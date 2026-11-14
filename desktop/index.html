@@ -36,7 +36,7 @@
       </div>
     </div>
 
-    <div class="app-shell" id="app-shell">
+    <div class="app-shell" id="app-shell" data-settings-mode="simple" data-agentic-mode="off">
     <!-- SIDEBAR. Navigation on the left, status at the foot: the content
          area belongs to the task, not to chrome. Narrow windows turn it into
          a top bar. -->
@@ -469,7 +469,7 @@
       </section>
 
       <!-- VIEW 2: SETTINGS -->
-      <section id="settings-view" class="view" data-settings-mode="simple">
+      <section id="settings-view" class="view" data-settings-mode="simple" data-agentic-mode="off">
         <header class="page-header">
           <h1 id="lbl-settings-title">Settings</h1>
           <p id="lbl-settings-subtitle" class="page-subtitle">
@@ -482,7 +482,7 @@
             id="settings-mode-switcher"
             class="settings-mode-switcher"
             role="radiogroup"
-            aria-label="Settings complexity"
+            aria-label="Settings mode"
             aria-describedby="settings-mode-description"
           >
             <button
@@ -492,7 +492,7 @@
               role="radio"
               aria-checked="true"
             >
-              Simple
+              Free
             </button>
             <button
               id="btn-settings-mode-advanced"
@@ -501,20 +501,53 @@
               role="radio"
               aria-checked="false"
             >
-              Advanced
+              With AI
             </button>
           </div>
           <p id="settings-mode-description" class="settings-mode-description">
-            Only the choices you need for everyday learning.
+            Only the choices you need for free offline learning without AI.
           </p>
+        </div>
+
+        <div id="settings-ai-mode-actions" class="settings-ai-mode-actions">
+          <div class="settings-ai-mode-toolbar">
+            <button id="btn-open-ai-wizard" class="btn secondary-btn btn-sm" type="button">
+              AI Setup Wizard…
+            </button>
+          </div>
+          <div id="settings-agentic-bar" class="settings-agentic-bar">
+            <label class="settings-toggle" for="toggle-agentic-coding">
+              <input type="checkbox" id="toggle-agentic-coding" />
+              <span>
+                <span class="settings-agentic-title-row">
+                  <span id="lbl-agentic-coding-title">Agentic Coding</span>
+                  <span id="lbl-agentic-coding-alpha" class="settings-badge-alpha">Alpha</span>
+                </span>
+                <span id="lbl-agentic-coding-help" class="settings-card-help">
+                  Alpha — requires a frontier model (Claude Opus+, GPT 6.1 Sol+, Gemini 4+…). Installs the zam CLI on PATH and rolls out skills to your configured workspaces.
+                </span>
+              </span>
+            </label>
+            <div id="agentic-coding-body" class="settings-stack" hidden>
+              <p id="agentic-coding-status" class="sub-label settings-status-row" aria-live="polite"></p>
+              <div class="settings-card-actions">
+                <button id="btn-open-agentic-wizard" class="btn secondary-btn btn-sm" type="button">
+                  Setup Agentic Coding…
+                </button>
+                <button id="btn-agentic-rollout" class="btn secondary-btn btn-sm" type="button">
+                  Roll out CLI &amp; skills
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div class="settings-layout">
           <!-- Sections of the visible cards, in their on-screen order; it
-               follows Simple/Advanced. Built by settings-toc.ts. -->
+               follows Free / With AI / Agentic Coding. Built by settings-toc.ts. -->
           <nav class="settings-toc" id="settings-toc" aria-label="Sections"></nav>
           <div class="settings-list" id="setup-card">
-            <article class="card frosted settings-card" id="study-learning-card">
+            <article class="card frosted settings-card" id="study-learning-card" data-settings-tier="advanced">
               <div class="settings-card-header">
                 <div>
                   <h2 id="lbl-settings-learning-title">Learning</h2>
@@ -625,7 +658,7 @@
               <p id="study-workload-status" class="sub-label settings-status-row" aria-live="polite"></p>
             </article>
 
-            <article class="card frosted settings-card" id="settings-ai-card">
+            <article class="card frosted settings-card" id="settings-ai-card" data-settings-tier="advanced">
               <div class="settings-card-header">
                 <div>
                   <h2 id="lbl-settings-ai-title">AI models</h2>
@@ -751,7 +784,7 @@
             </article>
 
             <!-- AGENT HARNESS CONNECTIONS (ADR 2026-07-11) -->
-            <article class="card frosted settings-card" id="settings-agents-card" data-settings-tier="advanced">
+            <article class="card frosted settings-card" id="settings-agents-card" data-settings-tier="advanced" data-agentic-tier="agentic">
               <div class="settings-card-header">
                 <div>
                   <h2 id="lbl-settings-agents-title">AI agents</h2>
@@ -769,7 +802,7 @@
               <p id="agent-connect-result" class="sub-label settings-status-row hidden" aria-live="polite"></p>
             </article>
 
-            <article class="card frosted settings-card" id="settings-workspaces-card" data-settings-tier="advanced">
+            <article class="card frosted settings-card" id="settings-workspaces-card" data-settings-tier="advanced" data-agentic-tier="agentic">
               <div class="settings-card-header">
                 <div>
                   <h2 id="lbl-settings-workspace-title">Workspace &amp; agents</h2>

@@ -849,6 +849,35 @@ textarea:focus-visible {
   margin: 0;
 }
 
+.settings-ai-mode-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-bottom: var(--space-5);
+}
+
+.settings-ai-mode-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.settings-agentic-bar {
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-card);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-4);
+}
+
+.settings-agentic-title-row {
+  align-items: center;
+  display: inline-flex;
+  gap: var(--space-2);
+}
+
 /* Sections beside the cards; above them in a narrow window. */
 .settings-layout {
   display: grid;
@@ -908,11 +937,28 @@ textarea:focus-visible {
   }
 }
 
-#settings-view[data-settings-mode="simple"] [data-settings-tier="advanced"] {
+#settings-view[data-settings-mode="simple"] [data-settings-tier="advanced"],
+#settings-view[data-settings-mode="simple"] #settings-ai-mode-actions,
+#settings-view[data-agentic-mode="off"] [data-agentic-tier="agentic"] {
   display: none !important;
 }
 
-/* Everyday choices read top-to-bottom in simple mode. Advanced mode keeps the
+#app-shell[data-settings-mode="simple"] #study-mode-switcher,
+#app-shell[data-settings-mode="simple"] #btn-choice-ask,
+#app-shell[data-settings-mode="simple"] #btn-choice-dispute,
+#app-shell[data-settings-mode="simple"] #discussion-box,
+#app-shell[data-settings-mode="simple"] #voice-controls,
+#app-shell[data-settings-mode="simple"] #voice-unavailable,
+#app-shell[data-settings-mode="simple"] #btn-content-material-import,
+#app-shell[data-settings-mode="simple"] #btn-content-topic-import,
+#app-shell[data-settings-mode="simple"] #btn-import-tab-text,
+#app-shell[data-settings-mode="simple"] #btn-import-tab-source,
+#app-shell[data-settings-mode="simple"] #btn-content-foundations-card,
+#app-shell[data-settings-mode="simple"] #btn-content-split-card {
+  display: none !important;
+}
+
+/* Everyday choices read top-to-bottom in Free mode. With AI keeps the
    source order so related infrastructure remains grouped together. */
 #settings-view[data-settings-mode="simple"] .settings-card {
   order: 99;
@@ -924,28 +970,20 @@ textarea:focus-visible {
   order: 100;
 }
 
-#settings-view[data-settings-mode="simple"] #study-learning-card {
+#settings-view[data-settings-mode="simple"] #study-workload-card {
   order: 1;
 }
 
-#settings-view[data-settings-mode="simple"] #study-workload-card {
+#settings-view[data-settings-mode="simple"] #settings-appearance-card {
   order: 2;
 }
 
-#settings-view[data-settings-mode="simple"] #settings-ai-card {
+#settings-view[data-settings-mode="simple"] #settings-data-card {
   order: 3;
 }
 
-#settings-view[data-settings-mode="simple"] #settings-appearance-card {
-  order: 4;
-}
-
-#settings-view[data-settings-mode="simple"] #settings-data-card {
-  order: 5;
-}
-
 #settings-view[data-settings-mode="simple"] #settings-system-card {
-  order: 6;
+  order: 4;
 }
 
 .settings-list {
@@ -3436,6 +3474,13 @@ textarea::placeholder {
 }
 
 /* ── VIEW 5: LEARNING CONTENT STUDIO ─────────────────────────────────────── */
+#content-cards-area:not([hidden]):not(.hidden) {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
 .content-studio-layout {
   display: flex;
   gap: 20px;
@@ -3449,6 +3494,7 @@ textarea::placeholder {
   display: flex;
   flex-direction: column;
   min-width: 0;
+  min-height: 0;
   height: 100%;
   padding: 20px;
 }
@@ -3458,6 +3504,7 @@ textarea::placeholder {
   display: flex;
   flex-direction: column;
   min-width: 0;
+  min-height: 0;
   height: 100%;
   padding: 20px;
 }
@@ -3939,7 +3986,10 @@ textarea::placeholder {
 /* Cards list container */
 .content-studio-card-list {
   flex: 1;
+  min-height: 0;
   overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -4034,12 +4084,18 @@ textarea::placeholder {
 }
 
 /* Editor Form */
+#editor-form-container {
+  min-height: 0;
+}
+
 .editor-scroll-container {
   flex: 1;
   display: flex;
   flex-direction: column;
   min-height: 0;
   overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
   padding-right: 5px;
   margin-bottom: 15px;
 }
@@ -4140,6 +4196,9 @@ textarea::placeholder {
   padding: 60px 20px;
   gap: 15px;
   flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }
 
 .content-studio-empty p {

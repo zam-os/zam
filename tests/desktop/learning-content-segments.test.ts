@@ -8,6 +8,7 @@ import {
 import { setCurrentLocale, t } from "../../desktop/src/i18n.js";
 import {
   editorialStatusLabel,
+  learningCardListLabel,
   matchesLearningSearch,
   unchosenGroupLabel,
 } from "../../desktop/src/learning-content.js";
@@ -49,6 +50,37 @@ describe("learning content segments", () => {
     expect(t("content_area_cards")).toBe("Learning cards");
     expect(t("content_segment_unchosen")).toBe("Not chosen");
     expect(t("btn_open_atlas")).toBe("Knowledge atlas");
+  });
+
+  it("prefers title, then question, then concept for card list labels", () => {
+    expect(
+      learningCardListLabel({
+        title: "Gespeicherte Änderungen prüfen",
+        question: "Woran lässt sich erkennen, ob sie gespeichert wurde?",
+        concept: "Prüfe, ob die Bearbeitung gespeichert wurde.",
+      }),
+    ).toBe("Gespeicherte Änderungen prüfen");
+
+    expect(
+      learningCardListLabel({
+        title: "   ",
+        question: "Woran lässt sich erkennen, ob sie gespeichert wurde?",
+        concept: "Prüfe, ob die Bearbeitung gespeichert wurde.",
+      }),
+    ).toBe("Woran lässt sich erkennen, ob sie gespeichert wurde?");
+
+    expect(
+      learningCardListLabel({
+        title: "",
+        question: null,
+        concept: "Prüfe, ob die Bearbeitung gespeichert wurde.",
+      }),
+    ).toBe("Prüfe, ob die Bearbeitung gespeichert wurde.");
+
+    setCurrentLocale("de");
+    expect(
+      learningCardListLabel({ title: "", question: "", concept: "" }),
+    ).toBe("Frage");
   });
 
   it("filters a row by the same fields the list already searches", () => {
@@ -107,5 +139,12 @@ describe("learning content segments", () => {
     expect(atlas).toContain("promptDeleteRegion(");
     expect(atlas).toContain("promptDeleteUnit(");
     expect(atlas).toContain('"personal-card-delete"');
+  });
+
+  it("keeps the card list and detail panel independently scrollable inside #content-cards-area", () => {
+    const styles = read("desktop/src/styles.css");
+    expect(styles).toMatch(
+      /#content-cards-area:not\(\[hidden\]\):not\(\.hidden\)\s*\{[^}]*flex:\s*1;[^}]*min-height:\s*0;/s,
+    );
   });
 });

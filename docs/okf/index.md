@@ -23,7 +23,7 @@ Current truth only — the *why* behind it lives in [../adr/](../adr/)
 - [MCP Transport and Surfaces](mcp-surfaces.md) — zam mcp is the preferred agent transport, and the Agent Plugins package ships it with ZAM's portable skill for compatible clients.
 - [Standalone Mobile Libraries](mobile-standalone-libraries.md) — ZAM Mobile runs standalone libraries, per-learner Flash or answer review, and cell-first curriculum flows on Android and iOS; pairing remains an optional multi-device upgrade.
 - [Observer Privacy Model and Policy Enforcement](observer-privacy-model.md) — The machine-local screen observation switch, two-layer consent and the ObserverPolicy contract for screen capture, and how shell observation is redacted and retained.
-- [Hands-Free Voice Mode](voice-mode.md) — Voice review shares one controller across device and cloud speech tiers, while learner-specific modes and simple-by-default settings keep advanced routing out of everyday use.
+- [Hands-Free Voice Mode](voice-mode.md) — Voice review shares one controller across device and cloud speech tiers, while Free mode on Desktop hides voice and mode switchers until With AI is enabled.
 
 ## data-model
 

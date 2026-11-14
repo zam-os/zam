@@ -109,7 +109,8 @@ describe("topic import (ADR 2026-10-14)", () => {
     // Every path on page 6 sets the choice, so another path takes it back.
     expect(onboarding).toContain("chosenStep = null;");
     expect(onboarding).toContain('actions.goToStep("content");');
-    expect(onboarding).toContain("chosenStep = path.action.step;");
+    expect(onboarding).toContain("onSelectStep(path.action.step);");
+    expect(onboarding).toContain("chosenStep = step;");
   });
 
   it("keeps the topic's name within its record before any model call", () => {

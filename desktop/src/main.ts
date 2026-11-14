@@ -89,6 +89,7 @@ import {
   type OnboardingCloudProvider,
   type OnboardingController,
   type OnboardingEmbeddingStatus,
+  type OnboardingFlowKind,
   type OnboardingPersona,
   type OnboardingWorkspaceStructure,
 } from "./onboarding.js";
@@ -181,7 +182,10 @@ import {
   pullForwardExecuteCommand,
 } from "./study-offers.js";
 import {
+  isAgenticCodingEffective,
+  loadAgenticCodingMode,
   loadSettingsViewMode,
+  saveAgenticCodingMode,
   saveSettingsViewMode,
   type SettingsViewMode,
 } from "./settings-view-mode.js";
@@ -207,6 +211,7 @@ import type {
 import {
   acceptsTypedStudyAnswer,
   type AutoCardFormat,
+  resolveEffectiveStudyLearningMode,
   resolveStudyLearningControlState,
   shouldEvaluateStudyAnswer,
   shouldRequestDynamicStudyQuestion,
@@ -400,6 +405,16 @@ const DEFAULT_STUDY_LEARNING_SETTINGS: StudyLearningSettings = {
 
 let isLlmEnabled = false;
 let settingsViewMode: SettingsViewMode = "simple";
+let agenticCodingEnabled = false;
+let hasNonAcademyCurriculumCells = true;
+
+function isFreeModeActive(): boolean {
+  return settingsViewMode === "simple";
+}
+
+function isAgenticModeActive(): boolean {
+  return isAgenticCodingEffective(settingsViewMode, agenticCodingEnabled);
+}
 let currentStudyLearningSettings = { ...DEFAULT_STUDY_LEARNING_SETTINGS };
 let studyLearningRequestRevision = 0;
 let studyLearningLoading = false;
@@ -934,10 +949,86 @@ function saveThemePreference(theme: ThemePreference): void {
   applyTheme(theme);
 }
 
+function syncAgenticCodingUI(): void {
+  const effective = isAgenticModeActive();
+  const agenticAttr = effective ? "on" : "off";
+  document
+    .getElementById("settings-view")
+    ?.setAttribute("data-agentic-mode", agenticAttr);
+  document
+    .getElementById("app-shell")
+    ?.setAttribute("data-agentic-mode", agenticAttr);
+
+  const toggle = document.getElementById(
+    "toggle-agentic-coding",
+  ) as HTMLInputElement | null;
+  if (toggle) toggle.checked = agenticCodingEnabled;
+  const body = document.getElementById("agentic-coding-body");
+  if (body) body.hidden = !effective;
+}
+
+function enforceFreeModeChrome(freeMode: boolean): void {
+  for (const id of [
+    "btn-content-material-import",
+    "btn-content-topic-import",
+    "btn-import-tab-text",
+    "btn-import-tab-source",
+  ]) {
+    const el = document.getElementById(id);
+    if (el) el.hidden = freeMode;
+  }
+  if (!freeMode) {
+    if (activeChoicePick) renderChoiceResult();
+    return;
+  }
+  const ask = document.getElementById("btn-choice-ask") as HTMLButtonElement | null;
+  if (ask) ask.hidden = true;
+  const dispute = document.getElementById(
+    "btn-choice-dispute",
+  ) as HTMLButtonElement | null;
+  if (dispute) dispute.hidden = true;
+  resetDiscussionUi();
+  void pauseVoiceMode();
+  document.getElementById("voice-controls")?.classList.add("hidden");
+  document.getElementById("voice-unavailable")?.classList.add("hidden");
+  const textActive = document
+    .getElementById("btn-import-tab-text")
+    ?.classList.contains("primary-btn");
+  const sourceActive = document
+    .getElementById("btn-import-tab-source")
+    ?.classList.contains("primary-btn");
+  if (textActive || sourceActive) {
+    document.getElementById("btn-import-tab-library")?.click();
+  }
+}
+
+async function runAgenticRollout(): Promise<void> {
+  const status = document.getElementById("agentic-coding-status");
+  const button = document.getElementById(
+    "btn-agentic-rollout",
+  ) as HTMLButtonElement | null;
+  if (status) status.textContent = t("agentic_coding_rollouting");
+  if (button) button.disabled = true;
+  try {
+    const summary = await repairInstallation();
+    if (status) status.textContent = summary;
+    await Promise.all([
+      loadAgentHarnessStatus(),
+      refreshAgentChecklistSignal(),
+      loadWorkspaceList(),
+    ]);
+  } finally {
+    if (button) button.disabled = false;
+  }
+}
+
 function applySettingsViewMode(mode: SettingsViewMode): void {
   settingsViewMode = mode;
   document
     .getElementById("settings-view")
+    ?.setAttribute("data-settings-mode", mode);
+  document
+    .getElementById("app-shell")
     ?.setAttribute("data-settings-mode", mode);
 
   const simple = document.getElementById(
@@ -961,16 +1052,28 @@ function applySettingsViewMode(mode: SettingsViewMode): void {
         : "settings_mode_advanced_help",
     );
   }
+  syncAgenticCodingUI();
+  enforceFreeModeChrome(simpleActive);
+  if (simpleActive) {
+    setAiStatus(t("status_free_mode"), "green");
+  }
+  renderOnboardingChecklist();
   renderSettingsToc();
 }
 
 function chooseSettingsViewMode(mode: SettingsViewMode): void {
+  const previous = settingsViewMode;
   saveSettingsViewMode(mode);
   applySettingsViewMode(mode);
   if (mode === "advanced") {
+    refreshAiStatus();
+    void refreshVoiceAvailability();
     void loadFoundryLocalStatus();
     void loadLocalVisionStatus();
     void loadLocalEmbeddingStatus();
+    if (previous === "simple" && !isLlmEnabled && onboardingController) {
+      showOnboardingFlow("ai");
+    }
   }
 }
 
@@ -981,6 +1084,29 @@ function initSettingsViewModeControls(): void {
   document
     .getElementById("btn-settings-mode-advanced")
     ?.addEventListener("click", () => chooseSettingsViewMode("advanced"));
+  document
+    .getElementById("btn-open-ai-wizard")
+    ?.addEventListener("click", () => showOnboardingFlow("ai"));
+  document
+    .getElementById("btn-open-agentic-wizard")
+    ?.addEventListener("click", () => showOnboardingFlow("agentic"));
+  document
+    .getElementById("btn-agentic-rollout")
+    ?.addEventListener("click", () => void runAgenticRollout());
+  document
+    .getElementById("toggle-agentic-coding")
+    ?.addEventListener("change", (event) => {
+      const enabled = (event.target as HTMLInputElement).checked;
+      agenticCodingEnabled = enabled;
+      saveAgenticCodingMode(enabled);
+      applySettingsViewMode(settingsViewMode);
+      if (enabled && isAgenticModeActive()) {
+        void runAgenticRollout();
+        if (agentHarnessConfigured !== true && onboardingController) {
+          showOnboardingFlow("agentic");
+        }
+      }
+    });
   initRadioGroupKeyboard(document.getElementById("settings-mode-switcher"));
   applySettingsViewMode(settingsViewMode);
 }
@@ -1095,6 +1221,18 @@ function initializeTranslations() {
     t("settings_mode_simple");
   document.getElementById("btn-settings-mode-advanced")!.textContent =
     t("settings_mode_advanced");
+  const aiWizardBtn = document.getElementById("btn-open-ai-wizard");
+  if (aiWizardBtn) aiWizardBtn.textContent = t("settings_open_ai_wizard");
+  const agenticTitle = document.getElementById("lbl-agentic-coding-title");
+  if (agenticTitle) agenticTitle.textContent = t("agentic_coding_title");
+  const agenticAlpha = document.getElementById("lbl-agentic-coding-alpha");
+  if (agenticAlpha) agenticAlpha.textContent = t("agentic_coding_alpha");
+  const agenticHelp = document.getElementById("lbl-agentic-coding-help");
+  if (agenticHelp) agenticHelp.textContent = t("agentic_coding_help");
+  const agenticWizardBtn = document.getElementById("btn-open-agentic-wizard");
+  if (agenticWizardBtn) agenticWizardBtn.textContent = t("agentic_coding_wizard_btn");
+  const agenticRolloutBtn = document.getElementById("btn-agentic-rollout");
+  if (agenticRolloutBtn) agenticRolloutBtn.textContent = t("agentic_coding_rollout_btn");
   applySettingsViewMode(settingsViewMode);
   document.getElementById("lbl-settings-learning-title")!.textContent =
     t("settings_learning_title");
@@ -2097,6 +2235,10 @@ function setAiStatus(label: string, dotClass: "green" | "amber" | "gray"): void 
  * changes) and update the header badge. Non-blocking: shows "starting" first.
  */
 function refreshAiStatus(): void {
+  if (isFreeModeActive()) {
+    setAiStatus(t("status_free_mode"), "green");
+    return;
+  }
   setAiStatus(t("ai_status_starting"), "amber");
   runBridge<{
     usable: boolean;
@@ -2636,8 +2778,15 @@ function studyLearningFallbackMode(): "flash" | "answer_feedback" {
   return isLlmEnabled ? "answer_feedback" : "flash";
 }
 
+function effectiveStudyLearningMode(): StudyLearningMode {
+  return resolveEffectiveStudyLearningMode({
+    freeMode: isFreeModeActive(),
+    learningMode: currentStudyLearningSettings.learningMode,
+  });
+}
+
 function isChoiceOrAutoMode(): boolean {
-  const mode = currentStudyLearningSettings.learningMode;
+  const mode = effectiveStudyLearningMode();
   return mode === "choice" || mode === "auto";
 }
 
@@ -2645,7 +2794,7 @@ function isChoiceOrAutoMode(): boolean {
 function isFlashLearningMode(): boolean {
   return isChoiceOrAutoMode()
     ? activeCardFormat === "flash"
-    : currentStudyLearningSettings.learningMode === "flash";
+    : effectiveStudyLearningMode() === "flash";
 }
 
 function isChoiceCard(): boolean {
@@ -2655,7 +2804,7 @@ function isChoiceCard(): boolean {
 }
 
 function defaultCardFormat(): AutoCardFormat {
-  const mode = currentStudyLearningSettings.learningMode;
+  const mode = effectiveStudyLearningMode();
   return mode === "answer_feedback" || mode === "answer_variation"
     ? "answer"
     : "flash";
@@ -5304,6 +5453,13 @@ function showOnboarding(): void {
   onboardingController.start();
 }
 
+/** Open a specific onboarding / setup wizard flow (`free` | `ai` | `agentic` | `topic`). */
+function showOnboardingFlow(flow: OnboardingFlowKind, stepId?: string): void {
+  if (!onboardingController) return;
+  switchView("onboarding-view");
+  onboardingController.startFlow(flow, stepId);
+}
+
 /** Open the flow directly at one page (e.g. the dashboard checklist). */
 function showOnboardingAt(stepId: string): void {
   if (!onboardingController) return;
@@ -5327,6 +5483,8 @@ function renderOnboardingChecklist(): void {
     agentConfigured: agentHarnessConfigured,
     workspaceStructure: onboardingWorkspaceStructure,
     cardsInDeck: deckCardCount,
+    freeMode: isFreeModeActive(),
+    agenticMode: isAgenticModeActive(),
   });
 
   container.classList.toggle("hidden", items.length === 0);
@@ -6318,6 +6476,7 @@ async function loadDashboard() {
       embedding?: OnboardingEmbeddingStatus;
       agentOffers?: OnboardingAgentOffer[];
       workspaceStructure?: OnboardingWorkspaceStructure;
+      hasNonAcademyCurriculumCells?: boolean;
     }>("desktop-bootstrap", ["--time-zone", learnerTimeZone()]);
     desktopUserId = settings.userId;
     setCurrentLocale(settings.locale || "en");
@@ -6334,6 +6493,8 @@ async function loadDashboard() {
     onboardingAgentOffers = settings.agentOffers ?? onboardingAgentOffers;
     onboardingWorkspaceStructure =
       settings.workspaceStructure ?? onboardingWorkspaceStructure;
+    hasNonAcademyCurriculumCells =
+      settings.hasNonAcademyCurriculumCells ?? hasNonAcademyCurriculumCells;
     dashboardSignalsLoaded = true;
     completeBootStep("settings");
 
@@ -6354,7 +6515,9 @@ async function loadDashboard() {
     }
     void loadWorkspaceList();
     void loadProviderStatus();
-    runAgentAutoConnectOnce();
+    if (isAgenticModeActive()) {
+      runAgentAutoConnectOnce();
+    }
 
     // 2. Vault-backed secrets (e.g. a Turso token in Bitwarden) must resolve
     // before the database is read: the bootstrap above already opens it, and
@@ -6755,9 +6918,10 @@ async function loadNextCard(
     renderReviewMedia("answer-media", [], "answer");
     questionText.textContent = "";
     showStudyBusy(
-      isLlmEnabled &&
+      !isFreeModeActive() &&
+        isLlmEnabled &&
         shouldRequestDynamicStudyQuestion(
-          currentStudyLearningSettings.learningMode,
+          effectiveStudyLearningMode(),
           options.dynamicQuestion !== false,
         )
         ? "question"
@@ -6795,14 +6959,15 @@ async function loadNextCard(
       }
     }
     const dynamicQuestionAllowed =
+      !isFreeModeActive() &&
       shouldRequestDynamicStudyQuestion(
-        currentStudyLearningSettings.learningMode,
+        effectiveStudyLearningMode(),
         options.dynamicQuestion !== false,
       );
     if (!dynamicQuestionAllowed) {
       reviewArgs.unshift("--no-dynamic-question");
     }
-    if (isLlmEnabled && dynamicQuestionAllowed) {
+    if (!isFreeModeActive() && isLlmEnabled && dynamicQuestionAllowed) {
       isWaitingForQuestion = true;
       startQuestionWaitTimer();
     }
@@ -6853,7 +7018,7 @@ async function submitAndReveal() {
 
   const textarea = document.getElementById("user-answer-input") as HTMLTextAreaElement;
   const userAnswer = acceptsTypedStudyAnswer(
-    currentStudyLearningSettings.learningMode,
+    effectiveStudyLearningMode(),
     activeCardFormat,
   )
     ? textarea.value.trim()
@@ -6875,11 +7040,11 @@ async function submitAndReveal() {
   let evaluationSuccessful = false;
   let evaluationError = "";
 
-  // Run LLM evaluation if enabled and user wrote an answer
+  // Run LLM evaluation if enabled (outside Free mode) and user wrote an answer
   if (
     shouldEvaluateStudyAnswer({
-      learningMode: currentStudyLearningSettings.learningMode,
-      evaluatorAvailable: isLlmEnabled,
+      learningMode: effectiveStudyLearningMode(),
+      evaluatorAvailable: !isFreeModeActive() && isLlmEnabled,
       answer: userAnswer,
       fastCheck: Boolean(activeCard.fastCheck) && !isChoiceOrAutoMode(),
       autoFormat: activeCardFormat,
@@ -7143,7 +7308,7 @@ function setupDiscussionForReveal(
   evaluationSuccessful: boolean,
 ): void {
   resetDiscussionUi();
-  if (!activeCard) return;
+  if (!activeCard || isFreeModeActive()) return;
   const card: DiscussionCardContext = {
     slug: activeCard.slug,
     concept: activeCard.concept,
@@ -7483,6 +7648,11 @@ function updateVoiceButton(): void {
  * the previous answer and must ask again.
  */
 async function refreshVoiceAvailability(): Promise<void> {
+  if (isFreeModeActive()) {
+    document.getElementById("voice-controls")?.classList.add("hidden");
+    document.getElementById("voice-unavailable")?.classList.add("hidden");
+    return;
+  }
   if (voiceProbePending) return;
   voiceProbePending = true;
   try {
@@ -7543,6 +7713,7 @@ async function pauseVoiceMode(): Promise<void> {
 }
 
 function startVoiceMode(): void {
+  if (isFreeModeActive()) return;
   const locale = resolveVoiceLocale(currentLocale);
   updateVoiceButton();
   void voiceController
@@ -8270,13 +8441,14 @@ async function resolveActivePresentation(): Promise<void> {
   activeRecallReason = null;
   activeRecallDetail = null;
   activeChoicePick = null;
-  const mode = currentStudyLearningSettings.learningMode;
+  const mode = effectiveStudyLearningMode();
   if (!activeCard || (mode !== "choice" && mode !== "auto")) {
     activeCardFormat = defaultCardFormat();
     return;
   }
   const recallFormat = (): AutoCardFormat =>
     mode === "auto" &&
+    !isFreeModeActive() &&
     isLlmEnabled &&
     currentStudyLearningSettings.autoRecallPin !== "flash"
       ? "answer"
@@ -8462,12 +8634,18 @@ function renderChoiceResult(): void {
 
   const ask = document.getElementById("btn-choice-ask") as HTMLButtonElement;
   ask.textContent = t("choice_ask");
-  ask.hidden = correct || disputed || !isLlmEnabled || discussion.active;
+  ask.hidden =
+    correct || disputed || isFreeModeActive() || !isLlmEnabled || discussion.active;
   const dispute = document.getElementById(
     "btn-choice-dispute",
   ) as HTMLButtonElement;
   dispute.textContent = t("choice_dispute");
-  dispute.hidden = typeof chosen !== "number" || correct || disputed;
+  dispute.hidden =
+    typeof chosen !== "number" ||
+    correct ||
+    disputed ||
+    isFreeModeActive() ||
+    activeChoice.entries[chosen]?.source !== "generated";
   document.getElementById("btn-choice-next")!.textContent = t("choice_next");
   box.classList.remove("hidden");
 }
@@ -8491,7 +8669,7 @@ async function submitChoice(): Promise<void> {
 
 /** "Ask": the follow-up chat, opened with a one-tap starter (Decision 7). */
 function openChoiceDiscussion(): void {
-  if (!activeCard || !activeChoice || !activeChoicePick) return;
+  if (!activeCard || !activeChoice || !activeChoicePick || isFreeModeActive()) return;
   clearChoiceAdvance();
   const answer = choiceAnswerText();
   const chosen =
@@ -8527,7 +8705,15 @@ function openChoiceDiscussion(): void {
 }
 
 function disputeChoice(): void {
-  if (!activeChoicePick || activeChoicePick.chosen === "dont_know") return;
+  if (
+    !activeChoice ||
+    !activeChoicePick ||
+    activeChoicePick.chosen === "dont_know" ||
+    isFreeModeActive() ||
+    activeChoice.entries[activeChoicePick.chosen]?.source !== "generated"
+  ) {
+    return;
+  }
   clearChoiceAdvance();
   activeChoicePick.disputed = true;
   renderChoiceResult();
@@ -8569,6 +8755,7 @@ let modelCapabilityRefresh: Promise<void> | null = null;
  * runtime is expensive, so they keep the manual "Re-check".
  */
 function refreshModelCapabilitiesWhenDue(): Promise<void> {
+  if (isFreeModeActive()) return Promise.resolve();
   modelCapabilityRefresh ??= (async () => {
     const check = await runBridge<ModelRefreshCapabilitiesResponse>(
       "model-refresh-capabilities",
@@ -8594,7 +8781,14 @@ function refreshModelCapabilitiesWhenDue(): Promise<void> {
  * calls never hold up the bridge the card on screen depends on (Decision 6).
  */
 function prepareChoiceOptionsInBackground(): void {
-  if (!isChoiceOrAutoMode() || !isLlmEnabled || choicePrepareInFlight) return;
+  if (
+    isFreeModeActive() ||
+    !isChoiceOrAutoMode() ||
+    !isLlmEnabled ||
+    choicePrepareInFlight
+  ) {
+    return;
+  }
   choicePrepareInFlight = true;
   void invoke<string>("execute_zam_bridge_background", {
     cmd: "choice-prepare",
@@ -9265,6 +9459,7 @@ function scheduleBundledTileReconcile(): void {
 window.addEventListener("DOMContentLoaded", () => {
   applyTheme(loadThemePreference());
   settingsViewMode = loadSettingsViewMode();
+  agenticCodingEnabled = loadAgenticCodingMode();
   // Apply the remembered locale before the first render, so the startup
   // overlay and the chrome behind it speak the learner's language from the
   // outset rather than switching once the bridge answers.
@@ -9349,10 +9544,15 @@ window.addEventListener("DOMContentLoaded", () => {
       workspaceDir: activeWorkspaceDir ?? "",
       activeWorkspaceId: activeWorkspaceId ?? "",
       workspaceStructure: onboardingWorkspaceStructure,
+      hasNonAcademyCurriculumCells,
     }),
     openExternal: (url) => void openUrl(url),
-    // Free import stays a modal. The curriculum opens from Quellen → Lehrplan.
+    // Free import and Academy stay modals; curriculum opens from Quellen → Lehrplan.
     openContentEntry: (entry) => {
+      if (entry === "academy") {
+        document.getElementById("btn-academy-open")?.click();
+        return;
+      }
       if (entry === "curriculum") {
         switchView("learning-content-view");
         void openLearningContentCurriculum();
@@ -9372,12 +9572,14 @@ window.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // Load initial dashboard state; then, off the critical path, an overdue
-  // capability check for cloud models.
+  // Load initial dashboard state; then, off the critical path (no-op in Free mode),
+  // an overdue capability check for cloud models.
   void loadDashboard().then(() => refreshModelCapabilitiesWhenDue());
   void refreshGraph3dFeature();
   void loadAppVersion();
-  repairInstallationOnVersionChange();
+  if (isAgenticModeActive()) {
+    repairInstallationOnVersionChange();
+  }
 
 
   // Start Session Button

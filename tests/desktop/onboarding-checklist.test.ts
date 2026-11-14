@@ -87,14 +87,58 @@ describe("dashboard onboarding checklist", () => {
     ]);
   });
 
-  it("links every row back to an existing flow step", () => {
-    const steps = buildOnboardingSteps(FLOW_CONTEXT, {
+  it("gates model/agent/workspace gaps by Free vs With AI vs Agentic Coding mode", () => {
+    const degraded = {
+      aiConnected: false,
+      agentConfigured: false,
+      workspaceStructure: { dirExists: false, missing: [], complete: false },
+      cardsInDeck: 0,
+    };
+
+    expect(
+      deriveOnboardingChecklist({ ...degraded, freeMode: true }).map(
+        (item) => item.id,
+      ),
+    ).toEqual(["content"]);
+    expect(
+      deriveOnboardingChecklist({
+        ...degraded,
+        cardsInDeck: 5,
+        freeMode: true,
+      }),
+    ).toEqual([]);
+
+    expect(
+      deriveOnboardingChecklist({
+        ...degraded,
+        freeMode: false,
+        agenticMode: false,
+      }).map((item) => item.id),
+    ).toEqual(["model", "content"]);
+
+    expect(
+      deriveOnboardingChecklist({
+        ...degraded,
+        freeMode: false,
+        agenticMode: true,
+      }).map((item) => item.id),
+    ).toEqual(["model", "agent", "workspace", "content"]);
+  });
+
+  it("links every row back to an existing step across its wizards", () => {
+    const actions = {
       openExternal() {},
       goToStep() {},
       openContentEntry() {},
       isLeaving: () => false,
-    });
-    const stepIds = new Set(steps.map((step) => step.id));
+    };
+    const stepIds = new Set(
+      (["free", "ai", "agentic"] as const).flatMap((flow) =>
+        buildOnboardingSteps(FLOW_CONTEXT, actions, flow).map(
+          (step) => step.id,
+        ),
+      ),
+    );
     for (const item of ONBOARDING_CHECKLIST_ITEMS) {
       expect(stepIds.has(item.step)).toBe(true);
     }

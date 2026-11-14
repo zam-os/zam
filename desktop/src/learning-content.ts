@@ -464,6 +464,20 @@ export function unchosenGroupLabel(group: { name: string }): string {
   return name || t("lbl_no_source_group");
 }
 
+/** Primary label for a card row in the Learning Content list: title, then question, then concept. */
+export function learningCardListLabel(item: {
+  title?: string | null;
+  question?: string | null;
+  concept?: string | null;
+}): string {
+  return (
+    item.title?.trim() ||
+    item.question?.trim() ||
+    item.concept?.trim() ||
+    t("lbl_question")
+  );
+}
+
 /** Entwurf / In Prüfung, from the token's editorial state. */
 export function editorialStatusLabel(state: string | null | undefined): string {
   if (state === "in_review") return t("lbl_editorial_in_review");
@@ -1332,7 +1346,7 @@ function groupRow(group: UnchosenGroupRow): HTMLElement {
 
 function memberRow(member: UnchosenMemberRow): HTMLElement {
   return tokenRow(
-    member.concept || member.title || t("lbl_question"),
+    learningCardListLabel(member),
     member.domain,
     t("lbl_unchosen_token"),
     "not-started",
@@ -1366,7 +1380,7 @@ function cardRow(card: PersonalCard): HTMLElement {
     statusClass = card.state;
   }
   const row = tokenRow(
-    card.concept || t("lbl_question"),
+    learningCardListLabel(card),
     card.domain,
     statusText,
     statusClass,

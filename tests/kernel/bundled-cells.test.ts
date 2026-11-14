@@ -16,6 +16,7 @@ import {
   getBundledCellEnrolment,
   getBundledCellsWithStatus,
   getBundledCellTile,
+  hasNonAcademyCurriculumCells,
   isBundledCellInstalled,
   listBundledCells,
   needsGenericCurriculumImport,
@@ -53,6 +54,14 @@ describe("Bundled learning cells (Phase 1)", () => {
     expect(rsOptik.gradeLabel).toBe("Realschule Klasse 7/8 (Bayern)");
     expect(rsOptik.publisher).toBe("ZAM Curriculum Working Group");
     expect(rsOptik.atomCount).toBe(4);
+    expect(hasNonAcademyCurriculumCells(cells)).toBe(true);
+    expect(hasNonAcademyCurriculumCells([])).toBe(false);
+    expect(
+      hasNonAcademyCurriculumCells([
+        { id: "zam-academy:mathematik-8" },
+        { id: "zam-academy:physik-8" },
+      ]),
+    ).toBe(false);
   });
 
   it("retrieves individual bundled cells and full KVT tiles", () => {

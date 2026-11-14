@@ -356,6 +356,10 @@
         flex-direction: column;
         gap: 10px;
       }
+      .content-studio-editor-panel {
+        position: sticky;
+        top: 12px;
+      }
       .content-studio-search-bar {
         display: flex;
         gap: 8px;
@@ -374,6 +378,8 @@
         gap: 8px;
         max-height: 360px;
         overflow-y: auto;
+        overscroll-behavior: contain;
+        scrollbar-gutter: stable;
         padding-right: 2px;
       }
       .content-list-item {

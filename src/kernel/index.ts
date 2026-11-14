@@ -526,6 +526,7 @@ export {
   getBundledCellEnrolment,
   getBundledCellsWithStatus,
   getBundledCellTile,
+  hasNonAcademyCurriculumCells,
   installedTileVersion,
   isBundledCellInstalled,
   listBundledCells,

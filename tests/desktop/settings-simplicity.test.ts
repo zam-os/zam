@@ -9,35 +9,36 @@ describe("native desktop settings simplicity", () => {
   const css = file("desktop/src/styles.css");
   const main = file("desktop/src/main.ts");
 
-  it("opens in simple mode with the complexity choice before all settings", () => {
+  it("opens in simple (Free) mode with the complexity choice before all settings", () => {
     const view = html.indexOf(
-      'id="settings-view" class="view" data-settings-mode="simple"',
+      'id="settings-view" class="view" data-settings-mode="simple" data-agentic-mode="off"',
     );
     const switcher = html.indexOf('id="settings-mode-switcher"');
     const settings = html.indexOf('class="settings-list"');
+    expect(html).toContain(
+      '<div class="app-shell" id="app-shell" data-settings-mode="simple" data-agentic-mode="off">',
+    );
     expect(view).toBeGreaterThan(0);
     expect(switcher).toBeGreaterThan(view);
     expect(switcher).toBeLessThan(settings);
   });
 
-  it("keeps everyday learning choices visible", () => {
+  it("keeps everyday Free-mode settings visible and hides AI/learning-mode setup until With AI", () => {
     for (const id of [
-      "study-learning-card",
       "study-workload-card",
-      "settings-ai-card",
       "settings-appearance-card",
       "settings-data-card",
+      "settings-system-card",
     ]) {
       expect(html).toMatch(
-        new RegExp(`<article[^>]+id="${id}"(?![^>]+data-settings-tier)`),
+        new RegExp(
+          `<article[^>]+id="${id}"(?![^>]+data-settings-tier)(?![^>]+data-agentic-tier)`,
+        ),
       );
     }
-  });
-
-  it("puts infrastructure and every local-model setup behind advanced mode", () => {
     for (const id of [
-      "settings-agents-card",
-      "settings-workspaces-card",
+      "study-learning-card",
+      "settings-ai-card",
       "settings-context-card",
       "settings-voice-card",
       "settings-server-db-card",
@@ -46,6 +47,13 @@ describe("native desktop settings simplicity", () => {
     ]) {
       expect(html).toMatch(
         new RegExp(`<article[^>]+id="${id}"[^>]+data-settings-tier="advanced"`),
+      );
+    }
+    for (const id of ["settings-agents-card", "settings-workspaces-card"]) {
+      expect(html).toMatch(
+        new RegExp(
+          `<article[^>]+id="${id}"[^>]+data-settings-tier="advanced"[^>]+data-agentic-tier="agentic"`,
+        ),
       );
     }
     for (const id of [
@@ -57,11 +65,44 @@ describe("native desktop settings simplicity", () => {
         new RegExp(`id="${id}"[^>]+data-settings-tier="advanced"`),
       );
     }
+    expect(html).toContain('id="settings-ai-mode-actions"');
+    expect(html).toContain('id="btn-open-ai-wizard"');
+    expect(html).toContain('id="toggle-agentic-coding"');
+    expect(html).toContain('id="btn-open-agentic-wizard"');
+    expect(html).toContain('id="btn-agentic-rollout"');
   });
 
-  it("hides advanced controls and only probes local models on demand", () => {
+  it("hides AI/Agentic controls in Free mode and only probes local models on demand", () => {
     expect(css).toContain(
       '#settings-view[data-settings-mode="simple"] [data-settings-tier="advanced"]',
+    );
+    expect(css).toContain(
+      '#settings-view[data-settings-mode="simple"] #settings-ai-mode-actions',
+    );
+    expect(css).toContain(
+      '#settings-view[data-agentic-mode="off"] [data-agentic-tier="agentic"]',
+    );
+    for (const hiddenSelector of [
+      '#app-shell[data-settings-mode="simple"] #study-mode-switcher',
+      '#app-shell[data-settings-mode="simple"] #btn-choice-ask',
+      '#app-shell[data-settings-mode="simple"] #btn-choice-dispute',
+      '#app-shell[data-settings-mode="simple"] #discussion-box',
+      '#app-shell[data-settings-mode="simple"] #voice-controls',
+      '#app-shell[data-settings-mode="simple"] #voice-unavailable',
+      '#app-shell[data-settings-mode="simple"] #btn-content-material-import',
+      '#app-shell[data-settings-mode="simple"] #btn-content-topic-import',
+      '#app-shell[data-settings-mode="simple"] #btn-import-tab-text',
+      '#app-shell[data-settings-mode="simple"] #btn-import-tab-source',
+      '#app-shell[data-settings-mode="simple"] #btn-content-foundations-card',
+      '#app-shell[data-settings-mode="simple"] #btn-content-split-card',
+    ]) {
+      expect(css).toContain(hiddenSelector);
+    }
+    expect(main).toContain(
+      "isFreeModeActive() || !isLlmEnabled || discussion.active",
+    );
+    expect(main).toContain(
+      'activeChoice.entries[chosen]?.source !== "generated"',
     );
     expect(main).toContain('if (settingsViewMode === "advanced") {');
     expect(main).toContain("void loadFoundryLocalStatus();");

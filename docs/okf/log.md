@@ -1,5 +1,9 @@
 # Log
 
+## 2026-11-14
+
+- **Update** — [Hands-Free Voice Mode](voice-mode.md)
+
 ## 2026-11-13
 
 - **Update** — [Token and Card Model](token-card-model.md)
