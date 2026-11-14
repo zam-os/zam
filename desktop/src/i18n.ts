@@ -147,12 +147,47 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     settings_title: "Ajustes",
     settings_subtitle:
       "Empieza con las pocas opciones que necesitas para aprender cada día.",
-    settings_mode_label: "Nivel de ajustes",
-    settings_mode_simple: "Sencillo",
-    settings_mode_advanced: "Avanzado",
-    settings_mode_simple_help: "Solo las opciones de uso diario.",
+    settings_mode_label: "Modo de aprendizaje",
+    settings_mode_simple: "Gratis",
+    settings_mode_advanced: "Con IA",
+    settings_mode_simple_help:
+      "Modo gratuito sin conexión ni IA: solo las opciones cotidianas.",
     settings_mode_advanced_help:
-      "También muestra conexiones, bases de datos y ajustes detallados.",
+      "Desbloquea modelos de IA, modo de voz, importación de temas/PDF y Agentic Coding (Alfa).",
+    status_free_mode: "Modo gratuito",
+    settings_open_ai_wizard: "Asistente de configuración de IA…",
+    agentic_coding_title: "Agentic Coding",
+    agentic_coding_alpha: "Alfa",
+    agentic_coding_help:
+      "Alfa — requiere un modelo avanzado (Claude Opus+, GPT 6.1 Sol+, Gemini 4+…). Instala la CLI zam en PATH y despliega las habilidades en tus carpetas de trabajo.",
+    agentic_coding_wizard_btn: "Configurar Agentic Coding…",
+    agentic_coding_rollout_btn: "Desplegar CLI y habilidades",
+    agentic_coding_rollouting:
+      "Instalando CLI zam y desplegando habilidades…",
+    onboarding_content_academy_label: "De ZAM Academy",
+    onboarding_content_academy_body:
+      "Celdas gratuitas seleccionadas para entrenar en la web con tarjetas listas — un clic para añadir.",
+    onboarding_content_academy_action: "Abrir ZAM Academy",
+    onboarding_agentic_intro_kicker: "Agentic Coding (Alfa)",
+    onboarding_agentic_intro_title:
+      "Aprende directamente de tu trabajo real.",
+    onboarding_agentic_intro_body:
+      "El modo Agentic Coding conecta ZAM con agentes como Claude Code o Antigravity mediante /zam y MCP, convirtiendo tareas reales en tarjetas de estudio.",
+    onboarding_agentic_intro_models:
+      "Estado Alfa: exige modelos muy capaces como Claude Opus+, GPT 6.1 Sol+ o Gemini 4+ para obtener resultados fiables.",
+    onboarding_agentic_intro_steps:
+      "En los próximos pasos instalarás la CLI zam en PATH, desplegarás las habilidades en tus carpetas de trabajo y conectarás tu agente.",
+    onboarding_workspace_rollout_btn: "Instalar CLI y desplegar habilidades",
+    onboarding_workspace_rollouting:
+      "Instalando la CLI zam y desplegando habilidades en las carpetas…",
+    onboarding_workspace_rollout_ok:
+      "CLI zam lista y habilidades actualizadas en {count} carpeta(s) de trabajo.",
+    onboarding_done_ai_title: "La IA está lista.",
+    onboarding_done_ai_body:
+      "Ya puedes usar evaluación con IA, modo de voz e importación de fotos, PDF o temas. También puedes activar Agentic Coding (Alfa) en Ajustes.",
+    onboarding_done_agentic_title: "Agentic Coding (Alfa) listo.",
+    onboarding_done_agentic_body:
+      "La CLI zam y las habilidades están desplegadas en tus carpetas de trabajo. Abre /zam en tu agente conectado cuando quieras capturar conocimiento.",
     settings_learning_title: "Aprendizaje",
     settings_learning_help:
       "Elige cómo funcionan las tarjetas durante un repaso.",
@@ -1097,12 +1132,47 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     settings_title: "Paramètres",
     settings_subtitle:
       "Commencez par les quelques choix utiles à l’apprentissage quotidien.",
-    settings_mode_label: "Niveau des paramètres",
-    settings_mode_simple: "Simple",
-    settings_mode_advanced: "Avancé",
-    settings_mode_simple_help: "Uniquement les choix du quotidien.",
+    settings_mode_label: "Mode d’utilisation",
+    settings_mode_simple: "Gratuit",
+    settings_mode_advanced: "Avec IA",
+    settings_mode_simple_help:
+      "Mode gratuit et hors ligne sans IA : uniquement les réglages du quotidien.",
     settings_mode_advanced_help:
-      "Affiche aussi les connexions, les bases de données et les réglages détaillés.",
+      "Débloque les modèles d’IA, le mode vocal, l’import de sujets/PDF et Agentic Coding (Alpha).",
+    status_free_mode: "Mode gratuit",
+    settings_open_ai_wizard: "Assistant de configuration IA…",
+    agentic_coding_title: "Agentic Coding",
+    agentic_coding_alpha: "Alpha",
+    agentic_coding_help:
+      "Alpha — nécessite un modèle très avancé (Claude Opus+, GPT 6.1 Sol+, Gemini 4+…). Installe la CLI zam sur PATH et déploie les skills dans vos dossiers de travail.",
+    agentic_coding_wizard_btn: "Configurer Agentic Coding…",
+    agentic_coding_rollout_btn: "Déployer CLI & skills",
+    agentic_coding_rollouting:
+      "Installation de la CLI zam et déploiement des skills…",
+    onboarding_content_academy_label: "Depuis ZAM Academy",
+    onboarding_content_academy_body:
+      "Modules gratuits avec applications web d’entraînement et cartes prêtes — un clic pour commencer.",
+    onboarding_content_academy_action: "Ouvrir ZAM Academy",
+    onboarding_agentic_intro_kicker: "Agentic Coding (Alpha)",
+    onboarding_agentic_intro_title:
+      "Apprenez à partir de vos tâches réelles.",
+    onboarding_agentic_intro_body:
+      "Le mode Agentic Coding relie ZAM à des agents comme Claude Code ou Antigravity via /zam et MCP pour transformer votre travail en cartes actives.",
+    onboarding_agentic_intro_models:
+      "Statut Alpha : nécessite un modèle très performant tel que Claude Opus+, GPT 6.1 Sol+ ou Gemini 4+.",
+    onboarding_agentic_intro_steps:
+      "Les étapes suivantes installent la CLI zam sur PATH, déploient les skills dans vos dossiers de travail et connectent votre agent.",
+    onboarding_workspace_rollout_btn: "Installer la CLI et déployer les skills",
+    onboarding_workspace_rollouting:
+      "Installation de la CLI zam et déploiement des skills en cours…",
+    onboarding_workspace_rollout_ok:
+      "CLI zam prête et skills déployés dans {count} dossier(s) de travail.",
+    onboarding_done_ai_title: "L’IA est prête.",
+    onboarding_done_ai_body:
+      "Les retours par IA, le mode vocal et l’import de PDF ou de sujets sont maintenant disponibles. Vous pouvez activer Agentic Coding (Alpha) dans Paramètres.",
+    onboarding_done_agentic_title: "Agentic Coding (Alpha) est prêt.",
+    onboarding_done_agentic_body:
+      "La CLI zam et les skills sont déployés dans vos dossiers de travail. Lancez /zam depuis votre agent connecté.",
     settings_learning_title: "Apprentissage",
     settings_learning_help:
       "Choisissez le comportement des cartes pendant une révision.",
@@ -2060,12 +2130,47 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     settings_title: "Configurações",
     settings_subtitle:
       "Comece pelas poucas escolhas necessárias para estudar no dia a dia.",
-    settings_mode_label: "Nível das configurações",
-    settings_mode_simple: "Simples",
-    settings_mode_advanced: "Avançado",
-    settings_mode_simple_help: "Apenas as escolhas do dia a dia.",
+    settings_mode_label: "Modo de uso",
+    settings_mode_simple: "Grátis",
+    settings_mode_advanced: "Com IA",
+    settings_mode_simple_help:
+      "Modo gratuito e offline sem IA: apenas as opções do dia a dia.",
     settings_mode_advanced_help:
-      "Também mostra conexões, bancos de dados e ajustes detalhados.",
+      "Libera modelos de IA, modo de voz, importação de temas/PDF e Agentic Coding (Alfa).",
+    status_free_mode: "Modo gratuito",
+    settings_open_ai_wizard: "Assistente de configuração de IA…",
+    agentic_coding_title: "Agentic Coding",
+    agentic_coding_alpha: "Alfa",
+    agentic_coding_help:
+      "Alfa — exige um modelo avançado (Claude Opus+, GPT 6.1 Sol+, Gemini 4+…). Instala a CLI zam no PATH e distribui as skills nas pastas de trabalho.",
+    agentic_coding_wizard_btn: "Configurar Agentic Coding…",
+    agentic_coding_rollout_btn: "Distribuir CLI e skills",
+    agentic_coding_rollouting:
+      "Instalando CLI zam e distribuindo skills…",
+    onboarding_content_academy_label: "Da ZAM Academy",
+    onboarding_content_academy_body:
+      "Células gratuitas com apps de prática na web e cartões prontos — adicione com um clique.",
+    onboarding_content_academy_action: "Abrir ZAM Academy",
+    onboarding_agentic_intro_kicker: "Agentic Coding (Alfa)",
+    onboarding_agentic_intro_title:
+      "Aprenda com o seu trabalho real.",
+    onboarding_agentic_intro_body:
+      "O modo Agentic Coding integra o ZAM a agentes como Claude Code ou Antigravity via /zam e MCP, transformando tarefas reais em cartões.",
+    onboarding_agentic_intro_models:
+      "Status Alfa: exige um modelo muito capaz como Claude Opus+, GPT 6.1 Sol+ ou Gemini 4+.",
+    onboarding_agentic_intro_steps:
+      "Nos próximos passos vamos instalar a CLI zam no PATH, distribuir skills nas pastas configuradas e conectar seu agente.",
+    onboarding_workspace_rollout_btn: "Instalar CLI e distribuir skills",
+    onboarding_workspace_rollouting:
+      "Instalando CLI zam e distribuindo skills nas pastas de trabalho…",
+    onboarding_workspace_rollout_ok:
+      "CLI zam pronta e skills atualizadas em {count} pasta(s) de trabalho.",
+    onboarding_done_ai_title: "A IA está pronta.",
+    onboarding_done_ai_body:
+      "Feedback com IA, modo de voz e importação de fotos, PDFs ou temas já estão disponíveis. Você também pode ativar Agentic Coding (Alfa) em Configurações.",
+    onboarding_done_agentic_title: "Agentic Coding (Alfa) pronto.",
+    onboarding_done_agentic_body:
+      "CLI zam e skills estão nas suas pastas de trabalho. Use /zam no agente conectado para capturar conhecimento.",
     settings_learning_title: "Aprendizagem",
     settings_learning_help:
       "Escolha como os cartões funcionam durante uma revisão.",
@@ -2999,11 +3104,43 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     setup_title: "设置与数据",
     settings_title: "设置",
     settings_subtitle: "先从日常学习真正需要的少量选项开始。",
-    settings_mode_label: "设置级别",
-    settings_mode_simple: "简单",
-    settings_mode_advanced: "高级",
-    settings_mode_simple_help: "仅显示日常使用的选项。",
-    settings_mode_advanced_help: "同时显示连接、数据库和详细调整。",
+    settings_mode_label: "使用模式",
+    settings_mode_simple: "免费模式",
+    settings_mode_advanced: "使用 AI",
+    settings_mode_simple_help: "无需 AI 即可离线免费学习：仅显示日常所需选项。",
+    settings_mode_advanced_help:
+      "解锁 AI 模型、语音模式、主题/PDF 导入以及可选的 Agentic Coding（Alpha）。",
+    status_free_mode: "免费模式",
+    settings_open_ai_wizard: "AI 配置向导…",
+    agentic_coding_title: "Agentic Coding",
+    agentic_coding_alpha: "Alpha",
+    agentic_coding_help:
+      "Alpha 测试版 — 需要顶尖大模型（Claude Opus+、GPT 6.1 Sol+、Gemini 4+…）。将安装 zam CLI 到 PATH，并在已配置的工作目录中部署技能。",
+    agentic_coding_wizard_btn: "配置 Agentic Coding…",
+    agentic_coding_rollout_btn: "部署 CLI 与技能",
+    agentic_coding_rollouting: "正在安装 zam CLI 并部署工作目录技能…",
+    onboarding_content_academy_label: "来自 ZAM Academy",
+    onboarding_content_academy_body:
+      "精选免费学习单元与网页交互练习，含现成卡片——一键即可开始。",
+    onboarding_content_academy_action: "打开 ZAM Academy",
+    onboarding_agentic_intro_kicker: "Agentic Coding（Alpha）",
+    onboarding_agentic_intro_title: "直接从真实编码与工作任务中学习。",
+    onboarding_agentic_intro_body:
+      "Agentic Coding 通过 /zam 和 MCP 将 ZAM 连接到 Claude Code 或 Antigravity 等智能体，把真实任务转化为持久记忆卡片。",
+    onboarding_agentic_intro_models:
+      "Alpha 状态：此模式需要高能力前沿模型（如 Claude Opus+、GPT 6.1 Sol+、Gemini 4+…）。",
+    onboarding_agentic_intro_steps:
+      "接下来将在 PATH 安装 zam CLI、向已配置工作目录部署技能并连接你的智能体。",
+    onboarding_workspace_rollout_btn: "安装 CLI 并部署技能",
+    onboarding_workspace_rollouting: "正在安装 zam CLI 并向工作目录部署技能…",
+    onboarding_workspace_rollout_ok:
+      "zam CLI 已就绪，并已更新 {count} 个工作目录的技能。",
+    onboarding_done_ai_title: "AI 已就绪。",
+    onboarding_done_ai_body:
+      "现已可用 AI 答案反馈、语音模式及照片/PDF/主题导入。你也可以在设置中启用 Agentic Coding（Alpha）。",
+    onboarding_done_agentic_title: "Agentic Coding（Alpha）已就绪。",
+    onboarding_done_agentic_body:
+      "zam CLI 和技能已部署到工作目录。可在已连接的智能体中运行 /zam 积累知识。",
     settings_learning_title: "学习",
     settings_learning_help: "选择复习时卡片的使用方式。",
     study_learning_saved: "学习模式已保存。",
@@ -3883,11 +4020,46 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     setup_title: "セットアップとデータ",
     settings_title: "設定",
     settings_subtitle: "毎日の学習に必要な少数の項目から始めます。",
-    settings_mode_label: "設定レベル",
-    settings_mode_simple: "かんたん",
-    settings_mode_advanced: "詳細",
-    settings_mode_simple_help: "日常的に使う項目だけを表示します。",
-    settings_mode_advanced_help: "接続、データベース、細かな調整も表示します。",
+    settings_mode_label: "学習モード",
+    settings_mode_simple: "無料モード",
+    settings_mode_advanced: "AI を使う",
+    settings_mode_simple_help:
+      "AI なしの無料・オフライン学習：毎日の復習に必要な項目だけを表示します。",
+    settings_mode_advanced_help:
+      "AI モデル、音声モード、トピック・PDF インポート、Agentic Coding（Alpha）を解放します。",
+    status_free_mode: "無料モード",
+    settings_open_ai_wizard: "AI セットアップウィザード…",
+    agentic_coding_title: "Agentic Coding",
+    agentic_coding_alpha: "Alpha",
+    agentic_coding_help:
+      "Alpha — Claude Opus+、GPT 6.1 Sol+、Gemini 4+ などの高性能モデルが必要です。PATH に zam CLI を導入し、設定済みワークスペースにスキルを展開します。",
+    agentic_coding_wizard_btn: "Agentic Coding を設定…",
+    agentic_coding_rollout_btn: "CLI とスキルを展開",
+    agentic_coding_rollouting:
+      "zam CLI の導入とスキル展開を実行しています…",
+    onboarding_content_academy_label: "ZAM Academy から",
+    onboarding_content_academy_body:
+      "無料のトレーニング用アプリと作成済みカードを含む学習セル — ワンクリックで追加。",
+    onboarding_content_academy_action: "ZAM Academy を開く",
+    onboarding_agentic_intro_kicker: "Agentic Coding（Alpha）",
+    onboarding_agentic_intro_title: "実際の作業からそのまま学ぶ。",
+    onboarding_agentic_intro_body:
+      "Agentic Coding は /zam と MCP を通じて Claude Code や Antigravity と連携し、実務の課題を記憶定着カードへ変えます。",
+    onboarding_agentic_intro_models:
+      "Alpha 段階：安定して使うには Claude Opus+、GPT 6.1 Sol+、Gemini 4+ などの高性能フロンティアモデルが必要です。",
+    onboarding_agentic_intro_steps:
+      "次のステップで PATH に zam CLI を入れ、ワークスペースへスキルを展開し、エージェントを接続します。",
+    onboarding_workspace_rollout_btn: "CLI 導入とスキル展開",
+    onboarding_workspace_rollouting:
+      "zam CLI とワークスペースのスキルを展開中…",
+    onboarding_workspace_rollout_ok:
+      "zam CLI を準備し、{count} 個のワークスペースにスキルを展開しました。",
+    onboarding_done_ai_title: "AI の準備が整いました。",
+    onboarding_done_ai_body:
+      "AI フィードバック、音声モード、画像・PDF・トピックインポートが使えます。設定から Agentic Coding（Alpha）も有効化できます。",
+    onboarding_done_agentic_title: "Agentic Coding（Alpha）の準備完了。",
+    onboarding_done_agentic_body:
+      "zam CLI とスキルを展開しました。接続したエージェントから /zam を呼び出して学習を始められます。",
     settings_learning_title: "学習",
     settings_learning_help: "復習中のカードの動作を選びます。",
     study_learning_saved: "学習モードを保存しました。",
@@ -5103,12 +5275,23 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     settings_title: "Settings",
     settings_subtitle:
       "Start with the few choices you need for everyday learning.",
-    settings_mode_label: "Settings level",
-    settings_mode_simple: "Simple",
-    settings_mode_advanced: "Advanced",
-    settings_mode_simple_help: "Only the choices you need day to day.",
+    settings_mode_label: "Learning mode",
+    settings_mode_simple: "Free",
+    settings_mode_advanced: "With AI",
+    settings_mode_simple_help:
+      "Free offline learning without AI — only the everyday controls you need.",
     settings_mode_advanced_help:
-      "Also show connections, databases, and detailed tuning.",
+      "Unlocks AI feedback, voice mode, Photo/PDF & topic import, plus optional Agentic Coding (Alpha).",
+    status_free_mode: "Free mode",
+    settings_open_ai_wizard: "AI Setup Wizard…",
+    agentic_coding_title: "Agentic Coding",
+    agentic_coding_alpha: "Alpha",
+    agentic_coding_help:
+      "Alpha — requires a frontier model (Claude Opus+, GPT 6.1 Sol+, Gemini 4+…). Installs the zam CLI on PATH and rolls out skills to configured workspaces.",
+    agentic_coding_wizard_btn: "Setup Agentic Coding…",
+    agentic_coding_rollout_btn: "Roll out CLI & skills",
+    agentic_coding_rollouting:
+      "Installing zam CLI and rolling out workspace skills…",
     settings_learning_title: "Learning",
     settings_learning_help: "Choose how cards behave during a review.",
     study_learning_saved: "Learning mode saved.",
@@ -6215,15 +6398,34 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     onboarding_finish: "Finish",
     onboarding_finish_later: "Finish later",
     onboarding_welcome_kicker: "Welcome to ZAM",
-    onboarding_welcome_title: "Learn deliberately — and keep it.",
+    onboarding_welcome_title: "Learn deliberately — free and offline.",
     onboarding_welcome_body:
-      "ZAM turns what you study into active-recall cards and schedules them with spaced repetition, so your knowledge sticks instead of fading. A few quick steps set it up to work fully.",
+      "ZAM turns what you study into active-recall cards and schedules them with spaced repetition (FSRS-6). You start in Free mode with zero AI keys or terminal setup needed.",
     onboarding_welcome_hint:
-      "You can leave at any time with “Finish later” and pick up where you left off.",
+      "You can leave at any time with “Finish later” and turn on AI or Agentic Coding (Alpha) later in Settings.",
     onboarding_done_kicker: "You're set up",
-    onboarding_done_title: "That's the essentials.",
+    onboarding_done_title: "Ready to learn for free.",
     onboarding_done_body:
-      "You can revisit this setup any time from Settings → “Run setup again”. Multi-machine vault secrets stay optional — paste is enough for one computer. Head to your dashboard to start learning.",
+      "You can revisit this setup any time from Settings → “Run setup again”. Want AI feedback or Agentic Coding later? Switch to “With AI” in Settings whenever you're ready.",
+    onboarding_done_ai_title: "AI features are ready.",
+    onboarding_done_ai_body:
+      "You can now use free-text AI feedback, question variations, voice mode, and Photo/PDF or topic import. To enable Agentic Coding (Alpha), turn it on inside Settings.",
+    onboarding_done_agentic_title: "Agentic Coding (Alpha) is ready.",
+    onboarding_done_agentic_body:
+      "The zam CLI and skills are rolled out to your workspaces. Call /zam inside your connected coding agent whenever you want to distill real work into cards.",
+    onboarding_agentic_intro_kicker: "Agentic Coding (Alpha)",
+    onboarding_agentic_intro_title: "Learn straight from real coding tasks.",
+    onboarding_agentic_intro_body:
+      "Agentic Coding pairs ZAM with coding agents such as Claude Code or Antigravity via /zam and MCP, turning real tasks into lasting recall cards.",
+    onboarding_agentic_intro_models:
+      "Alpha notice: this mode is still in Alpha and requires a very capable frontier model (Claude Opus+, GPT 6.1 Sol+, Gemini 4+…).",
+    onboarding_agentic_intro_steps:
+      "The next steps install the zam CLI on PATH, roll out skills to your configured workspaces, and connect your agent.",
+    onboarding_workspace_rollout_btn: "Install CLI & roll out skills",
+    onboarding_workspace_rollouting:
+      "Installing zam CLI and rolling out workspace skills…",
+    onboarding_workspace_rollout_ok:
+      "zam CLI ready and skills rolled out across {count} workspace(s).",
     // Optional multi-machine secrets (ADR 2026-07-30b) — skippable; not a
     // first-run requirement. Paste remains the default path.
     // Persona page (ADR 2026-07-24 §2, Phase 1).
@@ -6404,6 +6606,10 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     onboarding_content_body:
       "Your persona picks a sensible starting point — nothing is locked. Every path below stays available later under Learning Content.",
     onboarding_content_recommended: "Recommended for you",
+    onboarding_content_academy_label: "From ZAM Academy",
+    onboarding_content_academy_body:
+      "Curated free cells paired with web practice apps and ready-made cards — add one in a single click.",
+    onboarding_content_academy_action: "Browse ZAM Academy",
     onboarding_content_curriculum_label: "School curriculum",
     onboarding_content_curriculum_body:
       "Walk your state curriculum (LehrplanPLUS) level by level and import verified topics as cards.",
@@ -7153,12 +7359,23 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     settings_title: "Einstellungen",
     settings_subtitle:
       "Starte mit den wenigen Entscheidungen, die du beim täglichen Lernen brauchst.",
-    settings_mode_label: "Umfang der Einstellungen",
-    settings_mode_simple: "Einfach",
-    settings_mode_advanced: "Erweitert",
-    settings_mode_simple_help: "Nur die Einstellungen für den Lernalltag.",
+    settings_mode_label: "Lernmodus",
+    settings_mode_simple: "Kostenlos",
+    settings_mode_advanced: "Mit KI",
+    settings_mode_simple_help:
+      "Kostenlos und offline ohne KI lernen — nur die Einstellungen für den Alltag.",
     settings_mode_advanced_help:
-      "Zeigt zusätzlich Verbindungen, Datenbanken und Feineinstellungen.",
+      "Schaltet KI-Modelle, Sprachmodus, Foto-/PDF- & Themen-Import sowie optional Agentic Coding (Alpha) frei.",
+    status_free_mode: "Kostenlos-Modus",
+    settings_open_ai_wizard: "KI-Einrichtungsassistent…",
+    agentic_coding_title: "Agentic Coding",
+    agentic_coding_alpha: "Alpha",
+    agentic_coding_help:
+      "Alpha — erfordert eine sehr leistungsfähige KI (Claude Opus+, GPT 6.1 Sol+, Gemini 4+…). Installiert die zam-CLI im PATH und rollt die Skills in den eingerichteten Arbeitsverzeichnissen aus.",
+    agentic_coding_wizard_btn: "Agentic Coding einrichten…",
+    agentic_coding_rollout_btn: "CLI & Skills ausrollen",
+    agentic_coding_rollouting:
+      "zam-CLI wird installiert und Skills werden ausgerollt…",
     settings_learning_title: "Lernen",
     settings_learning_help:
       "Lege fest, wie Karten beim Wiederholen funktionieren.",
@@ -8303,15 +8520,34 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     onboarding_finish: "Fertig",
     onboarding_finish_later: "Später fortsetzen",
     onboarding_welcome_kicker: "Willkommen bei ZAM",
-    onboarding_welcome_title: "Bewusst lernen – und behalten.",
+    onboarding_welcome_title: "Bewusst lernen – kostenlos und ohne KI.",
     onboarding_welcome_body:
-      "ZAM verwandelt deinen Lernstoff in Active-Recall-Karten und plant sie mit Spaced Repetition, damit dein Wissen bleibt statt zu verblassen. Ein paar kurze Schritte richten alles vollständig ein.",
+      "ZAM verwandelt deinen Lernstoff in Active-Recall-Karten und plant sie mit Spaced Repetition (FSRS-6). Du startest im Kostenlos-Modus ganz ohne API-Keys oder Terminal.",
     onboarding_welcome_hint:
-      "Du kannst jederzeit mit „Später fortsetzen“ aussteigen und dort weitermachen, wo du aufgehört hast.",
+      "Du kannst jederzeit mit „Später fortsetzen“ aussteigen und KI oder Agentic Coding (Alpha) später in den Einstellungen aktivieren.",
     onboarding_done_kicker: "Alles eingerichtet",
-    onboarding_done_title: "Das war das Wichtigste.",
+    onboarding_done_title: "Bereit für den kostenlosen Start.",
     onboarding_done_body:
-      "Du kannst diese Einrichtung jederzeit über Einstellungen → „Einrichtung erneut starten“ öffnen. Vault-Secrets für mehrere Rechner bleiben optional — Einfügen reicht für einen Computer. Geh zu deinem Dashboard und leg los.",
+      "Du kannst diese Einrichtung jederzeit über Einstellungen → „Einrichtung erneut starten“ öffnen. Möchtest du später KI-Feedback oder Agentic Coding nutzen, wechsle einfach auf „Mit KI“.",
+    onboarding_done_ai_title: "KI ist eingerichtet.",
+    onboarding_done_ai_body:
+      "Freitext-Feedback, Variationen, Sprachmodus sowie Foto-/PDF- und Themen-Import sind jetzt freigeschaltet. Agentic Coding (Alpha) kannst du darunter optional aktivieren.",
+    onboarding_done_agentic_title: "Agentic Coding (Alpha) bereit.",
+    onboarding_done_agentic_body:
+      "Die zam-CLI und Skills sind in deinen Arbeitsverzeichnissen ausgerollt. Starte /zam in deinem verbundenen Agenten, sobald du aus realer Arbeit lernen willst.",
+    onboarding_agentic_intro_kicker: "Agentic Coding (Alpha)",
+    onboarding_agentic_intro_title: "Direkt aus echten Aufgaben lernen.",
+    onboarding_agentic_intro_body:
+      "Agentic Coding verbindet ZAM per /zam und MCP mit Coding-Agenten wie Claude Code oder Antigravity und destilliert reale Arbeit in Lernkarten.",
+    onboarding_agentic_intro_models:
+      "Alpha-Hinweis: Dieser Modus ist noch im Alpha-Zustand und erfordert eine sehr leistungsfähige KI (Claude Opus+, GPT 6.1 Sol+, Gemini 4+…).",
+    onboarding_agentic_intro_steps:
+      "Im nächsten Schritt werden die zam-CLI auf PATH installiert, Skills in den Arbeitsverzeichnissen ausgerollt und dein Agent verbunden.",
+    onboarding_workspace_rollout_btn: "CLI installieren & Skills ausrollen",
+    onboarding_workspace_rollouting:
+      "zam-CLI wird installiert und Skills werden in den Arbeitsverzeichnissen ausgerollt…",
+    onboarding_workspace_rollout_ok:
+      "zam-CLI bereit und Skills in {count} Arbeitsverzeichnis(sen) ausgerollt.",
     // Optionale Multi-Maschinen-Secrets (ADR 2026-07-30b) — überspringbar;
     // kein First-Run-Zwang. Paste bleibt der Standardweg.
     // Persona page (ADR 2026-07-24 §2, Phase 1).
@@ -8497,6 +8733,10 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     onboarding_content_body:
       "Deine Rolle wählt einen sinnvollen Startpunkt – nichts ist festgelegt. Jeder Weg unten bleibt später unter Lerninhalte verfügbar.",
     onboarding_content_recommended: "Für dich empfohlen",
+    onboarding_content_academy_label: "Aus der ZAM Academy",
+    onboarding_content_academy_body:
+      "Kuratierte kostenlose Lernzellen mit Web-Übungsapps und fertigen Karten – mit einem Klick übernehmen.",
+    onboarding_content_academy_action: "ZAM Academy öffnen",
     onboarding_content_curriculum_label: "Schul-Lehrplan",
     onboarding_content_curriculum_body:
       "Geh deinen Landeslehrplan (LehrplanPLUS) Ebene für Ebene durch und importiere geprüfte Themen als Karten.",

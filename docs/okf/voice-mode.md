@@ -1,14 +1,14 @@
 ---
 type: architecture
 title: Hands-Free Voice Mode
-description: Voice review shares one controller across device and cloud speech tiers, while learner-specific modes and simple-by-default settings keep advanced routing out of everyday use.
+description: Voice review shares one controller across device and cloud speech tiers, while Free mode on Desktop hides voice and mode switchers until With AI is enabled.
 tags:
   - voice
   - recall
   - desktop
   - mobile
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/voice-mode.md"
-timestamp: 2026-10-15T08:00:00.000Z
+timestamp: 2026-11-14T10:00:00.000Z
 ---
 
 Voice mode reads a due card aloud and maps a spoken word to an FSRS rating —
@@ -81,32 +81,32 @@ answer-and-feedback when one is active. Reading a fallback does not persist it,
 so connecting an evaluator never overwrites a learner who explicitly chose
 Flash.
 
-Desktop and Mobile expose all five modes in their native Settings — Flash,
-Choice, answer with feedback, variation, and Auto, with Auto's "later without
-typing" pin shown only while Auto is selected — and a four-way Flash / Choice /
-AI / Auto switch during review. Native Desktop follows the same controller
-contract as the companion: in Flash it hides answer input, skips dynamic
-questioning and evaluation, lets a click reveal the answer, and passes the
-learner's mode and timeouts into the voice controller. Switching modes pauses
-an active voice controller before saving and re-rendering. The in-session
-controls are unavailable only while no card is present or a load, reveal, save,
-edit, or review action is in flight; completing that transition recomputes the
-state and enables them again. Both switchers are radio groups in behaviour and
-not only in name: the group carries one tab stop, the arrow keys move and select
+Mobile Settings opens in a machine-local **Simple** view (keeping learning
+mode, workload preset, cloud-AI connection, appearance/reminders, learner
+profile, and updates visible, while **Advanced** reveals local-AI, speech-engine
+routing, server plumbing, pairing, and limits) and exposes all five modes —
+Flash, Choice, answer with feedback, variation, and Auto — plus the four-way
+review switcher and Voice mode. Desktop Studio instead defaults to a
+machine-local **Free** view (`simple`), which keeps review calm and zero-AI: it
+hides the study learning-mode settings card, `#study-mode-switcher`, Voice mode
+(`#voice-controls`, `#voice-unavailable`, `#settings-voice-card`), AI model
+configuration, and AI content imports/actions, resolving presentation cleanly to
+Flash or ready-made Choices with zero LLM calls and pausing/skipping voice
+probing. Switching Desktop Settings to **With AI** (`advanced`) reveals the AI
+Setup Wizard, all five learning modes, the in-session four-way switcher, Voice
+mode and speech-engine settings, AI imports/actions, server/sync/advanced cards,
+and the **Agentic Coding (`Alpha`)** toggle (which gates workspace/agent cards
+and CLI/skill rollout). These presentation preferences stay local because they
+describe operator mode on that machine, while learning mode and timeouts remain
+per-learner database settings.
+
+The in-session switcher and radio controls are radio groups in behaviour and
+not only in name: each group carries one tab stop, arrow keys move and select
 within it, and focus stays with the committed option after the save that briefly
 disables it. A failed save restores both selection and focus to the still-checked
 option, and keyboard navigation never hands focus to the answer field.
 Announcing the role without honouring its keys would leave a keyboard or
 screen-reader user worse off than the plain toggle buttons these replaced.
-
-Both native Settings surfaces default to a machine-local **Simple** view. It
-keeps learning mode, the workload preset, the ordinary cloud-AI connection,
-appearance or reminders, learner profile, and updates visible. **Advanced**
-reveals local-AI setup, speech-engine routing, database and server plumbing,
-device pairing, agent and workspace integration, and fine-grained limits. This
-presentation preference stays local because it describes operator comfort on
-that device, while learning mode and timeouts remain per-learner database
-settings.
 
 The MCP Recall and Settings panels read and write the same per-learner object
 through `study-learning-get` and `study-learning-set`; the old global

@@ -98,6 +98,7 @@ import {
   getTokensDeleteImpact,
   getTursoCredentials,
   hasCommand,
+  hasNonAcademyCurriculumCells,
   importCurriculumCards,
   inventoryObservationFiles,
   isBitwardenVaultEnabled,
@@ -4636,6 +4637,9 @@ bridgeCommand
         // Workspace page state (Phase 6): the active workspace's fresh-setup
         // structure, so the page can offer create/repair honestly.
         workspaceStructure: inspectWorkspaceStructure(workspaceDir),
+        // Free-mode first-run content step shows the Bavarian curriculum
+        // path only while non-Academy bundled cells remain.
+        hasNonAcademyCurriculumCells: hasNonAcademyCurriculumCells(),
       });
     });
   });

@@ -21,6 +21,8 @@ import { t, tf } from "./i18n.js";
 /** `MAX_TOPIC_TITLE` of the kernel's topic import; a test keeps them equal. */
 export const TOPIC_TITLE_MAX = 200;
 
+export type OnboardingFlowKind = "free" | "ai" | "agentic" | "topic";
+
 export interface OnboardingStep {
   /** Stable id for tests and later cross-step references. */
   id: string;
@@ -136,14 +138,21 @@ export interface OnboardingStepContext {
   activeWorkspaceId: string;
   /** Fresh-setup structure state of the active workspace. */
   workspaceStructure: OnboardingWorkspaceStructure;
+  /**
+   * True while local bundled curriculum cells exist outside ZAM Academy
+   * (Design W1: hides the local curriculum shortcut once Academy covers all).
+   */
+  hasNonAcademyCurriculumCells?: boolean;
 }
 
 /** Ollama download page, opened externally when the runtime is missing. */
 const OLLAMA_DOWNLOAD_URL = "https://ollama.com/download";
 
 export interface OnboardingController {
-  /** Reset to the first step, render, and reveal the flow. */
+  /** Reset to the first step of the default Free flow and reveal the flow. */
   start(): void;
+  /** Open a specific onboarding or setup wizard flow (`free` | `ai` | `agentic` | `topic`). */
+  startFlow(flow: OnboardingFlowKind, stepId?: string): void;
   /**
    * Open the flow directly at a step (the dashboard checklist reopens the
    * page that resolves a row). Falls back to the first step for unknown ids.
@@ -170,11 +179,11 @@ interface OnboardingDeps {
    */
   openExternal(url: string): void;
   /**
-   * Trigger an existing Studio import entry point — both are document-level
-   * modal overlays, so they open on top of the flow (plan Phase 8: wire the
+   * Trigger an existing Studio import entry point — all are document-level
+   * modal overlays, so they open on top of the flow (plan Phase 8 / W1: wire
    * existing entry points, never reimplement them).
    */
-  openContentEntry(entry: "curriculum" | "free-import"): void;
+  openContentEntry(entry: "academy" | "curriculum" | "free-import"): void;
 }
 
 /**
@@ -195,7 +204,7 @@ export interface OnboardingStepActions {
   openExternal(url: string): void;
   goToStep(id: string): void;
   /** Trigger an existing Studio import entry point (modal overlays). */
-  openContentEntry(entry: "curriculum" | "free-import"): void;
+  openContentEntry(entry: "academy" | "curriculum" | "free-import"): void;
   /**
    * True once the learner has asked to leave the flow, while the page is
    * still shown; see {@link createOnboardingExit}.
@@ -219,7 +228,7 @@ export interface ContentPathDescriptor {
   bodyKey: string;
   actionLabelKey: string;
   action:
-    | { kind: "entry"; entry: "curriculum" | "free-import" }
+    | { kind: "entry"; entry: "academy" | "curriculum" | "free-import" }
     | { kind: "step"; step: string };
 }
 
@@ -264,6 +273,64 @@ export function orderContentPaths(
     preferred,
     ...CONTENT_PATHS.filter((path) => path.id !== defaultId),
   ];
+}
+
+/**
+ * Content paths offered during the Free-mode first-run flow (Design W1).
+ * `curriculum` is offered only while local bundled non-Academy curriculum
+ * cells still exist (`hasNonAcademyCurriculumCells`).
+ */
+export const FREE_CONTENT_PATHS: readonly ContentPathDescriptor[] = [
+  {
+    id: "academy",
+    labelKey: "onboarding_content_academy_label",
+    bodyKey: "onboarding_content_academy_body",
+    actionLabelKey: "onboarding_content_academy_action",
+    action: { kind: "entry", entry: "academy" },
+  },
+  {
+    id: "curriculum",
+    labelKey: "onboarding_content_curriculum_label",
+    bodyKey: "onboarding_content_curriculum_body",
+    actionLabelKey: "onboarding_content_curriculum_action",
+    action: { kind: "entry", entry: "curriculum" },
+  },
+  {
+    id: "free-import",
+    labelKey: "onboarding_content_free_label",
+    bodyKey: "onboarding_content_free_body",
+    actionLabelKey: "onboarding_content_free_action",
+    action: { kind: "entry", entry: "free-import" },
+  },
+];
+
+export function freeDefaultPathFor(
+  defaultImportPath: string | undefined,
+  hasNonAcademyCurriculumCells = true,
+): string {
+  if (defaultImportPath === "curriculum" && hasNonAcademyCurriculumCells) {
+    return "curriculum";
+  }
+  if (defaultImportPath === "free-import") {
+    return "free-import";
+  }
+  return "academy";
+}
+
+export function orderFreeContentPaths(
+  defaultImportPath: string | undefined,
+  hasNonAcademyCurriculumCells = true,
+): readonly ContentPathDescriptor[] {
+  const available = hasNonAcademyCurriculumCells
+    ? FREE_CONTENT_PATHS
+    : FREE_CONTENT_PATHS.filter((path) => path.id !== "curriculum");
+  const preferredId = freeDefaultPathFor(
+    defaultImportPath,
+    hasNonAcademyCurriculumCells,
+  );
+  const preferred = available.find((path) => path.id === preferredId);
+  if (!preferred) return available;
+  return [preferred, ...available.filter((path) => path.id !== preferredId)];
 }
 
 // ── Dashboard onboarding checklist (ADR 2026-07-24 §7, plan Phase 9) ────────
@@ -328,6 +395,10 @@ export interface OnboardingChecklistState {
   workspaceStructure: OnboardingWorkspaceStructure | null;
   /** Total cards in the user's deck (bootstrap `dueSummary`); null while unknown. */
   cardsInDeck: number | null;
+  /** True when the learner uses Free mode (hides AI, agent, workspace rows). */
+  freeMode?: boolean;
+  /** False when AI mode is active without Agentic Coding (hides agent/workspace rows). */
+  agenticMode?: boolean;
 }
 
 /**
@@ -339,6 +410,13 @@ export function deriveOnboardingChecklist(
   state: OnboardingChecklistState,
 ): readonly OnboardingChecklistDescriptor[] {
   return ONBOARDING_CHECKLIST_ITEMS.filter((item) => {
+    if (state.freeMode && item.id !== "content") return false;
+    if (
+      state.agenticMode === false &&
+      (item.id === "agent" || item.id === "workspace")
+    ) {
+      return false;
+    }
     switch (item.id) {
       case "model":
         return !state.aiConnected;
@@ -354,9 +432,60 @@ export function deriveOnboardingChecklist(
   });
 }
 
+function renderContentPathCards(
+  container: HTMLElement,
+  paths: readonly ContentPathDescriptor[],
+  recommendedId: string,
+  actions: OnboardingStepActions,
+  onSelectEntry: () => void,
+  onSelectStep: (step: string) => void,
+): void {
+  const list = document.createElement("div");
+  list.className = "onboarding-topic-level";
+  for (const path of paths) {
+    const card = document.createElement("div");
+    card.className = "onboarding-topic-topic onboarding-content-path";
+    card.dataset.pathId = path.id;
+    const head = document.createElement("div");
+    head.className = "onboarding-model-card-head";
+    const label = document.createElement("p");
+    label.className = "onboarding-agent-offer-label";
+    label.textContent = t(path.labelKey);
+    head.append(label);
+    if (path.id === recommendedId) {
+      const badge = document.createElement("span");
+      badge.className = "onboarding-model-badge";
+      badge.textContent = t("onboarding_content_recommended");
+      head.append(badge);
+    }
+    const body = document.createElement("p");
+    body.className = "onboarding-model-line";
+    body.textContent = t(path.bodyKey);
+    const actionBtn = document.createElement("button");
+    actionBtn.type = "button";
+    actionBtn.className =
+      path.id === recommendedId
+        ? "btn primary-btn btn-sm"
+        : "btn secondary-btn btn-sm";
+    actionBtn.textContent = t(path.actionLabelKey);
+    actionBtn.addEventListener("click", () => {
+      if (path.action.kind === "entry") {
+        onSelectEntry();
+        actions.openContentEntry(path.action.entry);
+      } else {
+        onSelectStep(path.action.step);
+      }
+    });
+    card.append(head, body, actionBtn);
+    list.append(card);
+  }
+  container.append(list);
+}
+
 export function buildOnboardingSteps(
   ctx: OnboardingStepContext,
   actions: OnboardingStepActions,
+  flow: OnboardingFlowKind = "free",
 ): OnboardingStep[] {
   // Selection survives Back/forward re-renders within one run of the flow;
   // each start() re-reads the persisted value (or the in-session memo).
@@ -372,9 +501,9 @@ export function buildOnboardingSteps(
   // Topic import state, kept across Back/forward re-renders so a
   // half-decomposed topic survives navigating the flow.
   const topicState: TopicImportState = createTopicImportState();
-  // The topic page belongs to the flow only while page 6's topic path is the
-  // one last chosen (ADR 2026-10-14, Decision 6): another path takes it out.
-  let chosenStep: string | null = null;
+  // The topic page belongs to the flow only while the topic path is chosen
+  // (ADR 2026-10-14, Decision 6), or when opened directly via the topic flow.
+  let chosenStep: string | null = flow === "topic" ? "topic" : null;
   // Agent page detection state, probed lazily on first render (detection
   // reads real config files, so it does not ride desktop-bootstrap) and kept
   // across Back/forward re-renders. `report: null` + `error: null` = probing.
@@ -384,300 +513,357 @@ export function buildOnboardingSteps(
     notice: { text: string; ok: boolean } | null;
   } = { report: null, error: null, notice: null };
 
-  return [
-    {
-      id: "welcome",
-      titleKey: "onboarding_welcome_kicker",
-      skippable: false,
-      render(container) {
-        container.append(
-          heading(t("onboarding_welcome_title")),
-          paragraph(t("onboarding_welcome_body")),
-          paragraph(t("onboarding_welcome_hint")),
-        );
-      },
+  const welcomeStep: OnboardingStep = {
+    id: "welcome",
+    titleKey: "onboarding_welcome_kicker",
+    skippable: false,
+    render(container) {
+      container.append(
+        heading(t("onboarding_welcome_title")),
+        paragraph(t("onboarding_welcome_body")),
+        paragraph(t("onboarding_welcome_hint")),
+      );
     },
-    {
-      id: "persona",
-      titleKey: "onboarding_persona_kicker",
-      skippable: false,
-      render(container) {
-        container.append(
-          heading(t("onboarding_persona_title")),
-          paragraph(t("onboarding_persona_body")),
-        );
-        const group = document.createElement("div");
-        group.className = "onboarding-persona-grid";
-        group.setAttribute("role", "radiogroup");
-        group.setAttribute("aria-label", t("onboarding_persona_title"));
-        for (const persona of ctx.personas) {
-          const card = document.createElement("button");
-          card.type = "button";
-          card.className = "onboarding-persona-card";
-          card.dataset.personaId = persona.id;
-          card.setAttribute("role", "radio");
-          const label = document.createElement("span");
-          label.className = "onboarding-persona-label";
-          label.textContent = t(persona.labelKey);
-          const why = document.createElement("span");
-          why.className = "onboarding-persona-why";
-          why.textContent = t(persona.descriptionKey);
-          card.append(label, why);
-          card.addEventListener("click", () => {
-            selectedPersonaId = persona.id;
-            markPersonaSelection(group, selectedPersonaId);
-          });
-          group.append(card);
-        }
-        markPersonaSelection(group, selectedPersonaId);
-        container.append(group, paragraph(t("onboarding_persona_hint")));
-      },
-      async onNext() {
-        const persona = ctx.personas.find((p) => p.id === selectedPersonaId);
-        if (!persona) return;
-        // Persist the choice machine-local and seed its knowledge context
-        // (the persona's only data-model side effect). The label travels from
-        // here because only the desktop knows the user's locale.
-        await runBridge("onboarding-persona", [
-          persona.id,
-          "--context-label",
-          t(persona.contextLabelKey),
-        ]);
-        lastPersistedPersonaId = persona.id;
-      },
+  };
+
+  const personaStep: OnboardingStep = {
+    id: "persona",
+    titleKey: "onboarding_persona_kicker",
+    skippable: false,
+    render(container) {
+      container.append(
+        heading(t("onboarding_persona_title")),
+        paragraph(t("onboarding_persona_body")),
+      );
+      const group = document.createElement("div");
+      group.className = "onboarding-persona-grid";
+      group.setAttribute("role", "radiogroup");
+      group.setAttribute("aria-label", t("onboarding_persona_title"));
+      for (const persona of ctx.personas) {
+        const card = document.createElement("button");
+        card.type = "button";
+        card.className = "onboarding-persona-card";
+        card.dataset.personaId = persona.id;
+        card.setAttribute("role", "radio");
+        const label = document.createElement("span");
+        label.className = "onboarding-persona-label";
+        label.textContent = t(persona.labelKey);
+        const why = document.createElement("span");
+        why.className = "onboarding-persona-why";
+        why.textContent = t(persona.descriptionKey);
+        card.append(label, why);
+        card.addEventListener("click", () => {
+          selectedPersonaId = persona.id;
+          markPersonaSelection(group, selectedPersonaId);
+        });
+        group.append(card);
+      }
+      markPersonaSelection(group, selectedPersonaId);
+      container.append(group, paragraph(t("onboarding_persona_hint")));
     },
-    {
-      id: "model",
-      titleKey: "onboarding_model_kicker",
-      // Degraded mode is explicit and honest (ADR §7): without a model,
-      // manual authoring and reviews still work; AI entry points link back.
-      skippable: true,
-      render(container) {
+    async onNext() {
+      const persona = ctx.personas.find((p) => p.id === selectedPersonaId);
+      if (!persona) return;
+      // Persist the choice machine-local and seed its knowledge context
+      // (the persona's only data-model side effect). The label travels from
+      // here because only the desktop knows the user's locale.
+      await runBridge("onboarding-persona", [
+        persona.id,
+        "--context-label",
+        t(persona.contextLabelKey),
+      ]);
+      lastPersistedPersonaId = persona.id;
+    },
+  };
+
+  const freeContentStep: OnboardingStep = {
+    id: "content",
+    titleKey: "onboarding_content_kicker",
+    skippable: true,
+    render(container) {
+      container.append(
+        heading(t("onboarding_content_title")),
+        paragraph(t("onboarding_content_body")),
+      );
+      const persona = ctx.personas.find((p) => p.id === selectedPersonaId);
+      const hasCurriculum = ctx.hasNonAcademyCurriculumCells ?? true;
+      const defaultPath = freeDefaultPathFor(
+        persona?.defaultImportPath,
+        hasCurriculum,
+      );
+      renderContentPathCards(
+        container,
+        orderFreeContentPaths(persona?.defaultImportPath, hasCurriculum),
+        defaultPath,
+        actions,
+        () => {},
+        () => {},
+      );
+    },
+  };
+
+  const modelStep: OnboardingStep = {
+    id: "model",
+    titleKey: "onboarding_model_kicker",
+    // Degraded mode is explicit and honest (ADR §7): without a model,
+    // free learning still works; AI entry points link back.
+    skippable: true,
+    render(container) {
+      container.append(
+        heading(t("onboarding_model_title")),
+        paragraph(t("onboarding_model_body")),
+      );
+      // Exclude OpenRouter from onboarding recommendations as requested
+      const cloudProviders = ctx.cloudProviders.filter(
+        (p) => p.id !== "openrouter",
+      );
+      for (const provider of cloudProviders) {
         container.append(
-          heading(t("onboarding_model_title")),
-          paragraph(t("onboarding_model_body")),
-        );
-        // Exclude OpenRouter from onboarding recommendations as requested
-        const cloudProviders = ctx.cloudProviders.filter(
-          (p) => p.id !== "openrouter",
-        );
-        for (const provider of cloudProviders) {
-          container.append(
-            renderCloudProviderCard(provider, actions, {
-              connected: aiConnected,
-              onConnected: () => {
-                aiConnected = true;
-              },
-            }),
-          );
-        }
-        container.append(
-          renderAgentModelCard({
+          renderCloudProviderCard(provider, actions, {
             connected: aiConnected,
             onConnected: () => {
               aiConnected = true;
             },
           }),
-          renderLocalAiCard(ctx.localAiCapable),
-          renderEmbeddingBlock(actions, {
-            get: () => embeddingStatus,
-            set: (status) => {
-              embeddingStatus = status;
-            },
-          }),
         );
-      },
-    },
-    {
-      id: "agent",
-      titleKey: "onboarding_agent_kicker",
-      // Skippable and honest about the consequence: Studio-only usage works
-      // without an agent; `/zam` inside a harness does not (ADR §7).
-      skippable: true,
-      render(container) {
-        container.append(
-          heading(t("onboarding_agent_title")),
-          paragraph(t("onboarding_agent_body")),
-        );
-        const root = document.createElement("div");
-        root.className = "onboarding-agent";
-        container.append(root);
-        renderAgentArea(root, ctx.agentOffers, actions, agentState);
-      },
-    },
-    {
-      id: "workspace",
-      titleKey: "onboarding_workspace_kicker",
-      // Not skippable (ADR page table): the page only confirms or repairs a
-      // plain folder — there is nothing costly to opt out of.
-      skippable: false,
-      render(container) {
-        container.append(
-          heading(t("onboarding_workspace_title")),
-          paragraph(t("onboarding_workspace_body")),
-        );
-        const path = document.createElement("code");
-        path.className = "onboarding-workspace-path";
-        path.textContent = ctx.workspaceDir;
-        container.append(path);
-
-        const controls = document.createElement("div");
-        controls.className = "onboarding-model-links";
-        const repairBtn = document.createElement("button");
-        repairBtn.type = "button";
-        repairBtn.className = "btn secondary-btn btn-sm";
-        repairBtn.textContent = t("onboarding_workspace_repair");
-        controls.append(repairBtn);
-
-        const status = document.createElement("p");
-        status.className = "onboarding-model-status";
-        status.setAttribute("aria-live", "polite");
-
-        function reflect(): void {
-          const complete = workspaceStructure.complete;
-          repairBtn.classList.toggle("hidden", complete);
-          status.classList.toggle("ok", complete);
-          status.textContent = complete
-            ? t("onboarding_workspace_complete")
-            : t("onboarding_workspace_incomplete").replace(
-                "{count}",
-                String(workspaceStructure.missing.length),
-              );
-        }
-        reflect();
-
-        repairBtn.addEventListener("click", () => {
-          void (async () => {
-            repairBtn.disabled = true;
-            status.classList.remove("ok");
-            status.textContent = t("onboarding_workspace_repairing");
-            try {
-              const result = await runBridge<{
-                structure?: OnboardingWorkspaceStructure;
-              }>("workspace-repair", ["--id", ctx.activeWorkspaceId]);
-              if (result.structure) workspaceStructure = result.structure;
-              reflect();
-              if (workspaceStructure.complete) {
-                status.textContent = t("onboarding_workspace_repaired");
-              }
-            } catch (err) {
-              status.textContent = t("onboarding_workspace_error").replace(
-                "{message}",
-                bridgeErrorMessage(err),
-              );
-            } finally {
-              repairBtn.disabled = false;
-            }
-          })();
-        });
-
-        container.append(controls, status);
-      },
-    },
-    {
-      id: "content",
-      titleKey: "onboarding_content_kicker",
-      // Skippable (ADR page table): the dashboard shows the import paths
-      // instead of an empty state when nothing was imported (Phase 9).
-      skippable: true,
-      render(container) {
-        container.append(
-          heading(t("onboarding_content_title")),
-          paragraph(t("onboarding_content_body")),
-        );
-        // The default follows the persona chosen on page 2 — read live from
-        // this flow's selection so changing the persona re-routes this page.
-        const persona = ctx.personas.find((p) => p.id === selectedPersonaId);
-        const defaultPath = persona?.defaultImportPath ?? "topic-import";
-        const list = document.createElement("div");
-        list.className = "onboarding-topic-level";
-        for (const path of orderContentPaths(defaultPath)) {
-          const card = document.createElement("div");
-          card.className = "onboarding-topic-topic onboarding-content-path";
-          card.dataset.pathId = path.id;
-          const head = document.createElement("div");
-          head.className = "onboarding-model-card-head";
-          const label = document.createElement("p");
-          label.className = "onboarding-agent-offer-label";
-          label.textContent = t(path.labelKey);
-          head.append(label);
-          if (path.id === defaultPath) {
-            const badge = document.createElement("span");
-            badge.className = "onboarding-model-badge";
-            badge.textContent = t("onboarding_content_recommended");
-            head.append(badge);
-          }
-          const body = document.createElement("p");
-          body.className = "onboarding-model-line";
-          body.textContent = t(path.bodyKey);
-          const actionBtn = document.createElement("button");
-          actionBtn.type = "button";
-          actionBtn.className =
-            path.id === defaultPath
-              ? "btn primary-btn btn-sm"
-              : "btn secondary-btn btn-sm";
-          actionBtn.textContent = t(path.actionLabelKey);
-          actionBtn.addEventListener("click", () => {
-            if (path.action.kind === "entry") {
-              // Leaving the topic path changes the step count shown here.
-              if (chosenStep !== null) {
-                chosenStep = null;
-                actions.goToStep("content");
-              }
-              actions.openContentEntry(path.action.entry);
-            } else {
-              chosenStep = path.action.step;
-              actions.goToStep(path.action.step);
-            }
-          });
-          card.append(head, body, actionBtn);
-          list.append(card);
-        }
-        container.append(list);
-      },
-    },
-    {
-      id: "topic",
-      titleKey: "topic_kicker",
-      // Only for the topic path of page 6; skippable like every content step.
-      skippable: true,
-      shown: () => chosenStep === "topic",
-      render(container) {
-        container.append(
-          heading(t("topic_title")),
-          paragraph(t("topic_body")),
-        );
-        const root = document.createElement("div");
-        root.className = "onboarding-topic";
-        container.append(root);
-        renderTopicArea(
-          root,
-          {
-            isLeaving: () => actions.isLeaving(),
-            openModelSetup: () => actions.goToStep("model"),
+      }
+      container.append(
+        renderAgentModelCard({
+          connected: aiConnected,
+          onConnected: () => {
+            aiConnected = true;
           },
-          topicState,
-        );
-      },
-      onNext: () => commitTopicStep(topicState),
+        }),
+        renderLocalAiCard(ctx.localAiCapable),
+        renderEmbeddingBlock(actions, {
+          get: () => embeddingStatus,
+          set: (status) => {
+            embeddingStatus = status;
+          },
+        }),
+      );
     },
-    // No multi-machine vault step here (ADR 2026-07-30b, revised): the vault
-    // is an alpha feature most learners never need, and a page about
-    // Bitwarden regions and master passwords in the middle of first run
-    // costs newcomers more than it helps. It now lives behind an opt-in
-    // checkbox in Settings.
-    {
-      id: "done",
-      titleKey: "onboarding_done_kicker",
-      skippable: false,
-      render(container) {
-        container.append(
-          heading(t("onboarding_done_title")),
-          paragraph(t("onboarding_done_body")),
-        );
-      },
+  };
+
+  const agenticIntroStep: OnboardingStep = {
+    id: "agentic-intro",
+    titleKey: "onboarding_agentic_intro_kicker",
+    skippable: false,
+    render(container) {
+      container.append(
+        heading(t("onboarding_agentic_intro_title")),
+        paragraph(t("onboarding_agentic_intro_body")),
+        paragraph(t("onboarding_agentic_intro_models")),
+        paragraph(t("onboarding_agentic_intro_steps")),
+      );
     },
-  ];
+  };
+
+  const agentStep: OnboardingStep = {
+    id: "agent",
+    titleKey: "onboarding_agent_kicker",
+    skippable: true,
+    render(container) {
+      container.append(
+        heading(t("onboarding_agent_title")),
+        paragraph(t("onboarding_agent_body")),
+      );
+      const root = document.createElement("div");
+      root.className = "onboarding-agent";
+      container.append(root);
+      renderAgentArea(root, ctx.agentOffers, actions, agentState);
+    },
+  };
+
+  const workspaceStep: OnboardingStep = {
+    id: "workspace",
+    titleKey: "onboarding_workspace_kicker",
+    skippable: false,
+    render(container) {
+      container.append(
+        heading(t("onboarding_workspace_title")),
+        paragraph(t("onboarding_workspace_body")),
+      );
+      const path = document.createElement("code");
+      path.className = "onboarding-workspace-path";
+      path.textContent = ctx.workspaceDir;
+      container.append(path);
+
+      const controls = document.createElement("div");
+      controls.className = "onboarding-model-links";
+      const rolloutBtn = document.createElement("button");
+      rolloutBtn.type = "button";
+      rolloutBtn.className = "btn primary-btn btn-sm";
+      rolloutBtn.textContent = t("onboarding_workspace_rollout_btn");
+      const repairBtn = document.createElement("button");
+      repairBtn.type = "button";
+      repairBtn.className = "btn secondary-btn btn-sm";
+      repairBtn.textContent = t("onboarding_workspace_repair");
+      controls.append(rolloutBtn, repairBtn);
+
+      const status = document.createElement("p");
+      status.className = "onboarding-model-status";
+      status.setAttribute("aria-live", "polite");
+
+      const rolloutStatus = document.createElement("p");
+      rolloutStatus.className = "onboarding-model-status";
+      rolloutStatus.setAttribute("aria-live", "polite");
+
+      function reflect(): void {
+        const complete = workspaceStructure.complete;
+        repairBtn.classList.toggle("hidden", complete);
+        status.classList.toggle("ok", complete);
+        status.textContent = complete
+          ? t("onboarding_workspace_complete")
+          : t("onboarding_workspace_incomplete").replace(
+              "{count}",
+              String(workspaceStructure.missing.length),
+            );
+      }
+      reflect();
+
+      rolloutBtn.addEventListener("click", () => {
+        void (async () => {
+          rolloutBtn.disabled = true;
+          rolloutStatus.classList.remove("ok");
+          rolloutStatus.textContent = t("onboarding_workspace_rollouting");
+          try {
+            const report = await runBridge<{
+              workspaces?: { provisioned?: number } | null;
+            }>("install-repair");
+            agentState.report = null;
+            rolloutStatus.classList.add("ok");
+            rolloutStatus.textContent = t("onboarding_workspace_rollout_ok").replace(
+              "{count}",
+              String(report.workspaces?.provisioned ?? 0),
+            );
+          } catch (err) {
+            rolloutStatus.textContent = t("onboarding_workspace_error").replace(
+              "{message}",
+              bridgeErrorMessage(err),
+            );
+          } finally {
+            rolloutBtn.disabled = false;
+          }
+        })();
+      });
+
+      repairBtn.addEventListener("click", () => {
+        void (async () => {
+          repairBtn.disabled = true;
+          status.classList.remove("ok");
+          status.textContent = t("onboarding_workspace_repairing");
+          try {
+            const result = await runBridge<{
+              structure?: OnboardingWorkspaceStructure;
+            }>("workspace-repair", ["--id", ctx.activeWorkspaceId]);
+            if (result.structure) workspaceStructure = result.structure;
+            reflect();
+            if (workspaceStructure.complete) {
+              status.textContent = t("onboarding_workspace_repaired");
+            }
+          } catch (err) {
+            status.textContent = t("onboarding_workspace_error").replace(
+              "{message}",
+              bridgeErrorMessage(err),
+            );
+          } finally {
+            repairBtn.disabled = false;
+          }
+        })();
+      });
+
+      container.append(controls, status, rolloutStatus);
+    },
+  };
+
+  const contentAiStep: OnboardingStep = {
+    id: "content",
+    titleKey: "onboarding_content_kicker",
+    skippable: true,
+    render(container) {
+      container.append(
+        heading(t("onboarding_content_title")),
+        paragraph(t("onboarding_content_body")),
+      );
+      const persona = ctx.personas.find((p) => p.id === selectedPersonaId);
+      const defaultPath = persona?.defaultImportPath ?? "topic-import";
+      renderContentPathCards(
+        container,
+        orderContentPaths(defaultPath),
+        defaultPath,
+        actions,
+        () => {
+          if (chosenStep !== null) {
+            chosenStep = null;
+            actions.goToStep("content");
+          }
+        },
+        (step) => {
+          chosenStep = step;
+          actions.goToStep(step);
+        },
+      );
+    },
+  };
+
+  const topicStep: OnboardingStep = {
+    id: "topic",
+    titleKey: "topic_kicker",
+    skippable: true,
+    shown: () => chosenStep === "topic",
+    render(container) {
+      container.append(
+        heading(t("topic_title")),
+        paragraph(t("topic_body")),
+      );
+      const root = document.createElement("div");
+      root.className = "onboarding-topic";
+      container.append(root);
+      renderTopicArea(
+        root,
+        {
+          isLeaving: () => actions.isLeaving(),
+          openModelSetup: () => actions.goToStep("model"),
+        },
+        topicState,
+      );
+    },
+    onNext: () => commitTopicStep(topicState),
+  };
+
+  const doneTitleKey =
+    flow === "ai"
+      ? "onboarding_done_ai_title"
+      : flow === "agentic"
+        ? "onboarding_done_agentic_title"
+        : "onboarding_done_title";
+  const doneBodyKey =
+    flow === "ai"
+      ? "onboarding_done_ai_body"
+      : flow === "agentic"
+        ? "onboarding_done_agentic_body"
+        : "onboarding_done_body";
+
+  const doneStep: OnboardingStep = {
+    id: "done",
+    titleKey: "onboarding_done_kicker",
+    skippable: false,
+    render(container) {
+      container.append(heading(t(doneTitleKey)), paragraph(t(doneBodyKey)));
+    },
+  };
+
+  switch (flow) {
+    case "ai":
+      return [modelStep, doneStep];
+    case "agentic":
+      return [agenticIntroStep, workspaceStep, agentStep, doneStep];
+    case "topic":
+      return [modelStep, contentAiStep, topicStep, doneStep];
+    case "free":
+      return [welcomeStep, personaStep, freeContentStep, doneStep];
+  }
 }
 
 
@@ -2123,6 +2309,7 @@ export function initOnboarding(deps: OnboardingDeps): OnboardingController {
 
   let steps: OnboardingStep[] = [];
   let index = 0;
+  let activeFlow: OnboardingFlowKind = "free";
   const exit = createOnboardingExit(() => {
     nextBtn.disabled = false;
     finishLaterBtn.disabled = false;
@@ -2223,28 +2410,56 @@ export function initOnboarding(deps: OnboardingDeps): OnboardingController {
   });
   finishLaterBtn.addEventListener("click", complete);
 
+  function flowForStep(stepId: string): OnboardingFlowKind {
+    if (stepId === "model") return "ai";
+    if (
+      stepId === "agentic-intro" ||
+      stepId === "workspace" ||
+      stepId === "agent"
+    ) {
+      return "agentic";
+    }
+    if (stepId === "topic") return "topic";
+    return "free";
+  }
+
   function rebuild(): void {
-    steps = buildOnboardingSteps(deps.getStepContext(), {
-      openExternal: deps.openExternal,
-      openContentEntry: deps.openContentEntry,
-      // Degraded modes link back instead of erroring (ADR §7): e.g. the
-      // topic page sends the user to the model page when no text LLM is
-      // connected. Reads `steps` live, so it works for any built flow.
-      goToStep: (id) => {
-        const target = steps.findIndex((step) => step.id === id);
-        if (target >= 0) goTo(target);
+    steps = buildOnboardingSteps(
+      deps.getStepContext(),
+      {
+        openExternal: deps.openExternal,
+        openContentEntry: deps.openContentEntry,
+        // Degraded modes link back instead of erroring (ADR §7): e.g. the
+        // topic page sends the user to the model page when no text LLM is
+        // connected. Reads `steps` live, so it works for any built flow.
+        goToStep: (id) => {
+          const target = steps.findIndex((step) => step.id === id);
+          if (target >= 0) goTo(target);
+        },
+        isLeaving: () => exit.leaving,
       },
-      isLeaving: () => exit.leaving,
-    });
+      activeFlow,
+    );
   }
 
   return {
     start(): void {
+      activeFlow = "free";
       rebuild();
       index = 0;
       render();
     },
+    startFlow(flow: OnboardingFlowKind, stepId?: string): void {
+      activeFlow = flow;
+      rebuild();
+      const target = stepId
+        ? steps.findIndex((step) => step.id === stepId)
+        : 0;
+      index = Math.max(0, target >= 0 ? shownIndex(target, 1) : 0);
+      render();
+    },
     startAt(stepId: string): void {
+      activeFlow = flowForStep(stepId);
       rebuild();
       const target = steps.findIndex((step) => step.id === stepId);
       // A step that is not part of the flow yet starts at the next one.

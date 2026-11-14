@@ -1,113 +1,23 @@
 # ZAM (Zusammen) 🤝
 
-**Arbeite mit deiner KI an echten Aufgaben — und behalte das Wissen, statt es zu verlieren.**
+**Nachhaltig lernen mit Active Recall — kostenlos und offline am Desktop & Mobilgerät, optional mit KI und Agentic Coding.**
 
-> *ZAM ist Bairisch für „zusammen".*
+> *ZAM ist Bairisch für „zusammen“.*
 
-ZAM macht aus der täglichen Arbeit mit deinem KI-Agenten aktives Erinnern (Active
-Recall) — damit wachsende Automatisierung nicht wachsende Abhängigkeit bedeutet. Die
-Aufgabe wird erledigt **und** du wirst besser — das eine geht nicht mehr auf Kosten des
-anderen.
+Starte direkt mit dem **ZAM Desktop Studio** (native Tauri-App für macOS, Windows und Linux) oder den **Mobile-Apps** (Android und iOS): App installieren, kostenlose Lerninhalte importieren und offline mit FSRS-6-Abstandswiederholung lernen — ohne Konto, ohne Terminal und ohne KI-Modell.
 
-Nicht nur automatisieren. **Wachsen.**
-
-🌐 **[zam-os.org](https://zam-os.org)** — die Projekt-Website, in 7 Sprachen.
+🌐 **[zam-os.org](https://zam-os.org)** — die Projekt-Website, in 7 Sprachen · [English Version](README.md)
 
 ---
 
-## Für wen ZAM ist
+## 1. Desktop- oder Mobile-App installieren
 
-Für alle, die mit einem KI-Agenten arbeiten und dabei nicht einrosten wollen, während er
-immer mehr übernimmt — ob du das Fach gerade lernst (etwa als *Fachinformatiker*-Azubi,
-der dauerhafte Kompetenz aufbaut), dein Handwerk im Job schärfst oder einfach weiter
-wachsen willst, während du automatisierst. Wenn du ohnehin mit Claude, Codex, Copilot
-& Co. arbeitest, macht ZAM aus dieser Zeit bleibendes Können.
+Der schnellste Einstieg läuft direkt über die App — ganz ohne Terminal:
 
----
+- **Desktop Studio (macOS · Windows · Linux)** — lade dir den aktuellen Installer von [GitHub Releases](https://github.com/zam-os/zam/releases).
+- **Mobile-Apps (Android · iOS / iPadOS)** — installiere die Begleit-App über [GitHub Releases](https://github.com/zam-os/zam/releases) (funktioniert eigenständig lokal, optional später synchronisierbar).
 
-## Was ZAM heute kann
-
-- **Läuft in deinem KI-Agenten mit.** Während du an einer echten Aufgabe arbeitest,
-  zerlegt ZAM sie in kleine Wissenskonzepte, erkennt, welche zur Wiederholung anstehen,
-  und webt sie in die Sitzung ein.
-- **Sieht dir bei der Arbeit zu.** Machst du einen Schritt selbst gut, wird er still als
-  gelernt markiert — ohne Unterbrechung. Wenn keine echte Aufgabe zeigen kann, was du
-  weißt, stellt ZAM eine gezielte Erinnerungsfrage. Beides ist aktives Erinnern.
-- **Merkt sich, was du vergisst.** Jedes Konzept wird mit FSRS-6-Spaced-Repetition samt
-  kurzen Lern- und Wiederlernschritten über einen Voraussetzungsgraphen geplant.
-- **Bleibt auf deinem Rechner.** Eine lokale SQLite-Datenbank (`~/.zam/zam.db`), geteilt
-  von Agent und Desktop Studio. Wiederholen geht offline; lokale LLMs (Ollama,
-  FastFlowLM) werden unterstützt.
-
----
-
-## Zwei Orte, ein System
-
-Deine **Agenten-App** ist die eigentliche Werkbank. Das **ZAM Desktop Studio** ist für
-Einrichtung, Inhalte und fokussiertes Wiederholen. Beide teilen dieselbe lokale
-Datenbank — Fortschritt an einem Ort erscheint am anderen.
-
-### 1. In deinem KI-Agenten — *die Werkbank*
-
-Hier passiert das echte Lernen: Aufgaben werden zur Übung, ZAM beobachtet deine Arbeit
-und führt dich Schritt für Schritt. ZAM verbindet sich mit den Agenten-Apps, die du
-ohnehin nutzt:
-
-| Agent | Verbinden mit |
-|---|---|
-| **Claude** (Code / Desktop-App) | `zam agent connect claude-code` |
-| **Codex** | `zam agent connect codex` |
-| **Antigravity** | `zam agent connect antigravity` |
-| **OpenCode** | `zam agent connect opencode` |
-| **GitHub Copilot** (CLI / App) | `zam agent connect copilot` |
-| **Goose** | `zam agent connect goose` |
-| **Hermes** | `zam agent connect hermes` |
-
-Ein Befehl schreibt die MCP-Konfiguration (dein Agent fragt ggf. nach Freigabe). Für
-GitHub Copilot installiert er zusätzlich die Studio-, Recall-, Graph- und
-Settings-Canvases; starte Copilot danach neu. Dann einfach **`/zam`** tippen — oder
-„lass uns das zusammen mit ZAM machen" sagen — und normal arbeiten.
-
-#### Portables Agent Plugin
-
-Das Repository und das veröffentlichte npm-Paket folgen zusätzlich dem
-herstellerneutralen Format
-[Agent Plugins v1.0.0](https://agent-plugins.org/). Kompatible Clients können das
-Paketverzeichnis laden und finden darin ZAM-Skill und stdio-MCP-Server gemeinsam. Ein
-Quellcode-Checkout braucht vorher `npm ci && npm run build`; veröffentlichte Pakete
-enthalten die Laufzeit bereits. Aufbau und Prüfung stehen unter
-[ZAM Agent Plugin](docs/AGENT_PLUGIN.md).
-
-### 2. ZAM Desktop Studio — *Einrichtung, Inhalte & Atlas*
-
-Eine native App (`zam ui`) für das, worin ein Chatfenster schlecht ist:
-
-- **Geführte Einrichtung** — der erste Start verbindet KI-Modell, Agent und
-  Arbeitsbereich Seite für Seite; alles bleibt später in den Einstellungen änderbar.
-- **Einfachere Konfiguration** — Sprache und lokales KI-Modell in einem
-  Einstellungsfenster, nicht in einer Konfigdatei.
-- **Eigenes Material importieren** — Notizen einfügen, auf eine Quelle zeigen oder einen
-  strukturierten Lehrplan durchgehen; ein geführter Assistent macht daraus
-  Wiederholungskarten.
-- **Inhalte bearbeiten** — ein echter Editor für Konzepte, Fragen und Voraussetzungen.
-- **Deinen Wissensatlas sehen** — was du weißt, als Karte aus Inseln: Die Farbe zeigt das
-  Fach, die Textur, wie gut du es behältst, und rote Fäden zeigen, was worauf aufbaut.
-  Zoome vom Fach bis zum einzelnen Begriff und wiederhole von dort einen ganzen Bereich.
-- **Wiederholen** — fokussierte Active-Recall-Runden direkt in der App.
-
-```bash
-zam ui            # das Studio starten
-zam ui --build    # einmalig: nativen Installer bauen (braucht Rust)
-```
-
-> **Wiederholen geht an beiden Orten.** Beobachtung und begleitete Aufgaben passieren in
-> deinem Agenten.
-
----
-
-## Schnellstart
-
-**1. ZAM holen.** Eine Zeile installiert die Desktop-App und die `zam`-CLI:
+Lieber ein Terminal-Einzeiler für Desktop Studio + `zam`-CLI?
 
 ```bash
 # macOS · Linux
@@ -119,54 +29,94 @@ curl -fsSL https://zam-os.org/install.sh | sh
 irm https://zam-os.org/install.ps1 | iex
 ```
 
-Oder nimm einen Installer von den [Releases](https://github.com/zam-os/zam/releases),
-oder baue aus dem Quellcode (`git clone` → `npm install && npm run build`).
-
-**2. ZAM öffnen.** Der erste Start führt dich Seite für Seite durch die Einrichtung: als
-wer du lernst, dein KI-Modell (Cloud oder lokal), dein Agent, dein Arbeitsbereich und
-dein erster Lernstoff — aus einem Lehrplan, eigenen Quellen, einem Projekt oder einem
-Ziel, das du benennst. Jede Seite lässt sich überspringen und später abschließen; das
-Dashboard führt die verbleibenden Schritte als Liste. Kein Terminal nötig.
-
-**3. Lerne, während du arbeitest.** Öffne deinen Agenten, starte eine echte Aufgabe und
-tippe **`/zam`**. ZAM prüft, was ansteht, plant die Konzepte hinter der Aufgabe, übergibt
-dir die Arbeit, schaut zu, wie es läuft, und aktualisiert deinen Plan. Lieber sanft
-anfangen? Importiere Material und mach eine Wiederholungsrunde direkt im Studio.
-
-Mehrgeräte-Betrieb (Server-Datenbank und Mobile-Kopplung) ist ein optionales späteres
-Upgrade in den Einstellungen — der erste Start bleibt vollständig lokal.
-
-### Lieber im Terminal?
-
-Dieselbe Einrichtung gibt es als Befehle — `zam init` ist der geführte Assistent im
-CLI-Gewand:
-
-```bash
-zam init                        # Arbeitsbereich · KI-Modell · Datenbank · /zam-Skill
-zam agent connect claude-code   # oder codex · antigravity · opencode · copilot · goose · hermes
-```
+Oder direkt aus dem Quellcode bauen (`git clone` → `npm install && npm run build`, und `zam ui --build`, um lokal einen nativen Desktop-Installer zu erzeugen).
 
 ---
 
-## Wie es funktioniert
+## 2. Kostenlos Inhalte importieren & lernen (Standard-Modus)
 
-- **Token** — ein atomares Konzept, das es sich zu merken lohnt, mit Bloom-Stufe
-  (1 erinnern → 5 erschaffen).
-- **Card** — dein persönlicher Spaced-Repetition-Zustand für ein Token (FSRS-6).
-- **Voraussetzungen** — ein Graph dessen, was zuerst verstanden sein muss; ZAM fragt kein
-  Konzept ab, dessen Grundlagen dir gerade entglitten sind.
-- **Sessions** — jede Arbeits- und Lernepisode wird protokolliert, damit Bewertungen aus
-  echten Belegen stammen.
+Beim ersten Start ist standardmäßig der **Kostenlose Modus** aktiv. Das geführte Onboarding fragt, wer lernt, und bringt dich direkt zu kostenlosen Inhalten — ohne API-Key, ohne Terminal und ohne überladene KI-Menüs:
 
-Die Lern-Engine ist ein **KI-agnostischer Kernel** ohne jede LLM-Abhängigkeit; die
-Agenten-Schicht steuert ihn nur. Siehe [Kernel-Architektur](docs/okf/kernel-architecture.md).
+- **ZAM Academy** ([academy.zam-os.org](https://academy.zam-os.org)) — kostenlose interaktive Trainings-Apps mit passenden Lernkarten und Grundlagenverknüpfungen.
+- **Open Library & Lehrpläne** — offene Sammlungen und gebündelte Lehrplanthemen direkt in der App durchsuchen und übernehmen.
+- **Anki `.apkg`, CSV & TSV** — bestehende Stapel importieren und mit **FSRS-6-Spaced-Repetition** über einen Abhängigkeitsgraphen weiterlernen.
+- **Wissensatlas & aufgeräumte Oberfläche** — sieh dein Wissen als Inseln mit roten Grundlagen-Fäden. Im kostenlosen Modus bleiben Modus-Umschalter, Sprachmodus, Foto-/PDF-Entwürfe, KI-Editor-Helfer sowie CLI- und Agenten-Menüs verborgen.
+
+Dein Fortschritt bleibt lokal auf deinem Gerät in einer SQLite-Datenbank (`~/.zam/zam.db`). Mehrgeräte-Sync kannst du später optional in den Einstellungen einschalten.
+
+---
+
+## 3. Drei aufeinander aufbauende Modi im Desktop Studio
+
+Oben in den **Einstellungen** schaltest du bei Bedarf schrittweise mehr Funktionen frei:
+
+### Modus 1 · Kostenlos *(Standard — Desktop & Mobile)*
+
+Keine Konfiguration und keine KI-Kosten. Alles läuft offline mit deiner lokalen Bibliothek, importierten Stapeln, ZAM-Academy-Modulen und sauberer Karten- bzw. vorgefertigter Auswahl-Abfrage.
+
+### Modus 2 · Mit KI *(Optional — Desktop & Mobile)*
+
+Schalte **Einstellungen → Mit KI** um und starte den **KI-Einrichtungs-Wizard**, um eine **Cloud-API** oder eine **lokale Runtime** (**Ollama**, **FastFlowLM**) zu verbinden. Das schaltet frei:
+
+- **Antwort- & Variations-Feedback** sowie den Modus-Umschalter während der Abfrage (`Karten`, `Auswahl`, `KI`, `Auto`).
+- **Freihand-Sprachmodus** für unterwegs (lokale Gerätesprache oder optionale Cloud-Sprachmodelle).
+- **Material- & Themen-Import** — aus Fotos, PDFs, Notizen, Links oder Lernzielen per KI Kartenentwürfe erstellen sowie im Editor Grundlagen verknüpfen und Karten aufteilen.
+
+### Modus 3 · Agentic Coding *(Alpha — nur Desktop)*
+
+> **Modellanforderung (Alpha):** Agentic Coding zerlegt reale Entwicklungsaufgaben in Wissensbausteine, erkennt fehlende Grundlagen und beobachtet deine Arbeit leise im Hintergrund. Dafür brauchst du eine sehr leistungsfähige KI wie **Claude Opus+**, **GPT 6.1 Sol+** oder **Gemini 4+…**. *Auf Mobile ist Agentic Coding nicht vorgesehen.*
+
+Der Weg zu **Agentic Coding** ist der längste und liegt bewusst hinter dem **Mit KI**-Schalter:
+
+1. **Sehr leistungsfähige KI verbinden** in den KI-Einstellungen (**Claude Opus+**, **GPT 6.1 Sol+**, **Gemini 4+…**).
+2. **Agentic Coding (`Alpha`) einschalten** (oder den **Agentic-Coding-Wizard** starten). ZAM richtet dabei automatisch die `zam`-CLI auf deinem `PATH` ein und rollt die `/zam`- und `/okf`-Skills in deine konfigurierten Arbeitsverzeichnisse aus.
+3. **Coding-Agent per MCP verbinden** — ZAM unterstützt die folgenden Agenten-Apps (per Klick im Studio oder via CLI; dein Agent fragt ggf. nach Bestätigung für den MCP-Server):
+
+| Agent | CLI-Befehl |
+|---|---|
+| **Claude** (Code / Desktop-App) | `zam agent connect claude-code` |
+| **Codex** | `zam agent connect codex` |
+| **ZCode** | `zam agent connect zcode` |
+| **Antigravity** | `zam agent connect antigravity` |
+| **OpenCode** | `zam agent connect opencode` |
+| **GitHub Copilot** (CLI / App) | `zam agent connect copilot` |
+| **Goose** | `zam agent connect goose` |
+| **Grok Build** | `zam agent connect grok` |
+| **Hermes** | `zam agent connect hermes` |
+
+4. **Während der Arbeit lernen** — öffne deinen Agenten, tippe **`/zam`** ein und arbeite ganz normal an deiner Aufgabe. ZAM macht aus der täglichen Arbeit mit dem KI-Agenten aktives Erinnern, beobachtet deine Schritte und hakt Konzepte still als gekonnt ab, sobald du sie sicher selbst anwendest.
+
+*(Für GitHub Copilot richtet `zam agent connect copilot` zusätzlich benutzerweite Studio-, Recall-, Graph- und Settings-Canvases ein. Das Repo und npm-Paket folgen außerdem dem Standard [Agent Plugins v1.0.0](https://agent-plugins.org/) — ein Quellcode-Checkout braucht vorher `npm ci && npm run build`; siehe [ZAM Agent Plugin](docs/AGENT_PLUGIN.md).)*
+
+---
+
+## Wie ZAM funktioniert
+
+- **Oberflächen** — das **Desktop Studio** (native Tauri-App) und die **Mobile-Apps** übernehmen Einrichtung, Lerninhalte und fokussierte Abfrage über deine lokale SQLite-Datenbank (`~/.zam/zam.db`).
+- **Token** — ein atomares Konzept mit Bloom-Stufe (1 Erinnern → 5 Erschaffen).
+- **Karte** — dein persönlicher Lernzustand für ein Token (**FSRS-6** inklusive kurzer Lern- und Wiederlern-Schritte).
+- **Grundlagen-Graph** — bildet ab, worauf Konzepte aufbauen; ZAM schützt fehlende Grundlagen zuerst.
+- **KI-agnostischer Kernel** — die komplette Lernlogik liegt in `src/kernel/` ohne LLM-Abhängigkeiten; KI- und Agenten-Schichten sitzen strikt darüber. Siehe [Kernel-Architektur](docs/okf/kernel-architecture.md).
+
+<details>
+<summary>CLI-Referenz für Power-User</summary>
+
+```bash
+zam ui                          # Desktop Studio starten
+zam init                        # geführte CLI-Einrichtung (Arbeitsverzeichnis, Modell, Datenbank, Skills)
+zam agent connect claude-code   # oder codex · zcode · grok · antigravity · opencode · copilot · goose · hermes
+zam mcp                         # stdio MCP-Server starten
+```
+
+</details>
 
 ---
 
 ## Dokumentation
 
 - 🌐 [zam-os.org](https://zam-os.org) — Projekt-Website, in 7 Sprachen
-- [English Version](README.md) · [Nutzung & Wartung](docs/USAGE.md) · [Mitmachen](CONTRIBUTING.md) · [Architektur](docs/ARCHITECTURE.md)
+- 🎓 [ZAM Academy](https://academy.zam-os.org) — kostenlose interaktive Trainings-Apps
+- [Nutzung & Wartung](docs/USAGE.md) · [Mitmachen](CONTRIBUTING.md) · [Architektur](docs/ARCHITECTURE.md)
 
 ## Lizenz
 

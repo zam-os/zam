@@ -1366,6 +1366,16 @@ export function getBundledCell(cellId: string): BundledCellInfo | undefined {
   return BUNDLED_CELLS.find((cell) => cell.id === cellId);
 }
 
+/**
+ * Whether any bundled cell is outside the ZAM Academy catalog (e.g. a legacy
+ * Bavarian curriculum cell not yet served through academy.zam-os.org).
+ */
+export function hasNonAcademyCurriculumCells(
+  cells: readonly Pick<BundledCellInfo, "id">[] = BUNDLED_CELLS,
+): boolean {
+  return cells.some((cell) => !cell.id.startsWith("zam-academy:"));
+}
+
 export function findBundledCellByPrefix(prefix: string) {
   const tile = Object.values(BUNDLED_TILES).find(
     (t) => t.tile_id === prefix || t.tile_id.startsWith(prefix),

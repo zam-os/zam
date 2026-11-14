@@ -4,6 +4,7 @@ import { describe, expect, it } from "vitest";
 import { TRANSLATION_PACKS } from "../../desktop/src/i18n.js";
 import {
   CONTENT_PATHS,
+  FREE_CONTENT_PATHS,
   ONBOARDING_CHECKLIST_ITEMS,
 } from "../../desktop/src/onboarding.js";
 import { AGENT_OFFERS } from "../../src/cli/agent-offers.js";
@@ -1323,6 +1324,7 @@ describe("desktop locale completeness", () => {
         "onboarding_welcome_kicker",
         "onboarding_persona_kicker",
         "onboarding_model_kicker",
+        "onboarding_agentic_intro_kicker",
         "onboarding_agent_kicker",
         "onboarding_workspace_kicker",
         "onboarding_content_kicker",
@@ -1338,6 +1340,11 @@ describe("desktop locale completeness", () => {
           offer.consequenceKey,
         ]),
         ...CONTENT_PATHS.flatMap((path) => [
+          path.labelKey,
+          path.bodyKey,
+          path.actionLabelKey,
+        ]),
+        ...FREE_CONTENT_PATHS.flatMap((path) => [
           path.labelKey,
           path.bodyKey,
           path.actionLabelKey,

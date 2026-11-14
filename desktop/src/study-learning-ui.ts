@@ -6,6 +6,18 @@ export type StudyLearningMode =
   | "auto";
 
 /**
+ * In Free mode, the mode switcher is hidden and ZAM uses "auto" presentation
+ * without AI: pre-generated multiple-choice options while new, then Flash
+ * self-rated active recall once past the choice stage or without options.
+ */
+export function resolveEffectiveStudyLearningMode(input: {
+  freeMode: boolean;
+  learningMode: StudyLearningMode;
+}): StudyLearningMode {
+  return input.freeMode ? "auto" : input.learningMode;
+}
+
+/**
  * The format Auto resolved for the current card (ADR 2026-09-27 Decision 8):
  * a choice while the card is new, then free recall as an AI-evaluated answer
  * or as Flash.

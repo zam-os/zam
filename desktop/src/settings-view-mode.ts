@@ -37,3 +37,45 @@ export function saveSettingsViewMode(
     // view still applies for this page; only persistence is lost.
   }
 }
+
+export const AGENTIC_CODING_MODE_STORAGE_KEY = "zam:agentic-coding-mode";
+
+export function parseAgenticCodingMode(value: unknown): boolean {
+  return value === "true" || value === true;
+}
+
+export function loadAgenticCodingMode(
+  storage: Pick<Storage, "getItem"> = localStorage,
+): boolean {
+  try {
+    return parseAgenticCodingMode(
+      storage.getItem(AGENTIC_CODING_MODE_STORAGE_KEY),
+    );
+  } catch {
+    return false;
+  }
+}
+
+export function saveAgenticCodingMode(
+  enabled: boolean,
+  storage: Pick<Storage, "setItem"> = localStorage,
+): void {
+  try {
+    storage.setItem(
+      AGENTIC_CODING_MODE_STORAGE_KEY,
+      enabled ? "true" : "false",
+    );
+  } catch {
+    // Storage may be blocked; keep in-memory state for this session.
+  }
+}
+
+/**
+ * Agentic Coding (Alpha) requires AI mode ("advanced") to be active.
+ */
+export function isAgenticCodingEffective(
+  viewMode: SettingsViewMode,
+  agenticCodingEnabled: boolean,
+): boolean {
+  return viewMode === "advanced" && agenticCodingEnabled;
+}
