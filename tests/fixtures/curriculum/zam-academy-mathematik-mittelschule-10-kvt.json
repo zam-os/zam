@@ -1,0 +1,3197 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "zam-academy:mathematik-mittelschule-10",
+  "version": "2026.11.1",
+  "title": "Mathematik 10 Mittelschule (ZAM Academy)",
+  "description": "Sieben Lernbereiche des LehrplanPLUS Bayern für die M10-Klasse der Mittelschule: 35 Lektionen mit Labor und zwei Aufgabenstufen.",
+  "publisher": "ZAM Academy",
+  "published_at": "2026-11-13T08:00:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/mittelschule/10/mathematik",
+      "checked": "2026-11-12",
+      "label": "M10, LB 1–7"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01M7B0W1P4MX6W80JGH4SHD9EC",
+      "atom_uri": "urn:zam:atom:01M7B0W1P4MX6W80JGH4SHD9EC",
+      "namespace": "zam-academy-mathematik-mittelschule-10",
+      "slug": "pw-1-potenzen",
+      "title": "Potenzen mit beliebiger Basis",
+      "domain": "mathematik/mittelschule-10/stage-1",
+      "reduction": "axiomatic",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=pw-1-potenzen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-10",
+          "topic_code": "stage-1",
+          "topic_title": "Etappe 1: Potenzen und Wurzeln"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 10,
+          "subject": "mathematik",
+          "topic_code": "lb1",
+          "topic_title": "Potenzen und Wurzeln",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7B0W1Q7AQ70CR020KRG5AR0",
+          "slug": "ms10-pw-1-potenzen-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=pw-1-potenzen",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was bedeuten Basis und Exponent in der Potenz aⁿ?",
+          "concept": "a ist der Faktor, n gibt an, wie oft er vorkommt.",
+          "choice_distractors": [
+            {
+              "text": "a wird n-mal zu sich selbst addiert.",
+              "reason": "Das wäre a · n; eine Potenz ist ein Produkt gleicher Faktoren."
+            },
+            {
+              "text": "n ist der Faktor, a sagt, wie oft er vorkommt.",
+              "reason": "Basis und Exponent vertauscht: Die Basis ist der Faktor."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "a ist der Faktor, n gibt an, wie oft er vorkommt.",
+              "a wird n-mal zu sich selbst addiert."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7B0W1Q8D3EWVMZYPBHJ5GBR",
+          "slug": "ms10-pw-1-potenzen-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=pw-1-potenzen",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Welchen Wert hat (−2)⁵, und warum hat das Ergebnis dieses Vorzeichen?",
+          "concept": "−32, weil der Exponent ungerade ist.",
+          "sample_solution": "(−2)⁵ = (−2) · (−2) · (−2) · (−2) · (−2) = −32. Bei einer ungeraden Anzahl negativer Faktoren ist das Produkt negativ.",
+          "choice_distractors": [
+            {
+              "text": "32, weil eine Potenz immer positiv ist.",
+              "reason": "Bei negativer Basis und ungeradem Exponenten ist das Ergebnis negativ."
+            },
+            {
+              "text": "−10, weil 5 · (−2) = −10 ist.",
+              "reason": "Potenzieren ist wiederholtes Multiplizieren, nicht Multiplizieren mit dem Exponenten."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M7B0W1P5R6376AREKEZ7E6E8",
+      "atom_uri": "urn:zam:atom:01M7B0W1P5R6376AREKEZ7E6E8",
+      "namespace": "zam-academy-mathematik-mittelschule-10",
+      "slug": "pw-2-potenzgesetze",
+      "title": "Potenzgesetze",
+      "domain": "mathematik/mittelschule-10/stage-1",
+      "reduction": "axiomatic",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=pw-2-potenzgesetze",
+      "prerequisites": [
+        {
+          "atom_id": "01M7B0W1P4MX6W80JGH4SHD9EC",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion legt die Grundlage, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-10",
+          "topic_code": "stage-1",
+          "topic_title": "Etappe 1: Potenzen und Wurzeln"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 10,
+          "subject": "mathematik",
+          "topic_code": "lb1",
+          "topic_title": "Potenzen und Wurzeln",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7B0W1Q98FTG1765V05RMW3M",
+          "slug": "ms10-pw-2-potenzgesetze-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=pw-2-potenzgesetze",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie multiplizierst du Potenzen mit gleicher Basis?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "a^m \\cdot a^n = a^{m+n}",
+              "speech": "a hoch m mal a hoch n gleich a hoch m plus n"
+            }
+          ],
+          "choice_distractors": [
+            {
+              "text": "aᵐ · aⁿ = aᵐ·ⁿ",
+              "reason": "Beim Multiplizieren werden die Exponenten addiert; multipliziert werden sie beim Potenzieren einer Potenz."
+            },
+            {
+              "text": "aᵐ · aⁿ = (2a)ᵐ⁺ⁿ",
+              "reason": "Die Basis bleibt gleich; nur die Exponenten werden addiert."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "a^m \\cdot a^n = a^{m+n}",
+                  "speech": "a hoch m mal a hoch n gleich a hoch m plus n"
+                }
+              ],
+              "aᵐ · aⁿ = aᵐ·ⁿ"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7B0W1QA5PTV8T4KCCAGS77W",
+          "slug": "ms10-pw-2-potenzgesetze-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=pw-2-potenzgesetze",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Vereinfache x⁵ · x³ : x².",
+          "concept": "x⁶",
+          "sample_solution": "x⁵ · x³ = x⁸ (Exponenten addieren), x⁸ : x² = x⁶ (Exponenten subtrahieren).",
+          "choice_distractors": [
+            {
+              "text": "x⁸",
+              "reason": "Nur x⁵ · x³ gerechnet; das Teilen durch x² fehlt noch."
+            },
+            {
+              "text": "x⁴",
+              "reason": "Durch x² teilen heißt 2 vom Exponenten abziehen, nicht durch 2 teilen."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M7B0W1P6X0G9Q5YC0K2GT1KK",
+      "atom_uri": "urn:zam:atom:01M7B0W1P6X0G9Q5YC0K2GT1KK",
+      "namespace": "zam-academy-mathematik-mittelschule-10",
+      "slug": "pw-3-negative-exponenten",
+      "title": "Null und negative Exponenten",
+      "domain": "mathematik/mittelschule-10/stage-1",
+      "reduction": "axiomatic",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=pw-3-negative-exponenten",
+      "prerequisites": [
+        {
+          "atom_id": "01M7B0W1P5R6376AREKEZ7E6E8",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion legt die Grundlage, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-10",
+          "topic_code": "stage-1",
+          "topic_title": "Etappe 1: Potenzen und Wurzeln"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 10,
+          "subject": "mathematik",
+          "topic_code": "lb1",
+          "topic_title": "Potenzen und Wurzeln",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7B0W1QB6RADA53JAE40H9GZ",
+          "slug": "ms10-pw-3-negative-exponenten-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=pw-3-negative-exponenten",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was bedeutet ein negativer Exponent, zum Beispiel in a⁻ⁿ?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "a^{-n} = \\frac{1}{a^n}",
+              "speech": "a hoch minus n gleich eins durch a hoch n"
+            }
+          ],
+          "choice_distractors": [
+            {
+              "text": "a⁻ⁿ = −aⁿ",
+              "reason": "Ein negativer Exponent macht die Zahl nicht negativ, sondern bildet den Kehrwert."
+            },
+            {
+              "text": "a⁻ⁿ = a : n",
+              "reason": "Der Exponent zählt Faktoren; durch n zu teilen ist etwas anderes."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "a^{-n} = \\frac{1}{a^n}",
+                  "speech": "a hoch minus n gleich eins durch a hoch n"
+                }
+              ],
+              "a⁻ⁿ = −aⁿ"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7B0W1QCPKDXGH09717G9Z7M",
+          "slug": "ms10-pw-3-negative-exponenten-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=pw-3-negative-exponenten",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Schreibe 0,001 als Zehnerpotenz und 2⁻³ als Bruch.",
+          "concept": "10⁻³ und 1/8",
+          "sample_solution": "0,001 = 1/1.000 = 1/10³ = 10⁻³. 2⁻³ = 1/2³ = 1/8.",
+          "choice_distractors": [
+            {
+              "text": "10³ und −8",
+              "reason": "Ein negativer Exponent bedeutet Kehrwert, nicht negatives Vorzeichen."
+            },
+            {
+              "text": "10⁻² und 1/6",
+              "reason": "0,001 hat drei Nachkommastellen, und 2³ ist 8, nicht 2 · 3."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M7B0W1P7BH5XNQ0TC1XAYD3X",
+      "atom_uri": "urn:zam:atom:01M7B0W1P7BH5XNQ0TC1XAYD3X",
+      "namespace": "zam-academy-mathematik-mittelschule-10",
+      "slug": "pw-4-wurzeln",
+      "title": "Die n-te Wurzel",
+      "domain": "mathematik/mittelschule-10/stage-1",
+      "reduction": "axiomatic",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=pw-4-wurzeln",
+      "prerequisites": [
+        {
+          "atom_id": "01M7B0W1P4MX6W80JGH4SHD9EC",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion legt die Grundlage, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-10",
+          "topic_code": "stage-1",
+          "topic_title": "Etappe 1: Potenzen und Wurzeln"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 10,
+          "subject": "mathematik",
+          "topic_code": "lb1",
+          "topic_title": "Potenzen und Wurzeln",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7B0W1QDR59E4J7XC1M6Q0J6",
+          "slug": "ms10-pw-4-wurzeln-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=pw-4-wurzeln",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was ist die n-te Wurzel aus einer Zahl a ≥ 0?",
+          "concept": "Die Zahl b ≥ 0 mit bⁿ = a.",
+          "choice_distractors": [
+            {
+              "text": "Die Zahl b mit n · b = a.",
+              "reason": "Wurzelziehen kehrt das Potenzieren um, nicht das Multiplizieren."
+            },
+            {
+              "text": "Die Zahl b mit b = aⁿ.",
+              "reason": "Das ist die Potenz von a; die Wurzel kehrt sie um."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Zahl b ≥ 0 mit bⁿ = a.",
+              "Die Zahl b mit n · b = a."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7B0W1QEHBKBFT0ZTPTRETMT",
+          "slug": "ms10-pw-4-wurzeln-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=pw-4-wurzeln",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Berechne ⁵√32 und ⁴√81 und mache die Probe.",
+          "concept": "2 und 3",
+          "sample_solution": "2⁵ = 32, also ⁵√32 = 2. 3⁴ = 81, also ⁴√81 = 3.",
+          "choice_distractors": [
+            {
+              "text": "6 und 20",
+              "reason": "Grob durch n geteilt; gesucht ist die Zahl b mit bⁿ = a."
+            },
+            {
+              "text": "2 und 9",
+              "reason": "⁵√32 = 2 stimmt, aber 9 ist die Quadratwurzel aus 81, nicht die 4. Wurzel."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M7B0W1P8M4ZE0Z5ST1WWQ4CV",
+      "atom_uri": "urn:zam:atom:01M7B0W1P8M4ZE0Z5ST1WWQ4CV",
+      "namespace": "zam-academy-mathematik-mittelschule-10",
+      "slug": "pw-5-wurzelgesetze",
+      "title": "Wurzeln als Potenzen und Wurzelgesetze",
+      "domain": "mathematik/mittelschule-10/stage-1",
+      "reduction": "axiomatic",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=pw-5-wurzelgesetze",
+      "prerequisites": [
+        {
+          "atom_id": "01M7B0W1P7BH5XNQ0TC1XAYD3X",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion legt die Grundlage, auf der diese Lektion aufbaut."
+        },
+        {
+          "atom_id": "01M7B0W1P5R6376AREKEZ7E6E8",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion legt die Grundlage, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-10",
+          "topic_code": "stage-1",
+          "topic_title": "Etappe 1: Potenzen und Wurzeln"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 10,
+          "subject": "mathematik",
+          "topic_code": "lb1",
+          "topic_title": "Potenzen und Wurzeln",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7B0W1QFSNQMCPD42GVFPS6J",
+          "slug": "ms10-pw-5-wurzelgesetze-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=pw-5-wurzelgesetze",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie schreibst du die n-te Wurzel aus aᵐ als Potenz?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "\\sqrt[n]{a^m} = a^{\\frac{m}{n}}",
+              "speech": "n-te Wurzel aus a hoch m gleich a hoch m durch n"
+            }
+          ],
+          "choice_distractors": [
+            {
+              "text": "ⁿ√(aᵐ) = aᵐ⁻ⁿ",
+              "reason": "Die Wurzel wird zum Bruch im Exponenten, nicht zur Differenz."
+            },
+            {
+              "text": "ⁿ√(aᵐ) = aⁿᐟᵐ",
+              "reason": "Der Wurzelexponent n gehört in den Nenner, m in den Zähler."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "\\sqrt[n]{a^m} = a^{\\frac{m}{n}}",
+                  "speech": "n-te Wurzel aus a hoch m gleich a hoch m durch n"
+                }
+              ],
+              "ⁿ√(aᵐ) = aᵐ⁻ⁿ"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7B0W1QGKSTFZGQJNRY0XJ2N",
+          "slug": "ms10-pw-5-wurzelgesetze-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=pw-5-wurzelgesetze",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Vereinfache √2 · √8 und schreibe ³√(x⁶) ohne Wurzel.",
+          "concept": "4 und x²",
+          "sample_solution": "√2 · √8 = √16 = 4. ³√(x⁶) = x⁶ᐟ³ = x².",
+          "choice_distractors": [
+            {
+              "text": "√10 und x³",
+              "reason": "Wurzeln werden multipliziert, nicht addiert; und 6 : 3 ergibt 2."
+            },
+            {
+              "text": "16 und x¹⁸",
+              "reason": "√16 ist 4; die Wurzel teilt den Exponenten, sie multipliziert ihn nicht."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M7B0W1P9ZSR5TCRJPAQAZSTW",
+      "atom_uri": "urn:zam:atom:01M7B0W1P9ZSR5TCRJPAQAZSTW",
+      "namespace": "zam-academy-mathematik-mittelschule-10",
+      "slug": "pw-6-logarithmus",
+      "title": "Der Logarithmus",
+      "domain": "mathematik/mittelschule-10/stage-1",
+      "reduction": "axiomatic",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=pw-6-logarithmus",
+      "prerequisites": [
+        {
+          "atom_id": "01M7B0W1P7BH5XNQ0TC1XAYD3X",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion legt die Grundlage, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-10",
+          "topic_code": "stage-1",
+          "topic_title": "Etappe 1: Potenzen und Wurzeln"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 10,
+          "subject": "mathematik",
+          "topic_code": "lb1",
+          "topic_title": "Potenzen und Wurzeln",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7B0W1QHSNMZ8HMP08G7T987",
+          "slug": "ms10-pw-6-logarithmus-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=pw-6-logarithmus",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was gibt der Logarithmus log_b(a) an?",
+          "concept": "Den Exponenten x, für den bˣ = a gilt.",
+          "choice_distractors": [
+            {
+              "text": "Den Quotienten a : b, also a durch b.",
+              "reason": "Der Logarithmus sucht einen Exponenten, keinen Quotienten."
+            },
+            {
+              "text": "Die b-te Wurzel aus der Zahl a.",
+              "reason": "Die Wurzel sucht die Basis, der Logarithmus den Exponenten."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Den Exponenten x, für den bˣ = a gilt.",
+              "Den Quotienten a : b."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7B0W1QJZ2CBVQNG78NM3NEJ",
+          "slug": "ms10-pw-6-logarithmus-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=pw-6-logarithmus",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Für welchen Exponenten x gilt 2ˣ = 50? Runde auf zwei Stellen.",
+          "concept": "x ≈ 5,64",
+          "sample_solution": "x = lg(50) : lg(2) ≈ 1,69897 : 0,30103 ≈ 5,64. Probe: 2 hoch 5,64 ≈ 49,9.",
+          "choice_distractors": [
+            {
+              "text": "x = 25",
+              "reason": "50 : 2 ist kein Exponent: Gesucht ist, wie oft man 2 als Faktor braucht."
+            },
+            {
+              "text": "x ≈ 7,07",
+              "reason": "Das ist √50; gesucht ist der Exponent zur Basis 2."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M7B0W1PAA6GZFABR90PWDN7Y",
+      "atom_uri": "urn:zam:atom:01M7B0W1PAA6GZFABR90PWDN7Y",
+      "namespace": "zam-academy-mathematik-mittelschule-10",
+      "slug": "ex-1-linear-exponentiell",
+      "title": "Lineares und exponentielles Wachstum",
+      "domain": "mathematik/mittelschule-10/stage-2",
+      "reduction": "axiomatic",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=ex-1-linear-exponentiell",
+      "prerequisites": [
+        {
+          "atom_id": "01M7B0W1P4MX6W80JGH4SHD9EC",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion legt die Grundlage, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-10",
+          "topic_code": "stage-2",
+          "topic_title": "Etappe 2: Exponentialfunktion"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 10,
+          "subject": "mathematik",
+          "topic_code": "lb2",
+          "topic_title": "Exponentialfunktion",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7B0W1QK4T0XSK20D97JZDYA",
+          "slug": "ms10-ex-1-linear-exponentiell-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=ex-1-linear-exponentiell",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Woran erkennst du in einer Tabelle exponentielles Wachstum?",
+          "concept": "Die Quotienten aufeinanderfolgender Werte sind gleich.",
+          "choice_distractors": [
+            {
+              "text": "Die Differenzen aufeinanderfolgender Werte sind gleich.",
+              "reason": "Gleiche Differenzen kennzeichnen lineares Wachstum."
+            },
+            {
+              "text": "Die Werte wachsen in jedem Schritt um 1.",
+              "reason": "Exponentiell heißt gleicher Faktor, nicht gleicher Zuwachs."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Quotienten aufeinanderfolgender Werte sind gleich.",
+              "Die Differenzen aufeinanderfolgender Werte sind gleich."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7B0W1QMAC65R79Y5PAAV5QN",
+          "slug": "ms10-ex-1-linear-exponentiell-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=ex-1-linear-exponentiell",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "1.000 € wachsen entweder jedes Jahr um 80 € oder um 6 % mit Zinseszins. Welches Angebot ist nach 20 Jahren besser?",
+          "concept": "6 % Zinseszins: 3.207,14 € statt 2.600 €",
+          "sample_solution": "Linear: 1.000 + 20 · 80 = 2.600 €. Exponentiell: 1.000 · 1,06²⁰ ≈ 3.207,14 €.",
+          "choice_distractors": [
+            {
+              "text": "80 € pro Jahr: 2.600 € statt 2.200 €",
+              "reason": "2.200 € wären 6 % ohne Zinseszins; mit Zinseszins wächst das Kapital schneller."
+            },
+            {
+              "text": "Beide gleich gut: jeweils 2.600 €",
+              "reason": "Exponentielles Wachstum überholt lineares; 1,06²⁰ ist mehr als 2,6."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M7B0W1PBP5GHETZ12M8Z9QPG",
+      "atom_uri": "urn:zam:atom:01M7B0W1PBP5GHETZ12M8Z9QPG",
+      "namespace": "zam-academy-mathematik-mittelschule-10",
+      "slug": "ex-2-wachstumsmodelle",
+      "title": "Exponentielle Zunahme und Abnahme",
+      "domain": "mathematik/mittelschule-10/stage-2",
+      "reduction": "axiomatic",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=ex-2-wachstumsmodelle",
+      "prerequisites": [
+        {
+          "atom_id": "01M7B0W1PAA6GZFABR90PWDN7Y",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion legt die Grundlage, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-10",
+          "topic_code": "stage-2",
+          "topic_title": "Etappe 2: Exponentialfunktion"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 10,
+          "subject": "mathematik",
+          "topic_code": "lb2",
+          "topic_title": "Exponentialfunktion",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7B0W1QN77MQKBG9N573QB4G",
+          "slug": "ms10-ex-2-wachstumsmodelle-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=ex-2-wachstumsmodelle",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welcher Wachstumsfaktor q gehört zu einer Abnahme um p % pro Schritt?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "q = 1 - \\frac{p}{100}",
+              "speech": "q gleich eins minus p durch hundert"
+            }
+          ],
+          "choice_distractors": [
+            {
+              "text": "q = p : 100",
+              "reason": "Das ist nur der Anteil, der verloren geht; übrig bleiben 1 − p/100."
+            },
+            {
+              "text": "q = 100 − p",
+              "reason": "Der Faktor ist ein Anteil von 1, nicht von 100."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "q = 1 - \\frac{p}{100}",
+                  "speech": "q gleich eins minus p durch hundert"
+                }
+              ],
+              "q = 1 + p : 100"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7B0W1QPJ3F7W311MTMGSS1N",
+          "slug": "ms10-ex-2-wachstumsmodelle-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=ex-2-wachstumsmodelle",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Ein radioaktiver Stoff hat eine Halbwertszeit von 8 Tagen. Wie viel bleibt von 120 mg nach 24 Tagen?",
+          "concept": "15 mg",
+          "sample_solution": "24 Tage sind 3 Halbwertszeiten: 120 mg · (1/2)³ = 120 mg : 8 = 15 mg.",
+          "choice_distractors": [
+            {
+              "text": "40 mg",
+              "reason": "Nicht durch 3 teilen: In jeder Halbwertszeit halbiert sich der Rest."
+            },
+            {
+              "text": "0 mg",
+              "reason": "Der Rest halbiert sich immer weiter; er wird nie ganz 0."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M7B0W1PCQDAKCJNG0JFD30ER",
+      "atom_uri": "urn:zam:atom:01M7B0W1PCQDAKCJNG0JFD30ER",
+      "namespace": "zam-academy-mathematik-mittelschule-10",
+      "slug": "ex-3-wachstum-berechnen",
+      "title": "Wachstum berechnen",
+      "domain": "mathematik/mittelschule-10/stage-2",
+      "reduction": "axiomatic",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=ex-3-wachstum-berechnen",
+      "prerequisites": [
+        {
+          "atom_id": "01M7B0W1PBP5GHETZ12M8Z9QPG",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion legt die Grundlage, auf der diese Lektion aufbaut."
+        },
+        {
+          "atom_id": "01M7B0W1P9ZSR5TCRJPAQAZSTW",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion legt die Grundlage, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-10",
+          "topic_code": "stage-2",
+          "topic_title": "Etappe 2: Exponentialfunktion"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 10,
+          "subject": "mathematik",
+          "topic_code": "lb2",
+          "topic_title": "Exponentialfunktion",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7B0W1QQH7B3YWE0TR4GSYGT",
+          "slug": "ms10-ex-3-wachstum-berechnen-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=ex-3-wachstum-berechnen",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie berechnest du den Wachstumsfaktor q, wenn ein Wert in n Schritten von a auf y wächst?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "q = \\sqrt[n]{\\frac{y}{a}}",
+              "speech": "q gleich n-te Wurzel aus y durch a"
+            }
+          ],
+          "choice_distractors": [
+            {
+              "text": "q = (y − a) : n",
+              "reason": "Das ist der mittlere Zuwachs bei linearem Wachstum."
+            },
+            {
+              "text": "q = y : a",
+              "reason": "Das ist der Faktor für alle n Schritte zusammen; ziehe noch die n-te Wurzel."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "q = \\sqrt[n]{\\frac{y}{a}}",
+                  "speech": "q gleich n-te Wurzel aus y durch a"
+                }
+              ],
+              "q = (y − a) : n"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7B0W1QRXMC2KNYJ8M2A282J",
+          "slug": "ms10-ex-3-wachstum-berechnen-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=ex-3-wachstum-berechnen",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Ein Auto verliert jedes Jahr 20 % seines Werts. Nach wie vielen vollen Jahren ist es weniger als die Hälfte wert?",
+          "concept": "nach 4 Jahren",
+          "sample_solution": "0,8ⁿ = 0,5, also n = lg(0,5) : lg(0,8) ≈ 3,11. Nach 3 Jahren sind noch 51,2 % übrig, nach 4 Jahren 40,96 %.",
+          "choice_distractors": [
+            {
+              "text": "nach 2,5 Jahren",
+              "reason": "Das wäre lineare Abnahme: 50 % : 20 %. Exponentiell dauert es länger."
+            },
+            {
+              "text": "nach 3 Jahren",
+              "reason": "Nach 3 Jahren sind noch 51,2 % übrig, also mehr als die Hälfte."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M7B0W1PD3FANMB5E463D9TAQ",
+      "atom_uri": "urn:zam:atom:01M7B0W1PD3FANMB5E463D9TAQ",
+      "namespace": "zam-academy-mathematik-mittelschule-10",
+      "slug": "ae-1-aehnliche-figuren",
+      "title": "Ähnliche Figuren",
+      "domain": "mathematik/mittelschule-10/stage-3",
+      "reduction": "axiomatic",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=ae-1-aehnliche-figuren",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-10",
+          "topic_code": "stage-3",
+          "topic_title": "Etappe 3: Ähnliche Figuren"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 10,
+          "subject": "mathematik",
+          "topic_code": "lb3",
+          "topic_title": "Ähnliche Figuren",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7B0W1QS631EP307BF1RZFS9",
+          "slug": "ms10-ae-1-aehnliche-figuren-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=ae-1-aehnliche-figuren",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wann sind zwei Dreiecke ähnlich?",
+          "concept": "Wenn sie in zwei Winkeln übereinstimmen.",
+          "choice_distractors": [
+            {
+              "text": "Wenn sie gleich große Flächen haben.",
+              "reason": "Gleiche Fläche heißt nicht gleiche Form; ähnliche Dreiecke dürfen verschieden groß sein."
+            },
+            {
+              "text": "Wenn zwei Seiten gleich lang sind.",
+              "reason": "Gleich lange Seiten allein legen die Form nicht fest; entscheidend sind die Winkel."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Wenn sie in zwei Winkeln übereinstimmen.",
+              "Wenn sie gleich große Flächen haben."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7B0W1QTYF8CTXPHWFXW5S2P",
+          "slug": "ms10-ae-1-aehnliche-figuren-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=ae-1-aehnliche-figuren",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Ein Rechteck ist 4 cm × 6 cm, ein zweites 6 cm × 8 cm groß. Sind die Rechtecke ähnlich?",
+          "concept": "Nein: 6 : 4 = 1,5, aber 8 : 6 ≈ 1,33.",
+          "sample_solution": "Entsprechende Seiten: 6 : 4 = 1,5 und 8 : 6 ≈ 1,33. Die Verhältnisse sind verschieden, also nicht ähnlich, obwohl alle Winkel 90° sind.",
+          "choice_distractors": [
+            {
+              "text": "Ja, denn alle vier Winkel sind 90°.",
+              "reason": "Bei Vierecken reichen gleiche Winkel nicht; die Seitenverhältnisse müssen gleich sein."
+            },
+            {
+              "text": "Ja, beide Seiten wachsen um 2 cm.",
+              "reason": "Ähnlich heißt gleicher Faktor, nicht gleicher Zuwachs."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M7B0W1PEPQ4QGHNWKNCD7MBH",
+      "atom_uri": "urn:zam:atom:01M7B0W1PEPQ4QGHNWKNCD7MBH",
+      "namespace": "zam-academy-mathematik-mittelschule-10",
+      "slug": "ae-2-zentrische-streckung",
+      "title": "Zentrische Streckung und Maßstab",
+      "domain": "mathematik/mittelschule-10/stage-3",
+      "reduction": "axiomatic",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=ae-2-zentrische-streckung",
+      "prerequisites": [
+        {
+          "atom_id": "01M7B0W1PD3FANMB5E463D9TAQ",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion legt die Grundlage, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-10",
+          "topic_code": "stage-3",
+          "topic_title": "Etappe 3: Ähnliche Figuren"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 10,
+          "subject": "mathematik",
+          "topic_code": "lb3",
+          "topic_title": "Ähnliche Figuren",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7B0W1QV9B25D8CSGX8KQ6HE",
+          "slug": "ms10-ae-2-zentrische-streckung-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=ae-2-zentrische-streckung",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was gilt bei einer zentrischen Streckung mit dem Zentrum Z und dem Faktor k für einen Bildpunkt P'?",
+          "concept": "P' liegt auf dem Strahl ZP, und ZP' = k · ZP.",
+          "choice_distractors": [
+            {
+              "text": "P' liegt auf dem Strahl ZP, k cm hinter P.",
+              "reason": "Gestreckt wird mit dem Faktor k, nicht um k Längeneinheiten verschoben."
+            },
+            {
+              "text": "P' liegt auf der Senkrechten zu ZP durch P.",
+              "reason": "Bild und Original liegen auf demselben Strahl von Z aus."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "P' liegt auf dem Strahl ZP, und ZP' = k · ZP.",
+              "P' liegt auf dem Strahl ZP, k cm hinter P."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7B0W1QW08P9XAQ4F52SKVZ1",
+          "slug": "ms10-ae-2-zentrische-streckung-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=ae-2-zentrische-streckung",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Auf einer Karte im Maßstab 1 : 25.000 sind zwei Orte 6 cm voneinander entfernt. Wie weit ist das in Wirklichkeit?",
+          "concept": "1,5 km",
+          "sample_solution": "6 cm · 25.000 = 150.000 cm = 1.500 m = 1,5 km.",
+          "choice_distractors": [
+            {
+              "text": "15 km",
+              "reason": "Beim Umrechnen eine Stelle verrutscht: 150.000 cm sind 1,5 km."
+            },
+            {
+              "text": "150 m",
+              "reason": "150.000 cm sind 1.500 m, nicht 150 m."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M7B0W1PFXMDAVVSV4TNEYEKF",
+      "atom_uri": "urn:zam:atom:01M7B0W1PFXMDAVVSV4TNEYEKF",
+      "namespace": "zam-academy-mathematik-mittelschule-10",
+      "slug": "ae-3-flaechen-volumen",
+      "title": "Längen, Flächen und Volumen ähnlicher Figuren",
+      "domain": "mathematik/mittelschule-10/stage-3",
+      "reduction": "axiomatic",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=ae-3-flaechen-volumen",
+      "prerequisites": [
+        {
+          "atom_id": "01M7B0W1PEPQ4QGHNWKNCD7MBH",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion legt die Grundlage, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-10",
+          "topic_code": "stage-3",
+          "topic_title": "Etappe 3: Ähnliche Figuren"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 10,
+          "subject": "mathematik",
+          "topic_code": "lb3",
+          "topic_title": "Ähnliche Figuren",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7B0W1QX3CVP45T4N6EVG87C",
+          "slug": "ms10-ae-3-flaechen-volumen-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=ae-3-flaechen-volumen",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie ändern sich Flächeninhalt und Volumen, wenn ein Körper mit dem Faktor k ähnlich vergrößert wird?",
+          "concept": "Fläche mal k², Volumen mal k³",
+          "choice_distractors": [
+            {
+              "text": "Fläche mal k, Volumen mal k",
+              "reason": "Nur Längen wachsen mit k; Flächen haben zwei, Volumen drei Längenrichtungen."
+            },
+            {
+              "text": "Fläche mal 2k, Volumen mal 3k",
+              "reason": "Die 2 und die 3 sind Exponenten, keine Faktoren."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Fläche mal k², Volumen mal k³",
+              "Fläche mal k, Volumen mal k"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7B0W1QYZ72TE7X3QA5APEDZ",
+          "slug": "ms10-ae-3-flaechen-volumen-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=ae-3-flaechen-volumen",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Ein Modellauto im Maßstab 1 : 20 hat 0,05 m² Lackfläche. Wie viel Lackfläche hat das echte Auto?",
+          "concept": "20 m²",
+          "sample_solution": "Flächen wachsen mit k² = 20² = 400: 0,05 m² · 400 = 20 m².",
+          "choice_distractors": [
+            {
+              "text": "1 m²",
+              "reason": "Flächen wachsen nicht mit k, sondern mit k² = 400."
+            },
+            {
+              "text": "400 m²",
+              "reason": "Das wäre mit k³ = 8.000 gerechnet; Flächen wachsen mit k² = 400."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M7B0W1PGEYGV29WV2PPW9KKT",
+      "atom_uri": "urn:zam:atom:01M7B0W1PGEYGV29WV2PPW9KKT",
+      "namespace": "zam-academy-mathematik-mittelschule-10",
+      "slug": "ae-4-strahlensaetze",
+      "title": "Strahlensätze",
+      "domain": "mathematik/mittelschule-10/stage-3",
+      "reduction": "axiomatic",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=ae-4-strahlensaetze",
+      "prerequisites": [
+        {
+          "atom_id": "01M7B0W1PEPQ4QGHNWKNCD7MBH",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion legt die Grundlage, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-10",
+          "topic_code": "stage-3",
+          "topic_title": "Etappe 3: Ähnliche Figuren"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 10,
+          "subject": "mathematik",
+          "topic_code": "lb3",
+          "topic_title": "Ähnliche Figuren",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7B0W1QZQZDBSE5TD5QRRD5T",
+          "slug": "ms10-ae-4-strahlensaetze-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=ae-4-strahlensaetze",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie lautet der 2. Strahlensatz für die Parallelen AB und A'B' und das Zentrum Z?",
+          "concept": "A'B' : AB = ZA' : ZA",
+          "choice_distractors": [
+            {
+              "text": "A'B' : AB = AA' : ZA",
+              "reason": "Die Strahlenabschnitte müssen im Zentrum Z beginnen."
+            },
+            {
+              "text": "A'B' : AB = ZB : ZA",
+              "reason": "Die beiden Strahlenabschnitte müssen auf demselben Strahl liegen."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "A'B' : AB = ZA' : ZA",
+              "A'B' : AB = AA' : ZA"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7B0W1R0MPYWTBFMWXW7E6C8",
+          "slug": "ms10-ae-4-strahlensaetze-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=ae-4-strahlensaetze",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Ein 2 m langer Stab wirft einen 1,6 m langen Schatten, ein Baum zur selben Zeit einen 12 m langen. Wie hoch ist der Baum?",
+          "concept": "15 m",
+          "sample_solution": "Höhe : Schatten ist bei beiden gleich: h : 12 = 2 : 1,6, also h = 2 · 12 : 1,6 = 15 m.",
+          "choice_distractors": [
+            {
+              "text": "9,6 m",
+              "reason": "Schatten und Stablänge vertauscht: h = 2 · 12 : 1,6."
+            },
+            {
+              "text": "12,4 m",
+              "reason": "Die Strecken stehen im gleichen Verhältnis; man addiert nicht den Unterschied."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M7B0W1PH2171TQ97PGSXD8S2",
+      "atom_uri": "urn:zam:atom:01M7B0W1PH2171TQ97PGSXD8S2",
+      "namespace": "zam-academy-mathematik-mittelschule-10",
+      "slug": "ae-5-kathetensatz-hoehensatz",
+      "title": "Kathetensatz und Höhensatz",
+      "domain": "mathematik/mittelschule-10/stage-3",
+      "reduction": "axiomatic",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=ae-5-kathetensatz-hoehensatz",
+      "prerequisites": [
+        {
+          "atom_id": "01M7B0W1PD3FANMB5E463D9TAQ",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion legt die Grundlage, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-10",
+          "topic_code": "stage-3",
+          "topic_title": "Etappe 3: Ähnliche Figuren"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 10,
+          "subject": "mathematik",
+          "topic_code": "lb3",
+          "topic_title": "Ähnliche Figuren",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7B0W1R1YG5WVFGVRJQ6HQEC",
+          "slug": "ms10-ae-5-kathetensatz-hoehensatz-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=ae-5-kathetensatz-hoehensatz",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie lautet der Höhensatz im rechtwinkligen Dreieck mit den Hypotenusenabschnitten p und q?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "h^2 = p \\cdot q",
+              "speech": "h Quadrat gleich p mal q"
+            }
+          ],
+          "choice_distractors": [
+            {
+              "text": "h = p · q",
+              "reason": "Das Rechteck p · q hat die Fläche des Quadrats h², nicht die Länge h."
+            },
+            {
+              "text": "h² = c · p",
+              "reason": "Das ist der Kathetensatz für a, nicht der Höhensatz."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "h^2 = p \\cdot q",
+                  "speech": "h Quadrat gleich p mal q"
+                }
+              ],
+              "h² = p + q"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7B0W1R2ZQA9CKQQQWJF3S6W",
+          "slug": "ms10-ae-5-kathetensatz-hoehensatz-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=ae-5-kathetensatz-hoehensatz",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Ein rechtwinkliger Dachgiebel hat 10 m Bodenbreite, eine Dachseite ist 6 m lang. Wie hoch ist der Giebel?",
+          "concept": "4,8 m",
+          "sample_solution": "Kathetensatz: 6² = 10 · p, also p = 3,6 m und q = 6,4 m. Höhensatz: h² = 3,6 · 6,4 = 23,04, h = 4,8 m.",
+          "choice_distractors": [
+            {
+              "text": "6,4 m",
+              "reason": "Das ist der Abschnitt q; die Höhe folgt aus h² = p · q."
+            },
+            {
+              "text": "23,04 m",
+              "reason": "Das ist h²; ziehe noch die Wurzel."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M7B0W1PJPC6CNK9WY1SYC1CY",
+      "atom_uri": "urn:zam:atom:01M7B0W1PJPC6CNK9WY1SYC1CY",
+      "namespace": "zam-academy-mathematik-mittelschule-10",
+      "slug": "tr-1-sin-cos-tan",
+      "title": "Sinus, Kosinus und Tangens",
+      "domain": "mathematik/mittelschule-10/stage-4",
+      "reduction": "axiomatic",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=tr-1-sin-cos-tan",
+      "prerequisites": [
+        {
+          "atom_id": "01M7B0W1PD3FANMB5E463D9TAQ",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion legt die Grundlage, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-10",
+          "topic_code": "stage-4",
+          "topic_title": "Etappe 4: Trigonometrie"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 10,
+          "subject": "mathematik",
+          "topic_code": "lb4",
+          "topic_title": "Trigonometrie",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7B0W1R36KWDBTMWYCXZ5KCE",
+          "slug": "ms10-tr-1-sin-cos-tan-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=tr-1-sin-cos-tan",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie ist der Tangens eines Winkels α im rechtwinkligen Dreieck definiert?",
+          "concept": "tan α = Gegenkathete : Ankathete",
+          "choice_distractors": [
+            {
+              "text": "tan α = Gegenkathete : Hypotenuse",
+              "reason": "Das ist der Sinus."
+            },
+            {
+              "text": "tan α = Hypotenuse : Ankathete",
+              "reason": "Der Tangens verbindet die beiden Katheten."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "tan α = Gegenkathete : Ankathete",
+              "tan α = Ankathete : Gegenkathete"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7B0W1R46YE39HQV6KVE58JD",
+          "slug": "ms10-tr-1-sin-cos-tan-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=tr-1-sin-cos-tan",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Im rechtwinkligen Dreieck mit den Ecken R, S und T liegt der rechte Winkel bei S. Welche Seite ist die Gegenkathete des Winkels bei R?",
+          "concept": "ST",
+          "sample_solution": "Die Hypotenuse RT liegt dem rechten Winkel gegenüber. Dem Winkel bei R liegt die Seite ST gegenüber; RS ist die Ankathete.",
+          "choice_distractors": [
+            {
+              "text": "RS",
+              "reason": "RS liegt am Winkel bei R an: Das ist die Ankathete."
+            },
+            {
+              "text": "RT",
+              "reason": "RT liegt dem rechten Winkel gegenüber: Das ist die Hypotenuse."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M7B0W1PK466XK22CX3VABHP2",
+      "atom_uri": "urn:zam:atom:01M7B0W1PK466XK22CX3VABHP2",
+      "namespace": "zam-academy-mathematik-mittelschule-10",
+      "slug": "tr-2-berechnen",
+      "title": "Seiten und Winkel berechnen",
+      "domain": "mathematik/mittelschule-10/stage-4",
+      "reduction": "axiomatic",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=tr-2-berechnen",
+      "prerequisites": [
+        {
+          "atom_id": "01M7B0W1PJPC6CNK9WY1SYC1CY",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion legt die Grundlage, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-10",
+          "topic_code": "stage-4",
+          "topic_title": "Etappe 4: Trigonometrie"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 10,
+          "subject": "mathematik",
+          "topic_code": "lb4",
+          "topic_title": "Trigonometrie",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7B0W1R5W2WJNFRF5XRZS6VC",
+          "slug": "ms10-tr-2-berechnen-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=tr-2-berechnen",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie berechnest du die Gegenkathete aus der Hypotenuse und dem Winkel α?",
+          "concept": "Gegenkathete = Hypotenuse · sin α",
+          "choice_distractors": [
+            {
+              "text": "Gegenkathete = Hypotenuse · cos α",
+              "reason": "Mit cos α erhältst du die Ankathete."
+            },
+            {
+              "text": "Gegenkathete = Hypotenuse · tan α",
+              "reason": "Der Tangens verbindet die beiden Katheten, nicht Kathete und Hypotenuse."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Gegenkathete = Hypotenuse · sin α",
+              "Gegenkathete = Hypotenuse · cos α"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7B0W1R6FWK9CJB78XF7ABRD",
+          "slug": "ms10-tr-2-berechnen-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=tr-2-berechnen",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Ein gleichschenkliges Dreieck hat eine 8 cm lange Basis und Basiswinkel von 50°. Wie hoch ist es?",
+          "concept": "etwa 4,77 cm",
+          "sample_solution": "Die Höhe halbiert die Basis: h = 4 cm · tan 50° ≈ 4,77 cm.",
+          "choice_distractors": [
+            {
+              "text": "etwa 9,53 cm",
+              "reason": "Mit der ganzen Basis gerechnet; die Höhe teilt die Basis in zwei Hälften."
+            },
+            {
+              "text": "etwa 3,06 cm",
+              "reason": "Mit dem Sinus gerechnet; die halbe Basis ist die Ankathete, also Tangens."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M7B0W1PM2B33WTB7TGFSNHED",
+      "atom_uri": "urn:zam:atom:01M7B0W1PM2B33WTB7TGFSNHED",
+      "namespace": "zam-academy-mathematik-mittelschule-10",
+      "slug": "tr-3-sachaufgaben",
+      "title": "Sachaufgaben mit Winkelfunktionen",
+      "domain": "mathematik/mittelschule-10/stage-4",
+      "reduction": "axiomatic",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=tr-3-sachaufgaben",
+      "prerequisites": [
+        {
+          "atom_id": "01M7B0W1PK466XK22CX3VABHP2",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion legt die Grundlage, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-10",
+          "topic_code": "stage-4",
+          "topic_title": "Etappe 4: Trigonometrie"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 10,
+          "subject": "mathematik",
+          "topic_code": "lb4",
+          "topic_title": "Trigonometrie",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7B0W1R7NB7EQHG335G9F8J9",
+          "slug": "ms10-tr-3-sachaufgaben-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=tr-3-sachaufgaben",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was bedeutet eine Steigung von 12 % bei einer Straße?",
+          "concept": "12 m Höhe auf 100 m waagrechte Strecke",
+          "choice_distractors": [
+            {
+              "text": "ein Steigungswinkel von 12 Grad",
+              "reason": "Prozent und Grad sind verschieden: tan α = 0,12, also α ≈ 6,84°."
+            },
+            {
+              "text": "12 m Höhe auf 100 m Straßenlänge",
+              "reason": "Gemessen wird waagrecht, nicht entlang der Straße."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "12 m Höhe auf 100 m waagrechte Strecke",
+              "Steigungswinkel von 12°"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7B0W1R8ZKAQKDBGDGQRPFQ0",
+          "slug": "ms10-tr-3-sachaufgaben-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=tr-3-sachaufgaben",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Eine Rollstuhlrampe darf höchstens 6 % Steigung haben. Wie lang muss die waagrechte Strecke für eine 36 cm hohe Stufe mindestens sein?",
+          "concept": "6 m",
+          "sample_solution": "Höhe : Strecke = 0,06, also Strecke = 36 cm : 0,06 = 600 cm = 6 m.",
+          "choice_distractors": [
+            {
+              "text": "60 m",
+              "reason": "Beim Umrechnen verrutscht: 600 cm sind 6 m, nicht 60 m."
+            },
+            {
+              "text": "9 m",
+              "reason": "Das wären 4 % Steigung: 36 cm : 0,04 = 900 cm."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M7B0W1PNCHAZEQEBSBRYA35D",
+      "atom_uri": "urn:zam:atom:01M7B0W1PNCHAZEQEBSBRYA35D",
+      "namespace": "zam-academy-mathematik-mittelschule-10",
+      "slug": "tr-4-einheitskreis",
+      "title": "Sinus und Kosinus am Einheitskreis",
+      "domain": "mathematik/mittelschule-10/stage-4",
+      "reduction": "axiomatic",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=tr-4-einheitskreis",
+      "prerequisites": [
+        {
+          "atom_id": "01M7B0W1PJPC6CNK9WY1SYC1CY",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion legt die Grundlage, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-10",
+          "topic_code": "stage-4",
+          "topic_title": "Etappe 4: Trigonometrie"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 10,
+          "subject": "mathematik",
+          "topic_code": "lb4",
+          "topic_title": "Trigonometrie",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7B0W1R91NBCDMQE152M42HY",
+          "slug": "ms10-tr-4-einheitskreis-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=tr-4-einheitskreis",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Koordinaten hat der Punkt P zum Winkel α auf dem Einheitskreis?",
+          "concept": "P(cos α | sin α)",
+          "choice_distractors": [
+            {
+              "text": "P(α | 1)",
+              "reason": "Der Radius ist 1, aber die Koordinaten sind cos α und sin α."
+            },
+            {
+              "text": "P(tan α | 1)",
+              "reason": "Am Einheitskreis sind die Koordinaten cos α und sin α, nicht tan α."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "P(cos α | sin α)",
+              "P(sin α | cos α)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7B0W1RAY195DME72A0C26ET",
+          "slug": "ms10-tr-4-einheitskreis-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=tr-4-einheitskreis",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Für welche zwei Winkel zwischen 0° und 360° gilt sin α = 0,5?",
+          "concept": "30° und 150°",
+          "sample_solution": "sin⁻¹(0,5) = 30°. Denselben Sinus hat der an der y-Achse gespiegelte Punkt: 180° − 30° = 150°.",
+          "choice_distractors": [
+            {
+              "text": "30° und 330°",
+              "reason": "Bei 330° ist sin α = −0,5; gleiche Sinuswerte liegen spiegelbildlich zur y-Achse."
+            },
+            {
+              "text": "30° und 210°",
+              "reason": "Bei 210° ist der Sinus negativ (III. Quadrant)."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M7B0W1PPTR5S1S5BC39NEYRM",
+      "atom_uri": "urn:zam:atom:01M7B0W1PPTR5S1S5BC39NEYRM",
+      "namespace": "zam-academy-mathematik-mittelschule-10",
+      "slug": "tr-5-sinusfunktion",
+      "title": "Die Sinusfunktion",
+      "domain": "mathematik/mittelschule-10/stage-4",
+      "reduction": "axiomatic",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=tr-5-sinusfunktion",
+      "prerequisites": [
+        {
+          "atom_id": "01M7B0W1PNCHAZEQEBSBRYA35D",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion legt die Grundlage, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-10",
+          "topic_code": "stage-4",
+          "topic_title": "Etappe 4: Trigonometrie"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 10,
+          "subject": "mathematik",
+          "topic_code": "lb4",
+          "topic_title": "Trigonometrie",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7B0W1RBZTFZ6TMZ2WXBGD0G",
+          "slug": "ms10-tr-5-sinusfunktion-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=tr-5-sinusfunktion",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Periode und welchen Wertebereich hat die Funktion y = sin α?",
+          "concept": "Periode 360°, Werte von −1 bis 1",
+          "choice_distractors": [
+            {
+              "text": "Periode 180°, Werte von 0 bis 1",
+              "reason": "Nach 180° ist der Sinus negativ; erst nach 360° wiederholt sich alles."
+            },
+            {
+              "text": "Periode 90°, Werte von −90 bis 90",
+              "reason": "Die Werte sind Koordinaten auf dem Einheitskreis, keine Winkel."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Periode 360°, Werte von −1 bis 1",
+              "Periode 180°, Werte von 0 bis 1"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7B0W1RCHF57C1QEEEKHXWP6",
+          "slug": "ms10-tr-5-sinusfunktion-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=tr-5-sinusfunktion",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Ein Riesenrad mit 20 m Radius dreht sich in 12 Minuten einmal. Eine Gondel startet auf Höhe der Achse und fährt nach oben. Wie hoch über der Achse ist sie nach 1 Minute?",
+          "concept": "10 m",
+          "sample_solution": "Nach 1 von 12 Minuten hat sich das Rad um 360° : 12 = 30° gedreht: 20 m · sin 30° = 10 m.",
+          "choice_distractors": [
+            {
+              "text": "5 m",
+              "reason": "Nicht den Radius vierteln: Nach 30° ist die Gondel r · sin 30° = 10 m hoch."
+            },
+            {
+              "text": "17 m",
+              "reason": "Das wäre nach 2 Minuten (60°): 20 m · sin 60° ≈ 17,3 m."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M7B0W1PQJZ032EQ9CRSAZCBF",
+      "atom_uri": "urn:zam:atom:01M7B0W1PQJZ032EQ9CRSAZCBF",
+      "namespace": "zam-academy-mathematik-mittelschule-10",
+      "slug": "ku-1-kugel",
+      "title": "Oberfläche und Volumen der Kugel",
+      "domain": "mathematik/mittelschule-10/stage-5",
+      "reduction": "axiomatic",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=ku-1-kugel",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-10",
+          "topic_code": "stage-5",
+          "topic_title": "Etappe 5: Flächeninhalt und Rauminhalt – Kugeln"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 10,
+          "subject": "mathematik",
+          "topic_code": "lb5",
+          "topic_title": "Flächeninhalt und Rauminhalt – Kugeln",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7B0W1RD74EKSS3WHJK6WYQ5",
+          "slug": "ms10-ku-1-kugel-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=ku-1-kugel",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie berechnest du das Volumen einer Kugel mit dem Radius r?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "V = \\frac{4}{3} \\pi r^3",
+              "speech": "V gleich vier Drittel pi r hoch drei"
+            }
+          ],
+          "choice_distractors": [
+            {
+              "text": "V = 4πr²",
+              "reason": "Das ist die Oberfläche der Kugel."
+            },
+            {
+              "text": "V = πr² · h",
+              "reason": "Das ist das Volumen eines Zylinders; die Kugel hat keine Höhe h."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "V = \\frac{4}{3} \\pi r^3",
+                  "speech": "V gleich vier Drittel pi r hoch drei"
+                }
+              ],
+              "V = 4πr²"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7B0W1REH1P5C3A966WX9Q59",
+          "slug": "ms10-ku-1-kugel-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=ku-1-kugel",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Eine Kugel hat ein Volumen von 1 Liter. Wie groß ist ihr Radius?",
+          "concept": "etwa 6,20 cm",
+          "sample_solution": "1 L = 1.000 cm³. r = ³√(3 · 1.000 : (4π)) = ³√238,73 ≈ 6,20 cm.",
+          "choice_distractors": [
+            {
+              "text": "etwa 15,45 cm",
+              "reason": "Quadratwurzel statt dritter Wurzel: r³ = 238,73."
+            },
+            {
+              "text": "etwa 0,62 cm",
+              "reason": "1 Liter sind 1.000 cm³, nicht 1 cm³."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M7B0W1PRMNWCW7F6EM1QJR7G",
+      "atom_uri": "urn:zam:atom:01M7B0W1PRMNWCW7F6EM1QJR7G",
+      "namespace": "zam-academy-mathematik-mittelschule-10",
+      "slug": "ku-2-zusammengesetzt",
+      "title": "Zusammengesetzte Körper mit Kugeln",
+      "domain": "mathematik/mittelschule-10/stage-5",
+      "reduction": "axiomatic",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=ku-2-zusammengesetzt",
+      "prerequisites": [
+        {
+          "atom_id": "01M7B0W1PQJZ032EQ9CRSAZCBF",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion legt die Grundlage, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-10",
+          "topic_code": "stage-5",
+          "topic_title": "Etappe 5: Flächeninhalt und Rauminhalt – Kugeln"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 10,
+          "subject": "mathematik",
+          "topic_code": "lb5",
+          "topic_title": "Flächeninhalt und Rauminhalt – Kugeln",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7B0W1RFG5FZ16GKYKTYT9QW",
+          "slug": "ms10-ku-2-zusammengesetzt-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=ku-2-zusammengesetzt",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Fläche zählt bei der Oberfläche eines Zylinders mit aufgesetzter Halbkugel nicht mit?",
+          "concept": "Die bedeckte Deckfläche des Zylinders",
+          "choice_distractors": [
+            {
+              "text": "Die gewölbte Fläche der Halbkugel",
+              "reason": "Sie liegt außen und gehört zur Oberfläche."
+            },
+            {
+              "text": "Die Mantelfläche des Zylinders",
+              "reason": "Der Mantel ist außen sichtbar und zählt mit."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die bedeckte Deckfläche des Zylinders",
+              "Die gewölbte Fläche der Halbkugel"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7B0W1RGC9Z194WC66QYS38Q",
+          "slug": "ms10-ku-2-zusammengesetzt-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=ku-2-zusammengesetzt",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Ein Silo besteht aus einem Zylinder (r = 3 m, h = 8 m) und einer Halbkugel als Dach. Wie groß ist sein Volumen?",
+          "concept": "90π ≈ 282,74 m³",
+          "sample_solution": "Zylinder: π · 3² · 8 = 72π. Halbkugel: ⅔ · π · 3³ = 18π. Zusammen 90π ≈ 282,74 m³.",
+          "choice_distractors": [
+            {
+              "text": "108π ≈ 339,29 m³",
+              "reason": "Auf dem Silo sitzt nur eine Halbkugel, keine ganze Kugel."
+            },
+            {
+              "text": "72π ≈ 226,19 m³",
+              "reason": "Das ist nur der Zylinder; das Dach fehlt."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M7B0W1PSS607SXGSNK7MXPEC",
+      "atom_uri": "urn:zam:atom:01M7B0W1PSS607SXGSNK7MXPEC",
+      "namespace": "zam-academy-mathematik-mittelschule-10",
+      "slug": "st-1-baumdiagramm",
+      "title": "Mehrstufige Zufallsexperimente im Baumdiagramm",
+      "domain": "mathematik/mittelschule-10/stage-6",
+      "reduction": "axiomatic",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=st-1-baumdiagramm",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-10",
+          "topic_code": "stage-6",
+          "topic_title": "Etappe 6: Beschreibende Statistik und Wahrscheinlichkeiten"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 10,
+          "subject": "mathematik",
+          "topic_code": "lb6",
+          "topic_title": "Beschreibende Statistik und Wahrscheinlichkeiten",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7B0W1RHKQ4SBMMJ75G2S7WK",
+          "slug": "ms10-st-1-baumdiagramm-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=st-1-baumdiagramm",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was ändert sich im Baumdiagramm beim Ziehen ohne Zurücklegen von Stufe zu Stufe?",
+          "concept": "Die Anzahl der Kugeln sinkt, Zähler und Nenner ändern sich.",
+          "choice_distractors": [
+            {
+              "text": "Nichts, die Wahrscheinlichkeiten bleiben gleich.",
+              "reason": "Das gilt beim Ziehen mit Zurücklegen."
+            },
+            {
+              "text": "Nur der Zähler der Wahrscheinlichkeit wird kleiner.",
+              "reason": "Auch der Nenner wird kleiner, weil insgesamt eine Kugel fehlt."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Anzahl der Kugeln sinkt, Zähler und Nenner ändern sich.",
+              "Nichts, die Wahrscheinlichkeiten bleiben gleich."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7B0W1RJ0AT439GE1303PRGV",
+          "slug": "ms10-st-1-baumdiagramm-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=st-1-baumdiagramm",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "In einer Urne liegen 5 rote und 3 blaue Kugeln. Du ziehst zweimal ohne Zurücklegen. Wie wahrscheinlich ist zweimal rot?",
+          "concept": "5/14",
+          "sample_solution": "5/8 · 4/7 = 20/56 = 5/14 ≈ 35,7 %.",
+          "choice_distractors": [
+            {
+              "text": "25/64",
+              "reason": "Das wäre mit Zurücklegen: 5/8 · 5/8."
+            },
+            {
+              "text": "9/15",
+              "reason": "Entlang des Pfades wird multipliziert; Zähler und Nenner werden nicht addiert."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M7B0W1PTWG1J1SBCSP3PB1E9",
+      "atom_uri": "urn:zam:atom:01M7B0W1PTWG1J1SBCSP3PB1E9",
+      "namespace": "zam-academy-mathematik-mittelschule-10",
+      "slug": "st-2-pfadregeln",
+      "title": "Pfadregeln",
+      "domain": "mathematik/mittelschule-10/stage-6",
+      "reduction": "axiomatic",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=st-2-pfadregeln",
+      "prerequisites": [
+        {
+          "atom_id": "01M7B0W1PSS607SXGSNK7MXPEC",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion legt die Grundlage, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-10",
+          "topic_code": "stage-6",
+          "topic_title": "Etappe 6: Beschreibende Statistik und Wahrscheinlichkeiten"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 10,
+          "subject": "mathematik",
+          "topic_code": "lb6",
+          "topic_title": "Beschreibende Statistik und Wahrscheinlichkeiten",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7B0W1RKKXZK0XKVCWX2N111",
+          "slug": "ms10-st-2-pfadregeln-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=st-2-pfadregeln",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie berechnest du die Wahrscheinlichkeit eines Ereignisses, zu dem mehrere Pfade gehören?",
+          "concept": "Jeden Pfad multiplizieren, dann die Pfade addieren.",
+          "choice_distractors": [
+            {
+              "text": "Alle Wahrscheinlichkeiten der Äste addieren.",
+              "reason": "Entlang eines Pfades wird multipliziert."
+            },
+            {
+              "text": "Pfade multiplizieren und durch ihre Anzahl teilen.",
+              "reason": "Verschiedene Pfade werden addiert (2. Pfadregel)."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Jeden Pfad multiplizieren, dann die Pfade addieren.",
+              "Alle Wahrscheinlichkeiten der Äste addieren."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7B0W1RM5MCAVR2EYK34RR4F",
+          "slug": "ms10-st-2-pfadregeln-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=st-2-pfadregeln",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Eine Münze wird dreimal geworfen. Wie wahrscheinlich ist mindestens einmal Kopf?",
+          "concept": "7/8",
+          "sample_solution": "Gegenereignis: dreimal Zahl, P = (1/2)³ = 1/8. Also 1 − 1/8 = 7/8 = 87,5 %.",
+          "choice_distractors": [
+            {
+              "text": "3/8",
+              "reason": "Das ist genau einmal Kopf."
+            },
+            {
+              "text": "1/2",
+              "reason": "Drei Würfe machen mindestens einmal Kopf wahrscheinlicher als ein einzelner Wurf."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M7B0W1PVMDXWVX8PREBNV9NZ",
+      "atom_uri": "urn:zam:atom:01M7B0W1PVMDXWVX8PREBNV9NZ",
+      "namespace": "zam-academy-mathematik-mittelschule-10",
+      "slug": "st-3-permutationen",
+      "title": "Permutationen",
+      "domain": "mathematik/mittelschule-10/stage-6",
+      "reduction": "axiomatic",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=st-3-permutationen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-10",
+          "topic_code": "stage-6",
+          "topic_title": "Etappe 6: Beschreibende Statistik und Wahrscheinlichkeiten"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 10,
+          "subject": "mathematik",
+          "topic_code": "lb6",
+          "topic_title": "Beschreibende Statistik und Wahrscheinlichkeiten",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7B0W1RNAJJZ9YD9EG86P4V8",
+          "slug": "ms10-st-3-permutationen-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=st-3-permutationen",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Auf wie viele Arten lassen sich n verschiedene Dinge in einer Reihe anordnen?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "n! = n \\cdot (n-1) \\cdot \\ldots \\cdot 1",
+              "speech": "n Fakultät gleich n mal n minus eins mal und so weiter mal eins"
+            }
+          ],
+          "choice_distractors": [
+            {
+              "text": "n · (n + 1) : 2 Möglichkeiten",
+              "reason": "Das ist die Summe 1 + 2 + … + n; die Wahlmöglichkeiten werden aber multipliziert."
+            },
+            {
+              "text": "n · n = n² Möglichkeiten",
+              "reason": "Jedes Ding kommt nur einmal vor; die Auswahl wird von Platz zu Platz kleiner."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "n! = n \\cdot (n-1) \\cdot \\ldots \\cdot 1",
+                  "speech": "n Fakultät gleich n mal n minus eins mal und so weiter mal eins"
+                }
+              ],
+              "n · n Arten"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7B0W1RPGTDZZ0N4FG07QNRD",
+          "slug": "ms10-st-3-permutationen-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=st-3-permutationen",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Wie viele Möglichkeiten gibt es, aus 8 Läufern die Plätze 1, 2 und 3 zu besetzen?",
+          "concept": "336",
+          "sample_solution": "Platz 1: 8, Platz 2: 7, Platz 3: 6 Möglichkeiten: 8 · 7 · 6 = 336.",
+          "choice_distractors": [
+            {
+              "text": "40.320",
+              "reason": "Das ist 8!, also die Reihenfolge aller acht Läufer."
+            },
+            {
+              "text": "24",
+              "reason": "Das ist 8 · 3; die Möglichkeiten werden von Platz zu Platz kleiner und multipliziert."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M7B0W1PW7VVADJYPDKSW78Q8",
+      "atom_uri": "urn:zam:atom:01M7B0W1PW7VVADJYPDKSW78Q8",
+      "namespace": "zam-academy-mathematik-mittelschule-10",
+      "slug": "st-4-fehldeutungen",
+      "title": "Statistische Aussagen prüfen",
+      "domain": "mathematik/mittelschule-10/stage-6",
+      "reduction": "axiomatic",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=st-4-fehldeutungen",
+      "prerequisites": [
+        {
+          "atom_id": "01M7B0W1PTWG1J1SBCSP3PB1E9",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion legt die Grundlage, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-10",
+          "topic_code": "stage-6",
+          "topic_title": "Etappe 6: Beschreibende Statistik und Wahrscheinlichkeiten"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 10,
+          "subject": "mathematik",
+          "topic_code": "lb6",
+          "topic_title": "Beschreibende Statistik und Wahrscheinlichkeiten",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7B0W1RQCTTE3K9RKTD7Z6GZ",
+          "slug": "ms10-st-4-fehldeutungen-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=st-4-fehldeutungen",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Eine Münze zeigte fünfmal nacheinander Kopf. Wie wahrscheinlich ist Kopf beim nächsten Wurf?",
+          "concept": "1/2, die Münze hat kein Gedächtnis.",
+          "choice_distractors": [
+            {
+              "text": "Weniger als 1/2, jetzt ist Zahl fällig.",
+              "reason": "Unabhängige Würfe gleichen nichts aus; jeder Wurf beginnt neu."
+            },
+            {
+              "text": "1/64, so selten ist sechsmal Kopf.",
+              "reason": "1/64 gilt für die ganze Serie, nicht für den einen nächsten Wurf."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "1/2, die Münze hat kein Gedächtnis.",
+              "Weniger als 1/2, jetzt ist Zahl fällig."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7B0W1RRXK4701TTNWAAR6ZG",
+          "slug": "ms10-st-4-fehldeutungen-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=st-4-fehldeutungen",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Von 1.000 Personen sind 10 krank. Ein Test erkennt 90 % der Kranken und meldet 10 % der Gesunden fälschlich positiv. Wie viel Prozent der positiv Getesteten sind krank?",
+          "concept": "etwa 8,3 %",
+          "sample_solution": "Richtig positiv: 9. Falsch positiv: 10 % von 990 = 99. Anteil: 9 : 108 ≈ 8,3 %.",
+          "choice_distractors": [
+            {
+              "text": "etwa 90 %",
+              "reason": "90 % ist der Anteil der erkannten Kranken, nicht der Anteil Kranker unter den Positiven."
+            },
+            {
+              "text": "etwa 0,9 %",
+              "reason": "Das ist 9 von 1.000; gefragt ist der Anteil unter den 108 Positiven."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M7B0W1PXYJANXRQJS0A37NBM",
+      "atom_uri": "urn:zam:atom:01M7B0W1PXYJANXRQJS0A37NBM",
+      "namespace": "zam-academy-mathematik-mittelschule-10",
+      "slug": "fz-1-geradengleichung",
+      "title": "Geradengleichungen aufstellen",
+      "domain": "mathematik/mittelschule-10/stage-7",
+      "reduction": "axiomatic",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=fz-1-geradengleichung",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-10",
+          "topic_code": "stage-7",
+          "topic_title": "Etappe 7: Funktionale Zusammenhänge"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 10,
+          "subject": "mathematik",
+          "topic_code": "lb7",
+          "topic_title": "Funktionale Zusammenhänge",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7B0W1RSF96NVPSEHFYX646C",
+          "slug": "ms10-fz-1-geradengleichung-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=fz-1-geradengleichung",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie berechnest du die Steigung der Geraden durch P(x₁ | y₁) und Q(x₂ | y₂)?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "m = \\frac{y_2 - y_1}{x_2 - x_1}",
+              "speech": "m gleich y zwei minus y eins durch x zwei minus x eins"
+            }
+          ],
+          "choice_distractors": [
+            {
+              "text": "m = (y₂ − y₁) : 2",
+              "reason": "Durch den Unterschied der x-Werte teilen, nicht durch 2."
+            },
+            {
+              "text": "m = (x₂ + y₂) : (x₁ + y₁)",
+              "reason": "x- und y-Werte gehören nicht in dieselbe Klammer: Höhenunterschied durch Längenunterschied."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "m = \\frac{y_2 - y_1}{x_2 - x_1}",
+                  "speech": "m gleich y zwei minus y eins durch x zwei minus x eins"
+                }
+              ],
+              "m = (x₂ − x₁) : (y₂ − y₁)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7B0W1RTX2R724Z4ENERPMQK",
+          "slug": "ms10-fz-1-geradengleichung-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=fz-1-geradengleichung",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Eine Gerade geht durch P(1 | 3) und Q(4 | 9). Wie lautet ihre Gleichung?",
+          "concept": "y = 2x + 1",
+          "sample_solution": "m = (9 − 3) : (4 − 1) = 2. t = 3 − 2 · 1 = 1. Also y = 2x + 1.",
+          "choice_distractors": [
+            {
+              "text": "y = 0,5x + 2,5",
+              "reason": "m ist Δy : Δx = 6 : 3, nicht 3 : 6."
+            },
+            {
+              "text": "y = 2x + 3",
+              "reason": "t ist der y-Wert bei x = 0, nicht der y-Wert von P."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M7B0W1PY23Y6C8Q0E60EWT45",
+      "atom_uri": "urn:zam:atom:01M7B0W1PY23Y6C8Q0E60EWT45",
+      "namespace": "zam-academy-mathematik-mittelschule-10",
+      "slug": "fz-2-parallel-senkrecht",
+      "title": "Parallele und senkrechte Geraden",
+      "domain": "mathematik/mittelschule-10/stage-7",
+      "reduction": "axiomatic",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=fz-2-parallel-senkrecht",
+      "prerequisites": [
+        {
+          "atom_id": "01M7B0W1PXYJANXRQJS0A37NBM",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion legt die Grundlage, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-10",
+          "topic_code": "stage-7",
+          "topic_title": "Etappe 7: Funktionale Zusammenhänge"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 10,
+          "subject": "mathematik",
+          "topic_code": "lb7",
+          "topic_title": "Funktionale Zusammenhänge",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7B0W1RVQ3YB3KYWTFZ45HTJ",
+          "slug": "ms10-fz-2-parallel-senkrecht-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=fz-2-parallel-senkrecht",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Beziehung haben die Steigungen zweier Geraden, die senkrecht aufeinander stehen?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "m_1 \\cdot m_2 = -1",
+              "speech": "m eins mal m zwei gleich minus eins"
+            }
+          ],
+          "choice_distractors": [
+            {
+              "text": "gleiche Steigung",
+              "reason": "Gleiche Steigungen haben parallele Geraden."
+            },
+            {
+              "text": "m₁ + m₂ = 90",
+              "reason": "Steigungen sind keine Winkel; ihr Produkt ist −1."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "m_1 \\cdot m_2 = -1",
+                  "speech": "m eins mal m zwei gleich minus eins"
+                }
+              ],
+              "m₁ = m₂"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7B0W1RWY3T7X0R3ZPGHTEYB",
+          "slug": "ms10-fz-2-parallel-senkrecht-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=fz-2-parallel-senkrecht",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Bestimme die Gleichung der Senkrechten zu y = 2x + 1 durch P(4 | 1).",
+          "concept": "y = −0,5x + 3",
+          "sample_solution": "m⊥ = −1 : 2 = −0,5. t = 1 − (−0,5) · 4 = 3. Also y = −0,5x + 3.",
+          "choice_distractors": [
+            {
+              "text": "y = 2x − 7",
+              "reason": "Das ist die Parallele durch P; senkrecht braucht m = −0,5."
+            },
+            {
+              "text": "y = −2x + 9",
+              "reason": "Nicht nur das Vorzeichen ändern: Kehrwert nehmen, also −0,5."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M7B0W1PZ6PXFN1QNFE8HAE7N",
+      "atom_uri": "urn:zam:atom:01M7B0W1PZ6PXFN1QNFE8HAE7N",
+      "namespace": "zam-academy-mathematik-mittelschule-10",
+      "slug": "fz-3-binomische-formeln",
+      "title": "Binomische Formeln",
+      "domain": "mathematik/mittelschule-10/stage-7",
+      "reduction": "axiomatic",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=fz-3-binomische-formeln",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-10",
+          "topic_code": "stage-7",
+          "topic_title": "Etappe 7: Funktionale Zusammenhänge"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 10,
+          "subject": "mathematik",
+          "topic_code": "lb7",
+          "topic_title": "Funktionale Zusammenhänge",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7B0W1RXS6YD4KNV3SJ4HD8F",
+          "slug": "ms10-fz-3-binomische-formeln-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=fz-3-binomische-formeln",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie lautet die 1. binomische Formel?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "(a+b)^2 = a^2 + 2ab + b^2",
+              "speech": "a plus b in Klammern zum Quadrat gleich a Quadrat plus zwei a b plus b Quadrat"
+            }
+          ],
+          "choice_distractors": [
+            {
+              "text": "(a + b)² = a² + b²",
+              "reason": "Das Mittelglied 2ab fehlt."
+            },
+            {
+              "text": "(a + b)² = a² + ab + b²",
+              "reason": "Das Rechteck ab kommt zweimal vor: 2ab."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "(a+b)^2 = a^2 + 2ab + b^2",
+                  "speech": "a plus b in Klammern zum Quadrat gleich a Quadrat plus zwei a b plus b Quadrat"
+                }
+              ],
+              "(a + b)² = a² + b²"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7B0W1RYFT3Y1ZZ8A3S3TYW7",
+          "slug": "ms10-fz-3-binomische-formeln-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=fz-3-binomische-formeln",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Multipliziere (3x − 4)² aus.",
+          "concept": "9x² − 24x + 16",
+          "sample_solution": "a = 3x, b = 4: a² − 2ab + b² = 9x² − 2 · 3x · 4 + 16 = 9x² − 24x + 16.",
+          "choice_distractors": [
+            {
+              "text": "9x² − 16",
+              "reason": "Das wäre die 3. Formel; bei (a − b)² gehört das Mittelglied −2ab dazu."
+            },
+            {
+              "text": "3x² − 24x + 16",
+              "reason": "(3x)² = 9x²: Auch die 3 wird quadriert."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M7B0W1Q0W8N1VZ1VSFGF6EPF",
+      "atom_uri": "urn:zam:atom:01M7B0W1Q0W8N1VZ1VSFGF6EPF",
+      "namespace": "zam-academy-mathematik-mittelschule-10",
+      "slug": "fz-4-quadratische-gleichungen",
+      "title": "Quadratische Gleichungen lösen",
+      "domain": "mathematik/mittelschule-10/stage-7",
+      "reduction": "axiomatic",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=fz-4-quadratische-gleichungen",
+      "prerequisites": [
+        {
+          "atom_id": "01M7B0W1PZ6PXFN1QNFE8HAE7N",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion legt die Grundlage, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-10",
+          "topic_code": "stage-7",
+          "topic_title": "Etappe 7: Funktionale Zusammenhänge"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 10,
+          "subject": "mathematik",
+          "topic_code": "lb7",
+          "topic_title": "Funktionale Zusammenhänge",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7B0W1RZR6BBPE39XEPBWKFP",
+          "slug": "ms10-fz-4-quadratische-gleichungen-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=fz-4-quadratische-gleichungen",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie viele Lösungen hat ax² + bx + c = 0, wenn die Diskriminante D = b² − 4ac negativ ist?",
+          "concept": "keine Lösung",
+          "choice_distractors": [
+            {
+              "text": "zwei Lösungen",
+              "reason": "Zwei Lösungen gibt es bei D > 0."
+            },
+            {
+              "text": "genau eine Lösung",
+              "reason": "Eine Lösung gibt es bei D = 0."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "keine Lösung",
+              "zwei Lösungen"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7B0W1S0V1MDHNWR0ZXX1WMJ",
+          "slug": "ms10-fz-4-quadratische-gleichungen-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=fz-4-quadratische-gleichungen",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Löse x² − 2x − 8 = 0.",
+          "concept": "x₁ = −2, x₂ = 4",
+          "sample_solution": "D = 4 + 32 = 36. x = (2 ± 6) : 2, also −2 und 4. Probe: (x + 2)(x − 4) = x² − 2x − 8.",
+          "choice_distractors": [
+            {
+              "text": "x₁ = 0, x₂ = 2",
+              "reason": "Das löst x² − 2x = 0; das Glied −8 fehlt."
+            },
+            {
+              "text": "keine Lösung",
+              "reason": "D = 36 ist positiv, also gibt es zwei Lösungen."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M7B0W1Q1GNDSQEQQ016MX61T",
+      "atom_uri": "urn:zam:atom:01M7B0W1Q1GNDSQEQQ016MX61T",
+      "namespace": "zam-academy-mathematik-mittelschule-10",
+      "slug": "fz-5-bruchgleichungen",
+      "title": "Bruchgleichungen",
+      "domain": "mathematik/mittelschule-10/stage-7",
+      "reduction": "axiomatic",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=fz-5-bruchgleichungen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-10",
+          "topic_code": "stage-7",
+          "topic_title": "Etappe 7: Funktionale Zusammenhänge"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 10,
+          "subject": "mathematik",
+          "topic_code": "lb7",
+          "topic_title": "Funktionale Zusammenhänge",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7B0W1S1B780A2F072MWH8G6",
+          "slug": "ms10-fz-5-bruchgleichungen-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=fz-5-bruchgleichungen",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was musst du bei einer Bruchgleichung zuerst bestimmen, und warum?",
+          "concept": "Die Definitionsmenge, weil kein Nenner 0 werden darf.",
+          "choice_distractors": [
+            {
+              "text": "Den Hauptnenner, weil man sonst nicht kürzen kann.",
+              "reason": "Der Hauptnenner hilft beim Lösen; zuerst schließt man aber die Werte aus, für die ein Nenner 0 wird."
+            },
+            {
+              "text": "Die Lösungsmenge, weil sie immer leer ist.",
+              "reason": "Bruchgleichungen haben oft Lösungen; man prüft sie mit der Definitionsmenge."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Definitionsmenge, weil kein Nenner 0 werden darf.",
+              "Den Hauptnenner, weil man sonst nicht kürzen kann."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7B0W1S2SZKEC5RWHNSJ77SD",
+          "slug": "ms10-fz-5-bruchgleichungen-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=fz-5-bruchgleichungen",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Löse (x + 3) : (x − 1) = 2.",
+          "concept": "x = 5; 1 ist ausgeschlossen",
+          "sample_solution": "D: x ≠ 1. Mal (x − 1): x + 3 = 2x − 2, also x = 5. 5 liegt in der Definitionsmenge.",
+          "choice_distractors": [
+            {
+              "text": "x = 4; 1 ist ausgeschlossen",
+              "reason": "2 · (x − 1) = 2x − 2, nicht 2x − 1."
+            },
+            {
+              "text": "keine Lösung, weil 1 verboten ist",
+              "reason": "Nur x = 1 ist ausgeschlossen; die Lösung 5 ist erlaubt."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M7B0W1Q27KP9P39AD5YZ4BQD",
+      "atom_uri": "urn:zam:atom:01M7B0W1Q27KP9P39AD5YZ4BQD",
+      "namespace": "zam-academy-mathematik-mittelschule-10",
+      "slug": "fz-6-abhaengigkeiten",
+      "title": "Lineare, umgekehrt proportionale und quadratische Abhängigkeiten",
+      "domain": "mathematik/mittelschule-10/stage-7",
+      "reduction": "axiomatic",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=fz-6-abhaengigkeiten",
+      "prerequisites": [
+        {
+          "atom_id": "01M7B0W1PXYJANXRQJS0A37NBM",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion legt die Grundlage, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-10",
+          "topic_code": "stage-7",
+          "topic_title": "Etappe 7: Funktionale Zusammenhänge"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 10,
+          "subject": "mathematik",
+          "topic_code": "lb7",
+          "topic_title": "Funktionale Zusammenhänge",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7B0W1S3X47QRGEZTGSX1GV2",
+          "slug": "ms10-fz-6-abhaengigkeiten-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=fz-6-abhaengigkeiten",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Woran erkennst du in einer Tabelle eine umgekehrt proportionale Abhängigkeit?",
+          "concept": "Das Produkt x · y ist immer gleich.",
+          "choice_distractors": [
+            {
+              "text": "Der Quotient y : x ist immer gleich.",
+              "reason": "Das kennzeichnet eine proportionale Abhängigkeit."
+            },
+            {
+              "text": "Die Differenzen der y-Werte sind gleich.",
+              "reason": "Das kennzeichnet eine lineare Abhängigkeit."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Das Produkt x · y ist immer gleich.",
+              "Der Quotient y : x ist immer gleich."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7B0W1S4EBB6JHHS06S89JKY",
+          "slug": "ms10-fz-6-abhaengigkeiten-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=fz-6-abhaengigkeiten",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "6 Arbeiter brauchen für einen Auftrag 10 Tage. Wie lange brauchen 4 Arbeiter bei gleicher Leistung?",
+          "concept": "15 Tage",
+          "sample_solution": "Arbeiter · Tage = 60 bleibt gleich: 60 : 4 = 15 Tage.",
+          "choice_distractors": [
+            {
+              "text": "6,67 Tage",
+              "reason": "Proportional gerechnet; weniger Arbeiter brauchen länger."
+            },
+            {
+              "text": "12 Tage",
+              "reason": "Nicht zwei Tage pro fehlendem Arbeiter: Das Produkt bleibt gleich."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M7B0W1Q3KTK6F04V2F7VP4PG",
+      "atom_uri": "urn:zam:atom:01M7B0W1Q3KTK6F04V2F7VP4PG",
+      "namespace": "zam-academy-mathematik-mittelschule-10",
+      "slug": "fz-7-scheitelpunktform",
+      "title": "Quadratische Funktionen: Scheitelpunktform",
+      "domain": "mathematik/mittelschule-10/stage-7",
+      "reduction": "axiomatic",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=fz-7-scheitelpunktform",
+      "prerequisites": [
+        {
+          "atom_id": "01M7B0W1PZ6PXFN1QNFE8HAE7N",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion legt die Grundlage, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-10",
+          "topic_code": "stage-7",
+          "topic_title": "Etappe 7: Funktionale Zusammenhänge"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 10,
+          "subject": "mathematik",
+          "topic_code": "lb7",
+          "topic_title": "Funktionale Zusammenhänge",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7B0W1S5JTD2WXHTMC0P63GN",
+          "slug": "ms10-fz-7-scheitelpunktform-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=fz-7-scheitelpunktform",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welchen Scheitel hat die Parabel y = (x − d)² + e?",
+          "concept": "S(d | e)",
+          "choice_distractors": [
+            {
+              "text": "S(0 | e)",
+              "reason": "Die Klammer verschiebt die Parabel um d nach rechts."
+            },
+            {
+              "text": "S(d | 0)",
+              "reason": "e verschiebt nach oben; der Scheitel liegt auf der Höhe e."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "S(d | e)",
+              "S(−d | e)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7B0W1S6TAHMA6GDDXTAZ7XY",
+          "slug": "ms10-fz-7-scheitelpunktform-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=fz-7-scheitelpunktform",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Ein Wasserstrahl folgt y = −(x − 3)² + 4 (in m). Wie hoch steigt er, und wo trifft er auf den Boden?",
+          "concept": "4 m hoch; bei x = 1 und x = 5",
+          "sample_solution": "Scheitel S(3 | 4): höchster Punkt 4 m. y = 0: (x − 3)² = 4, also x = 3 ± 2.",
+          "choice_distractors": [
+            {
+              "text": "3 m hoch; bei x = 1 und x = 5",
+              "reason": "Die Höhe ist yₛ = 4, nicht xₛ = 3."
+            },
+            {
+              "text": "4 m hoch; bei x = −1 und x = 7",
+              "reason": "Die Wurzel aus 4 ist 2: x = 3 ± 2."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M7B0W1Q431ZW0N7EMR6E0GPA",
+      "atom_uri": "urn:zam:atom:01M7B0W1Q431ZW0N7EMR6E0GPA",
+      "namespace": "zam-academy-mathematik-mittelschule-10",
+      "slug": "fz-8-normalform",
+      "title": "Normalform und Scheitelpunktform",
+      "domain": "mathematik/mittelschule-10/stage-7",
+      "reduction": "axiomatic",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=fz-8-normalform",
+      "prerequisites": [
+        {
+          "atom_id": "01M7B0W1Q3KTK6F04V2F7VP4PG",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion legt die Grundlage, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-10",
+          "topic_code": "stage-7",
+          "topic_title": "Etappe 7: Funktionale Zusammenhänge"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 10,
+          "subject": "mathematik",
+          "topic_code": "lb7",
+          "topic_title": "Funktionale Zusammenhänge",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7B0W1S7B1A4KN4VFJBYBM8J",
+          "slug": "ms10-fz-8-normalform-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=fz-8-normalform",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie bestimmst du den Scheitel von y = x² + px + q?",
+          "concept": "Quadratisch ergänzen: S(−p/2 | q − (p/2)²)",
+          "choice_distractors": [
+            {
+              "text": "Ablesen: S(p | q) aus der Normalform",
+              "reason": "p und q sind nicht die Koordinaten; erst ergänzen."
+            },
+            {
+              "text": "Nullsetzen: S liegt bei x = −q : p",
+              "reason": "So bestimmt man die Nullstelle einer Geraden, nicht den Scheitel."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Quadratisch ergänzen: S(−p/2 | q − (p/2)²)",
+              "S(p | q)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7B0W1S8391P0QCRD1XH234P",
+          "slug": "ms10-fz-8-normalform-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=fz-8-normalform",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Schreibe y = x² − 6x + 5 in der Scheitelpunktform.",
+          "concept": "y = (x − 3)² − 4",
+          "sample_solution": "x² − 6x + 9 − 9 + 5 = (x − 3)² − 4.",
+          "choice_distractors": [
+            {
+              "text": "y = (x − 3)² + 5",
+              "reason": "Die Ergänzung 9 muss wieder abgezogen werden: 5 − 9 = −4."
+            },
+            {
+              "text": "y = (x − 6)² + 5",
+              "reason": "In der Klammer steht die Hälfte von p."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M7B0W1Q5B10X7XRXRZMFB2Q8",
+      "atom_uri": "urn:zam:atom:01M7B0W1Q5B10X7XRXRZMFB2Q8",
+      "namespace": "zam-academy-mathematik-mittelschule-10",
+      "slug": "fz-9-zwei-punkte",
+      "title": "Parabelgleichung aus zwei Punkten",
+      "domain": "mathematik/mittelschule-10/stage-7",
+      "reduction": "axiomatic",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=fz-9-zwei-punkte",
+      "prerequisites": [
+        {
+          "atom_id": "01M7B0W1Q431ZW0N7EMR6E0GPA",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion legt die Grundlage, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-10",
+          "topic_code": "stage-7",
+          "topic_title": "Etappe 7: Funktionale Zusammenhänge"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 10,
+          "subject": "mathematik",
+          "topic_code": "lb7",
+          "topic_title": "Funktionale Zusammenhänge",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7B0W1S9XCV3E79N4GWAF8SQ",
+          "slug": "ms10-fz-9-zwei-punkte-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=fz-9-zwei-punkte",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie bestimmst du p und q von y = x² + px + q aus zwei Punkten?",
+          "concept": "Beide Punkte einsetzen und das Gleichungssystem lösen.",
+          "choice_distractors": [
+            {
+              "text": "Den Scheitel aus der Zeichnung ablesen und p = q setzen.",
+              "reason": "Aus zwei Punkten liest man keinen Scheitel ab; man braucht zwei Gleichungen."
+            },
+            {
+              "text": "Die Steigung zwischen den beiden Punkten ist gleich p.",
+              "reason": "Die Parabel ist keine Gerade; man setzt die Punkte in die Gleichung ein."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Beide Punkte einsetzen und das Gleichungssystem lösen.",
+              "Den Scheitel aus der Zeichnung ablesen und p = q setzen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7B0W1SASZK8D7FA26M94V81",
+          "slug": "ms10-fz-9-zwei-punkte-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=fz-9-zwei-punkte",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Die Punkte P(1 | 2) und Q(3 | 6) liegen auf y = x² + px + q. Bestimme p und q.",
+          "concept": "p = −2, q = 3",
+          "sample_solution": "P: 1 + p + q = 2, also p + q = 1. Q: 9 + 3p + q = 6, also 3p + q = −3. Subtrahieren: 2p = −4, p = −2, q = 3.",
+          "choice_distractors": [
+            {
+              "text": "p = 2, q = −1",
+              "reason": "Probe mit Q: 9 + 6 − 1 = 14, nicht 6."
+            },
+            {
+              "text": "p = 1, q = 0",
+              "reason": "p + q = 1 allein reicht nicht; auch Q muss die Gleichung erfüllen."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M7B0W1Q6WVMWJSZZGAV4CY5N",
+      "atom_uri": "urn:zam:atom:01M7B0W1Q6WVMWJSZZGAV4CY5N",
+      "namespace": "zam-academy-mathematik-mittelschule-10",
+      "slug": "fz-10-schnittpunkte",
+      "title": "Achsenschnittpunkte und Schnittpunkte",
+      "domain": "mathematik/mittelschule-10/stage-7",
+      "reduction": "axiomatic",
+      "typical_age_min": 15,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=fz-10-schnittpunkte",
+      "prerequisites": [
+        {
+          "atom_id": "01M7B0W1Q0W8N1VZ1VSFGF6EPF",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion legt die Grundlage, auf der diese Lektion aufbaut."
+        },
+        {
+          "atom_id": "01M7B0W1PXYJANXRQJS0A37NBM",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion legt die Grundlage, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-10",
+          "topic_code": "stage-7",
+          "topic_title": "Etappe 7: Funktionale Zusammenhänge"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 10,
+          "subject": "mathematik",
+          "topic_code": "lb7",
+          "topic_title": "Funktionale Zusammenhänge",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7B0W1SB1TZ2M1KDV3Z8NAN8",
+          "slug": "ms10-fz-10-schnittpunkte-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=fz-10-schnittpunkte",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie berechnest du die Schnittpunkte einer Parabel mit einer Geraden?",
+          "concept": "Terme gleichsetzen und die Gleichung lösen.",
+          "choice_distractors": [
+            {
+              "text": "Die y-Achsenabschnitte gleichsetzen.",
+              "reason": "Das vergleicht nur die Werte bei x = 0, nicht die Schnittpunkte."
+            },
+            {
+              "text": "Die Scheitel von Parabel und Gerade verbinden.",
+              "reason": "Eine Gerade hat keinen Scheitel; man setzt die Terme gleich."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Terme gleichsetzen und die Gleichung lösen.",
+              "Die y-Achsenabschnitte gleichsetzen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7B0W1SCMVRCBH02XX3PAKB4",
+          "slug": "ms10-fz-10-schnittpunkte-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-10/#lesson=fz-10-schnittpunkte",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Berechne die Schnittpunkte von y = x² − 4 und y = x + 2.",
+          "concept": "(−2 | 0) und (3 | 5)",
+          "sample_solution": "x² − 4 = x + 2 ⇔ x² − x − 6 = 0 ⇔ (x + 2)(x − 3) = 0. x = −2: y = 0; x = 3: y = 5.",
+          "choice_distractors": [
+            {
+              "text": "(2 | 4) und (−3 | −1)",
+              "reason": "Vorzeichen der Lösungen vertauscht: (x + 2)(x − 3) = 0."
+            },
+            {
+              "text": "(−2 | 0) und (2 | 0)",
+              "reason": "Das sind die Nullstellen der Parabel, nicht die Schnittpunkte mit der Geraden."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

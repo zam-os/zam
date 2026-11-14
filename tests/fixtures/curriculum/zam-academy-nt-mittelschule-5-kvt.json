@@ -1,0 +1,2392 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "zam-academy:nt-mittelschule-5",
+  "version": "2026.11.1",
+  "title": "Natur und Technik 5 Mittelschule (ZAM Academy)",
+  "description": "Naturwissenschaftliches Arbeiten, Lebensgrundlage Sonne, Mensch und Gesundheit sowie Materie, Stoffe und Technik (LehrplanPLUS Bayern, Mittelschule 5).",
+  "publisher": "ZAM Academy",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/mittelschule/5/nt",
+      "label": "LehrplanPLUS Bayern · Natur und Technik 5 Mittelschule",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Naturwissenschaft",
+      "label": "Klexikon · Naturwissenschaft",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Experiment",
+      "label": "Klexikon · Experiment",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Modell",
+      "label": "Klexikon · Modell",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Global_harmonisiertes_System_zur_Einstufung_und_Kennzeichnung_von_Chemikalien",
+      "label": "Wikipedia · Global harmonisiertes System (GHS)",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Sonne",
+      "label": "Klexikon · Sonne",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Tag_und_Nacht",
+      "label": "Klexikon · Tag und Nacht",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Jahreszeiten",
+      "label": "Klexikon · Jahreszeiten",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Energie",
+      "label": "Klexikon · Energie",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Sonnenenergie",
+      "label": "Klexikon · Sonnenenergie",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Temperatur",
+      "label": "Klexikon · Temperatur",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Thermometer",
+      "label": "Klexikon · Thermometer",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/W%C3%A4rmetransport",
+      "label": "Wikipedia · Wärmeübertragung",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Haut",
+      "label": "Klexikon · Haut",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://www.gesundheitsinformation.de/wie-funktioniert-die-haut.html",
+      "label": "Gesundheitsinformation.de · Wie funktioniert die Haut?",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://www.bfs.de/DE/themen/opt/uv/wirkung/hauttypen/hauttypen.html",
+      "label": "Bundesamt für Strahlenschutz · Die verschiedenen Hauttypen",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://www.bfs.de/DE/themen/opt/uv/schutz/schutz_node.html",
+      "label": "Bundesamt für Strahlenschutz · Schutz vor UV-Strahlung",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Licht",
+      "label": "Klexikon · Licht",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Toter_Winkel",
+      "label": "Wikipedia · Toter Winkel",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Regenbogen",
+      "label": "Klexikon · Regenbogen",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Farbe",
+      "label": "Klexikon · Farbe",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Spektralfarbe",
+      "label": "Wikipedia · Spektralfarbe",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Auge",
+      "label": "Klexikon · Auge",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://www.gesundheitsinformation.de/wie-funktioniert-das-auge.html",
+      "label": "Gesundheitsinformation.de · Wie funktioniert das Auge?",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Brille",
+      "label": "Klexikon · Brille",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Organ",
+      "label": "Klexikon · Organ",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Atmung",
+      "label": "Klexikon · Atmung",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Blutkreislauf",
+      "label": "Klexikon · Blutkreislauf",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Gehirn",
+      "label": "Klexikon · Gehirn",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Gesundheit",
+      "label": "Klexikon · Gesundheit",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Verdauung",
+      "label": "Klexikon · Verdauung",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Verdauungstrakt",
+      "label": "Wikipedia · Verdauungstrakt",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Ern%C3%A4hrung",
+      "label": "Klexikon · Ernährung",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://www.dge.de/gesunde-ernaehrung/gut-essen-und-trinken/dge-empfehlungen/",
+      "label": "DGE · Gut essen und trinken – die DGE-Empfehlungen",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Skelett",
+      "label": "Klexikon · Skelett",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Wirbels%C3%A4ule",
+      "label": "Klexikon · Wirbelsäule",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Gelenk",
+      "label": "Klexikon · Gelenk",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Muskel",
+      "label": "Klexikon · Muskel",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Aggregatzustand",
+      "label": "Wikipedia · Aggregatzustand",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Chemie",
+      "label": "Klexikon · Chemie",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Wasser",
+      "label": "Klexikon · Wasser",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Fl%C3%BCssigkeit",
+      "label": "Klexikon · Flüssigkeit",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Gas",
+      "label": "Klexikon · Gas",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Zucker",
+      "label": "Klexikon · Zucker",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Papier",
+      "label": "Klexikon · Papier",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Eisen",
+      "label": "Klexikon · Eisen",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Salz",
+      "label": "Klexikon · Salz",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Trennverfahren_(Verfahrenstechnik)",
+      "label": "Wikipedia · Trennen (Verfahrenstechnik)",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/M%C3%BCll",
+      "label": "Klexikon · Abfall",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Recycling",
+      "label": "Klexikon · Recycling",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://www.umweltbundesamt.de/themen/abfall-ressourcen/abfallwirtschaft",
+      "label": "Umweltbundesamt · Abfall- und Kreislaufwirtschaft",
+      "checked": "2026-11-14"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01M7CEFJZ6D9WHDT7QDYFG57VJ",
+      "atom_uri": "urn:zam:atom:01M7CEFJZ6D9WHDT7QDYFG57VJ",
+      "namespace": "zam-academy-nt-mittelschule-5",
+      "slug": "nt5-forscherweg",
+      "title": "Wie Naturwissenschaftler forschen",
+      "domain": "nt/lb1",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-forscherweg",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-mittelschule-5",
+          "topic_code": "lb1",
+          "topic_title": "Naturwissenschaftliches Arbeiten"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "nt",
+          "topic_code": "lb1",
+          "topic_title": "Naturwissenschaftliches Arbeiten",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CEFK061P2KDAB3JQFSS2XG",
+          "slug": "nt5-forscherweg-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Du willst testen, ob sich Salz in warmem Wasser schneller löst als in kaltem. Was muss in beiden Gläsern gleich bleiben?",
+          "concept": "Die Wassermenge und die Salzmenge müssen in beiden Gläsern genau gleich groß sein.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-forscherweg",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Wassermenge und die Salzmenge müssen in beiden Gläsern genau gleich groß sein.",
+              "Im warmen Glas muss man zusätzlich kräftig umrühren und im kalten nicht."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CEFK0789EP2W0GT9HAP2FJ",
+          "slug": "nt5-forscherweg-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Nenne die fünf Schritte des naturwissenschaftlichen Erkenntniswegs in der richtigen Reihenfolge.",
+          "concept": "Alltagsphänomen beobachten, Frage stellen, Vermutung aufstellen, Versuch planen und mit genau einer veränderten Bedingung durchführen, beobachten und auswerten.",
+          "sample_solution": "Alltagsphänomen beobachten, Frage stellen, Vermutung aufstellen, Versuch planen und mit genau einer veränderten Bedingung durchführen, beobachten und auswerten.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-forscherweg"
+        }
+      ]
+    },
+    {
+      "id": "01M7CEFJZ7GD4G0A7JQEAQPEXY",
+      "atom_uri": "urn:zam:atom:01M7CEFJZ7GD4G0A7JQEAQPEXY",
+      "namespace": "zam-academy-nt-mittelschule-5",
+      "slug": "nt5-geraete-und-protokoll",
+      "title": "Laborgeräte nutzen und Versuche protokollieren",
+      "domain": "nt/lb1",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-geraete-und-protokoll",
+      "prerequisites": [
+        {
+          "atom_id": "01M7CEFJZ6D9WHDT7QDYFG57VJ",
+          "type": "soft",
+          "rationale": "Baut die Dokumentation auf den Schritten des Erkenntniswegs auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-mittelschule-5",
+          "topic_code": "lb1",
+          "topic_title": "Naturwissenschaftliches Arbeiten"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "nt",
+          "topic_code": "lb1",
+          "topic_title": "Naturwissenschaftliches Arbeiten",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CEFK088FFDREV5XWF8SAYS",
+          "slug": "nt5-geraete-und-protokoll-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welcher Satz gehört im Versuchsprotokoll eindeutig in den Abschnitt „Beobachtung“ und noch nicht in die „Auswertung“?",
+          "concept": "Nach zehn Sekunden steigen kleine Bläschen auf und das Wasser erwärmt sich auf 38 °C.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-geraete-und-protokoll",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nach zehn Sekunden steigen kleine Bläschen auf und das Wasser erwärmt sich auf 38 °C.",
+              "Das Salz löst sich, weil sich Wasserteilchen zwischen die Salzteilchen schieben."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CEFK09RG2Z289G2CMS4SDK",
+          "slug": "nt5-geraete-und-protokoll-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum werden Beobachtung und Auswertung in einem Versuchsprotokoll streng getrennt?",
+          "concept": "Die Beobachtung hält nur direkt messbare und sichtbare Vorgänge objektiv fest; erst die Auswertung deutet diese Befunde und zieht Schlüsse zur Versuchsfrage.",
+          "sample_solution": "Die Beobachtung hält nur direkt messbare und sichtbare Vorgänge objektiv fest; erst die Auswertung deutet diese Befunde und zieht Schlüsse zur Versuchsfrage.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-geraete-und-protokoll"
+        }
+      ]
+    },
+    {
+      "id": "01M7CEFJZ8X74HRN5B2KA4RAVQ",
+      "atom_uri": "urn:zam:atom:01M7CEFJZ8X74HRN5B2KA4RAVQ",
+      "namespace": "zam-academy-nt-mittelschule-5",
+      "slug": "nt5-gefahrstoffe-und-sicherheit",
+      "title": "Gefahrstoffe erkennen und sicher experimentieren",
+      "domain": "nt/lb1",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-gefahrstoffe-und-sicherheit",
+      "prerequisites": [
+        {
+          "atom_id": "01M7CEFJZ7GD4G0A7JQEAQPEXY",
+          "type": "soft",
+          "rationale": "Nutzt den sachgerechten Umgang mit Fachraumgeräten beim sicheren Experimentieren."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-mittelschule-5",
+          "topic_code": "lb1",
+          "topic_title": "Naturwissenschaftliches Arbeiten"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "nt",
+          "topic_code": "lb1",
+          "topic_title": "Naturwissenschaftliches Arbeiten",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CEFK0AKMVZMRNRQNSD5SPW",
+          "slug": "nt5-gefahrstoffe-und-sicherheit-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum darfst du im Natur-und-Technik-Raum niemals eine klare Flüssigkeit durch Probieren untersuchen, auch wenn sie aussieht wie Wasser?",
+          "concept": "Viele gefährliche Flüssigkeiten wie Säure oder Alkohol sind ebenfalls farblos und können Schleimhäute verätzen oder vergiften.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-gefahrstoffe-und-sicherheit",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Viele gefährliche Flüssigkeiten wie Säure oder Alkohol sind ebenfalls farblos und können Schleimhäute verätzen oder vergiften.",
+              "Weil man im Stehen beim Experimentieren keinen Geschmack spürt."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CEFK0BXCF1V8XXT68NG2TS",
+          "slug": "nt5-gefahrstoffe-und-sicherheit-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche drei Grundregeln schützen beim Experimentieren mit unbekannten Stoffen vor Verätzung und Vergiftung?",
+          "concept": "Gefahrstoffpiktogramme vorab prüfen, Schutzbrille tragen und im Fachraum niemals Stoffe kosten, unbedacht einatmen oder essen.",
+          "sample_solution": "Gefahrstoffpiktogramme vorab prüfen, Schutzbrille tragen und im Fachraum niemals Stoffe kosten, unbedacht einatmen oder essen.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-gefahrstoffe-und-sicherheit"
+        }
+      ]
+    },
+    {
+      "id": "01M7CEFJZ99XMZH8PSEFQRJZQJ",
+      "atom_uri": "urn:zam:atom:01M7CEFJZ99XMZH8PSEFQRJZQJ",
+      "namespace": "zam-academy-nt-mittelschule-5",
+      "slug": "nt5-modelle-verstehen",
+      "title": "Modelle verwenden und mit der Realität vergleichen",
+      "domain": "nt/lb1",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-modelle-verstehen",
+      "prerequisites": [
+        {
+          "atom_id": "01M7CEFJZ6D9WHDT7QDYFG57VJ",
+          "type": "soft",
+          "rationale": "Erweitert Vermutungen und Beobachtungen um naturwissenschaftliche Modellvorstellungen."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-mittelschule-5",
+          "topic_code": "lb1",
+          "topic_title": "Naturwissenschaftliches Arbeiten"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "nt",
+          "topic_code": "lb1",
+          "topic_title": "Naturwissenschaftliches Arbeiten",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CEFK0CZ5N3KZG88AGRJNPB",
+          "slug": "nt5-modelle-verstehen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Worin unterscheiden sich das gezeichnete Teilchenmodell von Wasser und echtes Wasser aus der Leitung?",
+          "concept": "Das Modell zeigt kugelförmige Punkte vergrößert und farbig, um Abstände zu erklären; echte Wasserteilchen sind unvorstellbar klein und nicht bunt.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-modelle-verstehen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Das Modell zeigt kugelförmige Punkte vergrößert und farbig, um Abstände zu erklären; echte Wasserteilchen sind unvorstellbar klein und nicht bunt.",
+              "Echtes Wasser besteht aus gar keinen Teilchen, sondern nur im Modell."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CEFK0DSKV4R56M6SVFQ0AG",
+          "slug": "nt5-modelle-verstehen-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welchen Nutzen haben naturwissenschaftliche Modelle und wo liegen ihre Grenzen?",
+          "concept": "Modelle machen zu kleine, zu große oder verborgene Zusammenhänge anschaulich, bilden die Wirklichkeit aber immer vereinfacht und nur in einzelnen Aspekten ab.",
+          "sample_solution": "Modelle machen zu kleine, zu große oder verborgene Zusammenhänge anschaulich, bilden die Wirklichkeit aber immer vereinfacht und nur in einzelnen Aspekten ab.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-modelle-verstehen"
+        }
+      ]
+    },
+    {
+      "id": "01M7CEFJZAY16BY1TDN7ZP5C2V",
+      "atom_uri": "urn:zam:atom:01M7CEFJZAY16BY1TDN7ZP5C2V",
+      "namespace": "zam-academy-nt-mittelschule-5",
+      "slug": "nt5-fachsprache-und-diagramme",
+      "title": "Fachsprache, Diagramme und Quellen nutzen",
+      "domain": "nt/lb1",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-fachsprache-und-diagramme",
+      "prerequisites": [
+        {
+          "atom_id": "01M7CEFJZ7GD4G0A7JQEAQPEXY",
+          "type": "soft",
+          "rationale": "Wertet Messwerte aus Versuchsprotokollen in Tabellen und Diagrammen aus."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-mittelschule-5",
+          "topic_code": "lb1",
+          "topic_title": "Naturwissenschaftliches Arbeiten"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "nt",
+          "topic_code": "lb1",
+          "topic_title": "Naturwissenschaftliches Arbeiten",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CEFK0EWMG62PC1PP5PMH7J",
+          "slug": "nt5-fachsprache-und-diagramme-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Beschreibung formuliert das Auflösen von Kochsalz in Wasser in genauer Fachsprache?",
+          "concept": "Das Kochsalz löst sich vollständig im Wasser und bildet eine klare Salzlösung.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-fachsprache-und-diagramme",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Das Kochsalz löst sich vollständig im Wasser und bildet eine klare Salzlösung.",
+              "Das Salz ist im Glas irgendwie weggezaubert."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CEFK0F79913J2SN5BADT03",
+          "slug": "nt5-fachsprache-und-diagramme-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche Angaben braucht jede Messwerttabelle und welche zwei Vorteile bieten Diagramme?",
+          "concept": "Jede Spalte nennt physikalische Größe und Einheit; Diagramme zeigen Verläufe und Vergleiche übersichtlich auf einen Blick.",
+          "sample_solution": "Jede Spalte nennt physikalische Größe und Einheit; Diagramme zeigen Verläufe und Vergleiche übersichtlich auf einen Blick.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-fachsprache-und-diagramme"
+        }
+      ]
+    },
+    {
+      "id": "01M7CEFJZB3P233Z0CMZBZ4NZ0",
+      "atom_uri": "urn:zam:atom:01M7CEFJZB3P233Z0CMZBZ4NZ0",
+      "namespace": "zam-academy-nt-mittelschule-5",
+      "slug": "nt5-tag-und-nacht",
+      "title": "Tag und Nacht: Die Drehung der Erde",
+      "domain": "nt/lb2",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-tag-und-nacht",
+      "prerequisites": [
+        {
+          "atom_id": "01M7CEFJZ99XMZH8PSEFQRJZQJ",
+          "type": "soft",
+          "rationale": "Erklärt die Erdrotation mithilfe eines einfachen kugelförmigen Erdmodells."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-mittelschule-5",
+          "topic_code": "lb2",
+          "topic_title": "Lebensgrundlage Sonne"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "nt",
+          "topic_code": "lb2",
+          "topic_title": "Lebensgrundlage Sonne",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CEFK0GKDWQ3K9JKABEKW67",
+          "slug": "nt5-tag-und-nacht-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wenn bei uns in Bayern gerade heller Mittag um 12 Uhr ist, welche Tageszeit herrscht gleichzeitig auf der genau gegenüberliegenden Rückseite der Erde?",
+          "concept": "Dort ist tiefste Nacht um etwa Mitternacht, weil diese Seite im Schatten der Erde liegt.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-tag-und-nacht",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Dort ist tiefste Nacht um etwa Mitternacht, weil diese Seite im Schatten der Erde liegt.",
+              "Dort ist ebenfalls Mittag, weil die Sonne um alle Seiten gleichzeitig scheint."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CEFK0H6ZQ17K836DE476WJ",
+          "slug": "nt5-tag-und-nacht-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre mithilfe eines Erdmodells, wie Tag und Nacht innerhalb von 24 Stunden entstehen.",
+          "concept": "Die Erde dreht sich in 24 Stunden einmal um ihre eigene Achse: Die der Sonne zugewandte Hälfte hat Tag, die im eigenen Schatten liegende Rückseite hat Nacht.",
+          "sample_solution": "Die Erde dreht sich in 24 Stunden einmal um ihre eigene Achse: Die der Sonne zugewandte Hälfte hat Tag, die im eigenen Schatten liegende Rückseite hat Nacht.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-tag-und-nacht"
+        }
+      ]
+    },
+    {
+      "id": "01M7CEFJZCAJQ6PW45J1ACPY1M",
+      "atom_uri": "urn:zam:atom:01M7CEFJZCAJQ6PW45J1ACPY1M",
+      "namespace": "zam-academy-nt-mittelschule-5",
+      "slug": "nt5-jahreszeiten",
+      "title": "Warum es Sommer und Winter gibt",
+      "domain": "nt/lb2",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-jahreszeiten",
+      "prerequisites": [
+        {
+          "atom_id": "01M7CEFJZB3P233Z0CMZBZ4NZ0",
+          "type": "soft",
+          "rationale": "Ergänzt die Tagesdrehung um den Jahreslauf der geneigten Erdachse um die Sonne."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-mittelschule-5",
+          "topic_code": "lb2",
+          "topic_title": "Lebensgrundlage Sonne"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "nt",
+          "topic_code": "lb2",
+          "topic_title": "Lebensgrundlage Sonne",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CEFK0JRJF6FZ7J3QTVJA65",
+          "slug": "nt5-jahreszeiten-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche beiden Ursachen führen zusammen dazu, dass bei uns in Bayern auf den warmen Sommer ein kalter Winter folgt?",
+          "concept": "Die Wanderung der Erde um die Sonne in einem Jahr gemeinsam mit der dauerhaft schräg stehenden Erdachse.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-jahreszeiten",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Wanderung der Erde um die Sonne in einem Jahr gemeinsam mit der dauerhaft schräg stehenden Erdachse.",
+              "Die Erde dreht sich im Winter doppelt so schnell um sich selbst wie im Sommer."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CEFK0KFXJ7TENG1XGR9NGF",
+          "slug": "nt5-jahreszeiten-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie entstehen die vier Jahreszeiten auf der Erde?",
+          "concept": "Die Erde umkreist die Sonne in einem Jahr mit um 23,5° geneigter Achse; dadurch wechseln Sonnenstandshöhe, Einfallswinkel und Tageslänge zwischen Sommer und Winter.",
+          "sample_solution": "Die Erde umkreist die Sonne in einem Jahr mit um 23,5° geneigter Achse; dadurch wechseln Sonnenstandshöhe, Einfallswinkel und Tageslänge zwischen Sommer und Winter.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-jahreszeiten"
+        }
+      ]
+    },
+    {
+      "id": "01M7CEFJZDJWMFM3V1RWDPV34C",
+      "atom_uri": "urn:zam:atom:01M7CEFJZDJWMFM3V1RWDPV34C",
+      "namespace": "zam-academy-nt-mittelschule-5",
+      "slug": "nt5-sonne-energiequelle",
+      "title": "Die Sonne als Energiequelle nutzen",
+      "domain": "nt/lb2",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-sonne-energiequelle",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-mittelschule-5",
+          "topic_code": "lb2",
+          "topic_title": "Lebensgrundlage Sonne"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "nt",
+          "topic_code": "lb2",
+          "topic_title": "Lebensgrundlage Sonne",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CEFK0MH1PD98P3X9WQTDYA",
+          "slug": "nt5-sonne-energiequelle-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Energieumwandlung findet direkt in einer Solarzelle (Photovoltaikanlage) auf einem Hausdach statt?",
+          "concept": "Strahlungsenergie der Sonne wird in elektrische Energie umgewandelt.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-sonne-energiequelle",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Strahlungsenergie der Sonne wird in elektrische Energie umgewandelt.",
+              "Elektrische Energie aus der Steckdose wird in Sonnenlicht verwandelt."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CEFK0NASQAF3FWPXMB0YWM",
+          "slug": "nt5-sonne-energiequelle-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Nenne zwei technische Wege, wie der Mensch die Strahlungsenergie der Sonne im Alltag nutzbar macht.",
+          "concept": "Solarthermie und Sonnenöfen wandeln gebündelte Sonnenstrahlung direkt in Wärmeenergie um; Solarzellen erzeugen aus Sonnenlicht elektrische Energie.",
+          "sample_solution": "Solarthermie und Sonnenöfen wandeln gebündelte Sonnenstrahlung direkt in Wärmeenergie um; Solarzellen erzeugen aus Sonnenlicht elektrische Energie.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-sonne-energiequelle"
+        }
+      ]
+    },
+    {
+      "id": "01M7CEFJZE8RTT65TH6PZZP0P7",
+      "atom_uri": "urn:zam:atom:01M7CEFJZE8RTT65TH6PZZP0P7",
+      "namespace": "zam-academy-nt-mittelschule-5",
+      "slug": "nt5-temperaturskala-thermometer",
+      "title": "Temperaturskala und Thermometer im Vergleich",
+      "domain": "nt/lb2",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-temperaturskala-thermometer",
+      "prerequisites": [
+        {
+          "atom_id": "01M7CEFJZAY16BY1TDN7ZP5C2V",
+          "type": "soft",
+          "rationale": "Verwendet physikalische Größe und Einheit (°C) für exakte Temperaturmessungen."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-mittelschule-5",
+          "topic_code": "lb2",
+          "topic_title": "Lebensgrundlage Sonne"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "nt",
+          "topic_code": "lb2",
+          "topic_title": "Lebensgrundlage Sonne",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CEFK0PKKQXNYD9H03HFDKS",
+          "slug": "nt5-temperaturskala-thermometer-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Du tauchst die linke Hand kurz in eiskaltes Wasser, die rechte in sehr warmes Wasser und steckst dann beide gleichzeitig in eine Schüssel mit 25 °C lauwarmem Wasser. Was spüren deine Hände?",
+          "concept": "Die kalte linke Hand empfindet das Wasser als warm, die warme rechte Hand empfindet dasselbe Wasser als kühl.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-temperaturskala-thermometer",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die kalte linke Hand empfindet das Wasser als warm, die warme rechte Hand empfindet dasselbe Wasser als kühl.",
+              "Beide Hände fühlen auf das Grad genau denselben Wert von 25 °C."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CEFK0QG4TR218S7VM6EW83",
+          "slug": "nt5-temperaturskala-thermometer-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche beiden Fixpunkte legen die Celsiusskala fest und warum ersetzt ein Thermometer das Hautgefühl?",
+          "concept": "Schmelzendes Eis markiert 0 °C und kochendes Wasser 100 °C; ein Thermometer misst objektiv, während das Hautgefühl je nach Vorgeschichte täuscht.",
+          "sample_solution": "Schmelzendes Eis markiert 0 °C und kochendes Wasser 100 °C; ein Thermometer misst objektiv, während das Hautgefühl je nach Vorgeschichte täuscht.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-temperaturskala-thermometer"
+        }
+      ]
+    },
+    {
+      "id": "01M7CEFJZFHH2DMSHM4ZNE72YB",
+      "atom_uri": "urn:zam:atom:01M7CEFJZFHH2DMSHM4ZNE72YB",
+      "namespace": "zam-academy-nt-mittelschule-5",
+      "slug": "nt5-waermeausdehnung",
+      "title": "Wärme lässt Stoffe sich ausdehnen",
+      "domain": "nt/lb2",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-waermeausdehnung",
+      "prerequisites": [
+        {
+          "atom_id": "01M7CEFJZ99XMZH8PSEFQRJZQJ",
+          "type": "soft",
+          "rationale": "Nutzt das Teilchenmodell zur Erklärung der Volumenänderung bei Erwärmung."
+        },
+        {
+          "atom_id": "01M7CEFJZE8RTT65TH6PZZP0P7",
+          "type": "soft",
+          "rationale": "Erklärt das Messprinzip von Flüssigkeitsthermometern."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-mittelschule-5",
+          "topic_code": "lb2",
+          "topic_title": "Lebensgrundlage Sonne"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "nt",
+          "topic_code": "lb2",
+          "topic_title": "Lebensgrundlage Sonne",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CEFK0RX5KMFPKG8RD012YY",
+          "slug": "nt5-waermeausdehnung-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was passiert im Teilchenmodell mit einer Flüssigkeit im Thermometer, wenn du sie von 10 °C auf 80 °C erwärmst?",
+          "concept": "Die Teilchen bewegen sich schneller, brauchen mehr Abstand und das Volumen der Flüssigkeit vergrößert sich, sodass der Faden steigt.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-waermeausdehnung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Teilchen bewegen sich schneller, brauchen mehr Abstand und das Volumen der Flüssigkeit vergrößert sich, sodass der Faden steigt.",
+              "Jedes einzelne Teilchen bläht sich auf wie ein großer Ballon."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CEFK0SK891DVH63K37N98J",
+          "slug": "nt5-waermeausdehnung-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre im Teilchenmodell, warum sich eine Thermometerflüssigkeit beim Erwärmen nach oben ausdehnt.",
+          "concept": "Beim Erwärmen bewegen sich die Teilchen schneller, stoßen stärker aneinander und brauchen mehr Abstand; dadurch vergrößert sich das Volumen der Flüssigkeit.",
+          "sample_solution": "Beim Erwärmen bewegen sich die Teilchen schneller, stoßen stärker aneinander und brauchen mehr Abstand; dadurch vergrößert sich das Volumen der Flüssigkeit.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-waermeausdehnung"
+        }
+      ]
+    },
+    {
+      "id": "01M7CEFJZG75TJ91CVKPF5ZSPR",
+      "atom_uri": "urn:zam:atom:01M7CEFJZG75TJ91CVKPF5ZSPR",
+      "namespace": "zam-academy-nt-mittelschule-5",
+      "slug": "nt5-waermeleiter-isolatoren",
+      "title": "Wärmeleiter und Isolatoren im Alltag",
+      "domain": "nt/lb2",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-waermeleiter-isolatoren",
+      "prerequisites": [
+        {
+          "atom_id": "01M7CEFJZE8RTT65TH6PZZP0P7",
+          "type": "soft",
+          "rationale": "Unterscheidet messbare Objekttemperatur vom gefühlten Wärmefluss der Haut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-mittelschule-5",
+          "topic_code": "lb2",
+          "topic_title": "Lebensgrundlage Sonne"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "nt",
+          "topic_code": "lb2",
+          "topic_title": "Lebensgrundlage Sonne",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CEFK0TN8FSGHHENXNQYXFT",
+          "slug": "nt5-waermeleiter-isolatoren-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Du fasst im kalten Klassenzimmer gleichzeitig das Tischbein aus Stahl und die Tischplatte aus Holz an. Warum fühlt sich das Stahlbein kälter an, obwohl beide 20 °C Raumtemperatur haben?",
+          "concept": "Stahl leitet die Wärme von deiner warmen Hand sehr schnell ab; Holz isoliert, sodass deine Hand weniger Wärme verliert.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-waermeleiter-isolatoren",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Stahl leitet die Wärme von deiner warmen Hand sehr schnell ab; Holz isoliert, sodass deine Hand weniger Wärme verliert.",
+              "Stahl erzeugt im Klassenzimmer von selbst Kälte."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CEFK0VWS9CBBGEJ5R06CCE",
+          "slug": "nt5-waermeleiter-isolatoren-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Unterscheide gute Wärmeleiter und Wärmeisolatoren jeweils mit zwei Alltagsbeispielen.",
+          "concept": "Gute Wärmeleiter wie Kupfer und Stahl leiten Wärme rasch weiter; Isolatoren wie Holz, Kunststoff, Kork oder eingeschlossene Luft hemmen den Wärmeabfluss.",
+          "sample_solution": "Gute Wärmeleiter wie Kupfer und Stahl leiten Wärme rasch weiter; Isolatoren wie Holz, Kunststoff, Kork oder eingeschlossene Luft hemmen den Wärmeabfluss.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-waermeleiter-isolatoren"
+        }
+      ]
+    },
+    {
+      "id": "01M7CEFJZHC98QCSF4CT56YJ8A",
+      "atom_uri": "urn:zam:atom:01M7CEFJZHC98QCSF4CT56YJ8A",
+      "namespace": "zam-academy-nt-mittelschule-5",
+      "slug": "nt5-waermetransport",
+      "title": "Wärmeleitung, Wärmeströmung und Wärmestrahlung",
+      "domain": "nt/lb2",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-waermetransport",
+      "prerequisites": [
+        {
+          "atom_id": "01M7CEFJZG75TJ91CVKPF5ZSPR",
+          "type": "soft",
+          "rationale": "Ordnet die Wärmeleitung festen Stoffen zu und erweitert um Strömung und Strahlung."
+        },
+        {
+          "atom_id": "01M7CEFJZDJWMFM3V1RWDPV34C",
+          "type": "soft",
+          "rationale": "Erklärt, wie Sonnenstrahlung ohne Luft oder Stoff dazwischen zur Erde gelangt."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-mittelschule-5",
+          "topic_code": "lb2",
+          "topic_title": "Lebensgrundlage Sonne"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "nt",
+          "topic_code": "lb2",
+          "topic_title": "Lebensgrundlage Sonne",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CEFK0WVHGN6N0WDEYEREEH",
+          "slug": "nt5-waermetransport-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Durch welche Art des Wärmetransports gelangt die Wärme der Sonne durch das leere Weltall bis auf deine Haut?",
+          "concept": "Durch Wärmestrahlung, weil sie keine Luft und keinen Stoff dazwischen braucht.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-waermetransport",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Durch Wärmestrahlung, weil sie keine Luft und keinen Stoff dazwischen braucht.",
+              "Durch Wärmeleitung über eine gigantische Metallbrücke bis zur Erde."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CEFK0XYXJTFZWF5SY88ZJ4",
+          "slug": "nt5-waermetransport-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Nenne die drei Arten der Wärmeübertragung und gib an, welche keinen Stoff dazwischen braucht.",
+          "concept": "Wärmeleitung in festen Stoffen, Wärmeströmung in Flüssigkeiten und Gasen sowie Wärmestrahlung, die auch durch das leere Weltall wirkt.",
+          "sample_solution": "Wärmeleitung in festen Stoffen, Wärmeströmung in Flüssigkeiten und Gasen sowie Wärmestrahlung, die auch durch das leere Weltall wirkt.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-waermetransport"
+        }
+      ]
+    },
+    {
+      "id": "01M7CEFJZJ09FGCYN385C2YG5G",
+      "atom_uri": "urn:zam:atom:01M7CEFJZJ09FGCYN385C2YG5G",
+      "namespace": "zam-academy-nt-mittelschule-5",
+      "slug": "nt5-haut-aufbau-eigenschaften",
+      "title": "Die Haut: Aufbau und Aufgaben",
+      "domain": "nt/lb2",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-haut-aufbau-eigenschaften",
+      "prerequisites": [
+        {
+          "atom_id": "01M7CEFJZG75TJ91CVKPF5ZSPR",
+          "type": "soft",
+          "rationale": "Zeigt die Fettpolster der Unterhaut als körpereigene Wärmedämmung."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-mittelschule-5",
+          "topic_code": "lb2",
+          "topic_title": "Lebensgrundlage Sonne"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "nt",
+          "topic_code": "lb2",
+          "topic_title": "Lebensgrundlage Sonne",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CEFK0YF9KEVZEZPQTQVJZ8",
+          "slug": "nt5-haut-aufbau-eigenschaften-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "In welcher Hautschicht liegen die Schweißdrüsen, Haarwurzeln und die meisten Tastkörperchen für Druck und Wärmeempfinden?",
+          "concept": "In der Lederhaut direkt unter der Oberhaut.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-haut-aufbau-eigenschaften",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "In der Lederhaut direkt unter der Oberhaut.",
+              "Nur in der obersten Schicht der Hornschicht ganz außen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CEFK0ZVS8377868MVX357Q",
+          "slug": "nt5-haut-aufbau-eigenschaften-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Nenne die drei Hauptschichten der menschlichen Haut von außen nach innen und jeweils eine Aufgabe.",
+          "concept": "Oberhaut schützt mit Hornschicht und Pigmenten; Lederhaut enthält Sinneszellen, Haarwurzeln, Blutgefäße und Drüsen; Unterhaut speichert Fett zur Wärmedämmung.",
+          "sample_solution": "Oberhaut schützt mit Hornschicht und Pigmenten; Lederhaut enthält Sinneszellen, Haarwurzeln, Blutgefäße und Drüsen; Unterhaut speichert Fett zur Wärmedämmung.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-haut-aufbau-eigenschaften"
+        }
+      ]
+    },
+    {
+      "id": "01M7CEFJZKE4FPGTERGSXAK564",
+      "atom_uri": "urn:zam:atom:01M7CEFJZKE4FPGTERGSXAK564",
+      "namespace": "zam-academy-nt-mittelschule-5",
+      "slug": "nt5-hautschutz-hauttypen",
+      "title": "Hautschutz, Gefährdungen und Hauttypen",
+      "domain": "nt/lb2",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-hautschutz-hauttypen",
+      "prerequisites": [
+        {
+          "atom_id": "01M7CEFJZJ09FGCYN385C2YG5G",
+          "type": "soft",
+          "rationale": "Schützt Oberhaut und Pigmentbildung gezielt vor UV-Schäden."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-mittelschule-5",
+          "topic_code": "lb2",
+          "topic_title": "Lebensgrundlage Sonne"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "nt",
+          "topic_code": "lb2",
+          "topic_title": "Lebensgrundlage Sonne",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CEFK101W999KDA86Q1BH5Z",
+          "slug": "nt5-hautschutz-hauttypen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was gibt der Lichtschutzfaktor (z. B. LSF 30 oder 50) auf einer Sonnencreme-Flasche grundsätzlich an?",
+          "concept": "Um welchen Faktor sich die ungefähre Eigenschutzzeit bis zur Hautrötung theoretisch verlängern lässt – wobei man die Zeit nie voll ausreizen sollte.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-hautschutz-hauttypen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Um welchen Faktor sich die ungefähre Eigenschutzzeit bis zur Hautrötung theoretisch verlängern lässt – wobei man die Zeit nie voll ausreizen sollte.",
+              "Dass man sich einmal am Tag eincremen und unbegrenzt lange in der Mittagssonne bleiben darf."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CEFK11NJBQ3MY7MBFZASWN",
+          "slug": "nt5-hautschutz-hauttypen-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche vier Maßnahmen schützen die Haut zuverlässig vor starker UV-Strahlung und Sonnenbrand?",
+          "concept": "Schatten in der Mittagszeit aufsuchen, dicht gewebte Kleidung und Sonnenhut tragen, empfindliche Haut regelmäßig eincremen und Eigenschutzzeit beachten.",
+          "sample_solution": "Schatten in der Mittagszeit aufsuchen, dicht gewebte Kleidung und Sonnenhut tragen, empfindliche Haut regelmäßig eincremen und Eigenschutzzeit beachten.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-hautschutz-hauttypen"
+        }
+      ]
+    },
+    {
+      "id": "01M7CEFJZM0SGWC6C4XWEAVP08",
+      "atom_uri": "urn:zam:atom:01M7CEFJZM0SGWC6C4XWEAVP08",
+      "namespace": "zam-academy-nt-mittelschule-5",
+      "slug": "nt5-licht-und-schatten",
+      "title": "Geradliniges Licht und Schatten",
+      "domain": "nt/lb2",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-licht-und-schatten",
+      "prerequisites": [
+        {
+          "atom_id": "01M7CEFJZDJWMFM3V1RWDPV34C",
+          "type": "soft",
+          "rationale": "Untersucht das ausgesendete Sonnenlicht hinsichtlich geradliniger Ausbreitung."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-mittelschule-5",
+          "topic_code": "lb2",
+          "topic_title": "Lebensgrundlage Sonne"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "nt",
+          "topic_code": "lb2",
+          "topic_title": "Lebensgrundlage Sonne",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CEFK12C6K9PZFSQXBFZ031",
+          "slug": "nt5-licht-und-schatten-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Du hältst deine Hand zwischen eine Taschenlampe und die Klassenzimmerwand. Was musst du tun, damit der Schatten der Hand an der Wand möglichst riesig wird?",
+          "concept": "Die Hand nah an die Taschenlampe und weiter weg von der Wand halten.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-licht-und-schatten",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Hand nah an die Taschenlampe und weiter weg von der Wand halten.",
+              "Die Hand möglichst fest direkt an die Wand drücken."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CEFK133QXQA1CCNY8PQNYN",
+          "slug": "nt5-licht-und-schatten-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie breitet sich Licht in gleichmäßiger Luft aus und wann entstehen Kern- und Halbschatten?",
+          "concept": "Licht breitet sich stets geradlinig aus; beleuchten mehrere oder größere Lichtquellen ein Hindernis, überlagern sich lichtlose Kernschatten und hellere Halbschatten.",
+          "sample_solution": "Licht breitet sich stets geradlinig aus; beleuchten mehrere oder größere Lichtquellen ein Hindernis, überlagern sich lichtlose Kernschatten und hellere Halbschatten.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-licht-und-schatten"
+        }
+      ]
+    },
+    {
+      "id": "01M7CEFJZN8N3358YHS7CC07HM",
+      "atom_uri": "urn:zam:atom:01M7CEFJZN8N3358YHS7CC07HM",
+      "namespace": "zam-academy-nt-mittelschule-5",
+      "slug": "nt5-reflexion-strassenverkehr",
+      "title": "Spiegel, Reflexion und Sicherheit im Straßenverkehr",
+      "domain": "nt/lb2",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-reflexion-strassenverkehr",
+      "prerequisites": [
+        {
+          "atom_id": "01M7CEFJZM0SGWC6C4XWEAVP08",
+          "type": "soft",
+          "rationale": "Wendet geradlinige Lichtstrahlen auf ebene Spiegel und Reflektoren an."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-mittelschule-5",
+          "topic_code": "lb2",
+          "topic_title": "Lebensgrundlage Sonne"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "nt",
+          "topic_code": "lb2",
+          "topic_title": "Lebensgrundlage Sonne",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CEFK14RTVDNMZC9JA5WYAF",
+          "slug": "nt5-reflexion-strassenverkehr-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum sieht man abends ein Kind mit weißer Jacke und Reflektoren am Fahrrad viel früher im Autoscheinwerfer als jemanden ganz in Schwarz ohne Reflektoren?",
+          "concept": "Helle Kleidung streut und Reflektoren werfen das Scheinwerferlicht gezielt zurück zum Auto; Schwarz schluckt fast alles Licht.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-reflexion-strassenverkehr",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Helle Kleidung streut und Reflektoren werfen das Scheinwerferlicht gezielt zurück zum Auto; Schwarz schluckt fast alles Licht.",
+              "Weil Reflektoren im Ranzen geheime Batterien versteckt haben."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CEFK152XRJ0FXCY0CTMZB8",
+          "slug": "nt5-reflexion-strassenverkehr-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie lautet das Reflexionsgesetz am Spiegel und wie schützen sich Radfahrende vor dem toten Winkel?",
+          "concept": "Der Einfallswinkel ist gleich dem Ausfallswinkel; vor dem toten Winkel schützen großer Seitenabstand, niemals rechts neben abbiegenden Lkw warten und Blickkontakt.",
+          "sample_solution": "Der Einfallswinkel ist gleich dem Ausfallswinkel; vor dem toten Winkel schützen großer Seitenabstand, niemals rechts neben abbiegenden Lkw warten und Blickkontakt.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-reflexion-strassenverkehr"
+        }
+      ]
+    },
+    {
+      "id": "01M7CEFJZP58MQDB2EH588T0X4",
+      "atom_uri": "urn:zam:atom:01M7CEFJZP58MQDB2EH588T0X4",
+      "namespace": "zam-academy-nt-mittelschule-5",
+      "slug": "nt5-spektral-und-koerperfarben",
+      "title": "Regenbogenfarben und wie bunte Dinge entstehen",
+      "domain": "nt/lb2",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-spektral-und-koerperfarben",
+      "prerequisites": [
+        {
+          "atom_id": "01M7CEFJZM0SGWC6C4XWEAVP08",
+          "type": "soft",
+          "rationale": "Zerlegt weißes Licht geradlinig verlaufender Strahlenbündel in Spektralfarben."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-mittelschule-5",
+          "topic_code": "lb2",
+          "topic_title": "Lebensgrundlage Sonne"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "nt",
+          "topic_code": "lb2",
+          "topic_title": "Lebensgrundlage Sonne",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CEFK16P2F88ZRK5J3FPSSA",
+          "slug": "nt5-spektral-und-koerperfarben-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was siehst du im Experiment mit einem roten Spielzeugauto in einem komplett abgedunkelten Raum, wenn du es ausschließlich mit reinem grünem Licht anleuchtest?",
+          "concept": "Das rote Auto wirkt fast schwarz, weil roter Lack grünes Licht schluckt (absorbiert) und kaum rotes Licht da ist, das er reflektieren könnte.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-spektral-und-koerperfarben",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Das rote Auto wirkt fast schwarz, weil roter Lack grünes Licht schluckt (absorbiert) und kaum rotes Licht da ist, das er reflektieren könnte.",
+              "Das Auto leuchtet dann plötzlich leuchtend blau."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CEFK17JY98J2JR162TJN3K",
+          "slug": "nt5-spektral-und-koerperfarben-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum erscheint ein reifer roter Apfel im weißen Tageslicht rot?",
+          "concept": "Weißes Licht enthält alle Spektralfarben; die Schale schluckt blaue, grüne und gelbe Anteile und reflektiert fast nur rotes Licht ins Auge.",
+          "sample_solution": "Weißes Licht enthält alle Spektralfarben; die Schale schluckt blaue, grüne und gelbe Anteile und reflektiert fast nur rotes Licht ins Auge.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-spektral-und-koerperfarben"
+        }
+      ]
+    },
+    {
+      "id": "01M7CEFJZQK6CBVG07PDK3VPSQ",
+      "atom_uri": "urn:zam:atom:01M7CEFJZQK6CBVG07PDK3VPSQ",
+      "namespace": "zam-academy-nt-mittelschule-5",
+      "slug": "nt5-auge-und-brille",
+      "title": "Wie Bilder im Auge entstehen und Brillen helfen",
+      "domain": "nt/lb2",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-auge-und-brille",
+      "prerequisites": [
+        {
+          "atom_id": "01M7CEFJZM0SGWC6C4XWEAVP08",
+          "type": "soft",
+          "rationale": "Erklärt den Strahlengang beim scharfen Abbilden auf der Netzhaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-mittelschule-5",
+          "topic_code": "lb2",
+          "topic_title": "Lebensgrundlage Sonne"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "nt",
+          "topic_code": "lb2",
+          "topic_title": "Lebensgrundlage Sonne",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CEFK18SK1YQYQE6N6A8X8F",
+          "slug": "nt5-auge-und-brille-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Brillenlinse hilft einem kurzsichtigen Schüler, die Tafel aus der letzten Reihe wieder gestochen scharf zu sehen?",
+          "concept": "Eine Zerstreuungslinse, weil sie den Brennpunkt von vor der Netzhaut zurück auf die Netzhaut verschiebt.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-auge-und-brille",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eine Zerstreuungslinse, weil sie den Brennpunkt von vor der Netzhaut zurück auf die Netzhaut verschiebt.",
+              "Eine starke Sammellinse, die den Brennpunkt noch weiter nach vorn zieht."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CEFK19NZVD1W9CXV9TJKJQ",
+          "slug": "nt5-auge-und-brille-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie entsteht das Bild auf der Netzhaut des Auges und welche Linsen gleichen Kurz- und Weitsichtigkeit aus?",
+          "concept": "Die Augenlinse entwirft ein verkleinertes, umgekehrtes Bild auf der Netzhaut; Kurzsichtigkeit korrigiert eine Zerstreuungslinse, Weitsichtigkeit eine Sammellinse.",
+          "sample_solution": "Die Augenlinse entwirft ein verkleinertes, umgekehrtes Bild auf der Netzhaut; Kurzsichtigkeit korrigiert eine Zerstreuungslinse, Weitsichtigkeit eine Sammellinse.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-auge-und-brille"
+        }
+      ]
+    },
+    {
+      "id": "01M7CEFJZR4XWPDJCBWXA3V6Y0",
+      "atom_uri": "urn:zam:atom:01M7CEFJZR4XWPDJCBWXA3V6Y0",
+      "namespace": "zam-academy-nt-mittelschule-5",
+      "slug": "nt5-organsysteme-ueberblick",
+      "title": "Vier wichtige Organsysteme arbeiten zusammen",
+      "domain": "nt/lb3",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-organsysteme-ueberblick",
+      "prerequisites": [
+        {
+          "atom_id": "01M7CEFJZJ09FGCYN385C2YG5G",
+          "type": "soft",
+          "rationale": "Knüpft an den Aufbau des Körpers aus spezialisierten Schutz- und Sinnesschichten an."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-mittelschule-5",
+          "topic_code": "lb3",
+          "topic_title": "Mensch und Gesundheit"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "nt",
+          "topic_code": "lb3",
+          "topic_title": "Mensch und Gesundheit",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CEFK1AWAAFMVFXEF9MMQKJ",
+          "slug": "nt5-organsysteme-ueberblick-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welches Organsystem bringt Sauerstoff aus der Lunge und Nährstoffe aus dem Darm gemeinsam zu den Muskeln?",
+          "concept": "Das Blutkreislaufsystem mit dem Herzen und den Blutgefäßen.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-organsysteme-ueberblick",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Das Blutkreislaufsystem mit dem Herzen und den Blutgefäßen.",
+              "Allein die Speiseröhre im Verdauungssystem."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CEFK1BF59EX2GD056B87NJ",
+          "slug": "nt5-organsysteme-ueberblick-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Nenne die vier zentralen Organsysteme des Menschen aus NT 5 und je ein Hauptorgan.",
+          "concept": "Atmungssystem mit Lunge, Blutkreislaufsystem mit Herz, Verdauungssystem mit Magen und Darm sowie Nervensystem mit Gehirn und Rückenmark.",
+          "sample_solution": "Atmungssystem mit Lunge, Blutkreislaufsystem mit Herz, Verdauungssystem mit Magen und Darm sowie Nervensystem mit Gehirn und Rückenmark.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-organsysteme-ueberblick"
+        }
+      ]
+    },
+    {
+      "id": "01M7CEFJZSG1DVF55SAD6W85Q4",
+      "atom_uri": "urn:zam:atom:01M7CEFJZSG1DVF55SAD6W85Q4",
+      "namespace": "zam-academy-nt-mittelschule-5",
+      "slug": "nt5-gesund-im-alltag",
+      "title": "Gesunde Lebensführung im Alltag einschätzen",
+      "domain": "nt/lb3",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-gesund-im-alltag",
+      "prerequisites": [
+        {
+          "atom_id": "01M7CEFJZR4XWPDJCBWXA3V6Y0",
+          "type": "soft",
+          "rationale": "Bezieht Alltagsentscheidungen auf das Zusammenspiel aller Organsysteme."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-mittelschule-5",
+          "topic_code": "lb3",
+          "topic_title": "Mensch und Gesundheit"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "nt",
+          "topic_code": "lb3",
+          "topic_title": "Mensch und Gesundheit",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CEFK1C004MAQT2SRR59Q5B",
+          "slug": "nt5-gesund-im-alltag-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Maßnahme lässt sich an einem ganz normalen Schultag am leichtesten als feste gesunde Gewohnheit umsetzen?",
+          "concept": "Das Handy dreißig Minuten vor dem Schlafengehen aus dem Bett verbannen und eine feste Schlafenszeit einhalten.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-gesund-im-alltag",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Das Handy dreißig Minuten vor dem Schlafengehen aus dem Bett verbannen und eine feste Schlafenszeit einhalten.",
+              "Am Wochenende zwanzig Stunden am Stück wach bleiben und danach durchschlafen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CEFK1D8PSRHWK1RFRKYF7G",
+          "slug": "nt5-gesund-im-alltag-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche vier Alltagsgewohnheiten halten die Organsysteme junger Menschen besonders gesund?",
+          "concept": "Ausreichend Schlaf ohne Bildschirm kurz davor, tägliche Bewegung, regelmäßiges Händewaschen sowie bewusstes Abwechseln von Sitzen und Bewegung.",
+          "sample_solution": "Ausreichend Schlaf ohne Bildschirm kurz davor, tägliche Bewegung, regelmäßiges Händewaschen sowie bewusstes Abwechseln von Sitzen und Bewegung.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-gesund-im-alltag"
+        }
+      ]
+    },
+    {
+      "id": "01M7CEFJZTXB9CT5AD957FYGFZ",
+      "atom_uri": "urn:zam:atom:01M7CEFJZTXB9CT5AD957FYGFZ",
+      "namespace": "zam-academy-nt-mittelschule-5",
+      "slug": "nt5-weg-der-nahrung",
+      "title": "Der Weg der Nahrung durch den Körper",
+      "domain": "nt/lb3",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-weg-der-nahrung",
+      "prerequisites": [
+        {
+          "atom_id": "01M7CEFJZR4XWPDJCBWXA3V6Y0",
+          "type": "soft",
+          "rationale": "Vertieft das Verdauungssystem als Teil der vier Organsysteme."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-mittelschule-5",
+          "topic_code": "lb3",
+          "topic_title": "Mensch und Gesundheit"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "nt",
+          "topic_code": "lb3",
+          "topic_title": "Mensch und Gesundheit",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CEFK1E2MKENK7SBFHA3BB9",
+          "slug": "nt5-weg-der-nahrung-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "In welchem Abschnitt des Verdauungssystems werden die fein zerlegten Nährstoffe hauptsächlich über die Darmwand ins Blut aufgenommen?",
+          "concept": "Im Dünndarm.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-weg-der-nahrung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Im Dünndarm.",
+              "Schon vollständig in der Speiseröhre."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CEFK1FC8ZKP8BTQPY82SWN",
+          "slug": "nt5-weg-der-nahrung-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Bringe die sechs Stationen des Verdauungswegs vom Essen bis zur Ausscheidung in die richtige Reihenfolge.",
+          "concept": "Mund mit Zähnen und Speichel, Speiseröhre, Magen, Dünndarm zur Nährstoffaufnahme ins Blut, Dickdarm zum Wasserentzug und Enddarm.",
+          "sample_solution": "Mund mit Zähnen und Speichel, Speiseröhre, Magen, Dünndarm zur Nährstoffaufnahme ins Blut, Dickdarm zum Wasserentzug und Enddarm.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-weg-der-nahrung"
+        }
+      ]
+    },
+    {
+      "id": "01M7CEFJZVMPZ697SRVB68ZP6T",
+      "atom_uri": "urn:zam:atom:01M7CEFJZVMPZ697SRVB68ZP6T",
+      "namespace": "zam-academy-nt-mittelschule-5",
+      "slug": "nt5-naehrstoffe-und-energie",
+      "title": "Nährstoffe liefern Energie und Baustoffe",
+      "domain": "nt/lb3",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-naehrstoffe-und-energie",
+      "prerequisites": [
+        {
+          "atom_id": "01M7CEFJZTXB9CT5AD957FYGFZ",
+          "type": "soft",
+          "rationale": "Ordnet den im Dünndarm aufgenommenen Grundbausteinen Aufgaben im Körper zu."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-mittelschule-5",
+          "topic_code": "lb3",
+          "topic_title": "Mensch und Gesundheit"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "nt",
+          "topic_code": "lb3",
+          "topic_title": "Mensch und Gesundheit",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CEFK1GDB7KMM5KAGNJXV9Y",
+          "slug": "nt5-naehrstoffe-und-energie-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Nährstoffgruppe braucht der Körper besonders als schnellen Treibstoff für Bewegung im Sportunterricht und Denkarbeit in der Schule?",
+          "concept": "Kohlenhydrate, etwa aus Vollkornbrot, Haferflocken, Kartoffeln oder Obst.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-naehrstoffe-und-energie",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Kohlenhydrate, etwa aus Vollkornbrot, Haferflocken, Kartoffeln oder Obst.",
+              "Künstliche Farbstoffe aus bunt gefärbten Süßigkeiten."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CEFK1H4SNCA39AYPPNR3QA",
+          "slug": "nt5-naehrstoffe-und-energie-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Nenne die drei energieliefernden Nährstoffgruppen und die vier regulierenden Nahrungsbestandteile.",
+          "concept": "Energie liefern Kohlenhydrate, Fette und Eiweiße (auch Baustoffe); Wasser, Vitamine, Mineralstoffe und Spurenelemente regeln Vorgänge im Körper.",
+          "sample_solution": "Energie liefern Kohlenhydrate, Fette und Eiweiße (auch Baustoffe); Wasser, Vitamine, Mineralstoffe und Spurenelemente regeln Vorgänge im Körper.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-naehrstoffe-und-energie"
+        }
+      ]
+    },
+    {
+      "id": "01M7CEFJZWN7TNY7PEWWEPJBH7",
+      "atom_uri": "urn:zam:atom:01M7CEFJZWN7TNY7PEWWEPJBH7",
+      "namespace": "zam-academy-nt-mittelschule-5",
+      "slug": "nt5-ernaehrung-bewerten",
+      "title": "Essgewohnheiten bewusst bewerten",
+      "domain": "nt/lb3",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-ernaehrung-bewerten",
+      "prerequisites": [
+        {
+          "atom_id": "01M7CEFJZVMPZ697SRVB68ZP6T",
+          "type": "soft",
+          "rationale": "Bewertet konkrete Mahlzeiten anhand von Zucker-, Fett- und Nährstoffgehalt."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-mittelschule-5",
+          "topic_code": "lb3",
+          "topic_title": "Mensch und Gesundheit"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "nt",
+          "topic_code": "lb3",
+          "topic_title": "Mensch und Gesundheit",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CEFK1JMYNE15EECPSPBYRA",
+          "slug": "nt5-ernaehrung-bewerten-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Aussage bewertet das Trinken einer 0,5-l-Limonade mit rund 16 Stück Würfelzucker fachlich richtig?",
+          "concept": "Die Limonade liefert in kürzester Zeit viel versteckten Zucker ohne sättigende Nährstoffe und begünstigt bei regelmäßigem Trinken Karies und Übergewicht.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-ernaehrung-bewerten",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Limonade liefert in kürzester Zeit viel versteckten Zucker ohne sättigende Nährstoffe und begünstigt bei regelmäßigem Trinken Karies und Übergewicht.",
+              "Flüssiger Zucker wird im Körper gar nicht als Nährstoff aufgenommen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CEFK1K2Y7YV91CFX9FAF6F",
+          "slug": "nt5-ernaehrung-bewerten-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche gesundheitlichen Folgen drohen bei dauerhaft zu viel Zucker und ungünstigen Fetten?",
+          "concept": "Zu viel Zucker und ungünstige Fette fördern Karies, Übergewicht, Fettleibigkeit und später Diabetes; frisches Gemüse, Vollkorn und Wasser beugen vor.",
+          "sample_solution": "Zu viel Zucker und ungünstige Fette fördern Karies, Übergewicht, Fettleibigkeit und später Diabetes; frisches Gemüse, Vollkorn und Wasser beugen vor.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-ernaehrung-bewerten"
+        }
+      ]
+    },
+    {
+      "id": "01M7CEFJZX8TMYT6KT198MPGY0",
+      "atom_uri": "urn:zam:atom:01M7CEFJZX8TMYT6KT198MPGY0",
+      "namespace": "zam-academy-nt-mittelschule-5",
+      "slug": "nt5-skelett-aufbau",
+      "title": "Das Skelett stützt und schützt den Körper",
+      "domain": "nt/lb3",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-skelett-aufbau",
+      "prerequisites": [
+        {
+          "atom_id": "01M7CEFJZR4XWPDJCBWXA3V6Y0",
+          "type": "soft",
+          "rationale": "Ergänzt die Organsysteme um Stützgerüst und Schutzfunktionen für innere Organe."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-mittelschule-5",
+          "topic_code": "lb3",
+          "topic_title": "Mensch und Gesundheit"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "nt",
+          "topic_code": "lb3",
+          "topic_title": "Mensch und Gesundheit",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CEFK1MYXP3JSWG1QE7J0XP",
+          "slug": "nt5-skelett-aufbau-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche beiden Organe liegen sicher geschützt im Inneren des Brustkorbs aus Rippen, Brustbein und Brustwirbelsäule?",
+          "concept": "Herz und Lunge.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-skelett-aufbau",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Herz und Lunge.",
+              "Gehirn und Ohr."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CEFK1NE51R643J6CRYQBZV",
+          "slug": "nt5-skelett-aufbau-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "In welche drei Hauptabschnitte gliedert sich das menschliche Skelett und welche zwei Hauptaufgaben erfüllt es?",
+          "concept": "Schädel, Rumpf und Gliedmaßen bilden das Skelett; es stützt den Körper für Haltung und Bewegung und schützt innere Organe wie Gehirn, Herz und Lunge.",
+          "sample_solution": "Schädel, Rumpf und Gliedmaßen bilden das Skelett; es stützt den Körper für Haltung und Bewegung und schützt innere Organe wie Gehirn, Herz und Lunge.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-skelett-aufbau"
+        }
+      ]
+    },
+    {
+      "id": "01M7CEFJZY0HB06937142TZK3X",
+      "atom_uri": "urn:zam:atom:01M7CEFJZY0HB06937142TZK3X",
+      "namespace": "zam-academy-nt-mittelschule-5",
+      "slug": "nt5-wirbelsaeule",
+      "title": "Die Wirbelsäule: S-Form für aufrechten Gang",
+      "domain": "nt/lb3",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-wirbelsaeule",
+      "prerequisites": [
+        {
+          "atom_id": "01M7CEFJZX8TMYT6KT198MPGY0",
+          "type": "soft",
+          "rationale": "Vertieft den Rumpfaufbau und den Schutz des Rückenmarks."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-mittelschule-5",
+          "topic_code": "lb3",
+          "topic_title": "Mensch und Gesundheit"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "nt",
+          "topic_code": "lb3",
+          "topic_title": "Mensch und Gesundheit",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CEFK1P8YH3HWA4FX6EABGY",
+          "slug": "nt5-wirbelsaeule-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche zwei Bestandteile sorgen gemeinsam dafür, dass beim Springen Stöße nicht hart bis zum Kopf durchschlagen?",
+          "concept": "Die geschwungene Doppel-S-Form der Wirbelsäule und die elastischen Bandscheiben zwischen den Wirbeln.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-wirbelsaeule",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die geschwungene Doppel-S-Form der Wirbelsäule und die elastischen Bandscheiben zwischen den Wirbeln.",
+              "Dass die Wirbelsäule aus einem einzigen starren geraden Knochenstab besteht."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CEFK1Q8QJFRSPB8VHJ51YA",
+          "slug": "nt5-wirbelsaeule-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum hat eine gesunde Wirbelsäule von der Seite betrachtet eine doppelte S-Form statt eines geraden Stabs?",
+          "concept": "Die Doppel-S-Form wirkt gemeinsam mit den elastischen Bandscheiben zwischen den Wirbeln wie ein Stoßdämpfer und schützt das Rückenmark.",
+          "sample_solution": "Die Doppel-S-Form wirkt gemeinsam mit den elastischen Bandscheiben zwischen den Wirbeln wie ein Stoßdämpfer und schützt das Rückenmark.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-wirbelsaeule"
+        }
+      ]
+    },
+    {
+      "id": "01M7CEFJZZJA35GM9ARBB6JHJ4",
+      "atom_uri": "urn:zam:atom:01M7CEFJZZJA35GM9ARBB6JHJ4",
+      "namespace": "zam-academy-nt-mittelschule-5",
+      "slug": "nt5-gelenke-und-muskeln",
+      "title": "Gelenke, Muskeln und Sehnen im Zusammenspiel",
+      "domain": "nt/lb3",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-gelenke-und-muskeln",
+      "prerequisites": [
+        {
+          "atom_id": "01M7CEFJZX8TMYT6KT198MPGY0",
+          "type": "soft",
+          "rationale": "Erklärt, wie Knochen über Gelenke und Muskeln bewegt werden."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-mittelschule-5",
+          "topic_code": "lb3",
+          "topic_title": "Mensch und Gesundheit"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "nt",
+          "topic_code": "lb3",
+          "topic_title": "Mensch und Gesundheit",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CEFK1RY1X1C6MP9MS8T122",
+          "slug": "nt5-gelenke-und-muskeln-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum braucht das Ellbogengelenk sowohl den Bizeps auf der Oberarm-Vorderseite als auch den Trizeps auf der Rückseite?",
+          "concept": "Weil sich ein Muskel immer nur zusammenziehen (ziehen) kann und sich nicht selbst wieder aktiv auseinanderdrücken lässt.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-gelenke-und-muskeln",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Weil sich ein Muskel immer nur zusammenziehen (ziehen) kann und sich nicht selbst wieder aktiv auseinanderdrücken lässt.",
+              "Weil der Bizeps nur Knochen besitzt und der Trizeps aus Sehnen besteht."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CEFK1SPG64FYTD1CAF6AV3",
+          "slug": "nt5-gelenke-und-muskeln-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum arbeiten Skelettmuskeln wie Bizeps und Trizeps immer paarweise als Gegenspieler zusammen?",
+          "concept": "Ein Muskel kann sich über seine Sehnen nur aktiv zusammenziehen und ziehen, nicht drücken; zum Beugen und Strecken ist daher ein Gegenspieler nötig.",
+          "sample_solution": "Ein Muskel kann sich über seine Sehnen nur aktiv zusammenziehen und ziehen, nicht drücken; zum Beugen und Strecken ist daher ein Gegenspieler nötig.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-gelenke-und-muskeln"
+        }
+      ]
+    },
+    {
+      "id": "01M7CEFK00CKQMD58R7VPJRCHB",
+      "atom_uri": "urn:zam:atom:01M7CEFK00CKQMD58R7VPJRCHB",
+      "namespace": "zam-academy-nt-mittelschule-5",
+      "slug": "nt5-haltung-und-sport",
+      "title": "Rückenfreundliche Haltung und gesunde Bewegung",
+      "domain": "nt/lb3",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-haltung-und-sport",
+      "prerequisites": [
+        {
+          "atom_id": "01M7CEFJZY0HB06937142TZK3X",
+          "type": "soft",
+          "rationale": "Schützt Doppel-S-Form und Bandscheiben im Schulalltag."
+        },
+        {
+          "atom_id": "01M7CEFJZZJA35GM9ARBB6JHJ4",
+          "type": "soft",
+          "rationale": "Nutzt aktive Muskelarbeit statt passiver Überlastung."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-mittelschule-5",
+          "topic_code": "lb3",
+          "topic_title": "Mensch und Gesundheit"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "nt",
+          "topic_code": "lb3",
+          "topic_title": "Mensch und Gesundheit",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CEFK1T5WTRR2BEJ5EARS4Y",
+          "slug": "nt5-haltung-und-sport-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie hebst du eine schwere Getränkekiste rückenschonend vom Boden auf?",
+          "concept": "In die Knie gehen, Kiste nah an den Körper ziehen und mit geradem Rücken aus den Beinmuskeln aufrichten.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-haltung-und-sport",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "In die Knie gehen, Kiste nah an den Körper ziehen und mit geradem Rücken aus den Beinmuskeln aufrichten.",
+              "Mit gestreckten Beinen weit vorbeugen und ruckartig aus dem runden Rücken hochreißen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CEFK1VTM7ZBCAJSNSEKHYX",
+          "slug": "nt5-haltung-und-sport-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Nenne drei wichtige Verhaltensregeln für einen gesunden Rücken im Schulalltag.",
+          "concept": "Schulrucksack eng anliegend mit beiden Gurten tragen, Lasten nah am Körper mit geradem Rücken aus den Knien heben und regelmäßig ausgleichenden Sport treiben.",
+          "sample_solution": "Schulrucksack eng anliegend mit beiden Gurten tragen, Lasten nah am Körper mit geradem Rücken aus den Knien heben und regelmäßig ausgleichenden Sport treiben.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-haltung-und-sport"
+        }
+      ]
+    },
+    {
+      "id": "01M7CEFK0142K0XZTAEP6PFD2D",
+      "atom_uri": "urn:zam:atom:01M7CEFK0142K0XZTAEP6PFD2D",
+      "namespace": "zam-academy-nt-mittelschule-5",
+      "slug": "nt5-reinstoffe-stoffgemische",
+      "title": "Reinstoffe und Stoffgemische im Teilchenmodell",
+      "domain": "nt/lb4",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-reinstoffe-stoffgemische",
+      "prerequisites": [
+        {
+          "atom_id": "01M7CEFJZ99XMZH8PSEFQRJZQJ",
+          "type": "soft",
+          "rationale": "Nutzt das Teilchenmodell zur Unterscheidung von Reinstoff und Gemisch."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-mittelschule-5",
+          "topic_code": "lb4",
+          "topic_title": "Materie, Stoffe und Technik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "nt",
+          "topic_code": "lb4",
+          "topic_title": "Materie, Stoffe und Technik",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CEFK1W5TASK60FF85PACNV",
+          "slug": "nt5-reinstoffe-stoffgemische-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Woran erkennst du im Teilchenmodell auf den ersten Blick eine Salzlösung im Vergleich zu destilliertem Wasser?",
+          "concept": "In der Salzlösung liegen zwischen den Wasserteilchen zusätzlich gleichmäßig verteilte Salzteilchen einer zweiten Sorte.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-reinstoffe-stoffgemische",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "In der Salzlösung liegen zwischen den Wasserteilchen zusätzlich gleichmäßig verteilte Salzteilchen einer zweiten Sorte.",
+              "In der Salzlösung schmelzen die Wasserteilchen und werden eckig."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CEFK1XJ1S773BDF9S5M8D8",
+          "slug": "nt5-reinstoffe-stoffgemische-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie unterscheidest du einen Reinstoff und ein Stoffgemisch im Teilchenmodell?",
+          "concept": "Ein Reinstoff enthält ausschließlich eine einzige Teilchensorte, während in einem Stoffgemisch mindestens zwei verschiedene Teilchensorten vorliegen.",
+          "sample_solution": "Ein Reinstoff enthält ausschließlich eine einzige Teilchensorte, während in einem Stoffgemisch mindestens zwei verschiedene Teilchensorten vorliegen.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-reinstoffe-stoffgemische"
+        }
+      ]
+    },
+    {
+      "id": "01M7CEFK0230JF1582BP3M2EW6",
+      "atom_uri": "urn:zam:atom:01M7CEFK0230JF1582BP3M2EW6",
+      "namespace": "zam-academy-nt-mittelschule-5",
+      "slug": "nt5-aggregatzustaende",
+      "title": "Fest, flüssig und gasförmig im Teilchenmodell",
+      "domain": "nt/lb4",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-aggregatzustaende",
+      "prerequisites": [
+        {
+          "atom_id": "01M7CEFK0142K0XZTAEP6PFD2D",
+          "type": "soft",
+          "rationale": "Erweitert die Teilchendarstellung um Ordnung und Bewegung in drei Zuständen."
+        },
+        {
+          "atom_id": "01M7CEFJZFHH2DMSHM4ZNE72YB",
+          "type": "soft",
+          "rationale": "Verbindet Temperaturänderung mit stärkerer Teilchenbewegung."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-mittelschule-5",
+          "topic_code": "lb4",
+          "topic_title": "Materie, Stoffe und Technik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "nt",
+          "topic_code": "lb4",
+          "topic_title": "Materie, Stoffe und Technik",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CEFK1YP705JNQ6GR5SR2TY",
+          "slug": "nt5-aggregatzustaende-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum lässt sich eine mit Luft gefüllte, zugehaltene Kunststoffspritze leicht eindrücken, eine bis oben mit Wasser gefüllte Spritze aber nicht?",
+          "concept": "Zwischen Gasteilchen gibt es große leere Abstände, die sich verkleinern lassen; Wasserteilchen berühren sich schon fast.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-aggregatzustaende",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Zwischen Gasteilchen gibt es große leere Abstände, die sich verkleinern lassen; Wasserteilchen berühren sich schon fast.",
+              "Weil Wasserteilchen aus hartem Metall bestehen und Gasteilchen weich sind."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CEFK1ZXVV3WQRYZVGAEW4K",
+          "slug": "nt5-aggregatzustaende-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie unterscheiden sich Teilchenordnung und Beweglichkeit bei fest, flüssig und gasförmig?",
+          "concept": "Fest: Teilchen sitzen eng geordnet an festen Plätzen; flüssig: sie gleiten eng aneinander vorbei; gasförmig: sie fliegen mit großem Abstand frei umher.",
+          "sample_solution": "Fest: Teilchen sitzen eng geordnet an festen Plätzen; flüssig: sie gleiten eng aneinander vorbei; gasförmig: sie fliegen mit großem Abstand frei umher.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-aggregatzustaende"
+        }
+      ]
+    },
+    {
+      "id": "01M7CEFK03EVD0TY8TH6BJ76MC",
+      "atom_uri": "urn:zam:atom:01M7CEFK03EVD0TY8TH6BJ76MC",
+      "namespace": "zam-academy-nt-mittelschule-5",
+      "slug": "nt5-stoffeigenschaften-steckbrief",
+      "title": "Stoffeigenschaften untersuchen und Steckbriefe anlegen",
+      "domain": "nt/lb4",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-stoffeigenschaften-steckbrief",
+      "prerequisites": [
+        {
+          "atom_id": "01M7CEFK0142K0XZTAEP6PFD2D",
+          "type": "soft",
+          "rationale": "Beschreibt Reinstoffe anhand typischer, messbarer Kenneigenschaften."
+        },
+        {
+          "atom_id": "01M7CEFJZ8X74HRN5B2KA4RAVQ",
+          "type": "soft",
+          "rationale": "Beachtet beim Untersuchen von Stoffen sichere Prüfregeln."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-mittelschule-5",
+          "topic_code": "lb4",
+          "topic_title": "Materie, Stoffe und Technik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "nt",
+          "topic_code": "lb4",
+          "topic_title": "Materie, Stoffe und Technik",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CEFK20ZH47GNFXPEJWRSVY",
+          "slug": "nt5-stoffeigenschaften-steckbrief-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Du hast zwei feine graue Metallpulver vor dir: eines aus reinem Eisen, das andere aus Aluminium. Welche Kenneigenschaft unterscheidet beide sofort ohne Feuer?",
+          "concept": "Eisen wird von einem Magneten stark angezogen, Aluminium hingegen nicht.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-stoffeigenschaften-steckbrief",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eisen wird von einem Magneten stark angezogen, Aluminium hingegen nicht.",
+              "Beide lösen sich in kaltem Wasser sofort auf."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CEFK217YTFV73RYRP4J444",
+          "slug": "nt5-stoffeigenschaften-steckbrief-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Nenne fünf leicht prüfbare Stoffeigenschaften für einen Stoffsteckbrief im Unterricht.",
+          "concept": "Aussehen, Wasserlöslichkeit, Magnetisierbarkeit, Brennbarkeit und elektrische Leitfähigkeit machen Reinstoffe sicher erkennbar und unterscheidbar.",
+          "sample_solution": "Aussehen, Wasserlöslichkeit, Magnetisierbarkeit, Brennbarkeit und elektrische Leitfähigkeit machen Reinstoffe sicher erkennbar und unterscheidbar.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-stoffeigenschaften-steckbrief"
+        }
+      ]
+    },
+    {
+      "id": "01M7CEFK04CBXQVBEX0MG8Z76N",
+      "atom_uri": "urn:zam:atom:01M7CEFK04CBXQVBEX0MG8Z76N",
+      "namespace": "zam-academy-nt-mittelschule-5",
+      "slug": "nt5-trennverfahren",
+      "title": "Stoffgemische im Experiment trennen",
+      "domain": "nt/lb4",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-trennverfahren",
+      "prerequisites": [
+        {
+          "atom_id": "01M7CEFK03EVD0TY8TH6BJ76MC",
+          "type": "soft",
+          "rationale": "Nutzt unterschiedliche Kenneigenschaften zum gezielten Trennen von Gemischen."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-mittelschule-5",
+          "topic_code": "lb4",
+          "topic_title": "Materie, Stoffe und Technik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "nt",
+          "topic_code": "lb4",
+          "topic_title": "Materie, Stoffe und Technik",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CEFK22NQP2ZGK6TNE1CTAZ",
+          "slug": "nt5-trennverfahren-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Du filterst trübes Wasser aus Sand und gelöstem Kochsalz durch ein Filterpapier. Was findest du danach im aufgefangenen klaren Filtrat?",
+          "concept": "Wasser und das weiterhin gelöste Kochsalz; nur der Sand bleibt im Filterpapier zurück.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-trennverfahren",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Wasser und das weiterhin gelöste Kochsalz; nur der Sand bleibt im Filterpapier zurück.",
+              "Reines Wasser ohne Salz, weil das Filterpapier alle Salzteilchen festhält."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CEFK23D3PFN4TB262DAEPZ",
+          "slug": "nt5-trennverfahren-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie trennst du ein Gemisch aus Sand, Eisenspänen und gelöstem Kochsalz in drei saubere Schritte auf?",
+          "concept": "Zuerst zieht ein Magnet die Eisenspäne heraus, danach hält ein Filterpapier den Sand zurück, und zuletzt gewinnt Eindampfen das feste Salz aus der Lösung.",
+          "sample_solution": "Zuerst zieht ein Magnet die Eisenspäne heraus, danach hält ein Filterpapier den Sand zurück, und zuletzt gewinnt Eindampfen das feste Salz aus der Lösung.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-trennverfahren"
+        }
+      ]
+    },
+    {
+      "id": "01M7CEFK05GJ5CW0VZQNENTH7M",
+      "atom_uri": "urn:zam:atom:01M7CEFK05GJ5CW0VZQNENTH7M",
+      "namespace": "zam-academy-nt-mittelschule-5",
+      "slug": "nt5-muell-und-recycling",
+      "title": "Müll als Stoffgemisch trennen und Wertstoffe gewinnen",
+      "domain": "nt/lb4",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-muell-und-recycling",
+      "prerequisites": [
+        {
+          "atom_id": "01M7CEFK04CBXQVBEX0MG8Z76N",
+          "type": "soft",
+          "rationale": "Überträgt Trennverfahren aus dem Labor auf industrielle Sortieranlagen."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-mittelschule-5",
+          "topic_code": "lb4",
+          "topic_title": "Materie, Stoffe und Technik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "nt",
+          "topic_code": "lb4",
+          "topic_title": "Materie, Stoffe und Technik",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CEFK24ZJE9GM60WHYESXY4",
+          "slug": "nt5-muell-und-recycling-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Mit welchem technischen Trennverfahren holt eine Sortieranlage blitzschnell Stahl- und Eisenteile aus dem laufenden Abfallband?",
+          "concept": "Durch Magnettrennen mithilfe eines kräftigen Magneten über dem Förderband.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-muell-und-recycling",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Durch Magnettrennen mithilfe eines kräftigen Magneten über dem Förderband.",
+              "Durch Verdampfen des gesamten Abfalls in großen Öfen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CEFK25GYHJJTVW3E916RSY",
+          "slug": "nt5-muell-und-recycling-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche drei Trennverfahren nutzt eine moderne Sortieranlage beim Müll- und Wertstoffrecycling?",
+          "concept": "Sieben trennt nach Teilchengröße, Magnettrennen zieht Eisenmetalle vom Band und Windsichten bläst leichte Kunststoffe von schwereren Anteilen weg.",
+          "sample_solution": "Sieben trennt nach Teilchengröße, Magnettrennen zieht Eisenmetalle vom Band und Windsichten bläst leichte Kunststoffe von schwereren Anteilen weg.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-5/#lesson=nt5-muell-und-recycling"
+        }
+      ]
+    }
+  ]
+}

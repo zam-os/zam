@@ -1,0 +1,2065 @@
+{
+	"$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+	"tile_id": "zam-academy:geographie-realschule-5",
+	"version": "2026.11.2",
+	"title": "Geographie 5 Realschule (ZAM Academy)",
+	"description": "31 lessons across all seven Bavarian curriculum areas. Offline map workshops and 62 practice items; fieldwork and presentations remain classroom activities. Preview; teacher review and videos remain open.",
+	"publisher": "ZAM Academy",
+	"published_at": "2026-11-13T12:00:00Z",
+	"sources": [
+		{
+			"uri": "https://academy.zam-os.org/geographie-realschule-5/",
+			"label": "ZAM Academy: Geographie 5 Realschule"
+		},
+		{
+			"uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/5/geographie",
+			"label": "LehrplanPLUS - Realschule - 5 - Geographie - Fachlehrpläne",
+			"checked": "2026-11-13"
+		},
+		{
+			"uri": "https://science.nasa.gov/earth/facts/",
+			"label": "Facts About Earth",
+			"checked": "2026-11-13"
+		},
+		{
+			"uri": "https://science.nasa.gov/solar-system/",
+			"label": "Solar System Exploration",
+			"checked": "2026-11-13"
+		},
+		{
+			"uri": "https://pubs.usgs.gov/gip/dynamic/understanding.html",
+			"label": "Understanding plate motions [This Dynamic Earth, USGS]",
+			"checked": "2026-11-13"
+		},
+		{
+			"uri": "https://geoportal.bayern.de/bayernatlas/",
+			"label": "BayernAtlas",
+			"checked": "2026-11-13"
+		},
+		{
+			"uri": "https://www.nationalpark-bayerischer-wald.bayern.de/ueber_uns/aufgaben/index.htm",
+			"label": "Aufgaben und Ziele",
+			"checked": "2026-11-13"
+		},
+		{
+			"uri": "https://www.esa.int/Space_Safety/Space_Debris",
+			"label": "Space Debris",
+			"checked": "2026-11-13"
+		},
+		{
+			"uri": "https://www.regierung.mittelfranken.bayern.de/",
+			"label": "Regierung von Mittelfranken - Regierung von Mittelfranken",
+			"checked": "2026-11-13"
+		},
+		{
+			"uri": "https://www.lfu.bayern.de/geologie/geologie_bayerns/ueberblick/index.htm",
+			"label": "Geologischer Überblick Bayern - LfU Bayern",
+			"checked": "2026-11-13"
+		}
+	],
+	"atoms": [
+		{
+			"id": "01M7BDTJPT0RW1Q92XXXDTCW9K",
+			"atom_uri": "urn:zam:atom:01M7BDTJPT0RW1Q92XXXDTCW9K",
+			"namespace": "zam-academy-geographie-realschule-5",
+			"slug": "geo5-geographie",
+			"title": "Natur und Mensch im Raum",
+			"domain": "geographie/grundlagen/geographie",
+			"reduction": "narrative",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-geographie",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "geographie-realschule-5",
+					"topic_code": "lb1",
+					"topic_title": "Einführung in das Fach"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 5,
+					"subject": "geographie",
+					"topic_code": "lb1",
+					"topic_title": "Einführung in das Fach",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7BDTJPV07PKQBBDA12QSYFD",
+					"slug": "geo5-geographie-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche Frage untersucht eine Wechselwirkung zwischen Mensch und Natur?",
+					"concept": "Wie verändert ein Parkplatz das Versickern von Regenwasser?",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Wie verändert ein Parkplatz das Versickern von Regenwasser?",
+							"Wie schreibt man das Wort Parkplatz?"
+						],
+						"correct_index": 0
+					},
+					"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-geographie"
+				},
+				{
+					"id": "01M7BDTJPVZRXZHVJHMR7VCEK3",
+					"slug": "geo5-geographie-anwenden",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Untersuche einen Schulhof mit den Begriffen Natur, Mensch und Wechselwirkung.",
+					"concept": "Bäume und Boden gehören zur Natur. Wege und Gebäude wurden von Menschen gestaltet. Ein Baum kann Schatten auf eine befestigte Spielfläche werfen. Ich beschreibe zuerst Beobachtungen und prüfe dann, wie sich Nutzung und Natur beeinflussen.",
+					"sample_solution": "Bäume und Boden gehören zur Natur. Wege und Gebäude wurden von Menschen gestaltet. Ein Baum kann Schatten auf eine befestigte Spielfläche werfen. Ich beschreibe zuerst Beobachtungen und prüfe dann, wie sich Nutzung und Natur beeinflussen.",
+					"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-geographie"
+				}
+			]
+		},
+		{
+			"id": "01M7BDTJPVCFTQSGH2KYT6A86N",
+			"atom_uri": "urn:zam:atom:01M7BDTJPVCFTQSGH2KYT6A86N",
+			"namespace": "zam-academy-geographie-realschule-5",
+			"slug": "geo5-medien",
+			"title": "Globus, Luftbild und Karte",
+			"domain": "geographie/grundlagen/medien",
+			"reduction": "narrative",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-medien",
+			"prerequisites": [
+				{
+					"atom_id": "01M7BDTJPT0RW1Q92XXXDTCW9K",
+					"type": "soft",
+					"rationale": "The earlier lesson supplies concepts used by this lesson."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "geographie-realschule-5",
+					"topic_code": "lb1",
+					"topic_title": "Einführung in das Fach"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 5,
+					"subject": "geographie",
+					"topic_code": "lb1",
+					"topic_title": "Einführung in das Fach",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7BDTJPVZH332483NB0BK3BG",
+					"slug": "geo5-medien-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welches Medium zeigt die Kugelform der Erde unmittelbar als Modell?",
+					"concept": "Ein Globus",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": ["Ein Globus", "Ein Stadtplan"],
+						"correct_index": 0
+					},
+					"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-medien"
+				},
+				{
+					"id": "01M7BDTJPVVQ3GY1HG3HX83T40",
+					"slug": "geo5-medien-anwenden",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Vergleiche Luftbild und Karte bei der Suche nach dem Schulgebäude.",
+					"concept": "Das Luftbild zeigt Dächer, Bäume und die sichtbare Umgebung zum Aufnahmezeitpunkt. Eine Karte vereinfacht diese Umgebung und hebt etwa Gebäude, Straßen und Namen hervor. Ich suche dieselben Landmarken in beiden Medien und kontrolliere Datum und Legende.",
+					"sample_solution": "Das Luftbild zeigt Dächer, Bäume und die sichtbare Umgebung zum Aufnahmezeitpunkt. Eine Karte vereinfacht diese Umgebung und hebt etwa Gebäude, Straßen und Namen hervor. Ich suche dieselben Landmarken in beiden Medien und kontrolliere Datum und Legende.",
+					"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-medien"
+				}
+			]
+		},
+		{
+			"id": "01M7BDTJPV7TZ98MPDNPH76NNC",
+			"atom_uri": "urn:zam:atom:01M7BDTJPV7TZ98MPDNPH76NNC",
+			"namespace": "zam-academy-geographie-realschule-5",
+			"slug": "geo5-karten",
+			"title": "Vom Luftbild zur Karte",
+			"domain": "geographie/grundlagen/karten",
+			"reduction": "narrative",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-karten",
+			"prerequisites": [
+				{
+					"atom_id": "01M7BDTJPVCFTQSGH2KYT6A86N",
+					"type": "soft",
+					"rationale": "The earlier lesson supplies concepts used by this lesson."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "geographie-realschule-5",
+					"topic_code": "lb1",
+					"topic_title": "Einführung in das Fach"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 5,
+					"subject": "geographie",
+					"topic_code": "lb1",
+					"topic_title": "Einführung in das Fach",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7BDTJPWKX495VG22B7NE3AT",
+					"slug": "geo5-karten-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wo erfährst du, was ein Kartenzeichen bedeutet?",
+					"concept": "In der Legende",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": ["In der Legende", "Allein an seiner Farbe"],
+						"correct_index": 0
+					},
+					"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-karten"
+				},
+				{
+					"id": "01M7BDTJPWG3W0HZ0G6K7DWPY4",
+					"slug": "geo5-karten-anwenden",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Erkläre an einem Schulwegplan, wie aus einem Luftbild eine Karte wird.",
+					"concept": "Ich wähle Gebäude, Wege und wichtige Querungen aus. Ihre Formen vereinfache ich. Dann trage ich eindeutige Zeichen und eine Legende ein. Ein Nordpfeil und ein Maßstab helfen bei der Orientierung. Vorübergehende Dinge wie einzelne Autos sind für diesen Plan unwichtig.",
+					"sample_solution": "Ich wähle Gebäude, Wege und wichtige Querungen aus. Ihre Formen vereinfache ich. Dann trage ich eindeutige Zeichen und eine Legende ein. Ein Nordpfeil und ein Maßstab helfen bei der Orientierung. Vorübergehende Dinge wie einzelne Autos sind für diesen Plan unwichtig.",
+					"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-karten"
+				}
+			]
+		},
+		{
+			"id": "01M7BDTJPVG94TSYKJ9CJC84EZ",
+			"atom_uri": "urn:zam:atom:01M7BDTJPVG94TSYKJ9CJC84EZ",
+			"namespace": "zam-academy-geographie-realschule-5",
+			"slug": "geo5-atlas",
+			"title": "Im Atlas gezielt finden",
+			"domain": "geographie/grundlagen/atlas",
+			"reduction": "narrative",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-atlas",
+			"prerequisites": [
+				{
+					"atom_id": "01M7BDTJPV7TZ98MPDNPH76NNC",
+					"type": "soft",
+					"rationale": "The earlier lesson supplies concepts used by this lesson."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "geographie-realschule-5",
+					"topic_code": "lb1",
+					"topic_title": "Einführung in das Fach"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 5,
+					"subject": "geographie",
+					"topic_code": "lb1",
+					"topic_title": "Einführung in das Fach",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7BDTJPWM6K1TJ93D5A5Q5G3",
+					"slug": "geo5-atlas-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was bedeutet C3 in einem Atlasregister normalerweise?",
+					"concept": "Ein Suchfeld der genannten Karte",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Ein Suchfeld der genannten Karte",
+							"Den dritten östlichen Meridian"
+						],
+						"correct_index": 0
+					},
+					"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-atlas"
+				},
+				{
+					"id": "01M7BDTJPWTBJAGVPSXXY593CR",
+					"slug": "geo5-atlas-anwenden",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Beschreibe deine Suche nach Bergstadt mit dem erfundenen Registereintrag Seite 24, C3.",
+					"concept": "Ich öffne Seite 24, suche Spalte C und Zeile 3 und lese dort den Ortsnamen. Danach prüfe ich Titel und Legende. Das Suchfeld hilft nur auf dieser Karte; für die Lage auf der Erde brauche ich bei Bedarf Breiten- und Längengrad.",
+					"sample_solution": "Ich öffne Seite 24, suche Spalte C und Zeile 3 und lese dort den Ortsnamen. Danach prüfe ich Titel und Legende. Das Suchfeld hilft nur auf dieser Karte; für die Lage auf der Erde brauche ich bei Bedarf Breiten- und Längengrad.",
+					"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-atlas"
+				}
+			]
+		},
+		{
+			"id": "01M7BDTJPV69EC1WZ3334QPD4G",
+			"atom_uri": "urn:zam:atom:01M7BDTJPV69EC1WZ3334QPD4G",
+			"namespace": "zam-academy-geographie-realschule-5",
+			"slug": "geo5-sonnensystem",
+			"title": "Unser Platz im Weltall",
+			"domain": "geographie/grundlagen/sonnensystem",
+			"reduction": "narrative",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-sonnensystem",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "geographie-realschule-5",
+					"topic_code": "lb2",
+					"topic_title": "Planet Erde"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 5,
+					"subject": "geographie",
+					"topic_code": "lb2",
+					"topic_title": "Planet Erde",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7BDTJPWBE1W9HJMKRK42MYK",
+					"slug": "geo5-sonnensystem-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welches Objekt ist ein selbst leuchtender Stern?",
+					"concept": "Die Sonne",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": ["Die Sonne", "Die Erde"],
+						"correct_index": 0
+					},
+					"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-sonnensystem"
+				},
+				{
+					"id": "01M7BDTJPWXAHMMYX0BEX2WTCG",
+					"slug": "geo5-sonnensystem-anwenden",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Ordne Sonne, Erde, Erdmond und Milchstraße ein und beschreibe ihren Zusammenhang.",
+					"concept": "Die Sonne ist ein Stern und die Erde ein Planet des Sonnensystems. Der Erdmond umläuft die Erde. Das gesamte Sonnensystem liegt in der Milchstraße. Sie ist eine Galaxie und umfasst sehr viele Sterne, also viel mehr als unser Sonnensystem.",
+					"sample_solution": "Die Sonne ist ein Stern und die Erde ein Planet des Sonnensystems. Der Erdmond umläuft die Erde. Das gesamte Sonnensystem liegt in der Milchstraße. Sie ist eine Galaxie und umfasst sehr viele Sterne, also viel mehr als unser Sonnensystem.",
+					"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-sonnensystem"
+				}
+			]
+		},
+		{
+			"id": "01M7BDTJPV9V9K98F8Q1VKB264",
+			"atom_uri": "urn:zam:atom:01M7BDTJPV9V9K98F8Q1VKB264",
+			"namespace": "zam-academy-geographie-realschule-5",
+			"slug": "geo5-erdbewegungen",
+			"title": "Tag, Nacht und Jahreszeiten",
+			"domain": "geographie/grundlagen/erdbewegungen",
+			"reduction": "narrative",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-erdbewegungen",
+			"prerequisites": [
+				{
+					"atom_id": "01M7BDTJPV69EC1WZ3334QPD4G",
+					"type": "soft",
+					"rationale": "The earlier lesson supplies concepts used by this lesson."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "geographie-realschule-5",
+					"topic_code": "lb2",
+					"topic_title": "Planet Erde"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 5,
+					"subject": "geographie",
+					"topic_code": "lb2",
+					"topic_title": "Planet Erde",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7BDTJPWDEPBXHXXG2A9X4AB",
+					"slug": "geo5-erdbewegungen-check",
+					"replaces": ["01K4G5E0000000000000000J05"],
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Um wie viel ist die Erdachse gegen die Senkrechte zur Bahnebene geneigt?",
+					"concept": "Um ungefähr 23,5°",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": ["Um ungefähr 23,5°", "Um ungefähr 90°"],
+						"correct_index": 0
+					},
+					"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-erdbewegungen"
+				},
+				{
+					"id": "01M7BDTJPWEYZWSA7JPN7FQRZW",
+					"slug": "geo5-erdbewegungen-anwenden",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Erkläre, warum in Deutschland Sommer sein kann, während in Australien Winter ist.",
+					"concept": "Im nördlichen Sommer ist die Nordhalbkugel zur Sonne geneigt. Ihre Tage sind länger und die Strahlen treffen steiler ein. Die Südhalbkugel ist zugleich von der Sonne weggeneigt und erhält weniger tägliche Sonnenenergie. Die Entfernung zur Sonne ist für beide Halbkugeln fast gleich.",
+					"sample_solution": "Im nördlichen Sommer ist die Nordhalbkugel zur Sonne geneigt. Ihre Tage sind länger und die Strahlen treffen steiler ein. Die Südhalbkugel ist zugleich von der Sonne weggeneigt und erhält weniger tägliche Sonnenenergie. Die Entfernung zur Sonne ist für beide Halbkugeln fast gleich.",
+					"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-erdbewegungen"
+				}
+			]
+		},
+		{
+			"id": "01M7BDTJPVP406CMX9VVD33EDG",
+			"atom_uri": "urn:zam:atom:01M7BDTJPVP406CMX9VVD33EDG",
+			"namespace": "zam-academy-geographie-realschule-5",
+			"slug": "geo5-leben",
+			"title": "Warum die Erde Leben ermöglicht",
+			"domain": "geographie/grundlagen/leben",
+			"reduction": "narrative",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-leben",
+			"prerequisites": [
+				{
+					"atom_id": "01M7BDTJPV9V9K98F8Q1VKB264",
+					"type": "soft",
+					"rationale": "The earlier lesson supplies concepts used by this lesson."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "geographie-realschule-5",
+					"topic_code": "lb2",
+					"topic_title": "Planet Erde"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 5,
+					"subject": "geographie",
+					"topic_code": "lb2",
+					"topic_title": "Planet Erde",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7BDTJPW4GCAPZNRG12MN6WT",
+					"slug": "geo5-leben-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche Aussage über Voraussetzungen bekannten Lebens ist sinnvoll?",
+					"concept": "Flüssiges Wasser, Energie und geeignete Umweltbedingungen wirken zusammen.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Flüssiges Wasser, Energie und geeignete Umweltbedingungen wirken zusammen.",
+							"Jeder Planet mit Gestein ist automatisch belebt."
+						],
+						"correct_index": 0
+					},
+					"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-leben"
+				},
+				{
+					"id": "01M7BDTJPWJKS53JZ689T8R3J1",
+					"slug": "geo5-leben-anwenden",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Erkläre drei zusammenwirkende Bedingungen, die Leben auf der Erde ermöglichen.",
+					"concept": "Flüssiges Wasser dient vielen Lebensvorgängen. Sonnenenergie ermöglicht etwa Photosynthese. Die Atmosphäre beeinflusst Temperatur und Strahlung und enthält wichtige Gase. Diese Bedingungen wirken zusammen; keine davon ist allein ein ausreichender Beweis für Leben.",
+					"sample_solution": "Flüssiges Wasser dient vielen Lebensvorgängen. Sonnenenergie ermöglicht etwa Photosynthese. Die Atmosphäre beeinflusst Temperatur und Strahlung und enthält wichtige Gase. Diese Bedingungen wirken zusammen; keine davon ist allein ein ausreichender Beweis für Leben.",
+					"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-leben"
+				}
+			]
+		},
+		{
+			"id": "01M7BDTJPVHS7NMQQ122PS0PQF",
+			"atom_uri": "urn:zam:atom:01M7BDTJPVHS7NMQQ122PS0PQF",
+			"namespace": "zam-academy-geographie-realschule-5",
+			"slug": "geo5-satelliten",
+			"title": "Satelliten und eine Weltraummission",
+			"domain": "geographie/grundlagen/satelliten",
+			"reduction": "narrative",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-satelliten",
+			"prerequisites": [
+				{
+					"atom_id": "01M7BDTJPV69EC1WZ3334QPD4G",
+					"type": "soft",
+					"rationale": "The earlier lesson supplies concepts used by this lesson."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "geographie-realschule-5",
+					"topic_code": "lb2",
+					"topic_title": "Planet Erde"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 5,
+					"subject": "geographie",
+					"topic_code": "lb2",
+					"topic_title": "Planet Erde",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7BDTJPW80SM433K5VSFFSES",
+					"slug": "geo5-satelliten-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche Aufgabe können Erdbeobachtungssatelliten übernehmen?",
+					"concept": "Wolken und Veränderungen der Erdoberfläche beobachten",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Wolken und Veränderungen der Erdoberfläche beobachten",
+							"Jedes Erdbeben auf den Tag genau vorhersagen"
+						],
+						"correct_index": 0
+					},
+					"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-satelliten"
+				},
+				{
+					"id": "01M7BDTJPWKM00QWAJNVM465GQ",
+					"slug": "geo5-satelliten-anwenden",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Beschreibe Nutzen und Risiko einer Erdbeobachtungsmission für Wälder.",
+					"concept": "Wiederholte Aufnahmen können große Waldflächen vergleichbar zeigen. Eine Auswertung muss Aufnahmezeit und Messmethode beachten. Starts oder Zusammenstöße können scheitern beziehungsweise Trümmer erzeugen. Zur Mission gehört daher auch ein verantwortlicher Plan für ihr Ende.",
+					"sample_solution": "Wiederholte Aufnahmen können große Waldflächen vergleichbar zeigen. Eine Auswertung muss Aufnahmezeit und Messmethode beachten. Starts oder Zusammenstöße können scheitern beziehungsweise Trümmer erzeugen. Zur Mission gehört daher auch ein verantwortlicher Plan für ihr Ende.",
+					"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-satelliten"
+				}
+			]
+		},
+		{
+			"id": "01M7BDTJPV5C1KN75DAH92JRFX",
+			"atom_uri": "urn:zam:atom:01M7BDTJPV5C1KN75DAH92JRFX",
+			"namespace": "zam-academy-geographie-realschule-5",
+			"slug": "geo5-erdgeschichte",
+			"title": "Erdgeschichte und Schalenbau",
+			"domain": "geographie/grundlagen/erdgeschichte",
+			"reduction": "narrative",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-erdgeschichte",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "geographie-realschule-5",
+					"topic_code": "lb2",
+					"topic_title": "Planet Erde"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 5,
+					"subject": "geographie",
+					"topic_code": "lb2",
+					"topic_title": "Planet Erde",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7BDTJPWD04BQT7VEZ4ZXT16",
+					"slug": "geo5-erdgeschichte-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie lautet die grobe Reihenfolge der Erdschalen von außen nach innen?",
+					"concept": "Erdkruste, Erdmantel, Erdkern",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Erdkruste, Erdmantel, Erdkern",
+							"Erdkern, Erdkruste, Erdmantel"
+						],
+						"correct_index": 0
+					},
+					"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-erdgeschichte"
+				},
+				{
+					"id": "01M7BDTJPWEEN7VVHQV0CQ5TQN",
+					"slug": "geo5-erdgeschichte-anwenden",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Vergleiche die Modelle Erdgeschichte als Zeitlinie und Erde als Schalenbild.",
+					"concept": "Die Zeitlinie ordnet Ereignisse und Zeitspannen. Das Schalenbild zeigt Kruste, Mantel und Kern im räumlichen Aufbau. Die erste Darstellung beantwortet wann, die zweite wo im Inneren. Bei beiden prüfe ich, ob Abstände oder Dicken maßstäblich gezeichnet sind.",
+					"sample_solution": "Die Zeitlinie ordnet Ereignisse und Zeitspannen. Das Schalenbild zeigt Kruste, Mantel und Kern im räumlichen Aufbau. Die erste Darstellung beantwortet wann, die zweite wo im Inneren. Bei beiden prüfe ich, ob Abstände oder Dicken maßstäblich gezeichnet sind.",
+					"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-erdgeschichte"
+				}
+			]
+		},
+		{
+			"id": "01M7BDTJPVM0AD27C4HZ3MRJWR",
+			"atom_uri": "urn:zam:atom:01M7BDTJPVM0AD27C4HZ3MRJWR",
+			"namespace": "zam-academy-geographie-realschule-5",
+			"slug": "geo5-weltkarte",
+			"title": "Kontinente, Ozeane und Weltbilder",
+			"domain": "geographie/grundlagen/weltkarte",
+			"reduction": "narrative",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-weltkarte",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "geographie-realschule-5",
+					"topic_code": "lb3",
+					"topic_title": "Gestalt und Gliederung der Erde"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 5,
+					"subject": "geographie",
+					"topic_code": "lb3",
+					"topic_title": "Gestalt und Gliederung der Erde",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7BDTJPWSQ4QFFSWYQCTK58Z",
+					"slug": "geo5-weltkarte-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Warum braucht eine ebene Weltkarte einen kritischen Vergleich mit dem Globus?",
+					"concept": "Die Übertragung der Kugel auf die Ebene verzerrt Eigenschaften.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Die Übertragung der Kugel auf die Ebene verzerrt Eigenschaften.",
+							"Die Erde besitzt einen natürlichen oberen Rand."
+						],
+						"correct_index": 0
+					},
+					"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-weltkarte"
+				},
+				{
+					"id": "01M7BDTJPWM4VZRVMEPJAP2NB2",
+					"slug": "geo5-weltkarte-anwenden",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Erkläre, warum Europa auf einer Weltkarte nicht in der Mitte liegen muss.",
+					"concept": "Eine Kugel hat keinen natürlichen Kartenmittelpunkt und keinen oberen Rand. Ein Kartenautor wählt Ausschnitt, Mittelpunkt und Ausrichtung. Eine pazifikzentrierte Karte kann die Nachbarschaft von Asien und Amerika besser zeigen. Die Lage der Kontinente selbst verändert sich dadurch nicht.",
+					"sample_solution": "Eine Kugel hat keinen natürlichen Kartenmittelpunkt und keinen oberen Rand. Ein Kartenautor wählt Ausschnitt, Mittelpunkt und Ausrichtung. Eine pazifikzentrierte Karte kann die Nachbarschaft von Asien und Amerika besser zeigen. Die Lage der Kontinente selbst verändert sich dadurch nicht.",
+					"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-weltkarte"
+				}
+			]
+		},
+		{
+			"id": "01M7BDTJPVYV6T58KC4EQ7G4F0",
+			"atom_uri": "urn:zam:atom:01M7BDTJPVYV6T58KC4EQ7G4F0",
+			"namespace": "zam-academy-geographie-realschule-5",
+			"slug": "geo5-gradnetz",
+			"title": "Mit dem Gradnetz einen Ort angeben",
+			"domain": "geographie/grundlagen/gradnetz",
+			"reduction": "narrative",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-gradnetz",
+			"prerequisites": [
+				{
+					"atom_id": "01M7BDTJPVM0AD27C4HZ3MRJWR",
+					"type": "soft",
+					"rationale": "The earlier lesson supplies concepts used by this lesson."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "geographie-realschule-5",
+					"topic_code": "lb3",
+					"topic_title": "Gestalt und Gliederung der Erde"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 5,
+					"subject": "geographie",
+					"topic_code": "lb3",
+					"topic_title": "Gestalt und Gliederung der Erde",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7BDTJPW0CX649A7HDE909NT",
+					"slug": "geo5-gradnetz-check",
+					"replaces": ["01K4G5E0000000000000000J01"],
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welcher Breitenkreis liegt bei 0° und trennt Nord- und Südhalbkugel?",
+					"concept": "Der Äquator",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": ["Der Äquator", "Der Nullmeridian"],
+						"correct_index": 0
+					},
+					"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-gradnetz"
+				},
+				{
+					"id": "01M7BDTJPW5N11YM11A5J6Q32V",
+					"slug": "geo5-gradnetz-anwenden",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Lies die ungefähre Lage Münchens bei 48° Nord und 11,5° Ost.",
+					"concept": "München liegt nördlich des Äquators auf der Nordhalbkugel und östlich des Nullmeridians von Greenwich. Die erste Zahl bezeichnet die Breite, die zweite die Länge. Die gerundeten Werte grenzen den Ort ein, benennen aber keine genaue Haustür.",
+					"sample_solution": "München liegt nördlich des Äquators auf der Nordhalbkugel und östlich des Nullmeridians von Greenwich. Die erste Zahl bezeichnet die Breite, die zweite die Länge. Die gerundeten Werte grenzen den Ort ein, benennen aber keine genaue Haustür.",
+					"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-gradnetz"
+				}
+			]
+		},
+		{
+			"id": "01M7BDTJPVNF6HRTGYXCW6F576",
+			"atom_uri": "urn:zam:atom:01M7BDTJPVNF6HRTGYXCW6F576",
+			"namespace": "zam-academy-geographie-realschule-5",
+			"slug": "geo5-massstab",
+			"title": "Maßstab und Entfernungen",
+			"domain": "geographie/grundlagen/massstab",
+			"reduction": "narrative",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-massstab",
+			"prerequisites": [
+				{
+					"atom_id": "01M7BDTJPV7TZ98MPDNPH76NNC",
+					"type": "soft",
+					"rationale": "The earlier lesson supplies concepts used by this lesson."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "geographie-realschule-5",
+					"topic_code": "lb3",
+					"topic_title": "Gestalt und Gliederung der Erde"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 5,
+					"subject": "geographie",
+					"topic_code": "lb3",
+					"topic_title": "Gestalt und Gliederung der Erde",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7BDTJPWH75248EF4ZK6G9MJ",
+					"slug": "geo5-massstab-check",
+					"replaces": ["01K4G5E0000000000000000J03"],
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie viel Wirklichkeit entspricht 1 cm bei 1 : 50 000?",
+					"concept": "500 m",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": ["500 m", "50 m"],
+						"correct_index": 0
+					},
+					"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-massstab"
+				},
+				{
+					"id": "01M7BDTJPWBTM6N3P84PGK315T",
+					"slug": "geo5-massstab-anwenden",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Berechne die Luftlinie für 8 cm auf einer Karte mit 1 : 25 000 und erkläre deinen Weg.",
+					"concept": "Ein Zentimeter entspricht 250 m. Acht Zentimeter entsprechen achtmal 250 m, also 2 000 m oder 2 km. Ich habe gerade zwischen den Orten gemessen. Für einen Straßenweg müsste ich dessen Verlauf messen; er kann länger sein.",
+					"sample_solution": "Ein Zentimeter entspricht 250 m. Acht Zentimeter entsprechen achtmal 250 m, also 2 000 m oder 2 km. Ich habe gerade zwischen den Orten gemessen. Für einen Straßenweg müsste ich dessen Verlauf messen; er kann länger sein.",
+					"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-massstab"
+				}
+			]
+		},
+		{
+			"id": "01M7BDTJPVHX3YN2KB3CQ69B6Z",
+			"atom_uri": "urn:zam:atom:01M7BDTJPVHX3YN2KB3CQ69B6Z",
+			"namespace": "zam-academy-geographie-realschule-5",
+			"slug": "geo5-orientierung",
+			"title": "Himmelsrichtungen, Höhe und Landmarken",
+			"domain": "geographie/grundlagen/orientierung",
+			"reduction": "narrative",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-orientierung",
+			"prerequisites": [
+				{
+					"atom_id": "01M7BDTJPVNF6HRTGYXCW6F576",
+					"type": "soft",
+					"rationale": "The earlier lesson supplies concepts used by this lesson."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "geographie-realschule-5",
+					"topic_code": "lb3",
+					"topic_title": "Gestalt und Gliederung der Erde"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 5,
+					"subject": "geographie",
+					"topic_code": "lb3",
+					"topic_title": "Gestalt und Gliederung der Erde",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7BDTJPWTSBHBF8P4TMG2RJS",
+					"slug": "geo5-orientierung-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was zeigen eng beieinanderliegende Höhenlinien bei gleichem Höhenabstand?",
+					"concept": "Einen steileren Hang",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": ["Einen steileren Hang", "Immer einen Wald"],
+						"correct_index": 0
+					},
+					"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-orientierung"
+				},
+				{
+					"id": "01M7BDTJPWRNPMTT7R9TNRAKJ9",
+					"slug": "geo5-orientierung-anwenden",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Beschreibe den Unterschied zwischen Höhenangabe und eng stehenden Höhenlinien.",
+					"concept": "Eine Höhenangabe sagt, wie hoch ein Punkt über dem Bezug liegt. Enge Höhenlinien zeigen dagegen bei gleichem Höhenabstand eine große Steigung. Ein hoch gelegenes Plateau kann flach sein; ein tiefer gelegener Hang kann steil sein. Höhe und Neigung sind deshalb verschiedene Eigenschaften.",
+					"sample_solution": "Eine Höhenangabe sagt, wie hoch ein Punkt über dem Bezug liegt. Enge Höhenlinien zeigen dagegen bei gleichem Höhenabstand eine große Steigung. Ein hoch gelegenes Plateau kann flach sein; ein tiefer gelegener Hang kann steil sein. Höhe und Neigung sind deshalb verschiedene Eigenschaften.",
+					"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-orientierung"
+				}
+			]
+		},
+		{
+			"id": "01M7BDTJPVKKM0S38SPK1CJDYT",
+			"atom_uri": "urn:zam:atom:01M7BDTJPVKKM0S38SPK1CJDYT",
+			"namespace": "zam-academy-geographie-realschule-5",
+			"slug": "geo5-forschungsreisen",
+			"title": "Forschungsreisen vergleichen",
+			"domain": "geographie/grundlagen/forschungsreisen",
+			"reduction": "narrative",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-forschungsreisen",
+			"prerequisites": [
+				{
+					"atom_id": "01M7BDTJPVM0AD27C4HZ3MRJWR",
+					"type": "soft",
+					"rationale": "The earlier lesson supplies concepts used by this lesson."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "geographie-realschule-5",
+					"topic_code": "lb3",
+					"topic_title": "Gestalt und Gliederung der Erde"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 5,
+					"subject": "geographie",
+					"topic_code": "lb3",
+					"topic_title": "Gestalt und Gliederung der Erde",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7BDTJPWQBE83REFQY316GDQ",
+					"slug": "geo5-forschungsreisen-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was gehört zu einem fairen Vergleich von Forschungsreisen?",
+					"concept": "Ziele, technische Möglichkeiten und Perspektiven prüfen",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Ziele, technische Möglichkeiten und Perspektiven prüfen",
+							"Nur die gefahrenen Kilometer vergleichen"
+						],
+						"correct_index": 0
+					},
+					"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-forschungsreisen"
+				},
+				{
+					"id": "01M7BDTJPWR30YVRFERYSX4FFE",
+					"slug": "geo5-forschungsreisen-anwenden",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Vergleiche eine historische Polarreise und eine heutige Meereisexpedition nach Ziel und Bedingungen.",
+					"concept": "Eine historische Reise konnte nach einer neuen Schiffsroute suchen, während eine heutige Expedition Messdaten zum Meereis gewinnt. Beide brauchen Versorgung und Schutz vor Kälte. Satelliten und moderne Kommunikation erweitern heutige Möglichkeiten, machen die Reise aber nicht gefahrlos.",
+					"sample_solution": "Eine historische Reise konnte nach einer neuen Schiffsroute suchen, während eine heutige Expedition Messdaten zum Meereis gewinnt. Beide brauchen Versorgung und Schutz vor Kälte. Satelliten und moderne Kommunikation erweitern heutige Möglichkeiten, machen die Reise aber nicht gefahrlos.",
+					"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-forschungsreisen"
+				}
+			]
+		},
+		{
+			"id": "01M7BDTJPVZ08DXTQ2ZP4ZC8HS",
+			"atom_uri": "urn:zam:atom:01M7BDTJPVZ08DXTQ2ZP4ZC8HS",
+			"namespace": "zam-academy-geographie-realschule-5",
+			"slug": "geo5-lebensraeume",
+			"title": "Leben in Polargebiet und Wüste",
+			"domain": "geographie/grundlagen/lebensraeume",
+			"reduction": "narrative",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-lebensraeume",
+			"prerequisites": [
+				{
+					"atom_id": "01M7BDTJPVM0AD27C4HZ3MRJWR",
+					"type": "soft",
+					"rationale": "The earlier lesson supplies concepts used by this lesson."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "geographie-realschule-5",
+					"topic_code": "lb3",
+					"topic_title": "Gestalt und Gliederung der Erde"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 5,
+					"subject": "geographie",
+					"topic_code": "lb3",
+					"topic_title": "Gestalt und Gliederung der Erde",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7BDTJPWKP8V2EP8QFB965ZY",
+					"slug": "geo5-lebensraeume-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welches Merkmal kennzeichnet eine Wüste vor allem?",
+					"concept": "Große Trockenheit",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": ["Große Trockenheit", "Überall meterhoher Sand"],
+						"correct_index": 0
+					},
+					"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-lebensraeume"
+				},
+				{
+					"id": "01M7BDTJPW2EZ0SGZWEZ7VRC1B",
+					"slug": "geo5-lebensraeume-anwenden",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Vergleiche eine arktische Siedlung und eine heiße Wüstenstadt mit je einer Bedingung und Anpassung.",
+					"concept": "In der arktischen Siedlung ist Schutz vor Kälte wichtig, etwa durch geeignete Kleidung und Gebäude. In der Wüstenstadt können Schatten und eine verlässliche Wasserversorgung besonders wichtig sein. Beide Beispiele sind vereinfacht; tatsächliche Lebensweisen unterscheiden sich auch innerhalb dieser Räume.",
+					"sample_solution": "In der arktischen Siedlung ist Schutz vor Kälte wichtig, etwa durch geeignete Kleidung und Gebäude. In der Wüstenstadt können Schatten und eine verlässliche Wasserversorgung besonders wichtig sein. Beide Beispiele sind vereinfacht; tatsächliche Lebensweisen unterscheiden sich auch innerhalb dieser Räume.",
+					"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-lebensraeume"
+				}
+			]
+		},
+		{
+			"id": "01M7BDTJPVD9D0M1253VGPS05M",
+			"atom_uri": "urn:zam:atom:01M7BDTJPVD9D0M1253VGPS05M",
+			"namespace": "zam-academy-geographie-realschule-5",
+			"slug": "geo5-platten",
+			"title": "Kräfte aus dem Erdinneren",
+			"domain": "geographie/grundlagen/platten",
+			"reduction": "narrative",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-platten",
+			"prerequisites": [
+				{
+					"atom_id": "01M7BDTJPV5C1KN75DAH92JRFX",
+					"type": "soft",
+					"rationale": "The earlier lesson supplies concepts used by this lesson."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "geographie-realschule-5",
+					"topic_code": "lb4",
+					"topic_title": "Veränderung der Erdoberfläche"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 5,
+					"subject": "geographie",
+					"topic_code": "lb4",
+					"topic_title": "Veränderung der Erdoberfläche",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7BDTJPWJXGEGJJ55WXQYMVA",
+					"slug": "geo5-platten-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welcher Vorgang ist endogen?",
+					"concept": "Gebirgsbildung durch zusammenstoßende Platten",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Gebirgsbildung durch zusammenstoßende Platten",
+							"Abtragung eines Ufers durch einen Fluss"
+						],
+						"correct_index": 0
+					},
+					"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-platten"
+				},
+				{
+					"id": "01M7BDTJPW6514NM52WVFJR2G1",
+					"slug": "geo5-platten-anwenden",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Vergleiche Island und Japan und erkläre das gemeinsame Verteilungsmuster.",
+					"concept": "Island liegt an einer auseinanderdriftenden Plattengrenze, Japan an Grenzen, an denen Platten aufeinander zu driften und eine abtauchen kann. In beiden Räumen treten Vulkane und Erdbeben auf. Der Vergleich zeigt die Bedeutung von Plattengrenzen trotz unterschiedlicher Bewegung.",
+					"sample_solution": "Island liegt an einer auseinanderdriftenden Plattengrenze, Japan an Grenzen, an denen Platten aufeinander zu driften und eine abtauchen kann. In beiden Räumen treten Vulkane und Erdbeben auf. Der Vergleich zeigt die Bedeutung von Plattengrenzen trotz unterschiedlicher Bewegung.",
+					"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-platten"
+				}
+			]
+		},
+		{
+			"id": "01M7BDTJPVQN4BDGWK5WAF3EMJ",
+			"atom_uri": "urn:zam:atom:01M7BDTJPVQN4BDGWK5WAF3EMJ",
+			"namespace": "zam-academy-geographie-realschule-5",
+			"slug": "geo5-gesteine",
+			"title": "Gesteine im Kreislauf",
+			"domain": "geographie/grundlagen/gesteine",
+			"reduction": "narrative",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-gesteine",
+			"prerequisites": [
+				{
+					"atom_id": "01M7BDTJPV5C1KN75DAH92JRFX",
+					"type": "soft",
+					"rationale": "The earlier lesson supplies concepts used by this lesson."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "geographie-realschule-5",
+					"topic_code": "lb4",
+					"topic_title": "Veränderung der Erdoberfläche"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 5,
+					"subject": "geographie",
+					"topic_code": "lb4",
+					"topic_title": "Veränderung der Erdoberfläche",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7BDTJPWPH6VB3RE4K8B21KT",
+					"slug": "geo5-gesteine-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was kann aus verdichteten und verkitteten Sandablagerungen entstehen?",
+					"concept": "Sandstein",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": ["Sandstein", "Frisch geschmolzenes Magma"],
+						"correct_index": 0
+					},
+					"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-gesteine"
+				},
+				{
+					"id": "01M7BDTJPW3XSY8QRQ29BVADK6",
+					"slug": "geo5-gesteine-anwenden",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Erkläre einen möglichen Weg vom Gebirge zum Sandstein.",
+					"concept": "Verwitterung lockert Material, Erosion trägt es ab und Flüsse transportieren den Sand. In einem Becken wird er abgelagert. Durch spätere Überlagerung, Verdichtung und Verkittung kann Sandstein entstehen. Dieser Weg dauert lange und ist nur eine Möglichkeit im Gesteinskreislauf.",
+					"sample_solution": "Verwitterung lockert Material, Erosion trägt es ab und Flüsse transportieren den Sand. In einem Becken wird er abgelagert. Durch spätere Überlagerung, Verdichtung und Verkittung kann Sandstein entstehen. Dieser Weg dauert lange und ist nur eine Möglichkeit im Gesteinskreislauf.",
+					"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-gesteine"
+				}
+			]
+		},
+		{
+			"id": "01M7BDTJPVD10XFW716Y21YAZD",
+			"atom_uri": "urn:zam:atom:01M7BDTJPVD10XFW716Y21YAZD",
+			"namespace": "zam-academy-geographie-realschule-5",
+			"slug": "geo5-abtragung",
+			"title": "Wasser, Wind und Temperatur",
+			"domain": "geographie/grundlagen/abtragung",
+			"reduction": "narrative",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-abtragung",
+			"prerequisites": [
+				{
+					"atom_id": "01M7BDTJPVQN4BDGWK5WAF3EMJ",
+					"type": "soft",
+					"rationale": "The earlier lesson supplies concepts used by this lesson."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "geographie-realschule-5",
+					"topic_code": "lb4",
+					"topic_title": "Veränderung der Erdoberfläche"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 5,
+					"subject": "geographie",
+					"topic_code": "lb4",
+					"topic_title": "Veränderung der Erdoberfläche",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7BDTJPWVA43FY3AD7464CJN",
+					"slug": "geo5-abtragung-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was bedeutet Erosion?",
+					"concept": "Abtragung von Boden oder Gestein",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Abtragung von Boden oder Gestein",
+							"Erstarrung von Magma"
+						],
+						"correct_index": 0
+					},
+					"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-abtragung"
+				},
+				{
+					"id": "01M7BDTJPW8X75M6N4A1WQ9CN3",
+					"slug": "geo5-abtragung-anwenden",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Beschreibe den Weg eines Sandkorns vom Hang bis zur Ablagerung im Bach.",
+					"concept": "Verwitterung kann das Korn aus dem Gestein lösen. Regenwasser trägt es ab und transportiert es zum Bach. Dort wird es weiterbewegt und bei geringerer Transportkraft abgelagert. Später kann es erneut aufgenommen werden; der Weg endet nicht zwingend nach einer Ablagerung.",
+					"sample_solution": "Verwitterung kann das Korn aus dem Gestein lösen. Regenwasser trägt es ab und transportiert es zum Bach. Dort wird es weiterbewegt und bei geringerer Transportkraft abgelagert. Später kann es erneut aufgenommen werden; der Weg endet nicht zwingend nach einer Ablagerung.",
+					"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-abtragung"
+				}
+			]
+		},
+		{
+			"id": "01M7BDTJPVBWHVT22NGW0PWE2T",
+			"atom_uri": "urn:zam:atom:01M7BDTJPVBWHVT22NGW0PWE2T",
+			"namespace": "zam-academy-geographie-realschule-5",
+			"slug": "geo5-naturrisiken",
+			"title": "Mit Naturkräften leben",
+			"domain": "geographie/grundlagen/naturrisiken",
+			"reduction": "narrative",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-naturrisiken",
+			"prerequisites": [
+				{
+					"atom_id": "01M7BDTJPVD9D0M1253VGPS05M",
+					"type": "soft",
+					"rationale": "The earlier lesson supplies concepts used by this lesson."
+				},
+				{
+					"atom_id": "01M7BDTJPVD10XFW716Y21YAZD",
+					"type": "soft",
+					"rationale": "The earlier lesson supplies concepts used by this lesson."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "geographie-realschule-5",
+					"topic_code": "lb4",
+					"topic_title": "Veränderung der Erdoberfläche"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 5,
+					"subject": "geographie",
+					"topic_code": "lb4",
+					"topic_title": "Veränderung der Erdoberfläche",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7BDTJPWSQ3BFN1JFE5P53NC",
+					"slug": "geo5-naturrisiken-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche Aussage über Schutz vor Naturgefahren ist richtig?",
+					"concept": "Vorbereitung kann Risiken senken, aber nicht jede Gefahr beseitigen.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Vorbereitung kann Risiken senken, aber nicht jede Gefahr beseitigen.",
+							"Ein Warnsystem verhindert jeden Vulkanausbruch."
+						],
+						"correct_index": 0
+					},
+					"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-naturrisiken"
+				},
+				{
+					"id": "01M7BDTJPW1JHYCJWDPRV071XW",
+					"slug": "geo5-naturrisiken-anwenden",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Erkläre am gedachten Vulkandorf einen Nutzen und zwei Möglichkeiten der Vorsorge.",
+					"concept": "Die Bewohner können geeignete vulkanische Böden bewirtschaften. Gefahrenkarten helfen, neue Gebäude außerhalb besonders gefährdeter Zonen zu planen. Geübte Evakuierungswege unterstützen die Vorbereitung. Diese Maßnahmen verhindern keinen Ausbruch und brauchen örtliche Fachplanung.",
+					"sample_solution": "Die Bewohner können geeignete vulkanische Böden bewirtschaften. Gefahrenkarten helfen, neue Gebäude außerhalb besonders gefährdeter Zonen zu planen. Geübte Evakuierungswege unterstützen die Vorbereitung. Diese Maßnahmen verhindern keinen Ausbruch und brauchen örtliche Fachplanung.",
+					"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-naturrisiken"
+				}
+			]
+		},
+		{
+			"id": "01M7BDTJPV44JHDA2NZAD09TTH",
+			"atom_uri": "urn:zam:atom:01M7BDTJPV44JHDA2NZAD09TTH",
+			"namespace": "zam-academy-geographie-realschule-5",
+			"slug": "geo5-umwelt",
+			"title": "Flächen nutzen und Natur schützen",
+			"domain": "geographie/grundlagen/umwelt",
+			"reduction": "narrative",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-umwelt",
+			"prerequisites": [
+				{
+					"atom_id": "01M7BDTJPVD10XFW716Y21YAZD",
+					"type": "soft",
+					"rationale": "The earlier lesson supplies concepts used by this lesson."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "geographie-realschule-5",
+					"topic_code": "lb4",
+					"topic_title": "Veränderung der Erdoberfläche"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 5,
+					"subject": "geographie",
+					"topic_code": "lb4",
+					"topic_title": "Veränderung der Erdoberfläche",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7BDTJPW0QY4JD974SEBS889",
+					"slug": "geo5-umwelt-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was ist ein Beispiel für einen Nutzungskonflikt?",
+					"concept": "Dieselbe Wiese wird als Parkplatz und als Lebensraum beansprucht.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Dieselbe Wiese wird als Parkplatz und als Lebensraum beansprucht.",
+							"Zwei Namen bezeichnen dieselbe Straße."
+						],
+						"correct_index": 0
+					},
+					"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-umwelt"
+				},
+				{
+					"id": "01M7BDTJPWTDW56APCJKBVW3F1",
+					"slug": "geo5-umwelt-anwenden",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Vergleiche Parkplatz und Blühfläche auf derselben gedachten Wiese mit zwei Kriterien.",
+					"concept": "Ein Parkplatz bietet Stellflächen, versiegelt aber meist Boden und verändert Lebensräume. Eine Blühfläche kann Insekten Nahrung bieten und Wasseraufnahme erhalten, schafft jedoch keine Stellplätze. Ich vergleiche Bedarf, Wasser und Artenvielfalt, statt nur eine Nutzung pauschal als gut zu bezeichnen.",
+					"sample_solution": "Ein Parkplatz bietet Stellflächen, versiegelt aber meist Boden und verändert Lebensräume. Eine Blühfläche kann Insekten Nahrung bieten und Wasseraufnahme erhalten, schafft jedoch keine Stellplätze. Ich vergleiche Bedarf, Wasser und Artenvielfalt, statt nur eine Nutzung pauschal als gut zu bezeichnen.",
+					"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-umwelt"
+				}
+			]
+		},
+		{
+			"id": "01M7BDTJPVYVD0NTRJZ6ASMYQ2",
+			"atom_uri": "urn:zam:atom:01M7BDTJPVYVD0NTRJZ6ASMYQ2",
+			"namespace": "zam-academy-geographie-realschule-5",
+			"slug": "geo5-deutschland",
+			"title": "Deutschland politisch gliedern",
+			"domain": "geographie/grundlagen/deutschland",
+			"reduction": "narrative",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-deutschland",
+			"prerequisites": [
+				{
+					"atom_id": "01M7BDTJPVHX3YN2KB3CQ69B6Z",
+					"type": "soft",
+					"rationale": "The earlier lesson supplies concepts used by this lesson."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "geographie-realschule-5",
+					"topic_code": "lb5",
+					"topic_title": "Naturräumliche und politische Strukturen in Deutschland und Bayern"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 5,
+					"subject": "geographie",
+					"topic_code": "lb5",
+					"topic_title": "Naturräumliche und politische Strukturen in Deutschland und Bayern",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7BDTJPW83KNPXT2XSBFQEFA",
+					"slug": "geo5-deutschland-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Aus wie vielen Bundesländern besteht Deutschland?",
+					"concept": "Aus 16 Bundesländern",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": ["Aus 16 Bundesländern", "Aus 7 Bundesländern"],
+						"correct_index": 0
+					},
+					"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-deutschland"
+				},
+				{
+					"id": "01M7BDTJPWZM2SQXERAWDSP2Z5",
+					"slug": "geo5-deutschland-anwenden",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Beschreibe die Lage Bayerns und die politischen Funktionen von Berlin und München.",
+					"concept": "Bayern liegt im Südosten Deutschlands. München ist seine Landeshauptstadt. Berlin liegt nordöstlich von München und ist Bundeshauptstadt sowie ein eigenes Bundesland. Die politischen Funktionen sind von den natürlichen Eigenschaften eines Raums zu unterscheiden.",
+					"sample_solution": "Bayern liegt im Südosten Deutschlands. München ist seine Landeshauptstadt. Berlin liegt nordöstlich von München und ist Bundeshauptstadt sowie ein eigenes Bundesland. Die politischen Funktionen sind von den natürlichen Eigenschaften eines Raums zu unterscheiden.",
+					"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-deutschland"
+				}
+			]
+		},
+		{
+			"id": "01M7BDTJPV3CTTEJYDPMVG7TNX",
+			"atom_uri": "urn:zam:atom:01M7BDTJPV3CTTEJYDPMVG7TNX",
+			"namespace": "zam-academy-geographie-realschule-5",
+			"slug": "geo5-bayern",
+			"title": "Bayern: Bezirke, Städte und Flüsse",
+			"domain": "geographie/grundlagen/bayern",
+			"reduction": "narrative",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-bayern",
+			"prerequisites": [
+				{
+					"atom_id": "01M7BDTJPVYVD0NTRJZ6ASMYQ2",
+					"type": "soft",
+					"rationale": "The earlier lesson supplies concepts used by this lesson."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "geographie-realschule-5",
+					"topic_code": "lb5",
+					"topic_title": "Naturräumliche und politische Strukturen in Deutschland und Bayern"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 5,
+					"subject": "geographie",
+					"topic_code": "lb5",
+					"topic_title": "Naturräumliche und politische Strukturen in Deutschland und Bayern",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7BDTJPWKD98HPEFT2P7S1N7",
+					"slug": "geo5-bayern-check",
+					"replaces": ["01K4G6D0000000000000000J03"],
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie viele Regierungsbezirke hat Bayern?",
+					"concept": "Sieben",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": ["Sieben", "Sechzehn"],
+						"correct_index": 0
+					},
+					"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-bayern"
+				},
+				{
+					"id": "01M7BDTJPWPJ63EQVXBTQV1TVH",
+					"slug": "geo5-bayern-anwenden",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Ordne München, Regensburg und Würzburg ihren Regierungsbezirken zu und ergänze zwei Flüsse.",
+					"concept": "München gehört zu Oberbayern, Regensburg zur Oberpfalz und Würzburg zu Unterfranken. Regensburg liegt an der Donau, Würzburg am Main. Die Donau fließt in Bayern überwiegend nach Osten; der Main gehört zum Flusssystem des Rheins.",
+					"sample_solution": "München gehört zu Oberbayern, Regensburg zur Oberpfalz und Würzburg zu Unterfranken. Regensburg liegt an der Donau, Würzburg am Main. Die Donau fließt in Bayern überwiegend nach Osten; der Main gehört zum Flusssystem des Rheins.",
+					"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-bayern"
+				}
+			]
+		},
+		{
+			"id": "01M7BDTJPV7JAXEC96EBCXJJYZ",
+			"atom_uri": "urn:zam:atom:01M7BDTJPV7JAXEC96EBCXJJYZ",
+			"namespace": "zam-academy-geographie-realschule-5",
+			"slug": "geo5-grosslandschaften",
+			"title": "Von der Küste zu den Alpen",
+			"domain": "geographie/grundlagen/grosslandschaften",
+			"reduction": "narrative",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-grosslandschaften",
+			"prerequisites": [
+				{
+					"atom_id": "01M7BDTJPVHX3YN2KB3CQ69B6Z",
+					"type": "soft",
+					"rationale": "The earlier lesson supplies concepts used by this lesson."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "geographie-realschule-5",
+					"topic_code": "lb5",
+					"topic_title": "Naturräumliche und politische Strukturen in Deutschland und Bayern"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 5,
+					"subject": "geographie",
+					"topic_code": "lb5",
+					"topic_title": "Naturräumliche und politische Strukturen in Deutschland und Bayern",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7BDTJPWCQF82S1X5VE7ARY3",
+					"slug": "geo5-grosslandschaften-check",
+					"replaces": ["01K4G6D0000000000000000J01"],
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche Großlandschaft reicht von den Küsten bis an den Mittelgebirgsraum?",
+					"concept": "Das Norddeutsche Tiefland",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": ["Das Norddeutsche Tiefland", "Das Alpenvorland"],
+						"correct_index": 0
+					},
+					"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-grosslandschaften"
+				},
+				{
+					"id": "01M7BDTJPWT30HS03C8YSPJ4D2",
+					"slug": "geo5-grosslandschaften-anwenden",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Beschreibe die Abfolge der vier Großlandschaften von Norden nach Süden mit Beispielen.",
+					"concept": "Im Norden liegt das Norddeutsche Tiefland mit Hamburg. Südlich folgt das Mittelgebirgsland, etwa mit dem Harz. München liegt im Alpenvorland. Ganz im Süden schließen die Alpen mit der Zugspitze an. Die Abfolge vereinfacht eine Landschaft mit Tälern, Hügeln und Becken.",
+					"sample_solution": "Im Norden liegt das Norddeutsche Tiefland mit Hamburg. Südlich folgt das Mittelgebirgsland, etwa mit dem Harz. München liegt im Alpenvorland. Ganz im Süden schließen die Alpen mit der Zugspitze an. Die Abfolge vereinfacht eine Landschaft mit Tälern, Hügeln und Becken.",
+					"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-grosslandschaften"
+				}
+			]
+		},
+		{
+			"id": "01M7BDTJPV9X91NEZ1Y3YXR7RE",
+			"atom_uri": "urn:zam:atom:01M7BDTJPV9X91NEZ1Y3YXR7RE",
+			"namespace": "zam-academy-geographie-realschule-5",
+			"slug": "geo5-themenkarten",
+			"title": "Zwei thematische Karten vergleichen",
+			"domain": "geographie/grundlagen/themenkarten",
+			"reduction": "narrative",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-themenkarten",
+			"prerequisites": [
+				{
+					"atom_id": "01M7BDTJPV7TZ98MPDNPH76NNC",
+					"type": "soft",
+					"rationale": "The earlier lesson supplies concepts used by this lesson."
+				},
+				{
+					"atom_id": "01M7BDTJPVYVD0NTRJZ6ASMYQ2",
+					"type": "soft",
+					"rationale": "The earlier lesson supplies concepts used by this lesson."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "geographie-realschule-5",
+					"topic_code": "lb5",
+					"topic_title": "Naturräumliche und politische Strukturen in Deutschland und Bayern"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 5,
+					"subject": "geographie",
+					"topic_code": "lb5",
+					"topic_title": "Naturräumliche und politische Strukturen in Deutschland und Bayern",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7BDTJPWRXZRMRED3BFG0GWR",
+					"slug": "geo5-themenkarten-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was prüfst du vor dem Vergleich zweier thematischer Karten?",
+					"concept": "Thema, Raum, Datum, Legende und Maßstab",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Thema, Raum, Datum, Legende und Maßstab",
+							"Nur die schönere Farbe"
+						],
+						"correct_index": 0
+					},
+					"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-themenkarten"
+				},
+				{
+					"id": "01M7BDTJPWEZW91PPK2FM0VFPH",
+					"slug": "geo5-themenkarten-anwenden",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Vergleiche die Unterrichtskarten Siedlung und Landwirtschaft nach je einem räumlichen Muster.",
+					"concept": "Die Siedlungskarte hebt ausgewählte Stadtregionen hervor, zum Beispiel das Ruhrgebiet und München. Die Landwirtschaftskarte zeigt ausgewählte Beispiele wie Ackerbauräume der Lössbörden und Grünland im Allgäu. Beide sind vereinfachte Auswahlen; sie liefern keine vollständige Dichte- oder Nutzungskarte.",
+					"sample_solution": "Die Siedlungskarte hebt ausgewählte Stadtregionen hervor, zum Beispiel das Ruhrgebiet und München. Die Landwirtschaftskarte zeigt ausgewählte Beispiele wie Ackerbauräume der Lössbörden und Grünland im Allgäu. Beide sind vereinfachte Auswahlen; sie liefern keine vollständige Dichte- oder Nutzungskarte.",
+					"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-themenkarten"
+				}
+			]
+		},
+		{
+			"id": "01M7BDTJPVTK4WMQG55MWE5EQW",
+			"atom_uri": "urn:zam:atom:01M7BDTJPVTK4WMQG55MWE5EQW",
+			"namespace": "zam-academy-geographie-realschule-5",
+			"slug": "geo5-schutzgebiete",
+			"title": "Landschaften schützen",
+			"domain": "geographie/grundlagen/schutzgebiete",
+			"reduction": "narrative",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-schutzgebiete",
+			"prerequisites": [
+				{
+					"atom_id": "01M7BDTJPVYVD0NTRJZ6ASMYQ2",
+					"type": "soft",
+					"rationale": "The earlier lesson supplies concepts used by this lesson."
+				},
+				{
+					"atom_id": "01M7BDTJPV44JHDA2NZAD09TTH",
+					"type": "soft",
+					"rationale": "The earlier lesson supplies concepts used by this lesson."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "geographie-realschule-5",
+					"topic_code": "lb5",
+					"topic_title": "Naturräumliche und politische Strukturen in Deutschland und Bayern"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 5,
+					"subject": "geographie",
+					"topic_code": "lb5",
+					"topic_title": "Naturräumliche und politische Strukturen in Deutschland und Bayern",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7BDTJPWCNGF628MKDG7D5B8",
+					"slug": "geo5-schutzgebiete-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche Aussage beschreibt eine zentrale Idee eines Nationalparks?",
+					"concept": "Natur soll sich großflächig möglichst nach eigenen Abläufen entwickeln.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Natur soll sich großflächig möglichst nach eigenen Abläufen entwickeln.",
+							"Jede Fläche muss vollständig bebaut werden."
+						],
+						"correct_index": 0
+					},
+					"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-schutzgebiete"
+				},
+				{
+					"id": "01M7BDTJPWKD62G1FJ6ZQT2SVA",
+					"slug": "geo5-schutzgebiete-anwenden",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Vergleiche den Bayerischen Wald und das Wattenmeer nach Lage und Schutzgrund.",
+					"concept": "Der Bayerische Wald liegt in Ostbayern an Tschechiens Grenze und schützt unter anderem Waldlebensräume und natürliche Abläufe. Das Wattenmeer liegt an der Nordseeküste und ist durch den Wechsel von Ebbe und Flut geprägt. Beide Räume sind schutzwürdig, unterscheiden sich aber in Lebensräumen und örtlichen Regeln.",
+					"sample_solution": "Der Bayerische Wald liegt in Ostbayern an Tschechiens Grenze und schützt unter anderem Waldlebensräume und natürliche Abläufe. Das Wattenmeer liegt an der Nordseeküste und ist durch den Wechsel von Ebbe und Flut geprägt. Beide Räume sind schutzwürdig, unterscheiden sich aber in Lebensräumen und örtlichen Regeln.",
+					"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-schutzgebiete"
+				}
+			]
+		},
+		{
+			"id": "01M7BDTJPVH78DQK2TP781D06F",
+			"atom_uri": "urn:zam:atom:01M7BDTJPVH78DQK2TP781D06F",
+			"namespace": "zam-academy-geographie-realschule-5",
+			"slug": "geo5-stadt",
+			"title": "Dein Schulort und sein Umland",
+			"domain": "geographie/grundlagen/stadt",
+			"reduction": "narrative",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-stadt",
+			"prerequisites": [
+				{
+					"atom_id": "01M7BDTJPV7TZ98MPDNPH76NNC",
+					"type": "soft",
+					"rationale": "The earlier lesson supplies concepts used by this lesson."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "geographie-realschule-5",
+					"topic_code": "lb6",
+					"topic_title": "Anwendung im Nahraum"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 5,
+					"subject": "geographie",
+					"topic_code": "lb6",
+					"topic_title": "Anwendung im Nahraum",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7BDTJPW5EAYAW9KVPGE3CXR",
+					"slug": "geo5-stadt-check",
+					"replaces": ["01K4G6D0000000000000000J07"],
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie nennt man die regelmäßige Fahrt zwischen Wohnort und Arbeitsort ohne dauerhaften Umzug?",
+					"concept": "Berufspendeln",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": ["Berufspendeln", "Binnenwanderung"],
+						"correct_index": 0
+					},
+					"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-stadt"
+				},
+				{
+					"id": "01M7BDTJPWGRQ81975FWFSZ3B3",
+					"slug": "geo5-stadt-anwenden",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Beschreibe am gedachten Schulort einen Stadtkern, eine Funktion und eine Umlandbeziehung.",
+					"concept": "Ein alter Markt mit Rathaus kann zum historischen Kern gehören. Eine Schule erfüllt eine Bildungsfunktion. Pendelwege aus benachbarten Orten verbinden den Schulort mit seinem Umland. Für den tatsächlichen Schulort prüfe ich diese Aussagen mit Stadtplan und Beobachtung.",
+					"sample_solution": "Ein alter Markt mit Rathaus kann zum historischen Kern gehören. Eine Schule erfüllt eine Bildungsfunktion. Pendelwege aus benachbarten Orten verbinden den Schulort mit seinem Umland. Für den tatsächlichen Schulort prüfe ich diese Aussagen mit Stadtplan und Beobachtung.",
+					"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-stadt"
+				}
+			]
+		},
+		{
+			"id": "01M7BDTJPVHA0HKC2SH8Z9D7HW",
+			"atom_uri": "urn:zam:atom:01M7BDTJPVHA0HKC2SH8Z9D7HW",
+			"namespace": "zam-academy-geographie-realschule-5",
+			"slug": "geo5-exkursion",
+			"title": "Eine Exkursion vorbereiten und auswerten",
+			"domain": "geographie/grundlagen/exkursion",
+			"reduction": "narrative",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-exkursion",
+			"prerequisites": [
+				{
+					"atom_id": "01M7BDTJPVG94TSYKJ9CJC84EZ",
+					"type": "soft",
+					"rationale": "The earlier lesson supplies concepts used by this lesson."
+				},
+				{
+					"atom_id": "01M7BDTJPVH78DQK2TP781D06F",
+					"type": "soft",
+					"rationale": "The earlier lesson supplies concepts used by this lesson."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "geographie-realschule-5",
+					"topic_code": "lb6",
+					"topic_title": "Anwendung im Nahraum"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 5,
+					"subject": "geographie",
+					"topic_code": "lb6",
+					"topic_title": "Anwendung im Nahraum",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7BDTJPW2H7009M9Z74NGAD9",
+					"slug": "geo5-exkursion-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was ist eine überprüfbare Beobachtung bei einer Kartierung?",
+					"concept": "Am markierten Haltepunkt stehen zwei Bänke.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Am markierten Haltepunkt stehen zwei Bänke.",
+							"Hier fühlt sich jeder Mensch wohl."
+						],
+						"correct_index": 0
+					},
+					"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-exkursion"
+				},
+				{
+					"id": "01M7BDTJPWK6GK95F2GJ2WHZRC",
+					"slug": "geo5-exkursion-anwenden",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Plane eine Kartierung schattiger Sitzplätze zwischen Schule und Bücherei.",
+					"concept": "Ich formuliere die Frage, zeichne eine geeignete Route und lege mit der Klasse Haltepunkte und Zeit fest. Ich notiere Sitzplätze und sichtbaren Schatten getrennt. Nach der begleiteten Erhebung stelle ich die Beobachtungen in einer Skizze dar und begrenze sie auf den untersuchten Zeitraum.",
+					"sample_solution": "Ich formuliere die Frage, zeichne eine geeignete Route und lege mit der Klasse Haltepunkte und Zeit fest. Ich notiere Sitzplätze und sichtbaren Schatten getrennt. Nach der begleiteten Erhebung stelle ich die Beobachtungen in einer Skizze dar und begrenze sie auf den untersuchten Zeitraum.",
+					"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-exkursion"
+				}
+			]
+		},
+		{
+			"id": "01M7BDTJPVD8N5Q6W917HFX264",
+			"atom_uri": "urn:zam:atom:01M7BDTJPVD8N5Q6W917HFX264",
+			"namespace": "zam-academy-geographie-realschule-5",
+			"slug": "geo5-lebensqualitaet",
+			"title": "Passende Karten und bessere Wege",
+			"domain": "geographie/grundlagen/lebensqualitaet",
+			"reduction": "narrative",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-lebensqualitaet",
+			"prerequisites": [
+				{
+					"atom_id": "01M7BDTJPVH78DQK2TP781D06F",
+					"type": "soft",
+					"rationale": "The earlier lesson supplies concepts used by this lesson."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "geographie-realschule-5",
+					"topic_code": "lb6",
+					"topic_title": "Anwendung im Nahraum"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 5,
+					"subject": "geographie",
+					"topic_code": "lb6",
+					"topic_title": "Anwendung im Nahraum",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7BDTJPWBPQPN4QDE443RFNY",
+					"slug": "geo5-lebensqualitaet-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche Karte hilft zuerst bei der Frage nach einer Busverbindung?",
+					"concept": "Eine ÖPNV-Karte mit Linien und Haltestellen",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Eine ÖPNV-Karte mit Linien und Haltestellen",
+							"Eine Karte der Erdzeitalter"
+						],
+						"correct_index": 0
+					},
+					"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-lebensqualitaet"
+				},
+				{
+					"id": "01M7BDTJPWFS9WHCT4ZPGPY7W2",
+					"slug": "geo5-lebensqualitaet-anwenden",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Wähle Karten für einen Busweg zur Bücherei und die anschließende kurze Wanderung und begründe.",
+					"concept": "Für die Busfahrt nutze ich einen Linienplan und aktuelle Fahrplanangaben. Für die Wanderung brauche ich Wege und Höhen aus einer Wanderkarte. Der Linienplan kann schematisch sein; ich leite daraus keine genaue Fußweglänge ab. Örtliche Zugänge und Querungen prüfe ich zusätzlich.",
+					"sample_solution": "Für die Busfahrt nutze ich einen Linienplan und aktuelle Fahrplanangaben. Für die Wanderung brauche ich Wege und Höhen aus einer Wanderkarte. Der Linienplan kann schematisch sein; ich leite daraus keine genaue Fußweglänge ab. Örtliche Zugänge und Querungen prüfe ich zusätzlich.",
+					"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-lebensqualitaet"
+				}
+			]
+		},
+		{
+			"id": "01M7BDTJPVNZPYSWZ7553MS7N3",
+			"atom_uri": "urn:zam:atom:01M7BDTJPVNZPYSWZ7553MS7N3",
+			"namespace": "zam-academy-geographie-realschule-5",
+			"slug": "geo5-aktuelle-frage",
+			"title": "Ein aktuelles Ereignis räumlich untersuchen",
+			"domain": "geographie/grundlagen/aktuelle-frage",
+			"reduction": "narrative",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-aktuelle-frage",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "geographie-realschule-5",
+					"topic_code": "lb7",
+					"topic_title": "Aktuelle geographische Fragestellung"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 5,
+					"subject": "geographie",
+					"topic_code": "lb7",
+					"topic_title": "Aktuelle geographische Fragestellung",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7BDTJPW40J6CNFNVDWHGEKV",
+					"slug": "geo5-aktuelle-frage-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche Frage ist räumlich und untersuchbar?",
+					"concept": "Wie verändert die geplante Platzgestaltung die Wege zur Schule?",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Wie verändert die geplante Platzgestaltung die Wege zur Schule?",
+							"Ist die Welt gut?"
+						],
+						"correct_index": 0
+					},
+					"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-aktuelle-frage"
+				},
+				{
+					"id": "01M7BDTJPWT2DSAMSXJWHER1HH",
+					"slug": "geo5-aktuelle-frage-anwenden",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Formuliere aus dem erfundenen Platzumbau eine geographische Untersuchungsfrage mit Ort und Betroffenen.",
+					"concept": "Ich frage, wie die geplante Umgestaltung des Platzes vor der Bücherei die Fußwege für Schülerinnen und Schüler verändert. Dazu brauche ich alte und geplante Wege sowie Angaben zu Zugängen. Die Beispielplanung ist erfunden und darf nicht als tatsächliche Nachricht ausgegeben werden.",
+					"sample_solution": "Ich frage, wie die geplante Umgestaltung des Platzes vor der Bücherei die Fußwege für Schülerinnen und Schüler verändert. Dazu brauche ich alte und geplante Wege sowie Angaben zu Zugängen. Die Beispielplanung ist erfunden und darf nicht als tatsächliche Nachricht ausgegeben werden.",
+					"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-aktuelle-frage"
+				}
+			]
+		},
+		{
+			"id": "01M7BDTJPV6RB7MJR6CVR3CBX9",
+			"atom_uri": "urn:zam:atom:01M7BDTJPV6RB7MJR6CVR3CBX9",
+			"namespace": "zam-academy-geographie-realschule-5",
+			"slug": "geo5-quellen",
+			"title": "Karte, Fachquelle und Nachricht vergleichen",
+			"domain": "geographie/grundlagen/quellen",
+			"reduction": "narrative",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-quellen",
+			"prerequisites": [
+				{
+					"atom_id": "01M7BDTJPVNZPYSWZ7553MS7N3",
+					"type": "soft",
+					"rationale": "The earlier lesson supplies concepts used by this lesson."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "geographie-realschule-5",
+					"topic_code": "lb7",
+					"topic_title": "Aktuelle geographische Fragestellung"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 5,
+					"subject": "geographie",
+					"topic_code": "lb7",
+					"topic_title": "Aktuelle geographische Fragestellung",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7BDTJPW049XCVVRG13DBE21",
+					"slug": "geo5-quellen-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was belegen zwei unterschiedliche Webadressen allein?",
+					"concept": "Noch keine voneinander unabhängige Bestätigung",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Noch keine voneinander unabhängige Bestätigung",
+							"Immer zwei unabhängige Untersuchungen"
+						],
+						"correct_index": 0
+					},
+					"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-quellen"
+				},
+				{
+					"id": "01M7BDTJPXQBNJZ04MFDAH7KBV",
+					"slug": "geo5-quellen-anwenden",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Vergleiche Gemeindeplan und Zeitungsbericht zum erfundenen Platzumbau.",
+					"concept": "Der Gemeindeplan zeigt eine beabsichtigte räumliche Gestaltung. Der Zeitungsbericht ordnet den Anlass ein und kann verschiedene Stimmen enthalten. Ich prüfe bei beiden Datum, Urheber und Belege. Eine Planung ist keine ausgeführte Veränderung und eine zitierte Meinung kein Nachweis einer Wirkung.",
+					"sample_solution": "Der Gemeindeplan zeigt eine beabsichtigte räumliche Gestaltung. Der Zeitungsbericht ordnet den Anlass ein und kann verschiedene Stimmen enthalten. Ich prüfe bei beiden Datum, Urheber und Belege. Eine Planung ist keine ausgeführte Veränderung und eine zitierte Meinung kein Nachweis einer Wirkung.",
+					"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-quellen"
+				}
+			]
+		},
+		{
+			"id": "01M7BDTJPV6VYDYYCCMY86872C",
+			"atom_uri": "urn:zam:atom:01M7BDTJPV6VYDYYCCMY86872C",
+			"namespace": "zam-academy-geographie-realschule-5",
+			"slug": "geo5-urteil",
+			"title": "Ein Urteil begründen und präsentieren",
+			"domain": "geographie/grundlagen/urteil",
+			"reduction": "narrative",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-urteil",
+			"prerequisites": [
+				{
+					"atom_id": "01M7BDTJPV6RB7MJR6CVR3CBX9",
+					"type": "soft",
+					"rationale": "The earlier lesson supplies concepts used by this lesson."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "geographie-realschule-5",
+					"topic_code": "lb7",
+					"topic_title": "Aktuelle geographische Fragestellung"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 5,
+					"subject": "geographie",
+					"topic_code": "lb7",
+					"topic_title": "Aktuelle geographische Fragestellung",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7BDTJPXZ41HAH3AKDN88BN3",
+					"slug": "geo5-urteil-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was braucht ein nachvollziehbares geographisches Urteil?",
+					"concept": "Belege, Kriterien, Perspektiven und benannte Grenzen",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Belege, Kriterien, Perspektiven und benannte Grenzen",
+							"Nur eine möglichst laute Meinung"
+						],
+						"correct_index": 0
+					},
+					"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-urteil"
+				},
+				{
+					"id": "01M7BDTJPX2PF19450F2D1JJZJ",
+					"slug": "geo5-urteil-anwenden",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Formuliere ein begrenztes Urteil zum erfundenen Platzumbau mit einem Beleg und einem Kriterium.",
+					"concept": "Wenn der Plan einen kürzeren Fußweg zeigt, spricht das beim Kriterium Erreichbarkeit für den Umbau. Ich prüfe zugleich Zugänglichkeit und Folgen für andere Nutzungen. Ob der Weg ausreichend beschattet wird, bleibt ohne weitere Angaben offen. Mein Urteil ist deshalb vorläufig und kein Bericht über einen tatsächlichen Bau.",
+					"sample_solution": "Wenn der Plan einen kürzeren Fußweg zeigt, spricht das beim Kriterium Erreichbarkeit für den Umbau. Ich prüfe zugleich Zugänglichkeit und Folgen für andere Nutzungen. Ob der Weg ausreichend beschattet wird, bleibt ohne weitere Angaben offen. Mein Urteil ist deshalb vorläufig und kein Bericht über einen tatsächlichen Bau.",
+					"source_link": "https://academy.zam-os.org/geographie-realschule-5/#lesson=geo-urteil"
+				}
+			]
+		}
+	]
+}

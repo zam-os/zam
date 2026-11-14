@@ -1,0 +1,1804 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "zam-academy:biologie-realschule-5",
+  "version": "2026.11.1",
+  "title": "Biologie 5 Realschule (ZAM Academy)",
+  "description": "25 interaktive Lektionen und 50 gezielte Wiederholungsfragen zu allen vier Lernbereichen von Biologie 5, Realschule Bayern. Vier digitale Modelle, Aufgaben auf zwei Niveaus und druckbare Unterlagen. Praktisches Arbeiten und Unterrichtsfeedback ergänzen den Kurs. Ohne Lernstandsübertragung.",
+  "publisher": "ZAM Academy",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/5/biologie",
+      "label": "ISB · LehrplanPLUS Biologie 5 Realschule",
+      "checked": "2026-11-13"
+    },
+    {
+      "uri": "https://www.gesundheitsinformation.de/wie-funktioniert-die-lunge.html",
+      "label": "IQWiG · Wie funktioniert die Lunge?",
+      "checked": "2026-11-13"
+    },
+    {
+      "uri": "https://www.gesundheitsinformation.de/wie-funktioniert-das-herz.html",
+      "label": "IQWiG · Wie funktioniert das Herz?",
+      "checked": "2026-11-13"
+    },
+    {
+      "uri": "https://www.gesundheitsinformation.de/wie-funktioniert-das-nervensystem.html",
+      "label": "IQWiG · Wie funktioniert das Nervensystem?",
+      "checked": "2026-11-13"
+    },
+    {
+      "uri": "https://www.gesundheitsinformation.de/wie-funktioniert-die-wirbelsaeule.html",
+      "label": "IQWiG · Wie funktioniert die Wirbelsäule?",
+      "checked": "2026-11-13"
+    },
+    {
+      "uri": "https://www.bmleh.de/DE/themen/tiere/tierschutz/tierschutz_node.html",
+      "label": "BMLEH · Tierschutz",
+      "checked": "2026-11-13"
+    },
+    {
+      "uri": "https://www.bmleh.de/DE/themen/tiere/tierschutz/tierschutz-nutztierhaltung.html",
+      "label": "BMLEH · Tierschutz in der Nutztierhaltung",
+      "checked": "2026-11-13"
+    },
+    {
+      "uri": "https://www.bmleh.de/DE/themen/tiere/nutztiere/rinder/rinder_node.html",
+      "label": "BMLEH · Rinder",
+      "checked": "2026-11-13"
+    },
+    {
+      "uri": "https://www.lfu.bayern.de/natur/wildtiermanagement_grosse_beutegreifer/wolf/index.htm",
+      "label": "LfU Bayern · Wildtiermanagement: Wolf",
+      "checked": "2026-11-13"
+    },
+    {
+      "uri": "https://www.lfu.bayern.de/natur/fledermausschutz/index.htm",
+      "label": "LfU Bayern · Fledermausschutz in Bayern",
+      "checked": "2026-11-13"
+    },
+    {
+      "uri": "https://www.lfu.bayern.de/natur/sap/arteninformationen/",
+      "label": "LfU Bayern · Arteninformationen",
+      "checked": "2026-11-13"
+    },
+    {
+      "uri": "https://www.bzfe.de/kueche-und-alltag/vom-acker-bis-zum-teller/kartoffeln",
+      "label": "BZfE · Kartoffeln",
+      "checked": "2026-11-13"
+    },
+    {
+      "uri": "https://www.bzfe.de/kueche-und-alltag/vom-acker-bis-zum-teller",
+      "label": "BZfE · Vom Acker bis zum Teller",
+      "checked": "2026-11-13"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01M7BDCG1N56W51WA6R068KQXR",
+      "atom_uri": "urn:zam:atom:01M7BDCG1N56W51WA6R068KQXR",
+      "namespace": "zam-academy-biologie-realschule-5",
+      "slug": "b5-geraete",
+      "title": "Laborgeräte und Messgeräte sicher nutzen",
+      "domain": "biologie/methoden",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-geraete",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-5",
+          "topic_code": "methoden",
+          "topic_title": "Prozessbezogene Kompetenzen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "subject": "biologie",
+          "topic_code": "lb1",
+          "topic_title": "Prozessbezogene Kompetenzen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7BDCG1N56W51WA6R068KQXS",
+          "slug": "b5-geraete-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welches Gerät eignet sich am besten, um feuchte Samen flach ausgelegt zu beobachten?",
+          "concept": "Eine Petrischale.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-geraete",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eine Petrischale.",
+              "Eine Stoppuhr."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7BDCG1N56W51WA6R068KQXT",
+          "slug": "b5-geraete-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Worin unterscheiden sich Messgeräte wie Waage und Thermometer von einfachen Laborgeräten wie Petrischale und Reagenzglas?",
+          "concept": "Messgeräte liefern Zahlenwerte mit einer passenden Einheit; Laborgeräte dienen dem Halten, Auslegen, Vergrößern oder sicheren Untersuchen.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-geraete",
+          "sample_solution": "Messgeräte liefern Zahlenwerte mit einer passenden Einheit; Laborgeräte dienen dem Halten, Auslegen, Vergrößern oder sicheren Untersuchen."
+        }
+      ]
+    },
+    {
+      "id": "01M7BDCG1N56W51WA6R068KQXV",
+      "atom_uri": "urn:zam:atom:01M7BDCG1N56W51WA6R068KQXV",
+      "namespace": "zam-academy-biologie-realschule-5",
+      "slug": "b5-beobachten-vergleichen",
+      "title": "Genau beobachten, vergleichen und bestimmen",
+      "domain": "biologie/methoden",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-beobachten-vergleichen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-5",
+          "topic_code": "methoden",
+          "topic_title": "Prozessbezogene Kompetenzen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "subject": "biologie",
+          "topic_code": "lb1",
+          "topic_title": "Prozessbezogene Kompetenzen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7BDCG1N56W51WA6R068KQXW",
+          "slug": "b5-beobachten-vergleichen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Worauf achtest du beim biologischen Vergleichen zweier Blätter besonders?",
+          "concept": "Beide Blätter nach denselben festgelegten Kriterien untersuchen und Gemeinsamkeiten wie Unterschiede nennen.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-beobachten-vergleichen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Beide Blätter nach denselben festgelegten Kriterien untersuchen und Gemeinsamkeiten wie Unterschiede nennen.",
+              "Nur beschreiben, welches Blatt dir persönlich besser gefällt."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7BDCG1N56W51WA6R068KQXX",
+          "slug": "b5-beobachten-vergleichen-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie gehst du beim kriteriengeleiteten biologischen Vergleichen zweier Lebewesen oder Blätter vor?",
+          "concept": "Man untersucht beide Objekte anhand derselben festgelegten Kriterien und hält Gemeinsamkeiten sowie Unterschiede geordnet fest.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-beobachten-vergleichen",
+          "sample_solution": "Man untersucht beide Objekte anhand derselben festgelegten Kriterien und hält Gemeinsamkeiten sowie Unterschiede geordnet fest."
+        }
+      ]
+    },
+    {
+      "id": "01M7BDCG1N56W51WA6R068KQXY",
+      "atom_uri": "urn:zam:atom:01M7BDCG1N56W51WA6R068KQXY",
+      "namespace": "zam-academy-biologie-realschule-5",
+      "slug": "b5-erkenntnisweg",
+      "title": "Der naturwissenschaftliche Erkenntnisweg",
+      "domain": "biologie/methoden",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-erkenntnisweg",
+      "prerequisites": [
+        {
+          "atom_id": "01M7BDCG1N56W51WA6R068KQXV",
+          "type": "soft",
+          "rationale": "Diese Lektion erläutert eine verwendete fachliche Grundlage; der Lernpfad bleibt frei zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-5",
+          "topic_code": "methoden",
+          "topic_title": "Prozessbezogene Kompetenzen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "subject": "biologie",
+          "topic_code": "lb1",
+          "topic_title": "Prozessbezogene Kompetenzen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7BDCG1N56W51WA6R068KQXZ",
+          "slug": "b5-erkenntnisweg-check",
+          "replaces": [
+            "01K4T5N0000000000000000J01"
+          ],
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie nennt man in der Biologie eine begründete vorläufige Erklärung, die anschließend durch ein Experiment überprüft wird?",
+          "concept": "Eine Hypothese.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-erkenntnisweg",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eine Hypothese.",
+              "Ein fertiges Messprotokoll."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7BDCG1N56W51WA6R068KQY0",
+          "slug": "b5-erkenntnisweg-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum wird in einem biologischen Experiment neben dem Versuchsansatz immer ein Kontrollansatz geführt und jeweils nur eine Bedingung verändert?",
+          "concept": "Nur wenn ein Kontrollansatz alle übrigen Bedingungen gleich hält, lässt sich die Wirkung der einen veränderten Bedingung eindeutig belegen.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-erkenntnisweg",
+          "sample_solution": "Nur wenn ein Kontrollansatz alle übrigen Bedingungen gleich hält, lässt sich die Wirkung der einen veränderten Bedingung eindeutig belegen."
+        }
+      ]
+    },
+    {
+      "id": "01M7BDCG1N56W51WA6R068KQY1",
+      "atom_uri": "urn:zam:atom:01M7BDCG1N56W51WA6R068KQY1",
+      "namespace": "zam-academy-biologie-realschule-5",
+      "slug": "b5-mikroskop",
+      "title": "Das Lichtmikroskop und erste Präparate",
+      "domain": "biologie/methoden",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-mikroskop",
+      "prerequisites": [
+        {
+          "atom_id": "01M7BDCG1N56W51WA6R068KQXR",
+          "type": "soft",
+          "rationale": "Diese Lektion erläutert eine verwendete fachliche Grundlage; der Lernpfad bleibt frei zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-5",
+          "topic_code": "methoden",
+          "topic_title": "Prozessbezogene Kompetenzen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "subject": "biologie",
+          "topic_code": "lb1",
+          "topic_title": "Prozessbezogene Kompetenzen",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "subject": "biologie",
+          "topic_code": "lb2",
+          "topic_title": "Biologie, die Wissenschaft von den Lebewesen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7BDCG1N56W51WA6R068KQY2",
+          "slug": "b5-mikroskop-check",
+          "replaces": [
+            "01K4T5N0000000000000000J03"
+          ],
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie berechnest du die Gesamtvergrößerung eines Lichtmikroskops?",
+          "concept": "Okularvergrößerung · Objektivvergrößerung (z. B. 10 · 40 = 400-fach).",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-mikroskop",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Okularvergrößerung · Objektivvergrößerung (z. B. 10 · 40 = 400-fach).",
+              "Okularvergrößerung + Objektivvergrößerung (z. B. 10 + 40 = 50-fach)."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7BDCG1N56W51WA6R068KQY3",
+          "slug": "b5-mikroskop-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "In welcher Reihenfolge stellst du ein Präparat unter dem Lichtmikroskop sicher scharf?",
+          "concept": "Man startet mit dem kleinsten Objektiv für ein großes Gesichtsfeld, fokussiert vorsichtig mit dem Grobtrieb und nutzt nach dem Wechsel zu stärkeren Objektiven nur den Feintrieb.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-mikroskop",
+          "sample_solution": "Man startet mit dem kleinsten Objektiv für ein großes Gesichtsfeld, fokussiert vorsichtig mit dem Grobtrieb und nutzt nach dem Wechsel zu stärkeren Objektiven nur den Feintrieb."
+        }
+      ]
+    },
+    {
+      "id": "01M7BDCG1N56W51WA6R068KQY4",
+      "atom_uri": "urn:zam:atom:01M7BDCG1N56W51WA6R068KQY4",
+      "namespace": "zam-academy-biologie-realschule-5",
+      "slug": "b5-modelle-protokolle",
+      "title": "Modelle, Protokolle und Darstellungsformen",
+      "domain": "biologie/methoden",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-modelle-protokolle",
+      "prerequisites": [
+        {
+          "atom_id": "01M7BDCG1N56W51WA6R068KQXY",
+          "type": "soft",
+          "rationale": "Diese Lektion erläutert eine verwendete fachliche Grundlage; der Lernpfad bleibt frei zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-5",
+          "topic_code": "methoden",
+          "topic_title": "Prozessbezogene Kompetenzen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "subject": "biologie",
+          "topic_code": "lb1",
+          "topic_title": "Prozessbezogene Kompetenzen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7BDCG1N56W51WA6R068KQY5",
+          "slug": "b5-modelle-protokolle-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Aussage trifft auf jedes biologische Anschauungsmodell zu?",
+          "concept": "Es zeigt wichtige Strukturen oder Zusammenhänge vereinfacht und unterscheidet sich in Material oder Details von der Realität.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-modelle-protokolle",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Es zeigt wichtige Strukturen oder Zusammenhänge vereinfacht und unterscheidet sich in Material oder Details von der Realität.",
+              "Es ist in Größe, Material und allen Lebensvorgängen ein genaues Abbild der Natur."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7BDCG1N56W51WA6R068KQY6",
+          "slug": "b5-modelle-protokolle-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche Bedeutung hat ein biologisches Anschauungsmodell und wo liegen seine typischen Grenzen?",
+          "concept": "Ein Modell veranschaulicht Strukturen oder Funktionsprinzipien vereinfacht; Farben, Größen, Material und echte Lebensvorgänge unterscheiden sich jedoch vom Original.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-modelle-protokolle",
+          "sample_solution": "Ein Modell veranschaulicht Strukturen oder Funktionsprinzipien vereinfacht; Farben, Größen, Material und echte Lebensvorgänge unterscheiden sich jedoch vom Original."
+        }
+      ]
+    },
+    {
+      "id": "01M7BDCG1N56W51WA6R068KQY7",
+      "atom_uri": "urn:zam:atom:01M7BDCG1N56W51WA6R068KQY7",
+      "namespace": "zam-academy-biologie-realschule-5",
+      "slug": "b5-quellen-vortrag",
+      "title": "Quellen prüfen, Steckbriefe erstellen und begründen",
+      "domain": "biologie/methoden",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-quellen-vortrag",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-5",
+          "topic_code": "methoden",
+          "topic_title": "Prozessbezogene Kompetenzen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "subject": "biologie",
+          "topic_code": "lb1",
+          "topic_title": "Prozessbezogene Kompetenzen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7BDCG1N56W51WA6R068KQY8",
+          "slug": "b5-quellen-vortrag-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Woran erkennst du eine gute biologische Informationsquelle für ein Referat?",
+          "concept": "Sie ist verständlich, sachlich belegt, eindeutig beschriftet und verfolgt kein Verkaufsinteresse.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-quellen-vortrag",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie ist verständlich, sachlich belegt, eindeutig beschriftet und verfolgt kein Verkaufsinteresse.",
+              "Sie enthält möglichst viele Ausrufezeichen und Werbeversprechen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7BDCG1N56W51WA6R068KQY9",
+          "slug": "b5-quellen-vortrag-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Aus welchen drei Bestandteilen baust du eine fachliche Begründung zu einer biologischen Aussage auf?",
+          "concept": "Eine starke Begründung verknüpft eine klare Behauptung mit einem überprüfbaren Faktum und einem passenden Beispiel.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-quellen-vortrag",
+          "sample_solution": "Eine starke Begründung verknüpft eine klare Behauptung mit einem überprüfbaren Faktum und einem passenden Beispiel."
+        }
+      ]
+    },
+    {
+      "id": "01M7BDCG1N56W51WA6R068KQYA",
+      "atom_uri": "urn:zam:atom:01M7BDCG1N56W51WA6R068KQYA",
+      "namespace": "zam-academy-biologie-realschule-5",
+      "slug": "b5-fakten-bewerten",
+      "title": "Fakten trennen und Entscheidungen abwägen",
+      "domain": "biologie/methoden",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-fakten-bewerten",
+      "prerequisites": [
+        {
+          "atom_id": "01M7BDCG1N56W51WA6R068KQY7",
+          "type": "soft",
+          "rationale": "Diese Lektion erläutert eine verwendete fachliche Grundlage; der Lernpfad bleibt frei zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-5",
+          "topic_code": "methoden",
+          "topic_title": "Prozessbezogene Kompetenzen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "subject": "biologie",
+          "topic_code": "lb1",
+          "topic_title": "Prozessbezogene Kompetenzen",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "subject": "biologie",
+          "topic_code": "lb4",
+          "topic_title": "Tiere und Pflanzen in der Umgebung des Menschen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7BDCG1N56W51WA6R068KQYB",
+          "slug": "b5-fakten-bewerten-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Woran erkennst du eine beschreibende Aussage (Faktum) im Unterschied zu einer Bewertung?",
+          "concept": "Sie gibt beobachtbare oder messbare Tatsachen ohne eigenes Werturteil wieder.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-fakten-bewerten",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie gibt beobachtbare oder messbare Tatsachen ohne eigenes Werturteil wieder.",
+              "Sie enthält möglichst starke Gefühls- oder Wunschwörter wie „schlecht“ oder „unbedingt“."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7BDCG1N56W51WA6R068KQYC",
+          "slug": "b5-fakten-bewerten-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie wägst du bei einer biologischen Streitfrage (z. B. Wolf in Bayern) fachlich begründet ab?",
+          "concept": "Man trennt zunächst beobachtbare Fakten von Bewertungen, prüft objektive Kriterien und entwickelt zu der Gegenposition konkrete Handlungsoptionen samt naheliegenden Folgen.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-fakten-bewerten",
+          "sample_solution": "Man trennt zunächst beobachtbare Fakten von Bewertungen, prüft objektive Kriterien und entwickelt zu der Gegenposition konkrete Handlungsoptionen samt naheliegenden Folgen."
+        }
+      ]
+    },
+    {
+      "id": "01M7BDCG1N56W51WA6R068KQYD",
+      "atom_uri": "urn:zam:atom:01M7BDCG1N56W51WA6R068KQYD",
+      "namespace": "zam-academy-biologie-realschule-5",
+      "slug": "b5-kennzeichen-tier",
+      "title": "Kennzeichen von Lebewesen am Beispiel Tier",
+      "domain": "biologie/lebewesen",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-kennzeichen-tier",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-5",
+          "topic_code": "lebewesen",
+          "topic_title": "Biologie, die Wissenschaft von den Lebewesen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "subject": "biologie",
+          "topic_code": "lb2",
+          "topic_title": "Biologie, die Wissenschaft von den Lebewesen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7BDCG1N56W51WA6R068KQYE",
+          "slug": "b5-kennzeichen-tier-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wodurch unterscheidet sich ein lebendiges Tier grundsätzlich von einem beweglichen Spielzeugroboter?",
+          "concept": "Das Tier zeigt alle Kennzeichen von Lebewesen wie Zellaufbau, Stoffwechsel, Wachstum und Fortpflanzung.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-kennzeichen-tier",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Das Tier zeigt alle Kennzeichen von Lebewesen wie Zellaufbau, Stoffwechsel, Wachstum und Fortpflanzung.",
+              "Nur das Spielzeugauto kann sich jemals von der Stelle bewegen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7BDCG1N56W51WA6R068KQYF",
+          "slug": "b5-kennzeichen-tier-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche sechs wesentlichen Kennzeichen weisen ein Tier als Lebewesen aus?",
+          "concept": "Zellaufbau, Stoffwechsel, Reizbarkeit, Wachstum und Entwicklung, eigenständige Bewegung sowie Fortpflanzung.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-kennzeichen-tier",
+          "sample_solution": "Zellaufbau, Stoffwechsel, Reizbarkeit, Wachstum und Entwicklung, eigenständige Bewegung sowie Fortpflanzung."
+        }
+      ]
+    },
+    {
+      "id": "01M7BDCG1N56W51WA6R068KQYG",
+      "atom_uri": "urn:zam:atom:01M7BDCG1N56W51WA6R068KQYG",
+      "namespace": "zam-academy-biologie-realschule-5",
+      "slug": "b5-pflanzen-leben",
+      "title": "Auch Pflanzen sind Lebewesen",
+      "domain": "biologie/lebewesen",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-pflanzen-leben",
+      "prerequisites": [
+        {
+          "atom_id": "01M7BDCG1N56W51WA6R068KQYD",
+          "type": "soft",
+          "rationale": "Diese Lektion erläutert eine verwendete fachliche Grundlage; der Lernpfad bleibt frei zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-5",
+          "topic_code": "lebewesen",
+          "topic_title": "Biologie, die Wissenschaft von den Lebewesen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "subject": "biologie",
+          "topic_code": "lb1",
+          "topic_title": "Prozessbezogene Kompetenzen",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "subject": "biologie",
+          "topic_code": "lb2",
+          "topic_title": "Biologie, die Wissenschaft von den Lebewesen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7BDCG1N56W51WA6R068KQYH",
+          "slug": "b5-pflanzen-leben-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Woran erkennst du im Alltag, dass auch Pflanzen auf Reize reagieren und sich selbst bewegen?",
+          "concept": "Ihre Sprosse und Blätter wachsen und richten sich langsam zum Licht aus.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-pflanzen-leben",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ihre Sprosse und Blätter wachsen und richten sich langsam zum Licht aus.",
+              "Nur der Wind bewegt Pflanzen, sie selbst verändern ihre Lage nie."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7BDCG1N56W51WA6R068KQYJ",
+          "slug": "b5-pflanzen-leben-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Mit welchen Beobachtungen belegst du, dass auch Pflanzen vollständige Lebewesen sind?",
+          "concept": "Pflanzen bestehen aus Zellen, betreiben Stoffwechsel, wachsen, pflanzen sich fort und reagieren mit langsamen Bewegungen wie der Lichtkrümmung auf Reize.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-pflanzen-leben",
+          "sample_solution": "Pflanzen bestehen aus Zellen, betreiben Stoffwechsel, wachsen, pflanzen sich fort und reagieren mit langsamen Bewegungen wie der Lichtkrümmung auf Reize."
+        }
+      ]
+    },
+    {
+      "id": "01M7BDCG1N56W51WA6R068KQYK",
+      "atom_uri": "urn:zam:atom:01M7BDCG1N56W51WA6R068KQYK",
+      "namespace": "zam-academy-biologie-realschule-5",
+      "slug": "b5-zelle-grundbaustein",
+      "title": "Die Zelle – gemeinsamer Grundbaustein aller Lebewesen",
+      "domain": "biologie/lebewesen",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-zelle-grundbaustein",
+      "prerequisites": [
+        {
+          "atom_id": "01M7BDCG1N56W51WA6R068KQY1",
+          "type": "soft",
+          "rationale": "Diese Lektion erläutert eine verwendete fachliche Grundlage; der Lernpfad bleibt frei zugänglich."
+        },
+        {
+          "atom_id": "01M7BDCG1N56W51WA6R068KQYD",
+          "type": "soft",
+          "rationale": "Diese Lektion erläutert eine verwendete fachliche Grundlage; der Lernpfad bleibt frei zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-5",
+          "topic_code": "lebewesen",
+          "topic_title": "Biologie, die Wissenschaft von den Lebewesen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "subject": "biologie",
+          "topic_code": "lb1",
+          "topic_title": "Prozessbezogene Kompetenzen",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "subject": "biologie",
+          "topic_code": "lb2",
+          "topic_title": "Biologie, die Wissenschaft von den Lebewesen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7BDCG1N56W51WA6R068KQYM",
+          "slug": "b5-zelle-grundbaustein-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche drei Bestandteile besitzen sowohl Tierzellen als auch Pflanzenzellen gemeinsam?",
+          "concept": "Zellmembran, Zellplasma und Zellkern.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-zelle-grundbaustein",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Zellmembran, Zellplasma und Zellkern.",
+              "Zellwand, Chloroplasten und große Vakuole."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7BDCG1N56W51WA6R068KQYN",
+          "slug": "b5-zelle-grundbaustein-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Durch welche drei zusätzlichen Zellbestandteile unterscheidet sich eine grüne Pflanzenzelle von einer Tierzelle?",
+          "concept": "Eine grüne Pflanzenzelle besitzt zusätzlich zu Zellmembran, Zellplasma und Zellkern eine feste Zellwand, eine große Vakuole und meist Chloroplasten.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-zelle-grundbaustein",
+          "sample_solution": "Eine grüne Pflanzenzelle besitzt zusätzlich zu Zellmembran, Zellplasma und Zellkern eine feste Zellwand, eine große Vakuole und meist Chloroplasten."
+        }
+      ]
+    },
+    {
+      "id": "01M7BDCG1N56W51WA6R068KQYP",
+      "atom_uri": "urn:zam:atom:01M7BDCG1N56W51WA6R068KQYP",
+      "namespace": "zam-academy-biologie-realschule-5",
+      "slug": "b5-organismus-ebenen",
+      "title": "Vom Baustein zum eigenständigen Organismus",
+      "domain": "biologie/lebewesen",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-organismus-ebenen",
+      "prerequisites": [
+        {
+          "atom_id": "01M7BDCG1N56W51WA6R068KQYK",
+          "type": "soft",
+          "rationale": "Diese Lektion erläutert eine verwendete fachliche Grundlage; der Lernpfad bleibt frei zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-5",
+          "topic_code": "lebewesen",
+          "topic_title": "Biologie, die Wissenschaft von den Lebewesen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "subject": "biologie",
+          "topic_code": "lb2",
+          "topic_title": "Biologie, die Wissenschaft von den Lebewesen",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "subject": "biologie",
+          "topic_code": "lb3",
+          "topic_title": "Bau und Funktion des menschlichen Körpers",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7BDCG1N56W51WA6R068KQYQ",
+          "slug": "b5-organismus-ebenen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was kennzeichnet einen eigenständigen Organismus?",
+          "concept": "Er ist ein selbständig lebensfähiges Lebewesen, das alle Kennzeichen des Lebens einschließlich Fortpflanzung selbst erfüllen kann.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-organismus-ebenen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Er ist ein selbständig lebensfähiges Lebewesen, das alle Kennzeichen des Lebens einschließlich Fortpflanzung selbst erfüllen kann.",
+              "Jedes einzelne Organ wie der Magen ist bereits ein eigenständiger Organismus."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7BDCG1N56W51WA6R068KQYR",
+          "slug": "b5-organismus-ebenen-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie ordnen sich die biologischen Organisationsebenen vom Grundbaustein bis zum Organismus, und warum ist erst der Organismus eigenständig?",
+          "concept": "Von der Zelle über Organ und Organsystem zum Organismus; erst der gesamte Organismus kann dauerhaft selbständig leben und sich fortpflanzen.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-organismus-ebenen",
+          "sample_solution": "Von der Zelle über Organ und Organsystem zum Organismus; erst der gesamte Organismus kann dauerhaft selbständig leben und sich fortpflanzen."
+        }
+      ]
+    },
+    {
+      "id": "01M7BDCG1N56W51WA6R068KQYS",
+      "atom_uri": "urn:zam:atom:01M7BDCG1N56W51WA6R068KQYS",
+      "namespace": "zam-academy-biologie-realschule-5",
+      "slug": "b5-organe-arbeitsteilung",
+      "title": "Organe, Organsysteme und Arbeitsteilung",
+      "domain": "biologie/koerper",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-organe-arbeitsteilung",
+      "prerequisites": [
+        {
+          "atom_id": "01M7BDCG1N56W51WA6R068KQYP",
+          "type": "soft",
+          "rationale": "Diese Lektion erläutert eine verwendete fachliche Grundlage; der Lernpfad bleibt frei zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-5",
+          "topic_code": "koerper",
+          "topic_title": "Bau und Funktion des menschlichen Körpers"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "subject": "biologie",
+          "topic_code": "lb1",
+          "topic_title": "Prozessbezogene Kompetenzen",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "subject": "biologie",
+          "topic_code": "lb3",
+          "topic_title": "Bau und Funktion des menschlichen Körpers",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7BDCG1N56W51WA6R068KQYT",
+          "slug": "b5-organe-arbeitsteilung-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was versteht man in der Biologie unter einem Organsystem?",
+          "concept": "Eine Gruppe von Organen, die zusammen eine gemeinsame Hauptaufgabe erfüllen.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-organe-arbeitsteilung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eine Gruppe von Organen, die zusammen eine gemeinsame Hauptaufgabe erfüllen.",
+              "Eine einzelne Zelle, die ohne weitere Organe arbeitet."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7BDCG1N56W51WA6R068KQYV",
+          "slug": "b5-organe-arbeitsteilung-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum bezeichnet man den menschlichen Körper als arbeitsteiliges System von Organen?",
+          "concept": "Spezialisierte Organe wie Herz, Lunge und Magen übernehmen jeweils bestimmte Aufgaben an festen Orten im Körper und arbeiten in Organsystemen zusammen.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-organe-arbeitsteilung",
+          "sample_solution": "Spezialisierte Organe wie Herz, Lunge und Magen übernehmen jeweils bestimmte Aufgaben an festen Orten im Körper und arbeiten in Organsystemen zusammen."
+        }
+      ]
+    },
+    {
+      "id": "01M7BDCG1N56W51WA6R068KQYW",
+      "atom_uri": "urn:zam:atom:01M7BDCG1N56W51WA6R068KQYW",
+      "namespace": "zam-academy-biologie-realschule-5",
+      "slug": "b5-atmung-kreislauf",
+      "title": "Atmungssystem und Herz-Kreislauf-System",
+      "domain": "biologie/koerper",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-atmung-kreislauf",
+      "prerequisites": [
+        {
+          "atom_id": "01M7BDCG1N56W51WA6R068KQYS",
+          "type": "soft",
+          "rationale": "Diese Lektion erläutert eine verwendete fachliche Grundlage; der Lernpfad bleibt frei zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-5",
+          "topic_code": "koerper",
+          "topic_title": "Bau und Funktion des menschlichen Körpers"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "subject": "biologie",
+          "topic_code": "lb3",
+          "topic_title": "Bau und Funktion des menschlichen Körpers",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7BDCG1N56W51WA6R068KQYX",
+          "slug": "b5-atmung-kreislauf-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum bilden die Lungenbläschen in der Lunge eine riesige feuchte Oberfläche mit vielen feinen Blutgefäßen?",
+          "concept": "Damit Sauerstoff schnell aus der Atemluft ins Blut gelangen und Kohlenstoffdioxid abgegeben werden kann.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-atmung-kreislauf",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Damit Sauerstoff schnell aus der Atemluft ins Blut gelangen und Kohlenstoffdioxid abgegeben werden kann.",
+              "Damit in der Lunge Nahrung verdaut werden kann."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7BDCG1N56W51WA6R068KQYY",
+          "slug": "b5-atmung-kreislauf-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie arbeiten Atmungssystem und Herz-Kreislauf-System zusammen, um alle Körperzellen zu versorgen?",
+          "concept": "Über die riesige Oberfläche der Lungenbläschen tritt Sauerstoff ins Blut über; das Herz pumpt mit seinen Klappen das Blut als Transportmittel zu allen Zellen und zurück.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-atmung-kreislauf",
+          "sample_solution": "Über die riesige Oberfläche der Lungenbläschen tritt Sauerstoff ins Blut über; das Herz pumpt mit seinen Klappen das Blut als Transportmittel zu allen Zellen und zurück."
+        }
+      ]
+    },
+    {
+      "id": "01M7BDCG1N56W51WA6R068KQYZ",
+      "atom_uri": "urn:zam:atom:01M7BDCG1N56W51WA6R068KQYZ",
+      "namespace": "zam-academy-biologie-realschule-5",
+      "slug": "b5-verdauung-nerven",
+      "title": "Verdauung, Ausscheidung und Nervensystem",
+      "domain": "biologie/koerper",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-verdauung-nerven",
+      "prerequisites": [
+        {
+          "atom_id": "01M7BDCG1N56W51WA6R068KQYS",
+          "type": "soft",
+          "rationale": "Diese Lektion erläutert eine verwendete fachliche Grundlage; der Lernpfad bleibt frei zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-5",
+          "topic_code": "koerper",
+          "topic_title": "Bau und Funktion des menschlichen Körpers"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "subject": "biologie",
+          "topic_code": "lb3",
+          "topic_title": "Bau und Funktion des menschlichen Körpers",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7BDCG1N56W51WA6R068KQZ0",
+          "slug": "b5-verdauung-nerven-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Hauptaufgabe erfüllt der stark gefaltete Dünndarm im Verdauungssystem?",
+          "concept": "Er zerlegt Nahrungsbestandteile weiter und nimmt die Nährstoffe über seine große Oberfläche ins Blut auf.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-verdauung-nerven",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Er zerlegt Nahrungsbestandteile weiter und nimmt die Nährstoffe über seine große Oberfläche ins Blut auf.",
+              "Er pumpt das Blut in die Lunge."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7BDCG1N56W51WA6R068KQZ1",
+          "slug": "b5-verdauung-nerven-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie hängen Verdauungssystem, Ausscheidungssystem und Nervensystem funktionell zusammen?",
+          "concept": "Der Verdauungsschlauch zerlegt Nahrung und nimmt Nährstoffe über die große Dünndarmoberfläche ins Blut auf; Nieren filtern Abfallstoffe heraus; das Nervensystem leitet Reize und steuert Reaktionen.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-verdauung-nerven",
+          "sample_solution": "Der Verdauungsschlauch zerlegt Nahrung und nimmt Nährstoffe über die große Dünndarmoberfläche ins Blut auf; Nieren filtern Abfallstoffe heraus; das Nervensystem leitet Reize und steuert Reaktionen."
+        }
+      ]
+    },
+    {
+      "id": "01M7BDCG1N56W51WA6R068KQZ2",
+      "atom_uri": "urn:zam:atom:01M7BDCG1N56W51WA6R068KQZ2",
+      "namespace": "zam-academy-biologie-realschule-5",
+      "slug": "b5-skelett-wirbelsaeule",
+      "title": "Das Skelett und die Doppel-S-Form der Wirbelsäule",
+      "domain": "biologie/koerper",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-skelett-wirbelsaeule",
+      "prerequisites": [
+        {
+          "atom_id": "01M7BDCG1N56W51WA6R068KQYS",
+          "type": "soft",
+          "rationale": "Diese Lektion erläutert eine verwendete fachliche Grundlage; der Lernpfad bleibt frei zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-5",
+          "topic_code": "koerper",
+          "topic_title": "Bau und Funktion des menschlichen Körpers"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "subject": "biologie",
+          "topic_code": "lb3",
+          "topic_title": "Bau und Funktion des menschlichen Körpers",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7BDCG1N56W51WA6R068KQZ3",
+          "slug": "b5-skelett-wirbelsaeule-check",
+          "replaces": [
+            "01K4B5M0000000000000000J01"
+          ],
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Form zeigt die menschliche Wirbelsäule von der Seite, um Stöße beim Gehen wie eine Feder abzufedern?",
+          "concept": "Eine doppelte S-Form mit elastischen Bandscheiben zwischen den Wirbeln.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-skelett-wirbelsaeule",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eine doppelte S-Form mit elastischen Bandscheiben zwischen den Wirbeln.",
+              "Eine völlig gerade Säule ohne Krümmung."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7BDCG1N56W51WA6R068KQZ4",
+          "slug": "b5-skelett-wirbelsaeule-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche Aufgaben erfüllt die doppel-S-förmige Krümmung der Wirbelsäule zusammen mit den Bandscheiben?",
+          "concept": "Sie federt Stöße beim aufrechten Gehen und Springen elastisch ab, bevor sie das Gehirn erreichen, und ermöglicht zugleich Stützung und Beweglichkeit des Rumpfes.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-skelett-wirbelsaeule",
+          "sample_solution": "Sie federt Stöße beim aufrechten Gehen und Springen elastisch ab, bevor sie das Gehirn erreichen, und ermöglicht zugleich Stützung und Beweglichkeit des Rumpfes."
+        }
+      ]
+    },
+    {
+      "id": "01M7BDCG1N56W51WA6R068KQZ5",
+      "atom_uri": "urn:zam:atom:01M7BDCG1N56W51WA6R068KQZ5",
+      "namespace": "zam-academy-biologie-realschule-5",
+      "slug": "b5-muskeln-gelenke",
+      "title": "Zusammenspiel von Knochen, Muskeln, Gelenken, Sehnen und Bändern",
+      "domain": "biologie/koerper",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-muskeln-gelenke",
+      "prerequisites": [
+        {
+          "atom_id": "01M7BDCG1N56W51WA6R068KQZ2",
+          "type": "soft",
+          "rationale": "Diese Lektion erläutert eine verwendete fachliche Grundlage; der Lernpfad bleibt frei zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-5",
+          "topic_code": "koerper",
+          "topic_title": "Bau und Funktion des menschlichen Körpers"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "subject": "biologie",
+          "topic_code": "lb3",
+          "topic_title": "Bau und Funktion des menschlichen Körpers",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7BDCG1N56W51WA6R068KQZ6",
+          "slug": "b5-muskeln-gelenke-check",
+          "replaces": [
+            "01K4B5M0000000000000000J03"
+          ],
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welcher Muskel arbeitet am menschlichen Oberarm als Gegenspieler (Strecker) zum Armbeuger Bizeps?",
+          "concept": "Der dreiköpfige Armstrecker (Trizeps).",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-muskeln-gelenke",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der dreiköpfige Armstrecker (Trizeps).",
+              "Der Unterarmbeuger."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7BDCG1N56W51WA6R068KQZ7",
+          "slug": "b5-muskeln-gelenke-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum braucht jedes bewegliche Knochengelenk mindestens ein Gegenspieler-Paar aus zwei Muskeln (z. B. Bizeps und Trizeps)?",
+          "concept": "Skelettmuskeln können sich nur aktiv zusammenziehen und über Sehnen an Knochen ziehen; das Gegenüber streckt den Arm durch eigenes Zusammenziehen zurück.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-muskeln-gelenke",
+          "sample_solution": "Skelettmuskeln können sich nur aktiv zusammenziehen und über Sehnen an Knochen ziehen; das Gegenüber streckt den Arm durch eigenes Zusammenziehen zurück."
+        }
+      ]
+    },
+    {
+      "id": "01M7BDCG1N56W51WA6R068KQZ8",
+      "atom_uri": "urn:zam:atom:01M7BDCG1N56W51WA6R068KQZ8",
+      "namespace": "zam-academy-biologie-realschule-5",
+      "slug": "b5-gesunderhaltung",
+      "title": "Den Bewegungsapparat gesund halten",
+      "domain": "biologie/koerper",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-gesunderhaltung",
+      "prerequisites": [
+        {
+          "atom_id": "01M7BDCG1N56W51WA6R068KQZ2",
+          "type": "soft",
+          "rationale": "Diese Lektion erläutert eine verwendete fachliche Grundlage; der Lernpfad bleibt frei zugänglich."
+        },
+        {
+          "atom_id": "01M7BDCG1N56W51WA6R068KQZ5",
+          "type": "soft",
+          "rationale": "Diese Lektion erläutert eine verwendete fachliche Grundlage; der Lernpfad bleibt frei zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-5",
+          "topic_code": "koerper",
+          "topic_title": "Bau und Funktion des menschlichen Körpers"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "subject": "biologie",
+          "topic_code": "lb3",
+          "topic_title": "Bau und Funktion des menschlichen Körpers",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7BDCG1N56W51WA6R068KQZ9",
+          "slug": "b5-gesunderhaltung-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie hebst du einen schweren Gegenstand richtig, um deine Bandscheiben zu schonen?",
+          "concept": "In die Knie gehen, den Rücken gerade halten und aus den kräftigen Beinmuskeln hochdrücken.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-gesunderhaltung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "In die Knie gehen, den Rücken gerade halten und aus den kräftigen Beinmuskeln hochdrücken.",
+              "Die Beine ganz gestreckt lassen und den Oberkörper weit nach vorn beugen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7BDCG1N56W51WA6R068KQZA",
+          "slug": "b5-gesunderhaltung-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche Maßnahmen halten Wirbelsäule, Knochen und Gelenke im Alltag langfristig gesund?",
+          "concept": "Regelmäßige Bewegung, rückenschonendes Heben mit gebeugten Knien und geradem Rücken, ein beidseitig getragener Rucksack sowie Schutzausrüstung wie ein Fahrradhelm.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-gesunderhaltung",
+          "sample_solution": "Regelmäßige Bewegung, rückenschonendes Heben mit gebeugten Knien und geradem Rücken, ein beidseitig getragener Rucksack sowie Schutzausrüstung wie ein Fahrradhelm."
+        }
+      ]
+    },
+    {
+      "id": "01M7BDCG1N56W51WA6R068KQZB",
+      "atom_uri": "urn:zam:atom:01M7BDCG1N56W51WA6R068KQZB",
+      "namespace": "zam-academy-biologie-realschule-5",
+      "slug": "b5-wildtiere",
+      "title": "Einheimische wild lebende Säugetiere und ihr Lebensraum",
+      "domain": "biologie/umgebung",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-wildtiere",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-5",
+          "topic_code": "umgebung",
+          "topic_title": "Tiere und Pflanzen in der Umgebung des Menschen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "subject": "biologie",
+          "topic_code": "lb1",
+          "topic_title": "Prozessbezogene Kompetenzen",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "subject": "biologie",
+          "topic_code": "lb4",
+          "topic_title": "Tiere und Pflanzen in der Umgebung des Menschen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7BDCG1N56W51WA6R068KQZC",
+          "slug": "b5-wildtiere-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Woran zeigt sich beim Eichhörnchen der enge Zusammenhang zwischen Körperbau und Lebensraum?",
+          "concept": "Scharfe Krallen und ein buschiger Schwanz helfen beim sicheren Klettern und Springen in Bäumen.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-wildtiere",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Scharfe Krallen und ein buschiger Schwanz helfen beim sicheren Klettern und Springen in Bäumen.",
+              "Es besitzt Schwimmhäute, um tief im Meer zu tauchen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7BDCG1N56W51WA6R068KQZD",
+          "slug": "b5-wildtiere-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum bedroht der Verlust von Hecken, Waldrändern oder alten Bäumen einheimische Wildsäuger wie Eichhörnchen, Igel oder Feldhase?",
+          "concept": "Körperbau, Nahrungssuche und Schutzverhalten sind eng an ihren Lebensraum gebunden; schwinden Nahrungsquellen und Verstecke, sinken ihre Überlebenschancen.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-wildtiere",
+          "sample_solution": "Körperbau, Nahrungssuche und Schutzverhalten sind eng an ihren Lebensraum gebunden; schwinden Nahrungsquellen und Verstecke, sinken ihre Überlebenschancen."
+        }
+      ]
+    },
+    {
+      "id": "01M7BDCG1N56W51WA6R068KQZE",
+      "atom_uri": "urn:zam:atom:01M7BDCG1N56W51WA6R068KQZE",
+      "namespace": "zam-academy-biologie-realschule-5",
+      "slug": "b5-haustiere-zucht",
+      "title": "Vom Wildtier zum Haus- und Nutztier",
+      "domain": "biologie/umgebung",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-haustiere-zucht",
+      "prerequisites": [
+        {
+          "atom_id": "01M7BDCG1N56W51WA6R068KQZB",
+          "type": "soft",
+          "rationale": "Diese Lektion erläutert eine verwendete fachliche Grundlage; der Lernpfad bleibt frei zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-5",
+          "topic_code": "umgebung",
+          "topic_title": "Tiere und Pflanzen in der Umgebung des Menschen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "subject": "biologie",
+          "topic_code": "lb4",
+          "topic_title": "Tiere und Pflanzen in der Umgebung des Menschen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7BDCG1N56W51WA6R068KQZF",
+          "slug": "b5-haustiere-zucht-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was versteht man unter Domestizierung?",
+          "concept": "Die über viele Generationen verlaufende Umwandlung von Wildtieren in Haustiere durch den Menschen.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-haustiere-zucht",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die über viele Generationen verlaufende Umwandlung von Wildtieren in Haustiere durch den Menschen.",
+              "Das Aussetzen eines Heimtiers im Wald."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7BDCG1N56W51WA6R068KQZG",
+          "slug": "b5-haustiere-zucht-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Worin unterscheidet sich die Domestizierung ganzer Tierarten von der Zähmung eines einzelnen Wildtiers?",
+          "concept": "Domestizierung verändert eine Tierart durch Züchtung über viele Generationen dauerhaft an menschliche Bedürfnisse (Nahrung, Rohstoffe, Arbeit); Zähmung prägt nur ein einzelnes Tier.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-haustiere-zucht",
+          "sample_solution": "Domestizierung verändert eine Tierart durch Züchtung über viele Generationen dauerhaft an menschliche Bedürfnisse (Nahrung, Rohstoffe, Arbeit); Zähmung prägt nur ein einzelnes Tier."
+        }
+      ]
+    },
+    {
+      "id": "01M7BDCG1N56W51WA6R068KQZH",
+      "atom_uri": "urn:zam:atom:01M7BDCG1N56W51WA6R068KQZH",
+      "namespace": "zam-academy-biologie-realschule-5",
+      "slug": "b5-nutztiere-haltung",
+      "title": "Körperbau und artgerechte Haltung von Nutztieren",
+      "domain": "biologie/umgebung",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-nutztiere-haltung",
+      "prerequisites": [
+        {
+          "atom_id": "01M7BDCG1N56W51WA6R068KQZE",
+          "type": "soft",
+          "rationale": "Diese Lektion erläutert eine verwendete fachliche Grundlage; der Lernpfad bleibt frei zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-5",
+          "topic_code": "umgebung",
+          "topic_title": "Tiere und Pflanzen in der Umgebung des Menschen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "subject": "biologie",
+          "topic_code": "lb4",
+          "topic_title": "Tiere und Pflanzen in der Umgebung des Menschen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7BDCG1N56W51WA6R068KQZJ",
+          "slug": "b5-nutztiere-haltung-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Haltungsbedingung passt am besten zum natürlichen Verhalten des Hausrinds als Herdentier und Wiederkäuer?",
+          "concept": "Ein Laufstall oder Weidegang mit Artgenossen, weichen Liegeflächen, frischem Wasser und Raufutter wie Gras oder Heu.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-nutztiere-haltung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein Laufstall oder Weidegang mit Artgenossen, weichen Liegeflächen, frischem Wasser und Raufutter wie Gras oder Heu.",
+              "Dauerhafte Einzelhaltung im dunklen Raum ohne Auslauf."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7BDCG1N56W51WA6R068KQZK",
+          "slug": "b5-nutztiere-haltung-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche natürlichen Merkmale des Hausrinds müssen bei einer artgerechten Haltung berücksichtigt werden?",
+          "concept": "Als Herdentier und wiederkäuender Pflanzenfresser braucht das Rind Sozialkontakt zu Artgenossen, Platz und weiche Liegeflächen, frisches Wasser sowie rohfaserreiches Futter wie Gras oder Heu.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-nutztiere-haltung",
+          "sample_solution": "Als Herdentier und wiederkäuender Pflanzenfresser braucht das Rind Sozialkontakt zu Artgenossen, Platz und weiche Liegeflächen, frisches Wasser sowie rohfaserreiches Futter wie Gras oder Heu."
+        }
+      ]
+    },
+    {
+      "id": "01M7BDCG1N56W51WA6R068KQZM",
+      "atom_uri": "urn:zam:atom:01M7BDCG1N56W51WA6R068KQZM",
+      "namespace": "zam-academy-biologie-realschule-5",
+      "slug": "b5-heimtiere-verantwortung",
+      "title": "Heimtiere artgerecht halten und Verantwortung übernehmen",
+      "domain": "biologie/umgebung",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-heimtiere-verantwortung",
+      "prerequisites": [
+        {
+          "atom_id": "01M7BDCG1N56W51WA6R068KQZH",
+          "type": "soft",
+          "rationale": "Diese Lektion erläutert eine verwendete fachliche Grundlage; der Lernpfad bleibt frei zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-5",
+          "topic_code": "umgebung",
+          "topic_title": "Tiere und Pflanzen in der Umgebung des Menschen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "subject": "biologie",
+          "topic_code": "lb1",
+          "topic_title": "Prozessbezogene Kompetenzen",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "subject": "biologie",
+          "topic_code": "lb4",
+          "topic_title": "Tiere und Pflanzen in der Umgebung des Menschen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7BDCG1N56W51WA6R068KQZN",
+          "slug": "b5-heimtiere-verantwortung-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Aussage gehört zu einer artgerechten Heimtierhaltung?",
+          "concept": "Soziale Tiere wie Kaninchen oder Meerschweinchen werden mindestens zu zweit mit ausreichend Platz und Beschäftigung gehalten.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-heimtiere-verantwortung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Soziale Tiere wie Kaninchen oder Meerschweinchen werden mindestens zu zweit mit ausreichend Platz und Beschäftigung gehalten.",
+              "Ein einzeln gehaltenes Kaninchen gewöhnt sich einfach an einen engen Käfig."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7BDCG1N56W51WA6R068KQZP",
+          "slug": "b5-heimtiere-verantwortung-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum ist vor der Anschaffung eines Heimtiers eine Prüfung objektiver Kriterien wie Sozialbedürfnis, Platz, Zeit und Kosten nötig?",
+          "concept": "Heimtiere sind fühlende Mitgeschöpfe; nur wer ausreichend Raum, Partnertiere bei sozialen Arten, tägliche Pflege und Tierarztkosten dauerhaft sichern kann, handelt verantwortungsvoll.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-heimtiere-verantwortung",
+          "sample_solution": "Heimtiere sind fühlende Mitgeschöpfe; nur wer ausreichend Raum, Partnertiere bei sozialen Arten, tägliche Pflege und Tierarztkosten dauerhaft sichern kann, handelt verantwortungsvoll."
+        }
+      ]
+    },
+    {
+      "id": "01M7BDCG1N56W51WA6R068KQZQ",
+      "atom_uri": "urn:zam:atom:01M7BDCG1N56W51WA6R068KQZQ",
+      "namespace": "zam-academy-biologie-realschule-5",
+      "slug": "b5-bluetenpflanzen-bau",
+      "title": "Grundbauplan der Blütenpflanze und Arbeitsteilung",
+      "domain": "biologie/umgebung",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-bluetenpflanzen-bau",
+      "prerequisites": [
+        {
+          "atom_id": "01M7BDCG1N56W51WA6R068KQYS",
+          "type": "soft",
+          "rationale": "Diese Lektion erläutert eine verwendete fachliche Grundlage; der Lernpfad bleibt frei zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-5",
+          "topic_code": "umgebung",
+          "topic_title": "Tiere und Pflanzen in der Umgebung des Menschen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "subject": "biologie",
+          "topic_code": "lb4",
+          "topic_title": "Tiere und Pflanzen in der Umgebung des Menschen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7BDCG1N56W51WA6R068KQZR",
+          "slug": "b5-bluetenpflanzen-bau-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche vier Grundorgane gehören zum Grundbauplan jeder Blütenpflanze?",
+          "concept": "Wurzel, Sprossachse, Laubblatt und Blüte.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-bluetenpflanzen-bau",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Wurzel, Sprossachse, Laubblatt und Blüte.",
+              "Herz, Lunge, Magen und Gehirn."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7BDCG1N56W51WA6R068KQZS",
+          "slug": "b5-bluetenpflanzen-bau-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche Grundaufgaben übernehmen die vier Grundorgane einer Blütenpflanze in Arbeitsteilung?",
+          "concept": "Die Wurzel verankert und nimmt Wasser mit Mineralstoffen auf, die Sprossachse trägt und leitet, die Laubblätter stellen Nährstoffe her und die Blüte dient der Fortpflanzung.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-bluetenpflanzen-bau",
+          "sample_solution": "Die Wurzel verankert und nimmt Wasser mit Mineralstoffen auf, die Sprossachse trägt und leitet, die Laubblätter stellen Nährstoffe her und die Blüte dient der Fortpflanzung."
+        }
+      ]
+    },
+    {
+      "id": "01M7BDCG1N56W51WA6R068KQZT",
+      "atom_uri": "urn:zam:atom:01M7BDCG1N56W51WA6R068KQZT",
+      "namespace": "zam-academy-biologie-realschule-5",
+      "slug": "b5-bluete-vielfalt",
+      "title": "Aufbau der Blüte und Vielfalt der Blütenpflanzen",
+      "domain": "biologie/umgebung",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-bluete-vielfalt",
+      "prerequisites": [
+        {
+          "atom_id": "01M7BDCG1N56W51WA6R068KQZQ",
+          "type": "soft",
+          "rationale": "Diese Lektion erläutert eine verwendete fachliche Grundlage; der Lernpfad bleibt frei zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-5",
+          "topic_code": "umgebung",
+          "topic_title": "Tiere und Pflanzen in der Umgebung des Menschen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "subject": "biologie",
+          "topic_code": "lb1",
+          "topic_title": "Prozessbezogene Kompetenzen",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "subject": "biologie",
+          "topic_code": "lb4",
+          "topic_title": "Tiere und Pflanzen in der Umgebung des Menschen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7BDCG1N56W51WA6R068KQZV",
+          "slug": "b5-bluete-vielfalt-check",
+          "replaces": [
+            "01K4B5P0000000000000000J03"
+          ],
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Aus welchen drei Teilen besteht der weibliche Stempel in der Mitte einer Blüte von oben nach unten?",
+          "concept": "Narbe, Griffel und Fruchtknoten.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-bluete-vielfalt",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Narbe, Griffel und Fruchtknoten.",
+              "Staubfaden, Staubbeutel und Blütenstaub."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7BDCG1N56W51WA6R068KQZW",
+          "slug": "b5-bluete-vielfalt-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Aus welchen vier Bestandteilen von außen nach innen ist eine vollständige Blüte aufgebaut, und warum ist Blütendiversität am Standort wichtig?",
+          "concept": "Kelchblätter, Kronblätter, Staubblätter und Stempel (Narbe, Griffel, Fruchtknoten); vielfältige Blüten sichern Nahrung für verschiedene Bestäuber und erhalten die heimische Biodiversität.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-bluete-vielfalt",
+          "sample_solution": "Kelchblätter, Kronblätter, Staubblätter und Stempel (Narbe, Griffel, Fruchtknoten); vielfältige Blüten sichern Nahrung für verschiedene Bestäuber und erhalten die heimische Biodiversität."
+        }
+      ]
+    },
+    {
+      "id": "01M7BDCG1N56W51WA6R068KQZX",
+      "atom_uri": "urn:zam:atom:01M7BDCG1N56W51WA6R068KQZX",
+      "namespace": "zam-academy-biologie-realschule-5",
+      "slug": "b5-wild-kulturpflanzen",
+      "title": "Von der Wildpflanze zur Kulturpflanze",
+      "domain": "biologie/umgebung",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-wild-kulturpflanzen",
+      "prerequisites": [
+        {
+          "atom_id": "01M7BDCG1N56W51WA6R068KQZQ",
+          "type": "soft",
+          "rationale": "Diese Lektion erläutert eine verwendete fachliche Grundlage; der Lernpfad bleibt frei zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-5",
+          "topic_code": "umgebung",
+          "topic_title": "Tiere und Pflanzen in der Umgebung des Menschen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "subject": "biologie",
+          "topic_code": "lb4",
+          "topic_title": "Tiere und Pflanzen in der Umgebung des Menschen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7BDCG1N56W51WA6R068KQZY",
+          "slug": "b5-wild-kulturpflanzen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Veränderung hat der Mensch beim Züchten von Kulturweizen aus Wildgräsern gezielt gefördert?",
+          "concept": "Größere Körner, die bis zur Ernte fest in der Ähre sitzen bleiben.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-wild-kulturpflanzen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Größere Körner, die bis zur Ernte fest in der Ähre sitzen bleiben.",
+              "Körner, die sofort beim leichtesten Wind ausfallen und verschwinden."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7BDCG1N56W51WA6R068KQZZ",
+          "slug": "b5-wild-kulturpflanzen-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche Merkmale hat der Mensch bei der Züchtung von Kulturweizen oder Kulturkohl gegenüber der Wildpflanze gezielt verändert?",
+          "concept": "Er förderte große, ertragreiche Organe (Körner, Blätter, Knollen) und feste Ähren; dafür brauchen viele Kulturpflanzen heute regelmäßige Pflege gegen Konkurrenz und Schädlinge.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-wild-kulturpflanzen",
+          "sample_solution": "Er förderte große, ertragreiche Organe (Körner, Blätter, Knollen) und feste Ähren; dafür brauchen viele Kulturpflanzen heute regelmäßige Pflege gegen Konkurrenz und Schädlinge."
+        }
+      ]
+    },
+    {
+      "id": "01M7BDCG1N56W51WA6R068KR00",
+      "atom_uri": "urn:zam:atom:01M7BDCG1N56W51WA6R068KR00",
+      "namespace": "zam-academy-biologie-realschule-5",
+      "slug": "b5-nutzpflanzen-getreide",
+      "title": "Getreidearten und Bedeutung von Nutzpflanzen",
+      "domain": "biologie/umgebung",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-nutzpflanzen-getreide",
+      "prerequisites": [
+        {
+          "atom_id": "01M7BDCG1N56W51WA6R068KQZX",
+          "type": "soft",
+          "rationale": "Diese Lektion erläutert eine verwendete fachliche Grundlage; der Lernpfad bleibt frei zugänglich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-realschule-5",
+          "topic_code": "umgebung",
+          "topic_title": "Tiere und Pflanzen in der Umgebung des Menschen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "subject": "biologie",
+          "topic_code": "lb4",
+          "topic_title": "Tiere und Pflanzen in der Umgebung des Menschen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7BDCG1N56W51WA6R068KR01",
+          "slug": "b5-nutzpflanzen-getreide-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Woran erkennst du Hafer auf dem Feld leicht im Vergleich zu Weizen, Roggen oder Gerste?",
+          "concept": "An der locker hängenden Rispe statt einer geschlossenen Ähre.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-nutzpflanzen-getreide",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "An der locker hängenden Rispe statt einer geschlossenen Ähre.",
+              "Hafer trägt große gelbe Kolben am Stängel."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7BDCG1N56W51WA6R068KR02",
+          "slug": "b5-nutzpflanzen-getreide-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche großen Nutzungsbereiche decken heimische Nutzpflanzen wie Getreide und Kartoffel für den Menschen ab?",
+          "concept": "Sie liefern vor allem Grundnahrungsmittel (z. B. Mehl, Flocken, Speisekartoffeln), tierisches Futter sowie nachwachsende Rohstoffe (Stärke, Stroh, Fasern) und Energie.",
+          "source_link": "https://academy.zam-os.org/biologie-realschule-5/#lesson=b5-nutzpflanzen-getreide",
+          "sample_solution": "Sie liefern vor allem Grundnahrungsmittel (z. B. Mehl, Flocken, Speisekartoffeln), tierisches Futter sowie nachwachsende Rohstoffe (Stärke, Stroh, Fasern) und Energie."
+        }
+      ]
+    }
+  ],
+  "published_at": "2026-11-13T21:40:00Z"
+}

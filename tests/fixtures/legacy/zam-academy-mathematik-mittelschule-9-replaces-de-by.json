@@ -1,0 +1,10 @@
+{
+  "schema": 1,
+  "status": "proposal-only",
+  "approved": null,
+  "source": "No Mittelschule mathematics legacy cells exist for Grade 9 in zam-os/zam (checked at the commit below). No cross-school mappings are proposed; existing Realschule and Gymnasium review histories stay with their own cards.",
+  "source_repository": "zam-os/zam",
+  "source_commit": "ea825d1c1147fcc5f37de5817c2d6a7c05e2f7ed",
+  "sources": [],
+  "rows": []
+}

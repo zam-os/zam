@@ -1,0 +1,152 @@
+{
+	"schema": 1,
+	"source_repository": "zam-os/zam",
+	"source_commit": "e6a235f75fe87b9d57af38bd61011027b891492c",
+	"status": "approved",
+	"approved": "2026-11-14",
+	"source": "Approved by Thomas on 2026-11-14: 6 A transfers via replaces (including 3 neighbouring Grade 6 items taught in current Grade 5), 0 B, all 10 C rows kept active without retirement.",
+	"sources": [
+		{
+			"file": "tests/fixtures/de-by-realschule-5-geographie-erde-gradnetz-orientierung-kvt.json",
+			"tile_id": "de-by:realschule-5-geographie-erde-gradnetz-orientierung",
+			"version": "2026.08.1",
+			"sha256": "f2b2a7298e9d507c88948d104a5188e92eaad14613afee1c0d8e7ff53156401b"
+		},
+		{
+			"file": "tests/fixtures/de-by-realschule-6-geographie-deutschland-bayern-raum-kvt.json",
+			"tile_id": "de-by:realschule-6-geographie-deutschland-bayern-raum",
+			"version": "2026.08.1",
+			"sha256": "03ae90a89c8cba89fe6afb204afa034d8763a531429f2dbaa32e429e38790f4c"
+		}
+	],
+	"rows": [
+		{
+			"de_by_cell": "de-by:realschule-5-geographie-erde-gradnetz-orientierung",
+			"de_by_id": "01K4G5E0000000000000000J01",
+			"category": "A",
+			"academy_slug": "geo5-gradnetz-check",
+			"action": "replace",
+			"reason": "Same single retrieval: the equator is the 0-degree latitude circle separating the hemispheres. The old answer adds circumference, but the prompt does not ask for it."
+		},
+		{
+			"de_by_cell": "de-by:realschule-5-geographie-erde-gradnetz-orientierung",
+			"de_by_id": "01K4G5E0000000000000000J02",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"reason": "The old combined prompt asks for the complete graticule, limits, meridian properties and coordinate example. New items retrieve narrower parts; no single unchanged successor."
+		},
+		{
+			"de_by_cell": "de-by:realschule-5-geographie-erde-gradnetz-orientierung",
+			"de_by_id": "01K4G5E0000000000000000J03",
+			"category": "A",
+			"academy_slug": "geo5-massstab-check",
+			"action": "replace",
+			"reason": "Same single retrieval: 1 cm at 1:50 000 corresponds to 500 m."
+		},
+		{
+			"de_by_cell": "de-by:realschule-5-geographie-erde-gradnetz-orientierung",
+			"de_by_id": "01K4G5E0000000000000000J04",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"reason": "The old four-part map-language prompt and distance calculation are distributed across several lessons. A history cannot be split across those successors."
+		},
+		{
+			"de_by_cell": "de-by:realschule-5-geographie-erde-gradnetz-orientierung",
+			"de_by_id": "01K4G5E0000000000000000J05",
+			"category": "A",
+			"academy_slug": "geo5-erdbewegungen-check",
+			"action": "replace",
+			"reason": "Same single retrieval: approximately 23.5 degrees relative to the perpendicular to the orbital plane."
+		},
+		{
+			"de_by_cell": "de-by:realschule-5-geographie-erde-gradnetz-orientierung",
+			"de_by_id": "01K4G5E0000000000000000J06",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"reason": "The compound answer joins rotation, orbit, seasons and fixed calendar dates. New lessons separate mechanisms and avoid treating solstice and equinox dates as invariant; no unchanged whole-answer successor."
+		},
+		{
+			"de_by_cell": "de-by:realschule-5-geographie-erde-gradnetz-orientierung",
+			"de_by_id": "01K4G5E0000000000000000J07",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"reason": "The agricultural regional superlative is not a recall objective of the new package. The current Grade 6 curriculum teaches agriculture; keep active pending a separate scope decision."
+		},
+		{
+			"de_by_cell": "de-by:realschule-5-geographie-erde-gradnetz-orientierung",
+			"de_by_id": "01K4G5E0000000000000000J08",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"reason": "The old agricultural land-use and structural-change bundle exceeds the Grade 5 introductory land-use comparison. Keep active for the later agriculture package."
+		},
+		{
+			"de_by_cell": "de-by:realschule-6-geographie-deutschland-bayern-raum",
+			"de_by_id": "01K4G6D0000000000000000J01",
+			"category": "A",
+			"academy_slug": "geo5-grosslandschaften-check",
+			"action": "replace",
+			"reason": "Same single retrieval: name of the northern German lowland. Current official curriculum assigns German physical structures to Grade 5; including this neighbouring-grade history is only a proposal."
+		},
+		{
+			"de_by_cell": "de-by:realschule-6-geographie-deutschland-bayern-raum",
+			"de_by_id": "01K4G6D0000000000000000J02",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"reason": "The old multi-part answer includes detailed elevations and geomorphology, and conflates parts of the step-land with Alpine foreland. The new broad-landscape lesson corrects and narrows this scope."
+		},
+		{
+			"de_by_cell": "de-by:realschule-6-geographie-deutschland-bayern-raum",
+			"de_by_id": "01K4G6D0000000000000000J03",
+			"category": "A",
+			"academy_slug": "geo5-bayern-check",
+			"action": "replace",
+			"reason": "Same single retrieval: Bavaria has seven administrative districts. Grade 5 now teaches this administration; neighbouring-grade inclusion requires Thomas to approve the proposal."
+		},
+		{
+			"de_by_cell": "de-by:realschule-6-geographie-deutschland-bayern-raum",
+			"de_by_id": "01K4G6D0000000000000000J04",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"reason": "All seven seats and a detailed tributary network form one old retrieval. New lesson tasks cover a smaller selection, so no mastery transfer is inferred."
+		},
+		{
+			"de_by_cell": "de-by:realschule-6-geographie-deutschland-bayern-raum",
+			"de_by_id": "01K4G6D0000000000000000J05",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"reason": "The mechanism of tides is not retrieved by a new item. A protected coastal landscape example does not establish an equivalent tide-mechanism retrieval."
+		},
+		{
+			"de_by_cell": "de-by:realschule-6-geographie-deutschland-bayern-raum",
+			"de_by_id": "01K4G6D0000000000000000J06",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"reason": "The detailed paired coastal morphology answer has no unchanged successor. The protected-area comparison is narrower."
+		},
+		{
+			"de_by_cell": "de-by:realschule-6-geographie-deutschland-bayern-raum",
+			"de_by_id": "01K4G6D0000000000000000J07",
+			"category": "A",
+			"academy_slug": "geo5-stadt-check",
+			"action": "replace",
+			"reason": "Same single retrieval: regular work travel without permanent relocation is commuting. Current Grade 5 explicitly includes city-hinterland relationships; scope remains a proposal."
+		},
+		{
+			"de_by_cell": "de-by:realschule-6-geographie-deutschland-bayern-raum",
+			"de_by_id": "01K4G6D0000000000000000J08",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"reason": "The metropolitan/rural comparison, demographic generalisations and constitutional framework are not the same retrieval as the Grade 5 city-functions tasks."
+		}
+	]
+}

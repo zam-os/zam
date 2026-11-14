@@ -1,0 +1,3745 @@
+{
+	"$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+	"tile_id": "zam-academy:franzoesisch-gymnasium-5",
+	"version": "2026.11.1",
+	"title": "Französisch 5 Gymnasium (ZAM Academy)",
+	"description": "French as the first foreign language, Bavaria: 40 beginner lessons, 120 visual construction goals, 80 production tasks and 120 linked recall cards. Local draft; listening, spontaneous interaction and current research require additional practice.",
+	"publisher": "ZAM Academy",
+	"sources": [
+		{
+			"uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/5/franzoesisch/1-fremdsprache",
+			"label": "ISB · Französisch 5 (1. Fremdsprache), Gymnasium",
+			"checked": "2026-11-14"
+		},
+		{
+			"uri": "https://european-union.europa.eu/principles-countries-history/eu-countries/france_en",
+			"label": "European Union · France — country profile",
+			"checked": "2026-11-14"
+		},
+		{
+			"uri": "https://european-union.europa.eu/principles-countries-history/eu-countries/germany_en",
+			"label": "European Union · Germany — country profile",
+			"checked": "2026-11-14"
+		},
+		{
+			"uri": "https://www.france.fr/fr/destination/bretagne/",
+			"label": "Atout France · Bretagne",
+			"checked": "2026-11-14"
+		}
+	],
+	"atoms": [
+		{
+			"id": "01M7CF8YHR40Q32WZTCPH5TQ6V",
+			"atom_uri": "urn:zam:atom:01M7CF8YHR40Q32WZTCPH5TQ6V",
+			"namespace": "zam-academy-franzoesisch-gymnasium-5",
+			"slug": "f5-bonjour",
+			"title": "Bonjour !",
+			"domain": "franzoesisch/rencontres",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-bonjour",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-gymnasium-5",
+					"topic_code": "rencontres",
+					"topic_title": "Bonjour, les amis !"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-sprechen",
+					"topic_title": "Höflich begrüßen und sich verabschieden",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-wortschatz",
+					"topic_title": "Höflich begrüßen und sich verabschieden",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb2",
+					"topic_title": "Höflich begrüßen und sich verabschieden",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb5",
+					"topic_title": "Höflich begrüßen und sich verabschieden",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7CF8YHSJF7PM8E4JH5904P7",
+					"slug": "f5-bonjour-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie begrüßt du eine erwachsene Frau höflich?",
+					"concept": "Bonjour, Madame.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-bonjour",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": ["Bonjour, Madame.", "Salut, mon copain !"],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7CF8YHSX0AY2BXT4R69E6RZ",
+					"slug": "f5-bonjour-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was sagst du beim höflichen Verabschieden?",
+					"concept": "Au revoir !",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-bonjour",
+					"sample_solution": "Au revoir !"
+				},
+				{
+					"id": "01M7CF8YHSCM1N6V1NNHDGWD8Z",
+					"slug": "f5-bonjour-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie heißt „bitte“ in einer höflichen Bitte an Erwachsene?",
+					"concept": "S’il vous plaît.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-bonjour",
+					"sample_solution": "S’il vous plaît."
+				}
+			]
+		},
+		{
+			"id": "01M7CF8YHRMHCVHC9EB7MY1RAM",
+			"atom_uri": "urn:zam:atom:01M7CF8YHRMHCVHC9EB7MY1RAM",
+			"namespace": "zam-academy-franzoesisch-gymnasium-5",
+			"slug": "f5-moi",
+			"title": "Je m’appelle…",
+			"domain": "franzoesisch/rencontres",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-moi",
+			"prerequisites": [
+				{
+					"atom_id": "01M7CF8YHR40Q32WZTCPH5TQ6V",
+					"type": "soft",
+					"rationale": "A self-introduction uses the greeting formulas."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-gymnasium-5",
+					"topic_code": "rencontres",
+					"topic_title": "Bonjour, les amis !"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-sprechen",
+					"topic_title": "Name, Alter und Wohnort nennen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-schreiben",
+					"topic_title": "Name, Alter und Wohnort nennen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-wortschatz",
+					"topic_title": "Name, Alter und Wohnort nennen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb5",
+					"topic_title": "Name, Alter und Wohnort nennen",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7CF8YHSSN71JP58V6F83A0F",
+					"slug": "f5-moi-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie heißt „Ich bin zehn Jahre alt“ auf Französisch?",
+					"concept": "J’ai dix ans.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-moi",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": ["J’ai dix ans.", "Je suis dix ans."],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7CF8YHSXGPK5F9KMR1GH3WZ",
+					"slug": "f5-moi-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie heißt „Ich wohne in Lyon“?",
+					"concept": "J’habite à Lyon.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-moi",
+					"sample_solution": "J’habite à Lyon."
+				},
+				{
+					"id": "01M7CF8YHSZPQRP037770KDQ1R",
+					"slug": "f5-moi-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Mit welcher Wendung nennst du deinen Namen?",
+					"concept": "Je m’appelle…",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-moi",
+					"sample_solution": "Je m’appelle…"
+				}
+			]
+		},
+		{
+			"id": "01M7CF8YHR04CPCZXZ7TK251K1",
+			"atom_uri": "urn:zam:atom:01M7CF8YHR04CPCZXZ7TK251K1",
+			"namespace": "zam-academy-franzoesisch-gymnasium-5",
+			"slug": "f5-sons",
+			"title": "Écoute les sons",
+			"domain": "franzoesisch/rencontres",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-sons",
+			"prerequisites": [
+				{
+					"atom_id": "01M7CF8YHR40Q32WZTCPH5TQ6V",
+					"type": "soft",
+					"rationale": "Familiar greetings supply the first pronunciation examples."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-gymnasium-5",
+					"topic_code": "rencontres",
+					"topic_title": "Bonjour, les amis !"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-aussprache",
+					"topic_title": "/y/, e-Laute und Nasale unterscheiden",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-hoeren",
+					"topic_title": "/y/, e-Laute und Nasale unterscheiden",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-schreiben",
+					"topic_title": "/y/, e-Laute und Nasale unterscheiden",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7CF8YHSGW6HNNM912CWK17G",
+					"slug": "f5-sons-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welchen Laut bezeichnet u im Wort tu?",
+					"concept": "/y/, ähnlich dem deutschen ü.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-sons",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": ["/y/, ähnlich dem deutschen ü.", "/u/ wie in vous."],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7CF8YHSX0FNDZ3RY1F7KK7D",
+					"slug": "f5-sons-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welcher Laut steht hinter é in été?",
+					"concept": "/e/.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-sons",
+					"sample_solution": "/e/."
+				},
+				{
+					"id": "01M7CF8YHSZ4TQYNWGG8S42FRF",
+					"slug": "f5-sons-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie sprichst du den Nasallaut in bon?",
+					"concept": "/ɔ̃/, ohne ein eigenes n anzuhängen.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-sons",
+					"sample_solution": "/ɔ̃/, ohne ein eigenes n anzuhängen."
+				}
+			]
+		},
+		{
+			"id": "01M7CF8YHR8ZQVMHEMAW9TM9GC",
+			"atom_uri": "urn:zam:atom:01M7CF8YHR8ZQVMHEMAW9TM9GC",
+			"namespace": "zam-academy-franzoesisch-gymnasium-5",
+			"slug": "f5-classe",
+			"title": "En classe",
+			"domain": "franzoesisch/rencontres",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-classe",
+			"prerequisites": [
+				{
+					"atom_id": "01M7CF8YHR40Q32WZTCPH5TQ6V",
+					"type": "soft",
+					"rationale": "Classroom requests build on polite forms of address."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-gymnasium-5",
+					"topic_code": "rencontres",
+					"topic_title": "Bonjour, les amis !"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-sprechen",
+					"topic_title": "Anweisungen und regelmäßiger Imperativ",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-wortschatz",
+					"topic_title": "Anweisungen und regelmäßiger Imperativ",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-grammatik",
+					"topic_title": "Anweisungen und regelmäßiger Imperativ",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb5",
+					"topic_title": "Anweisungen und regelmäßiger Imperativ",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7CF8YHTSFCG03S81QXG4XVX",
+					"slug": "f5-classe-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie heißt der regelmäßige tu-Imperativ von parler?",
+					"concept": "Parle ! Ohne tu und ohne s.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-classe",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": ["Parle ! Ohne tu und ohne s.", "Tu parles !"],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7CF8YHTHBQ19B0F68WEB9Y3",
+					"slug": "f5-classe-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was bedeutet complétez?",
+					"concept": "Ergänzt.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-classe",
+					"sample_solution": "Ergänzt."
+				},
+				{
+					"id": "01M7CF8YHTGHZ0GR228Z7XNYFQ",
+					"slug": "f5-classe-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie bittest du höflich um Wiederholung?",
+					"concept": "Répétez, s’il vous plaît.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-classe",
+					"sample_solution": "Répétez, s’il vous plaît."
+				}
+			]
+		},
+		{
+			"id": "01M7CF8YHRJ87M5XJ3R3DDK6AZ",
+			"atom_uri": "urn:zam:atom:01M7CF8YHRJ87M5XJ3R3DDK6AZ",
+			"namespace": "zam-academy-franzoesisch-gymnasium-5",
+			"slug": "f5-nombres",
+			"title": "De zéro à cent",
+			"domain": "franzoesisch/rencontres",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-nombres",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-gymnasium-5",
+					"topic_code": "rencontres",
+					"topic_title": "Bonjour, les amis !"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-wortschatz",
+					"topic_title": "Zahlen bis 100 zerlegen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb5",
+					"topic_title": "Zahlen bis 100 zerlegen",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7CF8YHT30SWMT2RA4D9PCDS",
+					"slug": "f5-nombres-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie heißt 71 in Frankreich?",
+					"concept": "Soixante et onze.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-nombres",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": ["Soixante et onze.", "Soixante et un."],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7CF8YHTQDCDA0005Q5WG5BY",
+					"slug": "f5-nombres-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie schreibst du genau 80?",
+					"concept": "Quatre-vingts.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-nombres",
+					"sample_solution": "Quatre-vingts."
+				},
+				{
+					"id": "01M7CF8YHTHPVW0XRXX6TCPK31",
+					"slug": "f5-nombres-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie schreibst du 81?",
+					"concept": "Quatre-vingt-un.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-nombres",
+					"sample_solution": "Quatre-vingt-un."
+				}
+			]
+		},
+		{
+			"id": "01M7CF8YHRC6CF5MDB26VFF10E",
+			"atom_uri": "urn:zam:atom:01M7CF8YHRC6CF5MDB26VFF10E",
+			"namespace": "zam-academy-franzoesisch-gymnasium-5",
+			"slug": "f5-articles",
+			"title": "Un livre, des livres",
+			"domain": "franzoesisch/vie",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-articles",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-gymnasium-5",
+					"topic_code": "vie",
+					"topic_title": "Ma petite vie"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-grammatik",
+					"topic_title": "Genus, Artikel und Mehrzahl zusammen lernen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-wortschatz",
+					"topic_title": "Genus, Artikel und Mehrzahl zusammen lernen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb5",
+					"topic_title": "Genus, Artikel und Mehrzahl zusammen lernen",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7CF8YHTARCN8Y9S1JERWGAM",
+					"slug": "f5-articles-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie heißen die bestimmten Artikel im Singular und Plural?",
+					"concept": "Le, la und vor Vokal l’ im Singular; les im Plural.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-articles",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Le, la und vor Vokal l’ im Singular; les im Plural.",
+							"Un, une und des."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7CF8YHTSTWM4EM2YH11V84A",
+					"slug": "f5-articles-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie lautet die Mehrzahl von un livre?",
+					"concept": "Des livres.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-articles",
+					"sample_solution": "Des livres."
+				},
+				{
+					"id": "01M7CF8YHTG6FEK1NWDF7GNP4Q",
+					"slug": "f5-articles-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Warum lernst du französische Nomen mit Artikel?",
+					"concept": "Der Artikel zeigt das Genus; es kann vom Deutschen abweichen.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-articles",
+					"sample_solution": "Der Artikel zeigt das Genus; es kann vom Deutschen abweichen."
+				}
+			]
+		},
+		{
+			"id": "01M7CF8YHRXSRK18KA4Y9437GJ",
+			"atom_uri": "urn:zam:atom:01M7CF8YHRXSRK18KA4Y9437GJ",
+			"namespace": "zam-academy-franzoesisch-gymnasium-5",
+			"slug": "f5-famille",
+			"title": "Ma famille",
+			"domain": "franzoesisch/vie",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-famille",
+			"prerequisites": [
+				{
+					"atom_id": "01M7CF8YHRC6CF5MDB26VFF10E",
+					"type": "soft",
+					"rationale": "Possessive agreement builds on noun gender and number."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-gymnasium-5",
+					"topic_code": "vie",
+					"topic_title": "Ma petite vie"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-sprechen",
+					"topic_title": "Possessivbegleiter und Subjektpronomen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-grammatik",
+					"topic_title": "Possessivbegleiter und Subjektpronomen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-wortschatz",
+					"topic_title": "Possessivbegleiter und Subjektpronomen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb5",
+					"topic_title": "Possessivbegleiter und Subjektpronomen",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7CF8YHT9XDN7VZY6CYNQJK4",
+					"slug": "f5-famille-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wonach richtet sich mon, ma oder mes?",
+					"concept": "Nach Genus und Zahl des Besitzworts.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-famille",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Nach Genus und Zahl des Besitzworts.",
+							"Nach dem Geschlecht der besitzenden Person."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7CF8YHTJKXWRDXEGDT1XT9B",
+					"slug": "f5-famille-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Warum heißt es mon amie?",
+					"concept": "Vor einem weiblichen Nomen mit Vokal steht mon statt ma.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-famille",
+					"sample_solution": "Vor einem weiblichen Nomen mit Vokal steht mon statt ma."
+				},
+				{
+					"id": "01M7CF8YHT0E0Y2A3EYWYTNSRP",
+					"slug": "f5-famille-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welches Subjektpronomen ersetzt Lina et Zoé?",
+					"concept": "Elles.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-famille",
+					"sample_solution": "Elles."
+				}
+			]
+		},
+		{
+			"id": "01M7CF8YHRM7D0MFBC7NG80ECV",
+			"atom_uri": "urn:zam:atom:01M7CF8YHRM7D0MFBC7NG80ECV",
+			"namespace": "zam-academy-franzoesisch-gymnasium-5",
+			"slug": "f5-animaux",
+			"title": "Des animaux et des jeux",
+			"domain": "franzoesisch/vie",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-animaux",
+			"prerequisites": [
+				{
+					"atom_id": "01M7CF8YHRC6CF5MDB26VFF10E",
+					"type": "soft",
+					"rationale": "Irregular plurals extend the regular noun/article pattern."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-gymnasium-5",
+					"topic_code": "vie",
+					"topic_title": "Ma petite vie"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-wortschatz",
+					"topic_title": "Häufige unregelmäßige Pluralformen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-grammatik",
+					"topic_title": "Häufige unregelmäßige Pluralformen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb5",
+					"topic_title": "Häufige unregelmäßige Pluralformen",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7CF8YHTY82H0QMBZ4AY0Z9B",
+					"slug": "f5-animaux-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie heißt die Mehrzahl von un animal?",
+					"concept": "Des animaux.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-animaux",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": ["Des animaux.", "Des animals."],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7CF8YHTN0FF3ACZVE28EWQZ",
+					"slug": "f5-animaux-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie heißt die Mehrzahl von un cadeau?",
+					"concept": "Des cadeaux.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-animaux",
+					"sample_solution": "Des cadeaux."
+				},
+				{
+					"id": "01M7CF8YHT7FKPSENS2WCP0QCR",
+					"slug": "f5-animaux-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie heißt die Mehrzahl von un jeu?",
+					"concept": "Des jeux.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-animaux",
+					"sample_solution": "Des jeux."
+				}
+			]
+		},
+		{
+			"id": "01M7CF8YHRD5P4MHKWH17PD33Y",
+			"atom_uri": "urn:zam:atom:01M7CF8YHRD5P4MHKWH17PD33Y",
+			"namespace": "zam-academy-franzoesisch-gymnasium-5",
+			"slug": "f5-maison",
+			"title": "À gauche, à droite",
+			"domain": "franzoesisch/vie",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-maison",
+			"prerequisites": [
+				{
+					"atom_id": "01M7CF8YHRC6CF5MDB26VFF10E",
+					"type": "soft",
+					"rationale": "Contracted articles build on the definite article."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-gymnasium-5",
+					"topic_code": "vie",
+					"topic_title": "Ma petite vie"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-wortschatz",
+					"topic_title": "Wohnen, Bildbeschreibung und zusammengezogene Artikel",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-grammatik",
+					"topic_title": "Wohnen, Bildbeschreibung und zusammengezogene Artikel",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb5",
+					"topic_title": "Wohnen, Bildbeschreibung und zusammengezogene Artikel",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7CF8YHTJMJWT6VKC7BHVBRB",
+					"slug": "f5-maison-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche zusammengezogenen Artikel entstehen mit à und de?",
+					"concept": "À + le = au, à + les = aux, de + le = du, de + les = des.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-maison",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"À + le = au, à + les = aux, de + le = du, de + les = des.",
+							"À und de bleiben vor le und les immer getrennt."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7CF8YHTN9WMSEAFN8S26JDY",
+					"slug": "f5-maison-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie heißt „links“ auf Französisch?",
+					"concept": "À gauche.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-maison",
+					"sample_solution": "À gauche."
+				},
+				{
+					"id": "01M7CF8YHTW8Y9VQRN8MED9N1V",
+					"slug": "f5-maison-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Warum heißt es à la maison, aber au parc?",
+					"concept": "À + le wird au; à + la bleibt getrennt.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-maison",
+					"sample_solution": "À + le wird au; à + la bleibt getrennt."
+				}
+			]
+		},
+		{
+			"id": "01M7CF8YHR0FCJK0CPFTMRYNNW",
+			"atom_uri": "urn:zam:atom:01M7CF8YHR0FCJK0CPFTMRYNNW",
+			"namespace": "zam-academy-franzoesisch-gymnasium-5",
+			"slug": "f5-fiche",
+			"title": "Ma fiche imaginaire",
+			"domain": "franzoesisch/vie",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-fiche",
+			"prerequisites": [
+				{
+					"atom_id": "01M7CF8YHRJ87M5XJ3R3DDK6AZ",
+					"type": "soft",
+					"rationale": "Dates and addresses use numbers."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-gymnasium-5",
+					"topic_code": "vie",
+					"topic_title": "Ma petite vie"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-schreiben",
+					"topic_title": "Datum, Monate und ein Formular",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-wortschatz",
+					"topic_title": "Datum, Monate und ein Formular",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb5",
+					"topic_title": "Datum, Monate und ein Formular",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7CF8YHT0ZJ7RZ02CXCR3KTH",
+					"slug": "f5-fiche-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie lautet das französische Datum für den 1. Juni?",
+					"concept": "Le 1er juin, gesprochen le premier juin.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-fiche",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Le 1er juin, gesprochen le premier juin.",
+							"Le un juin."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7CF8YHTEGH8C87DWTTMT11T",
+					"slug": "f5-fiche-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was bedeutet prénom in einem Formular?",
+					"concept": "Vorname.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-fiche",
+					"sample_solution": "Vorname."
+				},
+				{
+					"id": "01M7CF8YHTKSE7W7GWR7JMVFNY",
+					"slug": "f5-fiche-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie heißen die Monate Mai, Juni und Juli?",
+					"concept": "Mai, juin, juillet.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-fiche",
+					"sample_solution": "Mai, juin, juillet."
+				}
+			]
+		},
+		{
+			"id": "01M7CF8YHSHKBE23T6QZA0EY3H",
+			"atom_uri": "urn:zam:atom:01M7CF8YHSHKBE23T6QZA0EY3H",
+			"namespace": "zam-academy-franzoesisch-gymnasium-5",
+			"slug": "f5-etre-avoir",
+			"title": "Être et avoir",
+			"domain": "franzoesisch/verbes",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-etre-avoir",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-gymnasium-5",
+					"topic_code": "verbes",
+					"topic_title": "Les verbes en action"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-grammatik",
+					"topic_title": "Zwei Grundverben und Subjektpronomen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-schreiben",
+					"topic_title": "Zwei Grundverben und Subjektpronomen",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7CF8YHT6YXRZ8MFQP783ERW",
+					"slug": "f5-etre-avoir-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie lautet être mit nous und vous?",
+					"concept": "Nous sommes, vous êtes.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-etre-avoir",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": ["Nous sommes, vous êtes.", "Nous êtes, vous sommes."],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7CF8YHTJNKVF4JFMBXD5P09",
+					"slug": "f5-etre-avoir-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie lautet avoir mit nous, vous und ils?",
+					"concept": "Nous avons, vous avez, ils ont.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-etre-avoir",
+					"sample_solution": "Nous avons, vous avez, ils ont."
+				},
+				{
+					"id": "01M7CF8YHTTR8DH3S8KE8Z0Z21",
+					"slug": "f5-etre-avoir-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche Verbform steht nach on?",
+					"concept": "Die Form der 3. Person Singular, wie bei il und elle.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-etre-avoir",
+					"sample_solution": "Die Form der 3. Person Singular, wie bei il und elle."
+				}
+			]
+		},
+		{
+			"id": "01M7CF8YHSG36CFH1E3DF3MJJK",
+			"atom_uri": "urn:zam:atom:01M7CF8YHSG36CFH1E3DF3MJJK",
+			"namespace": "zam-academy-franzoesisch-gymnasium-5",
+			"slug": "f5-er",
+			"title": "Je parle français",
+			"domain": "franzoesisch/verbes",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-er",
+			"prerequisites": [
+				{
+					"atom_id": "01M7CF8YHSHKBE23T6QZA0EY3H",
+					"type": "soft",
+					"rationale": "Regular verb endings need subject pronouns already used with être and avoir."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-gymnasium-5",
+					"topic_code": "verbes",
+					"topic_title": "Les verbes en action"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-grammatik",
+					"topic_title": "Regelmäßige Verben auf -er",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-wortschatz",
+					"topic_title": "Regelmäßige Verben auf -er",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7CF8YHTSYP0WY5AYQ3VRPVS",
+					"slug": "f5-er-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche Endungen haben regelmäßige -er-Verben im Präsens?",
+					"concept": "-e, -es, -e, -ons, -ez, -ent.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-er",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"-e, -es, -e, -ons, -ez, -ent.",
+							"-s, -s, -t, -ons, -ez, -ent."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7CF8YHT1YC3WVVBKBB26NX8",
+					"slug": "f5-er-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie heißt „wir sprechen“?",
+					"concept": "Nous parlons.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-er",
+					"sample_solution": "Nous parlons."
+				},
+				{
+					"id": "01M7CF8YHTKKMJ8RMT66K7YAXC",
+					"slug": "f5-er-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Warum gehört aller nicht zum regelmäßigen -er-Muster?",
+					"concept": "Aller ist trotz -er-Endung unregelmäßig.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-er",
+					"sample_solution": "Aller ist trotz -er-Endung unregelmäßig."
+				}
+			]
+		},
+		{
+			"id": "01M7CF8YHSR74CQPF6ZY1TRSY2",
+			"atom_uri": "urn:zam:atom:01M7CF8YHSR74CQPF6ZY1TRSY2",
+			"namespace": "zam-academy-franzoesisch-gymnasium-5",
+			"slug": "f5-er-ecriture",
+			"title": "Nous mangeons",
+			"domain": "franzoesisch/verbes",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-er-ecriture",
+			"prerequisites": [
+				{
+					"atom_id": "01M7CF8YHSG36CFH1E3DF3MJJK",
+					"type": "soft",
+					"rationale": "Spelling changes preserve the regular -er endings."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-gymnasium-5",
+					"topic_code": "verbes",
+					"topic_title": "Les verbes en action"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-grammatik",
+					"topic_title": "Schreibbesonderheiten bei -er-Verben",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-schreiben",
+					"topic_title": "Schreibbesonderheiten bei -er-Verben",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7CF8YHTZPSQKAGKA8SJ7AHZ",
+					"slug": "f5-er-ecriture-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Warum schreibt man nous mangeons mit e?",
+					"concept": "Das e erhält den weichen g-Laut vor o.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-er-ecriture",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Das e erhält den weichen g-Laut vor o.",
+							"Die Endung lautet immer -eons."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7CF8YHTKA25W5W7MGSWRASK",
+					"slug": "f5-er-ecriture-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie lautet die nous-Form von commencer?",
+					"concept": "Nous commençons.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-er-ecriture",
+					"sample_solution": "Nous commençons."
+				},
+				{
+					"id": "01M7CF8YHT40VQ040S1M352XHT",
+					"slug": "f5-er-ecriture-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie lauten acheter mit je und nous?",
+					"concept": "J’achète, nous achetons.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-er-ecriture",
+					"sample_solution": "J’achète, nous achetons."
+				}
+			]
+		},
+		{
+			"id": "01M7CF8YHSHXK46FHMKD681K0H",
+			"atom_uri": "urn:zam:atom:01M7CF8YHSHXK46FHMKD681K0H",
+			"namespace": "zam-academy-franzoesisch-gymnasium-5",
+			"slug": "f5-re",
+			"title": "Nous attendons",
+			"domain": "franzoesisch/verbes",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-re",
+			"prerequisites": [
+				{
+					"atom_id": "01M7CF8YHSG36CFH1E3DF3MJJK",
+					"type": "soft",
+					"rationale": "The regular -re paradigm is compared with the known -er paradigm."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-gymnasium-5",
+					"topic_code": "verbes",
+					"topic_title": "Les verbes en action"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-grammatik",
+					"topic_title": "Regelmäßige Verben auf -re",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb5",
+					"topic_title": "Regelmäßige Verben auf -re",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7CF8YHT1SJMNABAB0WXWHA1",
+					"slug": "f5-re-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie lauten die Endungen regelmäßiger -re-Verben wie attendre?",
+					"concept": "-s, -s, keine Endung, -ons, -ez, -ent.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-re",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"-s, -s, keine Endung, -ons, -ez, -ent.",
+							"-e, -es, -e, -ons, -ez, -ent."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7CF8YHTEEMVT37MZTJ3XH4P",
+					"slug": "f5-re-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie heißt „sie wartet“?",
+					"concept": "Elle attend.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-re",
+					"sample_solution": "Elle attend."
+				},
+				{
+					"id": "01M7CF8YHTBYAMEZXC4HKZA6Y6",
+					"slug": "f5-re-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie heißt „wir verkaufen“?",
+					"concept": "Nous vendons.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-re",
+					"sample_solution": "Nous vendons."
+				}
+			]
+		},
+		{
+			"id": "01M7CF8YHSWXEWK0HK44F21NTF",
+			"atom_uri": "urn:zam:atom:01M7CF8YHSWXEWK0HK44F21NTF",
+			"namespace": "zam-academy-franzoesisch-gymnasium-5",
+			"slug": "f5-aller-faire",
+			"title": "On va au parc",
+			"domain": "franzoesisch/verbes",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-aller-faire",
+			"prerequisites": [
+				{
+					"atom_id": "01M7CF8YHSHKBE23T6QZA0EY3H",
+					"type": "soft",
+					"rationale": "Irregular present forms extend the subject–verb pattern."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-gymnasium-5",
+					"topic_code": "verbes",
+					"topic_title": "Les verbes en action"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-grammatik",
+					"topic_title": "Aller und faire im Präsens",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-sprechen",
+					"topic_title": "Aller und faire im Präsens",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb5",
+					"topic_title": "Aller und faire im Präsens",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7CF8YHTXHQ59JEZR8T7YGTV",
+					"slug": "f5-aller-faire-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie lautet aller mit je, nous und ils?",
+					"concept": "Je vais, nous allons, ils vont.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-aller-faire",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Je vais, nous allons, ils vont.",
+							"J’alle, nous allons, ils allent."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7CF8YHT9YGJMEAE4TMJZ88X",
+					"slug": "f5-aller-faire-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie lautet faire mit vous und ils?",
+					"concept": "Vous faites, ils font.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-aller-faire",
+					"sample_solution": "Vous faites, ils font."
+				},
+				{
+					"id": "01M7CF8YHTNXZ8BV00SANHGHNM",
+					"slug": "f5-aller-faire-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche Form von aller folgt auf on?",
+					"concept": "On va.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-aller-faire",
+					"sample_solution": "On va."
+				}
+			]
+		},
+		{
+			"id": "01M7CF8YHS247BMXPR0ZZ7DDNS",
+			"atom_uri": "urn:zam:atom:01M7CF8YHS247BMXPR0ZZ7DDNS",
+			"namespace": "zam-academy-franzoesisch-gymnasium-5",
+			"slug": "f5-questions",
+			"title": "Tu habites où ?",
+			"domain": "franzoesisch/echanges",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-questions",
+			"prerequisites": [
+				{
+					"atom_id": "01M7CF8YHRMHCVHC9EB7MY1RAM",
+					"type": "soft",
+					"rationale": "Question patterns ask for information practised in self-introductions."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-gymnasium-5",
+					"topic_code": "echanges",
+					"topic_title": "On parle ensemble"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-sprechen",
+					"topic_title": "Intonationsfragen und est-ce que",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-grammatik",
+					"topic_title": "Intonationsfragen und est-ce que",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7CF8YHTPKPQRSB95S7P35BC",
+					"slug": "f5-questions-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie bildest du eine Intonationsfrage?",
+					"concept": "Die Satzstellung bleibt; beim Sprechen zeigt die Intonation die Frage.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-questions",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Die Satzstellung bleibt; beim Sprechen zeigt die Intonation die Frage.",
+							"Du musst immer das Verb vor das Subjekt stellen."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7CF8YHT72JCC4H2F5WYFZFN",
+					"slug": "f5-questions-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie heißt „Wo wohnst du?“ mit est-ce que?",
+					"concept": "Où est-ce que tu habites ?",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-questions",
+					"sample_solution": "Où est-ce que tu habites ?"
+				},
+				{
+					"id": "01M7CF8YHTZVNGGN39JQP17XXP",
+					"slug": "f5-questions-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Warum steht est-ce qu’il statt est-ce que il?",
+					"concept": "Que wird vor Vokal zu qu’.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-questions",
+					"sample_solution": "Que wird vor Vokal zu qu’."
+				}
+			]
+		},
+		{
+			"id": "01M7CF8YHS31TFHMAX75C5372K",
+			"atom_uri": "urn:zam:atom:01M7CF8YHS31TFHMAX75C5372K",
+			"namespace": "zam-academy-franzoesisch-gymnasium-5",
+			"slug": "f5-quel",
+			"title": "Quel jour ?",
+			"domain": "franzoesisch/echanges",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-quel",
+			"prerequisites": [
+				{
+					"atom_id": "01M7CF8YHS247BMXPR0ZZ7DDNS",
+					"type": "soft",
+					"rationale": "Quel and nominal-subject inversion extend the basic question patterns."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-gymnasium-5",
+					"topic_code": "echanges",
+					"topic_title": "On parle ensemble"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-grammatik",
+					"topic_title": "Quel angleichen und Fragen mit nominalem Subjekt",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-sprechen",
+					"topic_title": "Quel angleichen und Fragen mit nominalem Subjekt",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7CF8YHTF76SWCDVXEYDPHCD",
+					"slug": "f5-quel-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche vier Formen hat quel?",
+					"concept": "Quel, quelle, quels, quelles; passend zu Genus und Zahl des Nomens.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-quel",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Quel, quelle, quels, quelles; passend zu Genus und Zahl des Nomens.",
+							"Quel bleibt immer unverändert."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7CF8YHT8D8000AFFNG7R532",
+					"slug": "f5-quel-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie fragst du mit faire und dem Namen Nathalie nach ihrer Tätigkeit?",
+					"concept": "Que fait Nathalie ?",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-quel",
+					"sample_solution": "Que fait Nathalie ?"
+				},
+				{
+					"id": "01M7CF8YHTWQAPXSPFBP8SKTKK",
+					"slug": "f5-quel-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie fragst du auf Französisch mit quels und être nach den Spielen einer Person?",
+					"concept": "Quels sont tes jeux ?",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-quel",
+					"sample_solution": "Quels sont tes jeux ?"
+				}
+			]
+		},
+		{
+			"id": "01M7CF8YHSE2TD2VKPM2D62NZJ",
+			"atom_uri": "urn:zam:atom:01M7CF8YHSE2TD2VKPM2D62NZJ",
+			"namespace": "zam-academy-franzoesisch-gymnasium-5",
+			"slug": "f5-negation",
+			"title": "Je ne parle pas",
+			"domain": "franzoesisch/echanges",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-negation",
+			"prerequisites": [
+				{
+					"atom_id": "01M7CF8YHSHKBE23T6QZA0EY3H",
+					"type": "soft",
+					"rationale": "Ne… pas wraps the conjugated verb, including être and avoir."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-gymnasium-5",
+					"topic_code": "echanges",
+					"topic_title": "On parle ensemble"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-grammatik",
+					"topic_title": "Verneinung mit ne… pas",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-schreiben",
+					"topic_title": "Verneinung mit ne… pas",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7CF8YHTB1B6K8K73HBF25VH",
+					"slug": "f5-negation-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie steht ne… pas beim einfachen Präsensverb?",
+					"concept": "Ne vor dem konjugierten Verb, pas dahinter; vor Vokal n’.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-negation",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Ne vor dem konjugierten Verb, pas dahinter; vor Vokal n’.",
+							"Ne und pas stehen beide hinter dem Verb."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7CF8YHTQ830BXJYC2RRWBGT",
+					"slug": "f5-negation-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie verneinst du J’ai un chat?",
+					"concept": "Je n’ai pas de chat.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-negation",
+					"sample_solution": "Je n’ai pas de chat."
+				},
+				{
+					"id": "01M7CF8YHTHPAGX4A9WX1SA6DZ",
+					"slug": "f5-negation-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welcher Artikel bleibt in Je n’aime pas le tennis?",
+					"concept": "Der bestimmte Artikel le.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-negation",
+					"sample_solution": "Der bestimmte Artikel le."
+				}
+			]
+		},
+		{
+			"id": "01M7CF8YHS1YS1HPQ10MVD00FC",
+			"atom_uri": "urn:zam:atom:01M7CF8YHS1YS1HPQ10MVD00FC",
+			"namespace": "zam-academy-franzoesisch-gymnasium-5",
+			"slug": "f5-objets",
+			"title": "Je donne un livre à Lina",
+			"domain": "franzoesisch/echanges",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-objets",
+			"prerequisites": [
+				{
+					"atom_id": "01M7CF8YHRC6CF5MDB26VFF10E",
+					"type": "soft",
+					"rationale": "Noun objects retain the articles and noun phrases already introduced."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-gymnasium-5",
+					"topic_code": "echanges",
+					"topic_title": "On parle ensemble"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-grammatik",
+					"topic_title": "Direktes und indirektes Objekt unterscheiden",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb4",
+					"topic_title": "Direktes und indirektes Objekt unterscheiden",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7CF8YHTCQ5TABQ30AB41PWW",
+					"slug": "f5-objets-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was unterscheidet ein direktes und ein indirektes Objekt im Französischen?",
+					"concept": "Das direkte schließt ohne Präposition an; das indirekte mit einer vom Verb geforderten Präposition.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-objets",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Das direkte schließt ohne Präposition an; das indirekte mit einer vom Verb geforderten Präposition.",
+							"Jede Person ist indirektes Objekt."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7CF8YHTX0ATPH017GQE2KD0",
+					"slug": "f5-objets-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was ist der COD in Je donne un livre à Lina?",
+					"concept": "Un livre.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-objets",
+					"sample_solution": "Un livre."
+				},
+				{
+					"id": "01M7CF8YHT2XQMCVNK28W6J6AE",
+					"slug": "f5-objets-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie heißt „Wir warten auf Lina“?",
+					"concept": "Nous attendons Lina.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-objets",
+					"sample_solution": "Nous attendons Lina."
+				}
+			]
+		},
+		{
+			"id": "01M7CF8YHSWRT8X4VJFN858ZMB",
+			"atom_uri": "urn:zam:atom:01M7CF8YHSWRT8X4VJFN858ZMB",
+			"namespace": "zam-academy-franzoesisch-gymnasium-5",
+			"slug": "f5-vouloir-pouvoir",
+			"title": "Je voudrais…",
+			"domain": "franzoesisch/echanges",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-vouloir-pouvoir",
+			"prerequisites": [
+				{
+					"atom_id": "01M7CF8YHSG36CFH1E3DF3MJJK",
+					"type": "soft",
+					"rationale": "A conjugated modal verb is contrasted with an infinitive."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-gymnasium-5",
+					"topic_code": "echanges",
+					"topic_title": "On parle ensemble"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-grammatik",
+					"topic_title": "Wünsche, Vorlieben, können und wollen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-wortschatz",
+					"topic_title": "Wünsche, Vorlieben, können und wollen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-sprechen",
+					"topic_title": "Wünsche, Vorlieben, können und wollen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb5",
+					"topic_title": "Wünsche, Vorlieben, können und wollen",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7CF8YHT13Q9W5G2GDHKE89W",
+					"slug": "f5-vouloir-pouvoir-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie äußerst du höflich „Ich möchte ein Buch“?",
+					"concept": "Je voudrais un livre, s’il vous plaît.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-vouloir-pouvoir",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Je voudrais un livre, s’il vous plaît.",
+							"Je suis un livre."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7CF8YHTZNSHWMJMEXTF10BX",
+					"slug": "f5-vouloir-pouvoir-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie lautet pouvoir mit nous, vous und ils?",
+					"concept": "Nous pouvons, vous pouvez, ils peuvent.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-vouloir-pouvoir",
+					"sample_solution": "Nous pouvons, vous pouvez, ils peuvent."
+				},
+				{
+					"id": "01M7CF8YHTW8F7C2F65T61R8YK",
+					"slug": "f5-vouloir-pouvoir-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche Verbform folgt auf Je veux oder Je peux?",
+					"concept": "Ein Infinitiv, zum Beispiel jouer.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-vouloir-pouvoir",
+					"sample_solution": "Ein Infinitiv, zum Beispiel jouer."
+				}
+			]
+		},
+		{
+			"id": "01M7CF8YHSGWMCJSZYMX7NAVB6",
+			"atom_uri": "urn:zam:atom:01M7CF8YHSGWMCJSZYMX7NAVB6",
+			"namespace": "zam-academy-franzoesisch-gymnasium-5",
+			"slug": "f5-ecole",
+			"title": "Lire, dire, écrire",
+			"domain": "franzoesisch/journee",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-ecole",
+			"prerequisites": [
+				{
+					"atom_id": "01M7CF8YHSG36CFH1E3DF3MJJK",
+					"type": "soft",
+					"rationale": "Lire, dire and écrire extend the present-tense subject–verb pattern."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-gymnasium-5",
+					"topic_code": "journee",
+					"topic_title": "Une journée et demain"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-grammatik",
+					"topic_title": "Schulalltag und drei unregelmäßige Verben",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-wortschatz",
+					"topic_title": "Schulalltag und drei unregelmäßige Verben",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb5",
+					"topic_title": "Schulalltag und drei unregelmäßige Verben",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7CF8YHTKW61TMYYMDZ4F05F",
+					"slug": "f5-ecole-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie lautet dire mit vous?",
+					"concept": "Vous dites.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-ecole",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": ["Vous dites.", "Vous disez."],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7CF8YHTFDATXTXHW7C008Q9",
+					"slug": "f5-ecole-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie lautet écrire mit je und nous?",
+					"concept": "J’écris, nous écrivons.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-ecole",
+					"sample_solution": "J’écris, nous écrivons."
+				},
+				{
+					"id": "01M7CF8YHT19C1902VM2YZ29Z5",
+					"slug": "f5-ecole-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie lautet lire mit il und ils?",
+					"concept": "Il lit, ils lisent.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-ecole",
+					"sample_solution": "Il lit, ils lisent."
+				}
+			]
+		},
+		{
+			"id": "01M7CF8YHSBR9JNK3RQ297NNFF",
+			"atom_uri": "urn:zam:atom:01M7CF8YHSBR9JNK3RQ297NNFF",
+			"namespace": "zam-academy-franzoesisch-gymnasium-5",
+			"slug": "f5-loisirs",
+			"title": "Tu prends le ballon ?",
+			"domain": "franzoesisch/journee",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-loisirs",
+			"prerequisites": [
+				{
+					"atom_id": "01M7CF8YHSWXEWK0HK44F21NTF",
+					"type": "soft",
+					"rationale": "Taking transport and describing hobbies build on movement and activity verbs."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-gymnasium-5",
+					"topic_code": "journee",
+					"topic_title": "Une journée et demain"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-grammatik",
+					"topic_title": "Prendre, Hobbys und mobile Geräte",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-wortschatz",
+					"topic_title": "Prendre, Hobbys und mobile Geräte",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb5",
+					"topic_title": "Prendre, Hobbys und mobile Geräte",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7CF8YHTXK32AKXY5A1X9DA0",
+					"slug": "f5-loisirs-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie lauten die drei Pluralformen von prendre?",
+					"concept": "Nous prenons, vous prenez, ils/elles prennent.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-loisirs",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Nous prenons, vous prenez, ils/elles prennent.",
+							"Nous prendons, vous prendez, ils prendent."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7CF8YHTJD5D4NTVJDRXYJ31",
+					"slug": "f5-loisirs-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie heißt „Er nimmt den Bus“?",
+					"concept": "Il prend le bus.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-loisirs",
+					"sample_solution": "Il prend le bus."
+				},
+				{
+					"id": "01M7CF8YHT2N51AJQCHNBRW2H5",
+					"slug": "f5-loisirs-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie heißt „Ich spiele Fußball“?",
+					"concept": "Je joue au foot.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-loisirs",
+					"sample_solution": "Je joue au foot."
+				}
+			]
+		},
+		{
+			"id": "01M7CF8YHSPM72ZFH94B7PTCSC",
+			"atom_uri": "urn:zam:atom:01M7CF8YHSPM72ZFH94B7PTCSC",
+			"namespace": "zam-academy-franzoesisch-gymnasium-5",
+			"slug": "f5-heures",
+			"title": "Il est quelle heure ?",
+			"domain": "franzoesisch/journee",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-heures",
+			"prerequisites": [
+				{
+					"atom_id": "01M7CF8YHRJ87M5XJ3R3DDK6AZ",
+					"type": "soft",
+					"rationale": "Telling time combines the known numbers with heure(s)."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-gymnasium-5",
+					"topic_code": "journee",
+					"topic_title": "Une journée et demain"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-wortschatz",
+					"topic_title": "Uhrzeiten und Tagesablauf",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-sprechen",
+					"topic_title": "Uhrzeiten und Tagesablauf",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb5",
+					"topic_title": "Uhrzeiten und Tagesablauf",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7CF8YHT606GY05BF2NQCP9K",
+					"slug": "f5-heures-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie sagst du 3:30 Uhr auf Französisch?",
+					"concept": "Il est trois heures et demie.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-heures",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Il est trois heures et demie.",
+							"Il est trois heures et quart."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7CF8YHTEM1K5SNGSQV5X7BG",
+					"slug": "f5-heures-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie viel Uhr ist quatre heures moins le quart?",
+					"concept": "3:45 Uhr, Viertel vor vier.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-heures",
+					"sample_solution": "3:45 Uhr, Viertel vor vier."
+				},
+				{
+					"id": "01M7CF8YHTA6FVPWHFYXVFVFDJ",
+					"slug": "f5-heures-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche Präposition steht vor einer Termin-Uhrzeit?",
+					"concept": "À, zum Beispiel à huit heures.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-heures",
+					"sample_solution": "À, zum Beispiel à huit heures."
+				}
+			]
+		},
+		{
+			"id": "01M7CF8YHSD28KM96V3MN3Z76G",
+			"atom_uri": "urn:zam:atom:01M7CF8YHSD28KM96V3MN3Z76G",
+			"namespace": "zam-academy-franzoesisch-gymnasium-5",
+			"slug": "f5-futur",
+			"title": "Demain, je vais jouer",
+			"domain": "franzoesisch/journee",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-futur",
+			"prerequisites": [
+				{
+					"atom_id": "01M7CF8YHSWXEWK0HK44F21NTF",
+					"type": "soft",
+					"rationale": "Futur proche requires the present tense of aller."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-gymnasium-5",
+					"topic_code": "journee",
+					"topic_title": "Une journée et demain"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-grammatik",
+					"topic_title": "Pläne mit dem futur proche",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-schreiben",
+					"topic_title": "Pläne mit dem futur proche",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb5",
+					"topic_title": "Pläne mit dem futur proche",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7CF8YHT8KDMK90QV3KA5P1V",
+					"slug": "f5-futur-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie bildest du das futur proche?",
+					"concept": "Präsens von aller + Infinitiv.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-futur",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Präsens von aller + Infinitiv.",
+							"Präsens von avoir + konjugiertes Verb."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7CF8YHTV19ZDGC8ZPR8R50E",
+					"slug": "f5-futur-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie heißt „Wir werden spielen“ als Plan?",
+					"concept": "Nous allons jouer.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-futur",
+					"sample_solution": "Nous allons jouer."
+				},
+				{
+					"id": "01M7CF8YHTAZ2Q3DWSVYET40KZ",
+					"slug": "f5-futur-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie verneinst du Je vais jouer?",
+					"concept": "Je ne vais pas jouer.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-futur",
+					"sample_solution": "Je ne vais pas jouer."
+				}
+			]
+		},
+		{
+			"id": "01M7CF8YHS38SNJQ0JMAZEHECJ",
+			"atom_uri": "urn:zam:atom:01M7CF8YHS38SNJQ0JMAZEHECJ",
+			"namespace": "zam-academy-franzoesisch-gymnasium-5",
+			"slug": "f5-invitation",
+			"title": "Tu viens samedi ?",
+			"domain": "franzoesisch/journee",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-invitation",
+			"prerequisites": [
+				{
+					"atom_id": "01M7CF8YHS247BMXPR0ZZ7DDNS",
+					"type": "soft",
+					"rationale": "Invitations combine question patterns and near-future plans."
+				},
+				{
+					"atom_id": "01M7CF8YHSD28KM96V3MN3Z76G",
+					"type": "soft",
+					"rationale": "Invitations combine question patterns and near-future plans."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-gymnasium-5",
+					"topic_code": "journee",
+					"topic_title": "Une journée et demain"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-schreiben",
+					"topic_title": "Einladen, begründen und mit quand verbinden",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-wortschatz",
+					"topic_title": "Einladen, begründen und mit quand verbinden",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb3",
+					"topic_title": "Einladen, begründen und mit quand verbinden",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb5",
+					"topic_title": "Einladen, begründen und mit quand verbinden",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7CF8YHT4P1D4MZJD0F59SXB",
+					"slug": "f5-invitation-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche vier Angaben braucht eine kurze Einladung?",
+					"concept": "Wen, was, wann und wo.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-invitation",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Wen, was, wann und wo.",
+							"Nur den Namen und einen Gruß."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7CF8YHTWP1B5KFXKNZP8DHA",
+					"slug": "f5-invitation-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie leitest du eine einfache Begründung ein?",
+					"concept": "Mit parce que, zum Beispiel parce que c’est amusant.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-invitation",
+					"sample_solution": "Mit parce que, zum Beispiel parce que c’est amusant."
+				},
+				{
+					"id": "01M7CF8YHTR0PEZE8028NZBBTG",
+					"slug": "f5-invitation-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was bedeutet quand in Je joue quand j’ai le temps?",
+					"concept": "Wenn: Ich spiele, wenn ich Zeit habe.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-invitation",
+					"sample_solution": "Wenn: Ich spiele, wenn ich Zeit habe."
+				}
+			]
+		},
+		{
+			"id": "01M7CF8YHSF7GQFRENM1FKZB0S",
+			"atom_uri": "urn:zam:atom:01M7CF8YHSF7GQFRENM1FKZB0S",
+			"namespace": "zam-academy-franzoesisch-gymnasium-5",
+			"slug": "f5-france",
+			"title": "La France sur la carte",
+			"domain": "franzoesisch/france",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-france",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-gymnasium-5",
+					"topic_code": "france",
+					"topic_title": "En route en France"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb2",
+					"topic_title": "Meere, Gebirge, Flüsse und Städte zuordnen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb5",
+					"topic_title": "Meere, Gebirge, Flüsse und Städte zuordnen",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7CF8YHT9DJ6HJMYPM0A1T3K",
+					"slug": "f5-france-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "An welchem Fluss liegt Paris?",
+					"concept": "An der Seine.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-france",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": ["An der Seine.", "An der Rhône."],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7CF8YHT74K7J5ZK8MAM8ZES",
+					"slug": "f5-france-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche Meere grenzen westlich und südlich an das europäische Festland Frankreichs?",
+					"concept": "Im Westen der Atlantik, im Süden das Mittelmeer.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-france",
+					"sample_solution": "Im Westen der Atlantik, im Süden das Mittelmeer."
+				},
+				{
+					"id": "01M7CF8YHT5F5HXV681GE8SBP1",
+					"slug": "f5-france-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche Gebirge liegen im Südosten Frankreichs und an der Grenze zu Spanien?",
+					"concept": "Die Alpen im Südosten, die Pyrenäen an der Grenze zu Spanien.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-france",
+					"sample_solution": "Die Alpen im Südosten, die Pyrenäen an der Grenze zu Spanien."
+				}
+			]
+		},
+		{
+			"id": "01M7CF8YHSZE2FZZQ5NAJC9WZA",
+			"atom_uri": "urn:zam:atom:01M7CF8YHSZE2FZZQ5NAJC9WZA",
+			"namespace": "zam-academy-franzoesisch-gymnasium-5",
+			"slug": "f5-paris",
+			"title": "Une journée à Paris",
+			"domain": "franzoesisch/france",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-paris",
+			"prerequisites": [
+				{
+					"atom_id": "01M7CF8YHSF7GQFRENM1FKZB0S",
+					"type": "soft",
+					"rationale": "The Paris itinerary builds on the city and river map."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-gymnasium-5",
+					"topic_code": "france",
+					"topic_title": "En route en France"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb2",
+					"topic_title": "Sehenswürdigkeiten und Verkehrsmittel",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-wortschatz",
+					"topic_title": "Sehenswürdigkeiten und Verkehrsmittel",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb5",
+					"topic_title": "Sehenswürdigkeiten und Verkehrsmittel",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7CF8YHVQQX6FAFYG1E260G8",
+					"slug": "f5-paris-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie heißt die Hauptstadt Frankreichs?",
+					"concept": "Paris.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-paris",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": ["Paris.", "Lyon."],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7CF8YHV2X21B60JKY36G5V5",
+					"slug": "f5-paris-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was bedeutet le métro?",
+					"concept": "Die U-Bahn.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-paris",
+					"sample_solution": "Die U-Bahn."
+				},
+				{
+					"id": "01M7CF8YHV1MS62VPDB8MQRK3J",
+					"slug": "f5-paris-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Nenne zwei bekannte Sehenswürdigkeiten in Paris.",
+					"concept": "Zum Beispiel die tour Eiffel und der Louvre.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-paris",
+					"sample_solution": "Zum Beispiel die tour Eiffel und der Louvre."
+				}
+			]
+		},
+		{
+			"id": "01M7CF8YHS1PEJ5Z8XC29HVM1V",
+			"atom_uri": "urn:zam:atom:01M7CF8YHS1PEJ5Z8XC29HVM1V",
+			"namespace": "zam-academy-franzoesisch-gymnasium-5",
+			"slug": "f5-bretagne",
+			"title": "Bienvenue en Bretagne",
+			"domain": "franzoesisch/france",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-bretagne",
+			"prerequisites": [
+				{
+					"atom_id": "01M7CF8YHSF7GQFRENM1FKZB0S",
+					"type": "soft",
+					"rationale": "The regional example builds on orientation within France."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-gymnasium-5",
+					"topic_code": "france",
+					"topic_title": "En route en France"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb2",
+					"topic_title": "Eine Region entdecken und Vorurteile vermeiden",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb5",
+					"topic_title": "Eine Region entdecken und Vorurteile vermeiden",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7CF8YHVRBJYC3BA0F029W9W",
+					"slug": "f5-bretagne-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wo liegt die Bretagne innerhalb Frankreichs?",
+					"concept": "Im Nordwesten.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-bretagne",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": ["Im Nordwesten.", "Im Südosten."],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7CF8YHV8T966N1RED78P6S2",
+					"slug": "f5-bretagne-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche Stadt ist die regionale Hauptstadt der Bretagne?",
+					"concept": "Rennes.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-bretagne",
+					"sample_solution": "Rennes."
+				},
+				{
+					"id": "01M7CF8YHVMPD7VXB9GQVFMGKC",
+					"slug": "f5-bretagne-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Warum beschreibt ein typisches Gericht nicht alle Familien einer Region?",
+					"concept": "Menschen haben unterschiedliche Gewohnheiten und Vorlieben.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-bretagne",
+					"sample_solution": "Menschen haben unterschiedliche Gewohnheiten und Vorlieben."
+				}
+			]
+		},
+		{
+			"id": "01M7CF8YHSFYXHDGB2H60G72J1",
+			"atom_uri": "urn:zam:atom:01M7CF8YHSFYXHDGB2H60G72J1",
+			"namespace": "zam-academy-franzoesisch-gymnasium-5",
+			"slug": "f5-voyage",
+			"title": "À la gare et à l’hôtel",
+			"domain": "franzoesisch/france",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-voyage",
+			"prerequisites": [
+				{
+					"atom_id": "01M7CF8YHR40Q32WZTCPH5TQ6V",
+					"type": "soft",
+					"rationale": "Travel requests combine polite formulas and numbers for platforms and rooms."
+				},
+				{
+					"atom_id": "01M7CF8YHRJ87M5XJ3R3DDK6AZ",
+					"type": "soft",
+					"rationale": "Travel requests combine polite formulas and numbers for platforms and rooms."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-gymnasium-5",
+					"topic_code": "france",
+					"topic_title": "En route en France"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-sprechen",
+					"topic_title": "Unterwegs höflich nachfragen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-wortschatz",
+					"topic_title": "Unterwegs höflich nachfragen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb5",
+					"topic_title": "Unterwegs höflich nachfragen",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7CF8YHVCWYTVGKN2GFYW26P",
+					"slug": "f5-voyage-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was bedeutet quai am Bahnhof?",
+					"concept": "Bahnsteig.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-voyage",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": ["Bahnsteig.", "Hotelzimmer."],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7CF8YHVMPHE6NCQV173VYH4",
+					"slug": "f5-voyage-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie fragst du nach dem Zug nach Lyon?",
+					"concept": "Le train pour Lyon, s’il vous plaît ?",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-voyage",
+					"sample_solution": "Le train pour Lyon, s’il vous plaît ?"
+				},
+				{
+					"id": "01M7CF8YHVNT7R5HG6PXSQ2D2Y",
+					"slug": "f5-voyage-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie heißen Bahnhof, Flughafen und Hotel auf Französisch?",
+					"concept": "La gare, l’aéroport, l’hôtel.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-voyage",
+					"sample_solution": "La gare, l’aéroport, l’hôtel."
+				}
+			]
+		},
+		{
+			"id": "01M7CF8YHSVSRMDYRTYHXF00B9",
+			"atom_uri": "urn:zam:atom:01M7CF8YHSVSRMDYRTYHXF00B9",
+			"namespace": "zam-academy-franzoesisch-gymnasium-5",
+			"slug": "f5-achats",
+			"title": "Un peu de pain",
+			"domain": "franzoesisch/france",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-achats",
+			"prerequisites": [
+				{
+					"atom_id": "01M7CF8YHRJ87M5XJ3R3DDK6AZ",
+					"type": "soft",
+					"rationale": "Shopping combines product quantities and noun phrases."
+				},
+				{
+					"atom_id": "01M7CF8YHRC6CF5MDB26VFF10E",
+					"type": "soft",
+					"rationale": "Shopping combines product quantities and noun phrases."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-gymnasium-5",
+					"topic_code": "france",
+					"topic_title": "En route en France"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-grammatik",
+					"topic_title": "Einkauf, Preise und Mengen mit de",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-wortschatz",
+					"topic_title": "Einkauf, Preise und Mengen mit de",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-sprechen",
+					"topic_title": "Einkauf, Preise und Mengen mit de",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb5",
+					"topic_title": "Einkauf, Preise und Mengen mit de",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7CF8YHVGGKBTWY9FD0VXTZ6",
+					"slug": "f5-achats-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was steht nach beaucoup und un peu vor einem Nomen?",
+					"concept": "De, vor Vokal d’: beaucoup de pommes, un peu d’eau.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-achats",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"De, vor Vokal d’: beaucoup de pommes, un peu d’eau.",
+							"Immer des oder du."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7CF8YHV3KH75JRPSNZTPSHS",
+					"slug": "f5-achats-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie heißt „Wie viele Bücher?“?",
+					"concept": "Combien de livres ?",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-achats",
+					"sample_solution": "Combien de livres ?"
+				},
+				{
+					"id": "01M7CF8YHV14QDCF1BFJK4TYQ6",
+					"slug": "f5-achats-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was bedeuten la baguette und le bol?",
+					"concept": "Ein langes Brot und eine Schale.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-achats",
+					"sample_solution": "Ein langes Brot und eine Schale."
+				}
+			]
+		},
+		{
+			"id": "01M7CF8YHSNEWT65GNW2JRBMMF",
+			"atom_uri": "urn:zam:atom:01M7CF8YHSNEWT65GNW2JRBMMF",
+			"namespace": "zam-academy-franzoesisch-gymnasium-5",
+			"slug": "f5-ecouter-moi",
+			"title": "Qui parle ?",
+			"domain": "franzoesisch/comprendre",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-ecouter-moi",
+			"prerequisites": [
+				{
+					"atom_id": "01M7CF8YHRMHCVHC9EB7MY1RAM",
+					"type": "soft",
+					"rationale": "The listening script reuses familiar self-introduction details."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-gymnasium-5",
+					"topic_code": "comprendre",
+					"topic_title": "Je comprends !"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-hoeren",
+					"topic_title": "Erst global hören, dann Einzelheiten sichern",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb4",
+					"topic_title": "Erst global hören, dann Einzelheiten sichern",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7CF8YHVGNR54HGHSD5BT0KV",
+					"slug": "f5-ecouter-moi-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was suchst du beim ersten globalen Hören?",
+					"concept": "Das Thema oder die Situation, noch nicht jedes Wort.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-ecouter-moi",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Das Thema oder die Situation, noch nicht jedes Wort.",
+							"Eine vollständige schriftliche Übersetzung."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7CF8YHVJAVHJM3G2KXK6BYG",
+					"slug": "f5-ecouter-moi-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche drei Angaben suchst du in einer einfachen Vorstellung?",
+					"concept": "Name, Alter und Wohnort.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-ecouter-moi",
+					"sample_solution": "Name, Alter und Wohnort."
+				},
+				{
+					"id": "01M7CF8YHVJ0R534Q9FDSKR810",
+					"slug": "f5-ecouter-moi-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie klärst du eine unsichere Zahl beim Hören?",
+					"concept": "Gezielt noch einmal hören und mit den Notizen vergleichen.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-ecouter-moi",
+					"sample_solution": "Gezielt noch einmal hören und mit den Notizen vergleichen."
+				}
+			]
+		},
+		{
+			"id": "01M7CF8YHSF3DYWHVMZDZ02K1K",
+			"atom_uri": "urn:zam:atom:01M7CF8YHSF3DYWHVMZDZ02K1K",
+			"namespace": "zam-academy-franzoesisch-gymnasium-5",
+			"slug": "f5-ecouter-courses",
+			"title": "La liste de courses",
+			"domain": "franzoesisch/comprendre",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-ecouter-courses",
+			"prerequisites": [
+				{
+					"atom_id": "01M7CF8YHRJ87M5XJ3R3DDK6AZ",
+					"type": "soft",
+					"rationale": "The listening script combines known numbers and shopping vocabulary."
+				},
+				{
+					"atom_id": "01M7CF8YHSVSRMDYRTYHXF00B9",
+					"type": "soft",
+					"rationale": "The listening script combines known numbers and shopping vocabulary."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-gymnasium-5",
+					"topic_code": "comprendre",
+					"topic_title": "Je comprends !"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-hoeren",
+					"topic_title": "Mengen und Reihenfolge in einem Hörtext",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-wortschatz",
+					"topic_title": "Mengen und Reihenfolge in einem Hörtext",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb4",
+					"topic_title": "Mengen und Reihenfolge in einem Hörtext",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7CF8YHV3AVC9JJ8B4Z08DBY",
+					"slug": "f5-ecouter-courses-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie strukturierst du Notizen zu einer Einkaufsliste?",
+					"concept": "Produkt und zugehörige Menge zusammen notieren.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-ecouter-courses",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Produkt und zugehörige Menge zusammen notieren.",
+							"Alle Zahlen ohne Produkte sammeln."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7CF8YHVB78AT8YEESS1BQ5Q",
+					"slug": "f5-ecouter-courses-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie heißt „drei Bananen“?",
+					"concept": "Trois bananes.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-ecouter-courses",
+					"sample_solution": "Trois bananes."
+				},
+				{
+					"id": "01M7CF8YHV23HEZZA8QPZGJVFR",
+					"slug": "f5-ecouter-courses-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was tust du mit einem Nachtrag im Hörtext?",
+					"concept": "Zur passenden Ware ergänzen und erneut prüfen.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-ecouter-courses",
+					"sample_solution": "Zur passenden Ware ergänzen und erneut prüfen."
+				}
+			]
+		},
+		{
+			"id": "01M7CF8YHS7G9GR76VNN4FEK6Y",
+			"atom_uri": "urn:zam:atom:01M7CF8YHS7G9GR76VNN4FEK6Y",
+			"namespace": "zam-academy-franzoesisch-gymnasium-5",
+			"slug": "f5-affiche",
+			"title": "Une affiche pour le club",
+			"domain": "franzoesisch/comprendre",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-affiche",
+			"prerequisites": [
+				{
+					"atom_id": "01M7CF8YHSPM72ZFH94B7PTCSC",
+					"type": "soft",
+					"rationale": "Reading an event poster requires clock times."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-gymnasium-5",
+					"topic_code": "comprendre",
+					"topic_title": "Je comprends !"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-lesen",
+					"topic_title": "Ein bildgestütztes Plakat lesen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb3",
+					"topic_title": "Ein bildgestütztes Plakat lesen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb4",
+					"topic_title": "Ein bildgestütztes Plakat lesen",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7CF8YHVE17RNK981XRFEDWG",
+					"slug": "f5-affiche-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche Angaben suchst du auf einem Veranstaltungsplakat?",
+					"concept": "Thema, Datum, Uhrzeit, Ort und Preis.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-affiche",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Thema, Datum, Uhrzeit, Ort und Preis.",
+							"Nur die Farbe der Überschrift."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7CF8YHV7SAPFRP9S64NN1SA",
+					"slug": "f5-affiche-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie nutzt du ein Bild beim Lesen?",
+					"concept": "Als Hinweis, den du mit Text und Kontext überprüfst.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-affiche",
+					"sample_solution": "Als Hinweis, den du mit Text und Kontext überprüfst."
+				},
+				{
+					"id": "01M7CF8YHV5S3C0DHQ7S58MCG8",
+					"slug": "f5-affiche-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was heißt de quinze heures à seize heures?",
+					"concept": "Von 15 bis 16 Uhr.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-affiche",
+					"sample_solution": "Von 15 bis 16 Uhr."
+				}
+			]
+		},
+		{
+			"id": "01M7CF8YHSK7N6KZXBTZ477D1J",
+			"atom_uri": "urn:zam:atom:01M7CF8YHSK7N6KZXBTZ477D1J",
+			"namespace": "zam-academy-franzoesisch-gymnasium-5",
+			"slug": "f5-mediation",
+			"title": "Tu peux expliquer ?",
+			"domain": "franzoesisch/comprendre",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-mediation",
+			"prerequisites": [
+				{
+					"atom_id": "01M7CF8YHS7G9GR76VNN4FEK6Y",
+					"type": "soft",
+					"rationale": "Mediation selects needed details from posters and travel situations."
+				},
+				{
+					"atom_id": "01M7CF8YHSFYXHDGB2H60G72J1",
+					"type": "soft",
+					"rationale": "Mediation selects needed details from posters and travel situations."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-gymnasium-5",
+					"topic_code": "comprendre",
+					"topic_title": "Je comprends !"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-sprachmittlung",
+					"topic_title": "Informationen für eine andere Person vermitteln",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb3",
+					"topic_title": "Informationen für eine andere Person vermitteln",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb5",
+					"topic_title": "Informationen für eine andere Person vermitteln",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7CF8YHV67HPCSF9ZNCHZ3EJ",
+					"slug": "f5-mediation-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was ist das Ziel einfacher Sprachmittlung?",
+					"concept": "Benötigte Informationen verständlich und passend weitergeben.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-mediation",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Benötigte Informationen verständlich und passend weitergeben.",
+							"Jedes Wort immer wörtlich übersetzen."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7CF8YHVER4KC0H66ZVAXQ67",
+					"slug": "f5-mediation-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was klärst du vor einer Sprachmittlung?",
+					"concept": "Für wen, wozu und in welche Sprache ich vermittle.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-mediation",
+					"sample_solution": "Für wen, wozu und in welche Sprache ich vermittle."
+				},
+				{
+					"id": "01M7CF8YHVMFEXYDJ69N1CKKAH",
+					"slug": "f5-mediation-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was tust du bei einer unklaren Preisangabe?",
+					"concept": "Nachfragen oder die Unsicherheit benennen.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-mediation",
+					"sample_solution": "Nachfragen oder die Unsicherheit benennen."
+				}
+			]
+		},
+		{
+			"id": "01M7CF8YHS3AFTM8ANWM1MVQCM",
+			"atom_uri": "urn:zam:atom:01M7CF8YHS3AFTM8ANWM1MVQCM",
+			"namespace": "zam-academy-franzoesisch-gymnasium-5",
+			"slug": "f5-message",
+			"title": "Un petit message",
+			"domain": "franzoesisch/comprendre",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-message",
+			"prerequisites": [
+				{
+					"atom_id": "01M7CF8YHS38SNJQ0JMAZEHECJ",
+					"type": "soft",
+					"rationale": "The message task replies to a simple invitation."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-gymnasium-5",
+					"topic_code": "comprendre",
+					"topic_title": "Je comprends !"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-schreiben",
+					"topic_title": "Adressatenbezogene Kurznachricht schreiben",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb3",
+					"topic_title": "Adressatenbezogene Kurznachricht schreiben",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb4",
+					"topic_title": "Adressatenbezogene Kurznachricht schreiben",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7CF8YHVNX38R53MMGRNWC87",
+					"slug": "f5-message-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche Teile braucht eine einfache persönliche Nachricht?",
+					"concept": "Passende Anrede, klare Information und passender Abschluss.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-message",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Passende Anrede, klare Information und passender Abschluss.",
+							"Nur möglichst viele Wörter."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7CF8YHVFPQ25C9JS1XY4JMC",
+					"slug": "f5-message-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie heißt ein freundschaftlicher Abschluss „Bis bald“?",
+					"concept": "À bientôt !",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-message",
+					"sample_solution": "À bientôt !"
+				},
+				{
+					"id": "01M7CF8YHVAJQ70DPREJ09BN2H",
+					"slug": "f5-message-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was prüfst du vor dem Abschicken einer Termin-Nachricht?",
+					"concept": "Empfänger, Datum, Uhrzeit, Ort und Schreibweise.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-message",
+					"sample_solution": "Empfänger, Datum, Uhrzeit, Ort und Schreibweise."
+				}
+			]
+		},
+		{
+			"id": "01M7CF8YHSPVXM8K9CT8GYAN0W",
+			"atom_uri": "urn:zam:atom:01M7CF8YHSPVXM8K9CT8GYAN0W",
+			"namespace": "zam-academy-franzoesisch-gymnasium-5",
+			"slug": "f5-fetes",
+			"title": "Joyeux anniversaire !",
+			"domain": "franzoesisch/outils",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-fetes",
+			"prerequisites": [
+				{
+					"atom_id": "01M7CF8YHR40Q32WZTCPH5TQ6V",
+					"type": "soft",
+					"rationale": "Festival greetings extend the familiar greeting formulas."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-gymnasium-5",
+					"topic_code": "outils",
+					"topic_title": "À toi de créer"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb2",
+					"topic_title": "Geburtstag, Weihnachten und Esskultur vergleichen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-wortschatz",
+					"topic_title": "Geburtstag, Weihnachten und Esskultur vergleichen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb5",
+					"topic_title": "Geburtstag, Weihnachten und Esskultur vergleichen",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7CF8YHV34VR35FH0B94D6T5",
+					"slug": "f5-fetes-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie wünschst du „Alles Gute zum Geburtstag“ auf Französisch?",
+					"concept": "Joyeux anniversaire !",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-fetes",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": ["Joyeux anniversaire !", "Joyeux Noël !"],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7CF8YHVEMN3YYM008NJVSD7",
+					"slug": "f5-fetes-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie wünschst du „Frohe Weihnachten“ auf Französisch?",
+					"concept": "Joyeux Noël !",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-fetes",
+					"sample_solution": "Joyeux Noël !"
+				},
+				{
+					"id": "01M7CF8YHV1WA2E4E1G0S1TMTQ",
+					"slug": "f5-fetes-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie vergleichst du Bräuche ohne Vorurteil?",
+					"concept": "Konkrete Beispiele vergleichen und individuelle Unterschiede beachten.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-fetes",
+					"sample_solution": "Konkrete Beispiele vergleichen und individuelle Unterschiede beachten."
+				}
+			]
+		},
+		{
+			"id": "01M7CF8YHSJ4Q91MWFW1617814",
+			"atom_uri": "urn:zam:atom:01M7CF8YHSJ4Q91MWFW1617814",
+			"namespace": "zam-academy-franzoesisch-gymnasium-5",
+			"slug": "f5-comptine",
+			"title": "Un petit poème",
+			"domain": "franzoesisch/outils",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-comptine",
+			"prerequisites": [
+				{
+					"atom_id": "01M7CF8YHR04CPCZXZ7TK251K1",
+					"type": "soft",
+					"rationale": "The spoken rhyme reuses the practised sound–spelling relationships."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-gymnasium-5",
+					"topic_code": "outils",
+					"topic_title": "À toi de créer"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb3",
+					"topic_title": "Ein kleines Gedicht mit Stimme und Bild gestalten",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-aussprache",
+					"topic_title": "Ein kleines Gedicht mit Stimme und Bild gestalten",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb5",
+					"topic_title": "Ein kleines Gedicht mit Stimme und Bild gestalten",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7CF8YHVB3EFRDYXBE1YG4VF",
+					"slug": "f5-comptine-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was ist eine comptine?",
+					"concept": "Ein kurzer rhythmischer Kinderreim.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-comptine",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": ["Ein kurzer rhythmischer Kinderreim.", "Ein Fahrplan."],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7CF8YHVD2WJ8RBCP4G2S69Q",
+					"slug": "f5-comptine-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie unterstützen Bild und Geste einen Vortrag?",
+					"concept": "Sie machen Bedeutung sichtbar und helfen beim Erinnern.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-comptine",
+					"sample_solution": "Sie machen Bedeutung sichtbar und helfen beim Erinnern."
+				},
+				{
+					"id": "01M7CF8YHV5B2419NX0Z1R6M8H",
+					"slug": "f5-comptine-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was bedeutet ici?",
+					"concept": "Hier.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-comptine",
+					"sample_solution": "Hier."
+				}
+			]
+		},
+		{
+			"id": "01M7CF8YHS3N9YW8V30M8MVSKD",
+			"atom_uri": "urn:zam:atom:01M7CF8YHS3N9YW8V30M8MVSKD",
+			"namespace": "zam-academy-franzoesisch-gymnasium-5",
+			"slug": "f5-lexique",
+			"title": "Mon carnet de mots",
+			"domain": "franzoesisch/outils",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-lexique",
+			"prerequisites": [
+				{
+					"atom_id": "01M7CF8YHRC6CF5MDB26VFF10E",
+					"type": "soft",
+					"rationale": "A noun entry includes its article and plural."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-gymnasium-5",
+					"topic_code": "outils",
+					"topic_title": "À toi de créer"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb4",
+					"topic_title": "Wortschatz aktiv erinnern und nachschlagen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-wortschatz",
+					"topic_title": "Wortschatz aktiv erinnern und nachschlagen",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7CF8YHVD0RZT95HVZ09YBE0",
+					"slug": "f5-lexique-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was gehört zu einem französischen Nomen im Vokabelheft?",
+					"concept": "Artikel, Plural und möglichst ein Beispielsatz.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-lexique",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Artikel, Plural und möglichst ein Beispielsatz.",
+							"Nur die deutsche Übersetzung."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7CF8YHVDEM6KR2GETYP8ZSH",
+					"slug": "f5-lexique-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie übst du aktiven Abruf mit einer Wortkarte?",
+					"concept": "Abdecken, aus dem Gedächtnis antworten, prüfen und später wiederholen.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-lexique",
+					"sample_solution": "Abdecken, aus dem Gedächtnis antworten, prüfen und später wiederholen."
+				},
+				{
+					"id": "01M7CF8YHV1PRQMXYZXEKNZTXP",
+					"slug": "f5-lexique-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wo schlägst du eine unsichere Verbform nach?",
+					"concept": "In einer Verbübersicht oder im Lehrwerk.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-lexique",
+					"sample_solution": "In einer Verbübersicht oder im Lehrwerk."
+				}
+			]
+		},
+		{
+			"id": "01M7CF8YHSS4W1VPRWVQWJ4XNX",
+			"atom_uri": "urn:zam:atom:01M7CF8YHSS4W1VPRWVQWJ4XNX",
+			"namespace": "zam-academy-franzoesisch-gymnasium-5",
+			"slug": "f5-accents",
+			"title": "Écrire avec les accents",
+			"domain": "franzoesisch/outils",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-accents",
+			"prerequisites": [
+				{
+					"atom_id": "01M7CF8YHSHKBE23T6QZA0EY3H",
+					"type": "soft",
+					"rationale": "A and à are distinguished using familiar avoir forms."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-gymnasium-5",
+					"topic_code": "outils",
+					"topic_title": "À toi de créer"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb4",
+					"topic_title": "Akzente tippen und Satzstellung vergleichen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-schreiben",
+					"topic_title": "Akzente tippen und Satzstellung vergleichen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-grammatik",
+					"topic_title": "Akzente tippen und Satzstellung vergleichen",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7CF8YHVQHMN5DT2D8NMFZE1",
+					"slug": "f5-accents-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was unterscheidet a und à?",
+					"concept": "A ist eine Form von avoir; à ist eine Präposition, etwa vor einem Ort.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-accents",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"A ist eine Form von avoir; à ist eine Präposition, etwa vor einem Ort.",
+							"Beide sind austauschbar."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7CF8YHVZG2352EKR22ZXA74",
+					"slug": "f5-accents-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie heißt „Morgen lese ich ein Buch“?",
+					"concept": "Demain, je lis un livre.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-accents",
+					"sample_solution": "Demain, je lis un livre."
+				},
+				{
+					"id": "01M7CF8YHV1Z9M5VMXWEA32TJC",
+					"slug": "f5-accents-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was unterscheidet ou und où?",
+					"concept": "Ou heißt oder; où heißt wo.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-accents",
+					"sample_solution": "Ou heißt oder; où heißt wo."
+				}
+			]
+		},
+		{
+			"id": "01M7CF8YHS3TF7071YCGK013B2",
+			"atom_uri": "urn:zam:atom:01M7CF8YHS3TF7071YCGK013B2",
+			"namespace": "zam-academy-franzoesisch-gymnasium-5",
+			"slug": "f5-projet",
+			"title": "Notre petite découverte",
+			"domain": "franzoesisch/outils",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-projet",
+			"prerequisites": [
+				{
+					"atom_id": "01M7CF8YHS3AFTM8ANWM1MVQCM",
+					"type": "soft",
+					"rationale": "The project combines a short message and facts from the France map."
+				},
+				{
+					"atom_id": "01M7CF8YHSF7GQFRENM1FKZB0S",
+					"type": "soft",
+					"rationale": "The project combines a short message and facts from the France map."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-gymnasium-5",
+					"topic_code": "outils",
+					"topic_title": "À toi de créer"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb3",
+					"topic_title": "Ein kleines Kulturprojekt und Rückblick",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb4",
+					"topic_title": "Ein kleines Kulturprojekt und Rückblick",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb5",
+					"topic_title": "Ein kleines Kulturprojekt und Rückblick",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "franzoesisch",
+					"topic_code": "lb2",
+					"topic_title": "Ein kleines Kulturprojekt und Rückblick",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7CF8YHVEVD9RT9BGDHBCRDT",
+					"slug": "f5-projet-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was prüfst du bei einer Quelle zu einem aktuellen Ereignis?",
+					"concept": "Herausgeber, Titel, Datum und passende Angaben zu Ort und Anlass.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-projet",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Herausgeber, Titel, Datum und passende Angaben zu Ort und Anlass.",
+							"Nur ob die Seite bunt aussieht."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7CF8YHV9Q8XAKTVNGG4HQXS",
+					"slug": "f5-projet-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was gehört zu einem sinnvollen Lernrückblick?",
+					"concept": "Ein gelungener Schritt und ein konkreter nächster Übungsschritt.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-projet",
+					"sample_solution": "Ein gelungener Schritt und ein konkreter nächster Übungsschritt."
+				},
+				{
+					"id": "01M7CF8YHV9XHG7S6Y77KJMHKB",
+					"slug": "f5-projet-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Warum braucht ein Lernplakat passende Bildbeschriftungen?",
+					"concept": "Sie verbinden sichtbare Dinge mit den richtigen Wörtern und Aussagen.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-gymnasium-5/#lesson=f5-projet",
+					"sample_solution": "Sie verbinden sichtbare Dinge mit den richtigen Wörtern und Aussagen."
+				}
+			]
+		}
+	]
+}

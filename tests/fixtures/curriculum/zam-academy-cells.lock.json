@@ -19,6 +19,19 @@
     "file": "zam-academy-biologie-realschule-10-kvt.json"
   },
   {
+    "id": "zam-academy:biologie-realschule-5",
+    "version": "2026.11.1",
+    "sha256": "c91d8e1d940b253fb3f227bd7b06bdf93c0d0a0f062447f5b7854a835cbb44b4",
+    "file": "zam-academy-biologie-realschule-5-kvt.json"
+  },
+  {
+    "id": "zam-academy:biologie-realschule-6",
+    "version": "2026.11.2",
+    "sha256": "13703b48e4189ac1d723f28ae1b850ffad1253987d4e27c3a83067b1c8e38e2e",
+    "file": "zam-academy-biologie-realschule-6-kvt.json",
+    "preview": true
+  },
+  {
     "id": "zam-academy:biologie-realschule-8",
     "version": "2026.10.2",
     "sha256": "5e9caa7f16517b045c5a70bc18c29288461ae6670cb969e55000276a9fa0e4f5",
@@ -141,6 +154,12 @@
     "file": "zam-academy-englisch-realschule-9-kvt.json"
   },
   {
+    "id": "zam-academy:franzoesisch-gymnasium-5",
+    "version": "2026.11.1",
+    "sha256": "39c0ebf70247c1a05765865917a612fad38508cbdb63295d0ad76629b0738467",
+    "file": "zam-academy-franzoesisch-gymnasium-5-kvt.json"
+  },
+  {
     "id": "zam-academy:franzoesisch-realschule-10",
     "version": "2026.10.2",
     "sha256": "8d57e27197f64491349c8a2cfb57830b1a644ebe0878ae31df1ebd5aa60e202d",
@@ -157,6 +176,19 @@
     "version": "2026.10.2",
     "sha256": "bb178630a291b0978f0275db7485a2981ba6826d75938c2c751999e4cee37ed3",
     "file": "zam-academy-franzoesisch-realschule-9-kvt.json"
+  },
+  {
+    "id": "zam-academy:geographie-gymnasium-5",
+    "version": "2026.11.1",
+    "sha256": "f5e8eab0a831dba363c8f93409ba9715900ce5884c5cc7ba2058ca05c2a73879",
+    "file": "zam-academy-geographie-gymnasium-5-kvt.json"
+  },
+  {
+    "id": "zam-academy:geographie-realschule-5",
+    "version": "2026.11.2",
+    "sha256": "d08ee4745358f435e299d4edff7886cfd1847dfcfc29190269bbab3ff911c096",
+    "file": "zam-academy-geographie-realschule-5-kvt.json",
+    "preview": true
   },
   {
     "id": "zam-academy:geographie-realschule-8",
@@ -187,6 +219,12 @@
     "version": "2026.10.1",
     "sha256": "d03372a8f474fcefecb72f7847afbb7a95c200ac612886411c50b53e5c87cc5e",
     "file": "zam-academy-geschichte-realschule-9-kvt.json"
+  },
+  {
+    "id": "zam-academy:gpg-mittelschule-5",
+    "version": "2026.11.1",
+    "sha256": "ef978a9f9079df9e4f7c2629d9ecbc349540397b0038e07e69bc3800ffbfef54",
+    "file": "zam-academy-gpg-mittelschule-5-kvt.json"
   },
   {
     "id": "zam-academy:hsu-grundschule-4",
@@ -246,6 +284,18 @@
     "file": "zam-academy-mathematik-gymnasium-6-kvt.json"
   },
   {
+    "id": "zam-academy:mathematik-gymnasium-7",
+    "version": "2026.11.2",
+    "sha256": "f61491376c27aa3f190f3734d3f756c02dd42b42af1f19727cf97bf9cd3fdee9",
+    "file": "zam-academy-mathematik-gymnasium-7-kvt.json"
+  },
+  {
+    "id": "zam-academy:mathematik-mittelschule-10",
+    "version": "2026.11.1",
+    "sha256": "bf150d0e5c71f0cebb106c82ebbf9f74ca7bc11c2e1f52607410dca54e56b7c5",
+    "file": "zam-academy-mathematik-mittelschule-10-kvt.json"
+  },
+  {
     "id": "zam-academy:mathematik-mittelschule-5",
     "version": "2026.11.1",
     "sha256": "4815ff9b18e1eeea7575dc4a35eca7c1ed831a854d80c9bc1d67d30793ea1708",
@@ -268,6 +318,12 @@
     "version": "2026.11.1",
     "sha256": "3a0d6d76a0dc3e0077b572d414894f4b615ea8bbb28b4c8315ff5d435899836c",
     "file": "zam-academy-mathematik-mittelschule-8-kvt.json"
+  },
+  {
+    "id": "zam-academy:mathematik-mittelschule-9",
+    "version": "2026.11.1",
+    "sha256": "0cfa8bc94eac8c946d8aa63bebfbff6aa4ba75bf823ed0ada9f4490915143710",
+    "file": "zam-academy-mathematik-mittelschule-9-kvt.json"
   },
   {
     "id": "zam-academy:mathematik-realschule-10",
@@ -304,6 +360,12 @@
     "version": "2026.10.1",
     "sha256": "cbd22fd777d1bcee467052326b538becf8bca502ab7a493d8078ae8acd48f817",
     "file": "zam-academy-mathematik-realschule-9-kvt.json"
+  },
+  {
+    "id": "zam-academy:nt-mittelschule-5",
+    "version": "2026.11.1",
+    "sha256": "a894ec797412fb3318d3c1bce7a06801663fb79ea7cf96620f792c4fb9b8fd5e",
+    "file": "zam-academy-nt-mittelschule-5-kvt.json"
   },
   {
     "id": "zam-academy:physik-gymnasium-11",

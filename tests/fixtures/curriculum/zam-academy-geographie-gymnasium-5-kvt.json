@@ -1,0 +1,3228 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "zam-academy:geographie-gymnasium-5",
+  "version": "2026.11.1",
+  "title": "Geographie 5 Gymnasium (ZAM Academy)",
+  "description": "44 Lektionen zu Geographie 5 Gymnasium Bayern: Arbeitstechniken, Planet Erde, Naturräume sowie ländliche und städtische Räume in Bayern und Deutschland. 88 kurze Wiederholungsfragen; Messungen, Versuche, Kartierung und Exkursion ergänzen die App. Keine Lernstandsübertragung; Veröffentlichung über die ZAM Academy.",
+  "publisher": "ZAM Academy",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/5/geographie",
+      "label": "LehrplanPLUS Bayern · Geographie 5 Gymnasium",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Sonnensystem",
+      "label": "Klexikon · Sonnensystem",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Planet",
+      "label": "Klexikon · Planet",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Erde",
+      "label": "Klexikon · Erde",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Atmosph%C3%A4re",
+      "label": "Klexikon · Atmosphäre",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Kontinent",
+      "label": "Klexikon · Kontinent",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Ozean",
+      "label": "Klexikon · Meer",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Globus",
+      "label": "Klexikon · Globus",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Landkarte",
+      "label": "Klexikon · Landkarte",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Atlas",
+      "label": "Klexikon · Atlas",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Himmelsrichtung",
+      "label": "Klexikon · Himmelsrichtung",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Kompass",
+      "label": "Klexikon · Kompass",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Breitengrad",
+      "label": "Klexikon · Breitenkreis",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Ma%C3%9Fstab",
+      "label": "Klexikon · Maßstab",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Geocaching",
+      "label": "Klexikon · Geocaching",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Satellit",
+      "label": "Klexikon · Satellit",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Wetter",
+      "label": "Klexikon · Wetter",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Thermometer",
+      "label": "Klexikon · Thermometer",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Niederschlag",
+      "label": "Klexikon · Niederschlag",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Erdboden",
+      "label": "Klexikon · Erdboden",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Gestein",
+      "label": "Klexikon · Gestein",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Fossil",
+      "label": "Klexikon · Fossil",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Plattentektonik",
+      "label": "Klexikon · Plattentektonik",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Vulkan",
+      "label": "Klexikon · Vulkan",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Erdbeben",
+      "label": "Klexikon · Erdbeben",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Erosion",
+      "label": "Klexikon · Erosion",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Alpen",
+      "label": "Klexikon · Alpen",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Zugspitze",
+      "label": "Klexikon · Zugspitze",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Gletscher",
+      "label": "Klexikon · Gletscher",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Eiszeit",
+      "label": "Klexikon · Eiszeit",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Tourismus",
+      "label": "Klexikon · Tourismus",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Lawine",
+      "label": "Klexikon · Lawine",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Hochwasser",
+      "label": "Klexikon · Hochwasser",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Mittelgebirge",
+      "label": "Klexikon · Gebirge",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Bayerischer_Wald",
+      "label": "Klexikon · Bayerischer Wald",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Nationalpark",
+      "label": "Klexikon · Nationalpark",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/K%C3%BCste",
+      "label": "Klexikon · Küste",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Nordsee",
+      "label": "Klexikon · Nordsee",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Ostsee",
+      "label": "Klexikon · Ostsee",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Watt_(Natur)",
+      "label": "Klexikon · Watt (Natur)",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Gezeiten",
+      "label": "Klexikon · Gezeiten",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Deich",
+      "label": "Klexikon · Deich",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Sturmflut",
+      "label": "Klexikon · Sturmflut",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Landwirtschaft",
+      "label": "Klexikon · Landwirtschaft",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Bauernhof",
+      "label": "Klexikon · Bauernhof",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Dorf",
+      "label": "Klexikon · Dorf",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Stadt",
+      "label": "Klexikon · Stadt",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Bundesland",
+      "label": "Klexikon · Bundesland",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Bayern",
+      "label": "Klexikon · Bayern",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Deutschland",
+      "label": "Klexikon · Deutschland",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Landkreis",
+      "label": "Klexikon · Landkreis",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Gemeinde",
+      "label": "Klexikon · Gemeinde",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Ruhrgebiet",
+      "label": "Klexikon · Ruhrgebiet",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/M%C3%BCnchen",
+      "label": "Klexikon · München",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Verkehr",
+      "label": "Klexikon · Verkehr",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Donau",
+      "label": "Klexikon · Donau",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Main",
+      "label": "Klexikon · Main",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Umweltschutz",
+      "label": "Klexikon · Umweltschutz",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Nachhaltigkeit",
+      "label": "Klexikon · Nachhaltigkeit",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Klimawandel",
+      "label": "Klexikon · Klimawandel",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://atlas.bayern.de/",
+      "label": "BayernAtlas · amtliche Karten und Luftbilder von Bayern",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://www.lfu.bayern.de/geologie/geologie_bayerns/ueberblick/index.htm",
+      "label": "LfU Bayern · Geologischer Überblick Bayern",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://www.nationalpark-bayerischer-wald.bayern.de/",
+      "label": "Nationalpark Bayerischer Wald",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://www.nationalpark-berchtesgaden.bayern.de/",
+      "label": "Nationalpark Berchtesgaden",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://www.bfn.de/nationalparke",
+      "label": "Bundesamt für Naturschutz · Nationalparke in Deutschland",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://www.waddensea-worldheritage.org/de",
+      "label": "Weltnaturerbe Wattenmeer",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://lawinenwarndienst.bayern.de/",
+      "label": "Lawinenwarndienst Bayern · Lawinenlage Bayern",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://www.hnd.bayern.de/",
+      "label": "Hochwassernachrichtendienst Bayern",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://www.dwd.de/DE/Home/home_node.html",
+      "label": "Deutscher Wetterdienst · Wetter und Klima",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://www.oekolandbau.de/",
+      "label": "oekolandbau.de · Informationsportal zu Öko-Landwirtschaft und Bio-Lebensmitteln",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://www.bmleh.de/DE/themen/landwirtschaft/oekologischer-landbau/oekologischer-landbau_node.html",
+      "label": "BMLEH · Ökologischer Landbau",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://www.lfl.bayern.de/",
+      "label": "Bayerische Landesanstalt für Landwirtschaft (LfL)",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://www.statistik.bayern.de/",
+      "label": "Bayerisches Landesamt für Statistik",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://www.stmi.bayern.de/",
+      "label": "Bayerisches Staatsministerium des Innern, für Sport und Integration",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://www.hanisauland.de/wissen/lexikon/grosses-lexikon/b/bundeslaender.html",
+      "label": "HanisauLand (bpb) · Bundesländer / Föderalismus",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://www.hanisauland.de/wissen/lexikon/grosses-lexikon/n/nachhaltigkeit.html",
+      "label": "HanisauLand (bpb) · Nachhaltigkeit",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://www.umweltbundesamt.de/uba-umwelttipps",
+      "label": "Umweltbundesamt · UBA-Umwelttipps",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://github.com/nvkelso/natural-earth-vector",
+      "label": "Natural Earth · gemeinfreie Kartendaten (Kartengrundlage dieser App)",
+      "checked": "2026-11-14"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01M7CFTBQCAN32WE7PEM3FHDHW",
+      "atom_uri": "urn:zam:atom:01M7CFTBQCAN32WE7PEM3FHDHW",
+      "namespace": "zam-academy-geographie-gymnasium-5",
+      "slug": "geogym5-kartenarten",
+      "title": "Topografische, physische und thematische Karten",
+      "domain": "geographie/lb1",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-kartenarten",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-gymnasium-5",
+          "topic_code": "lb1",
+          "topic_title": "Geographische Arbeitstechniken"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "geographie",
+          "topic_code": "lb1",
+          "topic_title": "Geographische Arbeitstechniken",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CFTBQD6S5S9SMTSM64BW79",
+          "slug": "geogym5-kartenarten-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Auf welcher Kartenart erkennst du am schnellsten, wo in Deutschland hohe Gebirge liegen?",
+          "concept": "auf einer physischen Karte",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-kartenarten",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "auf einer physischen Karte",
+              "auf einer thematischen Karte zur Bevölkerungsdichte"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CFTBQDZ4HAZ84S4VHF4HNF",
+          "slug": "geogym5-kartenarten-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Was zeigt eine physische Karte vor allem, und womit stellt sie es dar?",
+          "concept": "Das Relief, also hohe und tiefe Gebiete, mit Höhenschichtenfarben: grün tief, gelb und braun höher, weiß Hochgebirge.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-kartenarten",
+          "sample_solution": "Das Relief, also hohe und tiefe Gebiete, mit Höhenschichtenfarben: grün tief, gelb und braun höher, weiß Hochgebirge."
+        }
+      ]
+    },
+    {
+      "id": "01M7CFTBQDZ4HAZ84S4VHF4HNG",
+      "atom_uri": "urn:zam:atom:01M7CFTBQDZ4HAZ84S4VHF4HNG",
+      "namespace": "zam-academy-geographie-gymnasium-5",
+      "slug": "geogym5-atlas",
+      "title": "Mit dem Atlas arbeiten",
+      "domain": "geographie/lb1",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-atlas",
+      "prerequisites": [
+        {
+          "atom_id": "01M7CFTBQCAN32WE7PEM3FHDHW",
+          "type": "soft",
+          "rationale": "Im Atlas liest du Karten verschiedener Arten mit ihrer Legende."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-gymnasium-5",
+          "topic_code": "lb1",
+          "topic_title": "Geographische Arbeitstechniken"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "geographie",
+          "topic_code": "lb1",
+          "topic_title": "Geographische Arbeitstechniken",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CFTBQDZ4HAZ84S4VHF4HNH",
+          "slug": "geogym5-atlas-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Im Register steht „Passau 23 F5“. Was bedeutet „F5“?",
+          "concept": "das Planquadrat auf der Karte",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-atlas",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "das Planquadrat auf der Karte",
+              "die fünfte Auflage des Atlas"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CFTBQDZ4HAZ84S4VHF4HNJ",
+          "slug": "geogym5-atlas-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "In welcher Reihenfolge findest du einen Ort im Atlas?",
+          "concept": "Register → Seite → Planquadrat → Legende.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-atlas",
+          "sample_solution": "Register → Seite → Planquadrat → Legende."
+        }
+      ]
+    },
+    {
+      "id": "01M7CFTBQDZ4HAZ84S4VHF4HNK",
+      "atom_uri": "urn:zam:atom:01M7CFTBQDZ4HAZ84S4VHF4HNK",
+      "namespace": "zam-academy-geographie-gymnasium-5",
+      "slug": "geogym5-materialien",
+      "title": "Texte, Bilder, Tabellen und Diagramme auswerten",
+      "domain": "geographie/lb1",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-materialien",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-gymnasium-5",
+          "topic_code": "lb1",
+          "topic_title": "Geographische Arbeitstechniken"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "geographie",
+          "topic_code": "lb1",
+          "topic_title": "Geographische Arbeitstechniken",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CFTBQDZ4HAZ84S4VHF4HNM",
+          "slug": "geogym5-materialien-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was liest du bei einem Diagramm als Erstes?",
+          "concept": "Titel, Einheiten und Zeitraum",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-materialien",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Titel, Einheiten und Zeitraum",
+              "den höchsten Wert"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CFTBQDZ4HAZ84S4VHF4HNN",
+          "slug": "geogym5-materialien-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Nenne die drei Schritte, mit denen du ein Diagramm auswertest.",
+          "concept": "Beschreiben (Thema, Ort, Zeit, Einheit), auswerten (höchster, niedrigster Wert, Unterschiede), erklären.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-materialien",
+          "sample_solution": "Beschreiben (Thema, Ort, Zeit, Einheit), auswerten (höchster, niedrigster Wert, Unterschiede), erklären."
+        }
+      ]
+    },
+    {
+      "id": "01M7CFTBQDZ4HAZ84S4VHF4HNP",
+      "atom_uri": "urn:zam:atom:01M7CFTBQDZ4HAZ84S4VHF4HNP",
+      "namespace": "zam-academy-geographie-gymnasium-5",
+      "slug": "geogym5-diagramm",
+      "title": "Tabellen anlegen und Diagramme zeichnen",
+      "domain": "geographie/lb1",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-diagramm",
+      "prerequisites": [
+        {
+          "atom_id": "01M7CFTBQDZ4HAZ84S4VHF4HNK",
+          "type": "soft",
+          "rationale": "Wer Diagramme zeichnet, muss sie auch auswerten können."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-gymnasium-5",
+          "topic_code": "lb1",
+          "topic_title": "Geographische Arbeitstechniken"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "geographie",
+          "topic_code": "lb1",
+          "topic_title": "Geographische Arbeitstechniken",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CFTBQDZ4HAZ84S4VHF4HNQ",
+          "slug": "geogym5-diagramm-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Die Achse eines Säulendiagramms ist so eingeteilt: 1 cm entspricht 2 mm Niederschlag. Wie hoch zeichnest du die Säule für 6 mm?",
+          "concept": "3 cm",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-diagramm",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "3 cm",
+              "6 cm"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CFTBQDZ4HAZ84S4VHF4HNR",
+          "slug": "geogym5-diagramm-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Was muss feststehen, bevor du die Säulen eines Diagramms zeichnest?",
+          "concept": "Die Einteilung der Achse, gewählt nach dem größten Wert.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-diagramm",
+          "sample_solution": "Die Einteilung der Achse, gewählt nach dem größten Wert."
+        }
+      ]
+    },
+    {
+      "id": "01M7CFTBQDZ4HAZ84S4VHF4HNS",
+      "atom_uri": "urn:zam:atom:01M7CFTBQDZ4HAZ84S4VHF4HNS",
+      "namespace": "zam-academy-geographie-gymnasium-5",
+      "slug": "geogym5-exkursion",
+      "title": "Eine Erkundung vorbereiten und durchführen",
+      "domain": "geographie/lb1",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-exkursion",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-gymnasium-5",
+          "topic_code": "lb1",
+          "topic_title": "Geographische Arbeitstechniken"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "geographie",
+          "topic_code": "lb1",
+          "topic_title": "Geographische Arbeitstechniken",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CFTBQDZ4HAZ84S4VHF4HNT",
+          "slug": "geogym5-exkursion-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Womit beginnt die Vorbereitung einer Erkundung?",
+          "concept": "mit einer Leitfrage",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-exkursion",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "mit einer Leitfrage",
+              "mit dem Fotografieren vor Ort"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CFTBQDZ4HAZ84S4VHF4HNV",
+          "slug": "geogym5-exkursion-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Nenne die drei Phasen einer Erkundung.",
+          "concept": "1. vorbereiten, 2. durchführen, 3. auswerten (und präsentieren).",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-exkursion",
+          "sample_solution": "1. vorbereiten, 2. durchführen, 3. auswerten (und präsentieren)."
+        }
+      ]
+    },
+    {
+      "id": "01M7CFTBQDZSARVBYPKAEY9ESP",
+      "atom_uri": "urn:zam:atom:01M7CFTBQDZSARVBYPKAEY9ESP",
+      "namespace": "zam-academy-geographie-gymnasium-5",
+      "slug": "geogym5-sonnensystem",
+      "title": "Unser Sonnensystem",
+      "domain": "geographie/lb2",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-sonnensystem",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-gymnasium-5",
+          "topic_code": "lb2",
+          "topic_title": "Planet Erde"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "geographie",
+          "topic_code": "lb2",
+          "topic_title": "Planet Erde",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CFTBQDZSARVBYPKAEY9ESQ",
+          "slug": "geogym5-sonnensystem-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wodurch entstehen Tag und Nacht?",
+          "concept": "durch die Drehung der Erde um ihre eigene Achse",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-sonnensystem",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "durch die Drehung der Erde um ihre eigene Achse",
+              "durch den Umlauf der Erde um die Sonne"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CFTBQDZSARVBYPKAEY9ESR",
+          "slug": "geogym5-sonnensystem-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Nenne die acht Planeten von der Sonne aus.",
+          "concept": "Merkur, Venus, Erde, Mars, Jupiter, Saturn, Uranus, Neptun.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-sonnensystem",
+          "sample_solution": "Merkur, Venus, Erde, Mars, Jupiter, Saturn, Uranus, Neptun."
+        }
+      ]
+    },
+    {
+      "id": "01M7CFTBQDZSARVBYPKAEY9ESS",
+      "atom_uri": "urn:zam:atom:01M7CFTBQDZSARVBYPKAEY9ESS",
+      "namespace": "zam-academy-geographie-gymnasium-5",
+      "slug": "geogym5-schalenbau",
+      "title": "Der Schalenbau der Erde",
+      "domain": "geographie/lb2",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-schalenbau",
+      "prerequisites": [
+        {
+          "atom_id": "01M7CFTBQDZSARVBYPKAEY9ESP",
+          "type": "soft",
+          "rationale": "Der Aufbau der Erde folgt auf ihre Stellung im Sonnensystem."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-gymnasium-5",
+          "topic_code": "lb2",
+          "topic_title": "Planet Erde"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "geographie",
+          "topic_code": "lb2",
+          "topic_title": "Planet Erde",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CFTBQDZSARVBYPKAEY9EST",
+          "slug": "geogym5-schalenbau-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Schale der Erde ist flüssig?",
+          "concept": "der äußere Erdkern",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-schalenbau",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "der äußere Erdkern",
+              "die Erdkruste"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CFTBQDZSARVBYPKAEY9ESV",
+          "slug": "geogym5-schalenbau-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Nenne die Schalen der Erde von außen nach innen.",
+          "concept": "Erdkruste, Erdmantel, äußerer Erdkern (flüssig), innerer Erdkern (fest).",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-schalenbau",
+          "sample_solution": "Erdkruste, Erdmantel, äußerer Erdkern (flüssig), innerer Erdkern (fest)."
+        }
+      ]
+    },
+    {
+      "id": "01M7CFTBQDZSARVBYPKAEY9ESW",
+      "atom_uri": "urn:zam:atom:01M7CFTBQDZSARVBYPKAEY9ESW",
+      "namespace": "zam-academy-geographie-gymnasium-5",
+      "slug": "geogym5-kontinente",
+      "title": "Kontinente und Ozeane",
+      "domain": "geographie/lb2",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-kontinente",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-gymnasium-5",
+          "topic_code": "lb2",
+          "topic_title": "Planet Erde"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "geographie",
+          "topic_code": "lb2",
+          "topic_title": "Planet Erde",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CFTBQDZSARVBYPKAEY9ESX",
+          "slug": "geogym5-kontinente-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welcher Ozean liegt zwischen Europa und Nordamerika?",
+          "concept": "der Atlantik",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-kontinente",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "der Atlantik",
+              "der Pazifik"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CFTBQDZSARVBYPKAEY9ESY",
+          "slug": "geogym5-kontinente-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Nenne die drei großen Ozeane.",
+          "concept": "Pazifischer Ozean, Atlantischer Ozean, Indischer Ozean.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-kontinente",
+          "sample_solution": "Pazifischer Ozean, Atlantischer Ozean, Indischer Ozean."
+        }
+      ]
+    },
+    {
+      "id": "01M7CFTBQDZSARVBYPKAEY9ESZ",
+      "atom_uri": "urn:zam:atom:01M7CFTBQDZSARVBYPKAEY9ESZ",
+      "namespace": "zam-academy-geographie-gymnasium-5",
+      "slug": "geogym5-erde-einzigartig",
+      "title": "Die Erde – ein besonderer Planet",
+      "domain": "geographie/lb2",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-erde-einzigartig",
+      "prerequisites": [
+        {
+          "atom_id": "01M7CFTBQDZSARVBYPKAEY9ESP",
+          "type": "soft",
+          "rationale": "Der Abstand zur Sonne erklärt, warum es flüssiges Wasser gibt."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-gymnasium-5",
+          "topic_code": "lb2",
+          "topic_title": "Planet Erde"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "geographie",
+          "topic_code": "lb2",
+          "topic_title": "Planet Erde",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CFTBQDZSARVBYPKAEY9ET0",
+          "slug": "geogym5-erde-einzigartig-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum gibt es auf der Erde flüssiges Wasser?",
+          "concept": "weil sie den passenden Abstand zur Sonne und eine Lufthülle hat",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-erde-einzigartig",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "weil sie den passenden Abstand zur Sonne und eine Lufthülle hat",
+              "weil sie der Sonne am nächsten ist"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CFTBQDZSARVBYPKAEY9ET1",
+          "slug": "geogym5-erde-einzigartig-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Nenne drei Bedingungen, die die Erde zum Lebensraum machen.",
+          "concept": "Passender Abstand zur Sonne, flüssiges Wasser, Lufthülle mit Sauerstoff (dazu Magnetfeld und Böden).",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-erde-einzigartig",
+          "sample_solution": "Passender Abstand zur Sonne, flüssiges Wasser, Lufthülle mit Sauerstoff (dazu Magnetfeld und Böden)."
+        }
+      ]
+    },
+    {
+      "id": "01M7CFTBQDZSARVBYPKAEY9ET2",
+      "atom_uri": "urn:zam:atom:01M7CFTBQDZSARVBYPKAEY9ET2",
+      "namespace": "zam-academy-geographie-gymnasium-5",
+      "slug": "geogym5-erde-schuetzen",
+      "title": "Die Erde schützen – was ich tun kann",
+      "domain": "geographie/lb2",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-erde-schuetzen",
+      "prerequisites": [
+        {
+          "atom_id": "01M7CFTBQDZSARVBYPKAEY9ESZ",
+          "type": "soft",
+          "rationale": "Schützen kann man nur, was man als Lebensgrundlage erkannt hat."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-gymnasium-5",
+          "topic_code": "lb2",
+          "topic_title": "Planet Erde"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "geographie",
+          "topic_code": "lb2",
+          "topic_title": "Planet Erde",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CFTBQDZSARVBYPKAEY9ET3",
+          "slug": "geogym5-erde-schuetzen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welches Verhalten verringert den Ausstoß von Abgasen?",
+          "concept": "mit dem Fahrrad statt mit dem Auto zur Schule fahren",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-erde-schuetzen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "mit dem Fahrrad statt mit dem Auto zur Schule fahren",
+              "das Licht in leeren Räumen brennen lassen"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CFTBQDZSARVBYPKAEY9ET4",
+          "slug": "geogym5-erde-schuetzen-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Nenne zwei Dinge, die du im Alltag zum Schutz der Erde tun kannst.",
+          "concept": "Zum Beispiel kurze Wege zu Fuß oder mit dem Rad, Energie sparen, Müll vermeiden und trennen, regional einkaufen.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-erde-schuetzen",
+          "sample_solution": "Zum Beispiel kurze Wege zu Fuß oder mit dem Rad, Energie sparen, Müll vermeiden und trennen, regional einkaufen."
+        }
+      ]
+    },
+    {
+      "id": "01M7CFTBQDZSARVBYPKAEY9ET5",
+      "atom_uri": "urn:zam:atom:01M7CFTBQDZSARVBYPKAEY9ET5",
+      "namespace": "zam-academy-geographie-gymnasium-5",
+      "slug": "geogym5-globus-karte",
+      "title": "Globus, Karte und Maßstabsebenen",
+      "domain": "geographie/lb2",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-globus-karte",
+      "prerequisites": [
+        {
+          "atom_id": "01M7CFTBQDZSARVBYPKAEY9ESW",
+          "type": "soft",
+          "rationale": "Globus und Karte zeigen die Kontinente und Ozeane unterschiedlich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-gymnasium-5",
+          "topic_code": "lb2",
+          "topic_title": "Planet Erde"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "geographie",
+          "topic_code": "lb2",
+          "topic_title": "Planet Erde",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CFTBQDZSARVBYPKAEY9ET6",
+          "slug": "geogym5-globus-karte-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was zeigt ein Globus genauer als jede Weltkarte?",
+          "concept": "die Formen und Größenverhältnisse der Länder",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-globus-karte",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "die Formen und Größenverhältnisse der Länder",
+              "die Straßen in deinem Wohnort"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CFTBQDZSARVBYPKAEY9ET7",
+          "slug": "geogym5-globus-karte-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Warum ist jede Weltkarte verzerrt?",
+          "concept": "Weil sich die Kugelform der Erde nicht ohne Fehler flach darstellen lässt.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-globus-karte",
+          "sample_solution": "Weil sich die Kugelform der Erde nicht ohne Fehler flach darstellen lässt."
+        }
+      ]
+    },
+    {
+      "id": "01M7CFTBQDZSARVBYPKAEY9ET8",
+      "atom_uri": "urn:zam:atom:01M7CFTBQDZSARVBYPKAEY9ET8",
+      "namespace": "zam-academy-geographie-gymnasium-5",
+      "slug": "geogym5-himmelsrichtungen",
+      "title": "Himmelsrichtungen bestimmen",
+      "domain": "geographie/lb2",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-himmelsrichtungen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-gymnasium-5",
+          "topic_code": "lb2",
+          "topic_title": "Planet Erde"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "geographie",
+          "topic_code": "lb2",
+          "topic_title": "Planet Erde",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CFTBQDZSARVBYPKAEY9ET9",
+          "slug": "geogym5-himmelsrichtungen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "In welcher Himmelsrichtung steht die Sonne bei uns mittags?",
+          "concept": "im Süden",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-himmelsrichtungen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "im Süden",
+              "im Norden"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CFTBQDZSARVBYPKAEY9ETA",
+          "slug": "geogym5-himmelsrichtungen-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Wohin zeigt die Nadel eines Kompasses?",
+          "concept": "Nach Norden.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-himmelsrichtungen",
+          "sample_solution": "Nach Norden."
+        }
+      ]
+    },
+    {
+      "id": "01M7CFTBQDZSARVBYPKAEY9ETB",
+      "atom_uri": "urn:zam:atom:01M7CFTBQDZSARVBYPKAEY9ETB",
+      "namespace": "zam-academy-geographie-gymnasium-5",
+      "slug": "geogym5-gradnetz",
+      "title": "Das Gradnetz der Erde",
+      "domain": "geographie/lb2",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-gradnetz",
+      "prerequisites": [
+        {
+          "atom_id": "01M7CFTBQDZSARVBYPKAEY9ET5",
+          "type": "soft",
+          "rationale": "Das Gradnetz ist auf dem Globus und auf Karten eingezeichnet."
+        },
+        {
+          "atom_id": "01M7CFTBQDZSARVBYPKAEY9ET8",
+          "type": "soft",
+          "rationale": "Nord, Süd, Ost und West stecken in jeder Gradangabe."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-gymnasium-5",
+          "topic_code": "lb2",
+          "topic_title": "Planet Erde"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "geographie",
+          "topic_code": "lb2",
+          "topic_title": "Planet Erde",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CFTBQDZSARVBYPKAEY9ETC",
+          "slug": "geogym5-gradnetz-check",
+          "replaces": [
+            "01K4YG5E000000000000000J01"
+          ],
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Durch welchen Ort verläuft der Nullmeridian?",
+          "concept": "durch Greenwich in London",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-gradnetz",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "durch Greenwich in London",
+              "durch Paris"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CFTBQDZSARVBYPKAEY9ETD",
+          "slug": "geogym5-gradnetz-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Welche Angabe nennst du bei einer Lage im Gradnetz zuerst?",
+          "concept": "Die geographische Breite, danach die geographische Länge.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-gradnetz",
+          "sample_solution": "Die geographische Breite, danach die geographische Länge."
+        }
+      ]
+    },
+    {
+      "id": "01M7CFTBQDZTCRBQ5TQFQM1XMK",
+      "atom_uri": "urn:zam:atom:01M7CFTBQDZTCRBQ5TQFQM1XMK",
+      "namespace": "zam-academy-geographie-gymnasium-5",
+      "slug": "geogym5-hoehen",
+      "title": "Höhen auf Karten darstellen",
+      "domain": "geographie/lb2",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-hoehen",
+      "prerequisites": [
+        {
+          "atom_id": "01M7CFTBQCAN32WE7PEM3FHDHW",
+          "type": "soft",
+          "rationale": "Höhendarstellungen unterscheiden topografische und physische Karten."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-gymnasium-5",
+          "topic_code": "lb2",
+          "topic_title": "Planet Erde"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "geographie",
+          "topic_code": "lb2",
+          "topic_title": "Planet Erde",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CFTBQDZTCRBQ5TQFQM1XMM",
+          "slug": "geogym5-hoehen-check",
+          "replaces": [
+            "01K4YG5E000000000000000J03"
+          ],
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was bedeutet es, wenn Höhenlinien auf einer Karte sehr dicht beieinanderliegen?",
+          "concept": "Das Gelände ist dort steil.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-hoehen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Das Gelände ist dort steil.",
+              "Das Gelände ist dort flach."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CFTBQDZTCRBQ5TQFQM1XMN",
+          "slug": "geogym5-hoehen-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Was verbindet eine Höhenlinie?",
+          "concept": "Alle Punkte, die gleich hoch über dem Meeresspiegel liegen.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-hoehen",
+          "sample_solution": "Alle Punkte, die gleich hoch über dem Meeresspiegel liegen."
+        }
+      ]
+    },
+    {
+      "id": "01M7CFTBQDZTCRBQ5TQFQM1XMP",
+      "atom_uri": "urn:zam:atom:01M7CFTBQDZTCRBQ5TQFQM1XMP",
+      "namespace": "zam-academy-geographie-gymnasium-5",
+      "slug": "geogym5-massstab",
+      "title": "Maßstab und Entfernungen",
+      "domain": "geographie/lb2",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-massstab",
+      "prerequisites": [
+        {
+          "atom_id": "01M7CFTBQDZSARVBYPKAEY9ET5",
+          "type": "soft",
+          "rationale": "Jede Karte ist eine verkleinerte Darstellung der Erde."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-gymnasium-5",
+          "topic_code": "lb2",
+          "topic_title": "Planet Erde"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "geographie",
+          "topic_code": "lb2",
+          "topic_title": "Planet Erde",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CFTBQDZTCRBQ5TQFQM1XMQ",
+          "slug": "geogym5-massstab-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Auf einer Karte im Maßstab 1 : 50 000 misst du 3 cm. Wie weit ist das in der Wirklichkeit?",
+          "concept": "1,5 km",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-massstab",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "1,5 km",
+              "150 m"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CFTBQDZTCRBQ5TQFQM1XMR",
+          "slug": "geogym5-massstab-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Wie viele Meter sind 1 cm auf einer Karte im Maßstab 1 : 25 000?",
+          "concept": "250 m.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-massstab",
+          "sample_solution": "250 m."
+        }
+      ]
+    },
+    {
+      "id": "01M7CFTBQDZTCRBQ5TQFQM1XMS",
+      "atom_uri": "urn:zam:atom:01M7CFTBQDZTCRBQ5TQFQM1XMS",
+      "namespace": "zam-academy-geographie-gymnasium-5",
+      "slug": "geogym5-geomedien",
+      "title": "Digitale Geomedien und Geocaching",
+      "domain": "geographie/lb2",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-geomedien",
+      "prerequisites": [
+        {
+          "atom_id": "01M7CFTBQDZSARVBYPKAEY9ETB",
+          "type": "soft",
+          "rationale": "Digitale Geomedien zeigen Positionen als Koordinaten im Gradnetz."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-gymnasium-5",
+          "topic_code": "lb2",
+          "topic_title": "Planet Erde"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "geographie",
+          "topic_code": "lb2",
+          "topic_title": "Planet Erde",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CFTBQDZTCRBQ5TQFQM1XMT",
+          "slug": "geogym5-geomedien-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie bestimmt ein Smartphone im Freien seinen Standort?",
+          "concept": "mit Signalen von Navigationssatelliten",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-geomedien",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "mit Signalen von Navigationssatelliten",
+              "mit dem eingebauten Kompass allein"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CFTBQDZTCRBQ5TQFQM1XMV",
+          "slug": "geogym5-geomedien-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Nenne eine Grenze digitaler Karten.",
+          "concept": "Ohne Akku oder Empfang funktionieren sie nicht; geteilte Standortdaten verraten, wo man ist.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-geomedien",
+          "sample_solution": "Ohne Akku oder Empfang funktionieren sie nicht; geteilte Standortdaten verraten, wo man ist."
+        }
+      ]
+    },
+    {
+      "id": "01M7CFTBQDZTCRBQ5TQFQM1XMW",
+      "atom_uri": "urn:zam:atom:01M7CFTBQDZTCRBQ5TQFQM1XMW",
+      "namespace": "zam-academy-geographie-gymnasium-5",
+      "slug": "geogym5-grosslandschaften",
+      "title": "Die Großlandschaften Deutschlands",
+      "domain": "geographie/lb3",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-grosslandschaften",
+      "prerequisites": [
+        {
+          "atom_id": "01M7CFTBQDZTCRBQ5TQFQM1XMK",
+          "type": "soft",
+          "rationale": "Die Großlandschaften erkennst du an den Höhenschichten der physischen Karte."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-gymnasium-5",
+          "topic_code": "lb3",
+          "topic_title": "Naturräume in Bayern und Deutschland"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "geographie",
+          "topic_code": "lb3",
+          "topic_title": "Naturräume in Bayern und Deutschland",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CFTBQDZTCRBQ5TQFQM1XMX",
+          "slug": "geogym5-grosslandschaften-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Großlandschaft liegt ganz im Norden Deutschlands, direkt hinter der Küste?",
+          "concept": "das Norddeutsche Tiefland",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-grosslandschaften",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "das Norddeutsche Tiefland",
+              "das Alpenvorland"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CFTBQDZTCRBQ5TQFQM1XMY",
+          "slug": "geogym5-grosslandschaften-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Nenne die Großlandschaften Deutschlands von Norden nach Süden.",
+          "concept": "Norddeutsches Tiefland (mit Küste), Mittelgebirgsland, Alpenvorland, Alpen.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-grosslandschaften",
+          "sample_solution": "Norddeutsches Tiefland (mit Küste), Mittelgebirgsland, Alpenvorland, Alpen."
+        }
+      ]
+    },
+    {
+      "id": "01M7CFTBQDZTCRBQ5TQFQM1XMZ",
+      "atom_uri": "urn:zam:atom:01M7CFTBQDZTCRBQ5TQFQM1XMZ",
+      "namespace": "zam-academy-geographie-gymnasium-5",
+      "slug": "geogym5-bayern-naturraum",
+      "title": "Die Naturräume Bayerns",
+      "domain": "geographie/lb3",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-bayern-naturraum",
+      "prerequisites": [
+        {
+          "atom_id": "01M7CFTBQDZTCRBQ5TQFQM1XMW",
+          "type": "soft",
+          "rationale": "Bayerns Naturräume sind Teile der Großlandschaften Deutschlands."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-gymnasium-5",
+          "topic_code": "lb3",
+          "topic_title": "Naturräume in Bayern und Deutschland"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "geographie",
+          "topic_code": "lb3",
+          "topic_title": "Naturräume in Bayern und Deutschland",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CFTBQDZTCRBQ5TQFQM1XN0",
+          "slug": "geogym5-bayern-naturraum-check",
+          "replaces": [
+            "01K4YG5E000000000000000J07"
+          ],
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "In welche Meere fließt das Wasser von Main und Donau?",
+          "concept": "Main über den Rhein in die Nordsee, Donau ins Schwarze Meer",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-bayern-naturraum",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Main über den Rhein in die Nordsee, Donau ins Schwarze Meer",
+              "Main in die Ostsee, Donau ins Mittelmeer"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CFTBQDZTCRBQ5TQFQM1XN1",
+          "slug": "geogym5-bayern-naturraum-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Nenne die vier großen Naturräume Bayerns.",
+          "concept": "Alpen, Alpenvorland, Ostbayerisches Mittelgebirge, Schichtstufenland.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-bayern-naturraum",
+          "sample_solution": "Alpen, Alpenvorland, Ostbayerisches Mittelgebirge, Schichtstufenland."
+        }
+      ]
+    },
+    {
+      "id": "01M7CFTBQDZTCRBQ5TQFQM1XN2",
+      "atom_uri": "urn:zam:atom:01M7CFTBQDZTCRBQ5TQFQM1XN2",
+      "namespace": "zam-academy-geographie-gymnasium-5",
+      "slug": "geogym5-profil",
+      "title": "Kartenskizzen und Profile zeichnen",
+      "domain": "geographie/lb3",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-profil",
+      "prerequisites": [
+        {
+          "atom_id": "01M7CFTBQDZTCRBQ5TQFQM1XMK",
+          "type": "soft",
+          "rationale": "Ein Profil wird aus Höhenlinien oder Höhenschichten gezeichnet."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-gymnasium-5",
+          "topic_code": "lb3",
+          "topic_title": "Naturräume in Bayern und Deutschland"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "geographie",
+          "topic_code": "lb3",
+          "topic_title": "Naturräume in Bayern und Deutschland",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CFTBQDZTCRBQ5TQFQM1XN3",
+          "slug": "geogym5-profil-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum wird ein Profil fast immer überhöht gezeichnet?",
+          "concept": "damit die im Vergleich zur Länge kleinen Höhenunterschiede sichtbar werden",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-profil",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "damit die im Vergleich zur Länge kleinen Höhenunterschiede sichtbar werden",
+              "damit die Berge beeindruckender aussehen"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CFTBQDZTCRBQ5TQFQM1XN4",
+          "slug": "geogym5-profil-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Was ist ein Profil in der Geographie?",
+          "concept": "Ein meist überhöhter Schnitt durch das Gelände entlang einer Linie.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-profil",
+          "sample_solution": "Ein meist überhöhter Schnitt durch das Gelände entlang einer Linie."
+        }
+      ]
+    },
+    {
+      "id": "01M7CFTBQDZTCRBQ5TQFQM1XN5",
+      "atom_uri": "urn:zam:atom:01M7CFTBQDZTCRBQ5TQFQM1XN5",
+      "namespace": "zam-academy-geographie-gymnasium-5",
+      "slug": "geogym5-kraefte",
+      "title": "Kräfte, die die Erdoberfläche formen",
+      "domain": "geographie/lb3",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-kraefte",
+      "prerequisites": [
+        {
+          "atom_id": "01M7CFTBQDZSARVBYPKAEY9ESS",
+          "type": "soft",
+          "rationale": "Endogene Kräfte entstehen im Erdinneren unter der Kruste."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-gymnasium-5",
+          "topic_code": "lb3",
+          "topic_title": "Naturräume in Bayern und Deutschland"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "geographie",
+          "topic_code": "lb3",
+          "topic_title": "Naturräume in Bayern und Deutschland",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CFTBQDZTCRBQ5TQFQM1XN6",
+          "slug": "geogym5-kraefte-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welcher Vorgang wird von einer exogenen Kraft angetrieben?",
+          "concept": "Ein Fluss trägt Sand und Steine ab.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-kraefte",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein Fluss trägt Sand und Steine ab.",
+              "Ein Vulkan bricht aus."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CFTBQDZTCRBQ5TQFQM1XN7",
+          "slug": "geogym5-kraefte-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Was unterscheidet endogene von exogenen Kräften?",
+          "concept": "Endogene wirken aus dem Erdinneren und bauen auf, exogene wirken von außen und tragen ab.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-kraefte",
+          "sample_solution": "Endogene wirken aus dem Erdinneren und bauen auf, exogene wirken von außen und tragen ab."
+        }
+      ]
+    },
+    {
+      "id": "01M7CFTBQDZTCRBQ5TQFQM1XN8",
+      "atom_uri": "urn:zam:atom:01M7CFTBQDZTCRBQ5TQFQM1XN8",
+      "namespace": "zam-academy-geographie-gymnasium-5",
+      "slug": "geogym5-gesteine",
+      "title": "Gesteine und Fossilien als Spuren der Erdgeschichte",
+      "domain": "geographie/lb3",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-gesteine",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-gymnasium-5",
+          "topic_code": "lb3",
+          "topic_title": "Naturräume in Bayern und Deutschland"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "geographie",
+          "topic_code": "lb3",
+          "topic_title": "Naturräume in Bayern und Deutschland",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CFTBQEJPWG4MBM4SDQYMSF",
+          "slug": "geogym5-gesteine-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Ein Stein braust auf, wenn du einen Tropfen Essig daraufgibst. Um welches Gestein handelt es sich wahrscheinlich?",
+          "concept": "Kalkstein",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-gesteine",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Kalkstein",
+              "Granit"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CFTBQEJPWG4MBM4SDQYMSG",
+          "slug": "geogym5-gesteine-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Nenne die drei Gesteinsgruppen nach ihrer Entstehung.",
+          "concept": "Erstarrungsgesteine, Ablagerungsgesteine, Umwandlungsgesteine.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-gesteine",
+          "sample_solution": "Erstarrungsgesteine, Ablagerungsgesteine, Umwandlungsgesteine."
+        }
+      ]
+    },
+    {
+      "id": "01M7CFTBQEJPWG4MBM4SDQYMSH",
+      "atom_uri": "urn:zam:atom:01M7CFTBQEJPWG4MBM4SDQYMSH",
+      "namespace": "zam-academy-geographie-gymnasium-5",
+      "slug": "geogym5-alpen",
+      "title": "Die Alpen: Entstehung und Überformung",
+      "domain": "geographie/lb3",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-alpen",
+      "prerequisites": [
+        {
+          "atom_id": "01M7CFTBQDZTCRBQ5TQFQM1XN5",
+          "type": "soft",
+          "rationale": "Die Entstehung der Alpen verbindet endogene und exogene Kräfte."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-gymnasium-5",
+          "topic_code": "lb3",
+          "topic_title": "Naturräume in Bayern und Deutschland"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "geographie",
+          "topic_code": "lb3",
+          "topic_title": "Naturräume in Bayern und Deutschland",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CFTBQER2H9FHSQV317WX9X",
+          "slug": "geogym5-alpen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum findet man auf Alpengipfeln Versteinerungen von Meerestieren?",
+          "concept": "Die Gesteine entstanden am Meeresgrund und wurden später zum Gebirge gehoben.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-alpen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Gesteine entstanden am Meeresgrund und wurden später zum Gebirge gehoben.",
+              "Das Meer stand früher so hoch wie die heutigen Gipfel."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CFTBQET3AMX3G8FZYS9T6J",
+          "slug": "geogym5-alpen-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Welche Art von Gebirge sind die Alpen?",
+          "concept": "Ein Faltengebirge.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-alpen",
+          "sample_solution": "Ein Faltengebirge."
+        }
+      ]
+    },
+    {
+      "id": "01M7CFTBQET3AMX3G8FZYS9T6K",
+      "atom_uri": "urn:zam:atom:01M7CFTBQET3AMX3G8FZYS9T6K",
+      "namespace": "zam-academy-geographie-gymnasium-5",
+      "slug": "geogym5-alpenvorland",
+      "title": "Das Alpenvorland: ein Erbe der Eiszeit",
+      "domain": "geographie/lb3",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-alpenvorland",
+      "prerequisites": [
+        {
+          "atom_id": "01M7CFTBQEJPWG4MBM4SDQYMSH",
+          "type": "soft",
+          "rationale": "Die Gletscher des Alpenvorlands kamen aus den Alpentälern."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-gymnasium-5",
+          "topic_code": "lb3",
+          "topic_title": "Naturräume in Bayern und Deutschland"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "geographie",
+          "topic_code": "lb3",
+          "topic_title": "Naturräume in Bayern und Deutschland",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CFTBQET3AMX3G8FZYS9T6M",
+          "slug": "geogym5-alpenvorland-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie entstanden viele Seen im Alpenvorland, zum Beispiel der Chiemsee?",
+          "concept": "Gletscher der Eiszeit schürften Becken aus, die sich später mit Wasser füllten.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-alpenvorland",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Gletscher der Eiszeit schürften Becken aus, die sich später mit Wasser füllten.",
+              "Vulkane hinterließen Krater, die sich mit Wasser füllten."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CFTBQETSW778C06ZRQXQBD",
+          "slug": "geogym5-alpenvorland-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Nenne die drei Glieder der glazialen Serie von den Alpen nach Norden.",
+          "concept": "Zungenbecken, Endmoräne, Schotterebene.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-alpenvorland",
+          "sample_solution": "Zungenbecken, Endmoräne, Schotterebene."
+        }
+      ]
+    },
+    {
+      "id": "01M7CFTBQEZ0NAGMXKYM1JAJ6D",
+      "atom_uri": "urn:zam:atom:01M7CFTBQEZ0NAGMXKYM1JAJ6D",
+      "namespace": "zam-academy-geographie-gymnasium-5",
+      "slug": "geogym5-alpen-nutzung",
+      "title": "Die Alpen nutzen und schützen",
+      "domain": "geographie/lb3",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-alpen-nutzung",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-gymnasium-5",
+          "topic_code": "lb3",
+          "topic_title": "Naturräume in Bayern und Deutschland"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "geographie",
+          "topic_code": "lb3",
+          "topic_title": "Naturräume in Bayern und Deutschland",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CFTBQEZ0NAGMXKYM1JAJ6E",
+          "slug": "geogym5-alpen-nutzung-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was ist ein Beispiel für sanften Tourismus in den Alpen?",
+          "concept": "mit der Bahn anreisen und auf markierten Wegen wandern",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-alpen-nutzung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "mit der Bahn anreisen und auf markierten Wegen wandern",
+              "für eine neue Skipiste einen Bergwald roden"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CFTBQEZ0NAGMXKYM1JAJ6F",
+          "slug": "geogym5-alpen-nutzung-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Welcher Nationalpark liegt in den deutschen Alpen?",
+          "concept": "Der Nationalpark Berchtesgaden.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-alpen-nutzung",
+          "sample_solution": "Der Nationalpark Berchtesgaden."
+        }
+      ]
+    },
+    {
+      "id": "01M7CFTBQEZ0NAGMXKYM1JAJ6G",
+      "atom_uri": "urn:zam:atom:01M7CFTBQEZ0NAGMXKYM1JAJ6G",
+      "namespace": "zam-academy-geographie-gymnasium-5",
+      "slug": "geogym5-naturgefahren",
+      "title": "Naturgefahren in Bayern und Deutschland",
+      "domain": "geographie/lb3",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-naturgefahren",
+      "prerequisites": [
+        {
+          "atom_id": "01M7CFTBQEZ0NAGMXKYM1JAJ6D",
+          "type": "soft",
+          "rationale": "Eingriffe wie Rodungen verstärken Naturgefahren in den Alpen."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-gymnasium-5",
+          "topic_code": "lb3",
+          "topic_title": "Naturräume in Bayern und Deutschland"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "geographie",
+          "topic_code": "lb3",
+          "topic_title": "Naturräume in Bayern und Deutschland",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CFTBQEZ0NAGMXKYM1JAJ6H",
+          "slug": "geogym5-naturgefahren-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was schützt viele Alpendörfer auf natürliche Weise vor Lawinen?",
+          "concept": "ein dichter Bergwald am Hang über dem Dorf",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-naturgefahren",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "ein dichter Bergwald am Hang über dem Dorf",
+              "ein breiter Fluss im Tal"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CFTBQEZ0NAGMXKYM1JAJ6J",
+          "slug": "geogym5-naturgefahren-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Nenne zwei Schutzmaßnahmen gegen Hochwasser.",
+          "concept": "Zum Beispiel Deiche, Rückhaltebecken, Auen und Warndienste.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-naturgefahren",
+          "sample_solution": "Zum Beispiel Deiche, Rückhaltebecken, Auen und Warndienste."
+        }
+      ]
+    },
+    {
+      "id": "01M7CFTBQEZ0NAGMXKYM1JAJ6K",
+      "atom_uri": "urn:zam:atom:01M7CFTBQEZ0NAGMXKYM1JAJ6K",
+      "namespace": "zam-academy-geographie-gymnasium-5",
+      "slug": "geogym5-mittelgebirge",
+      "title": "Mittelgebirge: Bruchschollen und Schichtstufen",
+      "domain": "geographie/lb3",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-mittelgebirge",
+      "prerequisites": [
+        {
+          "atom_id": "01M7CFTBQDZTCRBQ5TQFQM1XN5",
+          "type": "soft",
+          "rationale": "Bruchschollen und Schichtstufen entstehen durch endogene und exogene Kräfte."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-gymnasium-5",
+          "topic_code": "lb3",
+          "topic_title": "Naturräume in Bayern und Deutschland"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "geographie",
+          "topic_code": "lb3",
+          "topic_title": "Naturräume in Bayern und Deutschland",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CFTBQEZ0NAGMXKYM1JAJ6M",
+          "slug": "geogym5-mittelgebirge-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie entsteht eine Schichtstufe?",
+          "concept": "Harte Gesteinsschichten werden langsamer abgetragen als weiche und bleiben als Stufen stehen.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-mittelgebirge",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Harte Gesteinsschichten werden langsamer abgetragen als weiche und bleiben als Stufen stehen.",
+              "Ein Vulkan schüttet Lava in Stufen auf."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CFTBQEZ0NAGMXKYM1JAJ6N",
+          "slug": "geogym5-mittelgebirge-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Wie heißen gehobene und abgesenkte Schollen eines Bruchschollengebirges?",
+          "concept": "Gehoben: Horst, abgesenkt: Graben.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-mittelgebirge",
+          "sample_solution": "Gehoben: Horst, abgesenkt: Graben."
+        }
+      ]
+    },
+    {
+      "id": "01M7CFTBQEZ0NAGMXKYM1JAJ6P",
+      "atom_uri": "urn:zam:atom:01M7CFTBQEZ0NAGMXKYM1JAJ6P",
+      "namespace": "zam-academy-geographie-gymnasium-5",
+      "slug": "geogym5-nationalpark",
+      "title": "Landschaftsschutz im Nationalpark Bayerischer Wald",
+      "domain": "geographie/lb3",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-nationalpark",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-gymnasium-5",
+          "topic_code": "lb3",
+          "topic_title": "Naturräume in Bayern und Deutschland"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "geographie",
+          "topic_code": "lb3",
+          "topic_title": "Naturräume in Bayern und Deutschland",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CFTBQEZ0NAGMXKYM1JAJ6Q",
+          "slug": "geogym5-nationalpark-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was ist das wichtigste Ziel eines Nationalparks?",
+          "concept": "die Natur sich möglichst ohne Eingriffe des Menschen entwickeln zu lassen",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-nationalpark",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "die Natur sich möglichst ohne Eingriffe des Menschen entwickeln zu lassen",
+              "möglichst viel Holz zu ernten"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CFTBQEZ0NAGMXKYM1JAJ6R",
+          "slug": "geogym5-nationalpark-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Welcher ist der älteste Nationalpark Deutschlands?",
+          "concept": "Der Nationalpark Bayerischer Wald, gegründet 1970.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-nationalpark",
+          "sample_solution": "Der Nationalpark Bayerischer Wald, gegründet 1970."
+        }
+      ]
+    },
+    {
+      "id": "01M7CFTBQEZ0NAGMXKYM1JAJ6S",
+      "atom_uri": "urn:zam:atom:01M7CFTBQEZ0NAGMXKYM1JAJ6S",
+      "namespace": "zam-academy-geographie-gymnasium-5",
+      "slug": "geogym5-kueste",
+      "title": "Küsten: Entstehung und Küstenformen",
+      "domain": "geographie/lb3",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-kueste",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-gymnasium-5",
+          "topic_code": "lb3",
+          "topic_title": "Naturräume in Bayern und Deutschland"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "geographie",
+          "topic_code": "lb3",
+          "topic_title": "Naturräume in Bayern und Deutschland",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CFTBQEZ0NAGMXKYM1JAJ6T",
+          "slug": "geogym5-kueste-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wodurch entstand die Kieler Förde?",
+          "concept": "Ein Gletscher der Eiszeit schürfte eine lange Rinne aus, die später das Meer füllte.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-kueste",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein Gletscher der Eiszeit schürfte eine lange Rinne aus, die später das Meer füllte.",
+              "Ein Fluss grub sich über Jahrtausende ins Land."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CFTBQEZ0NAGMXKYM1JAJ6V",
+          "slug": "geogym5-kueste-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Wodurch entstanden die heutigen Küsten von Nord- und Ostsee?",
+          "concept": "Durch den Anstieg des Meeresspiegels nach der letzten Eiszeit; Wellen, Strömungen und Gezeiten formen sie weiter.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-kueste",
+          "sample_solution": "Durch den Anstieg des Meeresspiegels nach der letzten Eiszeit; Wellen, Strömungen und Gezeiten formen sie weiter."
+        }
+      ]
+    },
+    {
+      "id": "01M7CFTBQEZ0NAGMXKYM1JAJ6W",
+      "atom_uri": "urn:zam:atom:01M7CFTBQEZ0NAGMXKYM1JAJ6W",
+      "namespace": "zam-academy-geographie-gymnasium-5",
+      "slug": "geogym5-wattenmeer",
+      "title": "Das Wattenmeer und der Küstenschutz",
+      "domain": "geographie/lb3",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-wattenmeer",
+      "prerequisites": [
+        {
+          "atom_id": "01M7CFTBQEZ0NAGMXKYM1JAJ6S",
+          "type": "soft",
+          "rationale": "Das Wattenmeer ist eine Küstenform der Nordsee."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-gymnasium-5",
+          "topic_code": "lb3",
+          "topic_title": "Naturräume in Bayern und Deutschland"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "geographie",
+          "topic_code": "lb3",
+          "topic_title": "Naturräume in Bayern und Deutschland",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CFTBQEZ0NAGMXKYM1JAJ6X",
+          "slug": "geogym5-wattenmeer-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie lange dauert es an der Nordsee ungefähr von einem Hochwasser bis zum nächsten?",
+          "concept": "etwa 12 Stunden und 25 Minuten",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-wattenmeer",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "etwa 12 Stunden und 25 Minuten",
+              "etwa einen Monat, von Vollmond zu Vollmond"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CFTBQEZ0NAGMXKYM1JAJ6Y",
+          "slug": "geogym5-wattenmeer-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Was ist der Tidenhub?",
+          "concept": "Der Höhenunterschied zwischen Hochwasser und Niedrigwasser.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-wattenmeer",
+          "sample_solution": "Der Höhenunterschied zwischen Hochwasser und Niedrigwasser."
+        }
+      ]
+    },
+    {
+      "id": "01M7CFTBQEZ0NAGMXKYM1JAJ6Z",
+      "atom_uri": "urn:zam:atom:01M7CFTBQEZ0NAGMXKYM1JAJ6Z",
+      "namespace": "zam-academy-geographie-gymnasium-5",
+      "slug": "geogym5-laendlicher-raum",
+      "title": "Ländliche Räume im Wandel",
+      "domain": "geographie/lb4",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-laendlicher-raum",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-gymnasium-5",
+          "topic_code": "lb4",
+          "topic_title": "Ländliche Räume in Bayern und Deutschland"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "geographie",
+          "topic_code": "lb4",
+          "topic_title": "Ländliche Räume in Bayern und Deutschland",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CFTBQEZ0NAGMXKYM1JAJ70",
+          "slug": "geogym5-laendlicher-raum-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum gibt es heute in vielen Dörfern weniger Bauernhöfe als vor 60 Jahren?",
+          "concept": "Maschinen ersetzen viele Arbeitskräfte, und größere Betriebe bewirtschaften mehr Fläche.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-laendlicher-raum",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Maschinen ersetzen viele Arbeitskräfte, und größere Betriebe bewirtschaften mehr Fläche.",
+              "Auf dem Land wird heute gar nichts mehr angebaut."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CFTBQEZ0NAGMXKYM1JAJ71",
+          "slug": "geogym5-laendlicher-raum-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Nenne zwei Merkmale ländlicher Räume.",
+          "concept": "Zum Beispiel wenige Einwohner je Quadratkilometer und viel Fläche für Land- und Forstwirtschaft.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-laendlicher-raum",
+          "sample_solution": "Zum Beispiel wenige Einwohner je Quadratkilometer und viel Fläche für Land- und Forstwirtschaft."
+        }
+      ]
+    },
+    {
+      "id": "01M7CFTBQEZ0NAGMXKYM1JAJ72",
+      "atom_uri": "urn:zam:atom:01M7CFTBQEZ0NAGMXKYM1JAJ72",
+      "namespace": "zam-academy-geographie-gymnasium-5",
+      "slug": "geogym5-wetter-messen",
+      "title": "Wetter messen und darstellen",
+      "domain": "geographie/lb4",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-wetter-messen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-gymnasium-5",
+          "topic_code": "lb4",
+          "topic_title": "Ländliche Räume in Bayern und Deutschland"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "geographie",
+          "topic_code": "lb4",
+          "topic_title": "Ländliche Räume in Bayern und Deutschland",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CFTBQEZ0NAGMXKYM1JAJ73",
+          "slug": "geogym5-wetter-messen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Ein Regenmesser zeigt nach einem Gewitter 5 mm. Wie viel Wasser fiel auf einen Quadratmeter?",
+          "concept": "5 Liter",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-wetter-messen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "5 Liter",
+              "5 Milliliter"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CFTBQEZ0NAGMXKYM1JAJ74",
+          "slug": "geogym5-wetter-messen-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Wie misst man die Lufttemperatur richtig?",
+          "concept": "Mit einem Thermometer im Schatten, etwa 2 m über dem Boden, zu festen Zeiten.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-wetter-messen",
+          "sample_solution": "Mit einem Thermometer im Schatten, etwa 2 m über dem Boden, zu festen Zeiten."
+        }
+      ]
+    },
+    {
+      "id": "01M7CFTBQEZ0NAGMXKYM1JAJ75",
+      "atom_uri": "urn:zam:atom:01M7CFTBQEZ0NAGMXKYM1JAJ75",
+      "namespace": "zam-academy-geographie-gymnasium-5",
+      "slug": "geogym5-boden",
+      "title": "Böden untersuchen",
+      "domain": "geographie/lb4",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-boden",
+      "prerequisites": [
+        {
+          "atom_id": "01M7CFTBQDZTCRBQ5TQFQM1XN8",
+          "type": "soft",
+          "rationale": "Böden entstehen aus verwittertem Gestein."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-gymnasium-5",
+          "topic_code": "lb4",
+          "topic_title": "Ländliche Räume in Bayern und Deutschland"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "geographie",
+          "topic_code": "lb4",
+          "topic_title": "Ländliche Räume in Bayern und Deutschland",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CFTBQEZ0NAGMXKYM1JAJ76",
+          "slug": "geogym5-boden-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Bei der Schlämmprobe setzt sich eine Schicht zuerst ganz unten im Glas ab. Welche?",
+          "concept": "Sand",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-boden",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sand",
+              "Ton"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CFTBQEZ0NAGMXKYM1JAJ77",
+          "slug": "geogym5-boden-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Warum ist Lössboden besonders fruchtbar?",
+          "concept": "Er ist fein, speichert viel Wasser und Nährstoffe und lässt sich gut bearbeiten.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-boden",
+          "sample_solution": "Er ist fein, speichert viel Wasser und Nährstoffe und lässt sich gut bearbeiten."
+        }
+      ]
+    },
+    {
+      "id": "01M7CFTBQEZ0NAGMXKYM1JAJ78",
+      "atom_uri": "urn:zam:atom:01M7CFTBQEZ0NAGMXKYM1JAJ78",
+      "namespace": "zam-academy-geographie-gymnasium-5",
+      "slug": "geogym5-einflussfaktoren",
+      "title": "Was die Landwirtschaft beeinflusst",
+      "domain": "geographie/lb4",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-einflussfaktoren",
+      "prerequisites": [
+        {
+          "atom_id": "01M7CFTBQEZ0NAGMXKYM1JAJ72",
+          "type": "soft",
+          "rationale": "Temperatur und Niederschlag sind gemessene Einflussfaktoren."
+        },
+        {
+          "atom_id": "01M7CFTBQEZ0NAGMXKYM1JAJ75",
+          "type": "soft",
+          "rationale": "Die Bodenart ist ein Einflussfaktor der Landwirtschaft."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-gymnasium-5",
+          "topic_code": "lb4",
+          "topic_title": "Ländliche Räume in Bayern und Deutschland"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "geographie",
+          "topic_code": "lb4",
+          "topic_title": "Ländliche Räume in Bayern und Deutschland",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CFTBQEZ6SCB5RYF9VERAW1",
+          "slug": "geogym5-einflussfaktoren-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum gibt es im Allgäu vor allem Wiesen und Weiden?",
+          "concept": "weil es dort viel regnet, eher kühl und hügelig ist",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-einflussfaktoren",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "weil es dort viel regnet, eher kühl und hügelig ist",
+              "weil die Böden dort aus Löss bestehen"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CFTBQEZ6SCB5RYF9VERAW2",
+          "slug": "geogym5-einflussfaktoren-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Nenne vier natürliche Einflussfaktoren auf die Landwirtschaft.",
+          "concept": "Temperatur, Niederschlag, Boden, Relief.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-einflussfaktoren",
+          "sample_solution": "Temperatur, Niederschlag, Boden, Relief."
+        }
+      ]
+    },
+    {
+      "id": "01M7CFTBQEZ6SCB5RYF9VERAW3",
+      "atom_uri": "urn:zam:atom:01M7CFTBQEZ6SCB5RYF9VERAW3",
+      "namespace": "zam-academy-geographie-gymnasium-5",
+      "slug": "geogym5-agrarraeume",
+      "title": "Agrarräume in Bayern und Deutschland",
+      "domain": "geographie/lb4",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-agrarraeume",
+      "prerequisites": [
+        {
+          "atom_id": "01M7CFTBQEZ0NAGMXKYM1JAJ78",
+          "type": "soft",
+          "rationale": "Agrarräume entstehen aus dem Zusammenwirken der Einflussfaktoren."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-gymnasium-5",
+          "topic_code": "lb4",
+          "topic_title": "Ländliche Räume in Bayern und Deutschland"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "geographie",
+          "topic_code": "lb4",
+          "topic_title": "Ländliche Räume in Bayern und Deutschland",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CFTBQEZ6SCB5RYF9VERAW4",
+          "slug": "geogym5-agrarraeume-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wofür ist die Hallertau bekannt?",
+          "concept": "für Hopfen",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-agrarraeume",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "für Hopfen",
+              "für Weinbau"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CFTBQEZ6SCB5RYF9VERAW5",
+          "slug": "geogym5-agrarraeume-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Welche Nutzung prägt den Gäuboden?",
+          "concept": "Ackerbau auf Lössboden, vor allem Weizen und Zuckerrüben.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-agrarraeume",
+          "sample_solution": "Ackerbau auf Lössboden, vor allem Weizen und Zuckerrüben."
+        }
+      ]
+    },
+    {
+      "id": "01M7CFTBQEZ6SCB5RYF9VERAW6",
+      "atom_uri": "urn:zam:atom:01M7CFTBQEZ6SCB5RYF9VERAW6",
+      "namespace": "zam-academy-geographie-gymnasium-5",
+      "slug": "geogym5-oeko-konventionell",
+      "title": "Konventionelle und ökologische Landwirtschaft",
+      "domain": "geographie/lb4",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-oeko-konventionell",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-gymnasium-5",
+          "topic_code": "lb4",
+          "topic_title": "Ländliche Räume in Bayern und Deutschland"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "geographie",
+          "topic_code": "lb4",
+          "topic_title": "Ländliche Räume in Bayern und Deutschland",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CFTBQEZD67R05JY5QR2GJP",
+          "slug": "geogym5-oeko-konventionell-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was ist im ökologischen Landbau verboten?",
+          "concept": "chemisch-synthetische Pflanzenschutzmittel",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-oeko-konventionell",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "chemisch-synthetische Pflanzenschutzmittel",
+              "ein Wechsel der Feldfrüchte auf dem Acker"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CFTBQEZD67R05JY5QR2GJQ",
+          "slug": "geogym5-oeko-konventionell-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Nenne einen Vorteil und einen Nachteil der ökologischen Landwirtschaft.",
+          "concept": "Vorteil: schont Boden, Wasser und Artenvielfalt. Nachteil: geringere Erträge und höhere Preise.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-oeko-konventionell",
+          "sample_solution": "Vorteil: schont Boden, Wasser und Artenvielfalt. Nachteil: geringere Erträge und höhere Preise."
+        }
+      ]
+    },
+    {
+      "id": "01M7CFTBQEZD67R05JY5QR2GJR",
+      "atom_uri": "urn:zam:atom:01M7CFTBQEZD67R05JY5QR2GJR",
+      "namespace": "zam-academy-geographie-gymnasium-5",
+      "slug": "geogym5-verwaltung",
+      "title": "Deutschland und Bayern politisch gegliedert",
+      "domain": "geographie/lb5",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-verwaltung",
+      "prerequisites": [
+        {
+          "atom_id": "01M7CFTBQDZTCRBQ5TQFQM1XMW",
+          "type": "soft",
+          "rationale": "Politische und naturräumliche Gliederung beantworten verschiedene Fragen."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-gymnasium-5",
+          "topic_code": "lb5",
+          "topic_title": "Städtische Räume in Bayern und Deutschland"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "geographie",
+          "topic_code": "lb5",
+          "topic_title": "Städtische Räume in Bayern und Deutschland",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CFTBQEZD67R05JY5QR2GJS",
+          "slug": "geogym5-verwaltung-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie viele Bundesländer hat Deutschland?",
+          "concept": "16",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-verwaltung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "16",
+              "7"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CFTBQEZD67R05JY5QR2GJT",
+          "slug": "geogym5-verwaltung-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Nenne die sieben Regierungsbezirke Bayerns.",
+          "concept": "Oberbayern, Niederbayern, Oberpfalz, Oberfranken, Mittelfranken, Unterfranken, Schwaben.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-verwaltung",
+          "sample_solution": "Oberbayern, Niederbayern, Oberpfalz, Oberfranken, Mittelfranken, Unterfranken, Schwaben."
+        }
+      ]
+    },
+    {
+      "id": "01M7CFTBQEZD67R05JY5QR2GJV",
+      "atom_uri": "urn:zam:atom:01M7CFTBQEZD67R05JY5QR2GJV",
+      "namespace": "zam-academy-geographie-gymnasium-5",
+      "slug": "geogym5-verdichtungsraeume",
+      "title": "Verdichtungsräume verorten",
+      "domain": "geographie/lb5",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-verdichtungsraeume",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-gymnasium-5",
+          "topic_code": "lb5",
+          "topic_title": "Städtische Räume in Bayern und Deutschland"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "geographie",
+          "topic_code": "lb5",
+          "topic_title": "Städtische Räume in Bayern und Deutschland",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CFTBQEZD67R05JY5QR2GJW",
+          "slug": "geogym5-verdichtungsraeume-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welcher ist der größte Verdichtungsraum Deutschlands?",
+          "concept": "das Rhein-Ruhr-Gebiet",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-verdichtungsraeume",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "das Rhein-Ruhr-Gebiet",
+              "der Raum München"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CFTBQEZD67R05JY5QR2GJX",
+          "slug": "geogym5-verdichtungsraeume-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Was ist ein Verdichtungsraum?",
+          "concept": "Ein Gebiet, in dem sehr viele Menschen auf engem Raum wohnen und arbeiten, mit dichtem Verkehrsnetz.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-verdichtungsraeume",
+          "sample_solution": "Ein Gebiet, in dem sehr viele Menschen auf engem Raum wohnen und arbeiten, mit dichtem Verkehrsnetz."
+        }
+      ]
+    },
+    {
+      "id": "01M7CFTBQEZD67R05JY5QR2GJY",
+      "atom_uri": "urn:zam:atom:01M7CFTBQEZD67R05JY5QR2GJY",
+      "namespace": "zam-academy-geographie-gymnasium-5",
+      "slug": "geogym5-stadtentwicklung",
+      "title": "Wie Städte entstanden und wuchsen",
+      "domain": "geographie/lb5",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-stadtentwicklung",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-gymnasium-5",
+          "topic_code": "lb5",
+          "topic_title": "Städtische Räume in Bayern und Deutschland"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "geographie",
+          "topic_code": "lb5",
+          "topic_title": "Städtische Räume in Bayern und Deutschland",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CFTBQEZD67R05JY5QR2GJZ",
+          "slug": "geogym5-stadtentwicklung-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum entstanden viele Städte an Flüssen?",
+          "concept": "Dort kreuzten sich Handelswege an Furten und Brücken.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-stadtentwicklung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Dort kreuzten sich Handelswege an Furten und Brücken.",
+              "Weil Flüsse vor Regen schützen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CFTBQEZD67R05JY5QR2GK0",
+          "slug": "geogym5-stadtentwicklung-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Woran erkennst du auf dem Stadtplan eine mittelalterliche Altstadt?",
+          "concept": "Enge, krumme Gassen, Marktplatz mit Kirche und Rathaus, Ringstraße oder Reste der Stadtmauer.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-stadtentwicklung",
+          "sample_solution": "Enge, krumme Gassen, Marktplatz mit Kirche und Rathaus, Ringstraße oder Reste der Stadtmauer."
+        }
+      ]
+    },
+    {
+      "id": "01M7CFTBQEZD67R05JY5QR2GK1",
+      "atom_uri": "urn:zam:atom:01M7CFTBQEZD67R05JY5QR2GK1",
+      "namespace": "zam-academy-geographie-gymnasium-5",
+      "slug": "geogym5-stadtgliederung",
+      "title": "Die Stadt und ihre Viertel",
+      "domain": "geographie/lb5",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-stadtgliederung",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-gymnasium-5",
+          "topic_code": "lb5",
+          "topic_title": "Städtische Räume in Bayern und Deutschland"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "geographie",
+          "topic_code": "lb5",
+          "topic_title": "Städtische Räume in Bayern und Deutschland",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CFTBQEZD67R05JY5QR2GK2",
+          "slug": "geogym5-stadtgliederung-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum wohnen in der Innenstadt großer Städte vergleichsweise wenige Menschen?",
+          "concept": "weil Geschäfte, Büros und Banken die teuren Flächen nutzen",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-stadtgliederung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "weil Geschäfte, Büros und Banken die teuren Flächen nutzen",
+              "weil dort keine Häuser stehen"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CFTBQEZD67R05JY5QR2GK3",
+          "slug": "geogym5-stadtgliederung-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Nenne vier Funktionsbereiche einer Stadt.",
+          "concept": "Innenstadt (City), Wohngebiete, Gewerbe- und Industriegebiete, Erholungsflächen.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-stadtgliederung",
+          "sample_solution": "Innenstadt (City), Wohngebiete, Gewerbe- und Industriegebiete, Erholungsflächen."
+        }
+      ]
+    },
+    {
+      "id": "01M7CFTBQEZD67R05JY5QR2GK4",
+      "atom_uri": "urn:zam:atom:01M7CFTBQEZD67R05JY5QR2GK4",
+      "namespace": "zam-academy-geographie-gymnasium-5",
+      "slug": "geogym5-suburbanisierung",
+      "title": "Suburbanisierung: Die Stadt wächst ins Umland",
+      "domain": "geographie/lb5",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-suburbanisierung",
+      "prerequisites": [
+        {
+          "atom_id": "01M7CFTBQEZD67R05JY5QR2GJY",
+          "type": "soft",
+          "rationale": "Suburbanisierung ist die jüngste Phase des Stadtwachstums."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-gymnasium-5",
+          "topic_code": "lb5",
+          "topic_title": "Städtische Räume in Bayern und Deutschland"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "geographie",
+          "topic_code": "lb5",
+          "topic_title": "Städtische Räume in Bayern und Deutschland",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CFTBQEZSVFTK7Y1D0Y58MR",
+          "slug": "geogym5-suburbanisierung-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was bedeutet Suburbanisierung?",
+          "concept": "Menschen und Betriebe ziehen aus der Kernstadt in das Umland.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-suburbanisierung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Menschen und Betriebe ziehen aus der Kernstadt in das Umland.",
+              "Menschen ziehen vom Dorf in die Innenstadt."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CFTBQEZSVFTK7Y1D0Y58MS",
+          "slug": "geogym5-suburbanisierung-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Nenne zwei Folgen der Suburbanisierung.",
+          "concept": "Zum Beispiel Flächenverbrauch im Umland und mehr Pendlerverkehr.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-suburbanisierung",
+          "sample_solution": "Zum Beispiel Flächenverbrauch im Umland und mehr Pendlerverkehr."
+        }
+      ]
+    },
+    {
+      "id": "01M7CFTBQEZSVFTK7Y1D0Y58MT",
+      "atom_uri": "urn:zam:atom:01M7CFTBQEZSVFTK7Y1D0Y58MT",
+      "namespace": "zam-academy-geographie-gymnasium-5",
+      "slug": "geogym5-stadt-umland",
+      "title": "Stadt und Umland: Pendler und Bedeutungsüberschuss",
+      "domain": "geographie/lb5",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-stadt-umland",
+      "prerequisites": [
+        {
+          "atom_id": "01M7CFTBQEZD67R05JY5QR2GK4",
+          "type": "soft",
+          "rationale": "Wer ins Umland zieht, pendelt oft in die Stadt."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-gymnasium-5",
+          "topic_code": "lb5",
+          "topic_title": "Städtische Räume in Bayern und Deutschland"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "geographie",
+          "topic_code": "lb5",
+          "topic_title": "Städtische Räume in Bayern und Deutschland",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CFTBQEZSVFTK7Y1D0Y58MV",
+          "slug": "geogym5-stadt-umland-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was meint man mit dem Bedeutungsüberschuss einer Stadt?",
+          "concept": "Sie bietet mehr Arbeitsplätze und Einrichtungen, als ihre eigenen Einwohner brauchen.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-stadt-umland",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie bietet mehr Arbeitsplätze und Einrichtungen, als ihre eigenen Einwohner brauchen.",
+              "Sie hat mehr Einwohner als jede andere Stadt."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CFTBQEZSVFTK7Y1D0Y58MW",
+          "slug": "geogym5-stadt-umland-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Was ist ein Pendler?",
+          "concept": "Jemand, der regelmäßig zwischen Wohnort und Arbeits- oder Schulort hin- und herfährt.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-stadt-umland",
+          "sample_solution": "Jemand, der regelmäßig zwischen Wohnort und Arbeits- oder Schulort hin- und herfährt."
+        }
+      ]
+    },
+    {
+      "id": "01M7CFTBQEZSVFTK7Y1D0Y58MX",
+      "atom_uri": "urn:zam:atom:01M7CFTBQEZSVFTK7Y1D0Y58MX",
+      "namespace": "zam-academy-geographie-gymnasium-5",
+      "slug": "geogym5-stadtplan",
+      "title": "Sich mit dem Stadtplan orientieren",
+      "domain": "geographie/lb5",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-stadtplan",
+      "prerequisites": [
+        {
+          "atom_id": "01M7CFTBQDZ4HAZ84S4VHF4HNG",
+          "type": "soft",
+          "rationale": "Planquadrate funktionieren im Stadtplan wie im Atlas."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-gymnasium-5",
+          "topic_code": "lb5",
+          "topic_title": "Städtische Räume in Bayern und Deutschland"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "geographie",
+          "topic_code": "lb5",
+          "topic_title": "Städtische Räume in Bayern und Deutschland",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CFTBQEZSVFTK7Y1D0Y58MY",
+          "slug": "geogym5-stadtplan-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Ein Netzplan der U-Bahn ist nicht maßstabsgetreu. Was folgt daraus?",
+          "concept": "Man kann mit ihm keine Entfernungen abmessen.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-stadtplan",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Man kann mit ihm keine Entfernungen abmessen.",
+              "Man kann mit ihm keine Umstiege finden."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CFTBQEZSVFTK7Y1D0Y58MZ",
+          "slug": "geogym5-stadtplan-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Wie findest du eine Straße auf dem Stadtplan?",
+          "concept": "Im Straßenverzeichnis das Planquadrat nachschlagen und dort suchen.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-stadtplan",
+          "sample_solution": "Im Straßenverzeichnis das Planquadrat nachschlagen und dort suchen."
+        }
+      ]
+    },
+    {
+      "id": "01M7CFTBQEZSVFTK7Y1D0Y58N0",
+      "atom_uri": "urn:zam:atom:01M7CFTBQEZSVFTK7Y1D0Y58N0",
+      "namespace": "zam-academy-geographie-gymnasium-5",
+      "slug": "geogym5-kartierung",
+      "title": "Eine Straße kartieren",
+      "domain": "geographie/lb5",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-kartierung",
+      "prerequisites": [
+        {
+          "atom_id": "01M7CFTBQEZD67R05JY5QR2GK1",
+          "type": "soft",
+          "rationale": "Eine Kartierung prüft die Funktionen eines Stadtviertels."
+        },
+        {
+          "atom_id": "01M7CFTBQDZ4HAZ84S4VHF4HNS",
+          "type": "soft",
+          "rationale": "Eine Kartierung ist eine Erkundung mit Leitfrage."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-gymnasium-5",
+          "topic_code": "lb5",
+          "topic_title": "Städtische Räume in Bayern und Deutschland"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "geographie",
+          "topic_code": "lb5",
+          "topic_title": "Städtische Räume in Bayern und Deutschland",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CFTBQEZSVFTK7Y1D0Y58N1",
+          "slug": "geogym5-kartierung-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum kartiert man Erdgeschoss und Obergeschoss getrennt?",
+          "concept": "weil sie oft unterschiedlich genutzt werden",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-kartierung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "weil sie oft unterschiedlich genutzt werden",
+              "weil das Obergeschoss immer leer steht"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CFTBQEZSVFTK7Y1D0Y58N2",
+          "slug": "geogym5-kartierung-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Was brauchst du für eine Nutzungskartierung?",
+          "concept": "Leitfrage, Grundkarte und Farblegende; Erd- und Obergeschoss werden getrennt eingetragen.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-kartierung",
+          "sample_solution": "Leitfrage, Grundkarte und Farblegende; Erd- und Obergeschoss werden getrennt eingetragen."
+        }
+      ]
+    },
+    {
+      "id": "01M7CFTBQEZSVFTK7Y1D0Y58N3",
+      "atom_uri": "urn:zam:atom:01M7CFTBQEZSVFTK7Y1D0Y58N3",
+      "namespace": "zam-academy-geographie-gymnasium-5",
+      "slug": "geogym5-nachhaltige-stadt",
+      "title": "Die Stadt nachhaltig umbauen",
+      "domain": "geographie/lb5",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-nachhaltige-stadt",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-gymnasium-5",
+          "topic_code": "lb5",
+          "topic_title": "Städtische Räume in Bayern und Deutschland"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "geographie",
+          "topic_code": "lb5",
+          "topic_title": "Städtische Räume in Bayern und Deutschland",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7CFTBQEZSVFTK7Y1D0Y58N4",
+          "slug": "geogym5-nachhaltige-stadt-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum pflanzen viele Städte mehr Bäume und begrünen Dächer?",
+          "concept": "Pflanzen kühlen im Sommer und halten Regenwasser zurück.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-nachhaltige-stadt",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Pflanzen kühlen im Sommer und halten Regenwasser zurück.",
+              "Bäume sorgen dafür, dass es mehr Parkplätze gibt."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7CFTBQEZSVFTK7Y1D0Y58N5",
+          "slug": "geogym5-nachhaltige-stadt-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Nenne zwei Maßnahmen für eine nachhaltige Stadt.",
+          "concept": "Zum Beispiel Rad- und Busverkehr fördern, Bäume und begrünte Dächer, Brachflächen statt Felder bebauen.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-5/#lesson=geogym5-nachhaltige-stadt",
+          "sample_solution": "Zum Beispiel Rad- und Busverkehr fördern, Bäume und begrünte Dächer, Brachflächen statt Felder bebauen."
+        }
+      ]
+    }
+  ]
+}

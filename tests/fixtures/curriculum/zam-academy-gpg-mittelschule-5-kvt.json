@@ -1,0 +1,2435 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "zam-academy:gpg-mittelschule-5",
+  "version": "2026.11.1",
+  "title": "Geschichte/Politik/Geographie 5 Mittelschule (ZAM Academy)",
+  "description": "34 Lektionen zu GPG 5 Mittelschule Bayern: Erde und Bayern, Steinzeit, Ägypten, Athen, Römer und Zusammenleben. 68 kurze Wiederholungsfragen; Klassenrat, Wahl, Ausflüge und eigene Recherche ergänzen die App. Keine Lernstandsübertragung; Veröffentlichung über die ZAM Academy.",
+  "publisher": "ZAM Academy",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/mittelschule/5/gpg",
+      "label": "LehrplanPLUS Bayern · Geschichte/Politik/Geographie 5 Mittelschule",
+      "checked": "2026-11-13"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Sonnensystem",
+      "label": "Klexikon · Sonnensystem",
+      "checked": "2026-11-13"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Erde",
+      "label": "Klexikon · Erde",
+      "checked": "2026-11-13"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Kontinent",
+      "label": "Klexikon · Kontinent",
+      "checked": "2026-11-13"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Meer",
+      "label": "Klexikon · Meer",
+      "checked": "2026-11-13"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Globus",
+      "label": "Klexikon · Globus",
+      "checked": "2026-11-13"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Landkarte",
+      "label": "Klexikon · Landkarte",
+      "checked": "2026-11-13"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Klima",
+      "label": "Klexikon · Klima",
+      "checked": "2026-11-13"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Deutschland",
+      "label": "Klexikon · Deutschland",
+      "checked": "2026-11-13"
+    },
+    {
+      "uri": "https://www.hanisauland.de/wissen/lexikon/grosses-lexikon/b/bundeslaender.html",
+      "label": "HanisauLand (bpb) · Bundesländer / Föderalismus",
+      "checked": "2026-11-13"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Bayern",
+      "label": "Klexikon · Bayern",
+      "checked": "2026-11-13"
+    },
+    {
+      "uri": "https://atlas.bayern.de/",
+      "label": "BayernAtlas · amtliche Karten von Bayern",
+      "checked": "2026-11-13"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Alpen",
+      "label": "Klexikon · Alpen",
+      "checked": "2026-11-13"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Watt_(Natur)",
+      "label": "Klexikon · Watt (Natur)",
+      "checked": "2026-11-13"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Gezeiten",
+      "label": "Klexikon · Gezeiten",
+      "checked": "2026-11-13"
+    },
+    {
+      "uri": "https://www.nationalpark-berchtesgaden.bayern.de/",
+      "label": "Nationalpark Berchtesgaden",
+      "checked": "2026-11-13"
+    },
+    {
+      "uri": "https://www.waddensea-worldheritage.org/de",
+      "label": "Weltnaturerbe Wattenmeer",
+      "checked": "2026-11-13"
+    },
+    {
+      "uri": "https://www.umweltbundesamt.de/uba-umwelttipps",
+      "label": "Umweltbundesamt · UBA-Umwelttipps",
+      "checked": "2026-11-13"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Energie",
+      "label": "Klexikon · Energie",
+      "checked": "2026-11-13"
+    },
+    {
+      "uri": "https://www.lfu.bayern.de/abfall/index.htm",
+      "label": "Bayerisches Landesamt für Umwelt · Abfall",
+      "checked": "2026-11-13"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Abfall",
+      "label": "Klexikon · Abfall",
+      "checked": "2026-11-13"
+    },
+    {
+      "uri": "https://www.hanisauland.de/wissen/lexikon/grosses-lexikon/n/nachhaltigkeit.html",
+      "label": "HanisauLand (bpb) · Nachhaltigkeit",
+      "checked": "2026-11-13"
+    },
+    {
+      "uri": "https://www.kinderzeitmaschine.de/vorgeschichte/vorgeschichte/",
+      "label": "Kinderzeitmaschine · Vorgeschichte",
+      "checked": "2026-11-13"
+    },
+    {
+      "uri": "https://www.kinderzeitmaschine.de/vorgeschichte/ereignisse/altsteinzeit/",
+      "label": "Kinderzeitmaschine · Altsteinzeit",
+      "checked": "2026-11-13"
+    },
+    {
+      "uri": "https://www.kinderzeitmaschine.de/vorgeschichte/ereignisse/jungsteinzeit/",
+      "label": "Kinderzeitmaschine · Jungsteinzeit",
+      "checked": "2026-11-13"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Steinzeit",
+      "label": "Klexikon · Steinzeit",
+      "checked": "2026-11-13"
+    },
+    {
+      "uri": "https://www.archaeologie.bayern/",
+      "label": "Archäologische Staatssammlung München",
+      "checked": "2026-11-13"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Nil",
+      "label": "Klexikon · Nil",
+      "checked": "2026-11-13"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Altes_%C3%84gypten",
+      "label": "Klexikon · Altes Ägypten",
+      "checked": "2026-11-13"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Pharao",
+      "label": "Klexikon · Pharao",
+      "checked": "2026-11-13"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Hieroglyphen",
+      "label": "Klexikon · Hieroglyphen",
+      "checked": "2026-11-13"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Pyramide",
+      "label": "Klexikon · Pyramide",
+      "checked": "2026-11-13"
+    },
+    {
+      "uri": "https://smaek.de/",
+      "label": "Staatliches Museum Ägyptischer Kunst München (SMÄK)",
+      "checked": "2026-11-13"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/R%C3%B6misches_Reich",
+      "label": "Klexikon · Römisches Reich",
+      "checked": "2026-11-13"
+    },
+    {
+      "uri": "https://www.kinderzeitmaschine.de/antike/rom/ereignisse/fruehe-und-hohe-kaiserzeit/",
+      "label": "Kinderzeitmaschine · Frühe und hohe Kaiserzeit",
+      "checked": "2026-11-13"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Limes",
+      "label": "Klexikon · Limes",
+      "checked": "2026-11-13"
+    },
+    {
+      "uri": "https://www.deutsche-limeskommission.de/",
+      "label": "Deutsche Limeskommission",
+      "checked": "2026-11-13"
+    },
+    {
+      "uri": "https://www.unesco.de/orte/welterbe/welterbestaetten-in-deutschland/",
+      "label": "Deutsche UNESCO-Kommission · Welterbestätten in Deutschland",
+      "checked": "2026-11-13"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Augsburg",
+      "label": "Klexikon · Augsburg",
+      "checked": "2026-11-13"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Regensburg",
+      "label": "Klexikon · Regensburg",
+      "checked": "2026-11-13"
+    },
+    {
+      "uri": "https://www.viaclaudia.org/via-claudia-augusta-willkommen",
+      "label": "Via Claudia Augusta · Europas Kulturachse",
+      "checked": "2026-11-13"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Altes_Griechenland",
+      "label": "Klexikon · Altes Griechenland",
+      "checked": "2026-11-13"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Athen",
+      "label": "Klexikon · Athen",
+      "checked": "2026-11-13"
+    },
+    {
+      "uri": "https://www.kinderzeitmaschine.de/antike/griechen/lucys-wissensbox/staat-und-politik/was-ist-demokratie/",
+      "label": "Kinderzeitmaschine · Was ist Demokratie?",
+      "checked": "2026-11-13"
+    },
+    {
+      "uri": "https://www.hanisauland.de/wissen/lexikon/grosses-lexikon/d/demokratie.html",
+      "label": "HanisauLand (bpb) · Demokratie",
+      "checked": "2026-11-13"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Demokratie",
+      "label": "Klexikon · Demokratie",
+      "checked": "2026-11-13"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Olympische_Spiele",
+      "label": "Klexikon · Olympische Spiele",
+      "checked": "2026-11-13"
+    },
+    {
+      "uri": "https://www.hanisauland.de/wissen/lexikon/grosses-lexikon/k/konflikt.html",
+      "label": "HanisauLand (bpb) · Konflikt",
+      "checked": "2026-11-13"
+    },
+    {
+      "uri": "https://www.hanisauland.de/wissen/lexikon/grosses-lexikon/g/gewalt.html",
+      "label": "HanisauLand (bpb) · Gewalt",
+      "checked": "2026-11-13"
+    },
+    {
+      "uri": "https://www.hanisauland.de/wissen/lexikon/grosses-lexikon/m/mediation.html",
+      "label": "HanisauLand (bpb) · Mediation",
+      "checked": "2026-11-13"
+    },
+    {
+      "uri": "https://www.hanisauland.de/wissen/lexikon/grosses-lexikon/k/kompromiss.html",
+      "label": "HanisauLand (bpb) · Kompromiss",
+      "checked": "2026-11-13"
+    },
+    {
+      "uri": "https://www.gesetze-bayern.de/Content/Document/BayEUG-62",
+      "label": "BayEUG Art. 62 · Schülermitverantwortung, Schülervertretung",
+      "checked": "2026-11-13"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Wahl",
+      "label": "Klexikon · Wahl",
+      "checked": "2026-11-13"
+    },
+    {
+      "uri": "https://www.hanisauland.de/wissen/lexikon/grosses-lexikon/f/familie.html",
+      "label": "HanisauLand (bpb) · Familie / Familienpolitik",
+      "checked": "2026-11-13"
+    },
+    {
+      "uri": "https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Bevoelkerung/Haushalte-Familien/_inhalt.html",
+      "label": "Statistisches Bundesamt · Haushalte und Familien",
+      "checked": "2026-11-13"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Ehe",
+      "label": "Klexikon · Ehe",
+      "checked": "2026-11-13"
+    },
+    {
+      "uri": "https://www.aktion-mensch.de/inklusion",
+      "label": "Aktion Mensch · Inklusion",
+      "checked": "2026-11-13"
+    },
+    {
+      "uri": "https://www.hanisauland.de/wissen/lexikon/grosses-lexikon/i/inklusion.html",
+      "label": "HanisauLand (bpb) · Inklusion",
+      "checked": "2026-11-13"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Behinderung",
+      "label": "Klexikon · Behinderung",
+      "checked": "2026-11-13"
+    },
+    {
+      "uri": "https://github.com/nvkelso/natural-earth-vector",
+      "label": "Natural Earth · gemeinfreie Kartendaten (Kartengrundlage dieser App)",
+      "checked": "2026-11-13"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01M7BH6C4M2HTC0FKF5CRDRSYS",
+      "atom_uri": "urn:zam:atom:01M7BH6C4M2HTC0FKF5CRDRSYS",
+      "namespace": "zam-academy-gpg-mittelschule-5",
+      "slug": "gpg5-sonnensystem",
+      "title": "Die Planeten unseres Sonnensystems",
+      "domain": "gpg/lb1",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-sonnensystem",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "gpg-mittelschule-5",
+          "topic_code": "lb1",
+          "topic_title": "Lebensraum Erde"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "gpg",
+          "topic_code": "lb1",
+          "topic_title": "Lebensraum Erde",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7BH6C4NQ8AYVJERKQ9VA8A7",
+          "slug": "gpg5-sonnensystem-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Der wievielte Planet von der Sonne aus ist die Erde?",
+          "concept": "der dritte",
+          "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-sonnensystem",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "der dritte",
+              "der erste"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7BH6C4PTB1SFQ0FS9NMGYSA",
+          "slug": "gpg5-sonnensystem-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Nenne die acht Planeten von der Sonne aus.",
+          "concept": "Merkur, Venus, Erde, Mars, Jupiter, Saturn, Uranus, Neptun.",
+          "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-sonnensystem",
+          "sample_solution": "Merkur, Venus, Erde, Mars, Jupiter, Saturn, Uranus, Neptun."
+        }
+      ]
+    },
+    {
+      "id": "01M7BH6C4QB8RBT6DH0FVSECJP",
+      "atom_uri": "urn:zam:atom:01M7BH6C4QB8RBT6DH0FVSECJP",
+      "namespace": "zam-academy-gpg-mittelschule-5",
+      "slug": "gpg5-erde-entstehung",
+      "title": "Die Erde entsteht – ein besonderer Planet",
+      "domain": "gpg/lb1",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-erde-entstehung",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "gpg-mittelschule-5",
+          "topic_code": "lb1",
+          "topic_title": "Lebensraum Erde"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "gpg",
+          "topic_code": "lb1",
+          "topic_title": "Lebensraum Erde",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7BH6C4R8V8CNH33R8ZRZVYR",
+          "slug": "gpg5-erde-entstehung-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum gibt es auf der Erde flüssiges Wasser?",
+          "concept": "Weil sie den richtigen Abstand zur Sonne hat.",
+          "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-erde-entstehung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Weil sie den richtigen Abstand zur Sonne hat.",
+              "Weil sie der größte Planet ist."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7BH6C4SZQEQEVNT4PK06WBM",
+          "slug": "gpg5-erde-entstehung-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche drei Bedingungen machen Leben auf der Erde möglich?",
+          "concept": "Richtiger Abstand zur Sonne, flüssiges Wasser und eine schützende Lufthülle mit Sauerstoff.",
+          "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-erde-entstehung",
+          "sample_solution": "Richtiger Abstand zur Sonne, flüssiges Wasser und eine schützende Lufthülle mit Sauerstoff."
+        }
+      ]
+    },
+    {
+      "id": "01M7BH6C4TNSG136THJR74AYSB",
+      "atom_uri": "urn:zam:atom:01M7BH6C4TNSG136THJR74AYSB",
+      "namespace": "zam-academy-gpg-mittelschule-5",
+      "slug": "gpg5-kontinente",
+      "title": "Kontinente und Ozeane",
+      "domain": "gpg/lb1",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-kontinente",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "gpg-mittelschule-5",
+          "topic_code": "lb1",
+          "topic_title": "Lebensraum Erde"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "gpg",
+          "topic_code": "lb1",
+          "topic_title": "Lebensraum Erde",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7BH6C4V0B0TCHW4B1Q1XC6B",
+          "slug": "gpg5-kontinente-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welcher Ozean liegt zwischen Europa und Afrika auf der einen und Amerika auf der anderen Seite?",
+          "concept": "der Atlantische Ozean",
+          "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-kontinente",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "der Atlantische Ozean",
+              "der Pazifische Ozean"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7BH6C4W7KHPPABMZWW62DMT",
+          "slug": "gpg5-kontinente-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Nenne die sieben Kontinente.",
+          "concept": "Asien, Afrika, Nordamerika, Südamerika, Antarktis, Europa, Australien und Ozeanien.",
+          "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-kontinente",
+          "sample_solution": "Asien, Afrika, Nordamerika, Südamerika, Antarktis, Europa, Australien und Ozeanien."
+        }
+      ]
+    },
+    {
+      "id": "01M7BH6C4X0NT34G4AD8RY34YZ",
+      "atom_uri": "urn:zam:atom:01M7BH6C4X0NT34G4AD8RY34YZ",
+      "namespace": "zam-academy-gpg-mittelschule-5",
+      "slug": "gpg5-globus-karte",
+      "title": "Globus, Karte und Himmelsrichtungen",
+      "domain": "gpg/lb1",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-globus-karte",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "gpg-mittelschule-5",
+          "topic_code": "lb1",
+          "topic_title": "Lebensraum Erde"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "gpg",
+          "topic_code": "lb1",
+          "topic_title": "Lebensraum Erde",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7BH6C4YX8ZPG6A1HJGJ6CTJ",
+          "slug": "gpg5-globus-karte-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was teilt die Erde in eine Nordhalbkugel und eine Südhalbkugel?",
+          "concept": "der Äquator",
+          "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-globus-karte",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "der Äquator",
+              "der Nullmeridian"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7BH6C4Z855WXT6FF5R0ZW2D",
+          "slug": "gpg5-globus-karte-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was ist der Vorteil eines Globus gegenüber einer Weltkarte?",
+          "concept": "Er zeigt Formen und Größen der Erde ohne Verzerrung.",
+          "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-globus-karte",
+          "sample_solution": "Er zeigt Formen und Größen der Erde ohne Verzerrung."
+        }
+      ]
+    },
+    {
+      "id": "01M7BH6C500CSP6VTKVV11917M",
+      "atom_uri": "urn:zam:atom:01M7BH6C500CSP6VTKVV11917M",
+      "namespace": "zam-academy-gpg-mittelschule-5",
+      "slug": "gpg5-klimazonen",
+      "title": "Die Klimazonen der Erde",
+      "domain": "gpg/lb1",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-klimazonen",
+      "prerequisites": [
+        {
+          "atom_id": "01M7BH6C4X0NT34G4AD8RY34YZ",
+          "type": "soft",
+          "rationale": "Die Klimazonen werden an Äquator, Wendekreisen und Polarkreisen beschrieben, die mit Globus und Karte eingeführt werden."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "gpg-mittelschule-5",
+          "topic_code": "lb1",
+          "topic_title": "Lebensraum Erde"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "gpg",
+          "topic_code": "lb1",
+          "topic_title": "Lebensraum Erde",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7BH6C51CE5SYQDG97SEFFKP",
+          "slug": "gpg5-klimazonen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "In welcher Klimazone liegt Deutschland?",
+          "concept": "in der gemäßigten Zone",
+          "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-klimazonen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "in der gemäßigten Zone",
+              "in den Tropen"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7BH6C52Y3E90TGE48MX3026",
+          "slug": "gpg5-klimazonen-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Nenne die Klimazonen vom Äquator zum Pol.",
+          "concept": "Tropen, Subtropen, gemäßigte Zone, polare Zone.",
+          "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-klimazonen",
+          "sample_solution": "Tropen, Subtropen, gemäßigte Zone, polare Zone."
+        }
+      ]
+    },
+    {
+      "id": "01M7BH6C53WM311G9PEP6PK8T0",
+      "atom_uri": "urn:zam:atom:01M7BH6C53WM311G9PEP6PK8T0",
+      "namespace": "zam-academy-gpg-mittelschule-5",
+      "slug": "gpg5-karten-lesen",
+      "title": "Karten lesen: Legende, Maßstab, Planquadrat",
+      "domain": "gpg/lb1",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-karten-lesen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "gpg-mittelschule-5",
+          "topic_code": "lb1",
+          "topic_title": "Lebensraum Erde"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "gpg",
+          "topic_code": "lb1",
+          "topic_title": "Lebensraum Erde",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7BH6C54A7N0D1NTD66J73HZ",
+          "slug": "gpg5-karten-lesen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was erklärt dir die Legende einer Karte?",
+          "concept": "was die Zeichen und Farben bedeuten",
+          "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-karten-lesen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "was die Zeichen und Farben bedeuten",
+              "wie alt die Karte ist"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7BH6C557RD2MHB2ZG8DS7AQ",
+          "slug": "gpg5-karten-lesen-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was gibt der Maßstab einer Karte an?",
+          "concept": "Wie stark die Wirklichkeit auf der Karte verkleinert ist.",
+          "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-karten-lesen",
+          "sample_solution": "Wie stark die Wirklichkeit auf der Karte verkleinert ist."
+        }
+      ]
+    },
+    {
+      "id": "01M7BH6C56WP6JA0T46B25ZYXH",
+      "atom_uri": "urn:zam:atom:01M7BH6C56WP6JA0T46B25ZYXH",
+      "namespace": "zam-academy-gpg-mittelschule-5",
+      "slug": "gpg5-deutschland",
+      "title": "Deutschland: Länder, Flüsse und Landschaften",
+      "domain": "gpg/lb1",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-deutschland",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "gpg-mittelschule-5",
+          "topic_code": "lb1",
+          "topic_title": "Lebensraum Erde"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "gpg",
+          "topic_code": "lb1",
+          "topic_title": "Lebensraum Erde",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7BH6C57KKAY8NYTV8JRRHGA",
+          "slug": "gpg5-deutschland-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welcher Berg ist der höchste Deutschlands?",
+          "concept": "die Zugspitze",
+          "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-deutschland",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "die Zugspitze",
+              "der Brocken im Harz"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7BH6C58C8NZ5TED5V7WBBH6",
+          "slug": "gpg5-deutschland-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Nenne die vier Großlandschaften Deutschlands von Norden nach Süden.",
+          "concept": "Norddeutsches Tiefland, Mittelgebirgsland, Alpenvorland, Alpen.",
+          "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-deutschland",
+          "sample_solution": "Norddeutsches Tiefland, Mittelgebirgsland, Alpenvorland, Alpen."
+        }
+      ]
+    },
+    {
+      "id": "01M7BH6C59ZSBBEPD9KKEXE4DB",
+      "atom_uri": "urn:zam:atom:01M7BH6C59ZSBBEPD9KKEXE4DB",
+      "namespace": "zam-academy-gpg-mittelschule-5",
+      "slug": "gpg5-bayern",
+      "title": "Bayern: dein Bundesland",
+      "domain": "gpg/lb1",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-bayern",
+      "prerequisites": [
+        {
+          "atom_id": "01M7BH6C56WP6JA0T46B25ZYXH",
+          "type": "soft",
+          "rationale": "Bayern wird innerhalb Deutschlands mit seinen Nachbarn und Flüssen verortet."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "gpg-mittelschule-5",
+          "topic_code": "lb1",
+          "topic_title": "Lebensraum Erde"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "gpg",
+          "topic_code": "lb1",
+          "topic_title": "Lebensraum Erde",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7BH6C5AT5PAPWSG9VZCV1BP",
+          "slug": "gpg5-bayern-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "An welchem Fluss liegt München?",
+          "concept": "an der Isar",
+          "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-bayern",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "an der Isar",
+              "am Main"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7BH6C5B83AXCES16Z5HK0ZH",
+          "slug": "gpg5-bayern-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie viele Regierungsbezirke hat Bayern, und wie heißt die Landeshauptstadt?",
+          "concept": "Sieben Regierungsbezirke; die Landeshauptstadt ist München.",
+          "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-bayern",
+          "sample_solution": "Sieben Regierungsbezirke; die Landeshauptstadt ist München."
+        }
+      ]
+    },
+    {
+      "id": "01M7BH6C5CAM1PAZ68GRQ3GTJY",
+      "atom_uri": "urn:zam:atom:01M7BH6C5CAM1PAZ68GRQ3GTJY",
+      "namespace": "zam-academy-gpg-mittelschule-5",
+      "slug": "gpg5-bayern-kueste",
+      "title": "Bayern und die Nordseeküste im Vergleich",
+      "domain": "gpg/lb1",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-bayern-kueste",
+      "prerequisites": [
+        {
+          "atom_id": "01M7BH6C56WP6JA0T46B25ZYXH",
+          "type": "soft",
+          "rationale": "Der Vergleich nutzt die Großlandschaften Alpen und Küste."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "gpg-mittelschule-5",
+          "topic_code": "lb1",
+          "topic_title": "Lebensraum Erde"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "gpg",
+          "topic_code": "lb1",
+          "topic_title": "Lebensraum Erde",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7BH6C5DRJ27H2AMZ6ZPY7VF",
+          "slug": "gpg5-bayern-kueste-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wovor schützen Deiche an der Nordseeküste?",
+          "concept": "vor Sturmfluten",
+          "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-bayern-kueste",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "vor Sturmfluten",
+              "vor Lawinen"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7BH6C5E2JWR5TZ8TYNX62YV",
+          "slug": "gpg5-bayern-kueste-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was ist das Watt?",
+          "concept": "Meeresboden aus Schlick und Sand, der bei Ebbe frei liegt.",
+          "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-bayern-kueste",
+          "sample_solution": "Meeresboden aus Schlick und Sand, der bei Ebbe frei liegt."
+        }
+      ]
+    },
+    {
+      "id": "01M7BH6C5FB0X9C622567CP82N",
+      "atom_uri": "urn:zam:atom:01M7BH6C5FB0X9C622567CP82N",
+      "namespace": "zam-academy-gpg-mittelschule-5",
+      "slug": "gpg5-energie",
+      "title": "Energie sparen im Alltag",
+      "domain": "gpg/lb1",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-energie",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "gpg-mittelschule-5",
+          "topic_code": "lb1",
+          "topic_title": "Lebensraum Erde"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "gpg",
+          "topic_code": "lb1",
+          "topic_title": "Lebensraum Erde",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7BH6C5GB94BVBQM3X465T0T",
+          "slug": "gpg5-energie-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie lüftest du im Winter, ohne viel Heizwärme zu verschwenden?",
+          "concept": "mehrmals kurz das Fenster ganz öffnen",
+          "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-energie",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "mehrmals kurz das Fenster ganz öffnen",
+              "das Fenster den ganzen Tag gekippt lassen"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7BH6C5H3JQ92B5SJ1K3FFWP",
+          "slug": "gpg5-energie-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was ist Stoßlüften?",
+          "concept": "Mehrmals am Tag das Fenster für wenige Minuten ganz öffnen, statt es lange zu kippen.",
+          "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-energie",
+          "sample_solution": "Mehrmals am Tag das Fenster für wenige Minuten ganz öffnen, statt es lange zu kippen."
+        }
+      ]
+    },
+    {
+      "id": "01M7BH6C5JY9XM5XP88DPC0J9P",
+      "atom_uri": "urn:zam:atom:01M7BH6C5JY9XM5XP88DPC0J9P",
+      "namespace": "zam-academy-gpg-mittelschule-5",
+      "slug": "gpg5-umwelt-alltag",
+      "title": "Regional einkaufen und Müll vermeiden",
+      "domain": "gpg/lb1",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-umwelt-alltag",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "gpg-mittelschule-5",
+          "topic_code": "lb1",
+          "topic_title": "Lebensraum Erde"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "gpg",
+          "topic_code": "lb1",
+          "topic_title": "Lebensraum Erde",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7BH6C5K0282A9TNASWS0F22",
+          "slug": "gpg5-umwelt-alltag-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was ist für die Umwelt am besten: Müll gar nicht erst entstehen lassen oder Müll in eine beliebige Tonne werfen?",
+          "concept": "Müll gar nicht erst entstehen lassen",
+          "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-umwelt-alltag",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Müll gar nicht erst entstehen lassen",
+              "Müll in eine beliebige Tonne werfen"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7BH6C5MGJVE772HW8AXE186",
+          "slug": "gpg5-umwelt-alltag-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "In welcher Reihenfolge gehst du am umweltfreundlichsten mit Müll um?",
+          "concept": "Erst vermeiden, dann wiederverwenden, dann richtig trennen.",
+          "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-umwelt-alltag",
+          "sample_solution": "Erst vermeiden, dann wiederverwenden, dann richtig trennen."
+        }
+      ]
+    },
+    {
+      "id": "01M7BH6C5N00WRPJAKRYDB7SNT",
+      "atom_uri": "urn:zam:atom:01M7BH6C5N00WRPJAKRYDB7SNT",
+      "namespace": "zam-academy-gpg-mittelschule-5",
+      "slug": "gpg5-zeitleiste",
+      "title": "Zeit ordnen: vor und nach Christi Geburt",
+      "domain": "gpg/lb2",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-zeitleiste",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "gpg-mittelschule-5",
+          "topic_code": "lb2",
+          "topic_title": "Zeit und Wandel"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "gpg",
+          "topic_code": "lb2",
+          "topic_title": "Zeit und Wandel",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7BH6C5P55PYXWJX7DVFF64K",
+          "slug": "gpg5-zeitleiste-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welches Jahr liegt früher: 300 v. Chr. oder 200 v. Chr.?",
+          "concept": "300 v. Chr.",
+          "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-zeitleiste",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "300 v. Chr.",
+              "200 v. Chr."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7BH6C5QKSFFVZNZ6JPWB547",
+          "slug": "gpg5-zeitleiste-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Gibt es in unserer Zeitrechnung ein Jahr 0?",
+          "concept": "Nein. Auf das Jahr 1 v. Chr. folgt direkt das Jahr 1 n. Chr.",
+          "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-zeitleiste",
+          "sample_solution": "Nein. Auf das Jahr 1 v. Chr. folgt direkt das Jahr 1 n. Chr."
+        }
+      ]
+    },
+    {
+      "id": "01M7BH6C5RD01QKBCZ7CHE1YEJ",
+      "atom_uri": "urn:zam:atom:01M7BH6C5RD01QKBCZ7CHE1YEJ",
+      "namespace": "zam-academy-gpg-mittelschule-5",
+      "slug": "gpg5-altsteinzeit",
+      "title": "Jäger und Sammler in der Altsteinzeit",
+      "domain": "gpg/lb2",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-altsteinzeit",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "gpg-mittelschule-5",
+          "topic_code": "lb2",
+          "topic_title": "Zeit und Wandel"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "gpg",
+          "topic_code": "lb2",
+          "topic_title": "Zeit und Wandel",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7BH6C5SV4C4JCQ76S3E4KR2",
+          "slug": "gpg5-altsteinzeit-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum zogen die Menschen in der Altsteinzeit immer wieder weiter?",
+          "concept": "Sie folgten den Tierherden, die sie jagten.",
+          "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-altsteinzeit",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie folgten den Tierherden, die sie jagten.",
+              "Sie suchten neue Felder für ihr Getreide."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7BH6C5TPQ8FQNA78AXK47DK",
+          "slug": "gpg5-altsteinzeit-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie beschafften die Menschen der Altsteinzeit ihre Nahrung?",
+          "concept": "Durch Jagen und Sammeln; als Nomaden zogen sie den Tierherden nach.",
+          "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-altsteinzeit",
+          "sample_solution": "Durch Jagen und Sammeln; als Nomaden zogen sie den Tierherden nach."
+        }
+      ]
+    },
+    {
+      "id": "01M7BH6C5VQ5HKS2NVAT0H66TX",
+      "atom_uri": "urn:zam:atom:01M7BH6C5VQ5HKS2NVAT0H66TX",
+      "namespace": "zam-academy-gpg-mittelschule-5",
+      "slug": "gpg5-jungsteinzeit",
+      "title": "Ackerbauern und Viehzüchter in der Jungsteinzeit",
+      "domain": "gpg/lb2",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-jungsteinzeit",
+      "prerequisites": [
+        {
+          "atom_id": "01M7BH6C5RD01QKBCZ7CHE1YEJ",
+          "type": "soft",
+          "rationale": "Die Jungsteinzeit wird im Vergleich mit der Lebensweise der Jäger und Sammler erklärt."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "gpg-mittelschule-5",
+          "topic_code": "lb2",
+          "topic_title": "Zeit und Wandel"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "gpg",
+          "topic_code": "lb2",
+          "topic_title": "Zeit und Wandel",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7BH6C5W7CXW172EWQ6XV67S",
+          "slug": "gpg5-jungsteinzeit-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was bedeutet „sesshaft“?",
+          "concept": "an einem festen Ort wohnen bleiben",
+          "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-jungsteinzeit",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "an einem festen Ort wohnen bleiben",
+              "den Tierherden hinterherziehen"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7BH6C5XP2CSE31040QFDNET",
+          "slug": "gpg5-jungsteinzeit-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Ab wann etwa lebten in Bayern Ackerbauern und Viehzüchter?",
+          "concept": "Ab etwa 5500 v. Chr.",
+          "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-jungsteinzeit",
+          "sample_solution": "Ab etwa 5500 v. Chr."
+        }
+      ]
+    },
+    {
+      "id": "01M7BH6C5YV3QZFNMNHMPV982S",
+      "atom_uri": "urn:zam:atom:01M7BH6C5YV3QZFNMNHMPV982S",
+      "namespace": "zam-academy-gpg-mittelschule-5",
+      "slug": "gpg5-jaeger-bauern",
+      "title": "Vom Jäger zum Bauern: ein großer Wandel",
+      "domain": "gpg/lb2",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-jaeger-bauern",
+      "prerequisites": [
+        {
+          "atom_id": "01M7BH6C5RD01QKBCZ7CHE1YEJ",
+          "type": "soft",
+          "rationale": "Der Wandel setzt die Lebensweise der Jäger und Sammler voraus."
+        },
+        {
+          "atom_id": "01M7BH6C5VQ5HKS2NVAT0H66TX",
+          "type": "soft",
+          "rationale": "Der Wandel führt zur Lebensweise der Ackerbauern und Viehzüchter."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "gpg-mittelschule-5",
+          "topic_code": "lb2",
+          "topic_title": "Zeit und Wandel"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "gpg",
+          "topic_code": "lb2",
+          "topic_title": "Zeit und Wandel",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7BH6C5ZPDD362ECE67BX9X2",
+          "slug": "gpg5-jaeger-bauern-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum konnten in der Jungsteinzeit mehr Menschen an einem Ort leben?",
+          "concept": "Vorräte aus dem Ackerbau reichten für mehr Menschen.",
+          "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-jaeger-bauern",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Vorräte aus dem Ackerbau reichten für mehr Menschen.",
+              "Es gab mehr Mammuts zum Jagen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7BH6C60TJEB8W97KGCMAPPM",
+          "slug": "gpg5-jaeger-bauern-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Nenne einen Vorteil und einen Nachteil der Sesshaftigkeit.",
+          "concept": "Vorteil: Vorräte für den Winter. Nachteil: Hunger bei Missernten.",
+          "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-jaeger-bauern",
+          "sample_solution": "Vorteil: Vorräte für den Winter. Nachteil: Hunger bei Missernten."
+        }
+      ]
+    },
+    {
+      "id": "01M7BH6C61XH5HW1JVEKRJKQVC",
+      "atom_uri": "urn:zam:atom:01M7BH6C61XH5HW1JVEKRJKQVC",
+      "namespace": "zam-academy-gpg-mittelschule-5",
+      "slug": "gpg5-nil",
+      "title": "Der Nil: ein Fluss in der Wüste",
+      "domain": "gpg/lb2",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-nil",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "gpg-mittelschule-5",
+          "topic_code": "lb2",
+          "topic_title": "Zeit und Wandel"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "gpg",
+          "topic_code": "lb2",
+          "topic_title": "Zeit und Wandel",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7BH6C62TGA7EVEAMENQWJCZ",
+          "slug": "gpg5-nil-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum war die Nilflut für die Bauern so wichtig?",
+          "concept": "Sie brachte Wasser und fruchtbaren Schlamm auf die Felder.",
+          "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-nil",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie brachte Wasser und fruchtbaren Schlamm auf die Felder.",
+              "Sie spülte die Wüste ins Meer."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7BH6C63A9NQWPZTJD8BHCXS",
+          "slug": "gpg5-nil-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wodurch wurden die Felder am Nil fruchtbar?",
+          "concept": "Durch die jährliche Nilflut, die fruchtbaren Schlamm zurückließ.",
+          "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-nil",
+          "sample_solution": "Durch die jährliche Nilflut, die fruchtbaren Schlamm zurückließ."
+        }
+      ]
+    },
+    {
+      "id": "01M7BH6C643ZAJVH75ZKBEFBDN",
+      "atom_uri": "urn:zam:atom:01M7BH6C643ZAJVH75ZKBEFBDN",
+      "namespace": "zam-academy-gpg-mittelschule-5",
+      "slug": "gpg5-nil-leistungen",
+      "title": "Was die Ägypter dem Nil verdanken",
+      "domain": "gpg/lb2",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-nil-leistungen",
+      "prerequisites": [
+        {
+          "atom_id": "01M7BH6C61XH5HW1JVEKRJKQVC",
+          "type": "soft",
+          "rationale": "Kalender, Vermessung und Bewässerung antworten auf die Nilflut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "gpg-mittelschule-5",
+          "topic_code": "lb2",
+          "topic_title": "Zeit und Wandel"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "gpg",
+          "topic_code": "lb2",
+          "topic_title": "Zeit und Wandel",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7BH6C65TFAFQNFM8KJG0GRS",
+          "slug": "gpg5-nil-leistungen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum mussten die Ägypter ihre Felder nach jeder Flut neu vermessen?",
+          "concept": "Die Flut hatte die Grenzen der Felder weggespült.",
+          "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-nil-leistungen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Flut hatte die Grenzen der Felder weggespült.",
+              "Die Felder wuchsen jedes Jahr."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7BH6C66B9QQJ4YKD450NMVB",
+          "slug": "gpg5-nil-leistungen-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie war der Kalender der alten Ägypter aufgebaut?",
+          "concept": "365 Tage: 12 Monate zu 30 Tagen und 5 Zusatztage.",
+          "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-nil-leistungen",
+          "sample_solution": "365 Tage: 12 Monate zu 30 Tagen und 5 Zusatztage."
+        }
+      ]
+    },
+    {
+      "id": "01M7BH6C675W02HTR0BNJ914KT",
+      "atom_uri": "urn:zam:atom:01M7BH6C675W02HTR0BNJ914KT",
+      "namespace": "zam-academy-gpg-mittelschule-5",
+      "slug": "gpg5-nil-heute",
+      "title": "Der Nil heute",
+      "domain": "gpg/lb2",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-nil-heute",
+      "prerequisites": [
+        {
+          "atom_id": "01M7BH6C61XH5HW1JVEKRJKQVC",
+          "type": "soft",
+          "rationale": "Der Vergleich mit heute setzt die frühere Nilflut voraus."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "gpg-mittelschule-5",
+          "topic_code": "lb2",
+          "topic_title": "Zeit und Wandel"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "gpg",
+          "topic_code": "lb2",
+          "topic_title": "Zeit und Wandel",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7BH6C68DD0DFM08DC8XZ014",
+          "slug": "gpg5-nil-heute-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum brauchen ägyptische Bauern heute Kunstdünger?",
+          "concept": "Der Schlamm bleibt im Nasser-Stausee hängen.",
+          "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-nil-heute",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Schlamm bleibt im Nasser-Stausee hängen.",
+              "Der Nil fließt heute nach Süden."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7BH6C69ZEVAR68NP8J746W1",
+          "slug": "gpg5-nil-heute-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wozu dient der Assuan-Hochdamm?",
+          "concept": "Er verhindert Hochwasser, speichert Wasser für die Felder und erzeugt Strom.",
+          "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-nil-heute",
+          "sample_solution": "Er verhindert Hochwasser, speichert Wasser für die Felder und erzeugt Strom."
+        }
+      ]
+    },
+    {
+      "id": "01M7BH6C6ASCQYQ1JVJ4J0JTM3",
+      "atom_uri": "urn:zam:atom:01M7BH6C6ASCQYQ1JVJ4J0JTM3",
+      "namespace": "zam-academy-gpg-mittelschule-5",
+      "slug": "gpg5-rom-reich",
+      "title": "Das Römische Weltreich",
+      "domain": "gpg/lb2",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-rom-reich",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "gpg-mittelschule-5",
+          "topic_code": "lb2",
+          "topic_title": "Zeit und Wandel"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "gpg",
+          "topic_code": "lb2",
+          "topic_title": "Zeit und Wandel",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7BH6C6BX0M2EJEEZ1AT8Y02",
+          "slug": "gpg5-rom-reich-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welches Meer lag mitten im Römischen Reich?",
+          "concept": "das Mittelmeer",
+          "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-rom-reich",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "das Mittelmeer",
+              "die Nordsee"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7BH6C6CJANHGG19AZCE4E2N",
+          "slug": "gpg5-rom-reich-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wann war das Römische Reich am größten?",
+          "concept": "Um 117 n. Chr. unter Kaiser Trajan.",
+          "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-rom-reich",
+          "sample_solution": "Um 117 n. Chr. unter Kaiser Trajan."
+        }
+      ]
+    },
+    {
+      "id": "01M7BH6C6DT7HDV7XA1TW0JHQ5",
+      "atom_uri": "urn:zam:atom:01M7BH6C6DT7HDV7XA1TW0JHQ5",
+      "namespace": "zam-academy-gpg-mittelschule-5",
+      "slug": "gpg5-limes",
+      "title": "Der Limes: die Grenze der Römer in Süddeutschland",
+      "domain": "gpg/lb2",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-limes",
+      "prerequisites": [
+        {
+          "atom_id": "01M7BH6C6ASCQYQ1JVJ4J0JTM3",
+          "type": "soft",
+          "rationale": "Der Limes ist ein Teil der Nordgrenze des Römischen Reiches."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "gpg-mittelschule-5",
+          "topic_code": "lb2",
+          "topic_title": "Zeit und Wandel"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "gpg",
+          "topic_code": "lb2",
+          "topic_title": "Zeit und Wandel",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7BH6C6EH9VW7W03M7BG6BDY",
+          "slug": "gpg5-limes-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wozu diente der Limes vor allem?",
+          "concept": "die Grenze zu bewachen und den Verkehr zu kontrollieren",
+          "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-limes",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "die Grenze zu bewachen und den Verkehr zu kontrollieren",
+              "Germanen grundsätzlich jeden Handel zu verbieten"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7BH6C6FRE11R91A8NBBFGMN",
+          "slug": "gpg5-limes-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was war der Limes?",
+          "concept": "Die etwa 550 km lange römische Grenzanlage zwischen Rhein und Donau.",
+          "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-limes",
+          "sample_solution": "Die etwa 550 km lange römische Grenzanlage zwischen Rhein und Donau."
+        }
+      ]
+    },
+    {
+      "id": "01M7BH6C6GXC3TR9DQMW3G09KA",
+      "atom_uri": "urn:zam:atom:01M7BH6C6GXC3TR9DQMW3G09KA",
+      "namespace": "zam-academy-gpg-mittelschule-5",
+      "slug": "gpg5-roemer-spuren",
+      "title": "Römische Spuren in Bayern heute",
+      "domain": "gpg/lb2",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-roemer-spuren",
+      "prerequisites": [
+        {
+          "atom_id": "01M7BH6C6DT7HDV7XA1TW0JHQ5",
+          "type": "soft",
+          "rationale": "Die Überreste stammen aus den römischen Provinzen am Limes."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "gpg-mittelschule-5",
+          "topic_code": "lb2",
+          "topic_title": "Zeit und Wandel"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "gpg",
+          "topic_code": "lb2",
+          "topic_title": "Zeit und Wandel",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7BH6C6HTPXWKPHV4B32N1BT",
+          "slug": "gpg5-roemer-spuren-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Aus welchem lateinischen Wort entstand das deutsche Wort „Fenster“?",
+          "concept": "fenestra",
+          "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-roemer-spuren",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "fenestra",
+              "murus"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7BH6C6JXPNJPDNBYXEXJD1D",
+          "slug": "gpg5-roemer-spuren-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Aus welchem lateinischen Wort stammt das deutsche Wort „Mauer“?",
+          "concept": "Aus „murus“.",
+          "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-roemer-spuren",
+          "sample_solution": "Aus „murus“."
+        }
+      ]
+    },
+    {
+      "id": "01M7BH6C6KHYPP2NXX9QA1ES40",
+      "atom_uri": "urn:zam:atom:01M7BH6C6KHYPP2NXX9QA1ES40",
+      "namespace": "zam-academy-gpg-mittelschule-5",
+      "slug": "gpg5-aegypten-alltag",
+      "title": "Leben und Arbeiten im alten Ägypten",
+      "domain": "gpg/lb3",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-aegypten-alltag",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "gpg-mittelschule-5",
+          "topic_code": "lb3",
+          "topic_title": "Politik und Gesellschaft"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "gpg",
+          "topic_code": "lb3",
+          "topic_title": "Politik und Gesellschaft",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7BH6C6MNGGJ149PCKDS500F",
+          "slug": "gpg5-aegypten-alltag-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum waren Schreiber im alten Ägypten so angesehen?",
+          "concept": "Nur wenige Menschen konnten lesen und schreiben.",
+          "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-aegypten-alltag",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nur wenige Menschen konnten lesen und schreiben.",
+              "Sie waren die stärksten Arbeiter auf dem Feld."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7BH6C6N6N12VZTM6GB8AHYA",
+          "slug": "gpg5-aegypten-alltag-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche Merkmale hat eine Hochkultur?",
+          "concept": "Staat mit Herrscher, Verwaltung mit Schrift, Städte, große Bauwerke, Religion und viele Berufe.",
+          "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-aegypten-alltag",
+          "sample_solution": "Staat mit Herrscher, Verwaltung mit Schrift, Städte, große Bauwerke, Religion und viele Berufe."
+        }
+      ]
+    },
+    {
+      "id": "01M7BH6C6P1W3K70WJDHQJ7KQN",
+      "atom_uri": "urn:zam:atom:01M7BH6C6P1W3K70WJDHQJ7KQN",
+      "namespace": "zam-academy-gpg-mittelschule-5",
+      "slug": "gpg5-pyramide",
+      "title": "Die Gesellschaftspyramide Ägyptens",
+      "domain": "gpg/lb3",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-pyramide",
+      "prerequisites": [
+        {
+          "atom_id": "01M7BH6C6KHYPP2NXX9QA1ES40",
+          "type": "soft",
+          "rationale": "Die Pyramide ordnet die Gruppen, deren Arbeit dort beschrieben wird."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "gpg-mittelschule-5",
+          "topic_code": "lb3",
+          "topic_title": "Politik und Gesellschaft"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "gpg",
+          "topic_code": "lb3",
+          "topic_title": "Politik und Gesellschaft",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7BH6C6QWSFAZMN8TNYKX0A5",
+          "slug": "gpg5-pyramide-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Gruppe war im alten Ägypten am größten?",
+          "concept": "die Bauern",
+          "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-pyramide",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "die Bauern",
+              "die Priester"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7BH6C6RPM84PZX8ZJDN3GAW",
+          "slug": "gpg5-pyramide-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wer stand an der Spitze der ägyptischen Gesellschaftspyramide?",
+          "concept": "Der Pharao.",
+          "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-pyramide",
+          "sample_solution": "Der Pharao."
+        }
+      ]
+    },
+    {
+      "id": "01M7BH6C6SJ55MX48YP751FK6J",
+      "atom_uri": "urn:zam:atom:01M7BH6C6SJ55MX48YP751FK6J",
+      "namespace": "zam-academy-gpg-mittelschule-5",
+      "slug": "gpg5-volksversammlung",
+      "title": "Die Volksversammlung in Athen",
+      "domain": "gpg/lb3",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-volksversammlung",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "gpg-mittelschule-5",
+          "topic_code": "lb3",
+          "topic_title": "Politik und Gesellschaft"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "gpg",
+          "topic_code": "lb3",
+          "topic_title": "Politik und Gesellschaft",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7BH6C6T15D7HKXA6XWK17MQ",
+          "slug": "gpg5-volksversammlung-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wer durfte in der Volksversammlung von Athen mitstimmen?",
+          "concept": "erwachsene Männer mit athenischem Bürgerrecht",
+          "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-volksversammlung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "erwachsene Männer mit athenischem Bürgerrecht",
+              "alle Menschen, die in Athen lebten"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7BH6C6V4N0SQAJ464RAD2V2",
+          "slug": "gpg5-volksversammlung-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was war das Scherbengericht in Athen?",
+          "concept": "Eine Abstimmung, mit der ein zu mächtiger Politiker für zehn Jahre verbannt werden konnte.",
+          "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-volksversammlung",
+          "sample_solution": "Eine Abstimmung, mit der ein zu mächtiger Politiker für zehn Jahre verbannt werden konnte."
+        }
+      ]
+    },
+    {
+      "id": "01M7BH6C6WTS4410D3771J1GPS",
+      "atom_uri": "urn:zam:atom:01M7BH6C6WTS4410D3771J1GPS",
+      "namespace": "zam-academy-gpg-mittelschule-5",
+      "slug": "gpg5-demokratie",
+      "title": "Athen: ein erster Ansatz von Demokratie?",
+      "domain": "gpg/lb3",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-demokratie",
+      "prerequisites": [
+        {
+          "atom_id": "01M7BH6C6SJ55MX48YP751FK6J",
+          "type": "soft",
+          "rationale": "Das Urteil bewertet die Volksversammlung."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "gpg-mittelschule-5",
+          "topic_code": "lb3",
+          "topic_title": "Politik und Gesellschaft"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "gpg",
+          "topic_code": "lb3",
+          "topic_title": "Politik und Gesellschaft",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7BH6C6XPWHD3QJ33HS8WQ14",
+          "slug": "gpg5-demokratie-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was bedeutet das griechische Wort „Demokratie“?",
+          "concept": "Herrschaft des Volkes",
+          "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-demokratie",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Herrschaft des Volkes",
+              "Herrschaft eines Königs"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7BH6C6YJTNABRR3PNZJ4NJ0",
+          "slug": "gpg5-demokratie-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was unterscheidet direkte von repräsentativer Demokratie?",
+          "concept": "Direkt stimmen die Bürger selbst ab; repräsentativ wählen sie Abgeordnete, die entscheiden.",
+          "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-demokratie",
+          "sample_solution": "Direkt stimmen die Bürger selbst ab; repräsentativ wählen sie Abgeordnete, die entscheiden."
+        }
+      ]
+    },
+    {
+      "id": "01M7BH6C6ZW7617CJTB26VPPVX",
+      "atom_uri": "urn:zam:atom:01M7BH6C6ZW7617CJTB26VPPVX",
+      "namespace": "zam-academy-gpg-mittelschule-5",
+      "slug": "gpg5-griechen-erbe",
+      "title": "Das Erbe der Griechen",
+      "domain": "gpg/lb3",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-griechen-erbe",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "gpg-mittelschule-5",
+          "topic_code": "lb3",
+          "topic_title": "Politik und Gesellschaft"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "gpg",
+          "topic_code": "lb3",
+          "topic_title": "Politik und Gesellschaft",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7BH6C70A9447ZA9RHMQ1K0F",
+          "slug": "gpg5-griechen-erbe-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Woher kommt das Wort „Politik“?",
+          "concept": "von „polis“, dem griechischen Wort für Stadtstaat",
+          "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-griechen-erbe",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "von „polis“, dem griechischen Wort für Stadtstaat",
+              "von „Polizei“"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7BH6C71BHMS0N7DVJZZ3ZZ6",
+          "slug": "gpg5-griechen-erbe-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Seit wann gab es die Olympischen Spiele im antiken Griechenland?",
+          "concept": "Seit 776 v. Chr.",
+          "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-griechen-erbe",
+          "sample_solution": "Seit 776 v. Chr."
+        }
+      ]
+    },
+    {
+      "id": "01M7BH6C72G9NADCAMH1RHKVSK",
+      "atom_uri": "urn:zam:atom:01M7BH6C72G9NADCAMH1RHKVSK",
+      "namespace": "zam-academy-gpg-mittelschule-5",
+      "slug": "gpg5-konflikte",
+      "title": "Konflikte im Alltag erkennen",
+      "domain": "gpg/lb4",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-konflikte",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "gpg-mittelschule-5",
+          "topic_code": "lb4",
+          "topic_title": "Lebenswelt"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "gpg",
+          "topic_code": "lb4",
+          "topic_title": "Lebenswelt",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7BH6C73Z6KJV91645209K19",
+          "slug": "gpg5-konflikte-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wann lässt sich ein Konflikt am leichtesten lösen?",
+          "concept": "früh, bevor er sich hochschaukelt",
+          "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-konflikte",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "früh, bevor er sich hochschaukelt",
+              "erst, wenn sich alle beleidigt haben"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7BH6C74N4V9CXBXS2458QX3",
+          "slug": "gpg5-konflikte-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Nenne drei häufige Ursachen von Konflikten.",
+          "concept": "Verschiedene Wünsche, Missverständnisse und verletzte Gefühle.",
+          "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-konflikte",
+          "sample_solution": "Verschiedene Wünsche, Missverständnisse und verletzte Gefühle."
+        }
+      ]
+    },
+    {
+      "id": "01M7BH6C755J1HF8AAC42FQCKR",
+      "atom_uri": "urn:zam:atom:01M7BH6C755J1HF8AAC42FQCKR",
+      "namespace": "zam-academy-gpg-mittelschule-5",
+      "slug": "gpg5-streit-loesen",
+      "title": "Streit fair lösen: Ich-Botschaften und Streitschlichtung",
+      "domain": "gpg/lb4",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-streit-loesen",
+      "prerequisites": [
+        {
+          "atom_id": "01M7BH6C72G9NADCAMH1RHKVSK",
+          "type": "soft",
+          "rationale": "Ich-Botschaften und Streitschlichtung lösen die dort beschriebenen Konflikte."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "gpg-mittelschule-5",
+          "topic_code": "lb4",
+          "topic_title": "Lebenswelt"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "gpg",
+          "topic_code": "lb4",
+          "topic_title": "Lebenswelt",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7BH6C76T625K0VK15NJ2XXR",
+          "slug": "gpg5-streit-loesen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welcher Satz ist eine Ich-Botschaft: „Ich bin traurig, wenn ich nicht mitspielen darf.“ oder „Du lässt mich nie mitspielen!“?",
+          "concept": "„Ich bin traurig, wenn ich nicht mitspielen darf.“",
+          "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-streit-loesen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "„Ich bin traurig, wenn ich nicht mitspielen darf.“",
+              "„Du lässt mich nie mitspielen!“"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7BH6C77ZEAD2JERAABSBQ3K",
+          "slug": "gpg5-streit-loesen-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Aus welchen drei Teilen besteht eine Ich-Botschaft?",
+          "concept": "Was passiert ist, wie ich mich fühle und was ich mir wünsche.",
+          "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-streit-loesen",
+          "sample_solution": "Was passiert ist, wie ich mich fühle und was ich mir wünsche."
+        }
+      ]
+    },
+    {
+      "id": "01M7BH6C78R3QKGY6XDXX9PZV0",
+      "atom_uri": "urn:zam:atom:01M7BH6C78R3QKGY6XDXX9PZV0",
+      "namespace": "zam-academy-gpg-mittelschule-5",
+      "slug": "gpg5-regeln",
+      "title": "Regeln für ein friedliches Zusammenleben",
+      "domain": "gpg/lb4",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-regeln",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "gpg-mittelschule-5",
+          "topic_code": "lb4",
+          "topic_title": "Lebenswelt"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "gpg",
+          "topic_code": "lb4",
+          "topic_title": "Lebenswelt",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7BH6C79Q91WHCX4CKW391AC",
+          "slug": "gpg5-regeln-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Klassenregel ist besser formuliert: „Wir lassen andere ausreden.“ oder „Nicht blöd sein!“?",
+          "concept": "„Wir lassen andere ausreden.“",
+          "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-regeln",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "„Wir lassen andere ausreden.“",
+              "„Nicht blöd sein!“"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7BH6C7AB0M8K38Y36ZCPNWY",
+          "slug": "gpg5-regeln-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Woran erkennst du eine gute Regel?",
+          "concept": "Sie ist positiv formuliert, klar, für alle gleich und gemeinsam beschlossen.",
+          "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-regeln",
+          "sample_solution": "Sie ist positiv formuliert, klar, für alle gleich und gemeinsam beschlossen."
+        }
+      ]
+    },
+    {
+      "id": "01M7BH6C7B630S9AMY318ASCK4",
+      "atom_uri": "urn:zam:atom:01M7BH6C7B630S9AMY318ASCK4",
+      "namespace": "zam-academy-gpg-mittelschule-5",
+      "slug": "gpg5-klassensprecher",
+      "title": "Die Klassensprecherwahl",
+      "domain": "gpg/lb4",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-klassensprecher",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "gpg-mittelschule-5",
+          "topic_code": "lb4",
+          "topic_title": "Lebenswelt"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "gpg",
+          "topic_code": "lb4",
+          "topic_title": "Lebenswelt",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7BH6C7C66YMAZADXCKV96T2",
+          "slug": "gpg5-klassensprecher-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum ist die Klassensprecherwahl geheim?",
+          "concept": "damit jeder wählen kann, ohne unter Druck gesetzt zu werden",
+          "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-klassensprecher",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "damit jeder wählen kann, ohne unter Druck gesetzt zu werden",
+              "damit die Lehrkraft allein entscheiden kann"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7BH6C7D8PCJXDBPAGSR6BDE",
+          "slug": "gpg5-klassensprecher-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche drei Grundsätze machen eine Klassensprecherwahl fair?",
+          "concept": "Sie ist geheim, frei und gleich.",
+          "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-klassensprecher",
+          "sample_solution": "Sie ist geheim, frei und gleich."
+        }
+      ]
+    },
+    {
+      "id": "01M7BH6C7EJMK29Q732ZVMTFQG",
+      "atom_uri": "urn:zam:atom:01M7BH6C7EJMK29Q732ZVMTFQG",
+      "namespace": "zam-academy-gpg-mittelschule-5",
+      "slug": "gpg5-klassenrat",
+      "title": "Der Klassenrat: gemeinsam entscheiden",
+      "domain": "gpg/lb4",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-klassenrat",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "gpg-mittelschule-5",
+          "topic_code": "lb4",
+          "topic_title": "Lebenswelt"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "gpg",
+          "topic_code": "lb4",
+          "topic_title": "Lebenswelt",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7BH6C7FG98EXAW9PKYQKCKA",
+          "slug": "gpg5-klassenrat-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was ist ein Kompromiss?",
+          "concept": "eine Lösung, bei der beide Seiten etwas nachgeben",
+          "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-klassenrat",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "eine Lösung, bei der beide Seiten etwas nachgeben",
+              "eine Lösung, bei der eine Seite alles bekommt"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7BH6C7GB4HSEZD99KCENG88",
+          "slug": "gpg5-klassenrat-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche Rollen gibt es im Klassenrat?",
+          "concept": "Leitung, Protokoll, Zeitwächter und Regelwächter.",
+          "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-klassenrat",
+          "sample_solution": "Leitung, Protokoll, Zeitwächter und Regelwächter."
+        }
+      ]
+    },
+    {
+      "id": "01M7BH6C7HFH6MB11DTVD2RXJH",
+      "atom_uri": "urn:zam:atom:01M7BH6C7HFH6MB11DTVD2RXJH",
+      "namespace": "zam-academy-gpg-mittelschule-5",
+      "slug": "gpg5-familienformen",
+      "title": "Familien heute: viele Formen",
+      "domain": "gpg/lb4",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-familienformen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "gpg-mittelschule-5",
+          "topic_code": "lb4",
+          "topic_title": "Lebenswelt"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "gpg",
+          "topic_code": "lb4",
+          "topic_title": "Lebenswelt",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7BH6C7JP0ZH6KFTEVM45PYG",
+          "slug": "gpg5-familienformen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was ist eine Patchworkfamilie?",
+          "concept": "Partner bringen Kinder aus früheren Beziehungen in die neue Familie mit.",
+          "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-familienformen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Partner bringen Kinder aus früheren Beziehungen in die neue Familie mit.",
+              "Ein Kind lebt allein mit einem Elternteil."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7BH6C7KV2AEFAXHZD6P2AR7",
+          "slug": "gpg5-familienformen-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was ist eine Regenbogenfamilie?",
+          "concept": "Eine Familie, in der Kinder zwei Mütter oder zwei Väter haben.",
+          "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-familienformen",
+          "sample_solution": "Eine Familie, in der Kinder zwei Mütter oder zwei Väter haben."
+        }
+      ]
+    },
+    {
+      "id": "01M7BH6C7M7QN4FEWNP0NC3JGR",
+      "atom_uri": "urn:zam:atom:01M7BH6C7M7QN4FEWNP0NC3JGR",
+      "namespace": "zam-academy-gpg-mittelschule-5",
+      "slug": "gpg5-familienwandel",
+      "title": "Warum sich Familien verändern",
+      "domain": "gpg/lb4",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-familienwandel",
+      "prerequisites": [
+        {
+          "atom_id": "01M7BH6C7HFH6MB11DTVD2RXJH",
+          "type": "soft",
+          "rationale": "Der Wandel erklärt, warum es die verschiedenen Familienformen gibt."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "gpg-mittelschule-5",
+          "topic_code": "lb4",
+          "topic_title": "Lebenswelt"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "gpg",
+          "topic_code": "lb4",
+          "topic_title": "Lebenswelt",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7BH6C7N86RD0CJZVMQBX3DQ",
+          "slug": "gpg5-familienwandel-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Seit wann dürfen in Deutschland auch zwei Frauen oder zwei Männer heiraten?",
+          "concept": "seit 2017",
+          "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-familienwandel",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "seit 2017",
+              "seit 1949"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7BH6C7PTBM31VQ05TQ16ERR",
+          "slug": "gpg5-familienwandel-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Nenne zwei Ursachen für den Wandel der Familie.",
+          "concept": "Zum Beispiel die Gleichberechtigung und dass oft beide Eltern berufstätig sind.",
+          "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-familienwandel",
+          "sample_solution": "Zum Beispiel die Gleichberechtigung und dass oft beide Eltern berufstätig sind."
+        }
+      ]
+    },
+    {
+      "id": "01M7BH6C7QMCM164B0EPKV0PJQ",
+      "atom_uri": "urn:zam:atom:01M7BH6C7QMCM164B0EPKV0PJQ",
+      "namespace": "zam-academy-gpg-mittelschule-5",
+      "slug": "gpg5-inklusion",
+      "title": "Gemeinsam mit Menschen mit Behinderung",
+      "domain": "gpg/lb4",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-inklusion",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "gpg-mittelschule-5",
+          "topic_code": "lb4",
+          "topic_title": "Lebenswelt"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 5,
+          "subject": "gpg",
+          "topic_code": "lb4",
+          "topic_title": "Lebenswelt",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7BH6C7RT5V49ENCNYNJYQ7Y",
+          "slug": "gpg5-inklusion-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie hilfst du einer Mitschülerin im Rollstuhl am besten?",
+          "concept": "Du fragst, ob und wie sie Hilfe möchte.",
+          "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-inklusion",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Du fragst, ob und wie sie Hilfe möchte.",
+              "Du schiebst sie ungefragt, wohin du denkst."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7BH6C7SG12VAYP1TNFM63AJ",
+          "slug": "gpg5-inklusion-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was bedeutet Inklusion?",
+          "concept": "Alle gehören von Anfang an dazu; Barrieren werden abgebaut, damit alle teilnehmen können.",
+          "source_link": "https://academy.zam-os.org/gpg-mittelschule-5/#lesson=gpg5-inklusion",
+          "sample_solution": "Alle gehören von Anfang an dazu; Barrieren werden abgebaut, damit alle teilnehmen können."
+        }
+      ]
+    }
+  ]
+}
