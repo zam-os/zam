@@ -1,0 +1,2063 @@
+{
+	"$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+	"tile_id": "zam-academy:biologie-realschule-6",
+	"version": "2026.11.2",
+	"title": "Biologie 6 Realschule (ZAM Academy)",
+	"description": "30 Lektionen und 60 Karten: biologisch arbeiten, Fortpflanzung und Sexualität, Vielfalt von Wirbeltieren und ein heimatnahes Ökosystem. Vorschau: Lehrkraftprüfung und Lehrvideos stehen noch aus.",
+	"publisher": "ZAM Academy",
+	"published_at": "2026-11-13T12:00:00Z",
+	"sources": [
+		{
+			"uri": "https://academy.zam-os.org/biologie-realschule-6/",
+			"label": "ZAM Academy · Biologie 6 Realschule"
+		},
+		{
+			"uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/6/biologie",
+			"label": "ISB · LehrplanPLUS Biologie 6 Realschule",
+			"checked": "2026-11-13"
+		},
+		{
+			"uri": "https://www.gesundheitsinformation.de/was-passiert-in-der-pubertaet.html",
+			"label": "IQWiG · Was passiert in der Pubertät?",
+			"checked": "2026-11-13"
+		},
+		{
+			"uri": "https://www.familienplanung.de/verhuetung/verhuetungsmethoden/kondom/",
+			"label": "BIÖG · Das Kondom",
+			"checked": "2026-11-13"
+		},
+		{
+			"uri": "https://www.bundesumweltministerium.de/faqs/insektenschutz",
+			"label": "Bundesumweltministerium · Insektenschutz",
+			"checked": "2026-11-13"
+		}
+	],
+	"atoms": [
+		{
+			"id": "01M7BGXATQPYGMHGNSASXX18GZ",
+			"atom_uri": "urn:zam:atom:01M7BGXATQPYGMHGNSASXX18GZ",
+			"namespace": "zam-academy-biologie-realschule-6",
+			"slug": "b6-forschen",
+			"title": "Eine Frage fair untersuchen",
+			"domain": "biologie/lb1",
+			"reduction": "classical",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-forschen",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "biologie-realschule-6",
+					"topic_code": "lb1",
+					"topic_title": "Prozessbezogene Kompetenzen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "biologie",
+					"topic_code": "lb1",
+					"topic_title": "Prozessbezogene Kompetenzen",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7BGXATRTQ8G4NC4FPF94GK5",
+					"slug": "b6-forschen-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-forschen",
+					"materiality": "material",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"edge_representative": true,
+					"question": "Welche Planung prüft die Wirkung von Wasser?",
+					"concept": "Gleiche Samen und Bedingungen, nur die Wasserzugabe unterscheidet sich.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Gleiche Samen und Bedingungen, nur die Wasserzugabe unterscheidet sich.",
+							"Andere Samen im Kühlschrank werden mit warmen, feuchten Samen verglichen."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7BGXATRGB0M0K1RCZ0X028M",
+					"slug": "b6-forschen-erklaeren",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-forschen",
+					"materiality": "material",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Warum muss ein Keimversuch einen Kontrollansatz besitzen?",
+					"concept": "Ein vergleichbarer Kontrollansatz hilft, die Wirkung der veränderten Bedingung von anderen Einflüssen zu unterscheiden.",
+					"sample_solution": "Ein vergleichbarer Kontrollansatz hilft, die Wirkung der veränderten Bedingung von anderen Einflüssen zu unterscheiden."
+				}
+			]
+		},
+		{
+			"id": "01M7BGXATQSR54JMHWV1NXW082",
+			"atom_uri": "urn:zam:atom:01M7BGXATQSR54JMHWV1NXW082",
+			"namespace": "zam-academy-biologie-realschule-6",
+			"slug": "b6-mikroskop",
+			"title": "Kleine Strukturen sichtbar machen",
+			"domain": "biologie/lb1",
+			"reduction": "classical",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-mikroskop",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "biologie-realschule-6",
+					"topic_code": "lb1",
+					"topic_title": "Prozessbezogene Kompetenzen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "biologie",
+					"topic_code": "lb1",
+					"topic_title": "Prozessbezogene Kompetenzen",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7BGXATRX5JAX3RVSMKD9EGN",
+					"slug": "b6-mikroskop-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-mikroskop",
+					"materiality": "material",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"edge_representative": true,
+					"question": "Womit beginnst du beim Mikroskopieren?",
+					"concept": "Mit dem kleinsten Objektiv.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Mit dem kleinsten Objektiv.",
+							"Immer mit der stärksten Vergrößerung."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7BGXATRCDRK44W0QB6GVZZC",
+					"slug": "b6-mikroskop-erklaeren",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-mikroskop",
+					"materiality": "material",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Warum beginnt man beim Mikroskopieren mit dem kleinsten Objektiv?",
+					"concept": "Die kleine Vergrößerung erleichtert das Finden des Ausschnitts und bietet meist mehr Abstand zum Präparat.",
+					"sample_solution": "Die kleine Vergrößerung erleichtert das Finden des Ausschnitts und bietet meist mehr Abstand zum Präparat."
+				}
+			]
+		},
+		{
+			"id": "01M7BGXATQC9RRQ78HWB35Q69B",
+			"atom_uri": "urn:zam:atom:01M7BGXATQC9RRQ78HWB35Q69B",
+			"namespace": "zam-academy-biologie-realschule-6",
+			"slug": "b6-bestimmen",
+			"title": "Vergleichen und mit einem Schlüssel bestimmen",
+			"domain": "biologie/lb1",
+			"reduction": "classical",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-bestimmen",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "biologie-realschule-6",
+					"topic_code": "lb1",
+					"topic_title": "Prozessbezogene Kompetenzen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "biologie",
+					"topic_code": "lb1",
+					"topic_title": "Prozessbezogene Kompetenzen",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7BGXATR9HKRJQ4ZNB5QSZHK",
+					"slug": "b6-bestimmen-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-bestimmen",
+					"materiality": "material",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"edge_representative": true,
+					"question": "Was macht einen Vergleich aussagekräftig?",
+					"concept": "Du prüfst an allen Beispielen dieselben Merkmale.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Du prüfst an allen Beispielen dieselben Merkmale.",
+							"Du nennst zu jedem Tier irgendeine andere Eigenschaft."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7BGXATRZQGPA5NNV0BEGJ47",
+					"slug": "b6-bestimmen-erklaeren",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-bestimmen",
+					"materiality": "material",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Welche Grenze hat ein Bestimmungsschlüssel für drei ausgewählte Arten?",
+					"concept": "Er unterscheidet nur die enthaltenen Arten; ein unbekanntes Tier darf nicht ohne weitere Prüfung in diese Auswahl gezwungen werden.",
+					"sample_solution": "Er unterscheidet nur die enthaltenen Arten; ein unbekanntes Tier darf nicht ohne weitere Prüfung in diese Auswahl gezwungen werden."
+				}
+			]
+		},
+		{
+			"id": "01M7BGXATQVQ067YXNHJGEXNMZ",
+			"atom_uri": "urn:zam:atom:01M7BGXATQVQ067YXNHJGEXNMZ",
+			"namespace": "zam-academy-biologie-realschule-6",
+			"slug": "b6-quellen",
+			"title": "Daten festhalten und Quellen prüfen",
+			"domain": "biologie/lb1",
+			"reduction": "classical",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-quellen",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "biologie-realschule-6",
+					"topic_code": "lb1",
+					"topic_title": "Prozessbezogene Kompetenzen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "biologie",
+					"topic_code": "lb1",
+					"topic_title": "Prozessbezogene Kompetenzen",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7BGXATR9TC8JZJMY5QY3455",
+					"slug": "b6-quellen-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-quellen",
+					"materiality": "material",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"edge_representative": true,
+					"question": "Welche Angabe gehört zu einer Messwerttabelle?",
+					"concept": "Die gemessene Größe mit ihrer Einheit.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Die gemessene Größe mit ihrer Einheit.",
+							"Nur eine Reihe unbeschrifteter Zahlen."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7BGXATR8W03AFF23QCP91T0",
+					"slug": "b6-quellen-erklaeren",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-quellen",
+					"materiality": "material",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Warum beweist eine Messreihe über Sprosslängen noch keine Ursache des Wachstums?",
+					"concept": "Sie beschreibt eine Veränderung. Für eine Ursache braucht man zusätzlich einen geeigneten Vergleich kontrollierter Bedingungen.",
+					"sample_solution": "Sie beschreibt eine Veränderung. Für eine Ursache braucht man zusätzlich einen geeigneten Vergleich kontrollierter Bedingungen."
+				}
+			]
+		},
+		{
+			"id": "01M7BGXATQ2B412EYSKT4ZRWNB",
+			"atom_uri": "urn:zam:atom:01M7BGXATQ2B412EYSKT4ZRWNB",
+			"namespace": "zam-academy-biologie-realschule-6",
+			"slug": "b6-bewerten",
+			"title": "Fakten und Werte unterscheiden",
+			"domain": "biologie/lb1",
+			"reduction": "classical",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-bewerten",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "biologie-realschule-6",
+					"topic_code": "lb1",
+					"topic_title": "Prozessbezogene Kompetenzen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "biologie",
+					"topic_code": "lb1",
+					"topic_title": "Prozessbezogene Kompetenzen",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7BGXATRKYPP4N4XRK85DG8T",
+					"slug": "b6-bewerten-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-bewerten",
+					"materiality": "material",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"edge_representative": true,
+					"question": "Welche Aussage enthält eine Bewertung?",
+					"concept": "Der Schutz des Brutplatzes hat für mich Vorrang.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Der Schutz des Brutplatzes hat für mich Vorrang.",
+							"Am Ufer brüten zwei Vogelpaare."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7BGXATRGTY8602H2YVK3X6R",
+					"slug": "b6-bewerten-erklaeren",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-bewerten",
+					"materiality": "material",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Wie unterscheiden sich eine biologische Sachangabe und ein Werturteil?",
+					"concept": "Eine Sachangabe beschreibt überprüfbare Verhältnisse. Ein Werturteil beurteilt sie anhand eines Maßstabs.",
+					"sample_solution": "Eine Sachangabe beschreibt überprüfbare Verhältnisse. Ein Werturteil beurteilt sie anhand eines Maßstabs."
+				}
+			]
+		},
+		{
+			"id": "01M7BGXATQ4GK5DSGNAC6KD30C",
+			"atom_uri": "urn:zam:atom:01M7BGXATQ4GK5DSGNAC6KD30C",
+			"namespace": "zam-academy-biologie-realschule-6",
+			"slug": "b6-merkmale",
+			"title": "Erbanlagen und Umwelt wirken zusammen",
+			"domain": "biologie/lb2",
+			"reduction": "classical",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-merkmale",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "biologie-realschule-6",
+					"topic_code": "lb2",
+					"topic_title": "Fortpflanzung und Sexualität"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "biologie",
+					"topic_code": "lb2",
+					"topic_title": "Fortpflanzung und Sexualität",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7BGXATRDTHQMX51SHGW7GDW",
+					"slug": "b6-merkmale-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-merkmale",
+					"materiality": "material",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"edge_representative": true,
+					"question": "Was ist ein Gen?",
+					"concept": "Ein Abschnitt der Erbsubstanz, der Erbinformation trägt.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Ein Abschnitt der Erbsubstanz, der Erbinformation trägt.",
+							"Eine beim Training fertig erworbene Fähigkeit."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7BGXATR31K8J1JE62FR647R",
+					"slug": "b6-merkmale-erklaeren",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-merkmale",
+					"materiality": "material",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Warum können Pflanzen mit gleichen Erbanlagen unterschiedlich wachsen?",
+					"concept": "Umweltbedingungen wie Wasser und Licht können die Merkmalsausprägung beeinflussen. Gleiche Anlagen garantieren kein gleiches Ergebnis.",
+					"sample_solution": "Umweltbedingungen wie Wasser und Licht können die Merkmalsausprägung beeinflussen. Gleiche Anlagen garantieren kein gleiches Ergebnis."
+				}
+			]
+		},
+		{
+			"id": "01M7BGXATQW0QQS1YR95Q093WF",
+			"atom_uri": "urn:zam:atom:01M7BGXATQW0QQS1YR95Q093WF",
+			"namespace": "zam-academy-biologie-realschule-6",
+			"slug": "b6-keimzellen",
+			"title": "Befruchtung verbindet Erbinformation",
+			"domain": "biologie/lb2",
+			"reduction": "classical",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-keimzellen",
+			"prerequisites": [
+				{
+					"atom_id": "01M7BGXATQ4GK5DSGNAC6KD30C",
+					"type": "soft",
+					"rationale": "Helpful prior knowledge; lessons remain freely accessible."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "biologie-realschule-6",
+					"topic_code": "lb2",
+					"topic_title": "Fortpflanzung und Sexualität"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "biologie",
+					"topic_code": "lb2",
+					"topic_title": "Fortpflanzung und Sexualität",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7BGXATRW170DEN6HSCXQTKS",
+					"slug": "b6-keimzellen-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-keimzellen",
+					"materiality": "material",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"edge_representative": true,
+					"question": "Was kennzeichnet Befruchtung?",
+					"concept": "Die Verschmelzung einer männlichen und einer weiblichen Keimzelle.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Die Verschmelzung einer männlichen und einer weiblichen Keimzelle.",
+							"Allein der Transport von Pollen auf eine Narbe."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7BGXATR4MDRA8YFPZYNPKNT",
+					"slug": "b6-keimzellen-erklaeren",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-keimzellen",
+					"materiality": "material",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Warum sehen Geschwister nicht zwangsläufig gleich aus?",
+					"concept": "Bei geschlechtlicher Fortpflanzung wird Erbinformation neu kombiniert; außerdem wirken Umweltbedingungen auf Merkmale ein.",
+					"sample_solution": "Bei geschlechtlicher Fortpflanzung wird Erbinformation neu kombiniert; außerdem wirken Umweltbedingungen auf Merkmale ein."
+				}
+			]
+		},
+		{
+			"id": "01M7BGXATQP4EZQ617CTVZ8TQ7",
+			"atom_uri": "urn:zam:atom:01M7BGXATQP4EZQ617CTVZ8TQ7",
+			"namespace": "zam-academy-biologie-realschule-6",
+			"slug": "b6-pubertaet",
+			"title": "Pubertät: Veränderungen verstehen",
+			"domain": "biologie/lb2",
+			"reduction": "classical",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-pubertaet",
+			"prerequisites": [
+				{
+					"atom_id": "01M7BGXATQ4GK5DSGNAC6KD30C",
+					"type": "soft",
+					"rationale": "Helpful prior knowledge; lessons remain freely accessible."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "biologie-realschule-6",
+					"topic_code": "lb2",
+					"topic_title": "Fortpflanzung und Sexualität"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "biologie",
+					"topic_code": "lb2",
+					"topic_title": "Fortpflanzung und Sexualität",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7BGXATRH1RDTK4PAQ66KGGX",
+					"slug": "b6-pubertaet-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-pubertaet",
+					"materiality": "material",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"edge_representative": true,
+					"question": "Welches Beispiel ist ein sekundäres Geschlechtsmerkmal?",
+					"concept": "Ein in der Pubertät wachsender Bart.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Ein in der Pubertät wachsender Bart.",
+							"Ein bereits vor der Pubertät angelegter Hoden."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7BGXATRXKX7AHNX2NBXGDG0",
+					"slug": "b6-pubertaet-erklaeren",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-pubertaet",
+					"materiality": "material",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Worin unterscheiden sich primäre und sekundäre Geschlechtsmerkmale?",
+					"concept": "Primäre Geschlechtsmerkmale sind die bereits vor der Pubertät angelegten Geschlechtsorgane. Sekundäre entwickeln sich stärker während der Pubertät.",
+					"sample_solution": "Primäre Geschlechtsmerkmale sind die bereits vor der Pubertät angelegten Geschlechtsorgane. Sekundäre entwickeln sich stärker während der Pubertät."
+				}
+			]
+		},
+		{
+			"id": "01M7BGXATQE71ZAAPTJYKPFFHH",
+			"atom_uri": "urn:zam:atom:01M7BGXATQE71ZAAPTJYKPFFHH",
+			"namespace": "zam-academy-biologie-realschule-6",
+			"slug": "b6-organe",
+			"title": "Fortpflanzungsorgane arbeiten zusammen",
+			"domain": "biologie/lb2",
+			"reduction": "classical",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-organe",
+			"prerequisites": [
+				{
+					"atom_id": "01M7BGXATQW0QQS1YR95Q093WF",
+					"type": "soft",
+					"rationale": "Helpful prior knowledge; lessons remain freely accessible."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "biologie-realschule-6",
+					"topic_code": "lb2",
+					"topic_title": "Fortpflanzung und Sexualität"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "biologie",
+					"topic_code": "lb2",
+					"topic_title": "Fortpflanzung und Sexualität",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7BGXATRZSSSA1N6CC5EG8Q4",
+					"slug": "b6-organe-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-organe",
+					"materiality": "material",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"edge_representative": true,
+					"question": "Wo entwickelt sich eine Schwangerschaft nach der Einnistung normalerweise weiter?",
+					"concept": "In der Gebärmutter.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": ["In der Gebärmutter.", "Im Eierstock."],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7BGXATR8Y32PNQBGRZNE074",
+					"slug": "b6-organe-erklaeren",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-organe",
+					"materiality": "material",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Worin unterscheiden sich Befruchtung und Einnistung beim Menschen?",
+					"concept": "Bei der Befruchtung verschmelzen Eizelle und Spermium, meist im Eileiter. Bei der späteren Einnistung verbindet sich der frühe Embryo mit der Gebärmutterschleimhaut.",
+					"sample_solution": "Bei der Befruchtung verschmelzen Eizelle und Spermium, meist im Eileiter. Bei der späteren Einnistung verbindet sich der frühe Embryo mit der Gebärmutterschleimhaut."
+				}
+			]
+		},
+		{
+			"id": "01M7BGXATQGBJ7P3PKXJTCH9ZZ",
+			"atom_uri": "urn:zam:atom:01M7BGXATQGBJ7P3PKXJTCH9ZZ",
+			"namespace": "zam-academy-biologie-realschule-6",
+			"slug": "b6-verantwortung",
+			"title": "Befruchtung, Verhütung und Verantwortung",
+			"domain": "biologie/lb2",
+			"reduction": "classical",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-verantwortung",
+			"prerequisites": [
+				{
+					"atom_id": "01M7BGXATQE71ZAAPTJYKPFFHH",
+					"type": "soft",
+					"rationale": "Helpful prior knowledge; lessons remain freely accessible."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "biologie-realschule-6",
+					"topic_code": "lb2",
+					"topic_title": "Fortpflanzung und Sexualität"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "biologie",
+					"topic_code": "lb2",
+					"topic_title": "Fortpflanzung und Sexualität",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7BGXATS712REF8BF92J25AW",
+					"slug": "b6-verantwortung-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-verantwortung",
+					"materiality": "material",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"edge_representative": true,
+					"question": "Welche Aussage zum Kondom ist richtig?",
+					"concept": "Es hält Spermien zurück und senkt bei richtiger Verwendung auch viele Infektionsrisiken.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Es hält Spermien zurück und senkt bei richtiger Verwendung auch viele Infektionsrisiken.",
+							"Es verhindert grundsätzlich jede Infektion."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7BGXATSYTRX5VNBJM95JW28",
+					"slug": "b6-verantwortung-erklaeren",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-verantwortung",
+					"materiality": "material",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Warum ersetzt Schwangerschaftsverhütung weder Infektionsschutz noch Einverständnis?",
+					"concept": "Methoden verhindern eine Schwangerschaft auf unterschiedlichen Wegen und schützen nicht alle vor Infektionen. Freiwilliges Einverständnis ist eine eigene Voraussetzung.",
+					"sample_solution": "Methoden verhindern eine Schwangerschaft auf unterschiedlichen Wegen und schützen nicht alle vor Infektionen. Freiwilliges Einverständnis ist eine eigene Voraussetzung."
+				}
+			]
+		},
+		{
+			"id": "01M7BGXATQ80MJVA54Z923WCP1",
+			"atom_uri": "urn:zam:atom:01M7BGXATQ80MJVA54Z923WCP1",
+			"namespace": "zam-academy-biologie-realschule-6",
+			"slug": "b6-vermehrung",
+			"title": "Geschlechtlich oder ungeschlechtlich?",
+			"domain": "biologie/lb2",
+			"reduction": "classical",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-vermehrung",
+			"prerequisites": [
+				{
+					"atom_id": "01M7BGXATQW0QQS1YR95Q093WF",
+					"type": "soft",
+					"rationale": "Helpful prior knowledge; lessons remain freely accessible."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "biologie-realschule-6",
+					"topic_code": "lb2",
+					"topic_title": "Fortpflanzung und Sexualität"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "biologie",
+					"topic_code": "lb2",
+					"topic_title": "Fortpflanzung und Sexualität",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7BGXATSHWNACTD5T941ZV9G",
+					"slug": "b6-vermehrung-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-vermehrung",
+					"materiality": "material",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"edge_representative": true,
+					"question": "Welches Beispiel ist ungeschlechtliche Fortpflanzung?",
+					"concept": "Eine Erdbeerpflanze bildet eine neue Pflanze am Ausläufer.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Eine Erdbeerpflanze bildet eine neue Pflanze am Ausläufer.",
+							"Eine Eizelle verschmilzt mit einer männlichen Keimzelle."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7BGXATS3S47DQW6DZVCTZWZ",
+					"slug": "b6-vermehrung-erklaeren",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-vermehrung",
+					"materiality": "material",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Worin unterscheiden sich geschlechtliche und ungeschlechtliche Fortpflanzung?",
+					"concept": "Geschlechtliche Fortpflanzung verbindet Keimzellen und kombiniert Erbinformation neu. Ungeschlechtliche bildet Nachkommen ohne Keimzellverschmelzung mit weitgehend gleichen Anlagen.",
+					"sample_solution": "Geschlechtliche Fortpflanzung verbindet Keimzellen und kombiniert Erbinformation neu. Ungeschlechtliche bildet Nachkommen ohne Keimzellverschmelzung mit weitgehend gleichen Anlagen."
+				}
+			]
+		},
+		{
+			"id": "01M7BGXATQK2WYE1GAVTB7WFCV",
+			"atom_uri": "urn:zam:atom:01M7BGXATQK2WYE1GAVTB7WFCV",
+			"namespace": "zam-academy-biologie-realschule-6",
+			"slug": "b6-bluete",
+			"title": "Die Blüte als Fortpflanzungsorgan",
+			"domain": "biologie/lb2",
+			"reduction": "classical",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-bluete",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "biologie-realschule-6",
+					"topic_code": "lb2",
+					"topic_title": "Fortpflanzung und Sexualität"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "biologie",
+					"topic_code": "lb2",
+					"topic_title": "Fortpflanzung und Sexualität",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7BGXATSZM1PF19G81C9DVEW",
+					"slug": "b6-bluete-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-bluete",
+					"materiality": "material",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"edge_representative": true,
+					"question": "Wo liegen die Samenanlagen einer Blüte?",
+					"concept": "Im Fruchtknoten.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": ["Im Fruchtknoten.", "Im Staubbeutel."],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7BGXATSY9BM79R759D57P5S",
+					"slug": "b6-bluete-erklaeren",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-bluete",
+					"materiality": "material",
+					"tier": "tier2_synthesis",
+					"bloom_level": 1,
+					"question": "Aus welchen drei Teilen besteht der Stempel einer Blüte von oben nach unten?",
+					"concept": "Narbe, Griffel und Fruchtknoten mit Samenanlagen.",
+					"sample_solution": "Narbe, Griffel und Fruchtknoten mit Samenanlagen."
+				}
+			]
+		},
+		{
+			"id": "01M7BGXATQ0GP165ZEWJ1B5SX6",
+			"atom_uri": "urn:zam:atom:01M7BGXATQ0GP165ZEWJ1B5SX6",
+			"namespace": "zam-academy-biologie-realschule-6",
+			"slug": "b6-bestaeubung",
+			"title": "Von Bestäubung zu Befruchtung",
+			"domain": "biologie/lb2",
+			"reduction": "classical",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-bestaeubung",
+			"prerequisites": [
+				{
+					"atom_id": "01M7BGXATQK2WYE1GAVTB7WFCV",
+					"type": "soft",
+					"rationale": "Helpful prior knowledge; lessons remain freely accessible."
+				},
+				{
+					"atom_id": "01M7BGXATQW0QQS1YR95Q093WF",
+					"type": "soft",
+					"rationale": "Helpful prior knowledge; lessons remain freely accessible."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "biologie-realschule-6",
+					"topic_code": "lb2",
+					"topic_title": "Fortpflanzung und Sexualität"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "biologie",
+					"topic_code": "lb2",
+					"topic_title": "Fortpflanzung und Sexualität",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7BGXATSEW72DXQPDE646FXD",
+					"slug": "b6-bestaeubung-check",
+					"replaces": ["01K4B5P0000000000000000J05"],
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-bestaeubung",
+					"materiality": "material",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"edge_representative": true,
+					"question": "Welcher Vorgang ist Bestäubung?",
+					"concept": "Pollen gelangt auf eine passende Narbe.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Pollen gelangt auf eine passende Narbe.",
+							"Eine Frucht fällt zu Boden."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7BGXATS5C26Z3GAEYHFANSM",
+					"slug": "b6-bestaeubung-erklaeren",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-bestaeubung",
+					"materiality": "material",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Warum sind Bestäubung und Befruchtung verschiedene Vorgänge?",
+					"concept": "Bestäubung bringt Pollen auf die Narbe. Danach können männliche Keimzellen über einen Pollenschlauch zur Eizelle gelangen; erst die Verschmelzung ist Befruchtung.",
+					"sample_solution": "Bestäubung bringt Pollen auf die Narbe. Danach können männliche Keimzellen über einen Pollenschlauch zur Eizelle gelangen; erst die Verschmelzung ist Befruchtung."
+				}
+			]
+		},
+		{
+			"id": "01M7BGXATQKNSA908V5RMRXHQP",
+			"atom_uri": "urn:zam:atom:01M7BGXATQKNSA908V5RMRXHQP",
+			"namespace": "zam-academy-biologie-realschule-6",
+			"slug": "b6-fruechte",
+			"title": "Samen ausbreiten: Natur als Vorbild",
+			"domain": "biologie/lb2",
+			"reduction": "classical",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-fruechte",
+			"prerequisites": [
+				{
+					"atom_id": "01M7BGXATQ0GP165ZEWJ1B5SX6",
+					"type": "soft",
+					"rationale": "Helpful prior knowledge; lessons remain freely accessible."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "biologie-realschule-6",
+					"topic_code": "lb2",
+					"topic_title": "Fortpflanzung und Sexualität"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "biologie",
+					"topic_code": "lb2",
+					"topic_title": "Fortpflanzung und Sexualität",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7BGXATSN3C6MMJMHQBGJ9WX",
+					"slug": "b6-fruechte-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-fruechte",
+					"materiality": "material",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"edge_representative": true,
+					"question": "Woraus entwickelt sich der Samen?",
+					"concept": "Aus der Samenanlage.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": ["Aus der Samenanlage.", "Aus dem Staubbeutel."],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7BGXATSKRK9E09CHRTFPQEW",
+					"slug": "b6-fruechte-erklaeren",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-fruechte",
+					"materiality": "material",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Wie übertragen Klettfrucht und Klettverschluss dasselbe Funktionsprinzip?",
+					"concept": "Haken halten sich an geeigneten Strukturen fest. Der Klettverschluss nutzt dieses biologische Prinzip technisch, ohne die ganze Pflanze zu kopieren.",
+					"sample_solution": "Haken halten sich an geeigneten Strukturen fest. Der Klettverschluss nutzt dieses biologische Prinzip technisch, ohne die ganze Pflanze zu kopieren."
+				}
+			]
+		},
+		{
+			"id": "01M7BGXATQGWC9N7HJH53X1SC2",
+			"atom_uri": "urn:zam:atom:01M7BGXATQGWC9N7HJH53X1SC2",
+			"namespace": "zam-academy-biologie-realschule-6",
+			"slug": "b6-keimung",
+			"title": "Vom Samen zur neuen Generation",
+			"domain": "biologie/lb2",
+			"reduction": "classical",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-keimung",
+			"prerequisites": [
+				{
+					"atom_id": "01M7BGXATQKNSA908V5RMRXHQP",
+					"type": "soft",
+					"rationale": "Helpful prior knowledge; lessons remain freely accessible."
+				},
+				{
+					"atom_id": "01M7BGXATQPYGMHGNSASXX18GZ",
+					"type": "soft",
+					"rationale": "Helpful prior knowledge; lessons remain freely accessible."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "biologie-realschule-6",
+					"topic_code": "lb2",
+					"topic_title": "Fortpflanzung und Sexualität"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "biologie",
+					"topic_code": "lb2",
+					"topic_title": "Fortpflanzung und Sexualität",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7BGXATSP5B9EPD6ME65XWAK",
+					"slug": "b6-keimung-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-keimung",
+					"materiality": "material",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"edge_representative": true,
+					"question": "Was braucht ein lebensfähiger Bohnensamen zum Keimen?",
+					"concept": "Wasser, Sauerstoff und eine geeignete Temperatur.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Wasser, Sauerstoff und eine geeignete Temperatur.",
+							"Zwingend Licht, aber kein Wasser."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7BGXATSE00VP8EX7C98DF6J",
+					"slug": "b6-keimung-erklaeren",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-keimung",
+					"materiality": "material",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Warum kann eine Bohne im Dunkeln keimen, aber nicht dauerhaft grün weiterwachsen?",
+					"concept": "Die Keimung nutzt Reservestoffe bei passender Feuchte, Luft und Temperatur. Für dauerhaftes grünes Wachstum braucht die Pflanze anschließend Licht.",
+					"sample_solution": "Die Keimung nutzt Reservestoffe bei passender Feuchte, Luft und Temperatur. Für dauerhaftes grünes Wachstum braucht die Pflanze anschließend Licht."
+				}
+			]
+		},
+		{
+			"id": "01M7BGXATQKQ30JGVR0GHHRCTX",
+			"atom_uri": "urn:zam:atom:01M7BGXATQKQ30JGVR0GHHRCTX",
+			"namespace": "zam-academy-biologie-realschule-6",
+			"slug": "b6-wirbeltierklassen",
+			"title": "Wirbeltiere nach Merkmalen ordnen",
+			"domain": "biologie/lb3",
+			"reduction": "classical",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-wirbeltierklassen",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "biologie-realschule-6",
+					"topic_code": "lb3",
+					"topic_title": "Vielfalt von Wirbeltieren"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "biologie",
+					"topic_code": "lb3",
+					"topic_title": "Vielfalt von Wirbeltieren",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7BGXATS5C16TNGEG08K6S0W",
+					"slug": "b6-wirbeltierklassen-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-wirbeltierklassen",
+					"materiality": "material",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"edge_representative": true,
+					"question": "Warum gehört ein Delfin zu den Säugetieren?",
+					"concept": "Er atmet mit Lungen und säugt seine Jungen.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Er atmet mit Lungen und säugt seine Jungen.",
+							"Jedes Wassertier ist ein Säugetier."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7BGXATSQM5BNPFXD8H2SE0H",
+					"slug": "b6-wirbeltierklassen-erklaeren",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-wirbeltierklassen",
+					"materiality": "material",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Warum reichen Fliegen oder Schwimmen nicht zur Einordnung einer Wirbeltierklasse?",
+					"concept": "Verschiedene Klassen nutzen dieselbe Fortbewegungsart. Körperbedeckung, Atmung und Fortpflanzungsmerkmale müssen gemeinsam verglichen werden.",
+					"sample_solution": "Verschiedene Klassen nutzen dieselbe Fortbewegungsart. Körperbedeckung, Atmung und Fortpflanzungsmerkmale müssen gemeinsam verglichen werden."
+				}
+			]
+		},
+		{
+			"id": "01M7BGXATQQYHCG74PMXGK5M86",
+			"atom_uri": "urn:zam:atom:01M7BGXATQQYHCG74PMXGK5M86",
+			"namespace": "zam-academy-biologie-realschule-6",
+			"slug": "b6-fische",
+			"title": "Fische: Atmung und Bewegung im Wasser",
+			"domain": "biologie/lb3",
+			"reduction": "classical",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-fische",
+			"prerequisites": [
+				{
+					"atom_id": "01M7BGXATQKQ30JGVR0GHHRCTX",
+					"type": "soft",
+					"rationale": "Helpful prior knowledge; lessons remain freely accessible."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "biologie-realschule-6",
+					"topic_code": "lb3",
+					"topic_title": "Vielfalt von Wirbeltieren"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "biologie",
+					"topic_code": "lb3",
+					"topic_title": "Vielfalt von Wirbeltieren",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7BGXATS03WKVPQ0MCPV939X",
+					"slug": "b6-fische-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-fische",
+					"materiality": "material",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"edge_representative": true,
+					"question": "Welchen Stoff nehmen Kiemen aus dem Wasser auf?",
+					"concept": "Gelösten Sauerstoff.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Gelösten Sauerstoff.",
+							"Den im Wasser gebundenen Wasserstoff als Atemgas."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7BGXATS20D5S16FGH0Q72RA",
+					"slug": "b6-fische-erklaeren",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-fische",
+					"materiality": "material",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Warum beweist ein stromlinienförmiges Modell nicht die gesamte Lebensweise eines Fisches?",
+					"concept": "Es zeigt einen Aspekt des Wasserwiderstands, bildet aber beispielsweise weder Kiemenatmung noch aktive Muskelbewegung vollständig ab.",
+					"sample_solution": "Es zeigt einen Aspekt des Wasserwiderstands, bildet aber beispielsweise weder Kiemenatmung noch aktive Muskelbewegung vollständig ab."
+				}
+			]
+		},
+		{
+			"id": "01M7BGXATQ1WHK28DXR71K9W4M",
+			"atom_uri": "urn:zam:atom:01M7BGXATQ1WHK28DXR71K9W4M",
+			"namespace": "zam-academy-biologie-realschule-6",
+			"slug": "b6-amphibien",
+			"title": "Amphibien: Entwicklung zwischen Wasser und Land",
+			"domain": "biologie/lb3",
+			"reduction": "classical",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-amphibien",
+			"prerequisites": [
+				{
+					"atom_id": "01M7BGXATQKQ30JGVR0GHHRCTX",
+					"type": "soft",
+					"rationale": "Helpful prior knowledge; lessons remain freely accessible."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "biologie-realschule-6",
+					"topic_code": "lb3",
+					"topic_title": "Vielfalt von Wirbeltieren"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "biologie",
+					"topic_code": "lb3",
+					"topic_title": "Vielfalt von Wirbeltieren",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7BGXATS4KR4CH7TXR9NF554",
+					"slug": "b6-amphibien-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-amphibien",
+					"materiality": "material",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"edge_representative": true,
+					"question": "Was verändert sich beim Grasfrosch während der Metamorphose?",
+					"concept": "Aus der Kaulquappe entwickelt sich ein Frosch mit Beinen und verändertem Atmungssystem.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Aus der Kaulquappe entwickelt sich ein Frosch mit Beinen und verändertem Atmungssystem.",
+							"Der erwachsene Frosch verwandelt sich in einen Fisch."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7BGXATS3B0AACMJ0ZNRSDXJ",
+					"slug": "b6-amphibien-erklaeren",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-amphibien",
+					"materiality": "material",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Warum braucht der Grasfrosch verbundene Wasser- und Landlebensräume?",
+					"concept": "Die frühe Entwicklung findet im Laichgewässer statt; später nutzt er auch Landlebensräume. Sichere Verbindungen sind für seine Wanderungen wichtig.",
+					"sample_solution": "Die frühe Entwicklung findet im Laichgewässer statt; später nutzt er auch Landlebensräume. Sichere Verbindungen sind für seine Wanderungen wichtig."
+				}
+			]
+		},
+		{
+			"id": "01M7BGXATQK5R3Z4YZT44J2S9Z",
+			"atom_uri": "urn:zam:atom:01M7BGXATQK5R3Z4YZT44J2S9Z",
+			"namespace": "zam-academy-biologie-realschule-6",
+			"slug": "b6-reptilien",
+			"title": "Reptilien: An Land leben",
+			"domain": "biologie/lb3",
+			"reduction": "classical",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-reptilien",
+			"prerequisites": [
+				{
+					"atom_id": "01M7BGXATQ1WHK28DXR71K9W4M",
+					"type": "soft",
+					"rationale": "Helpful prior knowledge; lessons remain freely accessible."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "biologie-realschule-6",
+					"topic_code": "lb3",
+					"topic_title": "Vielfalt von Wirbeltieren"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "biologie",
+					"topic_code": "lb3",
+					"topic_title": "Vielfalt von Wirbeltieren",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7BGXATSZCT58V1EE7NQ7BW5",
+					"slug": "b6-reptilien-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-reptilien",
+					"materiality": "material",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"edge_representative": true,
+					"question": "Welche Merkmalskombination passt zur Zauneidechse?",
+					"concept": "Trockene Hornschuppen und Lungenatmung.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Trockene Hornschuppen und Lungenatmung.",
+							"Federn und Säugen der Jungen."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7BGXATSNZH5EPRCCAKVHY8E",
+					"slug": "b6-reptilien-erklaeren",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-reptilien",
+					"materiality": "material",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Wie unterscheiden sich die Haut von Zauneidechse und Grasfrosch in Bezug auf Wasserverlust?",
+					"concept": "Die Hornschuppenhaut der Eidechse begrenzt Wasserverlust stärker. Die dünne, drüsenreiche Haut des Grasfroschs verlangt feuchte Bedingungen.",
+					"sample_solution": "Die Hornschuppenhaut der Eidechse begrenzt Wasserverlust stärker. Die dünne, drüsenreiche Haut des Grasfroschs verlangt feuchte Bedingungen."
+				}
+			]
+		},
+		{
+			"id": "01M7BGXATQAPJ0XEDFT0Q1YE3Z",
+			"atom_uri": "urn:zam:atom:01M7BGXATQAPJ0XEDFT0Q1YE3Z",
+			"namespace": "zam-academy-biologie-realschule-6",
+			"slug": "b6-voegel",
+			"title": "Vögel: Federn, Flug und Entwicklung",
+			"domain": "biologie/lb3",
+			"reduction": "classical",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-voegel",
+			"prerequisites": [
+				{
+					"atom_id": "01M7BGXATQKQ30JGVR0GHHRCTX",
+					"type": "soft",
+					"rationale": "Helpful prior knowledge; lessons remain freely accessible."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "biologie-realschule-6",
+					"topic_code": "lb3",
+					"topic_title": "Vielfalt von Wirbeltieren"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "biologie",
+					"topic_code": "lb3",
+					"topic_title": "Vielfalt von Wirbeltieren",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7BGXATS3TD49GATZ3Q3FYJ3",
+					"slug": "b6-voegel-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-voegel",
+					"materiality": "material",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"edge_representative": true,
+					"question": "Welches Merkmal kennzeichnet Vögel?",
+					"concept": "Federn.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": ["Federn.", "Dass jede Art fliegen kann."],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7BGXATSNRBVQARA09R1P3GJ",
+					"slug": "b6-voegel-erklaeren",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-voegel",
+					"materiality": "material",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Welche verschiedenen Aufgaben können Vogelfedern erfüllen?",
+					"concept": "Je nach Bau unterstützen sie Flug, Wärmeisolation oder Schutz. Federn bedeuten nicht, dass jede Vogelart fliegen kann.",
+					"sample_solution": "Je nach Bau unterstützen sie Flug, Wärmeisolation oder Schutz. Federn bedeuten nicht, dass jede Vogelart fliegen kann."
+				}
+			]
+		},
+		{
+			"id": "01M7BGXATQ4KSFK3YYSMEYCD8M",
+			"atom_uri": "urn:zam:atom:01M7BGXATQ4KSFK3YYSMEYCD8M",
+			"namespace": "zam-academy-biologie-realschule-6",
+			"slug": "b6-saeugetiere",
+			"title": "Säugetiere: vielfältig und verwandt",
+			"domain": "biologie/lb3",
+			"reduction": "classical",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-saeugetiere",
+			"prerequisites": [
+				{
+					"atom_id": "01M7BGXATQKQ30JGVR0GHHRCTX",
+					"type": "soft",
+					"rationale": "Helpful prior knowledge; lessons remain freely accessible."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "biologie-realschule-6",
+					"topic_code": "lb3",
+					"topic_title": "Vielfalt von Wirbeltieren"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "biologie",
+					"topic_code": "lb3",
+					"topic_title": "Vielfalt von Wirbeltieren",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7BGXATSCY6X7847BPE97VRJ",
+					"slug": "b6-saeugetiere-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-saeugetiere",
+					"materiality": "material",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"edge_representative": true,
+					"question": "Welche gemeinsame Eigenschaft verbindet Fledermaus und Maulwurf?",
+					"concept": "Beide säugen ihre Jungen.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": ["Beide säugen ihre Jungen.", "Beide besitzen Federn."],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7BGXATSGYH3YQRR7PMY6X71",
+					"slug": "b6-saeugetiere-erklaeren",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-saeugetiere",
+					"materiality": "material",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Wie zeigen Maulwurf und Fledermaus einen gemeinsamen Grundbauplan mit verschiedenen Funktionen?",
+					"concept": "Ihre Vordergliedmaßen sind unterschiedlich abgewandelt: kräftiger Grabbau beim Maulwurf, verlängerte Finger mit Flughaut bei der Fledermaus.",
+					"sample_solution": "Ihre Vordergliedmaßen sind unterschiedlich abgewandelt: kräftiger Grabbau beim Maulwurf, verlängerte Finger mit Flughaut bei der Fledermaus."
+				}
+			]
+		},
+		{
+			"id": "01M7BGXATQXXPSYM8ZEFYG6X7J",
+			"atom_uri": "urn:zam:atom:01M7BGXATQXXPSYM8ZEFYG6X7J",
+			"namespace": "zam-academy-biologie-realschule-6",
+			"slug": "b6-temperatur",
+			"title": "Körpertemperatur regulieren",
+			"domain": "biologie/lb3",
+			"reduction": "classical",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-temperatur",
+			"prerequisites": [
+				{
+					"atom_id": "01M7BGXATQAPJ0XEDFT0Q1YE3Z",
+					"type": "soft",
+					"rationale": "Helpful prior knowledge; lessons remain freely accessible."
+				},
+				{
+					"atom_id": "01M7BGXATQ4KSFK3YYSMEYCD8M",
+					"type": "soft",
+					"rationale": "Helpful prior knowledge; lessons remain freely accessible."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "biologie-realschule-6",
+					"topic_code": "lb3",
+					"topic_title": "Vielfalt von Wirbeltieren"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "biologie",
+					"topic_code": "lb3",
+					"topic_title": "Vielfalt von Wirbeltieren",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7BGXATSABXG46Y35V3EV2KG",
+					"slug": "b6-temperatur-check",
+					"replaces": ["01K4B7W0000000000000000J01"],
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-temperatur",
+					"materiality": "material",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"edge_representative": true,
+					"question": "Welche beiden Wirbeltierklassen sind gleichwarm?",
+					"concept": "Vögel und Säugetiere.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": ["Vögel und Säugetiere.", "Fische und Amphibien."],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7BGXATS2XCBYDRXWRHNNVJB",
+					"slug": "b6-temperatur-erklaeren",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-temperatur",
+					"materiality": "material",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Wie kann eine wechselwarme Eidechse ihre Körpertemperatur durch Verhalten beeinflussen?",
+					"concept": "Sie kann Sonnenplätze zum Erwärmen und kühlere Schattenplätze zum Begrenzen der Erwärmung nutzen.",
+					"sample_solution": "Sie kann Sonnenplätze zum Erwärmen und kühlere Schattenplätze zum Begrenzen der Erwärmung nutzen."
+				}
+			]
+		},
+		{
+			"id": "01M7BGXATQAFTJC9AB5F9D2FFW",
+			"atom_uri": "urn:zam:atom:01M7BGXATQAFTJC9AB5F9D2FFW",
+			"namespace": "zam-academy-biologie-realschule-6",
+			"slug": "b6-verhalten",
+			"title": "Verhalten und Kommunikation beobachten",
+			"domain": "biologie/lb3",
+			"reduction": "classical",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-verhalten",
+			"prerequisites": [
+				{
+					"atom_id": "01M7BGXATQC9RRQ78HWB35Q69B",
+					"type": "soft",
+					"rationale": "Helpful prior knowledge; lessons remain freely accessible."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "biologie-realschule-6",
+					"topic_code": "lb3",
+					"topic_title": "Vielfalt von Wirbeltieren"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "biologie",
+					"topic_code": "lb3",
+					"topic_title": "Vielfalt von Wirbeltieren",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7BGXATSWTG5DSY3MGCV9FCM",
+					"slug": "b6-verhalten-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-verhalten",
+					"materiality": "material",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"edge_representative": true,
+					"question": "Welches Beispiel ist zwischenartliche Kommunikation?",
+					"concept": "Eine Katze faucht einen Hund an.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Eine Katze faucht einen Hund an.",
+							"Eine Amsel singt gegenüber einer anderen Amsel."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7BGXATS6E7140RF30Q8KTMC",
+					"slug": "b6-verhalten-erklaeren",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-verhalten",
+					"materiality": "material",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Wie unterscheidest du Verhaltensbeobachtung und Funktionsdeutung?",
+					"concept": "Die Beobachtung nennt sichtbare oder hörbare Handlungen mit ihrer Situation. Eine vermutete Funktion braucht zusätzliche Belege, etwa Reaktionen anderer Tiere.",
+					"sample_solution": "Die Beobachtung nennt sichtbare oder hörbare Handlungen mit ihrer Situation. Eine vermutete Funktion braucht zusätzliche Belege, etwa Reaktionen anderer Tiere."
+				}
+			]
+		},
+		{
+			"id": "01M7BGXATQVNZ58AEBHN2C8HRF",
+			"atom_uri": "urn:zam:atom:01M7BGXATQVNZ58AEBHN2C8HRF",
+			"namespace": "zam-academy-biologie-realschule-6",
+			"slug": "b6-lebensraum",
+			"title": "Ein Ökosystem vor deiner Haustür",
+			"domain": "biologie/lb4",
+			"reduction": "classical",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-lebensraum",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "biologie-realschule-6",
+					"topic_code": "lb4",
+					"topic_title": "Ein heimatnahes Ökosystem"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "biologie",
+					"topic_code": "lb4",
+					"topic_title": "Ein heimatnahes Ökosystem",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7BGXATSE34HG5FZY4HT5XG8",
+					"slug": "b6-lebensraum-check",
+					"replaces": ["01K4B7W0000000000000000J05"],
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-lebensraum",
+					"materiality": "material",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"edge_representative": true,
+					"question": "Aus welchen beiden Komponenten besteht ein Ökosystem?",
+					"concept": "Biotop und Biozönose mit ihren Wechselwirkungen.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Biotop und Biozönose mit ihren Wechselwirkungen.",
+							"Nur aus Tieren und Pflanzen ohne ihren Lebensraum."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7BGXATS639FS98ESC3XV8RM",
+					"slug": "b6-lebensraum-erklaeren",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-lebensraum",
+					"materiality": "material",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Warum beeinflusst eine abiotische Veränderung die Lebensgemeinschaft einer Hecke?",
+					"concept": "Arten benötigen passende Bedingungen. Weniger Schatten kann beispielsweise Temperatur und Feuchte verändern und damit ihre Lebensmöglichkeiten beeinflussen.",
+					"sample_solution": "Arten benötigen passende Bedingungen. Weniger Schatten kann beispielsweise Temperatur und Feuchte verändern und damit ihre Lebensmöglichkeiten beeinflussen."
+				}
+			]
+		},
+		{
+			"id": "01M7BGXATR0R3HW58A7117QBXJ",
+			"atom_uri": "urn:zam:atom:01M7BGXATR0R3HW58A7117QBXJ",
+			"namespace": "zam-academy-biologie-realschule-6",
+			"slug": "b6-jahreszeiten",
+			"title": "Ein Lebensraum verändert sich",
+			"domain": "biologie/lb4",
+			"reduction": "classical",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-jahreszeiten",
+			"prerequisites": [
+				{
+					"atom_id": "01M7BGXATQVNZ58AEBHN2C8HRF",
+					"type": "soft",
+					"rationale": "Helpful prior knowledge; lessons remain freely accessible."
+				},
+				{
+					"atom_id": "01M7BGXATQVQ067YXNHJGEXNMZ",
+					"type": "soft",
+					"rationale": "Helpful prior knowledge; lessons remain freely accessible."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "biologie-realschule-6",
+					"topic_code": "lb4",
+					"topic_title": "Ein heimatnahes Ökosystem"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "biologie",
+					"topic_code": "lb4",
+					"topic_title": "Ein heimatnahes Ökosystem",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7BGXATSJMERXZ535004TSCW",
+					"slug": "b6-jahreszeiten-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-jahreszeiten",
+					"materiality": "material",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"edge_representative": true,
+					"question": "Was spricht zunächst für einen Jahresrhythmus?",
+					"concept": "Eine Hecke treibt im Frühling aus und verliert im Herbst Laub.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Eine Hecke treibt im Frühling aus und verliert im Herbst Laub.",
+							"Ein einmaliges Foto beweist einen dauerhaften Rückgang."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7BGXATS141NX1BMXKW317A0",
+					"slug": "b6-jahreszeiten-erklaeren",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-jahreszeiten",
+					"materiality": "material",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Wie lässt sich ein Jahresrhythmus von langfristigem Wandel unterscheiden?",
+					"concept": "Man vergleicht gleichartige Messungen zur gleichen Jahreszeit über mehrere Jahre, statt bloß Sommer und Winter gegenüberzustellen.",
+					"sample_solution": "Man vergleicht gleichartige Messungen zur gleichen Jahreszeit über mehrere Jahre, statt bloß Sommer und Winter gegenüberzustellen."
+				}
+			]
+		},
+		{
+			"id": "01M7BGXATRA6Z3K1QE1ABXK6P7",
+			"atom_uri": "urn:zam:atom:01M7BGXATRA6Z3K1QE1ABXK6P7",
+			"namespace": "zam-academy-biologie-realschule-6",
+			"slug": "b6-nischen",
+			"title": "Angepasstheiten und ökologische Nischen",
+			"domain": "biologie/lb4",
+			"reduction": "classical",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-nischen",
+			"prerequisites": [
+				{
+					"atom_id": "01M7BGXATQVNZ58AEBHN2C8HRF",
+					"type": "soft",
+					"rationale": "Helpful prior knowledge; lessons remain freely accessible."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "biologie-realschule-6",
+					"topic_code": "lb4",
+					"topic_title": "Ein heimatnahes Ökosystem"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "biologie",
+					"topic_code": "lb4",
+					"topic_title": "Ein heimatnahes Ökosystem",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7BGXATSQNZTAWZ2BENH6G01",
+					"slug": "b6-nischen-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-nischen",
+					"materiality": "material",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"edge_representative": true,
+					"question": "Was beschreibt eine ökologische Nische?",
+					"concept": "Umweltansprüche und Beziehungen einer Art.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Umweltansprüche und Beziehungen einer Art.",
+							"Nur die geografische Adresse eines Tiers."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7BGXATSCXZRZ8WZ0NE7TT17",
+					"slug": "b6-nischen-erklaeren",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-nischen",
+					"materiality": "material",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Warum ist eine ökologische Nische mehr als ein Aufenthaltsort?",
+					"concept": "Sie umfasst Umweltansprüche und Beziehungen einer Art, etwa Nahrung, Aktivitätszeiten, Feuchtigkeit und Fressfeinde.",
+					"sample_solution": "Sie umfasst Umweltansprüche und Beziehungen einer Art, etwa Nahrung, Aktivitätszeiten, Feuchtigkeit und Fressfeinde."
+				}
+			]
+		},
+		{
+			"id": "01M7BGXATRBAQMP3F962EZA60R",
+			"atom_uri": "urn:zam:atom:01M7BGXATRBAQMP3F962EZA60R",
+			"namespace": "zam-academy-biologie-realschule-6",
+			"slug": "b6-insekten",
+			"title": "Insekten: Bau, Entwicklung und Bedeutung",
+			"domain": "biologie/lb4",
+			"reduction": "classical",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-insekten",
+			"prerequisites": [
+				{
+					"atom_id": "01M7BGXATQVNZ58AEBHN2C8HRF",
+					"type": "soft",
+					"rationale": "Helpful prior knowledge; lessons remain freely accessible."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "biologie-realschule-6",
+					"topic_code": "lb4",
+					"topic_title": "Ein heimatnahes Ökosystem"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "biologie",
+					"topic_code": "lb4",
+					"topic_title": "Ein heimatnahes Ökosystem",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7BGXATSQJK9SX4WXNNS95RW",
+					"slug": "b6-insekten-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-insekten",
+					"materiality": "material",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"edge_representative": true,
+					"question": "Welches Merkmal passt zum erwachsenen Insekt?",
+					"concept": "Drei Beinpaare am Brustabschnitt.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Drei Beinpaare am Brustabschnitt.",
+							"Vier Beinpaare wie bei Spinnen."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7BGXATSJJKKMFM7KQRKS7H9",
+					"slug": "b6-insekten-erklaeren",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-insekten",
+					"materiality": "material",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Wodurch unterscheiden sich vollständige und unvollständige Verwandlung bei Insekten?",
+					"concept": "Bei vollständiger Verwandlung folgt auf die Larve eine Puppe. Bei unvollständiger entwickeln sich Nymphen ohne Puppenstadium zum erwachsenen Tier.",
+					"sample_solution": "Bei vollständiger Verwandlung folgt auf die Larve eine Puppe. Bei unvollständiger entwickeln sich Nymphen ohne Puppenstadium zum erwachsenen Tier."
+				}
+			]
+		},
+		{
+			"id": "01M7BGXATRCCSVYFVADZSKFPJ4",
+			"atom_uri": "urn:zam:atom:01M7BGXATRCCSVYFVADZSKFPJ4",
+			"namespace": "zam-academy-biologie-realschule-6",
+			"slug": "b6-nahrungsnetz",
+			"title": "Nahrungskette, Netz und Pyramide",
+			"domain": "biologie/lb4",
+			"reduction": "classical",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-nahrungsnetz",
+			"prerequisites": [
+				{
+					"atom_id": "01M7BGXATQVNZ58AEBHN2C8HRF",
+					"type": "soft",
+					"rationale": "Helpful prior knowledge; lessons remain freely accessible."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "biologie-realschule-6",
+					"topic_code": "lb4",
+					"topic_title": "Ein heimatnahes Ökosystem"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "biologie",
+					"topic_code": "lb4",
+					"topic_title": "Ein heimatnahes Ökosystem",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7BGXATS6K47FG4X0183MWTP",
+					"slug": "b6-nahrungsnetz-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-nahrungsnetz",
+					"materiality": "material",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"edge_representative": true,
+					"question": "Was bedeutet der Pfeil Blatt → Raupe?",
+					"concept": "Die Raupe frisst das Blatt.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Die Raupe frisst das Blatt.",
+							"Das Blatt frisst die Raupe."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7BGXATSEXMA7R29W15ZN33M",
+					"slug": "b6-nahrungsnetz-erklaeren",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-nahrungsnetz",
+					"materiality": "material",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Warum wird eine Energiepyramide nach oben schmaler?",
+					"concept": "Auf jeder Ernährungsstufe wird Energie für Lebensvorgänge verwendet und als Wärme abgegeben. Nur ein Teil steht der nächsten Stufe als Nahrung zur Verfügung.",
+					"sample_solution": "Auf jeder Ernährungsstufe wird Energie für Lebensvorgänge verwendet und als Wärme abgegeben. Nur ein Teil steht der nächsten Stufe als Nahrung zur Verfügung."
+				}
+			]
+		},
+		{
+			"id": "01M7BGXATRJCZPNAV0AKRZQVQN",
+			"atom_uri": "urn:zam:atom:01M7BGXATRJCZPNAV0AKRZQVQN",
+			"namespace": "zam-academy-biologie-realschule-6",
+			"slug": "b6-stoffkreislauf",
+			"title": "Stoffe kreisen, Energie fließt",
+			"domain": "biologie/lb4",
+			"reduction": "classical",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-stoffkreislauf",
+			"prerequisites": [
+				{
+					"atom_id": "01M7BGXATRCCSVYFVADZSKFPJ4",
+					"type": "soft",
+					"rationale": "Helpful prior knowledge; lessons remain freely accessible."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "biologie-realschule-6",
+					"topic_code": "lb4",
+					"topic_title": "Ein heimatnahes Ökosystem"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "biologie",
+					"topic_code": "lb4",
+					"topic_title": "Ein heimatnahes Ökosystem",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7BGXATSTYBQ6DS5V3VY80A4",
+					"slug": "b6-stoffkreislauf-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-stoffkreislauf",
+					"materiality": "material",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"edge_representative": true,
+					"question": "Welche Rolle haben Destruenten?",
+					"concept": "Sie bauen tote organische Stoffe ab und setzen unter anderem Mineralsalze frei.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Sie bauen tote organische Stoffe ab und setzen unter anderem Mineralsalze frei.",
+							"Sie verwandeln Wärme vollständig in Sonnenlicht."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7BGXATSVJWZT7ZBA1FP4F6H",
+					"slug": "b6-stoffkreislauf-erklaeren",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-stoffkreislauf",
+					"materiality": "material",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Warum sind Stoffkreislauf und Energiefluss nicht dasselbe?",
+					"concept": "Stoffe können nach Abbau und Aufnahme erneut genutzt werden. Energie wird zugeführt, weitergegeben und als Wärme abgegeben; neue Zufuhr bleibt nötig.",
+					"sample_solution": "Stoffe können nach Abbau und Aufnahme erneut genutzt werden. Energie wird zugeführt, weitergegeben und als Wärme abgegeben; neue Zufuhr bleibt nötig."
+				}
+			]
+		},
+		{
+			"id": "01M7BGXATR5PZM7XV5ZMP37MZQ",
+			"atom_uri": "urn:zam:atom:01M7BGXATR5PZM7XV5ZMP37MZQ",
+			"namespace": "zam-academy-biologie-realschule-6",
+			"slug": "b6-schutz",
+			"title": "Eingriffe prüfen und Schutz begründen",
+			"domain": "biologie/lb4",
+			"reduction": "classical",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-schutz",
+			"prerequisites": [
+				{
+					"atom_id": "01M7BGXATQVNZ58AEBHN2C8HRF",
+					"type": "soft",
+					"rationale": "Helpful prior knowledge; lessons remain freely accessible."
+				},
+				{
+					"atom_id": "01M7BGXATQ2B412EYSKT4ZRWNB",
+					"type": "soft",
+					"rationale": "Helpful prior knowledge; lessons remain freely accessible."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "biologie-realschule-6",
+					"topic_code": "lb4",
+					"topic_title": "Ein heimatnahes Ökosystem"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "biologie",
+					"topic_code": "lb4",
+					"topic_title": "Ein heimatnahes Ökosystem",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7BGXATSYAGBR07DQEEABN41",
+					"slug": "b6-schutz-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-schutz",
+					"materiality": "material",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"edge_representative": true,
+					"question": "Welche Begründung verbindet Eingriff und Wirkung nachvollziehbar?",
+					"concept": "Weniger Schatten kann den Boden erwärmen und feuchtigkeitsabhängige Arten beeinträchtigen.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Weniger Schatten kann den Boden erwärmen und feuchtigkeitsabhängige Arten beeinträchtigen.",
+							"Jeder Eingriff hat immer dieselbe Wirkung."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7BGXATSKNBPW7W6QE5TV0GH",
+					"slug": "b6-schutz-erklaeren",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-6/#lesson=b6-schutz",
+					"materiality": "material",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Wie begründest du eine Schutzmaßnahme für ein Ökosystem?",
+					"concept": "Ich verknüpfe einen belegten Eingriff mit veränderten Umweltfaktoren und Folgen für Arten, vergleiche Optionen und nenne Maßstab sowie Unsicherheiten.",
+					"sample_solution": "Ich verknüpfe einen belegten Eingriff mit veränderten Umweltfaktoren und Folgen für Arten, vergleiche Optionen und nenne Maßstab sowie Unsicherheiten."
+				}
+			]
+		}
+	]
+}

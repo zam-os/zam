@@ -1,0 +1,91 @@
+{
+  "schema": 1,
+  "status": "approved",
+  "approved": "2026-11-14",
+  "source": "Thomas am 2026-11-14 in der Claude-Code-Sitzung (Desktop), in der das Paket gebaut wurde, auf den Vorschlag mit 3 A / 0 B / 5 C: „Freigabe deines Vorschlages - bitte PR erstellen“. Die Freigabe umfasst die drei A-Übernahmen (J01, J03, J07) und lässt alle fünf C-Karten ohne Stilllegung aktiv. Ab der ersten Veröffentlichung (Zellversion 2026.11.1) tragen die drei Nachfolger je ein replaces auf ihre alte Karte.",
+  "note": "Checked on this commit: tests/fixtures/curriculum/ holds one Grade 5 Gymnasium geography cell, mapped below. The Gymnasium Grade 6 cell (Europe and the EU) and Grade 7 cell (Europe, plate tectonics, climate) belong to Europe topics that the current LehrplanPLUS teaches in Grade 7; they stay active and are not part of this mapping. The Realschule Grade 5 and 6 geography cells are proposed in geographie-realschule-5 and are not mapped twice.",
+  "source_repository": "zam-os/zam",
+  "source_commit": "b7fdfcc4e30d21bbbd97fb2025952ff7f4e296ac",
+  "sources": [
+    {
+      "file": "tests/fixtures/de-by-gymnasium-5-geographie-erde-gradnetz-orientierung-kvt.json",
+      "tile_id": "de-by:gymnasium-5-geographie-erde-gradnetz-orientierung",
+      "version": "2026.08.1",
+      "sha256": "d241915961802fc71623f6bbae2ec180a809715f616d2e4fc50f3c66a13ed134"
+    }
+  ],
+  "rows": [
+    {
+      "de_by_cell": "de-by:gymnasium-5-geographie-erde-gradnetz-orientierung",
+      "de_by_id": "01K4YG5E000000000000000J01",
+      "de_by_question": "Durch welchen historischen Londoner Vorort verläuft nach internationaler Vereinbarung der weltweite Nullmeridian (0° geographische Länge)?",
+      "category": "A",
+      "academy_slug": "geogym5-gradnetz-check",
+      "action": "replace",
+      "reason": "Same single retrieval: the prime meridian runs through Greenwich in London. The successor keeps the binary choice Greenwich (London) against Paris; the old prompt only adds the word „Vorort“."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-5-geographie-erde-gradnetz-orientierung",
+      "de_by_id": "01K4YG5E000000000000000J02",
+      "de_by_question": "Erkläre die mathematisch-geographische Struktur des weltweiten Gradnetzes der Erde: 1. Breitenkreise (Parallelkreise: Äquator 0° teilt Nord- und Südhalbkugel, 90° N und 90° S an den Polen, Wendekreise bei 23,5° N/S, Polarkreise bei 66,5° N/S), 2. Längenhalbkreise / Meridiane (verbinden Nord- und Südpol, Nullmeridian von Greenwich 0° bis 180° Ost/West, Datumsgrenze), 3. Exakte Punktbestimmung mit geographischen Koordinaten (immer zuerst Breite, dann Länge) und bestimme die Koordinaten der bayerischen Landeshauptstadt München (ca. 48° 08' N, 11° 34' O).",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "The old prompt asks in one card for latitude circles including tropics and polar circles, meridians, the date line and Munich's coordinates. The new cell splits these into narrower retrievals in several lessons, and tropics, polar circles and the date line are not part of the Grade 5 Fachlehrplan. No single unchanged successor."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-5-geographie-erde-gradnetz-orientierung",
+      "de_by_id": "01K4YG5E000000000000000J03",
+      "de_by_question": "Was lässt sich aus dem Abstand zweier benachbarter Höhenlinien (Isohypsen) auf einer topographischen Karte über das Gelände ablesen?",
+      "category": "A",
+      "academy_slug": "geogym5-hoehen-check",
+      "action": "replace",
+      "reason": "Same single retrieval: closely spaced contour lines mean steep terrain. The successor's binary choice is steep against flat, as in the old card."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-5-geographie-erde-gradnetz-orientierung",
+      "de_by_id": "01K4YG5E000000000000000J04",
+      "de_by_question": "Erkläre die Übersetzung der 3D-Realität in eine 2D-Karte: 1. Maßstabszahl (Kartenstrecke · Maßstabszahl = reale Strecke), 2. Höhenlinien / Isohypsen und Höhenschichtenfarben zur Darstellung des 3D-Reliefs (Äquidistanz / Höhenunterschied zwischen zwei Linien), 3. Generalisierung und Signaturen (Vereinfachung und Symbolik in der Legende) und berechne: Auf einer Wanderkarte mit Maßstab 1 : 50.000 misst der Weg zwischen Berghütte und Gipfelkreuz genau 6,4 cm. Wie viele Kilometer beträgt die reale Wanderdistanz (Luftlinie)?",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "A three-part prompt (scale, contour lines and hypsometric tints, generalisation) with a 6,4 cm calculation at 1 : 50 000. The new cell teaches the same calculation in the scale lesson but asks it in a different card; spreading one history over several cards is not allowed."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-5-geographie-erde-gradnetz-orientierung",
+      "de_by_id": "01K4YG5E000000000000000J05",
+      "de_by_question": "An welchem Datum steht die Sonne am Nördlichen Wendekreis (23,5° N) mittags im Zenit (Sommersonnenwende auf der Nordhalbkugel)?",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Seasons and the sun's zenith at the Tropic of Cancer are not part of the current Grade 5 Fachlehrplan for the Gymnasium (Planet Erde covers the solar system, the Earth's structure, its uniqueness and orientation). The card stays active outside this package; its fixed date „21. Juni“ is also a simplification, since the solstice falls on 20 or 21 June."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-5-geographie-erde-gradnetz-orientierung",
+      "de_by_id": "01K4YG5E000000000000000J06",
+      "de_by_question": "Erkläre die Entstehung der 4 Jahreszeiten durch das Zusammenspiel von Erdrevolution (365 1/4 Tage) und der konstanten Schiefstellung der Erdachse um 23,5° (Einstrahlungswinkel und Tageslänge), beschreibe die 4 Kardinalpunkte des Jahres (21. Juni Sommersonnenwende, 21. Dezember Wintersonnenwende, 21. März / 23. September Äquinoktium / Tag-und-Nacht-Gleiche) und grenze die 3 solaren Beleuchtungszonen der Erde voneinander ab (Tropen zwischen 23,5° N und S mit Zenitständen, Gemäßigte Zone mit 4 Jahreszeiten, Polarzone jenseits 66,5° mit Polartag/Polarnacht).",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Multi-part synthesis on the Earth's revolution, the 23,5° axial tilt, four cardinal dates and three illumination zones. Not part of the current Grade 5 Fachlehrplan; no successor in this cell."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-5-geographie-erde-gradnetz-orientierung",
+      "de_by_id": "01K4YG5E000000000000000J07",
+      "de_by_question": "In welche beiden großen Weltmeere entwässern die beiden Hauptflusssysteme Bayerns (Main-System vs. Donau-System) getrennt durch die Europäische Hauptwasserscheide?",
+      "category": "A",
+      "academy_slug": "geogym5-bayern-naturraum-check",
+      "action": "replace",
+      "reason": "Same single retrieval: Main via the Rhine into the North Sea, Danube into the Black Sea. The successor uses the same distractor (Main into the Baltic, Danube into the Mediterranean)."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-5-geographie-erde-gradnetz-orientierung",
+      "de_by_id": "01K4YG5E000000000000000J08",
+      "de_by_question": "Gliedere den Freistaat Bayern naturräumlich von Nord nach Süd (1. Fränkisches Schichtstufenland & Ostbayerische Mittelgebirge wie Spessart, Rhön, Frankenwald, Fichtelgebirge, Oberpfälzer/Bayerischer Wald mit Großem Arber 1456 m; 2. Schwäbisch-Bayerisches Alpenvorland mit Schotterebenen und eiszeitlichen Zungenbecken-Seen wie Chiemsee/Starnberger See; 3. Bayerische Alpen mit Zugspitze 2962 m), nenne die 7 Regierungsbezirke mit Regierungssitzen und vergleiche Ackerbaugebiete (Löss im Gäuboden) mit Grünlandwirtschaft (Allgäu).",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "A combined prompt on Bavaria's natural regions with heights, the seven government districts and seats and a comparison of arable and grassland farming. The new cell asks these parts in three lessons (natural regions, administration, land-use factors); no single unchanged successor."
+    }
+  ]
+}

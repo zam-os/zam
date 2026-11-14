@@ -21,9 +21,9 @@ import {
 // tests/kernel/zam-academy-informatik-realschule-8-cell.test.ts.
 // The two Mathematik 6 school cells moved to zam-academy:mathematik-realschule-6
 // and are archived in tests/fixtures/legacy/.
+// The two Biologie 6 school cells moved to zam-academy:biologie-realschule-6
+// and are archived in tests/fixtures/legacy/.
 const RS6_CELL_IDS = [
-  "de-by:realschule-6-biologie-saeugetiere-wirbeltiere-hunde-katzen",
-  "de-by:realschule-6-biologie-voegel-fische-amphibien-reptilien",
   "de-by:realschule-6-geschichte-urgeschichte-antike",
   "de-by:realschule-6-geographie-deutschland-bayern-raum",
   "de-by:realschule-6-englisch-grammatik-grundlagen",
@@ -31,6 +31,7 @@ const RS6_CELL_IDS = [
   "de-by:realschule-6-deutsch-texte-bericht-vorgangsbeschreibung",
 ];
 const ACADEMY_RS6_IDS = [
+  "zam-academy:biologie-realschule-6",
   "zam-academy:informatik-realschule-8",
   "zam-academy:mathematik-realschule-6",
 ];
@@ -137,8 +138,8 @@ describe("Realschule Bayern 6 Curriculum Cells (Einführungs- und Orientierungss
       totalCardsCreated += res.cardsCreated;
     }
 
-    // 6 cells * 8 + 1 cell * 4 = 48 + 4 = 52 cards
-    expect(totalCardsCreated).toBe(52);
+    // 4 cells * 8 + 1 cell * 4 = 32 + 4 = 36 cards
+    expect(totalCardsCreated).toBe(36);
 
     const statuses = await getBundledCellsWithStatus(db, userId);
     const rs6Statuses = statuses.filter((s) => RS6_CELL_IDS.includes(s.id));

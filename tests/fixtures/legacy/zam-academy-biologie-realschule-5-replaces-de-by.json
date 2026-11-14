@@ -1,0 +1,247 @@
+{
+  "schema": 1,
+  "status": "approved",
+  "approved": "2026-11-13",
+  "source": "Thomas am 2026-11-13 im Antigravity-Chat zur Freigabeanfrage von PR #124: „Freigabe erteilt - Du darfst als admin mergen“. Die Freigabe umfasst das 5-A / 0-B / 19-C-Mapping (inkl. NuT 5 J01 und J03) sowie den Ausschluss der Realschule-6- und Gymnasium-5-Zellen. Ab Zellversion 2026.11.1 tragen die 5 Nachfolger je ein replaces auf ihre alte Karte; alle 19 C-Karten bleiben aktiv.",
+  "note": "Freigegebenes Mapping aller 24 Altkarten der drei de-by:realschule-5-* Zellen aus zam-os/zam (Mensch/Skelett/Organe, Pflanzen/Blütenbau/Samen, NuT Mikroskop/Experiment/Dateien). 5 eindeutige Einzelabrufe (Kategorie A) werden in cell.json per replaces auf ihre Nachfolger überführt; die übrigen 19 Karten (Kategorie C) bleiben ohne Stilllegung aktiv.",
+  "source_repository": "zam-os/zam",
+  "source_commit": "b7fdfcc4e30d21bbbd97fb2025952ff7f4e296ac",
+  "sources": [
+    {
+      "file": "tests/fixtures/de-by-realschule-5-biologie-mensch-skelett-bewegung-organe-kvt.json",
+      "tile_id": "de-by:realschule-5-biologie-mensch-skelett-bewegung-organe",
+      "version": "2026.08.1",
+      "sha256": "e180c6629b614d4e9093f7db686b3232035d2e1f73e4cd9f62aab69ac3a1d090"
+    },
+    {
+      "file": "tests/fixtures/de-by-realschule-5-biologie-pflanzen-bluetenbau-samen-kvt.json",
+      "tile_id": "de-by:realschule-5-biologie-pflanzen-bluetenbau-samen",
+      "version": "2026.08.1",
+      "sha256": "ab4bdcfcc7e680fb61e1c56000baf5128e67c7078f1ea8be7d36f7e0fda10d9b"
+    },
+    {
+      "file": "tests/fixtures/de-by-realschule-5-natur-technik-mikroskop-experiment-dateien-kvt.json",
+      "tile_id": "de-by:realschule-5-natur-technik-mikroskop-experiment-dateien",
+      "version": "2026.08.1",
+      "sha256": "ee6706278ddac7bbe72ddb711576791e2de2cb23b12c843dc45146ac30d5953e"
+    }
+  ],
+  "rows": [
+    {
+      "de_by_cell": "de-by:realschule-5-biologie-mensch-skelett-bewegung-organe",
+      "de_by_id": "01K4B5M0000000000000000J01",
+      "de_by_question": "Welche charakteristische Form besitzt die menschliche Wirbelsäule in der Seitenansicht, um Erschütterungen beim aufrechten Gang wie eine elastische Feder abzufedern?",
+      "category": "A",
+      "academy_slug": "b5-skelett-wirbelsaeule-check",
+      "action": "replace",
+      "reason": "Derselbe Einzelabruf zur doppelten S-Form der Wirbelsäule und den Bandscheiben als Stoßdämpfer."
+    },
+    {
+      "de_by_cell": "de-by:realschule-5-biologie-mensch-skelett-bewegung-organe",
+      "de_by_id": "01K4B5M0000000000000000J02",
+      "de_by_question": "Gliedere das menschliche Skelett in seine Hauptabschnitte (Schädel mit Gehirn- und Gesichtsschädel, Rumpfskelett mit Wirbelsäule und Brustkorb aus 12 Rippenpaaren/Brustbein zum Schutz von Herz und Lunge, Gliedmaßenskelett mit Schulter-/Beckengürtel und Armen/Beinen), beschreibe den Feinbau eines Röhrenknochens (Knochenhaut mit Nerven/Blutgefäßen, feste Knochenrinde / Kompakta, Schwammgewebe / Spongiosa mit Leichtbau-Knochenbälkchen und Knochenmark) und erkläre die biologische Funktion der elastischen Bandscheiben zwischen den Wirbelkörpern.",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Mehrteilige Abfrage (Hauptabschnitte des Skeletts, Feinbau Röhrenknochen mit Periost/Spongiosa und Bandscheiben); im LehrplanPLUS B5 liegt der Schwerpunkt auf Skelett, Wirbelsäule, Knochen-Muskel-Gelenk-Zusammenspiel ohne Röhrenknochen-Histologie."
+    },
+    {
+      "de_by_cell": "de-by:realschule-5-biologie-mensch-skelett-bewegung-organe",
+      "de_by_id": "01K4B5M0000000000000000J03",
+      "de_by_question": "Welcher Muskel arbeitet als direkter Gegenspieler (Antagonist/Strecker) zum zweiköpfigen Armbeuger (Bizeps) am menschlichen Oberarm?",
+      "category": "A",
+      "academy_slug": "b5-muskeln-gelenke-check",
+      "action": "replace",
+      "reason": "Derselbe Einzelabruf zum Trizeps als direktem Gegenspieler (Strecker) des Armbeugers Bizeps am Oberarm."
+    },
+    {
+      "de_by_cell": "de-by:realschule-5-biologie-mensch-skelett-bewegung-organe",
+      "de_by_id": "01K4B5M0000000000000000J04",
+      "de_by_question": "Beschreibe den anatomischen Bau eines echten Gelenks (Gelenkkopf, Gelenkpfanne mit schützender Knorpelschicht, Gelenkkapsel mit Synovia/Gelenkschmiere zur Reibungsminderung und Bänder zur Stabilisierung), unterscheide die 4 Gelenktypen mit Beispielen (Kugelgelenk: Schulter/Hüfte; Scharniergelenk: Ellenbogen/Knie/Finger; Sattelgelenk: Daumengrundgelenk; Dreh-/Zapfengelenk: Kopfgelenk Atlas/Axis) und erkläre das Antagonistenprinzip der Skelettmuskeln (Muskeln können sich nur aktiv zusammenziehen/kontrahieren, nicht selbst aktiv strecken).",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Mehrteilige Sammelaufgabe (Gelenkbau mit Synovia, vier Gelenktypen und Antagonistenprinzip); keine automatische Zusammenführung auf eine Einzelkarte."
+    },
+    {
+      "de_by_cell": "de-by:realschule-5-biologie-mensch-skelett-bewegung-organe",
+      "de_by_id": "01K4B5M0000000000000000J05",
+      "de_by_question": "Um welchen Tag eines durchschnittlichen 28-tägigen Menstruationszyklus findet der Eisprung (Ovulation) im Eierstock statt?",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Betrifft den weiblichen Menstruationszyklus (Tag 14 Eisprung). Im aktuellen LehrplanPLUS Realschule gehört dieses Thema zu Biologie 6 (B6 LB 2), nicht zu Biologie 5."
+    },
+    {
+      "de_by_cell": "de-by:realschule-5-biologie-mensch-skelett-bewegung-organe",
+      "de_by_id": "01K4B5M0000000000000000J06",
+      "de_by_question": "Unterscheide primäre Geschlechtsmerkmale (von Geburt an vorhanden: Hoden, Penis bzw. Eierstöcke, Eileiter, Gebärmutter, Scheide) von sekundären Geschlechtsmerkmalen (bilden sich in der Pubertät durch Sexualhormone Testosteron/Östrogen: Bartwuchs, Stimmbruch, Brustentwicklung, Schambehaarung) und beschreibe die Phasen des ca. 28-tägigen weiblichen Menstruationszyklus (1. Menstruation/Regelblutung Tag 1–5, 2. Aufbauphase der Gebärmutterschleimhaut, 3. Eisprung um Tag 14, 4. Vorbereitung auf Einnistung, 5. Abstoßung bei Ausbleiben der Befruchtung).",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Betrifft Geschlechtsmerkmale und Zyklusphasen; im LehrplanPLUS gehört Sexualität und Fortpflanzung zu Biologie 6 (B6 LB 2), nicht zu Biologie 5. Karte bleibt aktiv."
+    },
+    {
+      "de_by_cell": "de-by:realschule-5-biologie-mensch-skelett-bewegung-organe",
+      "de_by_id": "01K4B5M0000000000000000J07",
+      "de_by_question": "An welchem Ort im weiblichen Körper findet die biologische Befruchtung (Verschmelzung von Ei- und Samenzelle) im Normalfall statt?",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Betrifft den Ort der Befruchtung im Eileiter; im LehrplanPLUS Stoff von Biologie 6 (B6 LB 2), nicht von Biologie 5. Karte bleibt aktiv."
+    },
+    {
+      "de_by_cell": "de-by:realschule-5-biologie-mensch-skelett-bewegung-organe",
+      "de_by_id": "01K4B5M0000000000000000J08",
+      "de_by_question": "Beschreibe die Entstehung neuen menschlichen Lebens in 4 Schritten: 1. Befruchtung (Verschmelzen des Zellkerns eines Spermiums mit dem Eizellkern im Eileiter zur Zygote), 2. Zellteilungen und Einnistung in die Gebärmutterschleimhaut (Tag 5–7), 3. Schwangerschaft (ca. 40 Wochen / 9 Monate: Versorgung über Plazenta und Nabelschnur mit Sauerstoff/Nährstoffen, Schutz im Fruchtwasser), 4. Geburt (Eröffnungswehen, Platzen der Fruchtblase, Austreibungswehen, Durchtrennung der Nabelschnur und Nachgeburt der Plazenta).",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Betrifft Befruchtung, Schwangerschaft und Geburt; im LehrplanPLUS Stoff von Biologie 6 (B6 LB 2), nicht von Biologie 5. Karte bleibt aktiv."
+    },
+    {
+      "de_by_cell": "de-by:realschule-5-biologie-pflanzen-bluetenbau-samen",
+      "de_by_id": "01K4B5P0000000000000000J01",
+      "de_by_question": "Über welche mikroskopisch feinen Zellstrukturen an der Wurzelspitze nehmen Pflanzen Wasser und gelöste Mineralsalze aus dem Boden auf?",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Spezifischer Einzelabruf zu Wurzelhaaren; im neuen Kurs wird die Wasseraufnahme durch die Wurzel im Überblick der vier Grundorgane behandelt, ohne mikroskopische Wurzelhaar-Terminologie als Pflichtkarte."
+    },
+    {
+      "de_by_cell": "de-by:realschule-5-biologie-pflanzen-bluetenbau-samen",
+      "de_by_id": "01K4B5P0000000000000000J02",
+      "de_by_question": "Beschreibe die drei vegetativen Grundorgane einer Blütenpflanze mit ihren spezialisierten Funktionen: 1. Wurzel (Verankerung im Erdreich, Aufnahme von Wasser und Mineralsalzen über Wurzelhaare, Speicherung von Reservestoffen wie bei der Rübe), 2. Sprossachse/Stängel (Stabilität, Ausrichtung der Blätter zum Sonnenlicht, Stofftransport in Leitbündeln: Wasser aufwärts im Xylem, Zuckerlösung abwärts im Phloem), 3. Laubblatt (Photosynthese mit Chlorophyll zur Stärkeherstellung, Gasaustausch und Transpiration/Verdunstung über Spaltöffnungen/Stomata).",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Mehrteilige Übersichtsaufgabe mit Xylem, Phloem und Photosynthese-Details aus späteren Jahrgangsstufen; bleibt unverändert aktiv."
+    },
+    {
+      "de_by_cell": "de-by:realschule-5-biologie-pflanzen-bluetenbau-samen",
+      "de_by_id": "01K4B5P0000000000000000J03",
+      "de_by_question": "Aus welchen drei Teilen besteht der weibliche Stempel (Fruchtblatt) im Zentrum einer Blütenpflanze von oben nach unten?",
+      "category": "A",
+      "academy_slug": "b5-bluete-vielfalt-check",
+      "action": "replace",
+      "reason": "Derselbe Einzelabruf zu den drei Bestandteilen des weiblichen Stempels (Narbe, Griffel und Fruchtknoten von oben nach unten)."
+    },
+    {
+      "de_by_cell": "de-by:realschule-5-biologie-pflanzen-bluetenbau-samen",
+      "de_by_id": "01K4B5P0000000000000000J04",
+      "de_by_question": "Beschreibe die 4 Blattkreise einer vollständigen Zwitterblüte von außen nach innen: 1. Kelchblätter (Sepalen: meist grün, schützen die Knospe), 2. Kronblätter (Petalen: farbig/duftend, locken Insekten an), 3. Staubblätter (männliche Organe: Staubfaden und Staubbeutel mit Pollensäcken/Blütenstaub), 4. Stempel / Fruchtblätter (weibliche Organe: klebrige Narbe, Griffel, Fruchtknoten mit Samenanlage und Eizelle).",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Mehrteilige Abfrage aller vier Blattkreise einschließlich Fruchtblatt-Begriff und Schutzfunktionen; nicht deckungsgleich als Einzelabruf überführbar."
+    },
+    {
+      "de_by_cell": "de-by:realschule-5-biologie-pflanzen-bluetenbau-samen",
+      "de_by_id": "01K4B5P0000000000000000J05",
+      "de_by_question": "Was versteht man in der Botanik unter dem Begriff 'Bestäubung'?",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Bestäubungs-Definition überschreitet den Schwerpunkt von B5 LB 4 (Bauplan der Blütenpflanze, Blütenbestandteile und Biodiversität) und vertieft Aspekte weiterer Jahrgangsstufen/Ziele."
+    },
+    {
+      "de_by_cell": "de-by:realschule-5-biologie-pflanzen-bluetenbau-samen",
+      "de_by_id": "01K4B5P0000000000000000J06",
+      "de_by_question": "Unterscheide biologisch präzise Bestäubung (mechanischer Transport des Blütenstaubs vom Staubbeutel auf die Narbe) von Befruchtung (Auskeimen des Pollenkorns zu einem Pollenschlauch durch den Griffel und Verschmelzen des männlichen Zellkerns mit dem Eizellkern in der Samenanlage) und vergleiche Insektenblütige (z. B. Kirsche, Rose: bunte Kronblätter, Klebriger Pollen, Nektar) mit Windblütigen Pflanzen (z. B. Hasel, Birke, Gräser: unscheinbare Kätzchen, riesige Mengen trockener Flugpollen, fedrige Narben).",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Detaillierte Trennung von Bestäubung, Pollenschlauchwachstum und Befruchtung einschließlich Wind-/Insektenblütigkeit geht über B5 LB 4 hinaus; bleibt aktiv."
+    },
+    {
+      "de_by_cell": "de-by:realschule-5-biologie-pflanzen-bluetenbau-samen",
+      "de_by_id": "01K4B5P0000000000000000J07",
+      "de_by_question": "Aus welchem Teil der Blüte entwickelt sich nach der Befruchtung die schützende und nährende Fruchtwand (Fruchtfleisch)?",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Frucht- und Samenentwicklung aus Fruchtknoten und Samenanlage ist kein verpflichtender Kerninhalt des B5-Grundbauplans; Karte bleibt aktiv."
+    },
+    {
+      "de_by_cell": "de-by:realschule-5-biologie-pflanzen-bluetenbau-samen",
+      "de_by_id": "01K4B5P0000000000000000J08",
+      "de_by_question": "Erkläre die Entstehung von Samen (aus der befruchteten Samenanlage: Samenschale, Keimling/Embryo mit Keimblättern, Nährgewebe) und Frucht (aus dem heranwachsenden Fruchtknoten) und analysiere die 4 evolutionären Strategien der Samenverbreitung: 1. Windausbreitung (Fallschirme wie Löwenzahn, Flügelfrüchte wie Ahorn), 2. Tierausbreitung (Klettfrüchte an Tierfellen wie Klette; Verzehr und Ausscheidung saftiger Beeren/Früchte wie Kirsche durch Vögel; Versteckausbreitung durch Eichhörnchen/Eichelhäher), 3. Wasserausbreitung (Schwimmgewebe wie Kokosnuss, Seerose), 4. Selbstausbreitung / Schleudermechanismen (Springkraut, Spritzgurke).",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Mehrteilige Übersicht zu vier Samenausbreitungstypen (Anemo-, Zoo-, Hydro-, Autochorie) liegt jenseits von B5 LB 4; bleibt aktiv."
+    },
+    {
+      "de_by_cell": "de-by:realschule-5-natur-technik-mikroskop-experiment-dateien",
+      "de_by_id": "01K4T5N0000000000000000J01",
+      "de_by_question": "Wie nennt man eine wissenschaftlich begründete Vermutung über den Ausgang eines Experiments, die anschließend experimentell überprüft wird?",
+      "category": "A",
+      "academy_slug": "b5-erkenntnisweg-check",
+      "action": "replace",
+      "reason": "Derselbe Einzelabruf zum Fachbegriff Hypothese als begründete, experimentell überprüfbare Vermutung im Erkenntnisweg."
+    },
+    {
+      "de_by_cell": "de-by:realschule-5-natur-technik-mikroskop-experiment-dateien",
+      "de_by_id": "01K4T5N0000000000000000J02",
+      "de_by_question": "Skizziere die 5 Stufen des naturwissenschaftlichen Erkenntniswegs (1. Naturbeobachtung & präzise Fragestellung, 2. Aufstellen einer überprüfbaren Hypothese, 3. Planung und Durchführung eines reproduzierbaren Experiments mit exakter Protokollführung, 4. Deutung & Abgleich der Ergebnisse mit der Hypothese, 5. Formulierung einer Gesetzmäßigkeit bzw. Falsifikation/Korrektur) und begründe die zwingende Notwendigkeit eines 'Kontrollansatzes' (Blindprobe / Nullprobe, bei dem genau ein einziger Umweltfaktor verändert wird).",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Mehrteilige Abfrage von fünf Stufen des Erkenntniswegs sowie Kontrollansatz und Falsifikation; bleibt wegen des größeren Umfangs ohne Einzelersetzung aktiv."
+    },
+    {
+      "de_by_cell": "de-by:realschule-5-natur-technik-mikroskop-experiment-dateien",
+      "de_by_id": "01K4T5N0000000000000000J03",
+      "de_by_question": "Wie berechnet man die optische Gesamtvergrößerung eines Lichtmikroskops?",
+      "category": "A",
+      "academy_slug": "b5-mikroskop-check",
+      "action": "replace",
+      "reason": "Derselbe Einzelabruf zur Berechnung der Gesamtvergrößerung des Lichtmikroskops (Okularvergrößerung · Objektivvergrößerung)."
+    },
+    {
+      "de_by_cell": "de-by:realschule-5-natur-technik-mikroskop-experiment-dateien",
+      "de_by_id": "01K4T5N0000000000000000J04",
+      "de_by_question": "Benenne die Hauptbestandteile eines Lichtmikroskops (Okular, Tubus, Objektivrevolver mit Objektiven, Objekttisch mit Präparateklemmen, Kondensor/Blende, Lichtquelle, Grob- und Feintrieb), erkläre die schrittweise Herstellung eines blasenfreien Frischpräparats (z. B. Küchenzwiebelhaut auf Objektträger, Wassertropfen, Deckglas im 45°-Winkel mit Präpariernadel absenken) und beschreibe die Vorgehensweise beim Scharfstellen (immer mit dem kleinsten Objektiv beginnen, Objekttisch mit Grobtrieb von unten nach oben herandrehen, dann unter Blickkontakt mit Feintrieb scharfstellen).",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Mehrteilige Sammelaufgabe zu Mikroskop-Bauteilen, Frischpräparat-Herstellung im 45°-Winkel und Fokussier-Ablauf; kein 1:1-Ersatz."
+    },
+    {
+      "de_by_cell": "de-by:realschule-5-natur-technik-mikroskop-experiment-dateien",
+      "de_by_id": "01K4T5N0000000000000000J05",
+      "de_by_question": "Wie nennt man in der Objektorientierung eine Eigenschaft eines Objekts (z. B. 'Farbe' oder 'Radius') und wie den konkreten Zustand dieser Eigenschaft (z. B. 'rot' oder '5 cm')?",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Informatik-Teil des früheren NuT-5-Moduls (Objektorientierung: Attribut und Attributwert); gehört inhaltlich zur Informatik, nicht zu Biologie 5."
+    },
+    {
+      "de_by_cell": "de-by:realschule-5-natur-technik-mikroskop-experiment-dateien",
+      "de_by_id": "01K4T5N0000000000000000J06",
+      "de_by_question": "Definiere die 4 Grundbausteine des objektorientierten Modells in NuT: 1. Objekt (konkretes Ding mit Name/Identifikator), 2. Klasse (Bauplan/Schablone für gleichartige Objekte), 3. Attribute und Attributwerte (Zustand des Objekts), 4. Methoden (Operationen/Aktionen, die den Zustand eines Objekts verändern) und stelle das Grafikobjekt 'meinKreis' der Klasse 'KREIS' im Punkt-Notationsschema dar (mit Attributen Radius, Füllfarbe, Mittelpunkt und Methoden Verschieben, Umfärben).",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Informatik-Teil des früheren NuT-5-Moduls (vier Grundbausteine des objektorientierten Modells und Punktnotation); gehört zur Informatik."
+    },
+    {
+      "de_by_cell": "de-by:realschule-5-natur-technik-mikroskop-experiment-dateien",
+      "de_by_id": "01K4T5N0000000000000000J07",
+      "de_by_question": "Woran erkennt das Betriebssystem eines Computers, um welchen Dateityp es sich bei einer Datei handelt und mit welchem Anwendungsprogramm sie geöffnet werden muss?",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Informatik-Teil des früheren NuT-5-Moduls (Dateinamenserweiterung); gehört zur Informatik, nicht zu Biologie 5."
+    },
+    {
+      "de_by_cell": "de-by:realschule-5-natur-technik-mikroskop-experiment-dateien",
+      "de_by_id": "01K4T5N0000000000000000J08",
+      "de_by_question": "Erkläre den Aufbau eines hierarchischen Dateibaums (Wurzelverzeichnis / Root, Ordner/Verzeichnisse, Unterordner, Dateien als Blätter), unterscheide absolute Pfadangaben (vollständige Wegbeschreibung ab dem Wurzelverzeichnis) von relativen Pfadangaben (Wegbeschreibung ausgehend vom aktuellen Arbeitsordner) und ordne die 4 Standard-Dateitypen ihren Endungen zu: Textdokument (.docx / .odt), Bilddatei (.jpg / .png), Audiodatei (.mp3 / .wav) und Videodatei (.mp4).",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Informatik-Teil des früheren NuT-5-Moduls (Dateibaum, absolute/relative Pfade und Dateitypen); gehört zur Informatik."
+    }
+  ]
+}

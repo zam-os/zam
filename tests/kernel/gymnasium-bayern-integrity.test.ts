@@ -8,8 +8,8 @@ import {
   type Database,
   enrolBundledCell,
   findBundledCellsForScope,
-  listBundledCells,
   kvtItemPlainTexts,
+  listBundledCells,
   openDatabase,
   plainProjection,
 } from "../../src/kernel/index.js";
@@ -46,13 +46,13 @@ const ENROL_SMOKE_CELLS = [
 ];
 
 describe("Gymnasium Bayern Full Curriculum (Klassen 5–13) Integrity & Quality Audit", () => {
-  it("verifies global uniqueness and schema compliance across all 124 remaining Gymnasium Bayern cells (Grades 5-13)", () => {
+  it("verifies global uniqueness and schema compliance across all 121 remaining Gymnasium Bayern cells (Grades 5-13)", () => {
     const allCells = listBundledCells();
     const byGymCells = allCells.filter((c) =>
       c.tile_id.startsWith("de-by:gymnasium-"),
     );
 
-    expect(byGymCells.length).toBe(124);
+    expect(byGymCells.length).toBe(121);
 
     const allAtomIds = new Set<string>();
     const allItemIds = new Set<string>();
@@ -98,18 +98,22 @@ describe("Gymnasium Bayern Full Curriculum (Klassen 5–13) Integrity & Quality 
             expect(item.fast_check?.correct_index).toBe(0);
           } else if (item.tier === "tier2_synthesis") {
             if (item.sample_solution) {
-              expect(plainText(item.sample_solution).length).toBeGreaterThan(50);
+              expect(plainText(item.sample_solution).length).toBeGreaterThan(
+                50,
+              );
             } else {
-              expect(kvtItemPlainTexts(item).concept.length).toBeGreaterThan(20);
+              expect(kvtItemPlainTexts(item).concept.length).toBeGreaterThan(
+                20,
+              );
             }
           }
         }
       }
     }
 
-    expect(gradeCellCounts[5]).toBe(7);
+    expect(gradeCellCounts[5]).toBe(6);
     expect(gradeCellCounts[6]).toBe(7);
-    expect(gradeCellCounts[7]).toBe(13);
+    expect(gradeCellCounts[7]).toBe(11);
     expect(gradeCellCounts[8]).toBe(16);
     expect(gradeCellCounts[9]).toBe(15);
     expect(gradeCellCounts[10]).toBe(18);

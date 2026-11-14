@@ -1,0 +1,3969 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "zam-academy:mathematik-mittelschule-9",
+  "version": "2026.11.1",
+  "title": "Mathematik 9 Mittelschule (ZAM Academy)",
+  "description": "Acht Lernbereiche des LehrplanPLUS Bayern für die Regelklasse (R9) und die Mittlere-Reife-Klasse (M9): 40 Lektionen mit Labor und zwei Aufgabenstufen.",
+  "publisher": "ZAM Academy",
+  "published_at": "2026-11-12T08:00:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/mittelschule/9/mathematik/regelklasse",
+      "checked": "2026-11-12",
+      "label": "R9, LB 1–8"
+    },
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/mittelschule/9/mathematik/mittlere-reife-klasse",
+      "checked": "2026-11-12",
+      "label": "M9, LB 1–8"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01M78QQC5HA3DFVBAV2TVHDAJP",
+      "atom_uri": "urn:zam:atom:01M78QQC5HA3DFVBAV2TVHDAJP",
+      "namespace": "zam-academy-mathematik-mittelschule-9",
+      "slug": "zi-1-jahreszinsen",
+      "title": "Kapital, Zinsen, Zinssatz",
+      "domain": "mathematik/mittelschule-9/stage-1",
+      "reduction": "axiomatic",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=zi-1-jahreszinsen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-9",
+          "topic_code": "stage-1",
+          "topic_title": "Etappe 1: Prozent- und Zinsrechnung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "track": "regelklasse",
+          "topic_code": "lb1",
+          "topic_title": "Prozent- und Zinsrechnung",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "track": "mittlere-reife-klasse",
+          "topic_code": "lb1",
+          "topic_title": "Prozent- und Zinsrechnung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78QQC6SEM1RBAG6HQYRAWFC",
+          "slug": "ms9-zi-1-jahreszinsen-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=zi-1-jahreszinsen",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie berechnest du die Jahreszinsen Z aus dem Kapital K und dem Zinssatz p %?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "Z = K \\cdot \\frac{p}{100}",
+              "speech": "Z gleich K mal p durch hundert"
+            }
+          ],
+          "choice_distractors": [
+            {
+              "text": "Z = K · 100 : p",
+              "reason": "So rechnest du rückwärts einen Grundwert aus. Die Zinsen sind p Hundertstel von K."
+            },
+            {
+              "text": "Z = K + K · p : 100",
+              "reason": "Das ist der Kontostand nach einem Jahr, nicht die Zinsen."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "Z = K \\cdot \\frac{p}{100}",
+                  "speech": "Z gleich K mal p durch hundert"
+                }
+              ],
+              "Z = K · p"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78QQC6TRE8NVGZV2SKAK5VP",
+          "slug": "ms9-zi-1-jahreszinsen-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=zi-1-jahreszinsen",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Ein Kredit über 2.500 € kostet im Jahr 112,50 € Zinsen. Welcher Zinssatz gilt?",
+          "concept": "4,5 %",
+          "sample_solution": "p = Z · 100 : K = 112,50 · 100 : 2.500 = 4,5. Der Zinssatz beträgt 4,5 %.",
+          "choice_distractors": [
+            {
+              "text": "0,045 %",
+              "reason": "0,045 ist der Anteil als Dezimalzahl; mal 100 ergibt Prozent."
+            },
+            {
+              "text": "22,2 %",
+              "reason": "Kapital und Zinsen vertauscht: Teile die Zinsen durch das Kapital."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M78QQC5JCDZXWTP95M3D2WFR",
+      "atom_uri": "urn:zam:atom:01M78QQC5JCDZXWTP95M3D2WFR",
+      "namespace": "zam-academy-mathematik-mittelschule-9",
+      "slug": "zi-2-monats-tageszinsen",
+      "title": "Zinsen für Monate und Tage",
+      "domain": "mathematik/mittelschule-9/stage-1",
+      "reduction": "axiomatic",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=zi-2-monats-tageszinsen",
+      "prerequisites": [
+        {
+          "atom_id": "01M78QQC5HA3DFVBAV2TVHDAJP",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion legt die Grundlage, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-9",
+          "topic_code": "stage-1",
+          "topic_title": "Etappe 1: Prozent- und Zinsrechnung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "track": "regelklasse",
+          "topic_code": "lb1",
+          "topic_title": "Prozent- und Zinsrechnung",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "track": "mittlere-reife-klasse",
+          "topic_code": "lb1",
+          "topic_title": "Prozent- und Zinsrechnung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78QQC6VJZDSGQA71ADM7SRV",
+          "slug": "ms9-zi-2-monats-tageszinsen-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=zi-2-monats-tageszinsen",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie berechnest du die Zinsen für t Tage im Bankjahr?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "Z = K \\cdot \\frac{p}{100} \\cdot \\frac{t}{360}",
+              "speech": "Z gleich K mal p durch hundert mal t durch dreihundertsechzig"
+            }
+          ],
+          "choice_distractors": [
+            {
+              "text": "Z = K·p/100·t/12",
+              "reason": "t zählt Tage, nicht Monate: Teile durch 360."
+            },
+            {
+              "text": "Z = K·p/100·t/365",
+              "reason": "Im Bankjahr hat das Jahr 360 Tage und jeder Monat 30."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "Z = K \\cdot \\frac{p}{100} \\cdot \\frac{t}{360}",
+                  "speech": "Z gleich K mal p durch hundert mal t durch dreihundertsechzig"
+                }
+              ],
+              "Z = K · p : 100 · t"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78QQC6WJKVVD595ADJ98X6D",
+          "slug": "ms9-zi-2-monats-tageszinsen-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=zi-2-monats-tageszinsen",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "4.800 € liegen 5 Monate lang zu 1,5 % auf einem Festgeldkonto. Wie viel Zinsen gibt es?",
+          "concept": "30 €",
+          "sample_solution": "Jahreszinsen: 4.800 € · 1,5 : 100 = 72 €. Fünf Monate sind 5/12 Jahr: 72 € · 5 : 12 = 30 €.",
+          "choice_distractors": [
+            {
+              "text": "72 €",
+              "reason": "Das sind die Zinsen für ein ganzes Jahr."
+            },
+            {
+              "text": "360 €",
+              "reason": "Die Monate sind keine Jahre: mal 5/12, nicht mal 5."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M78QQC5KKBX31YA83PBAJKJW",
+      "atom_uri": "urn:zam:atom:01M78QQC5KKBX31YA83PBAJKJW",
+      "namespace": "zam-academy-mathematik-mittelschule-9",
+      "slug": "zi-3-zinsformel-umstellen",
+      "title": "Kapital, Zinssatz und Zeit gesucht",
+      "domain": "mathematik/mittelschule-9/stage-1",
+      "reduction": "axiomatic",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=zi-3-zinsformel-umstellen",
+      "prerequisites": [
+        {
+          "atom_id": "01M78QQC5JCDZXWTP95M3D2WFR",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion legt die Grundlage, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-9",
+          "topic_code": "stage-1",
+          "topic_title": "Etappe 1: Prozent- und Zinsrechnung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "track": "mittlere-reife-klasse",
+          "topic_code": "lb1",
+          "topic_title": "Prozent- und Zinsrechnung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78QQC6X5XQDN0ZHQREPFF7T",
+          "slug": "ms9-zi-3-zinsformel-umstellen-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=zi-3-zinsformel-umstellen",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie stellst du Z = K · p/100 · t/360 nach der Zeit t in Tagen um?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "t = \\frac{Z \\cdot 100 \\cdot 360}{K \\cdot p}",
+              "speech": "t gleich Z mal hundert mal dreihundertsechzig durch K mal p"
+            }
+          ],
+          "choice_distractors": [
+            {
+              "text": "t = Z · K · p : 36.000",
+              "reason": "K und p stehen im Nenner: Teile durch sie, statt mit ihnen malzunehmen."
+            },
+            {
+              "text": "t = Z · 100 : (K · p)",
+              "reason": "So bekommst du die Zeit in Jahren. Für Tage kommt noch mal 360 dazu."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "t = \\frac{Z \\cdot 100 \\cdot 360}{K \\cdot p}",
+                  "speech": "t gleich Z mal hundert mal dreihundertsechzig durch K mal p"
+                }
+              ],
+              "t = Z · K · p : 36.000"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78QQC6Y1QKDPR9VD9A3AHGV",
+          "slug": "ms9-zi-3-zinsformel-umstellen-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=zi-3-zinsformel-umstellen",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Wie viele Tage müssen 3.600 € zu 2,5 % liegen, damit es 50 € Zinsen gibt?",
+          "concept": "200 Tage",
+          "sample_solution": "Jahreszinsen: 3.600 € · 2,5 : 100 = 90 €. t = 50 · 100 · 360 : (3.600 · 2,5) = 1.800.000 : 9.000 = 200 Tage.",
+          "choice_distractors": [
+            {
+              "text": "0,56 Tage",
+              "reason": "Das ist der Anteil eines Jahres (50 : 90). Mal 360 ergibt die Tage."
+            },
+            {
+              "text": "202,8 Tage",
+              "reason": "Im Bankjahr rechnet man mit 360 Tagen, nicht mit 365."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M78QQC5M3ARTHYVVARVF1N1T",
+      "atom_uri": "urn:zam:atom:01M78QQC5M3ARTHYVVARVF1N1T",
+      "namespace": "zam-academy-mathematik-mittelschule-9",
+      "slug": "zi-4-effektiver-jahreszins",
+      "title": "Der effektive Jahreszins",
+      "domain": "mathematik/mittelschule-9/stage-1",
+      "reduction": "axiomatic",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=zi-4-effektiver-jahreszins",
+      "prerequisites": [
+        {
+          "atom_id": "01M78QQC5JCDZXWTP95M3D2WFR",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion legt die Grundlage, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-9",
+          "topic_code": "stage-1",
+          "topic_title": "Etappe 1: Prozent- und Zinsrechnung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "track": "regelklasse",
+          "topic_code": "lb1",
+          "topic_title": "Prozent- und Zinsrechnung",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "track": "mittlere-reife-klasse",
+          "topic_code": "lb1",
+          "topic_title": "Prozent- und Zinsrechnung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78QQC6Z29KAGZBKM90ZSCQG",
+          "slug": "ms9-zi-4-effektiver-jahreszins-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=zi-4-effektiver-jahreszins",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Ein Kurzkredit über das Kapital K kostet für m Monate die Gebühr Z. Wie bestimmst du den effektiven Jahreszins?",
+          "concept": "Kosten auf 12 Monate hochrechnen: p = Z · 12 : m · 100 : K.",
+          "choice_distractors": [
+            {
+              "text": "Kosten nur in Prozent des Kapitals: p = Z · 100 : K.",
+              "reason": "So erhältst du nur den Prozentsatz für die kurze Laufzeit, nicht für ein Jahr."
+            },
+            {
+              "text": "Kosten durch die Laufzeit teilen: p = Z : m.",
+              "reason": "Das sind Euro pro Monat, kein Prozentsatz des Kapitals."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Kosten auf 12 Monate hochrechnen: p = Z · 12 : m · 100 : K.",
+              "Kosten nur in Prozent des Kapitals: p = Z · 100 : K."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78QQC70VNZE3QGWP79WXYP0",
+          "slug": "ms9-zi-4-effektiver-jahreszins-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=zi-4-effektiver-jahreszins",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Ein Pfandhaus verlangt für ein Darlehen von 300 € nach 2 Monaten 9 € Gebühren. Wie hoch ist der effektive Jahreszins?",
+          "concept": "18 %",
+          "sample_solution": "Ein Jahr hat 6-mal 2 Monate, das wären 6 · 9 € = 54 €. 54 € von 300 € sind 54 : 300 = 0,18 = 18 %.",
+          "choice_distractors": [
+            {
+              "text": "3 %",
+              "reason": "Das sind die Kosten für die zwei Monate. Rechne auf ein Jahr hoch."
+            },
+            {
+              "text": "1,5 %",
+              "reason": "Das ist ein Monat. Ein Jahr hat 12 Monate."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M78QQC5NS2HEZZP7A8M9XNQ3",
+      "atom_uri": "urn:zam:atom:01M78QQC5NS2HEZZP7A8M9XNQ3",
+      "namespace": "zam-academy-mathematik-mittelschule-9",
+      "slug": "zi-5-zinseszins",
+      "title": "Zinseszins Schritt für Schritt",
+      "domain": "mathematik/mittelschule-9/stage-1",
+      "reduction": "axiomatic",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=zi-5-zinseszins",
+      "prerequisites": [
+        {
+          "atom_id": "01M78QQC5HA3DFVBAV2TVHDAJP",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion legt die Grundlage, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-9",
+          "topic_code": "stage-1",
+          "topic_title": "Etappe 1: Prozent- und Zinsrechnung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "track": "regelklasse",
+          "topic_code": "lb1",
+          "topic_title": "Prozent- und Zinsrechnung",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "track": "mittlere-reife-klasse",
+          "topic_code": "lb1",
+          "topic_title": "Prozent- und Zinsrechnung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78QQC71VVGSHHAWQEGT1MPQ",
+          "slug": "ms9-zi-5-zinseszins-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=zi-5-zinseszins",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was bedeutet Zinseszins?",
+          "concept": "Die Zinsen werden zum Kapital addiert und im Folgejahr mitverzinst.",
+          "choice_distractors": [
+            {
+              "text": "Jedes Jahr gibt es dieselben Zinsen vom Startkapital.",
+              "reason": "Das sind einfache Zinsen ohne Zinseszins."
+            },
+            {
+              "text": "Der Zinssatz steigt jedes Jahr um einen Prozentpunkt.",
+              "reason": "Der Zinssatz bleibt gleich; es wächst das Kapital, das verzinst wird."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Zinsen werden zum Kapital addiert und im Folgejahr mitverzinst.",
+              "Jedes Jahr gibt es dieselben Zinsen vom Startkapital."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78QQC72Z7ZQAJQGJDG9KZ6Z",
+          "slug": "ms9-zi-5-zinseszins-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=zi-5-zinseszins",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "2.000 € werden 2 Jahre lang zu 3 % mit Zinseszins angelegt. Wie hoch ist das Kapital danach?",
+          "concept": "2.121,80 €",
+          "sample_solution": "Jahr 1: 2.000 € + 60 € = 2.060 €. Jahr 2: 2.060 € + 61,80 € = 2.121,80 €.",
+          "choice_distractors": [
+            {
+              "text": "2.120,00 €",
+              "reason": "Das wäre ohne Zinseszins: Im zweiten Jahr werden auch die 60 € verzinst."
+            },
+            {
+              "text": "2.060,00 €",
+              "reason": "Das ist erst der Stand nach einem Jahr."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M78QQC5PV7D3JDCJJ6KSCRQE",
+      "atom_uri": "urn:zam:atom:01M78QQC5PV7D3JDCJJ6KSCRQE",
+      "namespace": "zam-academy-mathematik-mittelschule-9",
+      "slug": "zi-6-zinsfaktor",
+      "title": "Mit dem Zinsfaktor rechnen",
+      "domain": "mathematik/mittelschule-9/stage-1",
+      "reduction": "axiomatic",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=zi-6-zinsfaktor",
+      "prerequisites": [
+        {
+          "atom_id": "01M78QQC5NS2HEZZP7A8M9XNQ3",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion legt die Grundlage, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-9",
+          "topic_code": "stage-1",
+          "topic_title": "Etappe 1: Prozent- und Zinsrechnung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "track": "mittlere-reife-klasse",
+          "topic_code": "lb1",
+          "topic_title": "Prozent- und Zinsrechnung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78QQC73DG7EW5598EAJG5PR",
+          "slug": "ms9-zi-6-zinsfaktor-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=zi-6-zinsfaktor",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie berechnest du das Kapital nach n Jahren mit dem Zinsfaktor q?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "K_n = K_0 \\cdot q^n",
+              "speech": "K n gleich K null mal q hoch n"
+            },
+            {
+              "type": "text",
+              "text": " mit q = 1 + p : 100"
+            }
+          ],
+          "choice_distractors": [
+            {
+              "text": "Kₙ = K₀ · (p : 100)ⁿ mit dem Zinssatz als Faktor",
+              "reason": "Der Zinsfaktor ist 1 + p : 100; die 1 steht für das Kapital selbst."
+            },
+            {
+              "text": "Kₙ = K₀ · n · p : 100, die einfachen Zinsen",
+              "reason": "Das sind nur die Zinsen ohne Zinseszins, nicht das Kapital nach n Jahren."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "K_n = K_0 \\cdot q^n",
+                  "speech": "K n gleich K null mal q hoch n"
+                },
+                {
+                  "type": "text",
+                  "text": " mit q = 1 + p : 100"
+                }
+              ],
+              "Kₙ = K₀ · q · n"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78QQC747NZFYCXGVHV1AZCH",
+          "slug": "ms9-zi-6-zinsfaktor-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=zi-6-zinsfaktor",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Welches Startkapital wächst bei 4 % Zinseszins in 5 Jahren auf 6.083,26 €?",
+          "concept": "5.000,00 €",
+          "sample_solution": "q = 1,04 und 1,04⁵ ≈ 1,21665. K₀ = 6.083,26 € : 1,21665 ≈ 5.000 €.",
+          "choice_distractors": [
+            {
+              "text": "5.069,38 €",
+              "reason": "So rechnest du ohne Zinseszins (mal 1,2). Teile durch 1,04 hoch 5."
+            },
+            {
+              "text": "7.401,22 €",
+              "reason": "Rückwärts heißt durch qⁿ teilen, nicht malnehmen."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M78QQC5Q3RYG85X6Y675NJPP",
+      "atom_uri": "urn:zam:atom:01M78QQC5Q3RYG85X6Y675NJPP",
+      "namespace": "zam-academy-mathematik-mittelschule-9",
+      "slug": "zi-7-zusammenhaenge-schaubilder",
+      "title": "Zusammenhänge beschreiben, Schaubilder befragen",
+      "domain": "mathematik/mittelschule-9/stage-1",
+      "reduction": "axiomatic",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=zi-7-zusammenhaenge-schaubilder",
+      "prerequisites": [
+        {
+          "atom_id": "01M78QQC5HA3DFVBAV2TVHDAJP",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion legt die Grundlage, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-9",
+          "topic_code": "stage-1",
+          "topic_title": "Etappe 1: Prozent- und Zinsrechnung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "track": "regelklasse",
+          "topic_code": "lb1",
+          "topic_title": "Prozent- und Zinsrechnung",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "track": "mittlere-reife-klasse",
+          "topic_code": "lb1",
+          "topic_title": "Prozent- und Zinsrechnung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78QQC7503QT0HSHGH028B6B",
+          "slug": "ms9-zi-7-zusammenhaenge-schaubilder-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=zi-7-zusammenhaenge-schaubilder",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Zinssatz und Zeit bleiben gleich, das Kapital wird verdreifacht. Was passiert mit den Zinsen?",
+          "concept": "Sie verdreifachen sich, denn Zinsen und Kapital sind proportional.",
+          "choice_distractors": [
+            {
+              "text": "Sie bleiben gleich, weil der Zinssatz gleich bleibt.",
+              "reason": "Der Zinssatz ist ein Anteil; vom dreifachen Kapital ist derselbe Anteil dreimal so viel."
+            },
+            {
+              "text": "Sie werden gedrittelt: je mehr Kapital, desto weniger Zinsen.",
+              "reason": "Das wäre umgekehrt proportional. Mehr Kapital bringt mehr Zinsen."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie verdreifachen sich, denn Zinsen und Kapital sind proportional.",
+              "Sie werden gedrittelt."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78QQC763G3H87AYBH7Y2TKP",
+          "slug": "ms9-zi-7-zusammenhaenge-schaubilder-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=zi-7-zusammenhaenge-schaubilder",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Ein Säulendiagramm zeigt 1,5 % und 2,5 % Tagesgeldzinsen; die Achse beginnt bei 1 %, die zweite Säule ist dreimal so hoch. Wie viel mehr Zinsen bringen 4.000 € in einem Jahr bei 2,5 %?",
+          "concept": "40 €",
+          "sample_solution": "4.000 € · 2,5 : 100 = 100 € und 4.000 € · 1,5 : 100 = 60 €, Unterschied 40 €. Die Säulen täuschen: Der Zinssatz ist nur etwa 1,7-mal so hoch.",
+          "choice_distractors": [
+            {
+              "text": "1 €",
+              "reason": "Das ist der Unterschied in Prozentpunkten, nicht in Euro."
+            },
+            {
+              "text": "120 €",
+              "reason": "Die Säulenhöhe täuscht, weil die Achse nicht bei 0 beginnt; rechne mit den Zinssätzen."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M78QQC5RR2TV889V1DF2SJ1N",
+      "atom_uri": "urn:zam:atom:01M78QQC5RR2TV889V1DF2SJ1N",
+      "namespace": "zam-academy-mathematik-mittelschule-9",
+      "slug": "po-1-zehnerpotenzen",
+      "title": "Große und kleine Zahlen mit Zehnerpotenzen",
+      "domain": "mathematik/mittelschule-9/stage-2",
+      "reduction": "axiomatic",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=po-1-zehnerpotenzen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-9",
+          "topic_code": "stage-2",
+          "topic_title": "Etappe 2: Potenzen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "track": "regelklasse",
+          "topic_code": "lb2",
+          "topic_title": "Potenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "track": "mittlere-reife-klasse",
+          "topic_code": "lb2",
+          "topic_title": "Potenzen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78QQC770YVH7PJEABQ9ZEJQ",
+          "slug": "ms9-po-1-zehnerpotenzen-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=po-1-zehnerpotenzen",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was bedeutet ein negativer Exponent wie in 7,2 · 10⁻⁴?",
+          "concept": "Das Komma wandert um 4 Stellen nach links: 7,2 · 10⁻⁴ = 0,00072.",
+          "choice_distractors": [
+            {
+              "text": "Die Zahl ist negativ: 7,2 · 10⁻⁴ = −72.000.",
+              "reason": "Ein negativer Exponent macht die Zahl klein, nicht negativ."
+            },
+            {
+              "text": "Das Komma wandert um 4 Stellen nach rechts: 72.000.",
+              "reason": "Nach rechts wandert es bei positivem Exponenten."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Das Komma wandert um 4 Stellen nach links: 7,2 · 10⁻⁴ = 0,00072.",
+              "Die Zahl ist negativ: −72.000."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78QQC78P71RH7MXGEHBKZ1E",
+          "slug": "ms9-po-1-zehnerpotenzen-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=po-1-zehnerpotenzen",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Ordne der Größe nach, die kleinste zuerst: 3,9 · 10⁻², 4,2 · 10⁻³ und 1,5 · 10⁻².",
+          "concept": "4,2 · 10⁻³ < 1,5 · 10⁻² < 3,9 · 10⁻²",
+          "sample_solution": "Als Dezimalzahlen: 0,0042 < 0,015 < 0,039. Zuerst entscheidet der Exponent, bei gleichem Exponenten die Vorzahl.",
+          "choice_distractors": [
+            {
+              "text": "1,5 · 10⁻² < 3,9 · 10⁻² < 4,2 · 10⁻³",
+              "reason": "Bei Exponent −3 ist die Zahl kleiner als bei −2."
+            },
+            {
+              "text": "4,2 · 10⁻³ < 3,9 · 10⁻² < 1,5 · 10⁻²",
+              "reason": "Bei gleichem Exponenten entscheidet die Vorzahl: 1,5 ist kleiner als 3,9."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M78QQC5SSEATZWRG649GXJ6M",
+      "atom_uri": "urn:zam:atom:01M78QQC5SSEATZWRG649GXJ6M",
+      "namespace": "zam-academy-mathematik-mittelschule-9",
+      "slug": "po-2-rechnen-zehnerpotenzen",
+      "title": "Rechnen mit Zehnerpotenzen",
+      "domain": "mathematik/mittelschule-9/stage-2",
+      "reduction": "axiomatic",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=po-2-rechnen-zehnerpotenzen",
+      "prerequisites": [
+        {
+          "atom_id": "01M78QQC5RR2TV889V1DF2SJ1N",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion legt die Grundlage, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-9",
+          "topic_code": "stage-2",
+          "topic_title": "Etappe 2: Potenzen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "track": "regelklasse",
+          "topic_code": "lb2",
+          "topic_title": "Potenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "track": "mittlere-reife-klasse",
+          "topic_code": "lb2",
+          "topic_title": "Potenzen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78QQC79F59V1V41NWMZN2HC",
+          "slug": "ms9-po-2-rechnen-zehnerpotenzen-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=po-2-rechnen-zehnerpotenzen",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie multiplizierst du zwei Zahlen in Zehnerpotenzschreibweise?",
+          "concept": "Vorzahlen malnehmen und Exponenten addieren.",
+          "choice_distractors": [
+            {
+              "text": "Vorzahlen malnehmen und Exponenten malnehmen.",
+              "reason": "10³ · 10² = 1.000 · 100 = 10⁵: Die Nullen zählen sich zusammen."
+            },
+            {
+              "text": "Vorzahlen addieren und Exponenten addieren.",
+              "reason": "Die Vorzahlen werden wie normale Faktoren malgenommen."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Vorzahlen malnehmen und Exponenten addieren.",
+              "Vorzahlen malnehmen, Exponenten malnehmen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78QQC7AY281526A796HF3V6",
+          "slug": "ms9-po-2-rechnen-zehnerpotenzen-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=po-2-rechnen-zehnerpotenzen",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Licht legt pro Sekunde 3 · 10⁵ km zurück. Wie weit kommt es in 5 · 10² Sekunden? Gib das Ergebnis in Zehnerpotenzschreibweise an.",
+          "concept": "1,5 · 10⁸ km",
+          "sample_solution": "(3 · 5) · 10⁵⁺² = 15 · 10⁷ km = 1,5 · 10⁸ km.",
+          "choice_distractors": [
+            {
+              "text": "15 · 10¹⁰ km",
+              "reason": "Die Exponenten werden addiert, nicht malgenommen."
+            },
+            {
+              "text": "1,5 · 10⁷ km",
+              "reason": "15 = 1,5 · 10: Der Exponent wird um 1 größer."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M78QQC5TP6AMP5DPMR69NKVF",
+      "atom_uri": "urn:zam:atom:01M78QQC5TP6AMP5DPMR69NKVF",
+      "namespace": "zam-academy-mathematik-mittelschule-9",
+      "slug": "po-3-vorsilben",
+      "title": "Vorsilben von Nano bis Peta",
+      "domain": "mathematik/mittelschule-9/stage-2",
+      "reduction": "axiomatic",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=po-3-vorsilben",
+      "prerequisites": [
+        {
+          "atom_id": "01M78QQC5RR2TV889V1DF2SJ1N",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion legt die Grundlage, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-9",
+          "topic_code": "stage-2",
+          "topic_title": "Etappe 2: Potenzen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "track": "regelklasse",
+          "topic_code": "lb2",
+          "topic_title": "Potenzen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "track": "mittlere-reife-klasse",
+          "topic_code": "lb2",
+          "topic_title": "Potenzen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78QQC7BKSRBXMVFQ0MW0RQD",
+          "slug": "ms9-po-3-vorsilben-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=po-3-vorsilben",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Für welche Zehnerpotenz steht die Vorsilbe Mikro (µ)?",
+          "concept": "10⁻⁶",
+          "choice_distractors": [
+            {
+              "text": "10⁻³",
+              "reason": "Das ist Milli (m)."
+            },
+            {
+              "text": "10⁻⁹",
+              "reason": "Das ist Nano (n)."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "10⁻⁶",
+              "10⁶"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78QQC7CC9GTMG90YTQ63C31",
+          "slug": "ms9-po-3-vorsilben-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=po-3-vorsilben",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Ein Video belegt 2,5 GB. Wie viele MB sind das, wenn 1 GB = 1.000 MB?",
+          "concept": "2.500 MB",
+          "sample_solution": "Von Giga (10⁹) zu Mega (10⁶) ist der Faktor 10³ = 1.000: 2,5 · 1.000 = 2.500 MB.",
+          "choice_distractors": [
+            {
+              "text": "2.500.000 MB",
+              "reason": "Giga und Mega liegen nur eine Dreierstufe auseinander."
+            },
+            {
+              "text": "0,0025 MB",
+              "reason": "Zur kleineren Einheit wird die Maßzahl größer, nicht kleiner."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M78QQC5V57VQXN10AFZTMM4H",
+      "atom_uri": "urn:zam:atom:01M78QQC5V57VQXN10AFZTMM4H",
+      "namespace": "zam-academy-mathematik-mittelschule-9",
+      "slug": "ge-1-rechtwinklige-dreiecke",
+      "title": "Rechtwinklige Dreiecke erkennen",
+      "domain": "mathematik/mittelschule-9/stage-3",
+      "reduction": "axiomatic",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=ge-1-rechtwinklige-dreiecke",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-9",
+          "topic_code": "stage-3",
+          "topic_title": "Etappe 3: Geometrische Figuren, Körper und Lagebeziehungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "track": "regelklasse",
+          "topic_code": "lb3",
+          "topic_title": "Geometrische Figuren, Körper und Lagebeziehungen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "track": "mittlere-reife-klasse",
+          "topic_code": "lb3",
+          "topic_title": "Geometrische Figuren, Körper und Lagebeziehungen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78QQC7D6XYW9KEPNWDVYB2B",
+          "slug": "ms9-ge-1-rechtwinklige-dreiecke-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=ge-1-rechtwinklige-dreiecke",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Seite eines rechtwinkligen Dreiecks heißt Hypotenuse?",
+          "concept": "Die Seite gegenüber dem rechten Winkel; sie ist die längste Seite.",
+          "choice_distractors": [
+            {
+              "text": "Eine der beiden Seiten am rechten Winkel.",
+              "reason": "Die Seiten am rechten Winkel sind die Katheten."
+            },
+            {
+              "text": "Immer die Seite c, egal wo der rechte Winkel liegt.",
+              "reason": "Das gilt nur, wenn der rechte Winkel bei C liegt."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Seite gegenüber dem rechten Winkel; sie ist die längste Seite.",
+              "Eine der beiden Seiten am rechten Winkel."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78QQC7EV3X7PJ73T1SPVH1E",
+          "slug": "ms9-ge-1-rechtwinklige-dreiecke-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=ge-1-rechtwinklige-dreiecke",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Im Dreieck PQR ist der Winkel bei Q ein rechter Winkel und ∢QPR = 38°. Welche Seite ist die Hypotenuse, und wie groß ist ∢PRQ?",
+          "concept": "PR; ∢PRQ = 52°",
+          "sample_solution": "Die Hypotenuse liegt dem rechten Winkel bei Q gegenüber: PR. Die spitzen Winkel ergänzen sich zu 90°: 90° − 38° = 52°.",
+          "choice_distractors": [
+            {
+              "text": "PQ; ∢PRQ = 52°",
+              "reason": "PQ liegt am rechten Winkel, ist also eine Kathete."
+            },
+            {
+              "text": "PR; ∢PRQ = 142°",
+              "reason": "Vergiss den rechten Winkel nicht: 180° − 90° − 38° = 52°."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M78QQC5WPB2N3AZ6M7C8T71T",
+      "atom_uri": "urn:zam:atom:01M78QQC5WPB2N3AZ6M7C8T71T",
+      "namespace": "zam-academy-mathematik-mittelschule-9",
+      "slug": "ge-2-thaleskreis",
+      "title": "Der Thaleskreis",
+      "domain": "mathematik/mittelschule-9/stage-3",
+      "reduction": "axiomatic",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=ge-2-thaleskreis",
+      "prerequisites": [
+        {
+          "atom_id": "01M78QQC5V57VQXN10AFZTMM4H",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion legt die Grundlage, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-9",
+          "topic_code": "stage-3",
+          "topic_title": "Etappe 3: Geometrische Figuren, Körper und Lagebeziehungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "track": "mittlere-reife-klasse",
+          "topic_code": "lb3",
+          "topic_title": "Geometrische Figuren, Körper und Lagebeziehungen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78QQC7FEAW45TSBRJJPWWMB",
+          "slug": "ms9-ge-2-thaleskreis-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=ge-2-thaleskreis",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was besagt der Satz des Thales?",
+          "concept": "Liegt C auf dem Halbkreis über AB, so hat das Dreieck ABC bei C einen rechten Winkel.",
+          "choice_distractors": [
+            {
+              "text": "Liegt C auf dem Halbkreis über AB, so ist das Dreieck ABC gleichschenklig.",
+              "reason": "Gleichschenklig ist es nur, wenn C genau in der Mitte des Bogens liegt."
+            },
+            {
+              "text": "Liegt C innerhalb des Kreises über AB, so ist der Winkel bei C ein rechter.",
+              "reason": "Innerhalb des Kreises wird der Winkel bei C stumpf."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Liegt C auf dem Halbkreis über AB, so hat das Dreieck ABC bei C einen rechten Winkel.",
+              "Liegt C innerhalb des Halbkreises, so ist der Winkel bei C ein rechter."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78QQC7GQWK0QMACYG8J7D06",
+          "slug": "ms9-ge-2-thaleskreis-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=ge-2-thaleskreis",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "C liegt auf dem Thaleskreis über AB, M ist der Mittelpunkt von AB, und ∢AMC = 100°. Wie groß sind α und β?",
+          "concept": "α = 40°, β = 50°",
+          "sample_solution": "Das Dreieck AMC ist gleichschenklig (MA = MC): α = (180° − 100°) : 2 = 40°. Mit γ = 90° folgt β = 90° − 40° = 50°.",
+          "choice_distractors": [
+            {
+              "text": "α = 50°, β = 40°",
+              "reason": "α liegt im Dreieck AMC an der Basis: (180° − 100°) : 2 = 40°."
+            },
+            {
+              "text": "α = 40°, β = 100°",
+              "reason": "β ist kein Winkel bei M; im Dreieck ABC gilt α + β = 90°."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M78QQC5X5CCCHM7DE1SFADDN",
+      "atom_uri": "urn:zam:atom:01M78QQC5X5CCCHM7DE1SFADDN",
+      "namespace": "zam-academy-mathematik-mittelschule-9",
+      "slug": "ge-3-pythagoras",
+      "title": "Der Satz des Pythagoras",
+      "domain": "mathematik/mittelschule-9/stage-3",
+      "reduction": "axiomatic",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=ge-3-pythagoras",
+      "prerequisites": [
+        {
+          "atom_id": "01M78QQC5V57VQXN10AFZTMM4H",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion legt die Grundlage, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-9",
+          "topic_code": "stage-3",
+          "topic_title": "Etappe 3: Geometrische Figuren, Körper und Lagebeziehungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "track": "regelklasse",
+          "topic_code": "lb3",
+          "topic_title": "Geometrische Figuren, Körper und Lagebeziehungen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "track": "mittlere-reife-klasse",
+          "topic_code": "lb3",
+          "topic_title": "Geometrische Figuren, Körper und Lagebeziehungen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78QQC7HJV7M745106KSBDQV",
+          "slug": "ms9-ge-3-pythagoras-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=ge-3-pythagoras",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie lautet der Satz des Pythagoras im Dreieck ABC mit dem rechten Winkel bei A?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "b^2 + c^2 = a^2",
+              "speech": "b Quadrat plus c Quadrat gleich a Quadrat"
+            }
+          ],
+          "choice_distractors": [
+            {
+              "text": "a² + b² = c², wie immer",
+              "reason": "Das gilt nur, wenn der rechte Winkel bei C liegt; hier ist a die Hypotenuse."
+            },
+            {
+              "text": "a + b = c",
+              "reason": "Die Quadrate der Katheten werden addiert, nicht die Seitenlängen."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "b^2 + c^2 = a^2",
+                  "speech": "b Quadrat plus c Quadrat gleich a Quadrat"
+                }
+              ],
+              "a² + b² = c²"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78QQC7J6THHA83YD028T89W",
+          "slug": "ms9-ge-3-pythagoras-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=ge-3-pythagoras",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Die Hypotenuse eines rechtwinkligen Dreiecks ist 13 cm lang, eine Kathete 5 cm. Wie lang ist die andere Kathete?",
+          "concept": "12 cm",
+          "sample_solution": "b² = 13² − 5² = 169 − 25 = 144, also b = √144 = 12 cm.",
+          "choice_distractors": [
+            {
+              "text": "13,93 cm",
+              "reason": "Bei einer gesuchten Kathete wird subtrahiert: √(169 + 25) wäre falsch."
+            },
+            {
+              "text": "8 cm",
+              "reason": "Nicht die Längen subtrahieren, sondern ihre Quadrate."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M78QQC5Y9Y4TQ1ZY9FNCB04A",
+      "atom_uri": "urn:zam:atom:01M78QQC5Y9Y4TQ1ZY9FNCB04A",
+      "namespace": "zam-academy-mathematik-mittelschule-9",
+      "slug": "ge-4-pythagoras-anwenden",
+      "title": "Pythagoras in Körpern und im Alltag",
+      "domain": "mathematik/mittelschule-9/stage-3",
+      "reduction": "axiomatic",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=ge-4-pythagoras-anwenden",
+      "prerequisites": [
+        {
+          "atom_id": "01M78QQC5X5CCCHM7DE1SFADDN",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion legt die Grundlage, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-9",
+          "topic_code": "stage-3",
+          "topic_title": "Etappe 3: Geometrische Figuren, Körper und Lagebeziehungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "track": "regelklasse",
+          "topic_code": "lb3",
+          "topic_title": "Geometrische Figuren, Körper und Lagebeziehungen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "track": "mittlere-reife-klasse",
+          "topic_code": "lb3",
+          "topic_title": "Geometrische Figuren, Körper und Lagebeziehungen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78QQC7K8909KHM9QSQDASFP",
+          "slug": "ms9-ge-4-pythagoras-anwenden-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=ge-4-pythagoras-anwenden",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie berechnest du die Raumdiagonale d eines Quaders mit den Kanten a, b und c?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "d = \\sqrt{a^2 + b^2 + c^2}",
+              "speech": "d gleich Wurzel aus a Quadrat plus b Quadrat plus c Quadrat"
+            }
+          ],
+          "choice_distractors": [
+            {
+              "text": "d = √(a + b + c)",
+              "reason": "Unter der Wurzel stehen die Quadrate der Kanten."
+            },
+            {
+              "text": "e = √(a² + b²)",
+              "reason": "Das ist nur die Flächendiagonale e des Bodens; die Höhe c fehlt."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "d = \\sqrt{a^2 + b^2 + c^2}",
+                  "speech": "d gleich Wurzel aus a Quadrat plus b Quadrat plus c Quadrat"
+                }
+              ],
+              "d = a + b + c"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78QQC7M6PXWTSSPS5TSKW5T",
+          "slug": "ms9-ge-4-pythagoras-anwenden-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=ge-4-pythagoras-anwenden",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Eine 5 m lange Leiter steht 1,4 m von einer Wand entfernt. Wie hoch reicht sie an der Wand?",
+          "concept": "4,8 m",
+          "sample_solution": "Die Leiter ist die Hypotenuse: h² = 5² − 1,4² = 25 − 1,96 = 23,04, also h = 4,8 m.",
+          "choice_distractors": [
+            {
+              "text": "5,19 m",
+              "reason": "Die Leiter ist die längste Seite; gesucht ist eine Kathete: Quadrate subtrahieren."
+            },
+            {
+              "text": "3,6 m",
+              "reason": "Nicht die Längen subtrahieren, sondern ihre Quadrate."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M78QQC5ZQR7JDE8Y8YFZR273",
+      "atom_uri": "urn:zam:atom:01M78QQC5ZQR7JDE8Y8YFZR273",
+      "namespace": "zam-academy-mathematik-mittelschule-9",
+      "slug": "ge-5-umkehrung",
+      "title": "Ist das Dreieck rechtwinklig?",
+      "domain": "mathematik/mittelschule-9/stage-3",
+      "reduction": "axiomatic",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=ge-5-umkehrung",
+      "prerequisites": [
+        {
+          "atom_id": "01M78QQC5X5CCCHM7DE1SFADDN",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion legt die Grundlage, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-9",
+          "topic_code": "stage-3",
+          "topic_title": "Etappe 3: Geometrische Figuren, Körper und Lagebeziehungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "track": "regelklasse",
+          "topic_code": "lb3",
+          "topic_title": "Geometrische Figuren, Körper und Lagebeziehungen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "track": "mittlere-reife-klasse",
+          "topic_code": "lb3",
+          "topic_title": "Geometrische Figuren, Körper und Lagebeziehungen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78QQC7NZK92FT3AHM6EGMR3",
+          "slug": "ms9-ge-5-umkehrung-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=ge-5-umkehrung",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Ein Dreieck hat die Seiten a, b und die längste Seite c. Wann ist es rechtwinklig?",
+          "concept": "Wenn a² + b² = c² gilt.",
+          "choice_distractors": [
+            {
+              "text": "Wenn a + b = c gilt.",
+              "reason": "Dann gibt es gar kein Dreieck; vergleiche die Quadrate."
+            },
+            {
+              "text": "Wenn a² + b² größer als c² ist.",
+              "reason": "Dann sind alle Winkel spitz."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Wenn a² + b² = c² gilt.",
+              "Wenn a + b = c gilt."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78QQC7PD7VNJSSE0PE9MM56",
+          "slug": "ms9-ge-5-umkehrung-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=ge-5-umkehrung",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Ein Maurer misst von einer Ecke aus 0,90 m und 1,20 m ab. Die Schräge zwischen den Marken ist 1,52 m lang. Ist die Ecke rechtwinklig?",
+          "concept": "Nein, bei einem rechten Winkel wäre die Schräge 1,50 m lang.",
+          "sample_solution": "0,9² + 1,2² = 0,81 + 1,44 = 2,25 = 1,5². Bei einem rechten Winkel müsste die Schräge 1,50 m lang sein; 1,52 m ist zu lang, der Winkel ist stumpf.",
+          "choice_distractors": [
+            {
+              "text": "Ja, denn 1,52 m ist ungefähr 1,50 m.",
+              "reason": "Beim Prüfen zählt die genaue Länge; 2 cm sind beim Mauern ein deutlicher Fehler."
+            },
+            {
+              "text": "Ja, denn 0,90 m + 1,20 m ist länger als 1,52 m.",
+              "reason": "Das zeigt nur, dass es ein Dreieck gibt, nicht, dass es rechtwinklig ist."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M78QQC60D3WFWC502D74M6NP",
+      "atom_uri": "urn:zam:atom:01M78QQC60D3WFWC502D74M6NP",
+      "namespace": "zam-academy-mathematik-mittelschule-9",
+      "slug": "ge-6-regelmaessige-vielecke",
+      "title": "Regelmäßige Vielecke",
+      "domain": "mathematik/mittelschule-9/stage-3",
+      "reduction": "axiomatic",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=ge-6-regelmaessige-vielecke",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-9",
+          "topic_code": "stage-3",
+          "topic_title": "Etappe 3: Geometrische Figuren, Körper und Lagebeziehungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "track": "regelklasse",
+          "topic_code": "lb3",
+          "topic_title": "Geometrische Figuren, Körper und Lagebeziehungen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "track": "mittlere-reife-klasse",
+          "topic_code": "lb3",
+          "topic_title": "Geometrische Figuren, Körper und Lagebeziehungen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78QQC7QSAXV3F7W58VTN82A",
+          "slug": "ms9-ge-6-regelmaessige-vielecke-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=ge-6-regelmaessige-vielecke",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie groß ist der Mittelpunktswinkel μ eines regelmäßigen n-Ecks?",
+          "concept": "μ = 360° : n",
+          "choice_distractors": [
+            {
+              "text": "μ = 180° : n",
+              "reason": "Um den Mittelpunkt herum liegen 360°."
+            },
+            {
+              "text": "μ = (n − 2) · 180°",
+              "reason": "Das ist die Summe aller Innenwinkel."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "μ = 360° : n",
+              "μ = 180° : n"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78QQC7R07J0WK53BZP3Q7S4",
+          "slug": "ms9-ge-6-regelmaessige-vielecke-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=ge-6-regelmaessige-vielecke",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Berechne für ein regelmäßiges Achteck den Mittelpunktswinkel und den Innenwinkel.",
+          "concept": "μ = 45°, Innenwinkel 135°",
+          "sample_solution": "μ = 360° : 8 = 45°. Basiswinkel (180° − 45°) : 2 = 67,5°, Innenwinkel 2 · 67,5° = 135°.",
+          "choice_distractors": [
+            {
+              "text": "μ = 45°, Innenwinkel 67,5°",
+              "reason": "67,5° ist ein Basiswinkel; der Innenwinkel besteht aus zwei Basiswinkeln."
+            },
+            {
+              "text": "μ = 22,5°, Innenwinkel 157,5°",
+              "reason": "Um den Mittelpunkt sind es 360°, nicht 180°."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M78QQC61NKY9N74CJ283882A",
+      "atom_uri": "urn:zam:atom:01M78QQC61NKY9N74CJ283882A",
+      "namespace": "zam-academy-mathematik-mittelschule-9",
+      "slug": "ge-7-pyramide-kegel",
+      "title": "Pyramide und Kegel",
+      "domain": "mathematik/mittelschule-9/stage-3",
+      "reduction": "axiomatic",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=ge-7-pyramide-kegel",
+      "prerequisites": [
+        {
+          "atom_id": "01M78QQC5X5CCCHM7DE1SFADDN",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion legt die Grundlage, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-9",
+          "topic_code": "stage-3",
+          "topic_title": "Etappe 3: Geometrische Figuren, Körper und Lagebeziehungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "track": "regelklasse",
+          "topic_code": "lb3",
+          "topic_title": "Geometrische Figuren, Körper und Lagebeziehungen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "track": "mittlere-reife-klasse",
+          "topic_code": "lb3",
+          "topic_title": "Geometrische Figuren, Körper und Lagebeziehungen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78QQC7SKTREBGYTCCSHY8FF",
+          "slug": "ms9-ge-7-pyramide-kegel-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=ge-7-pyramide-kegel",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie viele Ecken, Kanten und Flächen hat eine Pyramide mit n-eckiger Grundfläche?",
+          "concept": "n + 1 Ecken, 2n Kanten, n + 1 Flächen",
+          "choice_distractors": [
+            {
+              "text": "n Ecken, n Kanten, n Flächen",
+              "reason": "Die Spitze, die Seitenkanten und die Grundfläche kommen noch dazu."
+            },
+            {
+              "text": "n + 1 Ecken, n + 1 Kanten, 2n Flächen",
+              "reason": "Kanten und Flächen sind vertauscht."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "n + 1 Ecken, 2n Kanten, n + 1 Flächen",
+              "n Ecken, n Kanten, n Flächen"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78QQC7TPW2H42EDM04FQY1P",
+          "slug": "ms9-ge-7-pyramide-kegel-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=ge-7-pyramide-kegel",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Eine quadratische Pyramide hat die Grundkante a = 6 cm und die Höhe h = 4 cm. Wie lang ist die Seitenhöhe hₛ?",
+          "concept": "hₛ = 5 cm",
+          "sample_solution": "Im Dreieck aus h, a : 2 und hₛ gilt hₛ = √(4² + 3²) = √25 = 5 cm.",
+          "choice_distractors": [
+            {
+              "text": "hₛ ≈ 7,21 cm",
+              "reason": "Der Fußpunkt der Höhe liegt in der Mitte: Nimm a : 2 = 3 cm, nicht a."
+            },
+            {
+              "text": "hₛ ≈ 2,65 cm",
+              "reason": "hₛ ist die Hypotenuse: Quadrate addieren, nicht subtrahieren."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M78QQC62RZ2QF0H8142S051F",
+      "atom_uri": "urn:zam:atom:01M78QQC62RZ2QF0H8142S051F",
+      "namespace": "zam-academy-mathematik-mittelschule-9",
+      "slug": "ge-8-schiefe-koerper",
+      "title": "Schiefe Pyramiden und Kegel",
+      "domain": "mathematik/mittelschule-9/stage-3",
+      "reduction": "axiomatic",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=ge-8-schiefe-koerper",
+      "prerequisites": [
+        {
+          "atom_id": "01M78QQC61NKY9N74CJ283882A",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion legt die Grundlage, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-9",
+          "topic_code": "stage-3",
+          "topic_title": "Etappe 3: Geometrische Figuren, Körper und Lagebeziehungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "track": "mittlere-reife-klasse",
+          "topic_code": "lb3",
+          "topic_title": "Geometrische Figuren, Körper und Lagebeziehungen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78QQC7V68ZB23FHBCP9JXA5",
+          "slug": "ms9-ge-8-schiefe-koerper-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=ge-8-schiefe-koerper",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie misst man die Höhe einer schiefen Pyramide?",
+          "concept": "Senkrecht von der Spitze zur Ebene der Grundfläche.",
+          "choice_distractors": [
+            {
+              "text": "Entlang der längsten Seitenkante zur Grundfläche.",
+              "reason": "Seitenkanten sind schräg; die Höhe steht senkrecht auf der Grundfläche."
+            },
+            {
+              "text": "Von der Spitze zum Mittelpunkt der Grundfläche.",
+              "reason": "Diese Strecke ist bei schiefen Körpern schräg."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Senkrecht von der Spitze zur Ebene der Grundfläche.",
+              "Entlang der längsten Seitenkante zur Grundfläche."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78QQC7W5VB6WB7PSQKRW6F4",
+          "slug": "ms9-ge-8-schiefe-koerper-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=ge-8-schiefe-koerper",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Eine schiefe quadratische Pyramide (a = 4 cm, h = 6 cm) hat ihre Spitze genau über der Ecke A. Wie lang ist die Kante zur gegenüberliegenden Ecke C?",
+          "concept": "CS ≈ 8,25 cm",
+          "sample_solution": "Waagrecht von A nach C liegt die Diagonale √(4² + 4²) = √32. Dann ist CS = √(6² + 32) = √68 ≈ 8,25 cm.",
+          "choice_distractors": [
+            {
+              "text": "CS ≈ 7,21 cm",
+              "reason": "Zur Ecke C ist der waagrechte Abstand die Diagonale √32, nicht die Kante 4 cm."
+            },
+            {
+              "text": "CS ≈ 11,66 cm",
+              "reason": "Die Kante ist die Hypotenuse, nicht die Summe aus Höhe und Diagonale."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M78QQC63VJQ670DVENTNDVXV",
+      "atom_uri": "urn:zam:atom:01M78QQC63VJQ670DVENTNDVXV",
+      "namespace": "zam-academy-mathematik-mittelschule-9",
+      "slug": "fl-1-vielecke-flaeche",
+      "title": "Flächeninhalt regelmäßiger Vielecke",
+      "domain": "mathematik/mittelschule-9/stage-4",
+      "reduction": "axiomatic",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=fl-1-vielecke-flaeche",
+      "prerequisites": [
+        {
+          "atom_id": "01M78QQC60D3WFWC502D74M6NP",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion legt die Grundlage, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-9",
+          "topic_code": "stage-4",
+          "topic_title": "Etappe 4: Flächeninhalt – Vielecke"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "track": "regelklasse",
+          "topic_code": "lb4",
+          "topic_title": "Flächeninhalt – Vielecke",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "track": "mittlere-reife-klasse",
+          "topic_code": "lb4",
+          "topic_title": "Flächeninhalt – Vielecke",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78QQC7X9DTKD1V35YZFQMTF",
+          "slug": "ms9-fl-1-vielecke-flaeche-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=fl-1-vielecke-flaeche",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie berechnest du den Flächeninhalt eines regelmäßigen n-Ecks mit der Seite s und der Höhe h eines Bestimmungsdreiecks?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "A = n \\cdot \\frac{s \\cdot h}{2}",
+              "speech": "A gleich n mal s mal h durch zwei"
+            }
+          ],
+          "choice_distractors": [
+            {
+              "text": "A = (s · h) : 2",
+              "reason": "Das ist nur ein Dreieck; das n-Eck besteht aus n davon."
+            },
+            {
+              "text": "A = n · s² : 2",
+              "reason": "Die Höhe h des Bestimmungsdreiecks ist nicht so lang wie die Seite s."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "A = n \\cdot \\frac{s \\cdot h}{2}",
+                  "speech": "A gleich n mal s mal h durch zwei"
+                }
+              ],
+              "A = n · s · h"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78QQC7Y21MM7M9V5TTE1ZK0",
+          "slug": "ms9-fl-1-vielecke-flaeche-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=fl-1-vielecke-flaeche",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Ein regelmäßiges Sechseck hat s = 4 cm und die Höhe eines Bestimmungsdreiecks h = 3,46 cm. Wie groß ist sein Flächeninhalt?",
+          "concept": "41,52 cm²",
+          "sample_solution": "Ein Dreieck: 4 · 3,46 : 2 = 6,92 cm². Sechs Dreiecke: 6 · 6,92 cm² = 41,52 cm².",
+          "choice_distractors": [
+            {
+              "text": "83,04 cm²",
+              "reason": "Vergiss das : 2 der Dreiecksformel nicht."
+            },
+            {
+              "text": "6,92 cm²",
+              "reason": "Das ist ein Bestimmungsdreieck; das Sechseck hat sechs."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M78QQC64YFJSFCVMP71FNT7P",
+      "atom_uri": "urn:zam:atom:01M78QQC64YFJSFCVMP71FNT7P",
+      "namespace": "zam-academy-mathematik-mittelschule-9",
+      "slug": "fl-2-zusammengesetzte-figuren",
+      "title": "Zusammengesetzte Figuren",
+      "domain": "mathematik/mittelschule-9/stage-4",
+      "reduction": "axiomatic",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=fl-2-zusammengesetzte-figuren",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-9",
+          "topic_code": "stage-4",
+          "topic_title": "Etappe 4: Flächeninhalt – Vielecke"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "track": "regelklasse",
+          "topic_code": "lb4",
+          "topic_title": "Flächeninhalt – Vielecke",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "track": "mittlere-reife-klasse",
+          "topic_code": "lb4",
+          "topic_title": "Flächeninhalt – Vielecke",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78QQC7Z7BG3RRYQ17654KAT",
+          "slug": "ms9-fl-2-zusammengesetzte-figuren-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=fl-2-zusammengesetzte-figuren",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche zwei Wege gibt es, den Flächeninhalt einer zusammengesetzten Figur zu bestimmen?",
+          "concept": "Zerlegen und addieren oder ergänzen und abziehen.",
+          "choice_distractors": [
+            {
+              "text": "Nur den Umfang messen und daraus die Fläche schätzen.",
+              "reason": "Figuren mit gleichem Umfang können verschieden große Flächen haben."
+            },
+            {
+              "text": "Alle Seitenlängen addieren und mit 2 malnehmen.",
+              "reason": "Das ergibt eine Länge, keinen Flächeninhalt."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Zerlegen und addieren oder ergänzen und abziehen.",
+              "Nur den Umfang messen und daraus die Fläche schätzen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78QQC80F75FEFZEAKEP8NAF",
+          "slug": "ms9-fl-2-zusammengesetzte-figuren-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=fl-2-zusammengesetzte-figuren",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Ein L-förmiger Raum ist insgesamt 8 m × 6 m groß; an einer Ecke fehlt ein Stück von 3 m × 2 m. Wie groß ist der Raum?",
+          "concept": "42 m²",
+          "sample_solution": "Ergänzen: 8 · 6 = 48 m², minus 3 · 2 = 6 m², ergibt 42 m². Zerlegen: 8 · 4 + 5 · 2 = 32 + 10 = 42 m².",
+          "choice_distractors": [
+            {
+              "text": "48 m²",
+              "reason": "Das fehlende Eckstück muss abgezogen werden."
+            },
+            {
+              "text": "54 m²",
+              "reason": "Das Eckstück fehlt; es wird abgezogen, nicht addiert."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M78QQC652KNCK200MPJ561WV",
+      "atom_uri": "urn:zam:atom:01M78QQC652KNCK200MPJ561WV",
+      "namespace": "zam-academy-mathematik-mittelschule-9",
+      "slug": "fl-3-oberflaeche-pyramide-kegel",
+      "title": "Oberfläche von Pyramide und Kegel",
+      "domain": "mathematik/mittelschule-9/stage-4",
+      "reduction": "axiomatic",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=fl-3-oberflaeche-pyramide-kegel",
+      "prerequisites": [
+        {
+          "atom_id": "01M78QQC61NKY9N74CJ283882A",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion legt die Grundlage, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-9",
+          "topic_code": "stage-4",
+          "topic_title": "Etappe 4: Flächeninhalt – Vielecke"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "track": "mittlere-reife-klasse",
+          "topic_code": "lb4",
+          "topic_title": "Flächeninhalt – Vielecke",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78QQC81C79G1D93RZDFS9CQ",
+          "slug": "ms9-fl-3-oberflaeche-pyramide-kegel-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=fl-3-oberflaeche-pyramide-kegel",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie berechnest du den Mantel eines Kegels mit dem Radius r und der Mantellinie s?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "M = \\pi \\cdot r \\cdot s",
+              "speech": "M gleich pi mal r mal s"
+            }
+          ],
+          "choice_distractors": [
+            {
+              "text": "M = π · s²",
+              "reason": "Das wäre ein ganzer Kreis mit dem Radius s; der Mantel ist nur ein Ausschnitt davon."
+            },
+            {
+              "text": "M = π · r²",
+              "reason": "Das ist die Grundfläche, nicht der Mantel."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "M = \\pi \\cdot r \\cdot s",
+                  "speech": "M gleich pi mal r mal s"
+                }
+              ],
+              "M = π · s²"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78QQC82CDK9Q3EJA3T70E7S",
+          "slug": "ms9-fl-3-oberflaeche-pyramide-kegel-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=fl-3-oberflaeche-pyramide-kegel",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Eine quadratische Pyramide hat a = 6 cm und h = 4 cm. Wie groß ist ihre Oberfläche?",
+          "concept": "96 cm²",
+          "sample_solution": "hₛ = √(4² + 3²) = 5 cm. M = 4 · 6 · 5 : 2 = 60 cm², G = 6² = 36 cm², O = 96 cm².",
+          "choice_distractors": [
+            {
+              "text": "60 cm²",
+              "reason": "Das ist nur der Mantel; die Grundfläche gehört zur Oberfläche."
+            },
+            {
+              "text": "84 cm²",
+              "reason": "Für die Seitenflächen brauchst du die Seitenhöhe hₛ = 5 cm, nicht die Körperhöhe 4 cm."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M78QQC66NS00AV04059RWQM3",
+      "atom_uri": "urn:zam:atom:01M78QQC66NS00AV04059RWQM3",
+      "namespace": "zam-academy-mathematik-mittelschule-9",
+      "slug": "ri-1-prisma",
+      "title": "Prismen mit regelmäßiger Grundfläche",
+      "domain": "mathematik/mittelschule-9/stage-5",
+      "reduction": "axiomatic",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=ri-1-prisma",
+      "prerequisites": [
+        {
+          "atom_id": "01M78QQC63VJQ670DVENTNDVXV",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion legt die Grundlage, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-9",
+          "topic_code": "stage-5",
+          "topic_title": "Etappe 5: Rauminhalt – Prismen, Pyramiden, Kegel"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "track": "regelklasse",
+          "topic_code": "lb5",
+          "topic_title": "Rauminhalt – Prismen, Pyramiden, Kegel",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "track": "mittlere-reife-klasse",
+          "topic_code": "lb5",
+          "topic_title": "Rauminhalt – Prismen, Pyramiden, Kegel",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78QQC83W4H01BYJ02Z96E0X",
+          "slug": "ms9-ri-1-prisma-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=ri-1-prisma",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie berechnest du das Volumen eines geraden Prismas?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "V = G \\cdot h_k",
+              "speech": "V gleich G mal h k"
+            }
+          ],
+          "choice_distractors": [
+            {
+              "text": "V = G · hₖ : 3",
+              "reason": "Ein Drittel gilt nur für spitze Körper wie Pyramide und Kegel."
+            },
+            {
+              "text": "V = u · hₖ",
+              "reason": "Umfang mal Höhe ergibt den Mantel, nicht das Volumen."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "V = G \\cdot h_k",
+                  "speech": "V gleich G mal h k"
+                }
+              ],
+              "V = G · hₖ : 3"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78QQC841YA748JCYMJ1H0G2",
+          "slug": "ms9-ri-1-prisma-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=ri-1-prisma",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Ein sechseckiges Prisma hat die Grundfläche 41,52 cm² und ist 10 cm hoch. Wie viele Liter fasst es?",
+          "concept": "0,4152 l",
+          "sample_solution": "V = 41,52 cm² · 10 cm = 415,2 cm³. 1 l = 1.000 cm³, also 415,2 cm³ = 0,4152 l.",
+          "choice_distractors": [
+            {
+              "text": "415,2 l",
+              "reason": "415,2 sind cm³; teile noch durch 1.000."
+            },
+            {
+              "text": "4,152 l",
+              "reason": "Um eine Stelle verrutscht: 415,2 : 1.000 = 0,4152."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M78QQC672KKKX1Y7XK7WSJ4K",
+      "atom_uri": "urn:zam:atom:01M78QQC672KKKX1Y7XK7WSJ4K",
+      "namespace": "zam-academy-mathematik-mittelschule-9",
+      "slug": "ri-2-pyramide-kegel-volumen",
+      "title": "Volumen von Pyramide und Kegel",
+      "domain": "mathematik/mittelschule-9/stage-5",
+      "reduction": "axiomatic",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=ri-2-pyramide-kegel-volumen",
+      "prerequisites": [
+        {
+          "atom_id": "01M78QQC66NS00AV04059RWQM3",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion legt die Grundlage, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-9",
+          "topic_code": "stage-5",
+          "topic_title": "Etappe 5: Rauminhalt – Prismen, Pyramiden, Kegel"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "track": "regelklasse",
+          "topic_code": "lb5",
+          "topic_title": "Rauminhalt – Prismen, Pyramiden, Kegel",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "track": "mittlere-reife-klasse",
+          "topic_code": "lb5",
+          "topic_title": "Rauminhalt – Prismen, Pyramiden, Kegel",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78QQC85P4JX5ZF14NXMTK5C",
+          "slug": "ms9-ri-2-pyramide-kegel-volumen-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=ri-2-pyramide-kegel-volumen",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie berechnest du das Volumen einer Pyramide oder eines Kegels?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "V = \\frac{1}{3} \\cdot G \\cdot h",
+              "speech": "V gleich ein Drittel mal G mal h"
+            }
+          ],
+          "choice_distractors": [
+            {
+              "text": "V = G · h",
+              "reason": "Das ist das Prisma mit gleicher Grundfläche und Höhe; der spitze Körper hat ein Drittel davon."
+            },
+            {
+              "text": "V = ½ · G · h",
+              "reason": "Dreimal umschütten füllt das Prisma: ein Drittel, nicht die Hälfte."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "V = \\frac{1}{3} \\cdot G \\cdot h",
+                  "speech": "V gleich ein Drittel mal G mal h"
+                }
+              ],
+              "V = G · h"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78QQC86HBBDEQEXS23EV61V",
+          "slug": "ms9-ri-2-pyramide-kegel-volumen-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=ri-2-pyramide-kegel-volumen",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Ein Sandhaufen ist ein Kegel mit 4 m Durchmesser und 1,5 m Höhe. Wie viel m³ Sand sind das?",
+          "concept": "etwa 6,28 m³",
+          "sample_solution": "r = 2 m, V = ⅓ · π · 2² · 1,5 = 2π ≈ 6,28 m³.",
+          "choice_distractors": [
+            {
+              "text": "etwa 25,13 m³",
+              "reason": "Im Volumen steht der Radius 2 m, nicht der Durchmesser 4 m."
+            },
+            {
+              "text": "etwa 18,85 m³",
+              "reason": "Das wäre ein Zylinder; ein Kegel hat ein Drittel davon."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M78QQC689D76XVQZMZ253D9F",
+      "atom_uri": "urn:zam:atom:01M78QQC689D76XVQZMZ253D9F",
+      "namespace": "zam-academy-mathematik-mittelschule-9",
+      "slug": "ri-3-zusammengesetzte-koerper",
+      "title": "Zusammengesetzte Körper und Umkehraufgaben",
+      "domain": "mathematik/mittelschule-9/stage-5",
+      "reduction": "axiomatic",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=ri-3-zusammengesetzte-koerper",
+      "prerequisites": [
+        {
+          "atom_id": "01M78QQC672KKKX1Y7XK7WSJ4K",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion legt die Grundlage, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-9",
+          "topic_code": "stage-5",
+          "topic_title": "Etappe 5: Rauminhalt – Prismen, Pyramiden, Kegel"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "track": "regelklasse",
+          "topic_code": "lb5",
+          "topic_title": "Rauminhalt – Prismen, Pyramiden, Kegel",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "track": "mittlere-reife-klasse",
+          "topic_code": "lb5",
+          "topic_title": "Rauminhalt – Prismen, Pyramiden, Kegel",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78QQC876GMQTKHAH3TDHTHF",
+          "slug": "ms9-ri-3-zusammengesetzte-koerper-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=ri-3-zusammengesetzte-koerper",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie berechnest du die Höhe einer Pyramide aus dem Volumen V und der Grundfläche G?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "h = \\frac{3 \\cdot V}{G}",
+              "speech": "h gleich drei mal V durch G"
+            }
+          ],
+          "choice_distractors": [
+            {
+              "text": "h = V : G",
+              "reason": "So rechnest du beim Prisma; beim spitzen Körper kommt der Faktor 3 dazu."
+            },
+            {
+              "text": "h = V : (3 · G)",
+              "reason": "Aus V = ⅓ · G · h folgt h = 3 · V : G."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "h = \\frac{3 \\cdot V}{G}",
+                  "speech": "h gleich drei mal V durch G"
+                }
+              ],
+              "h = V : G"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78QQC88AJEQRNNQWSPAYKZB",
+          "slug": "ms9-ri-3-zusammengesetzte-koerper-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=ri-3-zusammengesetzte-koerper",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Ein Silo besteht aus einem Zylinder (Durchmesser 4 m, Höhe 8 m) mit einem Kegeldach von 1,5 m Höhe. Wie viel m³ fasst es?",
+          "concept": "etwa 106,81 m³",
+          "sample_solution": "Zylinder: π · 2² · 8 ≈ 100,53 m³. Kegel: ⅓ · π · 2² · 1,5 ≈ 6,28 m³. Zusammen etwa 106,81 m³.",
+          "choice_distractors": [
+            {
+              "text": "etwa 119,38 m³",
+              "reason": "Das Dach ist ein Kegel: ⅓ · G · h, nicht G · h."
+            },
+            {
+              "text": "etwa 427,26 m³",
+              "reason": "Rechne mit dem Radius 2 m, nicht mit dem Durchmesser 4 m."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M78QQC69GNPG20E0EHGRDQW5",
+      "atom_uri": "urn:zam:atom:01M78QQC69GNPG20E0EHGRDQW5",
+      "namespace": "zam-academy-mathematik-mittelschule-9",
+      "slug": "wk-1-ergebnisse-ereignisse",
+      "title": "Ergebnisse und Ereignisse",
+      "domain": "mathematik/mittelschule-9/stage-6",
+      "reduction": "axiomatic",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=wk-1-ergebnisse-ereignisse",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-9",
+          "topic_code": "stage-6",
+          "topic_title": "Etappe 6: Wahrscheinlichkeiten"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "track": "regelklasse",
+          "topic_code": "lb6",
+          "topic_title": "Wahrscheinlichkeiten",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "track": "mittlere-reife-klasse",
+          "topic_code": "lb6",
+          "topic_title": "Wahrscheinlichkeiten",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78QQC89WTFKV759NETHQMX9",
+          "slug": "ms9-wk-1-ergebnisse-ereignisse-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=wk-1-ergebnisse-ereignisse",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was ist die Ergebnismenge Ω eines Zufallsexperiments?",
+          "concept": "Die Menge aller möglichen Ergebnisse, beim Würfel Ω = {1; 2; 3; 4; 5; 6}.",
+          "choice_distractors": [
+            {
+              "text": "Die Menge der günstigen Ergebnisse eines Ereignisses.",
+              "reason": "Das ist ein Ereignis, eine Teilmenge von Ω."
+            },
+            {
+              "text": "Die Zahl der Versuche, die man durchführt.",
+              "reason": "Ω beschreibt, was passieren kann, nicht wie oft man es versucht."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Menge aller möglichen Ergebnisse, beim Würfel Ω = {1; 2; 3; 4; 5; 6}.",
+              "Die Menge der günstigen Ergebnisse eines Ereignisses."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78QQC8AYVZGBE399PYS45NM",
+          "slug": "ms9-wk-1-ergebnisse-ereignisse-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=wk-1-ergebnisse-ereignisse",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Ein Glücksrad hat die Felder 1 bis 12. Schreibe das Ereignis „Primzahl“ als Menge.",
+          "concept": "{2; 3; 5; 7; 11}",
+          "sample_solution": "Primzahlen bis 12 sind 2, 3, 5, 7 und 11. Die 1 ist keine Primzahl, weil sie nur einen Teiler hat.",
+          "choice_distractors": [
+            {
+              "text": "{1; 3; 5; 7; 11}",
+              "reason": "1 ist keine Primzahl, aber 2 ist eine: die einzige gerade Primzahl."
+            },
+            {
+              "text": "{2; 3; 5; 7; 9; 11}",
+              "reason": "9 = 3 · 3 hat mehr als zwei Teiler, ist also keine Primzahl."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M78QQC6A7KWKZ2TCM32WMNN5",
+      "atom_uri": "urn:zam:atom:01M78QQC6A7KWKZ2TCM32WMNN5",
+      "namespace": "zam-academy-mathematik-mittelschule-9",
+      "slug": "wk-2-laplace",
+      "title": "Wahrscheinlichkeiten bei Laplace-Experimenten",
+      "domain": "mathematik/mittelschule-9/stage-6",
+      "reduction": "axiomatic",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=wk-2-laplace",
+      "prerequisites": [
+        {
+          "atom_id": "01M78QQC69GNPG20E0EHGRDQW5",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion legt die Grundlage, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-9",
+          "topic_code": "stage-6",
+          "topic_title": "Etappe 6: Wahrscheinlichkeiten"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "track": "regelklasse",
+          "topic_code": "lb6",
+          "topic_title": "Wahrscheinlichkeiten",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "track": "mittlere-reife-klasse",
+          "topic_code": "lb6",
+          "topic_title": "Wahrscheinlichkeiten",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78QQC8BQ2B2X9JPYTJTBEJE",
+          "slug": "ms9-wk-2-laplace-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=wk-2-laplace",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie berechnest du bei einem Laplace-Experiment die Wahrscheinlichkeit eines Ereignisses E?",
+          "concept": "P(E) = Anzahl der günstigen Ergebnisse : Anzahl der möglichen Ergebnisse",
+          "choice_distractors": [
+            {
+              "text": "P(E) = Anzahl der günstigen Ergebnisse : 100",
+              "reason": "Teile durch alle möglichen Ergebnisse, nicht durch 100."
+            },
+            {
+              "text": "P(E) = Anzahl der günstigen minus Anzahl der ungünstigen Ergebnisse",
+              "reason": "Eine Wahrscheinlichkeit ist ein Verhältnis zwischen 0 und 1, keine Differenz."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "P(E) = Anzahl der günstigen Ergebnisse : Anzahl der möglichen Ergebnisse",
+              "P(E) = Anzahl der möglichen Ergebnisse : Anzahl der günstigen Ergebnisse"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78QQC8C9ZBP6PE16CHNDSEH",
+          "slug": "ms9-wk-2-laplace-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=wk-2-laplace",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "In einer Urne liegen 3 rote, 2 blaue und 5 grüne Kugeln. Wie groß ist die Wahrscheinlichkeit, eine blaue Kugel zu ziehen?",
+          "concept": "1/5 = 20 %",
+          "sample_solution": "Günstig sind 2 blaue Kugeln, möglich sind 10 Kugeln. P = 2/10 = 1/5 = 20 %.",
+          "choice_distractors": [
+            {
+              "text": "1/4 = 25 %",
+              "reason": "Die blauen Kugeln zählen bei den möglichen Ergebnissen mit: 2 von 10, nicht 2 von 8."
+            },
+            {
+              "text": "1/3 ≈ 33,3 %",
+              "reason": "Es gibt drei Farben, aber nicht gleich viele Kugeln je Farbe."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M78QQC6BWCX7WP33G168Q36V",
+      "atom_uri": "urn:zam:atom:01M78QQC6BWCX7WP33G168Q36V",
+      "namespace": "zam-academy-mathematik-mittelschule-9",
+      "slug": "wk-3-gegenereignis",
+      "title": "Gegenereignis und Chancen",
+      "domain": "mathematik/mittelschule-9/stage-6",
+      "reduction": "axiomatic",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=wk-3-gegenereignis",
+      "prerequisites": [
+        {
+          "atom_id": "01M78QQC6A7KWKZ2TCM32WMNN5",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion legt die Grundlage, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-9",
+          "topic_code": "stage-6",
+          "topic_title": "Etappe 6: Wahrscheinlichkeiten"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "track": "regelklasse",
+          "topic_code": "lb6",
+          "topic_title": "Wahrscheinlichkeiten",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "track": "mittlere-reife-klasse",
+          "topic_code": "lb6",
+          "topic_title": "Wahrscheinlichkeiten",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78QQC8D3WHJHKA2V42AW1CE",
+          "slug": "ms9-wk-3-gegenereignis-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=wk-3-gegenereignis",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie hängen die Wahrscheinlichkeiten eines Ereignisses E und seines Gegenereignisses Ē zusammen?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "P(\\bar{E}) = 1 - P(E)",
+              "speech": "P von E quer gleich eins minus P von E"
+            }
+          ],
+          "choice_distractors": [
+            {
+              "text": "P(Ē) = P(E), beide gleich",
+              "reason": "Gleich sind beide nur bei P(E) = 50 %."
+            },
+            {
+              "text": "P(Ē) = 2 · P(E)",
+              "reason": "Ereignis und Gegenereignis ergeben zusammen 1, also 100 %."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "P(\\bar{E}) = 1 - P(E)",
+                  "speech": "P von E quer gleich eins minus P von E"
+                }
+              ],
+              "P(Ē) = P(E)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78QQC8E96HYRZBSFXZF9T6V",
+          "slug": "ms9-wk-3-gegenereignis-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=wk-3-gegenereignis",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Ein Glücksrad hat 10 gleich große Felder, 3 davon gewinnen. Wie groß ist die Wahrscheinlichkeit, nicht zu gewinnen? Ist ein Gewinn oder eine Niete wahrscheinlicher?",
+          "concept": "70 %; eine Niete ist wahrscheinlicher.",
+          "sample_solution": "P(Gewinn) = 3/10 = 30 %. P(kein Gewinn) = 1 − 30 % = 70 %. Eine Niete ist mehr als doppelt so wahrscheinlich wie ein Gewinn.",
+          "choice_distractors": [
+            {
+              "text": "30 %; ein Gewinn ist wahrscheinlicher.",
+              "reason": "30 % ist die Gewinnwahrscheinlichkeit; gefragt ist das Gegenereignis."
+            },
+            {
+              "text": "70 %; beide sind gleich wahrscheinlich.",
+              "reason": "Gleich wären beide nur bei 50 %."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M78QQC6C7FGE11TBQFQEG373",
+      "atom_uri": "urn:zam:atom:01M78QQC6C7FGE11TBQFQEG373",
+      "namespace": "zam-academy-mathematik-mittelschule-9",
+      "slug": "wk-4-zwei-wuerfel",
+      "title": "Zwei Würfel: 36 Ergebnisse",
+      "domain": "mathematik/mittelschule-9/stage-6",
+      "reduction": "axiomatic",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=wk-4-zwei-wuerfel",
+      "prerequisites": [
+        {
+          "atom_id": "01M78QQC6A7KWKZ2TCM32WMNN5",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion legt die Grundlage, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-9",
+          "topic_code": "stage-6",
+          "topic_title": "Etappe 6: Wahrscheinlichkeiten"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "track": "mittlere-reife-klasse",
+          "topic_code": "lb6",
+          "topic_title": "Wahrscheinlichkeiten",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78QQC8FPR0N4Y9CJPN0QWTF",
+          "slug": "ms9-wk-4-zwei-wuerfel-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=wk-4-zwei-wuerfel",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie viele gleich wahrscheinliche Ergebnisse gibt es beim Werfen von zwei unterscheidbaren Würfeln?",
+          "concept": "36 Paare, denn 6 · 6 = 36.",
+          "choice_distractors": [
+            {
+              "text": "11, die Augensummen 2 bis 12.",
+              "reason": "Die Summen sind nicht gleich wahrscheinlich; Ergebnisse sind Paare."
+            },
+            {
+              "text": "12, je Würfel sechs.",
+              "reason": "Ein Ergebnis ist ein Paar (rot | blau): 6 · 6, nicht 6 + 6."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "36 Paare, denn 6 · 6 = 36.",
+              "11, die Augensummen 2 bis 12."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78QQC8GRVZHKZ0KA9MNZBWW",
+          "slug": "ms9-wk-4-zwei-wuerfel-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=wk-4-zwei-wuerfel",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Zwei unterscheidbare Würfel werden geworfen. Wie groß ist die Wahrscheinlichkeit für mindestens eine 6?",
+          "concept": "11/36 ≈ 30,6 %",
+          "sample_solution": "Gegenereignis „keine 6“: 5 · 5 = 25 Ergebnisse. P(mindestens eine 6) = 1 − 25/36 = 11/36 ≈ 30,6 %.",
+          "choice_distractors": [
+            {
+              "text": "1/3 ≈ 33,3 %",
+              "reason": "1/6 + 1/6 zählt das Paar (6 | 6) doppelt."
+            },
+            {
+              "text": "1/36 ≈ 2,8 %",
+              "reason": "Das ist nur das Ereignis „zwei Sechsen“."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M78QQC6DNZFB38QM6RZG40H8",
+      "atom_uri": "urn:zam:atom:01M78QQC6DNZFB38QM6RZG40H8",
+      "namespace": "zam-academy-mathematik-mittelschule-9",
+      "slug": "gl-1-klammern",
+      "title": "Gleichungen mit Klammern",
+      "domain": "mathematik/mittelschule-9/stage-7",
+      "reduction": "axiomatic",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=gl-1-klammern",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-9",
+          "topic_code": "stage-7",
+          "topic_title": "Etappe 7: Gleichungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "track": "regelklasse",
+          "topic_code": "lb7",
+          "topic_title": "Gleichungen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "track": "mittlere-reife-klasse",
+          "topic_code": "lb7",
+          "topic_title": "Gleichungen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78QQC8H5R0TMEY8AGSB86X2",
+          "slug": "ms9-gl-1-klammern-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=gl-1-klammern",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "In welcher Reihenfolge löst du eine Gleichung mit Klammern?",
+          "concept": "Klammern auflösen, zusammenfassen, x isolieren, Probe.",
+          "choice_distractors": [
+            {
+              "text": "Die Klammer einfach weglassen und dann umformen.",
+              "reason": "Der Faktor vor der Klammer muss mit jedem Glied in der Klammer malgenommen werden."
+            },
+            {
+              "text": "Nur die linke Seite umformen, die rechte bleibt stehen.",
+              "reason": "Äquivalenzumformungen gelten immer für beide Seiten."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Klammern auflösen, zusammenfassen, x isolieren, Probe.",
+              "Die Klammer einfach weglassen und dann umformen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78QQC8J2GEQPD5NAZAPP8D0",
+          "slug": "ms9-gl-1-klammern-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=gl-1-klammern",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Löse die Gleichung 3(x + 2) = x + 14.",
+          "concept": "x = 4",
+          "sample_solution": "3x + 6 = x + 14, also 2x = 8 und x = 4. Probe: 3 · 6 = 18 und 4 + 14 = 18.",
+          "choice_distractors": [
+            {
+              "text": "x = 6",
+              "reason": "Die 2 in der Klammer wurde nicht mit 3 malgenommen: 3x + 2 = x + 14 ist falsch aufgelöst."
+            },
+            {
+              "text": "x = 8",
+              "reason": "2x = 8 ist noch nicht die Lösung: Teile durch 2."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M78QQC6E6H5V1E8K9N9SWTWY",
+      "atom_uri": "urn:zam:atom:01M78QQC6E6H5V1E8K9N9SWTWY",
+      "namespace": "zam-academy-mathematik-mittelschule-9",
+      "slug": "gl-2-brueche-mischung",
+      "title": "Gleichungen mit Brüchen und Mischungen",
+      "domain": "mathematik/mittelschule-9/stage-7",
+      "reduction": "axiomatic",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=gl-2-brueche-mischung",
+      "prerequisites": [
+        {
+          "atom_id": "01M78QQC6DNZFB38QM6RZG40H8",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion legt die Grundlage, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-9",
+          "topic_code": "stage-7",
+          "topic_title": "Etappe 7: Gleichungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "track": "regelklasse",
+          "topic_code": "lb7",
+          "topic_title": "Gleichungen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "track": "mittlere-reife-klasse",
+          "topic_code": "lb7",
+          "topic_title": "Gleichungen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78QQC8KB9NN4MNJVWKZCFZN",
+          "slug": "ms9-gl-2-brueche-mischung-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=gl-2-brueche-mischung",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie löst du eine Gleichung wie x/3 + x/4 = 14?",
+          "concept": "Beide Seiten mit dem Hauptnenner 12 malnehmen: 4x + 3x = 168, also x = 24.",
+          "choice_distractors": [
+            {
+              "text": "Zähler und Nenner getrennt addieren: 2x/7 = 14, also x = 49.",
+              "reason": "Brüche mit verschiedenen Nennern werden erst gleichnamig gemacht."
+            },
+            {
+              "text": "Mit 7, der Summe der Nenner, malnehmen: x = 14.",
+              "reason": "Malnehmen mit dem Hauptnenner, dem kleinsten gemeinsamen Vielfachen 12."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Beide Seiten mit dem Hauptnenner 12 malnehmen: 4x + 3x = 168, also x = 24.",
+              "Zähler und Nenner getrennt addieren: 2x/7 = 14."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78QQC8M1G2E1X36Z7CRTJ4D",
+          "slug": "ms9-gl-2-brueche-mischung-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=gl-2-brueche-mischung",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Wie viel kg Kaffee zu 8 € pro kg mischt man mit 5 kg Kaffee zu 12 € pro kg, damit 1 kg Mischung 9,60 € kostet?",
+          "concept": "x = 7,5 kg",
+          "sample_solution": "8x + 12 · 5 = 9,6 · (x + 5), also 8x + 60 = 9,6x + 48, 12 = 1,6x und x = 7,5 kg.",
+          "choice_distractors": [
+            {
+              "text": "x = 5 kg",
+              "reason": "Bei gleichen Mengen kostet die Mischung 10 € pro kg, nicht 9,60 €."
+            },
+            {
+              "text": "x = 2,5 kg",
+              "reason": "Die billigere Sorte muss überwiegen, damit der Preis unter 10 € liegt."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M78QQC6FDZ44JV63XXYAZ8GE",
+      "atom_uri": "urn:zam:atom:01M78QQC6FDZ44JV63XXYAZ8GE",
+      "namespace": "zam-academy-mathematik-mittelschule-9",
+      "slug": "gl-3-formeln",
+      "title": "Formeln umstellen",
+      "domain": "mathematik/mittelschule-9/stage-7",
+      "reduction": "axiomatic",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=gl-3-formeln",
+      "prerequisites": [
+        {
+          "atom_id": "01M78QQC6DNZFB38QM6RZG40H8",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion legt die Grundlage, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-9",
+          "topic_code": "stage-7",
+          "topic_title": "Etappe 7: Gleichungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "track": "regelklasse",
+          "topic_code": "lb7",
+          "topic_title": "Gleichungen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "track": "mittlere-reife-klasse",
+          "topic_code": "lb7",
+          "topic_title": "Gleichungen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78QQC8NQW8PKEEBY2RQS1TW",
+          "slug": "ms9-gl-3-formeln-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=gl-3-formeln",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie stellst du die Trapezformel A = (a + c) · h : 2 nach h um?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "h = \\frac{2A}{a + c}",
+              "speech": "h gleich zwei A durch a plus c"
+            }
+          ],
+          "choice_distractors": [
+            {
+              "text": "h = A : (a + c) ohne die 2",
+              "reason": "Das : 2 der Formel wird beim Umstellen zu · 2."
+            },
+            {
+              "text": "h = 2 · (a + c) : A",
+              "reason": "Umgedreht: 2A steht im Zähler, a + c im Nenner."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "h = \\frac{2A}{a + c}",
+                  "speech": "h gleich zwei A durch a plus c"
+                }
+              ],
+              "h = A : (a + c)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78QQC8PY4RSMEA6GTG0JQTK",
+          "slug": "ms9-gl-3-formeln-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=gl-3-formeln",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Ein Eisenblock (Dichte 7,9 g/cm³) wiegt 1.580 g. Wie groß ist sein Volumen?",
+          "concept": "200 cm³",
+          "sample_solution": "ρ = m : V, also V = m : ρ = 1.580 : 7,9 = 200 cm³.",
+          "choice_distractors": [
+            {
+              "text": "12.482 cm³",
+              "reason": "V = m : ρ, nicht m · ρ."
+            },
+            {
+              "text": "0,005 cm³",
+              "reason": "Masse durch Dichte, nicht Dichte durch Masse."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M78QQC6GVHZ6EA9TYV1F36A6",
+      "atom_uri": "urn:zam:atom:01M78QQC6GVHZ6EA9TYV1F36A6",
+      "namespace": "zam-academy-mathematik-mittelschule-9",
+      "slug": "gl-4-produkte-summen",
+      "title": "Gleichungen mit Produkten von Summen",
+      "domain": "mathematik/mittelschule-9/stage-7",
+      "reduction": "axiomatic",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=gl-4-produkte-summen",
+      "prerequisites": [
+        {
+          "atom_id": "01M78QQC6DNZFB38QM6RZG40H8",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion legt die Grundlage, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-9",
+          "topic_code": "stage-7",
+          "topic_title": "Etappe 7: Gleichungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "track": "mittlere-reife-klasse",
+          "topic_code": "lb7",
+          "topic_title": "Gleichungen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78QQC8QTRW6NWVGXFXZ8CBP",
+          "slug": "ms9-gl-4-produkte-summen-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=gl-4-produkte-summen",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie multiplizierst du (x + a)(x + b) aus?",
+          "concept": "x² + (a + b)x + ab",
+          "choice_distractors": [
+            {
+              "text": "(a + b)x² + ab",
+              "reason": "x · x ergibt x² mit dem Faktor 1; die Summe a + b gehört vor x."
+            },
+            {
+              "text": "x² + (ab)x + a + b",
+              "reason": "Vertauscht: a · b steht ohne x am Ende, a + b vor x."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "x² + (a + b)x + ab",
+              "x² + ab"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78QQC8RE02TYM4R3GN94XK5",
+          "slug": "ms9-gl-4-produkte-summen-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=gl-4-produkte-summen",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Löse die Gleichung (x + 2)(x + 3) = (x + 1)(x + 6).",
+          "concept": "x = 0",
+          "sample_solution": "x² + 5x + 6 = x² + 7x + 6. Das x² fällt weg: 5x = 7x, also 2x = 0 und x = 0.",
+          "choice_distractors": [
+            {
+              "text": "x = 4",
+              "reason": "Probe: (4 + 2)(4 + 3) = 42, aber (4 + 1)(4 + 6) = 50."
+            },
+            {
+              "text": "keine Lösung",
+              "reason": "x² fällt weg, und 5x = 7x hat die Lösung x = 0."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M78QQC6HXG4MFXF7HGQDZC73",
+      "atom_uri": "urn:zam:atom:01M78QQC6HXG4MFXF7HGQDZC73",
+      "namespace": "zam-academy-mathematik-mittelschule-9",
+      "slug": "gl-5-bruchgleichungen",
+      "title": "Bruchgleichungen",
+      "domain": "mathematik/mittelschule-9/stage-7",
+      "reduction": "axiomatic",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=gl-5-bruchgleichungen",
+      "prerequisites": [
+        {
+          "atom_id": "01M78QQC6E6H5V1E8K9N9SWTWY",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion legt die Grundlage, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-9",
+          "topic_code": "stage-7",
+          "topic_title": "Etappe 7: Gleichungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "track": "mittlere-reife-klasse",
+          "topic_code": "lb7",
+          "topic_title": "Gleichungen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78QQC8SB7Q9QVT337YHPG3C",
+          "slug": "ms9-gl-5-bruchgleichungen-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=gl-5-bruchgleichungen",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was bestimmst du bei einer Bruchgleichung zuerst, und warum?",
+          "concept": "Die Definitionsmenge, denn kein Nenner darf 0 werden.",
+          "choice_distractors": [
+            {
+              "text": "Den Hauptnenner der Zahlen ohne x, damit alles gleichnamig ist.",
+              "reason": "Entscheidend sind die Nenner mit x, weil man nicht durch 0 teilen darf."
+            },
+            {
+              "text": "Die Probe, damit die Lösung am Ende sicher stimmt.",
+              "reason": "Die Probe kommt am Schluss; zuerst müssen die verbotenen Zahlen bekannt sein."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Definitionsmenge, denn kein Nenner darf 0 werden.",
+              "Die Probe, damit die Lösung am Ende sicher stimmt."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78QQC8TX6NSQ8W169HFG9FF",
+          "slug": "ms9-gl-5-bruchgleichungen-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=gl-5-bruchgleichungen",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Bestimme die Definitionsmenge und die Lösungsmenge von 6/(x − 1) = 2.",
+          "concept": "D = ℚ ∖ {1}, L = {4}",
+          "sample_solution": "x − 1 = 0 für x = 1, also D = ℚ ∖ {1}. Mal (x − 1): 6 = 2x − 2, also x = 4; 4 liegt in D.",
+          "choice_distractors": [
+            {
+              "text": "D = ℚ ∖ {0}, L = {4}",
+              "reason": "Nicht x selbst steht im Nenner, sondern x − 1; ausgeschlossen ist 1."
+            },
+            {
+              "text": "D = ℚ ∖ {1}, L = {3}",
+              "reason": "Aus 6 = 2(x − 1) folgt x − 1 = 3, also x = 4."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M78QQC6JNJMJFZKQZR1H6JKZ",
+      "atom_uri": "urn:zam:atom:01M78QQC6JNJMJFZKQZR1H6JKZ",
+      "namespace": "zam-academy-mathematik-mittelschule-9",
+      "slug": "gl-6-gleichungssysteme",
+      "title": "Lineare Gleichungssysteme",
+      "domain": "mathematik/mittelschule-9/stage-7",
+      "reduction": "axiomatic",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=gl-6-gleichungssysteme",
+      "prerequisites": [
+        {
+          "atom_id": "01M78QQC6DNZFB38QM6RZG40H8",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion legt die Grundlage, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-9",
+          "topic_code": "stage-7",
+          "topic_title": "Etappe 7: Gleichungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "track": "mittlere-reife-klasse",
+          "topic_code": "lb7",
+          "topic_title": "Gleichungen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78QQC8V1TY7Q6N9H1NNZCCH",
+          "slug": "ms9-gl-6-gleichungssysteme-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=gl-6-gleichungssysteme",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was ist die Lösung eines linearen Gleichungssystems mit zwei Variablen im Koordinatensystem?",
+          "concept": "Der Schnittpunkt der beiden Geraden.",
+          "choice_distractors": [
+            {
+              "text": "Der Schnittpunkt einer Geraden mit der y-Achse.",
+              "reason": "Das ist der y-Achsenabschnitt einer einzelnen Gleichung."
+            },
+            {
+              "text": "Jeder Punkt auf einer der beiden Geraden.",
+              "reason": "Ein Punkt einer Geraden erfüllt nur ihre eigene Gleichung."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Schnittpunkt der beiden Geraden.",
+              "Der Schnittpunkt einer Geraden mit der y-Achse."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78QQC8WPJXM8VDD0A1TJ4E7",
+          "slug": "ms9-gl-6-gleichungssysteme-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=gl-6-gleichungssysteme",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Löse das Gleichungssystem I: 2x + 3y = 12 und II: 4x − 3y = 6.",
+          "concept": "x = 3, y = 2",
+          "sample_solution": "I + II: 6x = 18, also x = 3. In I: 6 + 3y = 12, also y = 2. Probe in II: 12 − 6 = 6.",
+          "choice_distractors": [
+            {
+              "text": "x = 2, y = 3",
+              "reason": "x und y sind vertauscht; Probe in I: 4 + 9 = 13."
+            },
+            {
+              "text": "x = 3, y = 6",
+              "reason": "Aus 6 + 3y = 12 folgt 3y = 6, also y = 2."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M78QQC6KRJMJ6M5N6GC8AZS1",
+      "atom_uri": "urn:zam:atom:01M78QQC6KRJMJ6M5N6GC8AZS1",
+      "namespace": "zam-academy-mathematik-mittelschule-9",
+      "slug": "gl-7-reinquadratisch",
+      "title": "Reinquadratische Gleichungen",
+      "domain": "mathematik/mittelschule-9/stage-7",
+      "reduction": "axiomatic",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=gl-7-reinquadratisch",
+      "prerequisites": [
+        {
+          "atom_id": "01M78QQC6DNZFB38QM6RZG40H8",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion legt die Grundlage, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-9",
+          "topic_code": "stage-7",
+          "topic_title": "Etappe 7: Gleichungen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "track": "mittlere-reife-klasse",
+          "topic_code": "lb7",
+          "topic_title": "Gleichungen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78QQC8XFFYGSV6M2MNMZAGQ",
+          "slug": "ms9-gl-7-reinquadratisch-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=gl-7-reinquadratisch",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie viele Lösungen hat die Gleichung x² = d?",
+          "concept": "Zwei für d > 0, eine für d = 0, keine für d < 0.",
+          "choice_distractors": [
+            {
+              "text": "Immer genau eine, nämlich die Wurzel √d.",
+              "reason": "Auch −√d ist eine Lösung, denn (−√d)² = d."
+            },
+            {
+              "text": "Immer zwei, auch für negatives d.",
+              "reason": "Ein Quadrat ist nie negativ; für d < 0 gibt es keine Lösung."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Zwei für d > 0, eine für d = 0, keine für d < 0.",
+              "Immer genau eine, nämlich die Wurzel √d."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78QQC8YC8Y3FY0EFWAN3EDT",
+          "slug": "ms9-gl-7-reinquadratisch-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=gl-7-reinquadratisch",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Löse die Gleichung 3x² − 48 = 0.",
+          "concept": "L = {−4; 4}",
+          "sample_solution": "3x² = 48, x² = 16, also x = −4 oder x = 4.",
+          "choice_distractors": [
+            {
+              "text": "L = {−6,93; 6,93}",
+              "reason": "Erst durch 3 teilen: x² = 16, nicht x² = 48."
+            },
+            {
+              "text": "L = {−16; 16}",
+              "reason": "Aus x² = 16 folgt x = ±4; die Wurzel fehlt."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M78QQC6MPCEV75X0R99Z43N6",
+      "atom_uri": "urn:zam:atom:01M78QQC6MPCEV75X0R99Z43N6",
+      "namespace": "zam-academy-mathematik-mittelschule-9",
+      "slug": "fu-1-zuordnungen",
+      "title": "Zuordnungen unterscheiden",
+      "domain": "mathematik/mittelschule-9/stage-8",
+      "reduction": "axiomatic",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=fu-1-zuordnungen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-9",
+          "topic_code": "stage-8",
+          "topic_title": "Etappe 8: Funktionale Zusammenhänge"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "track": "regelklasse",
+          "topic_code": "lb8",
+          "topic_title": "Funktionale Zusammenhänge",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "track": "mittlere-reife-klasse",
+          "topic_code": "lb8",
+          "topic_title": "Funktionale Zusammenhänge",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78QQC8ZZKC9E2MWYZ1V19ST",
+          "slug": "ms9-fu-1-zuordnungen-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=fu-1-zuordnungen",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Woran erkennst du in einer Tabelle eine umgekehrt proportionale Zuordnung?",
+          "concept": "Das Produkt x · y ist für alle Wertepaare gleich.",
+          "choice_distractors": [
+            {
+              "text": "Der Quotient y : x ist für alle Wertepaare gleich.",
+              "reason": "Das kennzeichnet eine proportionale Zuordnung."
+            },
+            {
+              "text": "Die Zunahme von y ist bei gleichen Schritten gleich.",
+              "reason": "Das kennzeichnet eine lineare Zuordnung."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Das Produkt x · y ist für alle Wertepaare gleich.",
+              "Der Quotient y : x ist für alle Wertepaare gleich."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78QQC90S95TMWA1F112EP7T",
+          "slug": "ms9-fu-1-zuordnungen-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=fu-1-zuordnungen",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Ein Taxi kostet 3 € Grundgebühr und 2 € pro km. Ist die Zuordnung Strecke → Preis proportional?",
+          "concept": "Nein, linear, aber nicht proportional.",
+          "sample_solution": "Preis = 2 · x + 3. Jeder Kilometer kostet gleich viel mehr, also linear. Wegen der Grundgebühr ist y : x nicht gleich: 7 : 2 = 3,5, aber 11 : 4 = 2,75.",
+          "choice_distractors": [
+            {
+              "text": "Ja, jeder Kilometer kostet gleich viel.",
+              "reason": "Gleiche Zunahme heißt linear; proportional wäre es nur ohne Grundgebühr."
+            },
+            {
+              "text": "Nein, umgekehrt proportional.",
+              "reason": "Mehr Kilometer kosten mehr, nicht weniger."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M78QQC6NMCTGQG46DNT2RZTF",
+      "atom_uri": "urn:zam:atom:01M78QQC6NMCTGQG46DNT2RZTF",
+      "namespace": "zam-academy-mathematik-mittelschule-9",
+      "slug": "fu-2-fehlende-werte",
+      "title": "Fehlende Werte berechnen und ablesen",
+      "domain": "mathematik/mittelschule-9/stage-8",
+      "reduction": "axiomatic",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=fu-2-fehlende-werte",
+      "prerequisites": [
+        {
+          "atom_id": "01M78QQC6MPCEV75X0R99Z43N6",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion legt die Grundlage, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-9",
+          "topic_code": "stage-8",
+          "topic_title": "Etappe 8: Funktionale Zusammenhänge"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "track": "regelklasse",
+          "topic_code": "lb8",
+          "topic_title": "Funktionale Zusammenhänge",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "track": "mittlere-reife-klasse",
+          "topic_code": "lb8",
+          "topic_title": "Funktionale Zusammenhänge",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78QQC91DZE5DRJSWMB25YB9",
+          "slug": "ms9-fu-2-fehlende-werte-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=fu-2-fehlende-werte",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "3 Bagger brauchen 12 Tage. Wie rechnest du aus, wie lange 4 Bagger brauchen?",
+          "concept": "Umgekehrt proportional: 3 · 12 = 36 Baggertage, 36 : 4 = 9 Tage.",
+          "choice_distractors": [
+            {
+              "text": "Proportional: 12 : 3 · 4 = 16 Tage.",
+              "reason": "Mehr Bagger brauchen weniger Zeit; das Produkt bleibt gleich."
+            },
+            {
+              "text": "12 − 1 = 11 Tage, ein Bagger mehr, ein Tag weniger.",
+              "reason": "Bei umgekehrter Proportionalität bleibt das Produkt gleich, nicht die Summe."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Umgekehrt proportional: 3 · 12 = 36 Baggertage, 36 : 4 = 9 Tage.",
+              "Proportional: 12 : 3 · 4 = 16 Tage."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78QQC92J0YNNTM2YMK0ZX6R",
+          "slug": "ms9-fu-2-fehlende-werte-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=fu-2-fehlende-werte",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Ein Handytarif kostet 4,99 € Grundgebühr und 9 Cent pro Minute. Die Minuten stehen in Zelle A2. Welche Formel gehört in B2, und was kosten 150 Minuten?",
+          "concept": "=4,99+0,09*A2; 18,49 €",
+          "sample_solution": "Kosten = Grundgebühr + Preis pro Minute · Minuten: 4,99 + 0,09 · 150 = 4,99 + 13,50 = 18,49 €.",
+          "choice_distractors": [
+            {
+              "text": "=0,09*A2; 13,50 €",
+              "reason": "Die Grundgebühr fehlt in der Formel."
+            },
+            {
+              "text": "=(4,99+0,09)*A2; 762,00 €",
+              "reason": "Die Grundgebühr wird nur einmal gezahlt, nicht pro Minute."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M78QQC6P9MKRE5YRENNX00AT",
+      "atom_uri": "urn:zam:atom:01M78QQC6P9MKRE5YRENNX00AT",
+      "namespace": "zam-academy-mathematik-mittelschule-9",
+      "slug": "fu-3-lineare-funktion",
+      "title": "Lineare Funktionen y = mx + t",
+      "domain": "mathematik/mittelschule-9/stage-8",
+      "reduction": "axiomatic",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=fu-3-lineare-funktion",
+      "prerequisites": [
+        {
+          "atom_id": "01M78QQC6MPCEV75X0R99Z43N6",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion legt die Grundlage, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-9",
+          "topic_code": "stage-8",
+          "topic_title": "Etappe 8: Funktionale Zusammenhänge"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "track": "mittlere-reife-klasse",
+          "topic_code": "lb8",
+          "topic_title": "Funktionale Zusammenhänge",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78QQC93CRJGXMTBYTWJQYCR",
+          "slug": "ms9-fu-3-lineare-funktion-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=fu-3-lineare-funktion",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was bedeuten m und t in der Gleichung y = mx + t?",
+          "concept": "m ist die Steigung, t der y-Achsenabschnitt.",
+          "choice_distractors": [
+            {
+              "text": "m ist der y-Achsenabschnitt, t die Steigung.",
+              "reason": "Vertauscht: t ist der y-Wert bei x = 0."
+            },
+            {
+              "text": "m ist die Nullstelle, t der Schnitt mit der x-Achse.",
+              "reason": "Die Nullstelle ist −t : m; t liegt auf der y-Achse."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "m ist die Steigung, t der y-Achsenabschnitt.",
+              "m ist der y-Achsenabschnitt, t die Steigung."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78QQC94G12BFA6CNA22W2YB",
+          "slug": "ms9-fu-3-lineare-funktion-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=fu-3-lineare-funktion",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Eine Gerade geht durch P(2 | 5) und Q(4 | 9). Wie lautet ihre Gleichung?",
+          "concept": "y = 2x + 1",
+          "sample_solution": "m = (9 − 5) : (4 − 2) = 2. P einsetzen: 5 = 2 · 2 + t, also t = 1.",
+          "choice_distractors": [
+            {
+              "text": "y = 0,5x + 4",
+              "reason": "m = Unterschied der y-Werte : Unterschied der x-Werte, nicht umgekehrt."
+            },
+            {
+              "text": "y = 2x + 5",
+              "reason": "t ist der y-Wert bei x = 0, nicht der y-Wert von P."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M78QQC6QQ0D5NK583DW8NX59",
+      "atom_uri": "urn:zam:atom:01M78QQC6QQ0D5NK583DW8NX59",
+      "namespace": "zam-academy-mathematik-mittelschule-9",
+      "slug": "fu-4-umgekehrt-proportional",
+      "title": "Umgekehrt proportionale Funktionen y = k : x",
+      "domain": "mathematik/mittelschule-9/stage-8",
+      "reduction": "axiomatic",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=fu-4-umgekehrt-proportional",
+      "prerequisites": [
+        {
+          "atom_id": "01M78QQC6MPCEV75X0R99Z43N6",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion legt die Grundlage, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-9",
+          "topic_code": "stage-8",
+          "topic_title": "Etappe 8: Funktionale Zusammenhänge"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "track": "mittlere-reife-klasse",
+          "topic_code": "lb8",
+          "topic_title": "Funktionale Zusammenhänge",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78QQC95WRCNJ2PZK5FA83Z2",
+          "slug": "ms9-fu-4-umgekehrt-proportional-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=fu-4-umgekehrt-proportional",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie lautet die Funktionsgleichung einer umgekehrt proportionalen Zuordnung, und welche Form hat ihr Graph?",
+          "concept": "y = k : x mit k = x · y; der Graph ist eine Hyperbel.",
+          "choice_distractors": [
+            {
+              "text": "y = k · x; der Graph ist eine Gerade durch den Ursprung.",
+              "reason": "Das ist die proportionale Zuordnung."
+            },
+            {
+              "text": "y = x²; der Graph ist eine Parabel.",
+              "reason": "Bei umgekehrter Proportionalität bleibt das Produkt x · y gleich."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "y = k : x mit k = x · y; der Graph ist eine Hyperbel.",
+              "y = k · x; der Graph ist eine Gerade durch den Ursprung."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78QQC96P5F4RS6SCK35A5Z3",
+          "slug": "ms9-fu-4-umgekehrt-proportional-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=fu-4-umgekehrt-proportional",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Eine Fahrt über 120 km dauert bei 60 km/h 2 Stunden. Wie lange dauert sie bei 80 km/h?",
+          "concept": "1,5 h",
+          "sample_solution": "k = 60 · 2 = 120, also y = 120 : x. Bei 80 km/h: 120 : 80 = 1,5 h.",
+          "choice_distractors": [
+            {
+              "text": "2,67 h",
+              "reason": "Das wäre proportional gerechnet; höheres Tempo heißt kürzere Zeit."
+            },
+            {
+              "text": "40 h",
+              "reason": "Die Zeit ist der Quotient 120 : 80, nicht die Differenz."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M78QQC6R2V77VDGR3S4312H7",
+      "atom_uri": "urn:zam:atom:01M78QQC6R2V77VDGR3S4312H7",
+      "namespace": "zam-academy-mathematik-mittelschule-9",
+      "slug": "fu-5-schnittpunkt",
+      "title": "Schnittpunkte von Geraden",
+      "domain": "mathematik/mittelschule-9/stage-8",
+      "reduction": "axiomatic",
+      "typical_age_min": 14,
+      "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=fu-5-schnittpunkt",
+      "prerequisites": [
+        {
+          "atom_id": "01M78QQC6P9MKRE5YRENNX00AT",
+          "type": "soft",
+          "rationale": "Die verlinkte Lektion legt die Grundlage, auf der diese Lektion aufbaut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "mathematik-mittelschule-9",
+          "topic_code": "stage-8",
+          "topic_title": "Etappe 8: Funktionale Zusammenhänge"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 9,
+          "subject": "mathematik",
+          "track": "mittlere-reife-klasse",
+          "topic_code": "lb8",
+          "topic_title": "Funktionale Zusammenhänge",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M78QQC97BN191W13271KTN96",
+          "slug": "ms9-fu-5-schnittpunkt-regel",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=fu-5-schnittpunkt",
+          "materiality": "material",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie berechnest du den Schnittpunkt zweier Geraden y = m₁x + t₁ und y = m₂x + t₂?",
+          "concept": "Rechte Seiten gleichsetzen und nach x auflösen.",
+          "choice_distractors": [
+            {
+              "text": "Die Steigungen gleichsetzen: m₁ = m₂.",
+              "reason": "Gleiche Steigungen heißen parallel; dann gibt es keinen Schnittpunkt."
+            },
+            {
+              "text": "Die beiden y-Achsenabschnitte addieren.",
+              "reason": "Im Schnittpunkt haben beide Gleichungen dasselbe x und dasselbe y."
+            }
+          ],
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Rechte Seiten gleichsetzen und nach x auflösen.",
+              "Die Steigungen gleichsetzen: m₁ = m₂."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M78QQC98YYES2ACB78XP23EJ",
+          "slug": "ms9-fu-5-schnittpunkt-transfer",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/mathematik-mittelschule-9/#lesson=fu-5-schnittpunkt",
+          "materiality": "material",
+          "tier": "tier2_transfer",
+          "bloom_level": 3,
+          "question": "Tarif A kostet 10 € Grundgebühr und 2 € pro Stunde, Tarif B 20 € und 1 € pro Stunde. Ab wie vielen Stunden ist B günstiger?",
+          "concept": "bei mehr als 10 Stunden",
+          "sample_solution": "2x + 10 = x + 20 ergibt x = 10; dann kosten beide 30 €. Danach steigt A schneller, also ist B bei mehr als 10 Stunden günstiger.",
+          "choice_distractors": [
+            {
+              "text": "bei mehr als 30 Stunden",
+              "reason": "30 ist der Preis im Schnittpunkt, nicht die Stundenzahl."
+            },
+            {
+              "text": "bis zu 10 Stunden",
+              "reason": "Bis 10 Stunden ist A günstiger, weil A die kleinere Grundgebühr hat."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

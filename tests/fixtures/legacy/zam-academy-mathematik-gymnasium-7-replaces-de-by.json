@@ -1,0 +1,130 @@
+{
+  "schema": 1,
+  "approved": "2026-11-14",
+  "status": "approved",
+  "source": "Freigabe durch Thomas am 2026-11-14 (4 A-Ersetzungen per replaces, 0 B, 8 C bleiben aktiv).",
+  "source_repository": "zam-os/zam",
+  "source_commit": "0dd65c8f58b7ece3edcf6aff1d5eced099b74e6c",
+  "sources": [
+    {
+      "file": "tests/fixtures/de-by-gymnasium-7-mathematik-rationale-zahlen-gleichungen-prozent-kvt.json",
+      "sha256": "12c21b73301aca0872977cef74ec288c491cf7ad0be1d7280d41e2de4117bdf3",
+      "tile_id": "de-by:gymnasium-7-mathematik-rationale-zahlen-gleichungen-prozent"
+    },
+    {
+      "file": "tests/fixtures/de-by-gymnasium-7-mathematik-symmetrie-winkel-dreiecke-kongruenz-kvt.json",
+      "sha256": "d6212c5c0f2efd81ad098eb07dd0b70816f000f64aa80d963d2723f487bde83f",
+      "tile_id": "de-by:gymnasium-7-mathematik-symmetrie-winkel-dreiecke-kongruenz"
+    }
+  ],
+  "rows": [
+    {
+      "de_by_cell": "de-by:gymnasium-7-mathematik-rationale-zahlen-gleichungen-prozent",
+      "de_by_id": "01K4M7Z0000000000000000J01",
+      "de_by_question": "Welches Ergebnis liefert die Multiplikation zweier negativer rationaler Zahlen: (-0, 4)·(-15)?",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Reine Multiplikation rationaler Zahlen gehört im LehrplanPLUS zum Stoff der Jahrgangsstufe 6 und bildet in M7 nur eine Vorkenntnis bei Termwerten."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-7-mathematik-rationale-zahlen-gleichungen-prozent",
+      "de_by_id": "01K4M7Z0000000000000000J02",
+      "de_by_question": "Erkläre die Struktur der rationalen Zahlen ℚ und wende die Rechengesetze an: 1. Menge der rationalen Zahlen: ℚ = {p/q | p ∈ ℤ, q ∈ ℕ ∖ {0}}; umfasst alle positiven/negativen Brüche und endlichen bzw. periodischen Dezimalbrüche, 2. Vorzeichen- und Rechenregeln: Addition gegensätzlicher Vorzeichen, Subtraktion als Addition der Gegenzahl (a - b = a + (-b)), Multiplikation/Division (+·+ = +, -·- = +, +·- = -), 3. Rechengesetze in ℚ: Kommutativgesetz, Assoziativgesetz, Distributivgesetz (a·(b + c) = a·b + a·c), 4. Berechne vorteilhaft durch Ausklammern: (-3/7)·18,5 + (-3/7)·2,5.",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Mehrteilige Gesamtkarte aus Jgst.-6-Stoff (Q und Vorzeichenregeln) und M7-Distributivgesetz; kein einzelner Nachfolger ersetzt die ganze Karte."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-7-mathematik-rationale-zahlen-gleichungen-prozent",
+      "de_by_id": "01K4M7Z0000000000000000J03",
+      "de_by_question": "Löse die lineare Gleichung 5x - 8 = 2x + 13 für x ∈ ℚ.",
+      "category": "A",
+      "academy_slug": "gl-2-aequivalenz-lineare-gleichung",
+      "action": "replace",
+      "reason": "Gleicher Einzelabruf: lineare Gleichung 5x − 8 = 2x + 13 durch Äquivalenzumformungen nach x = 7 auflösen."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-7-mathematik-rationale-zahlen-gleichungen-prozent",
+      "de_by_id": "01K4M7Z0000000000000000J04",
+      "de_by_question": "Erkläre systematisch Äquivalenzumformungen von Gleichungen und die Prozentrechnung: 1. Äquivalenzumformungen (Symbol ⇔): Umformungen, die die Lösungsmen L einer Gleichung nicht verändern:   * Beidseitige Addition/Subtraktion desselben Terms (T₁ = T₂ ⇔ T₁ + T₃ = T₂ + T₃).   * Beidseitige Multiplikation/Division mit einer Zahl c ≠ 0. 2. Lösen linearer Gleichungen mit Klammern: Terme vereinfachen (Klammern auflösen) → x-Terme auf eine Seite, absolute Zahlen auf die andere → durch Koeffizienten vor x teilen → Lösungsmenge L = {x} angeben. 3. Die Prozentrechnung: Formel W = G·p% (W = Prozentwert, G = Grundwert, p% = p/100 = Prozentsatz); Prozentsatzveränderungen (Vermehrter Grundwert G⁺ = G·(1 + p%) vs. Verminderter Grundwert G⁻ = G·(1 - p%)). 4. Löse die Gleichung: 3·(2x - 4) - (x + 2) = 4·(x - 1) + 6.",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Mehrteilige Synthesekarte über Äquivalenzumformungen, Klammergleichungen und Prozentrechnung; verteilt auf mehrere Lektionen der Etappe 3."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-7-mathematik-symmetrie-winkel-dreiecke-kongruenz",
+      "de_by_id": "01K4M7W0000000000000000J01",
+      "de_by_question": "Welche Ortslinie beschreibt die Menge aller Punkte der Ebene, die von zwei gegebenen Punkten A und B den gleichen Abstand haben (d(P, A) = d(P, B))?",
+      "category": "A",
+      "academy_slug": "sy-3-abstand-mittelsenkrechte",
+      "action": "replace",
+      "reason": "Gleicher Einzelabruf: Die Mittelsenkrechte der Strecke [AB] fasst genau alle Punkte mit gleichem Abstand zu A und B zusammen."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-7-mathematik-symmetrie-winkel-dreiecke-kongruenz",
+      "de_by_id": "01K4M7W0000000000000000J02",
+      "de_by_question": "Analysiere Achsenspiegelung und Punktspiegelung sowie ihre elementaren Ortslinien: 1. Achsenspiegelung an der Geraden a: Die Verbindungsstrecke [PP'] wird von der Spiegelachse a rechtwinklig halbiert (a ⊥ [PP'] und d(P, a) = d(P', a)); Eigenschaften: Längentreu, Winkeltreu, Kreistreu, Geradentreu, aber Orientierungssinn kehrt sich um (Gegensinnigkeit), 2. Punktspiegelung am Zentrum Z: Das Zentrum Z ist der Mittelpunkt der Strecke [PP']; entspricht einer Drehung um 180°; Eigenschaften: Längen-, winkel- und gleichsinnig orientierungstreu, 3. Die beiden zentralen Ortslinien: Mittelsenkrechte m_([AB]) (Punkte mit gleichem Abstand zu zwei Punkten) und Winkelhalbierende w_α (Punkte mit gleichem Abstand zu zwei sich schneidenden Geraden/Schenkeln).",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Mehrteilige Synthesekarte zu Achsenspiegelung, Punktspiegelung und zwei Ortslinien (umspannt sy-1 bis sy-4)."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-7-mathematik-symmetrie-winkel-dreiecke-kongruenz",
+      "de_by_id": "01K4M7W0000000000000000J03",
+      "de_by_question": "Wie groß ist die Summe der drei Innenwinkel α + β + γ in JEDEM beliebigen ebenen Dreieck der euklidischen Geometrie?",
+      "category": "A",
+      "academy_slug": "wi-3-dreiecksumme-winkelsumme",
+      "action": "replace",
+      "reason": "Gleicher Einzelabruf: Die Innenwinkelsumme jedes Dreiecks beträgt 180°."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-7-mathematik-symmetrie-winkel-dreiecke-kongruenz",
+      "de_by_id": "01K4M7W0000000000000000J04",
+      "de_by_question": "Erkläre und beweise die Winkelbeziehungen an geschnittenen Geraden und die Innenwinkelsumme: 1. Winkel an sich schneidenden Geraden: Scheitelwinkel sind gleich groß (α = α'), Nebenwinkel ergänzen sich zu 180° (α + β = 180°), 2. Winkel an Parallelen mit einer schneidenden Geraden g: Stufenwinkel (F-Winkel) sind gleich groß (α = α₁), Wechselwinkel (Z-Winkel) sind gleich groß (α = α₂), 3. Der mathematische Beweis der Dreieckswinkelsumme: Konstruktion einer Parallelen zur Grundseite AB durch den Eckpunkt C und Nutzung von Wechselwinkeln → α + β + γ = 180°, 4. Formel für die Innenwinkelsumme eines beliebigen konvexen n-Ecks: S_n = (n - 2)·180°.",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Mehrteilige Synthesekarte über Geradenkreuzungen, Parallelen, Dreiecksbeweis und Vielecksformel (umspannt wi-1 bis wi-4)."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-7-mathematik-symmetrie-winkel-dreiecke-kongruenz",
+      "de_by_id": "01K4M7W0000000000000000J05",
+      "de_by_question": "Unter welcher Bedingung ist ein Dreieck nach dem Kongruenzsatz 'SsW' (zwei Seiten und ein Gegenwinkel) EINDEUTIG konstruierbar und kongruent?",
+      "category": "A",
+      "academy_slug": "ko-3-wsw-ssw-ssw-bedingung",
+      "action": "replace",
+      "reason": "Gleicher Einzelabruf: SsW ist genau dann eindeutig, wenn der gegebene Winkel der längeren Seite gegenüberliegt."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-7-mathematik-symmetrie-winkel-dreiecke-kongruenz",
+      "de_by_id": "01K4M7W0000000000000000J06",
+      "de_by_question": "Definiere und systematisiere die 4 Kongruenzsätze für Dreiecke im Gymnasium: 1. SSS (Seite-Seite-Seite): Zwei Dreiecke sind kongruent (deckungsgleich ΔABC ≅ ΔA'B'C'), wenn sie in allen 3 Seitenlängen übereinstimmen (Dreiecksungleichung a + b > c vorausgesetzt), 2. SWS (Seite-Winkel-Seite): Übereinstimmung in 2 Seiten und dem von ihnen eingeschlossenen Winkel, 3. WSW / SWW (Winkel-Seite-Winkel): Übereinstimmung in einer Seite und 2 Winkeln, 4. SsW (Seite-Seite-Winkel): Übereinstimmung in 2 Seiten und dem Gegenwinkel der längeren Seite, 5. Warum ist 'WWW' (drei gleiche Winkel) kein Kongruenzsatz?",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Mehrteilige Übersichtskarte zu allen vier Kongruenzsätzen und der WWW-Gegenfrage (umspannt ko-1 bis ko-3)."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-7-mathematik-symmetrie-winkel-dreiecke-kongruenz",
+      "de_by_id": "01K4M7W0000000000000000J07",
+      "de_by_question": "In welchem Verhältnis teilt der physikalische Schwerpunkt S eines Dreiecks jede der drei Seitenhalbierenden (vom Eckpunkt zur gegenüberliegenden Seite gemessen)?",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Seitenhalbierende und das Schwerpunktsverhältnis 2 : 1 gehören nicht zum verpflichtenden LehrplanPLUS-Katalog von M7."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-7-mathematik-symmetrie-winkel-dreiecke-kongruenz",
+      "de_by_id": "01K4M7W0000000000000000J08",
+      "de_by_question": "Systematisiere die vier klassischen besonderen Punkte im Dreieck und ihre Linien: 1. Umkreismittelpunkt U: Schnittpunkt der 3 Mittelsenkrechten (m_a, m_b, m_c); hat zu allen 3 Ecken den gleichen Abstand (r_u = |UA| = |UB| = |UC|; liegt bei rechtwinkligen Dreiecken genau in der Mitte der Hypotenuse [Thaleskreis] und bei stumpfwinkligen außerhalb), 2. Inkreismittelpunkt I: Schnittpunkt der 3 Winkelhalbierenden (w_α, w_β, w_γ); berührt alle 3 Dreiecksseiten von innen (r_i = d(I, a) = d(I, b) = d(I, c)), 3. Schwerpunkt S: Schnittpunkt der 3 Seitenhalbierenden (s_a, s_b, s_c); physikalischer Massenmittelpunkt mit Teilungsverhältnis 2:1, 4. Höhenschnittpunkt H: Schnittpunkt der 3 Höhengeraden (h_a, h_b, h_c mit h_a ⊥ a); liegt bei stumpfwinkligen Dreiecken außerhalb, 5. Die Eulersche Gerade: U, S, H liegen auf einer gemeinsamen Geraden.",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Umkreis/Inkreis (ko-6) und Höhen (ko-9) sind im Paket enthalten; diese 5-teilige Sammel- und Synthesekarte bündelt sie jedoch mit Schwerpunkt (2:1) und Eulerscher Gerade außerhalb des LehrplanPLUS M7 und ist daher nicht 1:1 ersetzbar."
+    }
+  ]
+}

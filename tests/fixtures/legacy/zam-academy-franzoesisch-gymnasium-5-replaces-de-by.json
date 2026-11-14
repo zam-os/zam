@@ -1,0 +1,22 @@
+{
+	"status": "proposal-only",
+	"approved": null,
+	"source_repository": "https://github.com/zam-os/zam",
+	"source": "Inventory checked on 2026-11-14 in tests/fixtures/curriculum/ and src/kernel/library/bundled-cells.ts: no French Gymnasium grade 5 or grade 6 legacy cell. The neighbouring grade-7 composite card includes a quantity + de facet, but also relative pronouns, extended negation and partitive articles. Thomas decided to leave that whole card with grade 7; no history transfer is proposed.",
+	"sources": [],
+	"rows": [],
+	"schema": 1,
+	"source_commit": "e6a235f75fe87b9d57af38bd61011027b891492c",
+	"neighbouring_grade_review": {
+		"cell_id": "de-by:gymnasium-7-franzoesisch-passe-compose-relativsaetze-verneinung",
+		"item_id": "01K4F7Y0000000000000000J04",
+		"source_path": "tests/fixtures/curriculum/de-by-gymnasium-7-franzoesisch-passe-compose-relativsaetze-verneinung-kvt.json",
+		"grade5_overlap_item": "01M7CF8YHVGGKBTWY9FD0VXTZ6",
+		"assessment": "A shared quantity + de facet does not make the whole multi-topic retrieval equivalent. A category-A transfer to f5-achats-check would overstate mastery; the other facets are outside this grade-5 package.",
+		"decision_question": "Should the composite card remain with grade 7, or should grade 5 also inventory it as a category-C keep-active item?",
+		"decision": "leave-with-grade-7",
+		"decided_by": "Thomas",
+		"decided": "2026-11-14",
+		"decision_source": "Thomas answered the Codex chat question during PR #134 review follow-up: \"Leave it with grade 7 (Recommended)\". This is a scope decision, not approval of any history transfer."
+	}
+}

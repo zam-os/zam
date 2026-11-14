@@ -1,0 +1,10 @@
+{
+  "schema": 1,
+  "status": "proposal-only",
+  "approved": null,
+  "note": "Kein Altbestand für die Mittelschule in zam-os/zam (geprüft auf Commit b7fdfcc4e30d21bbbd97fb2025952ff7f4e296ac: keine de-by:mittelschule-Zelle in bundled-cells.ts oder tests/fixtures/curriculum/). Reale thematisch verwandte de-by-Zellen anderer Schularten sind: (1) bereits freigegeben zugeordnet: de-by:realschule-5-natur-technik-mikroskop-experiment-dateien (NuT J01/J03) und de-by:realschule-5-biologie-mensch-skelett-bewegung-organe (Mensch J01/J03) an biologie-realschule-5 sowie de-by:realschule-8-chemie-stoffe-stoffgemische-trennung an chemie-realschule-8 (kein Doppelanspruch durch nt-mittelschule-5); (2) anderweitig vorgeschlagen: de-by:realschule-8-biologie-ernaehrung-verdauung in biologie-realschule-8; (3) unbeansprucht aktiv: de-by:gymnasium-5-natur-technik-mikroskop-experiment-oop, de-by:gymnasium-5-biologie-mensch-skelett-sexualbiologie (von biologie-realschule-5 als andere Schulart ausgeschlossen) sowie fachverwandte Zellen höherer Jahrgänge wie de-by:realschule-7-physik-waermelehre-temperatur-ausdehnung, de-by:gymnasium-7-physik-optik-lichtbrechung-totalreflexion-linsen, de-by:gymnasium-8-biologie-verdauung-stoffwechsel-blutkreislauf-herz und de-by:gymnasium-8-physik-waermelehre-thermodynamik-energieumwandlung. Sie bleiben aktiv; ob eine der unbeanspruchten Gymnasium-5-Zellen zu nt-mittelschule-5 gehören soll oder bei ihrer Schulart bleibt, ist eine Frage an Thomas. Daher keine Ersetzungen oder Stilllegungen.",
+  "source_repository": "zam-os/zam",
+  "source_commit": "b7fdfcc4e30d21bbbd97fb2025952ff7f4e296ac",
+  "sources": [],
+  "rows": []
+}

@@ -1,0 +1,402 @@
+{
+	"schema": 1,
+	"status": "approved",
+	"approved": "2026-11-14",
+	"source": "Approved by Thomas on 2026-11-14 (3 A transfers via replaces, 0 B, 37 C kept active).",
+	"source_repository": "zam-os/zam",
+	"source_commit": "e6a235f75fe87b9d57af38bd61011027b891492c",
+	"sources": [
+		{
+			"file": "tests/fixtures/de-by-realschule-5-biologie-mensch-skelett-bewegung-organe-kvt.json",
+			"tile_id": "de-by:realschule-5-biologie-mensch-skelett-bewegung-organe",
+			"version": "2026.08.1",
+			"sha256": "e180c6629b614d4e9093f7db686b3232035d2e1f73e4cd9f62aab69ac3a1d090"
+		},
+		{
+			"file": "tests/fixtures/de-by-realschule-5-biologie-pflanzen-bluetenbau-samen-kvt.json",
+			"tile_id": "de-by:realschule-5-biologie-pflanzen-bluetenbau-samen",
+			"version": "2026.08.1",
+			"sha256": "ab4bdcfcc7e680fb61e1c56000baf5128e67c7078f1ea8be7d36f7e0fda10d9b"
+		},
+		{
+			"file": "tests/fixtures/de-by-realschule-6-biologie-saeugetiere-wirbeltiere-hunde-katzen-kvt.json",
+			"tile_id": "de-by:realschule-6-biologie-saeugetiere-wirbeltiere-hunde-katzen",
+			"version": "2026.08.1",
+			"sha256": "0f6a4ccc40a982e1acadf60159a29ff1244d19701d90fe0916a4f492aa6e1e8a"
+		},
+		{
+			"file": "tests/fixtures/de-by-realschule-6-biologie-voegel-fische-amphibien-reptilien-kvt.json",
+			"tile_id": "de-by:realschule-6-biologie-voegel-fische-amphibien-reptilien",
+			"version": "2026.08.1",
+			"sha256": "6ab0ab0baf91ced7f7b5feacfcb5dc3dd793d2757a42bd655fdbf8fd4381af97"
+		},
+		{
+			"file": "tests/fixtures/de-by-realschule-7-biologie-wirbeltiere-oekologie-kvt.json",
+			"tile_id": "de-by:realschule-7-biologie-wirbeltiere-oekologie",
+			"version": "2026.08.1",
+			"sha256": "2623d57b9472c34b369e4a2ebc2565e214dd3b6d390c690b88c946d2693fbf67"
+		}
+	],
+	"rows": [
+		{
+			"de_by_cell": "de-by:realschule-5-biologie-mensch-skelett-bewegung-organe",
+			"de_by_id": "01K4B5M0000000000000000J01",
+			"de_by_question": "Welche charakteristische Form besitzt die menschliche Wirbelsäule in der Seitenansicht, um Erschütterungen beim aufrechten Gang wie eine elastische Feder abzufedern?",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"note": "Human spine shape belongs to the inherited anatomy inventory, outside this package’s retrievals."
+		},
+		{
+			"de_by_cell": "de-by:realschule-5-biologie-mensch-skelett-bewegung-organe",
+			"de_by_id": "01K4B5M0000000000000000J02",
+			"de_by_question": "Gliedere das menschliche Skelett in seine Hauptabschnitte (Schädel mit Gehirn- und Gesichtsschädel, Rumpfskelett mit Wirbelsäule und Brustkorb aus 12 Rippenpaaren/Brustbein zum Schutz von Herz und Lunge, Gliedmaßenskelett mit Schulter-/Beckengürtel und Armen/Beinen), beschreibe den Feinbau eines Röhrenknochens (Knochenhaut mit Nerven/Blutgefäßen, feste Knochenrinde / Kompakta, Schwammgewebe / Spongiosa mit Leichtbau-Knochenbälkchen und Knochenmark) und erkläre die biologische Funktion der elastischen Bandscheiben zwischen den Wirbelkörpern.",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"note": "The old composite skeleton prompt is not retained in one successor."
+		},
+		{
+			"de_by_cell": "de-by:realschule-5-biologie-mensch-skelett-bewegung-organe",
+			"de_by_id": "01K4B5M0000000000000000J03",
+			"de_by_question": "Welcher Muskel arbeitet als direkter Gegenspieler (Antagonist/Strecker) zum zweiköpfigen Armbeuger (Bizeps) am menschlichen Oberarm?",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"note": "The named antagonist muscle is not retrieved in this package."
+		},
+		{
+			"de_by_cell": "de-by:realschule-5-biologie-mensch-skelett-bewegung-organe",
+			"de_by_id": "01K4B5M0000000000000000J04",
+			"de_by_question": "Beschreibe den anatomischen Bau eines echten Gelenks (Gelenkkopf, Gelenkpfanne mit schützender Knorpelschicht, Gelenkkapsel mit Synovia/Gelenkschmiere zur Reibungsminderung und Bänder zur Stabilisierung), unterscheide die 4 Gelenktypen mit Beispielen (Kugelgelenk: Schulter/Hüfte; Scharniergelenk: Ellenbogen/Knie/Finger; Sattelgelenk: Daumengrundgelenk; Dreh-/Zapfengelenk: Kopfgelenk Atlas/Axis) und erkläre das Antagonistenprinzip der Skelettmuskeln (Muskeln können sich nur aktiv zusammenziehen/kontrahieren, nicht selbst aktiv strecken).",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"note": "The composite joint and antagonist prompt is not retained."
+		},
+		{
+			"de_by_cell": "de-by:realschule-5-biologie-mensch-skelett-bewegung-organe",
+			"de_by_id": "01K4B5M0000000000000000J05",
+			"de_by_question": "Um welchen Tag eines durchschnittlichen 28-tägigen Menstruationszyklus findet der Eisprung (Ovulation) im Eierstock statt?",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"note": "The fixed cycle-day framing is not taught as a general prediction; no transfer to the broader organ lesson."
+		},
+		{
+			"de_by_cell": "de-by:realschule-5-biologie-mensch-skelett-bewegung-organe",
+			"de_by_id": "01K4B5M0000000000000000J06",
+			"de_by_question": "Unterscheide primäre Geschlechtsmerkmale (von Geburt an vorhanden: Hoden, Penis bzw. Eierstöcke, Eileiter, Gebärmutter, Scheide) von sekundären Geschlechtsmerkmalen (bilden sich in der Pubertät durch Sexualhormone Testosteron/Östrogen: Bartwuchs, Stimmbruch, Brustentwicklung, Schambehaarung) und beschreibe die Phasen des ca. 28-tägigen weiblichen Menstruationszyklus (1. Menstruation/Regelblutung Tag 1–5, 2. Aufbauphase der Gebärmutterschleimhaut, 3. Eisprung um Tag 14, 4. Vorbereitung auf Einnistung, 5. Abstoßung bei Ausbleiben der Befruchtung).",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"note": "The old prompt combines puberty and a detailed fixed cycle; no successor preserves the whole retrieval."
+		},
+		{
+			"de_by_cell": "de-by:realschule-5-biologie-mensch-skelett-bewegung-organe",
+			"de_by_id": "01K4B5M0000000000000000J07",
+			"de_by_question": "An welchem Ort im weiblichen Körper findet die biologische Befruchtung (Verschmelzung von Ei- und Samenzelle) im Normalfall statt?",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"note": "The old answer specifies the upper third of the oviduct; the new explanation asks a broader fertilization-versus-implantation comparison."
+		},
+		{
+			"de_by_cell": "de-by:realschule-5-biologie-mensch-skelett-bewegung-organe",
+			"de_by_id": "01K4B5M0000000000000000J08",
+			"de_by_question": "Beschreibe die Entstehung neuen menschlichen Lebens in 4 Schritten: 1. Befruchtung (Verschmelzen des Zellkerns eines Spermiums mit dem Eizellkern im Eileiter zur Zygote), 2. Zellteilungen und Einnistung in die Gebärmutterschleimhaut (Tag 5–7), 3. Schwangerschaft (ca. 40 Wochen / 9 Monate: Versorgung über Plazenta und Nabelschnur mit Sauerstoff/Nährstoffen, Schutz im Fruchtwasser), 4. Geburt (Eröffnungswehen, Platzen der Fruchtblase, Austreibungswehen, Durchtrennung der Nabelschnur und Nachgeburt der Plazenta).",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"note": "The old four-part pregnancy and placenta prompt is broader than the new retrieval."
+		},
+		{
+			"de_by_cell": "de-by:realschule-5-biologie-pflanzen-bluetenbau-samen",
+			"de_by_id": "01K4B5P0000000000000000J01",
+			"de_by_question": "Über welche mikroskopisch feinen Zellstrukturen an der Wurzelspitze nehmen Pflanzen Wasser und gelöste Mineralsalze aus dem Boden auf?",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"note": "Root hairs are not a new standalone retrieval."
+		},
+		{
+			"de_by_cell": "de-by:realschule-5-biologie-pflanzen-bluetenbau-samen",
+			"de_by_id": "01K4B5P0000000000000000J02",
+			"de_by_question": "Beschreibe die drei vegetativen Grundorgane einer Blütenpflanze mit ihren spezialisierten Funktionen: 1. Wurzel (Verankerung im Erdreich, Aufnahme von Wasser und Mineralsalzen über Wurzelhaare, Speicherung von Reservestoffen wie bei der Rübe), 2. Sprossachse/Stängel (Stabilität, Ausrichtung der Blätter zum Sonnenlicht, Stofftransport in Leitbündeln: Wasser aufwärts im Xylem, Zuckerlösung abwärts im Phloem), 3. Laubblatt (Photosynthese mit Chlorophyll zur Stärkeherstellung, Gasaustausch und Transpiration/Verdunstung über Spaltöffnungen/Stomata).",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"note": "The old combined vegetative-organ and transport retrieval is not preserved."
+		},
+		{
+			"de_by_cell": "de-by:realschule-5-biologie-pflanzen-bluetenbau-samen",
+			"de_by_id": "01K4B5P0000000000000000J03",
+			"de_by_question": "Aus welchen drei Teilen besteht der weibliche Stempel (Fruchtblatt) im Zentrum einer Blütenpflanze von oben nach unten?",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"note": "Already transferred under Thomas’s approved 2026-11-13 Grade 5 mapping to b5-bluete-vielfalt-check. Grade 6 must not propose or apply a second owner for this history."
+		},
+		{
+			"de_by_cell": "de-by:realschule-5-biologie-pflanzen-bluetenbau-samen",
+			"de_by_id": "01K4B5P0000000000000000J04",
+			"de_by_question": "Beschreibe die 4 Blattkreise einer vollständigen Zwitterblüte von außen nach innen: 1. Kelchblätter (Sepalen: meist grün, schützen die Knospe), 2. Kronblätter (Petalen: farbig/duftend, locken Insekten an), 3. Staubblätter (männliche Organe: Staubfaden und Staubbeutel mit Pollensäcken/Blütenstaub), 4. Stempel / Fruchtblätter (weibliche Organe: klebrige Narbe, Griffel, Fruchtknoten mit Samenanlage und Eizelle).",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"note": "The old multipart answer and specimen detail are not retained in one new card."
+		},
+		{
+			"de_by_cell": "de-by:realschule-5-biologie-pflanzen-bluetenbau-samen",
+			"de_by_id": "01K4B5P0000000000000000J05",
+			"de_by_question": "Was versteht man in der Botanik unter dem Begriff 'Bestäubung'?",
+			"category": "A",
+			"academy_slug": "b6-bestaeubung-check",
+			"action": "replace",
+			"note": "The same atomic definition of pollination is retained in one card."
+		},
+		{
+			"de_by_cell": "de-by:realschule-5-biologie-pflanzen-bluetenbau-samen",
+			"de_by_id": "01K4B5P0000000000000000J06",
+			"de_by_question": "Unterscheide biologisch präzise Bestäubung (mechanischer Transport des Blütenstaubs vom Staubbeutel auf die Narbe) von Befruchtung (Auskeimen des Pollenkorns zu einem Pollenschlauch durch den Griffel und Verschmelzen des männlichen Zellkerns mit dem Eizellkern in der Samenanlage) und vergleiche Insektenblütige (z. B. Kirsche, Rose: bunte Kronblätter, Klebriger Pollen, Nektar) mit Windblütigen Pflanzen (z. B. Hasel, Birke, Gräser: unscheinbare Kätzchen, riesige Mengen trockener Flugpollen, fedrige Narben).",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"note": "The old comparison combines pollination, fertilization and two transport mechanisms; the new cards split them."
+		},
+		{
+			"de_by_cell": "de-by:realschule-5-biologie-pflanzen-bluetenbau-samen",
+			"de_by_id": "01K4B5P0000000000000000J07",
+			"de_by_question": "Aus welchem Teil der Blüte entwickelt sich nach der Befruchtung die schützende und nährende Fruchtwand (Fruchtfleisch)?",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"note": "The old question asks specifically for fruit-wall origin; the new seed-origin retrieval is different."
+		},
+		{
+			"de_by_cell": "de-by:realschule-5-biologie-pflanzen-bluetenbau-samen",
+			"de_by_id": "01K4B5P0000000000000000J08",
+			"de_by_question": "Erkläre die Entstehung von Samen (aus der befruchteten Samenanlage: Samenschale, Keimling/Embryo mit Keimblättern, Nährgewebe) und Frucht (aus dem heranwachsenden Fruchtknoten) und analysiere die 4 evolutionären Strategien der Samenverbreitung: 1. Windausbreitung (Fallschirme wie Löwenzahn, Flügelfrüchte wie Ahorn), 2. Tierausbreitung (Klettfrüchte an Tierfellen wie Klette; Verzehr und Ausscheidung saftiger Beeren/Früchte wie Kirsche durch Vögel; Versteckausbreitung durch Eichhörnchen/Eichelhäher), 3. Wasserausbreitung (Schwimmgewebe wie Kokosnuss, Seerose), 4. Selbstausbreitung / Schleudermechanismen (Springkraut, Spritzgurke).",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"note": "The old answer combines seed anatomy and four dispersal routes; the new cards do not preserve the whole."
+		},
+		{
+			"de_by_cell": "de-by:realschule-6-biologie-saeugetiere-wirbeltiere-hunde-katzen",
+			"de_by_id": "01K4B6S0000000000000000J01",
+			"de_by_question": "Welche Jagdstrategie kennzeichnet die Hauskatze im Gegensatz zum ausdauernd rennenden Hetzjäger Hund (Wolf)?",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"note": "The cat-specific hunting strategy is not a new retrieval."
+		},
+		{
+			"de_by_cell": "de-by:realschule-6-biologie-saeugetiere-wirbeltiere-hunde-katzen",
+			"de_by_id": "01K4B6S0000000000000000J02",
+			"de_by_question": "Vergleiche Hund (Wolfsfamilie) und Hauskatze systematisch anhand ihrer Jagdweise (Hetzjäger im Rudel vs. Einzel-Schleichjäger), ihrer Pfoten/Krallen (nicht einziehbare Krallen als Spikes beim Laufen vs. einziehbare Schärfkrallen), ihres Skeletts/Körpers und ihrer Sinnesorgane (Nasentier/Geruchssinn mit Makrosmat vs. Sehtier mit Dämmerungssehen/Tapetum lucidum und Vibrissen/Tasthaaren).",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"note": "The old dog-cat comparison bundles hunting, claws, skeleton and senses and is not preserved."
+		},
+		{
+			"de_by_cell": "de-by:realschule-6-biologie-saeugetiere-wirbeltiere-hunde-katzen",
+			"de_by_id": "01K4B6S0000000000000000J03",
+			"de_by_question": "Auf wie vielen Zehen pro Fuß fußt ein Pferd (Unpaarhufer) als extremer Zehenspitzengänger?",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"note": "The exact hoof digit is not retrieved here."
+		},
+		{
+			"de_by_cell": "de-by:realschule-6-biologie-saeugetiere-wirbeltiere-hunde-katzen",
+			"de_by_id": "01K4B6S0000000000000000J04",
+			"de_by_question": "Unterscheide Unpaarhufer (Pferd: 1 Zehe) von Paarhufern (Rind, Schwein, Schaf, Reh: 2 Hauptzehen mit Afterklauen) als Zehenspitzengänger und beschreibe den Weg der Pflanzennahrung durch die vier Magenabschnitte des Rindes (Pansen mit Symbiose-Bakterien, Netzmagen, Hochwürgen/Wiederkäuen, Blättermagen zur Wasserresorption, Labmagen als eigentlicher Drüsenmagen).",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"note": "The old hoof and ruminant-stomach composite is not preserved."
+		},
+		{
+			"de_by_cell": "de-by:realschule-6-biologie-saeugetiere-wirbeltiere-hunde-katzen",
+			"de_by_id": "01K4B6S0000000000000000J05",
+			"de_by_question": "Welche spezialisierten Zähne im Raubtiergebiss (z. B. bei Katze und Hund) greifen wie die Klingen einer Schere ineinander, um Fleischbrocken und Sehnen zu zerschneiden?",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"note": "The named carnassial teeth are not a standalone retrieval."
+		},
+		{
+			"de_by_cell": "de-by:realschule-6-biologie-saeugetiere-wirbeltiere-hunde-katzen",
+			"de_by_id": "01K4B6S0000000000000000J06",
+			"de_by_question": "Vergleiche die drei Gebisstypen der Säugetiere anhand von Zahnformel und Funktion: 1. Fleischfressergebiss (Raubtiere: dolchartige Fangzähne, Reißzähne als Schere, Scharniergelenk im Kiefer), 2. Pflanzenfressergebiss (Rind/Pferd: Schmelzleistenzähne zum Zermahlen, zahnlose Lücke / Hornplatte im Oberkiefer, Mahlbewegung im Kiefergelenk), 3. Allesfressergebiss (Wildschwein/Mensch: Höckerzähne, Mahl- und Schneidfähigkeit).",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"note": "The old three-dentition composite and tooth-formula detail are not retained."
+		},
+		{
+			"de_by_cell": "de-by:realschule-6-biologie-saeugetiere-wirbeltiere-hunde-katzen",
+			"de_by_id": "01K4B6S0000000000000000J07",
+			"de_by_question": "Über welches Organ werden die Embryonen höherer Säugetiere im Mutterleib (Gebärmutter) mit Nährstoffen und Sauerstoff aus dem mütterlichen Blut versorgt?",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"note": "The placenta-and-umbilical-cord retrieval is outside the new mammal comparison."
+		},
+		{
+			"de_by_cell": "de-by:realschule-6-biologie-saeugetiere-wirbeltiere-hunde-katzen",
+			"de_by_id": "01K4B6S0000000000000000J08",
+			"de_by_question": "Fasse die fünf wesentlichen Klassenmerkmale der Säugetiere zusammen: 1. Behaarung (Fell mit Woll- und Deckhaaren zur Wärmedämmung), 2. Gleichwarm (Homoiothermie ca. 36–38 °C), 3. Lebendgebärend (Viviparie mit Plazenta und Fruchthülle), 4. Säugen der Nachkommen mit Muttermilch aus Milchdrüsen, 5. Hochdifferenziertes Gehirn und intensive Brutpflege (Nestflüchter vs. Nesthocker).",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"note": "The old five-part mammal prompt is not retained; the course explicitly qualifies live birth with exceptions."
+		},
+		{
+			"de_by_cell": "de-by:realschule-6-biologie-voegel-fische-amphibien-reptilien",
+			"de_by_id": "01K4B6V0000000000000000J01",
+			"de_by_question": "Welche spiralförmig gedrehten Eiweißschnüre halten den Dotter mit der empfindlichen Keimscheibe im Zentrum des Vogeleis elastisch in der Schwebe?",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"note": "Chalazae are not a new retrieval."
+		},
+		{
+			"de_by_cell": "de-by:realschule-6-biologie-voegel-fische-amphibien-reptilien",
+			"de_by_id": "01K4B6V0000000000000000J02",
+			"de_by_question": "Beschreibe den mikroskopischen und anatomischen Bau eines Vogeleis (poröse Kalkschale für Gasaustausch, äußere und innere Schalenhaut mit Luftkammer am stumpfen Pol, Eiklar/Eiweiß als Wasserspeicher und Stoßdämpfer, Dotter mit Dottermembran als Nährstoffreserve, Keimscheibe und Hagelschnüre) und erkläre die Bedeutung des regelmäßigen Eier-Wendedrehens durch die brütenden Elterntiere.",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"note": "The detailed egg anatomy and full sample solution are not retained as one successor."
+		},
+		{
+			"de_by_cell": "de-by:realschule-6-biologie-voegel-fische-amphibien-reptilien",
+			"de_by_id": "01K4B6V0000000000000000J03",
+			"de_by_question": "In welche Richtung strömt das Blut in den Kiemenkapillaren im Verhältnis zum vorbeifließenden Atemwasser?",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"note": "The gill countercurrent mechanism is not a new retrieval."
+		},
+		{
+			"de_by_cell": "de-by:realschule-6-biologie-voegel-fische-amphibien-reptilien",
+			"de_by_id": "01K4B6V0000000000000000J04",
+			"de_by_question": "Erkläre den Bau des Fisch-Atmungsapparats (Kiemendeckel, Kiemenbögen mit Kiemenreusendornen als Schwebstofffilter und stark durchbluteten Kiemenblättchen), beschreibe den Atemmechanismus (Maul öffnen / Kiemendeckel geschlossen -> Maul schließen / Kiemendeckel heben und Wasser herausdrücken) und begründe physikalisch-biologisch den gewaltigen Wirkungsgrad des Gegenstromprinzips gegenüber dem Gleichstromprinzip.",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"note": "The detailed gill anatomy and gas-exchange composite is not retained."
+		},
+		{
+			"de_by_cell": "de-by:realschule-6-biologie-voegel-fische-amphibien-reptilien",
+			"de_by_id": "01K4B6V0000000000000000J05",
+			"de_by_question": "Welche Gliedmaßen wachsen bei der Kaulquappe während der Metamorphose als ERSTES nach außen sichtbar heraus?",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"note": "The exact order of hind- and forelimb emergence is not retrieved in the new general metamorphosis card."
+		},
+		{
+			"de_by_cell": "de-by:realschule-6-biologie-voegel-fische-amphibien-reptilien",
+			"de_by_id": "01K4B6V0000000000000000J06",
+			"de_by_question": "Beschreibe die vollständige Metamorphose (Gestaltwandlung) des Grasfrosches von der Eiablage im Laichgewässer bis zum fertigen Landtier in 5 Schritten: 1. Geleelaich / äußere Befruchtung, 2. Schlüpfen der Kaulquappe (Außenkiemen, Flossensaum, Hornschnabel/Pflanzenfresser), 3. Innenkiemen, 4. Gliedmaßenbildung (zuerst Hinterbeine, dann Vorderbeine), 5. Rückbildung des Ruderschwanzes, Umstellung auf Lungen-/Hautatmung und fleischfressende Ernährung (Schleuderzunge).",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"note": "The old detailed metamorphosis composite is not retained in full."
+		},
+		{
+			"de_by_cell": "de-by:realschule-6-biologie-voegel-fische-amphibien-reptilien",
+			"de_by_id": "01K4B6V0000000000000000J07",
+			"de_by_question": "Warum müssen sich Eidechsen und Schlangen im Laufe ihres Lebens in regelmäßigen Abständen häuten (Natternhemd abstreifen)?",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"note": "The old specialized reptile/amphibian retrieval is not an identical new card."
+		},
+		{
+			"de_by_cell": "de-by:realschule-6-biologie-voegel-fische-amphibien-reptilien",
+			"de_by_id": "01K4B6V0000000000000000J08",
+			"de_by_question": "Erkläre die evolutionären Anpassungen der Reptilien (Zauneidechse, Blindschleiche, Ringelnatter, Kreuzotter) an ein dauerhaftes Leben auf trockenem Land: 1. Trockene Hornschuppenhaut als Verdunstungsschutz und Notwendigkeit der Häutung, 2. Innere Befruchtung und pergamentartig beschalte Eier (Amnioten-Ei: Dottervorrat, Schutzhüllen), 3. Fortbewegung (Spreizgang der Echsen vs. Schlängeln der Schlangen) und 4. Wechselwarmes Verhalten (Sonnentanken/Thermoregulation).",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"note": "The old composite reptile/amphibian comparison is split or narrowed in the new lessons."
+		},
+		{
+			"de_by_cell": "de-by:realschule-7-biologie-wirbeltiere-oekologie",
+			"de_by_id": "01K4B7W0000000000000000J01",
+			"de_by_question": "Welche beiden Wirbeltierklassen sind im Gegensatz zu Fischen, Amphibien und Reptilien gleichwarm (homoiotherm) und halten ihre Körperkerntemperatur konstant?",
+			"category": "A",
+			"academy_slug": "b6-temperatur-check",
+			"action": "replace",
+			"note": "The same retrieval of the two endothermic vertebrate classes is retained in one card."
+		},
+		{
+			"de_by_cell": "de-by:realschule-7-biologie-wirbeltiere-oekologie",
+			"de_by_id": "01K4B7W0000000000000000J02",
+			"de_by_question": "Erstelle eine vergleichende Übersicht über die fünf Wirbeltierklassen (Fische, Lurche/Amphibien, Kriechtiere/Reptilien, Vögel, Säugetiere) anhand von fünf biologischen Kriterien: Körperbedeckung, Atmungsorgane, Fortpflanzung/Entwicklung (Eier/lebendgebärend), Herz-Kreislauf-Bau und Temperaturregulation (wechselwarm vs. gleichwarm).",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"note": "The old five-class table includes circulation anatomy not taught or retained here."
+		},
+		{
+			"de_by_cell": "de-by:realschule-7-biologie-wirbeltiere-oekologie",
+			"de_by_id": "01K4B7W0000000000000000J03",
+			"de_by_question": "Welches Organ ermöglicht es echten Knochenfischen, ohne Muskelanstrengung in einer bestimmten Wassertiefe zu schweben?",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"note": "The old unqualified bony-fish swim-bladder prompt is not retained; the course says many, not all."
+		},
+		{
+			"de_by_cell": "de-by:realschule-7-biologie-wirbeltiere-oekologie",
+			"de_by_id": "01K4B7W0000000000000000J04",
+			"de_by_question": "Analysiere die anatomischen und physiologischen Anpassungen des Vogelkörpers an das Fliegen (Leichtbauweise: pneumatisierte Röhrenknochen, zahnloser Hornschnabel; Muskel- und Antriebsapparat: Brustbeinkamm mit kräftigen Flugmuskeln; Atmung: Luftsacksystem; aerodynamische Tragflächen/Federn) und stelle diese den Anpassungen der Fische an das Wasserleben gegenüber (Stromlinienform, Flossen als Steuer/Antrieb, Seitenlinienorgan, Schwimmblase).",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"note": "The old combined bird-flight and fish-swimming prompt is split and simplified."
+		},
+		{
+			"de_by_cell": "de-by:realschule-7-biologie-wirbeltiere-oekologie",
+			"de_by_id": "01K4B7W0000000000000000J05",
+			"de_by_question": "Aus welchen beiden Komponenten setzt sich ein vollständiges Ökosystem nach der biologischen Definition zusammen?",
+			"category": "A",
+			"academy_slug": "b6-lebensraum-check",
+			"action": "replace",
+			"note": "The same two-component ecosystem definition is retained in one card, including interactions."
+		},
+		{
+			"de_by_cell": "de-by:realschule-7-biologie-wirbeltiere-oekologie",
+			"de_by_id": "01K4B7W0000000000000000J06",
+			"de_by_question": "Definiere Ökosystem, Biotop und Biozönose, unterscheide abiotische (unbelebte) Umweltfaktoren (Licht, Temperatur, Wasser/Feuchtigkeit, Boden-pH, Wind) von biotischen (belebten) Faktoren (Konkurrenz, Räuber-Beute, Parasitismus, Symbiose) und erläutere diese Zusammenhänge am Beispiel des Ökosystems Mischwald.",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"note": "The old ecosystem-and-environmental-factor composite is not retained in one successor."
+		},
+		{
+			"de_by_cell": "de-by:realschule-7-biologie-wirbeltiere-oekologie",
+			"de_by_id": "01K4B7W0000000000000000J07",
+			"de_by_question": "Welche Organismengruppe (z. B. Regenwürmer, Pilze, Bodenbakterien) baut abgestorbene organische Substanz zu anorganischen Mineralstoffen ab und schließt so den Stoffkreislauf?",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"note": "The old wording groups earthworms with chemical decomposers; the course distinguishes fragmentation and microbial decomposition."
+		},
+		{
+			"de_by_cell": "de-by:realschule-7-biologie-wirbeltiere-oekologie",
+			"de_by_id": "01K4B7W0000000000000000J08",
+			"de_by_question": "Erkläre die drei trophischen Grundstufen in einem Ökosystem: Produzenten (autotroph), Konsumenten (heterotroph: Pflanzenfresser 1. Ordnung, Fleischfresser 2./3. Ordnung, Spitzenräuber) und Destruenten (Mineralisierer), vergleiche den geschlossenen Stoffkreislauf (Kohlenstoff, Stickstoff, Mineralien) mit dem offenen unidirektionalen Energiefluss (10-%-Regel der Energiepyramide / Wärmeverlust) und zeichne eine 4-gliedrige Nahrungskette im See.",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"note": "The old trophic-level composite includes a fixed energy percentage and closed-cycle wording; no history is transferred to corrected, narrower retrievals."
+		}
+	]
+}

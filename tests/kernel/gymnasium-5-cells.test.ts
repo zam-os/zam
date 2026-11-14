@@ -15,18 +15,21 @@ import {
   openDatabase,
 } from "../../src/kernel/index.js";
 
-// Mathematik 5 moved to zam-academy:mathematik-gymnasium-5; its two school
-// cells are archived in tests/fixtures/legacy/.
+// Mathematik 5 and Geographie 5 moved to their ZAM Academy cells; the
+// superseded school cells are archived in tests/fixtures/legacy/.
 const GYM5_CELL_IDS = [
   "de-by:gymnasium-5-biologie-mensch-skelett-sexualbiologie",
   "de-by:gymnasium-5-biologie-pflanzen-bluetenbau-samen",
   "de-by:gymnasium-5-natur-technik-mikroskop-experiment-oop",
-  "de-by:gymnasium-5-geographie-erde-gradnetz-orientierung",
   "de-by:gymnasium-5-deutsch-erzaehlen-maerchen-fabeln",
   "de-by:gymnasium-5-deutsch-grammatik-faelle-rechtschreibung",
   "de-by:gymnasium-5-englisch-starter-grammar-tenses",
 ];
-const ACADEMY_GYM5_IDS = ["zam-academy:mathematik-gymnasium-5"];
+const ACADEMY_GYM5_IDS = [
+  "zam-academy:franzoesisch-gymnasium-5",
+  "zam-academy:geographie-gymnasium-5",
+  "zam-academy:mathematik-gymnasium-5",
+];
 
 describe("Gymnasium Bayern 5 Curriculum Cells (Unterstufe / G9)", () => {
   let tempDir: string;
@@ -151,8 +154,8 @@ describe("Gymnasium Bayern 5 Curriculum Cells (Unterstufe / G9)", () => {
       totalCardsCreated += res.cardsCreated;
     }
 
-    // 7 cells * 4 atoms * 2 items = 56 cards
-    expect(totalCardsCreated).toBe(56);
+    // 6 cells * 4 atoms * 2 items = 48 cards
+    expect(totalCardsCreated).toBe(48);
 
     const statuses = await getBundledCellsWithStatus(db, userId);
     const gym5Statuses = statuses.filter((s) => GYM5_CELL_IDS.includes(s.id));
