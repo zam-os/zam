@@ -3,6 +3,7 @@ import { existsSync, mkdtempSync, readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { weltwissenSeedRows } from "../../src/kernel/atlas/index.js";
 import {
   type Database,
   enrolBundledCell,
@@ -550,5 +551,36 @@ describe.each(UNMAPPED_CELLS)("ZAM Academy $app cell", (cell) => {
         alreadyEnrolled: true,
       });
     });
+  });
+});
+
+describe("Weltwissen placement for GPG and NT Mittelschule 5", () => {
+  it("places every gpg-mittelschule-5 and nt-mittelschule-5 lesson into its Weltwissen Gebiet", () => {
+    const { aliases } = weltwissenSeedRows();
+    const regionFor = (domain: string) =>
+      aliases.find((alias) => alias.domainPrefix === domain)?.regionKey;
+
+    const expected: Readonly<Record<string, Readonly<Record<string, string>>>> =
+      {
+        "zam-academy:gpg-mittelschule-5": {
+          "gpg/lb1": "gesellschaft.geographie.erde",
+          "gpg/lb2": "gesellschaft.geschichte.antike",
+          "gpg/lb3": "gesellschaft.politik-und-gesellschaft.mitwirkung",
+          "gpg/lb4": "gesellschaft.politik-und-gesellschaft.mitwirkung",
+        },
+        "zam-academy:nt-mittelschule-5": {
+          "nt/lb1": "natur.biologie.forschen",
+          "nt/lb2": "natur.physik.waerme",
+          "nt/lb3": "natur.biologie.mensch",
+          "nt/lb4": "natur.chemie.teilchen",
+        },
+      };
+
+    for (const [cellId, mapping] of Object.entries(expected)) {
+      const tile = getBundledCellTile(cellId)!;
+      for (const atom of tile.atoms) {
+        expect(regionFor(atom.domain), atom.slug).toBe(mapping[atom.domain]);
+      }
+    }
   });
 });
