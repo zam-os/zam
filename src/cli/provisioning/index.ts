@@ -45,27 +45,29 @@ export type SetupAgent = "claude" | "copilot" | "codex" | "agent";
 
 const ALL_SETUP_AGENTS: SetupAgent[] = ["claude", "copilot", "codex", "agent"];
 
+/**
+ * The skills ZAM wires into a workspace: the main skill and the guided-work
+ * skill (ADR 2026-11-15). Each harness folder gets one link per skill.
+ */
+export const SKILL_NAMES = ["zam", "zam-work"] as const;
+
+const SKILL_FOLDERS: Array<{ root: string; agents: SetupAgent[] }> = [
+  { root: ".claude", agents: ["claude", "copilot"] },
+  { root: ".agent", agents: ["agent"] },
+  { root: ".agents", agents: ["codex"] },
+];
+
 const SKILL_PAIRS: Array<{
   from: string;
   to: string;
   agents: SetupAgent[];
-}> = [
-  {
-    from: join(packageRoot, ".claude", "skills", "zam", "SKILL.md"),
-    to: join(".claude", "skills", "zam", "SKILL.md"),
-    agents: ["claude", "copilot"],
-  },
-  {
-    from: join(packageRoot, ".agent", "skills", "zam", "SKILL.md"),
-    to: join(".agent", "skills", "zam", "SKILL.md"),
-    agents: ["agent"],
-  },
-  {
-    from: join(packageRoot, ".agents", "skills", "zam", "SKILL.md"),
-    to: join(".agents", "skills", "zam", "SKILL.md"),
-    agents: ["codex"],
-  },
-];
+}> = SKILL_NAMES.flatMap((name) =>
+  SKILL_FOLDERS.map(({ root, agents }) => ({
+    from: join(packageRoot, root, "skills", name, "SKILL.md"),
+    to: join(root, "skills", name, "SKILL.md"),
+    agents,
+  })),
+);
 
 export function parseSetupAgents(value?: string): Set<SetupAgent> {
   if (!value || value.trim().toLowerCase() === "all") {
@@ -162,17 +164,19 @@ function linkPointsTo(sourceDir: string, destinationDir: string): boolean {
 }
 
 /**
- * True when the destination is a real directory that carries the ZAM skill
- * fingerprint (`name: zam` in SKILL.md). Such a directory is an outdated copy of
- * the skill — safe to replace with a live link even without `--force`. A
+ * True when the destination is a real directory that carries the fingerprint
+ * of the skill it should hold (`name: zam` or `name: zam-work` in SKILL.md,
+ * after the folder's own name). Such a directory is an outdated copy of the
+ * skill — safe to replace with a live link even without `--force`. A
  * directory whose SKILL.md names a different skill is treated as unmanaged.
  */
-function isZamSkillCopy(destinationDir: string): boolean {
+function isZamSkillCopy(destinationDir: string, skillName: string): boolean {
   try {
     if (!lstatSync(destinationDir).isDirectory()) return false;
     const skillFile = join(destinationDir, "SKILL.md");
     if (!existsSync(skillFile)) return false;
-    return /^name:\s*zam\s*$/m.test(readFileSync(skillFile, "utf8"));
+    const name = readFileSync(skillFile, "utf8").match(/^name:\s*(\S+)\s*$/m);
+    return name?.[1] === skillName;
   } catch {
     return false;
   }
@@ -198,7 +202,7 @@ export function classifySkillDestination(
   if (linkPointsTo(sourceDir, destinationDir)) return "linked";
   if (!pathExists(destinationDir)) return "missing";
   if (isSymbolicLink(destinationDir)) return "broken";
-  if (isZamSkillCopy(destinationDir)) return "stale-copy";
+  if (isZamSkillCopy(destinationDir, basename(sourceDir))) return "stale-copy";
   return "unmanaged";
 }
 

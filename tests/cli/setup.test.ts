@@ -28,7 +28,7 @@ import {
 } from "../../src/kernel/index.js";
 
 describe("setup command helpers", () => {
-  it("links ZAM skills for Claude/Copilot, shared agents, and Codex", () => {
+  it("links both ZAM skills for Claude/Copilot, shared agents, and Codex", () => {
     const cwd = mkdtempSync(join(tmpdir(), "zam-setup-skills-"));
 
     try {
@@ -39,16 +39,20 @@ describe("setup command helpers", () => {
         join(cwd, ".agent", "skills", "zam", "SKILL.md"),
         join(cwd, ".agents", "skills", "zam", "SKILL.md"),
       ];
+      const workDestinations = destinations.map((destination) =>
+        join(dirname(dirname(destination)), "zam-work", "SKILL.md"),
+      );
 
-      for (const destination of destinations) {
+      for (const destination of [...destinations, ...workDestinations]) {
         expect(existsSync(destination)).toBe(true);
         expect(lstatSync(dirname(destination)).isSymbolicLink()).toBe(true);
       }
-      expect(first.map((result) => result.action)).toEqual([
-        "linked",
-        "linked",
-        "linked",
-      ]);
+      expect(first.map((result) => result.action)).toEqual(
+        Array(6).fill("linked"),
+      );
+      for (const destination of workDestinations) {
+        expect(readFileSync(destination, "utf8")).toMatch(/^name: zam-work$/m);
+      }
       expect(readFileSync(destinations[2], "utf8")).toContain("$zam");
       expect(realpathSync(dirname(destinations[2]))).toBe(
         realpathSync(join(process.cwd(), ".agents", "skills", "zam")),

@@ -61,13 +61,13 @@ This detects installed user-scoped harnesses, registers the `zam` MCP server, in
 When the user invokes the ZAM skill without a task or mode, do not choose a workflow on their behalf:
 
 1. Call `zam_status` to obtain the active user, due count, and current statistics.
-2. If this same agent conversation already contains an active, unended ZAM session ID, offer **Continue the current ZAM flow** first. Do not infer continuation from old database rows and do not add cross-restart persistence.
+2. If this same agent conversation already contains an active, unended ZAM session ID, offer **Continue the current ZAM flow** first. Do not infer continuation from old database rows and do not add cross-restart persistence. The one exception is guided work: when the learner names a guided-work session to continue, `zam_work_plan` with an empty list returns its subtasks (see the `zam-work` skill).
 3. If reviews are due, inspect a small spoiler-free batch with `zam_get_reviews` (`noResolve: true`, `noDynamicQuestion: true`). Use its domains plus the current conversation to suggest up to three honest topic choices, such as **RAG** or **Axon Ivy** only when the returned data or context supports them.
 4. Present the applicable choices below and wait for the user to select one:
    - **Recall now** — put this first when there is no known active flow; show the due count and targeted topic suggestions, plus an all-due option.
    - **Work and observe** — help complete a real task while monitoring which knowledge is exercised.
    - **Discover learning gaps** — inspect the intended work or context for concepts that appear to be missing.
-   - **Guided collaboration** — help, but deliberately leave suitable steps for the learner to perform.
+   - **Guided collaboration** — work on a real task as a team: the learner takes the hardest subtasks and does them by hand. When chosen, load the `zam-work` skill and follow it.
 5. Do not list Studio. Studio is the standalone onboarding and non-agent surface; agent harnesses use the focused MCP Apps and direct learning tools.
 
 ### Purpose-built visual surfaces
@@ -192,7 +192,7 @@ Call `zam_session_start` with the active user, task description, and execution c
 In Shadowing mode, hand off to the user:
 > "This is now your job. Good luck!"
 
-Step back. Do not interrupt unless the user asks for help. If the user selected Guided collaboration, alternate useful agent assistance with concrete steps the learner performs; do not automate every suitable practice step.
+Step back. Do not interrupt unless the user asks for help. Guided collaboration has its own skill, `zam-work`.
 
 To observe, tell the user to open a monitored terminal window:
 > "I've opened a terminal for you. Go ahead and work there — come back here when you're done."

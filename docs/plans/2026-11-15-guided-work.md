@@ -1,6 +1,6 @@
 # Guided work — implementation plan
 
-**Status:** Phases 1–3 are built. Phase 4 builds the rest of the flow, 5–6 clean up and accept the ADR, 7 is the pilot.\
+**Status:** Phases 1–4 are built; the hand check 4.5 is open. 5–6 clean up and accept the ADR, 7 is the pilot.\
 **Decision:** [ADR 2026-11-15 — Guided Work](../adr/2026-11-15-guided-work-subtasks-and-review.md). Its decisions are cited here as **D1–D11**. Read the ADR first; this plan does not repeat its reasons.\
 **Branch:** `feat/guided-work`, from `main`. One feature, one branch, one PR, one commit per phase.
 
@@ -147,19 +147,30 @@ Pitfall: `submitReview` calls `ensureCard` when it gets a `tokenId` and no card 
 
 Goal: a short skill carries the flow, and every harness gets it.
 
-- [ ] **4.1** New skill `skills/zam-work/SKILL.md`, at most 80 lines. A draft is in Appendix A. It holds the flow and the rules; the tool results carry the step-by-step instruction.
-- [ ] **4.2** Harness copies `.claude/skills/zam-work/`, `.agent/skills/zam-work/` and `.agents/skills/zam-work/`. The body below the front matter is identical in all four. Add `tests/cli/work-skill.test.ts`, which fails when a body differs, and which asserts that the skill never tells the agent to pass a `tokenId` (moved here from 3.3).
-- [ ] **4.3** Distribution. Today the code knows one skill:
+- [x] **4.1** New skill `skills/zam-work/SKILL.md`, at most 80 lines. A draft is in Appendix A. It holds the flow and the rules; the tool results carry the step-by-step instruction.
+- [x] **4.2** Harness copies `.claude/skills/zam-work/`, `.agent/skills/zam-work/` and `.agents/skills/zam-work/`. The body below the front matter is identical in all four. Add `tests/cli/work-skill.test.ts`, which fails when a body differs, and which asserts that the skill never tells the agent to pass a `tokenId` (moved here from 3.3).
+- [x] **4.3** Distribution. Today the code knows one skill:
   - `src/kernel/system/hooks.ts` (`distributeGlobalSkills` and the path helpers above it),
   - `src/cli/provisioning/index.ts` (`wireSkills` and its health report),
   - `package.json` `files`,
   - the tests `tests/cli/skill-links.test.ts`, `tests/cli/agent-plugin.test.ts`, `tests/cli/setup.test.ts` and `tests/kernel/system.test.ts`.
 
   Turn the single name into a list of two, `zam` and `zam-work`, in each place. Keep the behaviour for `zam` exactly as it is; extend the tests rather than rewrite them.
-- [ ] **4.4** In all four copies of the existing `zam` skill, change only what points at guided work: the menu entry **Guided collaboration** now says to load the `zam-work` skill, and the sentence about guided collaboration in STEP 4 goes. Add one sentence to the rule against inferring a running flow from old rows: a guided-work session is picked up again with `zam_work_plan`.
+- [x] **4.4** In all four copies of the existing `zam` skill, change only what points at guided work: the menu entry **Guided collaboration** now says to load the `zam-work` skill, and the sentence about guided collaboration in STEP 4 goes. Add one sentence to the rule against inferring a running flow from old rows: a guided-work session is picked up again with `zam_work_plan`.
 - [ ] **4.5** Check by hand in one harness: `/zam`, choose guided collaboration, and follow a small real task to the record.
 
 Exit evidence: the tests of 4.2 and 4.3 pass; a note in this plan on what 4.5 showed.
+
+Done on `feat/guided-work`, 2026-11-15, except 4.5. Evidence and deviations:
+
+- `skills/zam-work/SKILL.md` has 73 lines; the three harness copies share its body. The flow lives mostly in the tools' `instruction` texts, so the skill is shorter than Appendix A: the record at the end is one paragraph that points to the last instruction.
+- Front matter per copy, as for the main skill: the portable copy keeps `name`, `description`, `license`, `compatibility`; the harness copies carry `user-invocable: true` instead.
+- Distribution: `SKILL_NAMES` in `src/cli/provisioning/index.ts` and a loop in `distributeGlobalSkills` (`src/kernel/system/hooks.ts`). `getPackageSkillPath` takes the skill name as a second argument, `zam` by default. Global entries for the new skill are named, for example, `Codex Global (zam-work)`; the main skill's names are unchanged.
+- An outdated copy is recognised by the name its folder should hold, so an old `zam` copy in a `zam-work` folder is treated as foreign, not replaced.
+- `tests/cli/work-skill.test.ts` (8 tests): identical bodies, front matter, length, the three tools, no `tokenId` (moved here from 3.3), the main skill's menu in all four copies, the npm file list, package resolution, global distribution and the stale-copy rule. `tests/cli/setup.test.ts` now expects six links.
+- The main skill changed in three lines in each copy: the menu entry, the sentence in STEP 4, and the exception to "do not infer continuation" for a named guided-work session.
+- Lint, `tsc --noEmit` and the full suite pass (456 files, 4784 tests, 32 skipped).
+- **4.5 is open.** The ZAM server this session is connected to is the installed release, not this branch, so the new tools could not be tried in a harness here. It needs a build of this branch connected to one harness.
 
 Out of scope: the three harness copies of the existing `zam` skill have drifted from `skills/zam` (they lack the material-import lines). Repairing that is a separate change.
 
