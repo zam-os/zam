@@ -165,6 +165,11 @@ import {
   submitRatingCommand,
 } from "./study-card-actions.js";
 import {
+  type ActiveCardNewBudget,
+  type StudySessionSnapshot,
+  createPausedStudySession,
+} from "./study-session-resume.js";
+import {
   type BonusOffer,
   type ImportBonusItem,
   type PreconditionOffer,
@@ -763,6 +768,10 @@ let bonusIgnoredThisSession = false;
 let sessionNewRemaining = 0;
 let sessionExtraNewRemaining = 0;
 let sessionCardsRemaining = 0;
+let activeCardConsumedReview = false;
+let activeCardNewBudget: ActiveCardNewBudget = "none";
+let pausedStudySession: StudySessionSnapshot<AtlasLensKindWire> | null = null;
+let resumeSessionInFlight = false;
 
 const SAFE_REVIEW_MEDIA_TYPES = new Set([
   "image/png",
@@ -1152,7 +1161,7 @@ function initializeTranslations() {
   // Checklist rows resolve their copy at render time — rebuild them so a
   // locale switch never leaves stale-language rows (no-op before bootstrap).
   renderOnboardingChecklist();
-  document.getElementById("btn-start-session")!.textContent = t("btn_start_session");
+  syncPausedSessionUi();
   document.getElementById("lbl-translating")!.textContent = t("lbl_translating");
   document.getElementById("lbl-ai-evaluating")!.textContent = t("lbl_ai_evaluating");
   document.getElementById("lbl-ai-working")!.textContent = t("lbl_ai_working");
@@ -5571,23 +5580,11 @@ function switchView(
     true;
 
   if (viewId !== "study-view" && studySessionActive) {
-    // Navigating away must silence the microphone and the speaker.
-    void pauseVoiceMode();
-    evaluationRequestId++;
-    if (revealInProgress) cancelActiveBridgeRequest();
-    revealInProgress = false;
-    learningClock.reset();
-    finishAiWait();
-    finishQuestionWait();
-    hideStudyBusy();
-    closeManageMenu();
-    closeInlineEditor();
-    if (isStudyConfirmOpen()) hideStudyConfirm();
-    activeCard = null;
-    updateReviewControlState();
-    // Leaving study via nav abandons the in-progress card; still close the
+    // Navigating away via nav abandons the in-progress card and closes the
     // backend session so it does not linger. The summary path uses
-    // finishStudySession() and stays on study-view.
+    // finishStudySession() and stays on study-view; jumpToFullEditor() pauses
+    // first via pauseCurrentStudySession().
+    teardownActiveStudyUi();
     void closeUiLearningSession();
   }
   // Leaving the summary screen via nav restores the study shell for next time.
@@ -6478,7 +6475,16 @@ async function loadDashboard() {
       workspaceStructure?: OnboardingWorkspaceStructure;
       hasNonAcademyCurriculumCells?: boolean;
     }>("desktop-bootstrap", ["--time-zone", learnerTimeZone()]);
+    const previousDesktopUserId = desktopUserId;
     desktopUserId = settings.userId;
+    if (
+      pausedStudySession &&
+      previousDesktopUserId &&
+      previousDesktopUserId !== desktopUserId
+    ) {
+      pausedStudySession = null;
+      syncPausedSessionUi();
+    }
     setCurrentLocale(settings.locale || "en");
     isLlmEnabled = settings.llm?.enabled || false;
     activeWorkspaceId = settings.activeWorkspaceId ?? activeWorkspaceId;
@@ -6570,6 +6576,7 @@ async function loadDashboard() {
       caughtUpEl.classList.remove("hidden");
       startBtn.disabled = true;
     }
+    syncPausedSessionUi();
     void refreshDashboardLibraryTopics();
 
     // Remaining-setup checklist (plan Phase 9): render synchronously from
@@ -6884,6 +6891,8 @@ async function loadNextCard(
   activeCard = null;
   activeAttemptId = null;
   activeAnswerFormat = "recall";
+  activeCardConsumedReview = false;
+  activeCardNewBudget = "none";
   resetChoiceState();
   activePromptQuestion = "";
   updateReviewControlState();
@@ -8190,6 +8199,148 @@ function toggleManageMenu(): void {
   btn.setAttribute("aria-expanded", String(open));
 }
 
+function teardownActiveStudyUi(): void {
+  void pauseVoiceMode();
+  questionRequestId++;
+  cardLoadInProgress = false;
+  evaluationRequestId++;
+  if (revealInProgress) void cancelActiveBridgeRequest();
+  revealInProgress = false;
+  clearChoiceAdvance();
+  learningClock.reset();
+  finishAiWait();
+  finishQuestionWait();
+  hideStudyBusy();
+  closeManageMenu();
+  closeInlineEditor();
+  if (isStudyConfirmOpen()) hideStudyConfirm();
+  resetDiscussionUi();
+  hideStudyOffer();
+  pendingReviewPayload = null;
+  activeCard = null;
+  activeAttemptId = null;
+  activeCardConsumedReview = false;
+  activeCardNewBudget = "none";
+  updateReviewControlState();
+}
+
+function syncPausedSessionUi(): void {
+  const banner = document.getElementById("content-study-resume-banner");
+  const statusEl = document.getElementById("lbl-content-resume-status");
+  const resumeBtn = document.getElementById(
+    "btn-content-resume-session",
+  ) as HTMLButtonElement | null;
+  const startBtn = document.getElementById(
+    "btn-start-session",
+  ) as HTMLButtonElement | null;
+  const paused = pausedStudySession !== null;
+  if (banner) {
+    banner.classList.toggle("hidden", !paused);
+    banner.hidden = !paused;
+  }
+  if (statusEl) {
+    statusEl.textContent = t("study_paused_status");
+  }
+  if (resumeBtn) {
+    resumeBtn.textContent = t("btn_resume_session");
+    resumeBtn.disabled = resumeSessionInFlight;
+  }
+  if (startBtn) {
+    startBtn.textContent = paused
+      ? t("btn_resume_session")
+      : t("btn_start_session");
+    if (paused) {
+      startBtn.disabled = resumeSessionInFlight;
+    } else if (dueSummaryLoaded) {
+      startBtn.disabled = totalDue <= 0;
+    }
+  }
+}
+
+function pauseCurrentStudySession(): void {
+  pausedStudySession = createPausedStudySession({
+    sessionId: zamUiSessionId,
+    startedDue: sessionStartedDue,
+    cardsReviewed: cardsReviewedThisSession,
+    cardsRemaining: sessionCardsRemaining,
+    newRemaining: sessionNewRemaining,
+    extraNewRemaining: sessionExtraNewRemaining,
+    choiceReady: sessionChoiceReady,
+    bonusIgnored: bonusIgnoredThisSession,
+    ratings: sessionRatingTally.ratings,
+    done: sessionRatingTally.done,
+    assessedAtoms: [...assessedAtomsThisSession],
+    atlasRegion: studyAtlasRegion,
+    hasUnratedActiveCard: activeCard !== null,
+    consumedReviewSlot: activeCardConsumedReview,
+    consumedNewBudget: activeCardNewBudget,
+  });
+  // Keep the backend session open under pausedStudySession.sessionId so
+  // resuming from the editor or Today preserves the same session, tallies,
+  // workload budgets, and Atlas region context.
+  zamUiSessionId = null;
+  studySessionActive = false;
+  teardownActiveStudyUi();
+  syncPausedSessionUi();
+}
+
+async function discardPausedStudySession(): Promise<void> {
+  const paused = pausedStudySession;
+  pausedStudySession = null;
+  syncPausedSessionUi();
+  if (paused?.sessionId) {
+    try {
+      await runBridge<ZamSessionResponse>("end-session", [
+        "--session",
+        paused.sessionId,
+      ]);
+    } catch (error) {
+      console.warn("Failed to end paused UI learning session", error);
+    }
+  }
+}
+
+async function resumeStudySession(): Promise<void> {
+  const paused = pausedStudySession;
+  if (!paused || resumeSessionInFlight) return;
+  resumeSessionInFlight = true;
+  syncPausedSessionUi();
+  try {
+    prepareStudyViewForSession();
+    sessionStartedDue = paused.startedDue;
+    sessionRatingTally.done = paused.done;
+    sessionRatingTally.ratings = { ...paused.ratings };
+    cardsReviewedThisSession = paused.cardsReviewed;
+    sessionCardsRemaining = paused.cardsRemaining;
+    sessionNewRemaining = paused.newRemaining;
+    sessionExtraNewRemaining = paused.extraNewRemaining;
+    sessionChoiceReady = paused.choiceReady;
+    bonusIgnoredThisSession = paused.bonusIgnored;
+    for (const atomId of paused.assessedAtoms) {
+      assessedAtomsThisSession.add(atomId);
+    }
+    zamUiSessionId = paused.sessionId;
+
+    await loadStudyLearningSettings();
+    await ensureUiLearningSession(
+      paused.atlasRegion ? "Atlas region review" : "Desktop learning session",
+    );
+
+    pausedStudySession = null;
+    syncPausedSessionUi();
+    switchView("study-view");
+    studyAtlasRegion = paused.atlasRegion ? { ...paused.atlasRegion } : null;
+    await loadNextCard();
+  } catch (err) {
+    if (!pausedStudySession) pausedStudySession = paused;
+    syncPausedSessionUi();
+    console.error("Failed to resume study session:", err);
+  } finally {
+    resumeSessionInFlight = false;
+    syncPausedSessionUi();
+  }
+}
+
 async function jumpToFullEditor(): Promise<void> {
   if (
     !activeCard ||
@@ -8202,6 +8353,7 @@ async function jumpToFullEditor(): Promise<void> {
   }
   const slug = activeCard.slug;
   closeManageMenu();
+  pauseCurrentStudySession();
   // skipStudioLoad: openCardInEditor is the sole loader+select for this jump.
   switchView("learning-content-view", { skipStudioLoad: true });
   const found = await openCardInEditor(slug);
@@ -8308,6 +8460,15 @@ async function presentFetchedCard(payload: ReviewPayload): Promise<void> {
   learningClock.start(Date.now());
   activePromptQuestion = payload.prompt.question;
   resolvedContextContent = payload.resolvedContext?.content || null;
+  activeCardConsumedReview = sessionCardsRemaining > 0;
+  activeCardNewBudget =
+    activeCard.state === "new"
+      ? sessionNewRemaining > 0
+        ? "new"
+        : sessionExtraNewRemaining > 0
+          ? "extra_new"
+          : "none"
+      : "none";
   cardsReviewedThisSession++;
   sessionCardsRemaining = Math.max(0, sessionCardsRemaining - 1);
   if (activeCard.state === "new") {
@@ -9254,23 +9415,9 @@ async function finishStudySession(): Promise<void> {
   if (sessionSummaryVisible) return;
   sessionSummaryVisible = true;
   studySessionActive = false;
-  void pauseVoiceMode();
-
-  evaluationRequestId++;
-  if (revealInProgress) cancelActiveBridgeRequest();
-  revealInProgress = false;
-  learningClock.reset();
-  finishAiWait();
-  finishQuestionWait();
-  hideStudyBusy();
-  closeManageMenu();
-  closeInlineEditor();
-  if (isStudyConfirmOpen()) hideStudyConfirm();
-  resetDiscussionUi();
-  hideStudyOffer();
-  pendingReviewPayload = null;
-  activeCard = null;
-  updateReviewControlState();
+  pausedStudySession = null;
+  syncPausedSessionUi();
+  teardownActiveStudyUi();
 
   await closeUiLearningSession();
 
@@ -9326,6 +9473,7 @@ async function startAtlasRegionReview(
   key: string,
   options: { due: number; practise: number },
 ): Promise<void> {
+  await discardPausedStudySession();
   prepareStudyViewForSession();
   await configureSessionWorkload();
   sessionNewRemaining = 0;
@@ -9582,9 +9730,13 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 
 
-  // Start Session Button
+  // Start / Resume Session Buttons
   document.getElementById("btn-start-session")!.addEventListener("click", () => {
     void (async () => {
+      if (pausedStudySession) {
+        await resumeStudySession();
+        return;
+      }
       prepareStudyViewForSession();
       await configureSessionWorkload();
       await loadStudyLearningSettings();
@@ -9593,6 +9745,12 @@ window.addEventListener("DOMContentLoaded", () => {
       await loadNextCard();
     })();
   });
+
+  document
+    .getElementById("btn-content-resume-session")
+    ?.addEventListener("click", () => {
+      void resumeStudySession();
+    });
 
   document.getElementById("nav-dashboard")?.addEventListener("click", () => {
     switchView("dashboard-view");

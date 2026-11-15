@@ -81,6 +81,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     dashboard_error: "No se pudieron cargar tus datos",
     lbl_domains: "Dominios activos",
     btn_start_session: "Iniciar sesión de aprendizaje",
+    study_paused_status: "Sesión de aprendizaje en pausa",
+    btn_resume_session: "Reanudar sesión",
     lbl_translating: "Traduciendo dinámicamente...",
     placeholder_answer:
       "Escribe aquí tu respuesta conceptual... (Ctrl+Intro para enviar)",
@@ -1066,6 +1068,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     dashboard_error: "Impossible de charger vos données",
     lbl_domains: "Domaines actifs",
     btn_start_session: "Démarrer la session d'apprentissage",
+    study_paused_status: "Session d'apprentissage en pause",
+    btn_resume_session: "Reprendre la session",
     lbl_translating: "Traduction dynamique...",
     placeholder_answer:
       "Saisissez ici votre réponse conceptuelle... (Ctrl+Entrée pour envoyer)",
@@ -2064,6 +2068,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     dashboard_error: "Não foi possível carregar seus dados",
     lbl_domains: "Domínios ativos",
     btn_start_session: "Iniciar sessão de aprendizado",
+    study_paused_status: "Sessão de aprendizado pausada",
+    btn_resume_session: "Retomar sessão",
     lbl_translating: "Traduzindo dinamicamente...",
     placeholder_answer:
       "Digite aqui sua resposta conceitual... (Ctrl+Enter para enviar)",
@@ -3044,6 +3050,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     dashboard_error: "无法加载你的数据",
     lbl_domains: "活跃领域",
     btn_start_session: "开始学习课",
+    study_paused_status: "学习课已暂停",
+    btn_resume_session: "继续学习课",
     lbl_translating: "正在动态翻译...",
     placeholder_answer: "在此输入你的概念性回答...（Ctrl+Enter 提交）",
     placeholder_discussion: "就这张卡片继续提问...（Enter 发送）",
@@ -3958,6 +3966,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     dashboard_error: "データを読み込めませんでした",
     lbl_domains: "アクティブな領域",
     btn_start_session: "学習セッションを開始",
+    study_paused_status: "学習セッションを一時停止中",
+    btn_resume_session: "学習セッションを再開",
     lbl_translating: "動的に翻訳中...",
     placeholder_answer: "ここに概念的な回答を入力...（Ctrl+Enter で送信）",
     placeholder_discussion: "このカードについて質問する...（Enter で送信）",
@@ -4971,6 +4981,8 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       "Some settings cards could not be set up ({panels}). The rest of ZAM works; see the log for details.",
     lbl_domains: "Active Domains",
     btn_start_session: "Start learning",
+    study_paused_status: "Learning session paused",
+    btn_resume_session: "Resume learning session",
     lbl_translating: "Translating dynamically...",
     placeholder_answer:
       "Type your conceptual answer here... (Ctrl+Enter to submit)",
@@ -7045,6 +7057,8 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       "Einige Einstellungs-Karten konnten nicht eingerichtet werden ({panels}). Der Rest von ZAM funktioniert; Details stehen im Log.",
     lbl_domains: "Aktive Wissensbereiche",
     btn_start_session: "Jetzt lernen",
+    study_paused_status: "Lernsitzung pausiert",
+    btn_resume_session: "Lernsitzung fortsetzen",
     lbl_translating: "Übersetze dynamisch...",
     placeholder_answer:
       "Schreibe deine konzeptionelle Antwort... (Strg+Eingabe zum Absenden)",
