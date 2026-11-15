@@ -1,5 +1,10 @@
 # Log
 
+## 2026-11-15
+
+- **Creation** — [Guided Work](guided-work.md)
+- **Update** — [MCP Transport and Surfaces](mcp-surfaces.md)
+
 ## 2026-11-14
 
 - **Update** — [Token and Card Model](token-card-model.md)

@@ -12,11 +12,15 @@ import { fileURLToPath } from "node:url";
 
 const HOME = homedir();
 
+/** The skills ZAM ships: the main skill and the guided-work skill (ADR 2026-11-15). */
+export type PackageSkillName = "zam" | "zam-work";
+
 /**
- * Get the path to ZAM's internal package SKILL.md.
+ * Get the path to one of ZAM's packaged SKILL.md files.
  */
 export function getPackageSkillPath(
   agent: "default" | "claude" | "codex" = "default",
+  skill: PackageSkillName = "zam",
 ): string {
   // Support source modules plus the dist/index.js and dist/cli/index.js bundles.
   const packageRoot =
@@ -28,130 +32,65 @@ export function getPackageSkillPath(
 
   if (!packageRoot) return "";
 
-  if (agent === "codex") {
-    const codexPath = join(packageRoot, ".agents", "skills", "zam", "SKILL.md");
-    if (existsSync(codexPath)) return codexPath;
-    return "";
+  const candidates =
+    agent === "codex"
+      ? [".agents"]
+      : agent === "claude"
+        ? [".claude"]
+        : [".agent", ".claude"];
+  for (const root of candidates) {
+    const path = join(packageRoot, root, "skills", skill, "SKILL.md");
+    if (existsSync(path)) return path;
   }
-
-  if (agent === "claude") {
-    const claudePath = join(
-      packageRoot,
-      ".claude",
-      "skills",
-      "zam",
-      "SKILL.md",
-    );
-    if (existsSync(claudePath)) return claudePath;
-    return "";
-  }
-
-  // Try .agent first
-  let path = join(packageRoot, ".agent", "skills", "zam", "SKILL.md");
-  if (existsSync(path)) return path;
-
-  // Try .claude
-  path = join(packageRoot, ".claude", "skills", "zam", "SKILL.md");
-  if (existsSync(path)) return path;
-
   return "";
 }
 
+/** One global skill folder per harness, and which packaged copy it takes. */
+const GLOBAL_SKILL_TARGETS: Array<{
+  name: string;
+  dir: string[];
+  source: "default" | "claude" | "codex";
+}> = [
+  { name: "Claude Code Global", dir: [".claude", "skills"], source: "claude" },
+  { name: "Gemini CLI Global", dir: [".gemini", "skills"], source: "default" },
+  { name: "Codex Global", dir: [".agents", "skills"], source: "codex" },
+  { name: "Goose Global", dir: [".goose", "skills"], source: "default" },
+];
+
 /**
- * Distribute the ZAM active-recall training skill globally.
- * Copies SKILL.md into global directories for supported coding agents.
+ * Distribute ZAM's skills globally: the main skill and the guided-work
+ * skill, copied into the global skill folder of each supported harness.
+ * Entries for the main skill keep their harness name; the guided-work
+ * skill's entries carry "(zam-work)".
  */
 export function distributeGlobalSkills(home: string = HOME): Array<{
   name: string;
   path: string;
   success: boolean;
 }> {
-  const sourceSkill = getPackageSkillPath();
-  const claudeSourceSkill = getPackageSkillPath("claude");
-  const codexSourceSkill = getPackageSkillPath("codex");
   const results: Array<{ name: string; path: string; success: boolean }> = [];
 
-  if (!sourceSkill) {
+  if (!getPackageSkillPath()) {
     console.warn("Could not find ZAM source SKILL.md in the package folder.");
     return results;
   }
 
-  // 1. Claude Code global directory
-  const claudeSkillsDir = join(home, ".claude", "skills", "zam");
-  try {
-    if (!claudeSourceSkill) {
-      throw new Error("Claude skill source not found");
+  for (const skill of ["zam", "zam-work"] as const) {
+    for (const target of GLOBAL_SKILL_TARGETS) {
+      const name = skill === "zam" ? target.name : `${target.name} (${skill})`;
+      const skillDir = join(home, ...target.dir, skill);
+      try {
+        const source = getPackageSkillPath(target.source, skill);
+        if (!source) {
+          throw new Error(`${skill} skill source not found`);
+        }
+        mkdirSync(skillDir, { recursive: true });
+        copyFileSync(source, join(skillDir, "SKILL.md"));
+        results.push({ name, path: join(skillDir, "SKILL.md"), success: true });
+      } catch (_err) {
+        results.push({ name, path: skillDir, success: false });
+      }
     }
-    mkdirSync(claudeSkillsDir, { recursive: true });
-    copyFileSync(claudeSourceSkill, join(claudeSkillsDir, "SKILL.md"));
-    results.push({
-      name: "Claude Code Global",
-      path: join(claudeSkillsDir, "SKILL.md"),
-      success: true,
-    });
-  } catch (_err) {
-    results.push({
-      name: "Claude Code Global",
-      path: claudeSkillsDir,
-      success: false,
-    });
-  }
-
-  // 2. Gemini/agy global directory
-  const geminiSkillsDir = join(home, ".gemini", "skills", "zam");
-  try {
-    mkdirSync(geminiSkillsDir, { recursive: true });
-    copyFileSync(sourceSkill, join(geminiSkillsDir, "SKILL.md"));
-    results.push({
-      name: "Gemini CLI Global",
-      path: join(geminiSkillsDir, "SKILL.md"),
-      success: true,
-    });
-  } catch (_err) {
-    results.push({
-      name: "Gemini CLI Global",
-      path: geminiSkillsDir,
-      success: false,
-    });
-  }
-
-  // 3. Codex global skills directory
-  const codexSkillsDir = join(home, ".agents", "skills", "zam");
-  try {
-    if (!codexSourceSkill) {
-      throw new Error("Codex skill source not found");
-    }
-    mkdirSync(codexSkillsDir, { recursive: true });
-    copyFileSync(codexSourceSkill, join(codexSkillsDir, "SKILL.md"));
-    results.push({
-      name: "Codex Global",
-      path: join(codexSkillsDir, "SKILL.md"),
-      success: true,
-    });
-  } catch (_err) {
-    results.push({
-      name: "Codex Global",
-      path: codexSkillsDir,
-      success: false,
-    });
-  }
-
-  // 4. Goose skills directory
-  const gooseSkillsDir = join(home, ".goose", "skills", "zam");
-  try {
-    mkdirSync(gooseSkillsDir, { recursive: true });
-    copyFileSync(sourceSkill, join(gooseSkillsDir, "SKILL.md"));
-    results.push({
-      name: "Goose Global",
-      path: join(gooseSkillsDir, "SKILL.md"),
-      success: true,
-    });
-  } catch (_err) {
-    results.push({
-      name: "Goose Global",
-      path: gooseSkillsDir,
-      success: false,
-    });
   }
 
   return results;

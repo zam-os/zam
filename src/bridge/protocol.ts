@@ -636,7 +636,9 @@ export interface SessionOpenResponse {
         label: string | null;
         language: string | null;
       }>;
+      /** The learner's card for the token; null when they have none. */
       card: {
+        id: string;
         state: string;
         due_at: string;
         blocked: boolean;
@@ -1296,4 +1298,40 @@ export interface AtlasVariantResponse {
   success: boolean;
   detached?: number;
   reattached?: number;
+}
+
+// ── Guided work (ADR 2026-11-15) ────────────────────────────────────────────
+
+/** One subtask of a guided-work session, addressed by its ordinal (1–9). */
+export interface WorkSubtaskWire {
+  id: string;
+  session_id: string;
+  ordinal: number;
+  title: string;
+  done_criterion: string;
+  kind: "text" | "terminal" | "computer_use";
+  owner: "user" | "agent" | "other";
+  state: "open" | "handed_over" | "done" | "cancelled";
+  waits_for: number[];
+  /** Derived: not ended, and waiting for a subtask that has not ended. */
+  blocked: boolean;
+  external_ref: string | null;
+  done_by: "user" | "agent" | "other" | null;
+  checked: "passed" | "failed" | "not_checked" | null;
+  help: "none" | "pointer" | "pattern" | "agent_did_it" | null;
+  commit_id: string | null;
+  handed_over_at: string | null;
+  closed_at: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+/**
+ * The answer of `work-plan`, `work-hand-over` and `work-close`: the session's
+ * whole list and the next step in plain English, which carries the flow.
+ */
+export interface WorkResponse {
+  sessionId: string;
+  subtasks: WorkSubtaskWire[];
+  instruction: string;
 }

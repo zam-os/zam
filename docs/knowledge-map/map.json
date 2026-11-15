@@ -96,17 +96,18 @@
       "parent": "symbiosis",
       "label": "Collaboration modes",
       "link": "changes through",
-      "text": "Per concept, collaboration moves from shadowing to copilot to autonomy as retention and stability grow.",
+      "text": "Per learner and domain, a derived mode suggests shadowing, copilot or autonomy as retention and stability grow; the learner decides.",
       "sources": [
-        "beliefs/symbiosis/modes/README.md"
+        "beliefs/symbiosis/modes/README.md",
+        "beliefs/symbiosis/README.md"
       ]
     },
     {
       "id": "autonomy-practice",
       "parent": "modes",
-      "label": "Practice tasks",
+      "label": "Practice in real work",
       "link": "keep",
-      "text": "Even in autonomy, the human gets periodic real practice tasks, not quizzes.",
+      "text": "Even in autonomy, the human practises by taking the hardest subtasks of real work; ZAM schedules no practice tasks.",
       "sources": [
         "beliefs/symbiosis/modes/README.md",
         "beliefs/forgetting/skill-decay/README.md"
@@ -127,7 +128,7 @@
       "parent": "symbiosis",
       "label": "Quiet observation",
       "link": "prefers",
-      "text": "The best learning happens when the learner barely notices it, so the agent observes instead of interrupting.",
+      "text": "The agent judges a result where one remains, speaks at the decision points and stays silent while the learner works.",
       "sources": [
         "beliefs/symbiosis/observation-over-interruption/README.md"
       ]
@@ -137,7 +138,7 @@
       "parent": "symbiosis",
       "label": "Two-way learning",
       "link": "also covers",
-      "text": "Agent skills decay too, so the same scheduling applies to what the agent knows.",
+      "text": "Agent skills go stale too, and context the agent lacked is written into the repository's knowledge, where both sides read it.",
       "sources": [
         "beliefs/symbiosis/bidirectional-learning/README.md"
       ]
@@ -1179,6 +1180,60 @@
       ]
     },
     {
+      "id": "guided-work",
+      "parent": "session-model",
+      "label": "Guided work",
+      "link": "is practised as",
+      "text": "Guided work splits a real task into at most nine subtasks with an owner; the learner takes the hardest ones and does them by hand.",
+      "sources": [
+        "docs/okf/guided-work.md",
+        "docs/adr/2026-11-15-guided-work-subtasks-and-review.md"
+      ]
+    },
+    {
+      "id": "subtask-rules",
+      "parent": "guided-work",
+      "label": "Subtask rules",
+      "link": "is enforced by",
+      "text": "The kernel closes a learner's subtask as theirs only after a hand-over, and records a colleague's work only through the plan.",
+      "sources": [
+        "src/kernel/models/subtask.ts"
+      ]
+    },
+    {
+      "id": "work-tools",
+      "parent": "guided-work",
+      "label": "Work tools",
+      "link": "is carried by",
+      "text": "Three tools record plan, hand-over and close; each answer returns the whole subtask list and the agent's next step.",
+      "sources": [
+        "src/cli/work-handlers.ts",
+        "src/cli/commands/mcp.ts"
+      ]
+    },
+    {
+      "id": "work-record",
+      "parent": "guided-work",
+      "label": "Record at the end",
+      "link": "ends with",
+      "text": "No card step interrupts guided work; at the end the learner accepts each new card and confirms covered cards once, by card id.",
+      "sources": [
+        "src/cli/work-handlers.ts",
+        "docs/okf/guided-work.md"
+      ]
+    },
+    {
+      "id": "zam-work-skill",
+      "parent": "guided-work",
+      "label": "zam-work skill",
+      "link": "is taught by",
+      "text": "The zam-work skill carries the guided-work flow and ships beside the main zam skill in every harness copy.",
+      "sources": [
+        "skills/zam-work/SKILL.md",
+        "src/kernel/system/hooks.ts"
+      ]
+    },
+    {
       "id": "read-up",
       "parent": "content",
       "label": "Reading up",
@@ -1557,6 +1612,24 @@
       "to": "sinnbild-canonical",
       "kind": "uses",
       "link": "marks places with"
+    },
+    {
+      "from": "autonomy-practice",
+      "to": "guided-work",
+      "kind": "requires",
+      "link": "happens in"
+    },
+    {
+      "from": "work-record",
+      "to": "answer-format",
+      "kind": "requires",
+      "link": "declares"
+    },
+    {
+      "from": "guided-work",
+      "to": "agents",
+      "kind": "requires",
+      "link": "runs inside"
     }
   ]
 }

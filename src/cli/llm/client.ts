@@ -1576,7 +1576,11 @@ export interface GeneratedCardProposal {
   domain: string;
   context: string;
   bloom_level: number;
-  symbiosis_mode: "shadowing" | "copilot" | "autonomy";
+  /**
+   * No longer asked of a model (ADR 2026-11-15, Decision 10). A value a
+   * model still sends is kept when it is valid; otherwise the card has none.
+   */
+  symbiosis_mode?: "shadowing" | "copilot" | "autonomy";
   source_link: string | null;
   /** Titles or concepts of cards in the same batch that this card depends on. */
   prerequisites?: string[];
@@ -1668,9 +1672,13 @@ function parseGeneratedCardArray(
         `Invalid ${label} card at index ${index}: bloom_level must be an integer from 1 to 5`,
       );
     }
+    // The mode is no longer asked for (ADR 2026-11-15, Decision 10). A card
+    // without one is fine; a value that is there must still be a valid mode.
     if (
-      typeof card.symbiosis_mode !== "string" ||
-      !VALID_GENERATED_MODES.has(card.symbiosis_mode)
+      card.symbiosis_mode !== undefined &&
+      card.symbiosis_mode !== null &&
+      (typeof card.symbiosis_mode !== "string" ||
+        !VALID_GENERATED_MODES.has(card.symbiosis_mode))
     ) {
       throw new Error(
         `Invalid ${label} card at index ${index}: invalid symbiosis_mode`,
@@ -1686,8 +1694,12 @@ function parseGeneratedCardArray(
       domain: card.domain as string,
       context: card.context as string,
       bloom_level: card.bloom_level,
-      symbiosis_mode:
-        card.symbiosis_mode as GeneratedCardProposal["symbiosis_mode"],
+      ...(typeof card.symbiosis_mode === "string"
+        ? {
+            symbiosis_mode:
+              card.symbiosis_mode as GeneratedCardProposal["symbiosis_mode"],
+          }
+        : {}),
       source_link: null,
     };
   });
@@ -1972,8 +1984,7 @@ function cardFieldsSpec(
 4. "domain": The category of the card. Use "${targetCategory}" as the default, but you may refine it if a specific sub-topic is evident.
 5. "context": ${contextField}
 6. "bloom_level": Initial Bloom cognitive level (1 = Remember, 2 = Understand, 3 = Apply, 4 = Analyze, 5 = Synthesize).
-7. "symbiosis_mode": ZAM agent symbiosis level: "shadowing" (reading/monitoring), "copilot" (interactive helper), or "autonomy" (autonomous tasks).
-8. "prerequisites": An array of "title" values from OTHER cards in this same batch that a learner must know BEFORE understanding this card. Leave empty [] if this card has no dependencies on other cards in the batch. Only reference cards that appear in the same output array. Order foundational concepts (definitions, facts) before their applications (formulas, analysis).
+7. "prerequisites": An array of "title" values from OTHER cards in this same batch that a learner must know BEFORE understanding this card. Leave empty [] if this card has no dependencies on other cards in the batch. Only reference cards that appear in the same output array. Order foundational concepts (definitions, facts) before their applications (formulas, analysis).
 `;
 }
 
@@ -2487,7 +2498,6 @@ For each split proposal card, you MUST generate:
 3. "domain": The category of the card (default to "${token.domain}").
 4. "context": The context excerpt from the original card's context or a derivation of it.
 5. "bloom_level": Bloom taxonomy level (1 to 5).
-6. "symbiosis_mode": Symbiosis mode ("shadowing", "copilot", or "autonomy").
 
 Guidelines:
 ${cardShapeRuleLines()}
@@ -2722,7 +2732,6 @@ For each proposed foundational card, you MUST generate:
 3. "domain": The category of the card (default to "${token.domain}").
 4. "context": The context excerpt explaining where this prerequisite fits in the learning hierarchy.
 5. "bloom_level": Bloom taxonomy level (typically 1 or 2 for foundational facts).
-6. "symbiosis_mode": Symbiosis mode ("shadowing", "copilot", or "autonomy").
 
 Guidelines:
 - First identify which prerequisites the card really depends on, then create exactly one card per prerequisite. The number of cards follows from the card: at least 1, and as many as are genuinely necessary.

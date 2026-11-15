@@ -11,5 +11,5 @@
 
 ## Related beliefs
 
-- [Symbiosis modes](../symbiosis/modes/) define how forgetting is detected — through observation in shadowing/copilot, through practice tasks in autonomy.
+- [Symbiosis modes](../symbiosis/modes/) shape where forgetting shows — in a review, in a result that falls short of its done-criterion, or when the learner gets stuck on a subtask they took.
 - [Dependency graphs](../knowledge-structure/dependency-graphs/) provide the structure that makes prerequisite blocking possible.

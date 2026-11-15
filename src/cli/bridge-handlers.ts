@@ -79,6 +79,7 @@ import {
   listAssignmentsByAssigner,
   listAssignmentsForLearner,
   listLibraryTopics,
+  listSubtasks,
   listTokens,
   monitorLogExists,
   needsGenericCurriculumImport,
@@ -1532,8 +1533,12 @@ export async function findTokens(db: Database, params: FindTokensParams) {
       score: t.score,
       similarity: t.similarity,
       knowledgeContexts: contextMap.get(t.id) ?? [],
+      // The card id lets a caller record a review for a card the learner
+      // already has (ADR 2026-11-15, Decision 8). A token without a card
+      // stays null: a review for it would enrol the learner.
       card: card
         ? {
+            id: card.id,
             state: card.state,
             due_at: card.due_at,
             blocked: card.blocked,
@@ -1805,6 +1810,9 @@ export async function endSession(db: Database, params: EndSessionParams) {
     : undefined;
   const session = await kernelEndSession(db, params.session);
   const summary = await getSessionSummary(db, params.session);
+  // Guided work (ADR 2026-11-15): the session's subtasks travel with its
+  // end, so a harness without the work tools can still show them.
+  const subtasks = await listSubtasks(db, params.session);
   // The raw log is evidence only while it is captured (ADR 2026-10-08 R6):
   // once the synthesis above was prepared, the session's raw files go and a
   // value-free digest stays; the confirmed candidates carry their own texts.
@@ -1822,6 +1830,7 @@ export async function endSession(db: Database, params: EndSessionParams) {
     startedAt: session.started_at,
     completedAt: session.completed_at,
     summary,
+    subtasks,
     ...(synthesis ? { synthesis } : {}),
   };
 }

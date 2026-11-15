@@ -1,6 +1,6 @@
 # Guided Work: Subtasks with an Owner, Evidence from the Result, and a Colleague's Review
 
-**Status:** Proposed\
+**Status:** Accepted\
 **Date:** 2026-11-15\
 **Decider:** Thomas (project owner)\
 **Review:** GPT-6.1 Sol and Gemini 4 Argon on 2026-11-15; second pass by Gemini 4 Argon, Grok 4.7 and GPT-6 Astra the same day (zam-os/zam#485); see *Review record*\
@@ -659,3 +659,5 @@ Gemini 4 Argon, Grok 4.7 and GPT-6 Astra reviewed commit `277816a3` on
   for the existing cards the work covered; board and session kept in step.
 - 2026-11-15 — Second review pass by Gemini 4 Argon, Grok 4.7 and GPT-6
   Astra; findings applied.
+- 2026-11-15 — Accepted by the owner, with the belief changes of
+  Decision 11 (zam-os/zam#486).
