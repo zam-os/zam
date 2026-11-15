@@ -657,6 +657,103 @@ describe("LLM client utilities (CLI layer)", () => {
     );
   }
 
+  it("no longer asks a model for the symbiosis mode and accepts a card without it (ADR 2026-11-15)", async () => {
+    const db = await openDatabase({
+      dbPath: ":memory:",
+      initialize: true,
+      useConfiguredCloud: false,
+    });
+    await setSetting(db, "llm.enabled", "true");
+    await setSetting(db, "llm.url", "http://dummy/v1");
+
+    const prompts: string[] = [];
+    const originalFetch = global.fetch;
+    mockReadinessAndChatFetch((bodyText) => {
+      const body = JSON.parse(bodyText);
+      prompts.push(
+        body.messages.map((m: { content: string }) => m.content).join("\n"),
+      );
+      return new Response(
+        JSON.stringify({
+          choices: [
+            {
+              message: {
+                content: JSON.stringify([
+                  {
+                    question: "What does git revert create?",
+                    concept: "A new commit that undoes the changes",
+                    domain: "git",
+                    bloom_level: 2,
+                    context: "revert creates a new commit",
+                  },
+                ]),
+              },
+              finish_reason: "stop",
+            },
+          ],
+        }),
+      );
+    });
+
+    try {
+      const cards = await importCurriculumViaLLM(db, "git revert", "git");
+      expect(cards).toHaveLength(1);
+      expect(cards[0].symbiosis_mode).toBeUndefined();
+      expect(prompts.length).toBeGreaterThan(0);
+      for (const prompt of prompts) {
+        expect(prompt).not.toContain("symbiosis_mode");
+      }
+    } finally {
+      global.fetch = originalFetch;
+      await db.close();
+    }
+  });
+
+  it("still refuses a symbiosis mode that is there but invalid", async () => {
+    const db = await openDatabase({
+      dbPath: ":memory:",
+      initialize: true,
+      useConfiguredCloud: false,
+    });
+    await setSetting(db, "llm.enabled", "true");
+    await setSetting(db, "llm.url", "http://dummy/v1");
+
+    const originalFetch = global.fetch;
+    mockReadinessAndChatFetch(
+      () =>
+        new Response(
+          JSON.stringify({
+            choices: [
+              {
+                message: {
+                  content: JSON.stringify([
+                    {
+                      question: "What does git revert create?",
+                      concept: "A new commit that undoes the changes",
+                      domain: "git",
+                      bloom_level: 2,
+                      symbiosis_mode: "always",
+                      context: "revert creates a new commit",
+                    },
+                  ]),
+                },
+                finish_reason: "stop",
+              },
+            ],
+          }),
+        ),
+    );
+
+    try {
+      await expect(
+        importCurriculumViaLLM(db, "git revert", "git"),
+      ).rejects.toThrow(/invalid symbiosis_mode/);
+    } finally {
+      global.fetch = originalFetch;
+      await db.close();
+    }
+  });
+
   it("importCurriculumViaLLM treats a substantial-but-unclosed array as truncated, not malformed JSON", async () => {
     // Seen in practice: the model spends its whole remaining budget
     // enumerating cards without ever closing the array. Thousands of

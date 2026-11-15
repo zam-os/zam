@@ -1,6 +1,6 @@
 # Guided work — implementation plan
 
-**Status:** Phases 1–4 are built; the hand check 4.5 is open. 5–6 clean up and accept the ADR, 7 is the pilot.\
+**Status:** Phases 1–5 are built; the hand check 4.5 is open. 5–6 clean up and accept the ADR, 7 is the pilot.\
 **Decision:** [ADR 2026-11-15 — Guided Work](../adr/2026-11-15-guided-work-subtasks-and-review.md). Its decisions are cited here as **D1–D11**. Read the ADR first; this plan does not repeat its reasons.\
 **Branch:** `feat/guided-work`, from `main`. One feature, one branch, one PR, one commit per phase.
 
@@ -178,12 +178,19 @@ Out of scope: the three harness copies of the existing `zam` skill have drifted 
 
 Goal: D10.
 
-- [ ] **5.1** `src/cli/llm/client.ts`: remove `symbiosis_mode` from the three prompts that ask for it, and make `parseGeneratedCardArray` accept a card without it. `GeneratedCardProposal.symbiosis_mode` becomes optional. A value that is present and invalid is still refused.
-- [ ] **5.2** Callers that pass the generated mode on to `createToken` pass `null` when it is absent.
-- [ ] **5.3** Leave alone: the `symbiosisMode` parameter of `zam_add_token` and `zam_review_action`, the column, `resolveActiveSymbiosisMode` and `getDomainCompetence`.
-- [ ] **5.4** Tests: a generated card without the field parses; one with an invalid value throws.
+- [x] **5.1** `src/cli/llm/client.ts`: remove `symbiosis_mode` from the three prompts that ask for it, and make `parseGeneratedCardArray` accept a card without it. `GeneratedCardProposal.symbiosis_mode` becomes optional. A value that is present and invalid is still refused.
+- [x] **5.2** Callers that pass the generated mode on to `createToken` pass `null` when it is absent.
+- [x] **5.3** Leave alone: the `symbiosisMode` parameter of `zam_add_token` and `zam_review_action`, the column, `resolveActiveSymbiosisMode` and `getDomainCompetence`.
+- [x] **5.4** Tests: a generated card without the field parses; one with an invalid value throws.
 
 Exit evidence: the LLM client tests pass; `grep -n "symbiosis_mode" src/cli/llm/client.ts` shows no prompt line.
+
+Done on `feat/guided-work`, 2026-11-15. Evidence and deviations:
+
+- The three prompts no longer name the field. `parseGeneratedCardArray` accepts a card without it, keeps a valid value a model still sends, and refuses one that is there but invalid. `GeneratedCardProposal.symbiosis_mode` is optional.
+- 5.2 needed no change: every caller already turns a missing mode into `"none"` and the token writers turn `"none"` into `null`. `tsc --noEmit` confirms that no caller relied on the field.
+- Desktop and Mobile were not touched; they read the mode from the bridge, which still sends `"none"` for a card without one.
+- Two tests in `tests/cli/llm.test.ts`: no prompt sent to the model contains `symbiosis_mode`, a card without it parses, and an invalid value is still refused. Lint, `tsc --noEmit` and the full suite pass (456 files, 4786 tests, 32 skipped).
 
 ## Phase 6 — Beliefs, documents, acceptance
 
