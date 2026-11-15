@@ -128,6 +128,16 @@ CREATE POLICY learner_session_steps_policy ON session_steps FOR ALL
   WITH CHECK (session_id IN (
     SELECT id FROM sessions WHERE user_id = current_learner_id()));
 
+-- session_subtasks (ADR 2026-11-15) belongs to its session in the same way.
+ALTER TABLE session_subtasks ENABLE ROW LEVEL SECURITY;
+ALTER TABLE session_subtasks FORCE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS learner_session_subtasks_policy ON session_subtasks;
+CREATE POLICY learner_session_subtasks_policy ON session_subtasks FOR ALL
+  USING (session_id IN (
+    SELECT id FROM sessions WHERE user_id = current_learner_id()))
+  WITH CHECK (session_id IN (
+    SELECT id FROM sessions WHERE user_id = current_learner_id()));
+
 ALTER TABLE card_presentations ENABLE ROW LEVEL SECURITY;
 ALTER TABLE card_presentations FORCE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS learner_card_presentations_policy ON card_presentations;
@@ -238,6 +248,7 @@ export const RLS_PROTECTED_TABLES = [
   "review_logs",
   "sessions",
   "session_steps",
+  "session_subtasks",
   "card_presentations",
   "review_attempts",
   "session_syntheses",

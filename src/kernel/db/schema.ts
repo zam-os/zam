@@ -206,6 +206,39 @@ CREATE TABLE IF NOT EXISTS learner_connections (
 );
 `;
 
+/**
+ * Subtasks of a guided-work session (ADR 2026-11-15, Decisions 1, 4 and 6,
+ * M049). A subtask is a piece of work with an owner; `session_steps` stays
+ * the record that a token was exercised. `waits_for` is a JSON array of the
+ * ordinals a subtask waits for. "Blocked" is not stored: a subtask is
+ * blocked while one it waits for is neither done nor cancelled. `owner` and
+ * `done_by` take `other` for a colleague, whose work comes in from a board
+ * and never counts as the learner's.
+ */
+export const SESSION_SUBTASK_TABLES = `
+CREATE TABLE IF NOT EXISTS session_subtasks (
+  id              TEXT PRIMARY KEY,
+  session_id      TEXT NOT NULL REFERENCES sessions(id) ON DELETE CASCADE,
+  ordinal         INTEGER NOT NULL CHECK (ordinal BETWEEN 1 AND 9),
+  title           TEXT NOT NULL,
+  done_criterion  TEXT NOT NULL DEFAULT '',
+  kind            TEXT NOT NULL CHECK (kind IN ('text', 'terminal', 'computer_use')),
+  owner           TEXT NOT NULL CHECK (owner IN ('user', 'agent', 'other')),
+  state           TEXT NOT NULL DEFAULT 'open' CHECK (state IN ('open', 'handed_over', 'done', 'cancelled')),
+  waits_for       TEXT NOT NULL DEFAULT '[]',
+  external_ref    TEXT,
+  done_by         TEXT CHECK (done_by IN ('user', 'agent', 'other')),
+  checked         TEXT CHECK (checked IN ('passed', 'failed', 'not_checked')),
+  help            TEXT CHECK (help IN ('none', 'pointer', 'pattern', 'agent_did_it')),
+  commit_id       TEXT,
+  handed_over_at  TEXT,
+  closed_at       TEXT,
+  created_at      TEXT NOT NULL DEFAULT (datetime('now')),
+  updated_at      TEXT NOT NULL DEFAULT (datetime('now')),
+  UNIQUE (session_id, ordinal)
+);
+`;
+
 export const SCHEMA_TABLES = `
 -- PRAGMAs (WAL, foreign_keys) are set programmatically in connection.ts,
 -- not here, because libsql embedded replicas manage their own WAL.
@@ -452,7 +485,7 @@ CREATE TABLE IF NOT EXISTS session_steps (
   notes       TEXT,
   created_at  TEXT NOT NULL DEFAULT (datetime('now'))
 );
-
+${SESSION_SUBTASK_TABLES}
 -- Observed attempts: one identity for direct submit, monitor/UI candidates,
 -- confirmation and synthesis. Same attempt → one review; a different
 -- independent attempt is new evidence even in the same session.
@@ -735,6 +768,7 @@ CREATE INDEX IF NOT EXISTS idx_review_logs_attempt ON review_logs(attempt_id);
 CREATE INDEX IF NOT EXISTS idx_review_attempts_session
   ON review_attempts(session_id, token_id, evidence_key);
 CREATE INDEX IF NOT EXISTS idx_session_steps_session ON session_steps(session_id);
+CREATE INDEX IF NOT EXISTS idx_session_subtasks_session ON session_subtasks(session_id);
 CREATE INDEX IF NOT EXISTS idx_tokens_title ON tokens(title);
 CREATE INDEX IF NOT EXISTS idx_token_contexts_context ON token_contexts(context_id);
 CREATE INDEX IF NOT EXISTS idx_tokens_atom ON tokens(atom_id);

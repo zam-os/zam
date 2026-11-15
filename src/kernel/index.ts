@@ -859,6 +859,26 @@ export {
   settingScopeOf,
 } from "./models/settings.js";
 export type {
+  CloseSubtaskInput,
+  HandOverSubtaskInput,
+  PlanSubtaskInput,
+  PlanSubtasksInput,
+  Subtask,
+  SubtaskCheck,
+  SubtaskHelp,
+  SubtaskKind,
+  SubtaskOwner,
+  SubtaskState,
+} from "./models/subtask.js";
+export {
+  closeSubtask,
+  handOverSubtask,
+  listSubtasks,
+  MAX_SUBTASKS,
+  planSubtasks,
+  SubtaskRuleError,
+} from "./models/subtask.js";
+export type {
   BloomLevel,
   ConfirmFoundationsResult,
   CreateTokenInput,

@@ -24,6 +24,7 @@ import {
   EMBLEM_TABLES,
   SCHEMA_INDEXES,
   SCHEMA_TABLES,
+  SESSION_SUBTASK_TABLES,
 } from "./schema.js";
 import type { Database } from "./types.js";
 
@@ -33,7 +34,7 @@ import type { Database } from "./types.js";
  * never runs on any existing library. `tests/kernel/provision.test.ts` guards
  * the constant against the M-series markers below.
  */
-export const CURRENT_SCHEMA_VERSION = 48;
+export const CURRENT_SCHEMA_VERSION = 49;
 
 const SCHEMA_VERSION_TABLE = "zam_schema_version";
 
@@ -1088,6 +1089,11 @@ export async function runMigrations(db: Database): Promise<void> {
     failed_at    TEXT,
     last_error   TEXT
   )`);
+
+  // M049: subtasks of a guided-work session (ADR 2026-11-15, Decisions 1, 4
+  // and 6) — a piece of work with an owner, beside session_steps, which
+  // stays the record that a token was exercised.
+  await db.exec(SESSION_SUBTASK_TABLES);
 }
 
 /**
