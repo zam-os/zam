@@ -3,7 +3,7 @@
 **Status:** Proposed\
 **Date:** 2026-11-15\
 **Decider:** Thomas (project owner)\
-**Review:** GPT-6.1 Sol and Gemini 4 Argon on 2026-11-15 (zam-os/zam#485); see *Review record*\
+**Review:** GPT-6.1 Sol and Gemini 4 Argon on 2026-11-15; second pass by Gemini 4 Argon, Grok 4.7 and GPT-6 Astra the same day (zam-os/zam#485); see *Review record*\
 **Related:** [2026-10-08](2026-10-08-skill-learner-observation.md) (observation without content) · [2026-10-08b](2026-10-08b-corporate-deployment-baseline.md) (agents are untrusted) · [2026-07-17](2026-07-17-okf-knowledge-base.md) (OKF knowledge base) · [2026-07-06a](2026-07-06a-mcp-agent-transport-and-surfaces.md) (MCP transport) · [2026-06-13a](2026-06-13a-automatic-session-synthesis.md) (session synthesis)
 
 ---
@@ -121,11 +121,12 @@ foundations, add, link).
 ### 1. Guided work is planned as subtasks with an owner
 
 A session holds a short list of subtasks, nine at most. Each has a title, a
-done-criterion, an owner (`user` or `agent`), a state (`open`, `blocked`,
-`handed_over`, `done`), the subtasks it waits for, a kind of work
-(Decision 5) and an optional external reference. The owner is who took the
-subtask. Who finished it is recorded when it closes (Decision 6). The
-session is the record. Private use needs nothing beyond it.
+done-criterion, an owner (`user`, `agent` or `other`, a colleague), a state
+(`open`, `blocked`, `handed_over`, `done`, `cancelled`), the subtasks it
+waits for, a kind of work (Decision 5) and an optional external reference.
+The owner is who took the subtask. Who finished it is recorded when it
+ends (Decision 6). The session is the record. Private use needs nothing
+beyond it.
 
 Dependencies are part of the list: manual tests wait until the code is
 written and builds; an agent subtask can wait for the learner's.
@@ -184,17 +185,25 @@ step, with the environment's tools:
 - Whenever a subtask changes state, the agent updates its board item in
   the same turn.
 - When a session resumes, the agent reads the items again and brings the
-  session's list in line. What a colleague changed on the board wins: an
-  item that was closed, taken over or removed changes the subtask
-  accordingly.
+  session's list in line. What a colleague changed on the board wins:
+  - an item a colleague finished is `done` by `other`;
+  - an item a colleague took over gets the owner `other` and stays open
+    until they finish it;
+  - an item that was removed is `cancelled`.
+
+  A subtask that waited for a cancelled one is no longer blocked by it. The
+  agent shows it to the learner, who decides whether it still makes sense.
+  None of the three ever counts as the learner's work.
 - At the end of the working day, and whenever work is interrupted, the
   work in progress is on the feature branch. The agent reminds the learner
   and pushes when asked. Team rules for branches and pushes come first
   where they exist.
 
-ZAM stores the reference on the subtask, and a subtask that has one is not
-created a second time. ZAM itself reads and writes no board; the agent
-does. ZAM's Azure DevOps connector stays read-only.
+The agent creates the board items after the learner chose and then gives
+ZAM their references with an update of the plan (Decision 6). A subtask
+that has a reference is not created a second time. ZAM itself reads and
+writes no board; the agent does. ZAM's Azure DevOps connector stays
+read-only.
 
 ### 5. Evidence follows the kind of work
 
@@ -244,14 +253,19 @@ says nothing about recall and touches no card (Decision 8).
 Three tools carry this, each with a bridge command:
 
 - **Plan** records the subtasks and returns which ones the agent must not
-  write.
+  write. Called again, it updates the list: it attaches board references,
+  and when a session resumes it applies what changed on the board
+  (Decision 4). It always returns the session's current list, so a session
+  can be picked up in a new conversation.
 - **Hand over** marks a learner subtask as handed over. Its result is the
   instruction to stop, so it arrives at the moment of stopping and not
-  several calls earlier.
-- **Close** records who did the subtask and its evidence. `done_by: user`
-  is accepted only for a learner-owned subtask that was handed over. A
-  learner-owned subtask may close with `done_by: agent`; that is the third
-  step of help. An agent-owned subtask never closes as the learner's.
+  several calls earlier. It is the last call of the turn.
+- **Close** records who did the subtask and its evidence, for work this
+  session finished. `done_by: user` is accepted only for a learner-owned
+  subtask that was handed over. A learner-owned subtask may close with
+  `done_by: agent`; that is the third step of help. An agent-owned subtask
+  never closes as the learner's. What a colleague finished or removed
+  comes in through Plan, not through Close.
 
 This is a cooperative protocol. The agent itself reports who did the work,
 and ZAM sees neither an agent's edits nor its turns. The tools make the
@@ -316,23 +330,40 @@ weeks. The agent proposes a card only for what passes two tests:
 - Will this concept probably still exist in two years?
 - Is it more than something easily looked up?
 
-Each proposal is shown by itself, with its question and its answer, before
-anything is created. The learner checks both and accepts or rejects it;
+Each proposal is shown by itself, with its question, its answer and one
+line on why it passes the two tests, before anything is created. The
+learner checks question and answer and accepts or rejects it;
 they know best whether it is worth remembering. Nothing is accepted in
 bulk. Project knowledge that fails the tests belongs in the repository's
 knowledge (Decision 7), where it can be looked up, not in a card.
 
 **Cards the learner already has: one confirmation.** The agent lists the
-cards the work covered. The learner can strike any from the list and
-confirms the rest with one yes. They are then recorded as reviewed, as
-Good, the value today's rule uses when the effort is unknown, and their
-due reviews fall away. The learner's yes is the statement of independence
-the kernel asks for. A card whose answer the agent supplied in the session
-is left out; that is today's rule too. The question asked card by card is
-for new cards only.
+cards whose criterion the learner met in full in subtasks they closed
+themselves. A subtask the agent finished brings no card onto the list, and
+a card whose answer the agent supplied in the session is left out. The
+list shows each card's title, not its answer, so a card the learner
+strikes is not spoiled.
 
-The record uses the tools that exist today. The rules for a good token are
-unchanged.
+The confirmation asks what today's rule requires: did you apply each of
+these in full and by yourself? The learner strikes what they did not and
+confirms the rest with one yes. Those cards are recorded as reviewed, as
+Good, the value today's rule uses when the effort is unknown, and their
+due reviews fall away. The evidence rule itself does not change. The
+question asked card by card is for new cards only.
+
+How it is recorded:
+
+- The kernel asks no one about independence. It accepts Hard, Good or Easy
+  only for an attempt marked independent. The work skill therefore passes
+  `independent: true` for the cards the learner kept, a fixed `activity`
+  that tells a coverage confirmation from a recall, and `answer_format:
+  recall`.
+- One existing tool has to change. The token search returns no card id
+  today, and a review needs one. It will return the id of a card the
+  learner already has. A match without a card is dropped, because a review
+  submitted for it would enrol the learner in that token.
+
+The rules for a good token are unchanged.
 
 There is no card type for a recurring kind of step (see *Alternatives*,
 work cards). What ZAM keeps about the doing is the session's list: which
@@ -343,7 +374,8 @@ known (*Delivery*).
 
 ### 9. The flow is cheap by construction
 
-- One call for the plan, one per hand-over, one per closed subtask.
+- One call for the plan and one each time it changes, one per hand-over,
+  one per closed subtask.
 - No card call during the work. The cards are settled once, at the end
   (Decision 8).
 - No subagent by default. One background check of a path is allowed when
@@ -387,6 +419,23 @@ accepts this ADR:
   into the repository's knowledge, where both sides can read it. Agent
   skills stay for procedures.
 
+The acceptance PR rewrites every component that still describes the old
+picture, not only the headline of each belief:
+
+- Session model, component 3: ratings are given at the end of the work
+  session and confirmed by the learner.
+- Observation over interruption, components 1 and 4: success inferred from
+  the shell log, and silent rating.
+- Modes, components 5 and 6: scheduled practice tasks, and the mode stored
+  on the shared token.
+- Skill decay, components 2, 3 and 5, and the line in
+  `beliefs/forgetting/README.md` that has autonomy detect forgetting
+  through practice tasks.
+- Symbiosis, component 6: "the system grants more autonomy".
+- Bidirectional learning, component 1, says agent skills are scheduled by
+  FSRS, while `agent_skills` has no scheduling columns. The PR settles
+  that mismatch too.
+
 ## Consequences
 
 **Gained**
@@ -411,6 +460,10 @@ accepts this ADR:
   needs its entry in the snapshot
   list (`SNAPSHOT_TABLES`) and in the row-level-security policies
   (`src/cli/deploy/rls-policies.ts`).
+- One existing tool changes: the token search returns the card id of a
+  card the learner already has (Decision 8).
+- Today's skill forbids inferring a running flow from old rows. Picking up
+  guided work in a new conversation relaxes that for its sessions.
 - Skill distribution knows one skill today (`distributeGlobalSkills`,
   `wireSkills`). A second one needs that code changed. The repository
   holds four copies of the skill, and the three harness copies have
@@ -529,8 +582,7 @@ Every claim about the repository in the two reviews was checked and held.
   (both; Decision 6).
 - Closing a subtask is separate from recall credit and rates no card.
   Credit for existing cards is given once, at the end, on the learner's
-  confirmation, which is the statement of independence the kernel asks for
-  (both; Decisions 5 and 8).
+  confirmation (both; Decisions 5 and 8).
 - Board and session are kept in step: the item is updated at every change
   of state and read again when a session resumes, and a subtask is not
   created twice. The agent does it with the environment's tools, not ZAM
@@ -564,6 +616,40 @@ Every claim about the repository in the two reviews was checked and held.
   during the work; the learner is told to take the hardest subtasks
   instead (Decisions 3 and 8).
 
+### Second pass
+
+Gemini 4 Argon, Grok 4.7 and GPT-6 Astra reviewed commit `277816a3` on
+2026-11-15. Their claims about the code were checked and held.
+
+**Applied**
+
+- A colleague's work can be recorded: the owner `other`, `done` by
+  `other` and the state `cancelled`, with their effect on waiting subtasks
+  and never as the learner's work. It comes in through Plan (all three;
+  Decisions 1, 4 and 6).
+- Plan is an update that can be repeated. It attaches board references
+  and returns the current list (Gemini, Grok; Decisions 4, 6 and 9).
+- The joint confirmation asks whether the learner applied each card in
+  full and independently, so the evidence rule stays as it is (GPT-6
+  Astra; Decision 8).
+- Only subtasks the learner closed bring cards onto the list. The skill
+  passes `independent: true`, a fixed `activity` and `answer_format:
+  recall`. The token search has to return the card id, and a match without
+  a card is dropped (Grok, Gemini; Decision 8).
+- The hand-over is the last call of the turn (Grok, Gemini; Decision 6).
+- Each proposed card carries one line on why it passes the two tests
+  (Gemini; Decision 8).
+- The belief components to rewrite are listed (Grok, Gemini; Decision 11).
+
+**Not applied**
+
+- *A fixed stop field in the hand-over result and a `board_sync` flag*
+  (Gemini). The shape of a payload belongs to the plan.
+- Gemini's second pass cites `beliefs/token-craft/worth-keeping`, which
+  does not exist, and its agreement list describes decisions this ADR does
+  not contain. Only its findings that could be checked in the code were
+  used.
+
 ## Status history
 
 - 2026-11-15 — Proposed.
@@ -571,3 +657,5 @@ Every claim about the repository in the two reviews was checked and held.
 - 2026-11-15 — Owner: no card step during the work for now; at the end a
   few new cards for lasting knowledge, each asked first; one confirmation
   for the existing cards the work covered; board and session kept in step.
+- 2026-11-15 — Second review pass by Gemini 4 Argon, Grok 4.7 and GPT-6
+  Astra; findings applied.
