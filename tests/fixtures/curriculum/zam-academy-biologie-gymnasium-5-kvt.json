@@ -1,0 +1,3470 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "zam-academy:biologie-gymnasium-5",
+  "version": "2026.11.1",
+  "title": "Biologie 5 Gymnasium (ZAM Academy)",
+  "description": "Natur und Technik 5, Schwerpunkt Biologie: Erkenntnisweg und Mikroskop, Lebewesen und Zellen, Sinne, Bewegung, Stoffwechsel, Pubertät und Fortpflanzung, Samenpflanzen und Ökosystem Grünland (LehrplanPLUS Bayern, Gymnasium 5).",
+  "publisher": "ZAM Academy",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/5/nt_gym",
+      "label": "LehrplanPLUS Bayern · Natur und Technik 5 Gymnasium",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Naturwissenschaft",
+      "label": "Klexikon · Naturwissenschaft",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Experiment",
+      "label": "Klexikon · Experiment",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Modell",
+      "label": "Klexikon · Modell",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Mikroskop",
+      "label": "Klexikon · Mikroskop",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Lichtmikroskop",
+      "label": "Wikipedia · Lichtmikroskop",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Lupe",
+      "label": "Klexikon · Lupe",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Thermometer",
+      "label": "Klexikon · Thermometer",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Waage",
+      "label": "Klexikon · Waage",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Iod-St%C3%A4rke-Reaktion",
+      "label": "Wikipedia · Iodprobe",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Kalkwasser",
+      "label": "Wikipedia · Kalkwasser",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Fett",
+      "label": "Klexikon · Fett",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Francesco_Redi",
+      "label": "Wikipedia · Francesco Redi",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Spontanzeugung",
+      "label": "Wikipedia · Spontanzeugung",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/William_Harvey",
+      "label": "Wikipedia · William Harvey",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Robert_Hooke",
+      "label": "Wikipedia · Robert Hooke",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Biologie",
+      "label": "Klexikon · Biologie",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Lebewesen",
+      "label": "Klexikon · Leben",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Zelle",
+      "label": "Klexikon · Zelle",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Zelle_(Biologie)",
+      "label": "Wikipedia · Zelle (Biologie)",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Gewebe_(Biologie)",
+      "label": "Wikipedia · Gewebe (Biologie)",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Sinnesorgan",
+      "label": "Klexikon · Organ",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Sinnesorgan",
+      "label": "Wikipedia · Sinnesorgan",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Auge",
+      "label": "Klexikon · Auge",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Ohr",
+      "label": "Klexikon · Ohr",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Haut",
+      "label": "Klexikon · Haut",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Nerv",
+      "label": "Klexikon · Nerv",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Gehirn",
+      "label": "Klexikon · Gehirn",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Reiz-Reaktions-Schema",
+      "label": "Wikipedia · Reiz-Reaktions-Modell",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Reaktionszeit",
+      "label": "Wikipedia · Reaktionszeit",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Alkohol",
+      "label": "Klexikon · Alkohol",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/L%C3%A4rm",
+      "label": "Klexikon · Lärm",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://www.gesundheitsinformation.de/wie-funktioniert-das-ohr.html",
+      "label": "Gesundheitsinformation.de · Wie funktioniert das Ohr?",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://www.gesundheitsinformation.de/wie-funktioniert-das-auge.html",
+      "label": "Gesundheitsinformation.de · Wie funktioniert das Auge?",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://www.bfs.de/DE/themen/opt/uv/schutz/schutz_node.html",
+      "label": "Bundesamt für Strahlenschutz · Schutz vor UV-Strahlung",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Sonnenbrand",
+      "label": "Klexikon · Sonnenbrand",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Skelett",
+      "label": "Klexikon · Skelett",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Knochen",
+      "label": "Klexikon · Knochen",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Wirbels%C3%A4ule",
+      "label": "Klexikon · Wirbelsäule",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Gelenk",
+      "label": "Klexikon · Gelenk",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Gelenk",
+      "label": "Wikipedia · Gelenk",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Muskel",
+      "label": "Klexikon · Muskel",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Energie",
+      "label": "Klexikon · Energie",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Zellatmung",
+      "label": "Wikipedia · Zellatmung",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Sauerstoff",
+      "label": "Klexikon · Sauerstoff",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Zucker",
+      "label": "Klexikon · Zucker",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Ern%C3%A4hrung",
+      "label": "Klexikon · Ernährung",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Kohlenhydrate",
+      "label": "Klexikon · Kohlenhydrate",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Eiwei%C3%9F",
+      "label": "Klexikon · Eiweiß",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Vitamin",
+      "label": "Klexikon · Vitamin",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://www.dge.de/gesunde-ernaehrung/gut-essen-und-trinken/dge-empfehlungen/",
+      "label": "DGE · Gut essen und trinken – die DGE-Empfehlungen",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://www.dge.de/gesunde-ernaehrung/gut-essen-und-trinken/dge-ernaehrungskreis/",
+      "label": "DGE · DGE-Ernährungskreis",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://www.bzfe.de/essen-und-gesundheit/ernaehrungspyramide",
+      "label": "Bundeszentrum für Ernährung · Die Ernährungspyramide",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Verdauung",
+      "label": "Klexikon · Verdauung",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://www.gesundheitsinformation.de/wie-funktioniert-der-darm.html",
+      "label": "Gesundheitsinformation.de · Wie funktioniert der Darm?",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://www.gesundheitsinformation.de/wie-funktioniert-der-magen.html",
+      "label": "Gesundheitsinformation.de · Wie funktioniert der Magen?",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Oberfl%C3%A4chenvergr%C3%B6%C3%9Ferung",
+      "label": "Wikipedia · Oberflächenvergrößerung",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Darmzotte",
+      "label": "Wikipedia · Darmzotte",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Lungenbl%C3%A4schen",
+      "label": "Wikipedia · Lungenbläschen",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Atmung",
+      "label": "Klexikon · Atmung",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Lunge",
+      "label": "Klexikon · Lunge",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://www.gesundheitsinformation.de/wie-funktioniert-die-lunge.html",
+      "label": "Gesundheitsinformation.de · Wie funktioniert die Lunge?",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Blutkreislauf",
+      "label": "Klexikon · Blutkreislauf",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Herz",
+      "label": "Klexikon · Herz",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Blut",
+      "label": "Klexikon · Blut",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://www.gesundheitsinformation.de/wie-funktioniert-das-herz.html",
+      "label": "Gesundheitsinformation.de · Wie funktioniert das Herz?",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://www.who.int/news-room/fact-sheets/detail/physical-activity",
+      "label": "WHO · Physical activity (englisch)",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Zigarette",
+      "label": "Klexikon · Zigarette",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Sucht",
+      "label": "Klexikon · Sucht",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://www.rauchfrei-info.de/",
+      "label": "rauchfrei-info.de (BIÖG)",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Pubert%C3%A4t",
+      "label": "Klexikon · Pubertät",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Menstruation",
+      "label": "Klexikon · Menstruation",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Sexualit%C3%A4t",
+      "label": "Klexikon · Sexualität",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Schwangerschaft",
+      "label": "Klexikon · Schwangerschaft",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://www.loveline.de/",
+      "label": "Loveline (BIÖG) · Liebe, Körper, Sexualität",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://www.trau-dich.de/",
+      "label": "Trau dich! · Initiative zur Prävention sexuellen Kindesmissbrauchs",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://www.nummergegenkummer.de/",
+      "label": "Nummer gegen Kummer · Beratung für Kinder und Jugendliche",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Bl%C3%BCte",
+      "label": "Klexikon · Blüte",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Bl%C3%BCtendiagramm",
+      "label": "Wikipedia · Blütendiagramm",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Best%C3%A4ubung",
+      "label": "Wikipedia · Bestäubung",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Windbest%C3%A4ubung",
+      "label": "Wikipedia · Anemophilie (Windbestäubung)",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Biene",
+      "label": "Klexikon · Bienen",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Kirsche",
+      "label": "Klexikon · Kirsche",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Hasel",
+      "label": "Klexikon · Haselnuss",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Gr%C3%A4ser",
+      "label": "Klexikon · Gras",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Kreuzbl%C3%BCtengew%C3%A4chse",
+      "label": "Wikipedia · Kreuzblütler",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Lippenbl%C3%BCtler",
+      "label": "Wikipedia · Lippenblütler",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Raps",
+      "label": "Klexikon · Kohl",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Salbei",
+      "label": "Klexikon · Salbei",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Bestimmungsschl%C3%BCssel",
+      "label": "Wikipedia · Bestimmungsschlüssel",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/L%C3%B6wenzahn",
+      "label": "Klexikon · Löwenzahn",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Wiesen-Salbei",
+      "label": "Wikipedia · Wiesensalbei",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Rot-Klee",
+      "label": "Wikipedia · Wiesenklee",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Scharfer_Hahnenfu%C3%9F",
+      "label": "Wikipedia · Scharfer Hahnenfuß",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Spitzwegerich",
+      "label": "Wikipedia · Spitzwegerich",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Wiesen-Margerite",
+      "label": "Wikipedia · Magerwiesen-Margerite",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Wiese",
+      "label": "Klexikon · Wiese",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/%C3%96kosystem",
+      "label": "Klexikon · Ökosystem",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Gr%C3%BCnland",
+      "label": "Wikipedia · Grünland",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Artenvielfalt",
+      "label": "Klexikon · Artenvielfalt",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Landwirtschaft",
+      "label": "Klexikon · Landwirtschaft",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://www.lfl.bayern.de/iab/kulturlandschaft/",
+      "label": "LfL Bayern · Kulturlandschaft & Biodiversität",
+      "checked": "2026-11-14"
+    },
+    {
+      "uri": "https://www.lfl.bayern.de/ipz/gruenland/",
+      "label": "LfL Bayern · Grünland, Feldfutter, Grassamen",
+      "checked": "2026-11-14"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01M7D27HKPYMX1MS7QAZ35XMAG",
+      "atom_uri": "urn:zam:atom:01M7D27HKPYMX1MS7QAZ35XMAG",
+      "namespace": "zam-academy-biologie-gymnasium-5",
+      "slug": "bg5-erkenntnisweg",
+      "title": "Wie Biologen Fragen beantworten",
+      "domain": "biologie/s1",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-erkenntnisweg",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-5",
+          "topic_code": "s1",
+          "topic_title": "Forschen wie in der Biologie"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "nt_gym",
+          "topic_code": "lb2.1",
+          "topic_title": "Erkenntnisse gewinnen – kommunizieren – bewerten",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7D27HKQQP3R9N0M4T31799P",
+          "slug": "bg5-erkenntnisweg-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Du willst prüfen, ob Hefe bei Wärme mehr Gas bildet. Welcher Versuchsplan ist fair?",
+          "concept": "Ansatz A bei 20 °C und Ansatz B bei 35 °C, sonst alles gleich",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-erkenntnisweg",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ansatz A bei 20 °C und Ansatz B bei 35 °C, sonst alles gleich",
+              "Ansatz A bei 20 °C mit wenig Zucker und Ansatz B bei 35 °C mit viel Zucker"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7D27HKQ4K009TTV4TY2CA3E",
+          "slug": "bg5-erkenntnisweg-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Nenne die Phasen des naturwissenschaftlichen Erkenntniswegs in der richtigen Reihenfolge.",
+          "concept": "Frage, Hypothese, Untersuchung planen und durchführen, Daten auswerten und interpretieren, Folgerung.",
+          "sample_solution": "Frage, Hypothese, Untersuchung planen und durchführen, Daten auswerten und interpretieren, Folgerung.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-erkenntnisweg"
+        }
+      ]
+    },
+    {
+      "id": "01M7D27HKPZCM2FHDCJNJJD655",
+      "atom_uri": "urn:zam:atom:01M7D27HKPZCM2FHDCJNJJD655",
+      "namespace": "zam-academy-biologie-gymnasium-5",
+      "slug": "bg5-arbeitstechniken",
+      "title": "Arbeitstechniken im Labor und im Freiland",
+      "domain": "biologie/s1",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-arbeitstechniken",
+      "prerequisites": [
+        {
+          "atom_id": "01M7D27HKPYMX1MS7QAZ35XMAG",
+          "type": "soft",
+          "rationale": "Arbeitstechniken dienen der Durchführung einer geplanten Untersuchung."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-5",
+          "topic_code": "s1",
+          "topic_title": "Forschen wie in der Biologie"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "nt_gym",
+          "topic_code": "lb2.1",
+          "topic_title": "Erkenntnisse gewinnen – kommunizieren – bewerten",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7D27HKQX6TNGSVMV4CGP1G2",
+          "slug": "bg5-arbeitstechniken-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was musst du tun, bevor du die Masse von Samen in einer Schale bestimmst?",
+          "concept": "Die leere Schale auf die Waage stellen und die Anzeige auf null setzen",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-arbeitstechniken",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die leere Schale auf die Waage stellen und die Anzeige auf null setzen",
+              "Die Samen in der Hand schätzen und den Wert aufschreiben"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7D27HKQX6FRE33ENJP48415",
+          "slug": "bg5-arbeitstechniken-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Worauf achtest du beim Ablesen eines Thermometers und beim Wiegen mit der Waage?",
+          "concept": "Thermometer erst ablesen, wenn die Anzeige stillsteht, und auf Augenhöhe; Waage vorher auf null stellen; Werte mit Einheit notieren.",
+          "sample_solution": "Thermometer erst ablesen, wenn die Anzeige stillsteht, und auf Augenhöhe; Waage vorher auf null stellen; Werte mit Einheit notieren.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-arbeitstechniken"
+        }
+      ]
+    },
+    {
+      "id": "01M7D27HKPYRNH1J6BZSXA1SYR",
+      "atom_uri": "urn:zam:atom:01M7D27HKPYRNH1J6BZSXA1SYR",
+      "namespace": "zam-academy-biologie-gymnasium-5",
+      "slug": "bg5-fehlerquellen",
+      "title": "Fehlerquellen finden und vermeiden",
+      "domain": "biologie/s1",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-fehlerquellen",
+      "prerequisites": [
+        {
+          "atom_id": "01M7D27HKPYMX1MS7QAZ35XMAG",
+          "type": "soft",
+          "rationale": "Fehlerquellen beziehen sich auf Planung und Durchführung des Erkenntniswegs."
+        },
+        {
+          "atom_id": "01M7D27HKPZCM2FHDCJNJJD655",
+          "type": "soft",
+          "rationale": "Messfehler setzen den Umgang mit Messgeräten voraus."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-5",
+          "topic_code": "s1",
+          "topic_title": "Forschen wie in der Biologie"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "nt_gym",
+          "topic_code": "lb2.1",
+          "topic_title": "Erkenntnisse gewinnen – kommunizieren – bewerten",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7D27HKQT0GQTB657WFCYYZF",
+          "slug": "bg5-fehlerquellen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Gruppe A stellt ihre Kresseschale ans Fenster, Gruppe B ihre in den Schrank. Beide gießen unterschiedlich viel. Was ist das Problem?",
+          "concept": "Es unterscheiden sich mehrere Faktoren, deshalb ist unklar, was das Ergebnis verursacht",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-fehlerquellen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Es unterscheiden sich mehrere Faktoren, deshalb ist unklar, was das Ergebnis verursacht",
+              "Kresse braucht kein Wasser, deshalb ist das Gießen egal"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7D27HKQRD193CAFXRSAHBJK",
+          "slug": "bg5-fehlerquellen-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie machst du die Ergebnisse einer Untersuchung verlässlicher?",
+          "concept": "Gewissenhaft planen (nur einen Faktor ändern), sorgfältig messen, Beobachtungen sofort notieren und Messungen wiederholen.",
+          "sample_solution": "Gewissenhaft planen (nur einen Faktor ändern), sorgfältig messen, Beobachtungen sofort notieren und Messungen wiederholen.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-fehlerquellen"
+        }
+      ]
+    },
+    {
+      "id": "01M7D27HKPEDFQE39PHQCMFJ6W",
+      "atom_uri": "urn:zam:atom:01M7D27HKPEDFQE39PHQCMFJ6W",
+      "namespace": "zam-academy-biologie-gymnasium-5",
+      "slug": "bg5-nachweise",
+      "title": "Stoffe nachweisen: Stärke, Fett und Kohlenstoffdioxid",
+      "domain": "biologie/s1",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-nachweise",
+      "prerequisites": [
+        {
+          "atom_id": "01M7D27HKPZCM2FHDCJNJJD655",
+          "type": "soft",
+          "rationale": "Nachweise nutzen Glasgeräte und Sicherheitsregeln."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-5",
+          "topic_code": "s1",
+          "topic_title": "Forschen wie in der Biologie"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "nt_gym",
+          "topic_code": "lb2.1",
+          "topic_title": "Erkenntnisse gewinnen – kommunizieren – bewerten",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7D27HKQW79AZV18P1ZXA5BA",
+          "slug": "bg5-nachweise-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Du tropfst Iod-Kaliumiodid-Lösung auf eine Kartoffelscheibe und sie färbt sich blauschwarz. Was hast du nachgewiesen?",
+          "concept": "Stärke",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-nachweise",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Stärke",
+              "Fett"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7D27HKQV3QN9A0ARQBA0PQ4",
+          "slug": "bg5-nachweise-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie weist du Fett nach, und woran erkennst du das positive Ergebnis?",
+          "concept": "Mit der Fettfleckprobe: Probe auf Papier reiben und trocknen lassen; ein durchscheinender Fleck bleibt, wenn Fett enthalten ist.",
+          "sample_solution": "Mit der Fettfleckprobe: Probe auf Papier reiben und trocknen lassen; ein durchscheinender Fleck bleibt, wenn Fett enthalten ist.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-nachweise"
+        }
+      ]
+    },
+    {
+      "id": "01M7D27HKPF5S13PY1XNM1G7Y9",
+      "atom_uri": "urn:zam:atom:01M7D27HKPF5S13PY1XNM1G7Y9",
+      "namespace": "zam-academy-biologie-gymnasium-5",
+      "slug": "bg5-mikroskop",
+      "title": "Mit dem Lichtmikroskop arbeiten",
+      "domain": "biologie/s1",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-mikroskop",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-5",
+          "topic_code": "s1",
+          "topic_title": "Forschen wie in der Biologie"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "nt_gym",
+          "topic_code": "lb2.1",
+          "topic_title": "Erkenntnisse gewinnen – kommunizieren – bewerten",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7D27HKQQ8KW8ZZ8YDN8HVYA",
+          "slug": "bg5-mikroskop-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Das Okular vergrößert 10-fach, das Objektiv 40-fach. Wie stark ist die Gesamtvergrößerung?",
+          "concept": "400-fach",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-mikroskop",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "400-fach",
+              "50-fach"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7D27HKQQ492QE8ZR232F62R",
+          "slug": "bg5-mikroskop-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie gehst du beim Mikroskopieren vor, wenn du zur stärkeren Vergrößerung wechseln willst?",
+          "concept": "Mit dem kleinsten Objektiv scharf stellen, Stelle in die Mitte schieben, dann stärkeres Objektiv einschwenken und nur mit dem Feintrieb nachstellen.",
+          "sample_solution": "Mit dem kleinsten Objektiv scharf stellen, Stelle in die Mitte schieben, dann stärkeres Objektiv einschwenken und nur mit dem Feintrieb nachstellen.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-mikroskop"
+        }
+      ]
+    },
+    {
+      "id": "01M7D27HKPZQ5CJ3VJQ0WMF6PQ",
+      "atom_uri": "urn:zam:atom:01M7D27HKPZQ5CJ3VJQ0WMF6PQ",
+      "namespace": "zam-academy-biologie-gymnasium-5",
+      "slug": "bg5-praeparat-zeichnen",
+      "title": "Präparate herstellen und biologisch zeichnen",
+      "domain": "biologie/s1",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-praeparat-zeichnen",
+      "prerequisites": [
+        {
+          "atom_id": "01M7D27HKPF5S13PY1XNM1G7Y9",
+          "type": "soft",
+          "rationale": "Präparate werden für das Mikroskop hergestellt."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-5",
+          "topic_code": "s1",
+          "topic_title": "Forschen wie in der Biologie"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "nt_gym",
+          "topic_code": "lb2.1",
+          "topic_title": "Erkenntnisse gewinnen – kommunizieren – bewerten",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7D27HKQRYMNZBWTR9DJ5VF8",
+          "slug": "bg5-praeparat-zeichnen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum setzt man das Deckgläschen schräg an und senkt es langsam ab?",
+          "concept": "Damit keine Luftblasen unter dem Deckgläschen eingeschlossen werden",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-praeparat-zeichnen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Damit keine Luftblasen unter dem Deckgläschen eingeschlossen werden",
+              "Damit sich das Präparat schneller anfärbt"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7D27HKQB2TWEK39P549YNCS",
+          "slug": "bg5-praeparat-zeichnen-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Nenne drei Regeln für eine biologische Zeichnung.",
+          "concept": "Mit Bleistift in klaren Linien ohne Farbe; nur Gesehenes zeichnen; Beschriftung mit geraden Linien, Überschrift und Vergrößerung angeben.",
+          "sample_solution": "Mit Bleistift in klaren Linien ohne Farbe; nur Gesehenes zeichnen; Beschriftung mit geraden Linien, Überschrift und Vergrößerung angeben.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-praeparat-zeichnen"
+        }
+      ]
+    },
+    {
+      "id": "01M7D27HKPMABTY53HBGTX6W9D",
+      "atom_uri": "urn:zam:atom:01M7D27HKPMABTY53HBGTX6W9D",
+      "namespace": "zam-academy-biologie-gymnasium-5",
+      "slug": "bg5-modelle",
+      "title": "Modelle in der Biologie",
+      "domain": "biologie/s1",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-modelle",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-5",
+          "topic_code": "s1",
+          "topic_title": "Forschen wie in der Biologie"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "nt_gym",
+          "topic_code": "lb2.1",
+          "topic_title": "Erkenntnisse gewinnen – kommunizieren – bewerten",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7D27HKQGA8ZBR0FAB9Y3FQ9",
+          "slug": "bg5-modelle-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wofür steht beim Lungenmodell die Gummihaut am Boden der Glasglocke?",
+          "concept": "Für das Zwerchfell",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-modelle",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Für das Zwerchfell",
+              "Für die Lungenflügel"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7D27HKQ1800ACWN8KEHX30C",
+          "slug": "bg5-modelle-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was unterscheidet ein Strukturmodell von einem Funktionsmodell?",
+          "concept": "Ein Strukturmodell zeigt den Bau (z. B. Torso), ein Funktionsmodell zeigt, wie etwas arbeitet (z. B. Lungenmodell).",
+          "sample_solution": "Ein Strukturmodell zeigt den Bau (z. B. Torso), ein Funktionsmodell zeigt, wie etwas arbeitet (z. B. Lungenmodell).",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-modelle"
+        }
+      ]
+    },
+    {
+      "id": "01M7D27HKPR4K787P3E98KQM2J",
+      "atom_uri": "urn:zam:atom:01M7D27HKPR4K787P3E98KQM2J",
+      "namespace": "zam-academy-biologie-gymnasium-5",
+      "slug": "bg5-protokoll-diagramme",
+      "title": "Protokolle, Tabellen und Diagramme",
+      "domain": "biologie/s1",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-protokoll-diagramme",
+      "prerequisites": [
+        {
+          "atom_id": "01M7D27HKPYMX1MS7QAZ35XMAG",
+          "type": "soft",
+          "rationale": "Das Protokoll dokumentiert die Phasen des Erkenntniswegs."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-5",
+          "topic_code": "s1",
+          "topic_title": "Forschen wie in der Biologie"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "nt_gym",
+          "topic_code": "lb2.1",
+          "topic_title": "Erkenntnisse gewinnen – kommunizieren – bewerten",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7D27HKQP46199M91DX2KHP6",
+          "slug": "bg5-protokoll-diagramme-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welcher Satz gehört ins Protokoll unter „Beobachtung“?",
+          "concept": "Das Kalkwasser wird nach zehn Sekunden milchig trüb.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-protokoll-diagramme",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Das Kalkwasser wird nach zehn Sekunden milchig trüb.",
+              "Die Ausatemluft enthält also Kohlenstoffdioxid."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7D27HKQ5R5D67H9TA9PM76P",
+          "slug": "bg5-protokoll-diagramme-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Aus welchen Teilen besteht ein naturwissenschaftliches Protokoll?",
+          "concept": "Titel, Aufbau und Durchführung, Beobachtung sowie Auswertung und Interpretation.",
+          "sample_solution": "Titel, Aufbau und Durchführung, Beobachtung sowie Auswertung und Interpretation.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-protokoll-diagramme"
+        }
+      ]
+    },
+    {
+      "id": "01M7D27HKPWRH7RXJSR10VJW4M",
+      "atom_uri": "urn:zam:atom:01M7D27HKPWRH7RXJSR10VJW4M",
+      "namespace": "zam-academy-biologie-gymnasium-5",
+      "slug": "bg5-quellen-fachsprache",
+      "title": "Quellen auswerten und Fachsprache nutzen",
+      "domain": "biologie/s1",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-quellen-fachsprache",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-5",
+          "topic_code": "s1",
+          "topic_title": "Forschen wie in der Biologie"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "nt_gym",
+          "topic_code": "lb2.1",
+          "topic_title": "Erkenntnisse gewinnen – kommunizieren – bewerten",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7D27HKQCGH7AYV93TSXFPG3",
+          "slug": "bg5-quellen-fachsprache-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Formulierung verwendet Fachsprache?",
+          "concept": "Der Bizeps verkürzt sich und zieht den Unterarm nach oben.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-quellen-fachsprache",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Bizeps verkürzt sich und zieht den Unterarm nach oben.",
+              "Der Muskel drückt den Arm hoch."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7D27HKQ333TFM3J3QAFHYKW",
+          "slug": "bg5-quellen-fachsprache-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche Fragen stellst du an eine Quelle, bevor du ihr eine Antwort entnimmst?",
+          "concept": "Wer hat sie geschrieben, wann, für wen, und nennt sie Belege?",
+          "sample_solution": "Wer hat sie geschrieben, wann, für wen, und nennt sie Belege?",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-quellen-fachsprache"
+        }
+      ]
+    },
+    {
+      "id": "01M7D27HKPAJST3208HG7ZSFSV",
+      "atom_uri": "urn:zam:atom:01M7D27HKPAJST3208HG7ZSFSV",
+      "namespace": "zam-academy-biologie-gymnasium-5",
+      "slug": "bg5-wissen-wandelt-sich",
+      "title": "Wie sich Wissen verändert",
+      "domain": "biologie/s1",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-wissen-wandelt-sich",
+      "prerequisites": [
+        {
+          "atom_id": "01M7D27HKPYMX1MS7QAZ35XMAG",
+          "type": "soft",
+          "rationale": "Neues Wissen entsteht über den Erkenntnisweg."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-5",
+          "topic_code": "s1",
+          "topic_title": "Forschen wie in der Biologie"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "nt_gym",
+          "topic_code": "lb2.1",
+          "topic_title": "Erkenntnisse gewinnen – kommunizieren – bewerten",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7D27HKQ4QCZWMGTY70T5ZX6",
+          "slug": "bg5-wissen-wandelt-sich-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was zeigte Redis Versuch mit den abgedeckten Gläsern?",
+          "concept": "Maden entstehen aus Fliegeneiern, nicht von selbst aus Fleisch",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-wissen-wandelt-sich",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Maden entstehen aus Fliegeneiern, nicht von selbst aus Fleisch",
+              "Maden entstehen von selbst aus Fleisch, wenn es warm ist"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7D27HKQXF03CPRD7ETZC77W",
+          "slug": "bg5-wissen-wandelt-sich-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum kann sich naturwissenschaftliches Wissen verändern?",
+          "concept": "Neue Beobachtungen, Versuche oder Geräte können alte Vorstellungen widerlegen oder verbessern, wie Redis Madenversuch zeigt.",
+          "sample_solution": "Neue Beobachtungen, Versuche oder Geräte können alte Vorstellungen widerlegen oder verbessern, wie Redis Madenversuch zeigt.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-wissen-wandelt-sich"
+        }
+      ]
+    },
+    {
+      "id": "01M7D27HKP55D2HXREVG13NQVC",
+      "atom_uri": "urn:zam:atom:01M7D27HKP55D2HXREVG13NQVC",
+      "namespace": "zam-academy-biologie-gymnasium-5",
+      "slug": "bg5-kennzeichen-lebewesen",
+      "title": "Was Lebewesen ausmacht",
+      "domain": "biologie/s2",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-kennzeichen-lebewesen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-5",
+          "topic_code": "s2",
+          "topic_title": "Lebewesen & Zellen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "nt_gym",
+          "topic_code": "lb2.2",
+          "topic_title": "Biologie - die Wissenschaft von den Lebewesen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7D27HKQEKZH35BZCSCVYS3S",
+          "slug": "bg5-kennzeichen-lebewesen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Eine Kerzenflamme verbraucht Stoffe und bewegt sich. Warum ist sie trotzdem kein Lebewesen?",
+          "concept": "Sie zeigt nicht alle Kennzeichen, zum Beispiel besteht sie nicht aus Zellen und pflanzt sich nicht fort",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-kennzeichen-lebewesen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie zeigt nicht alle Kennzeichen, zum Beispiel besteht sie nicht aus Zellen und pflanzt sich nicht fort",
+              "Weil sie heiß ist und Lebewesen immer kalt sind"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7D27HKQ6QFZTEEERV17PKV6",
+          "slug": "bg5-kennzeichen-lebewesen-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Nenne die Kennzeichen, die alle Lebewesen zeigen.",
+          "concept": "Reize aufnehmen und reagieren, aktive Bewegung, Stoffwechsel, Fortpflanzung, Wachstum und Entwicklung, Aufbau aus Zellen.",
+          "sample_solution": "Reize aufnehmen und reagieren, aktive Bewegung, Stoffwechsel, Fortpflanzung, Wachstum und Entwicklung, Aufbau aus Zellen.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-kennzeichen-lebewesen"
+        }
+      ]
+    },
+    {
+      "id": "01M7D27HKPMB47EYB2ADWN08RZ",
+      "atom_uri": "urn:zam:atom:01M7D27HKPMB47EYB2ADWN08RZ",
+      "namespace": "zam-academy-biologie-gymnasium-5",
+      "slug": "bg5-zellen",
+      "title": "Tierzelle und Pflanzenzelle",
+      "domain": "biologie/s2",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-zellen",
+      "prerequisites": [
+        {
+          "atom_id": "01M7D27HKPF5S13PY1XNM1G7Y9",
+          "type": "soft",
+          "rationale": "Zellen werden mit dem Lichtmikroskop betrachtet."
+        },
+        {
+          "atom_id": "01M7D27HKP55D2HXREVG13NQVC",
+          "type": "soft",
+          "rationale": "Der Aufbau aus Zellen ist ein Kennzeichen der Lebewesen."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-5",
+          "topic_code": "s2",
+          "topic_title": "Lebewesen & Zellen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "nt_gym",
+          "topic_code": "lb2.2",
+          "topic_title": "Biologie - die Wissenschaft von den Lebewesen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7D27HKQ1Q6D4RS1DXQSDH0Z",
+          "slug": "bg5-zellen-check",
+          "replaces": [
+            "01K4YT5N000000000000000J03"
+          ],
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche drei Bestandteile haben Pflanzenzellen, Tierzellen aber nicht?",
+          "concept": "Zellwand, Chloroplasten und eine große Vakuole",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-zellen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Zellwand, Chloroplasten und eine große Vakuole",
+              "Zellmembran, Zellplasma und Zellkern"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7D27HKQ3CFPXHZ2N6C7YCEF",
+          "slug": "bg5-zellen-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche Zellbestandteile haben Tier- und Pflanzenzellen gemeinsam?",
+          "concept": "Zellmembran, Zellplasma und Zellkern.",
+          "sample_solution": "Zellmembran, Zellplasma und Zellkern.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-zellen"
+        }
+      ]
+    },
+    {
+      "id": "01M7D27HKP62Q3KMA32DKJZTHB",
+      "atom_uri": "urn:zam:atom:01M7D27HKP62Q3KMA32DKJZTHB",
+      "namespace": "zam-academy-biologie-gymnasium-5",
+      "slug": "bg5-gewebe-organe",
+      "title": "Von der Zelle zum Organismus",
+      "domain": "biologie/s2",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-gewebe-organe",
+      "prerequisites": [
+        {
+          "atom_id": "01M7D27HKPMB47EYB2ADWN08RZ",
+          "type": "soft",
+          "rationale": "Gewebe bestehen aus gleichartigen Zellen."
+        },
+        {
+          "atom_id": "01M7D27HKPZQ5CJ3VJQ0WMF6PQ",
+          "type": "soft",
+          "rationale": "Gewebe werden als Präparat mikroskopiert und gezeichnet."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-5",
+          "topic_code": "s2",
+          "topic_title": "Lebewesen & Zellen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "nt_gym",
+          "topic_code": "lb2.2",
+          "topic_title": "Biologie - die Wissenschaft von den Lebewesen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7D27HKQ2FY5K669J19VZYXA",
+          "slug": "bg5-gewebe-organe-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was ist ein Gewebe?",
+          "concept": "Ein Verband aus vielen gleichartigen Zellen mit gleicher Aufgabe",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-gewebe-organe",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein Verband aus vielen gleichartigen Zellen mit gleicher Aufgabe",
+              "Ein einzelnes Organ wie das Herz"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7D27HKQ17WTDEHSFNJMR5Y8",
+          "slug": "bg5-gewebe-organe-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Ordne die Organisationsebenen vom Kleinsten zum Größten.",
+          "concept": "Zelle, Gewebe, Organ, Organsystem, Organismus.",
+          "sample_solution": "Zelle, Gewebe, Organ, Organsystem, Organismus.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-gewebe-organe"
+        }
+      ]
+    },
+    {
+      "id": "01M7D27HKP3H6ZZ1C2MWRVZHTZ",
+      "atom_uri": "urn:zam:atom:01M7D27HKP3H6ZZ1C2MWRVZHTZ",
+      "namespace": "zam-academy-biologie-gymnasium-5",
+      "slug": "bg5-sinnesorgane",
+      "title": "Unsere Sinnesorgane",
+      "domain": "biologie/s3",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-sinnesorgane",
+      "prerequisites": [
+        {
+          "atom_id": "01M7D27HKP55D2HXREVG13NQVC",
+          "type": "soft",
+          "rationale": "Reizaufnahme ist ein Kennzeichen der Lebewesen."
+        },
+        {
+          "atom_id": "01M7D27HKP62Q3KMA32DKJZTHB",
+          "type": "soft",
+          "rationale": "Sinnesorgane sind Organe aus spezialisierten Zellen."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-5",
+          "topic_code": "s3",
+          "topic_title": "Sinne & Reaktion"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "nt_gym",
+          "topic_code": "lb2.3",
+          "topic_title": "Der Mensch als Lebewesen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7D27HKQK6AXPDCR68B7066E",
+          "slug": "bg5-sinnesorgane-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Auf welchen Reiz sind die Sinneszellen in der Netzhaut des Auges spezialisiert?",
+          "concept": "Auf Licht",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-sinnesorgane",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Auf Licht",
+              "Auf Schall"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7D27HKQYKS5HN4A0XQW79M3",
+          "slug": "bg5-sinnesorgane-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was ist das Gemeinsame aller Sinnesorgane?",
+          "concept": "Sie enthalten spezialisierte Sinneszellen, die eine bestimmte Reizart aufnehmen und in Signale für Nerven und Gehirn umwandeln.",
+          "sample_solution": "Sie enthalten spezialisierte Sinneszellen, die eine bestimmte Reizart aufnehmen und in Signale für Nerven und Gehirn umwandeln.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-sinnesorgane"
+        }
+      ]
+    },
+    {
+      "id": "01M7D27HKPKH5VP7ZHBVXN4Q81",
+      "atom_uri": "urn:zam:atom:01M7D27HKPKH5VP7ZHBVXN4Q81",
+      "namespace": "zam-academy-biologie-gymnasium-5",
+      "slug": "bg5-reiz-reaktion",
+      "title": "Die Reiz-Reaktions-Kette",
+      "domain": "biologie/s3",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-reiz-reaktion",
+      "prerequisites": [
+        {
+          "atom_id": "01M7D27HKP3H6ZZ1C2MWRVZHTZ",
+          "type": "soft",
+          "rationale": "Die Kette beginnt mit der Reizaufnahme im Sinnesorgan."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-5",
+          "topic_code": "s3",
+          "topic_title": "Sinne & Reaktion"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "nt_gym",
+          "topic_code": "lb2.3",
+          "topic_title": "Der Mensch als Lebewesen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7D27HKQGFA4EF0P6JTKFBVD",
+          "slug": "bg5-reiz-reaktion-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Station folgt in der Reiz-Reaktions-Kette direkt auf das Sinnesorgan?",
+          "concept": "Ein Nerv leitet die Information zum Gehirn",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-reiz-reaktion",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein Nerv leitet die Information zum Gehirn",
+              "Der Muskel führt sofort die Reaktion aus"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7D27HKQ8R2SN27HAT3NS301",
+          "slug": "bg5-reiz-reaktion-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Nenne die Stationen der Reiz-Reaktions-Kette.",
+          "concept": "Reiz, Sinnesorgan, Nerv, Gehirn, Nerv, Muskel, Reaktion.",
+          "sample_solution": "Reiz, Sinnesorgan, Nerv, Gehirn, Nerv, Muskel, Reaktion.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-reiz-reaktion"
+        }
+      ]
+    },
+    {
+      "id": "01M7D27HKP5ZRDBG9RNCJCW8A4",
+      "atom_uri": "urn:zam:atom:01M7D27HKP5ZRDBG9RNCJCW8A4",
+      "namespace": "zam-academy-biologie-gymnasium-5",
+      "slug": "bg5-reaktionszeit",
+      "title": "Reaktionszeit, Alkohol und Straßenverkehr",
+      "domain": "biologie/s3",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-reaktionszeit",
+      "prerequisites": [
+        {
+          "atom_id": "01M7D27HKPKH5VP7ZHBVXN4Q81",
+          "type": "soft",
+          "rationale": "Die Reaktionszeit ist die Dauer der Reiz-Reaktions-Kette."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-5",
+          "topic_code": "s3",
+          "topic_title": "Sinne & Reaktion"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "nt_gym",
+          "topic_code": "lb2.3",
+          "topic_title": "Der Mensch als Lebewesen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7D27HKQRWTVXYVGMZZJENWM",
+          "slug": "bg5-reaktionszeit-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum ist Alkohol im Straßenverkehr so gefährlich?",
+          "concept": "Er verlangsamt die Verarbeitung im Gehirn und verlängert so die Reaktionszeit",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-reaktionszeit",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Er verlangsamt die Verarbeitung im Gehirn und verlängert so die Reaktionszeit",
+              "Er macht die Muskeln stärker, sodass man zu fest bremst"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7D27HKQB37NQPZY6111XTSJ",
+          "slug": "bg5-reaktionszeit-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was ist der Reaktionsweg, und wodurch wird er länger?",
+          "concept": "Der Weg, den man zwischen Reiz und Reaktion zurücklegt; er wird länger durch höheres Tempo, Alkohol, Müdigkeit oder Ablenkung.",
+          "sample_solution": "Der Weg, den man zwischen Reiz und Reaktion zurücklegt; er wird länger durch höheres Tempo, Alkohol, Müdigkeit oder Ablenkung.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-reaktionszeit"
+        }
+      ]
+    },
+    {
+      "id": "01M7D27HKPHXK9XFNT7454BQ0P",
+      "atom_uri": "urn:zam:atom:01M7D27HKPHXK9XFNT7454BQ0P",
+      "namespace": "zam-academy-biologie-gymnasium-5",
+      "slug": "bg5-sinne-schuetzen",
+      "title": "Ohren und Augen schützen",
+      "domain": "biologie/s3",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-sinne-schuetzen",
+      "prerequisites": [
+        {
+          "atom_id": "01M7D27HKP3H6ZZ1C2MWRVZHTZ",
+          "type": "soft",
+          "rationale": "Geschützt werden die Sinnesorgane und ihre Sinneszellen."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-5",
+          "topic_code": "s3",
+          "topic_title": "Sinne & Reaktion"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "nt_gym",
+          "topic_code": "lb2.3",
+          "topic_title": "Der Mensch als Lebewesen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7D27HKQ0BW795N9KP5W6BAB",
+          "slug": "bg5-sinne-schuetzen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Ab welcher Lautstärke kann das Gehör geschädigt werden?",
+          "concept": "Ab etwa 85 Dezibel",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-sinne-schuetzen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ab etwa 85 Dezibel",
+              "Ab etwa 30 Dezibel"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7D27HKQ7GJ0K5X20ZCEEKWN",
+          "slug": "bg5-sinne-schuetzen-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie schützt du Augen und Haut vor UV-Strahlung?",
+          "concept": "Sonnenbrille mit UV-Schutz, nie in die Sonne schauen, Schatten, Kleidung, Kopfbedeckung und Sonnencreme.",
+          "sample_solution": "Sonnenbrille mit UV-Schutz, nie in die Sonne schauen, Schatten, Kleidung, Kopfbedeckung und Sonnencreme.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-sinne-schuetzen"
+        }
+      ]
+    },
+    {
+      "id": "01M7D27HKPB57AY92DTS7EYMYZ",
+      "atom_uri": "urn:zam:atom:01M7D27HKPB57AY92DTS7EYMYZ",
+      "namespace": "zam-academy-biologie-gymnasium-5",
+      "slug": "bg5-skelett",
+      "title": "Das Skelett: Stütze, Schutz und Bewegung",
+      "domain": "biologie/s4",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-skelett",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-5",
+          "topic_code": "s4",
+          "topic_title": "Skelett & Bewegung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "nt_gym",
+          "topic_code": "lb2.3",
+          "topic_title": "Der Mensch als Lebewesen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7D27HKQ6DF838JAYJAPQFG4",
+          "slug": "bg5-skelett-check",
+          "replaces": [
+            "01K4YB5M000000000000000J01"
+          ],
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Aufgabe haben die Bandscheiben zwischen den Wirbelkörpern?",
+          "concept": "Sie federn Stöße ab und machen die Wirbelsäule beweglich",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-skelett",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie federn Stöße ab und machen die Wirbelsäule beweglich",
+              "Sie bilden das Blut und verteilen es im Rücken"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7D27HKQE0R1DWY3W7Q8997W",
+          "slug": "bg5-skelett-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Nenne die drei Aufgaben des Skeletts mit je einem Beispiel.",
+          "concept": "Stütze (Wirbelsäule), Schutz (Schädel für das Gehirn, Brustkorb für Herz und Lunge) und Bewegung (Knochen als Hebel).",
+          "sample_solution": "Stütze (Wirbelsäule), Schutz (Schädel für das Gehirn, Brustkorb für Herz und Lunge) und Bewegung (Knochen als Hebel).",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-skelett"
+        }
+      ]
+    },
+    {
+      "id": "01M7D27HKPDSJCF8XA6XVQW9CM",
+      "atom_uri": "urn:zam:atom:01M7D27HKPDSJCF8XA6XVQW9CM",
+      "namespace": "zam-academy-biologie-gymnasium-5",
+      "slug": "bg5-gelenke",
+      "title": "Gelenke und ihre Bewegungen",
+      "domain": "biologie/s4",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-gelenke",
+      "prerequisites": [
+        {
+          "atom_id": "01M7D27HKPB57AY92DTS7EYMYZ",
+          "type": "soft",
+          "rationale": "Gelenke verbinden die Knochen des Skeletts."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-5",
+          "topic_code": "s4",
+          "topic_title": "Skelett & Bewegung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "nt_gym",
+          "topic_code": "lb2.3",
+          "topic_title": "Der Mensch als Lebewesen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7D27HKQ8E1H71XBX9RYADA1",
+          "slug": "bg5-gelenke-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welcher Gelenktyp ermöglicht es, den Arm im Schultergelenk zu kreisen?",
+          "concept": "Ein Kugelgelenk",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-gelenke",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein Kugelgelenk",
+              "Ein Scharniergelenk"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7D27HKQDEXSFGQCWCBE88YE",
+          "slug": "bg5-gelenke-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Nenne vier Gelenktypen mit je einem Beispiel am Körper.",
+          "concept": "Kugelgelenk (Schulter), Scharniergelenk (Ellbogen), Sattelgelenk (Daumenwurzel), Drehgelenk (1. und 2. Halswirbel).",
+          "sample_solution": "Kugelgelenk (Schulter), Scharniergelenk (Ellbogen), Sattelgelenk (Daumenwurzel), Drehgelenk (1. und 2. Halswirbel).",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-gelenke"
+        }
+      ]
+    },
+    {
+      "id": "01M7D27HKP2AVV034QB8Z8C66V",
+      "atom_uri": "urn:zam:atom:01M7D27HKP2AVV034QB8Z8C66V",
+      "namespace": "zam-academy-biologie-gymnasium-5",
+      "slug": "bg5-gegenspieler",
+      "title": "Muskeln arbeiten als Gegenspieler",
+      "domain": "biologie/s4",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-gegenspieler",
+      "prerequisites": [
+        {
+          "atom_id": "01M7D27HKPDSJCF8XA6XVQW9CM",
+          "type": "soft",
+          "rationale": "Muskeln bewegen Knochen in Gelenken."
+        },
+        {
+          "atom_id": "01M7D27HKPMABTY53HBGTX6W9D",
+          "type": "soft",
+          "rationale": "Das Gegenspielerprinzip wird mit einem Modell abgeleitet."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-5",
+          "topic_code": "s4",
+          "topic_title": "Skelett & Bewegung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "nt_gym",
+          "topic_code": "lb2.3",
+          "topic_title": "Der Mensch als Lebewesen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7D27HKQRAQCZ5KZKTZMTXP0",
+          "slug": "bg5-gegenspieler-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum braucht der Bizeps einen Gegenspieler?",
+          "concept": "Weil er nur ziehen kann und den Unterarm nicht zurückschieben kann",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-gegenspieler",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Weil er nur ziehen kann und den Unterarm nicht zurückschieben kann",
+              "Weil er allein zu schwach ist, um den Arm zu beugen"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7D27HKQTWPBZ9FWM0S26CC3",
+          "slug": "bg5-gegenspieler-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welcher Muskel beugt, welcher streckt den Arm?",
+          "concept": "Der Bizeps beugt den Arm (Beuger), der Trizeps streckt ihn (Strecker).",
+          "sample_solution": "Der Bizeps beugt den Arm (Beuger), der Trizeps streckt ihn (Strecker).",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-gegenspieler"
+        }
+      ]
+    },
+    {
+      "id": "01M7D27HKP51DPSRS5BSHH7JFB",
+      "atom_uri": "urn:zam:atom:01M7D27HKP51DPSRS5BSHH7JFB",
+      "namespace": "zam-academy-biologie-gymnasium-5",
+      "slug": "bg5-bewegungsapparat-gesund",
+      "title": "Zusammenspiel und Gesundheit des Bewegungsapparats",
+      "domain": "biologie/s4",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-bewegungsapparat-gesund",
+      "prerequisites": [
+        {
+          "atom_id": "01M7D27HKP2AVV034QB8Z8C66V",
+          "type": "soft",
+          "rationale": "Das Zusammenspiel umfasst die Gegenspieler."
+        },
+        {
+          "atom_id": "01M7D27HKPKH5VP7ZHBVXN4Q81",
+          "type": "soft",
+          "rationale": "Nerven und Gehirn lösen die Bewegung aus."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-5",
+          "topic_code": "s4",
+          "topic_title": "Skelett & Bewegung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "nt_gym",
+          "topic_code": "lb2.3",
+          "topic_title": "Der Mensch als Lebewesen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7D27HKQ3QNM3A9RVRQPC61F",
+          "slug": "bg5-bewegungsapparat-gesund-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welcher Nährstoff ist besonders wichtig für feste Knochen?",
+          "concept": "Calcium, zum Beispiel aus Milchprodukten",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-bewegungsapparat-gesund",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Calcium, zum Beispiel aus Milchprodukten",
+              "Zucker, zum Beispiel aus Limonade"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7D27HKQNC5W755KYCJA1GMX",
+          "slug": "bg5-bewegungsapparat-gesund-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Nenne drei Maßnahmen, die Knochen und Muskeln gesund halten.",
+          "concept": "Regelmäßige Bewegung, calciumreiche Ernährung und Vitamin D, Aufwärmen und Schutzausrüstung beim Sport.",
+          "sample_solution": "Regelmäßige Bewegung, calciumreiche Ernährung und Vitamin D, Aufwärmen und Schutzausrüstung beim Sport.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-bewegungsapparat-gesund"
+        }
+      ]
+    },
+    {
+      "id": "01M7D27HKPRVQN0JP0XZP1FX8N",
+      "atom_uri": "urn:zam:atom:01M7D27HKPRVQN0JP0XZP1FX8N",
+      "namespace": "zam-academy-biologie-gymnasium-5",
+      "slug": "bg5-energiebedarf",
+      "title": "Wofür der Körper Energie braucht",
+      "domain": "biologie/s5",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-energiebedarf",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-5",
+          "topic_code": "s5",
+          "topic_title": "Ernährung, Atmung & Kreislauf"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "nt_gym",
+          "topic_code": "lb2.3",
+          "topic_title": "Der Mensch als Lebewesen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7D27HKQ491XP9YQ83AZRY1E",
+          "slug": "bg5-energiebedarf-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum braucht der Körper auch im Schlaf Energie?",
+          "concept": "Herz und Atemmuskeln arbeiten weiter, und die Körpertemperatur muss gehalten werden",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-energiebedarf",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Herz und Atemmuskeln arbeiten weiter, und die Körpertemperatur muss gehalten werden",
+              "Er braucht im Schlaf keine Energie, nur tagsüber"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7D27HKQZNYT57ZP47ZQVPZK",
+          "slug": "bg5-energiebedarf-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wofür braucht der Körper Energie?",
+          "concept": "Für Bewegung, Wachstum, Regeneration und das Halten der Körpertemperatur.",
+          "sample_solution": "Für Bewegung, Wachstum, Regeneration und das Halten der Körpertemperatur.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-energiebedarf"
+        }
+      ]
+    },
+    {
+      "id": "01M7D27HKPYC8HQSEMA3JM1XC5",
+      "atom_uri": "urn:zam:atom:01M7D27HKPYC8HQSEMA3JM1XC5",
+      "namespace": "zam-academy-biologie-gymnasium-5",
+      "slug": "bg5-zellatmung",
+      "title": "Die Zellatmung",
+      "domain": "biologie/s5",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-zellatmung",
+      "prerequisites": [
+        {
+          "atom_id": "01M7D27HKPRVQN0JP0XZP1FX8N",
+          "type": "soft",
+          "rationale": "Die Zellatmung deckt den Energiebedarf."
+        },
+        {
+          "atom_id": "01M7D27HKPEDFQE39PHQCMFJ6W",
+          "type": "soft",
+          "rationale": "Kohlenstoffdioxid aus der Zellatmung wird mit Kalkwasser nachgewiesen."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-5",
+          "topic_code": "s5",
+          "topic_title": "Ernährung, Atmung & Kreislauf"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "nt_gym",
+          "topic_code": "lb2.3",
+          "topic_title": "Der Mensch als Lebewesen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7D27HKQ6AVC45X1PMXZA9NP",
+          "slug": "bg5-zellatmung-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Stoffe entstehen bei der Zellatmung?",
+          "concept": "Kohlenstoffdioxid und Wasser",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-zellatmung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Kohlenstoffdioxid und Wasser",
+              "Traubenzucker und Sauerstoff"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7D27HKQKGCBJZ5YHNBAKQHB",
+          "slug": "bg5-zellatmung-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Gib das Reaktionsschema der Zellatmung an.",
+          "concept": "Traubenzucker + Sauerstoff → Kohlenstoffdioxid + Wasser; dabei wird Energie umgewandelt.",
+          "sample_solution": "Traubenzucker + Sauerstoff → Kohlenstoffdioxid + Wasser; dabei wird Energie umgewandelt.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-zellatmung"
+        }
+      ]
+    },
+    {
+      "id": "01M7D27HKPJEND7W11446WNW7C",
+      "atom_uri": "urn:zam:atom:01M7D27HKPJEND7W11446WNW7C",
+      "namespace": "zam-academy-biologie-gymnasium-5",
+      "slug": "bg5-naehrstoffe",
+      "title": "Nährstoffe und ihr Energieinhalt",
+      "domain": "biologie/s5",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-naehrstoffe",
+      "prerequisites": [
+        {
+          "atom_id": "01M7D27HKPRVQN0JP0XZP1FX8N",
+          "type": "soft",
+          "rationale": "Nährstoffe liefern die benötigte Energie."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-5",
+          "topic_code": "s5",
+          "topic_title": "Ernährung, Atmung & Kreislauf"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "nt_gym",
+          "topic_code": "lb2.3",
+          "topic_title": "Der Mensch als Lebewesen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7D27HKQNAXRG6MTFXFAXZBX",
+          "slug": "bg5-naehrstoffe-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welcher Nährstoff liefert pro Gramm die meiste Energie?",
+          "concept": "Fett",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-naehrstoffe",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Fett",
+              "Eiweiß"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7D27HKQPKC6CTYQ71HW0YR1",
+          "slug": "bg5-naehrstoffe-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie viel Energie liefert etwa ein Gramm Kohlenhydrate, Eiweiß und Fett?",
+          "concept": "Kohlenhydrate und Eiweiß etwa 17 kJ pro Gramm, Fett etwa 37 kJ pro Gramm.",
+          "sample_solution": "Kohlenhydrate und Eiweiß etwa 17 kJ pro Gramm, Fett etwa 37 kJ pro Gramm.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-naehrstoffe"
+        }
+      ]
+    },
+    {
+      "id": "01M7D27HKP8HSPDNTC7T3D9HQ9",
+      "atom_uri": "urn:zam:atom:01M7D27HKP8HSPDNTC7T3D9HQ9",
+      "namespace": "zam-academy-biologie-gymnasium-5",
+      "slug": "bg5-ausgewogen-essen",
+      "title": "Ausgewogen essen",
+      "domain": "biologie/s5",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-ausgewogen-essen",
+      "prerequisites": [
+        {
+          "atom_id": "01M7D27HKPJEND7W11446WNW7C",
+          "type": "soft",
+          "rationale": "Ausgewogenheit bezieht sich auf die Nährstoffe und ihren Energieinhalt."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-5",
+          "topic_code": "s5",
+          "topic_title": "Ernährung, Atmung & Kreislauf"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "nt_gym",
+          "topic_code": "lb2.3",
+          "topic_title": "Der Mensch als Lebewesen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7D27HKQYK2RDYHYXMVTPQ9W",
+          "slug": "bg5-ausgewogen-essen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Lebensmittelgruppe steht in der Ernährungspyramide ganz unten, weil man davon am meisten zu sich nehmen soll?",
+          "concept": "Getränke wie Wasser und ungesüßter Tee",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-ausgewogen-essen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Getränke wie Wasser und ungesüßter Tee",
+              "Süßigkeiten und Knabbereien"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7D27HKQ1Z0KWTWYZ0WDF3T5",
+          "slug": "bg5-ausgewogen-essen-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche Lebensmittel isst man nach der Ernährungspyramide reichlich, welche sparsam?",
+          "concept": "Reichlich Getränke, Gemüse, Obst und Getreideprodukte; sparsam Fette, Süßes und Knabbereien.",
+          "sample_solution": "Reichlich Getränke, Gemüse, Obst und Getreideprodukte; sparsam Fette, Süßes und Knabbereien.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-ausgewogen-essen"
+        }
+      ]
+    },
+    {
+      "id": "01M7D27HKPG6W1W7HQ91H0BGRH",
+      "atom_uri": "urn:zam:atom:01M7D27HKPG6W1W7HQ91H0BGRH",
+      "namespace": "zam-academy-biologie-gymnasium-5",
+      "slug": "bg5-verdauung",
+      "title": "Der Weg der Nahrung: Verdauung",
+      "domain": "biologie/s5",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-verdauung",
+      "prerequisites": [
+        {
+          "atom_id": "01M7D27HKPJEND7W11446WNW7C",
+          "type": "soft",
+          "rationale": "Verdaut werden die Nährstoffe der Nahrung."
+        },
+        {
+          "atom_id": "01M7D27HKP62Q3KMA32DKJZTHB",
+          "type": "soft",
+          "rationale": "Das Verdauungssystem ist ein Organsystem."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-5",
+          "topic_code": "s5",
+          "topic_title": "Ernährung, Atmung & Kreislauf"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "nt_gym",
+          "topic_code": "lb2.3",
+          "topic_title": "Der Mensch als Lebewesen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7D27HKQJG805HX1TM5MA3ZD",
+          "slug": "bg5-verdauung-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "In welchem Organ werden die meisten Nährstoffbausteine ins Blut aufgenommen?",
+          "concept": "Im Dünndarm",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-verdauung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Im Dünndarm",
+              "Im Magen"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7D27HKQDH0BYFSPZ8PWH7HW",
+          "slug": "bg5-verdauung-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was ist das Grundprinzip der Verdauung?",
+          "concept": "Große Nährstoffteilchen werden in kleine Bausteine zerlegt, die im Dünndarm ins Blut aufgenommen werden.",
+          "sample_solution": "Große Nährstoffteilchen werden in kleine Bausteine zerlegt, die im Dünndarm ins Blut aufgenommen werden.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-verdauung"
+        }
+      ]
+    },
+    {
+      "id": "01M7D27HKPQ9Q4SKE1YAPSCCJ6",
+      "atom_uri": "urn:zam:atom:01M7D27HKPQ9Q4SKE1YAPSCCJ6",
+      "namespace": "zam-academy-biologie-gymnasium-5",
+      "slug": "bg5-oberflaeche",
+      "title": "Oberflächenvergrößerung: viel Fläche auf kleinem Raum",
+      "domain": "biologie/s5",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-oberflaeche",
+      "prerequisites": [
+        {
+          "atom_id": "01M7D27HKPG6W1W7HQ91H0BGRH",
+          "type": "soft",
+          "rationale": "Darmzotten vergrößern die Oberfläche des Dünndarms."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-5",
+          "topic_code": "s5",
+          "topic_title": "Ernährung, Atmung & Kreislauf"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "nt_gym",
+          "topic_code": "lb2.3",
+          "topic_title": "Der Mensch als Lebewesen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7D27HKQW8NPWNN1DFR5Y0AT",
+          "slug": "bg5-oberflaeche-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Ein Würfel mit 4 cm Kante wird in 8 gleiche Würfel zerteilt. Was passiert mit der Oberfläche?",
+          "concept": "Sie verdoppelt sich, die Menge bleibt gleich",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-oberflaeche",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie verdoppelt sich, die Menge bleibt gleich",
+              "Sie bleibt gleich, weil die Menge gleich bleibt"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7D27HKQ4KVT1BE9SSGWNGAZ",
+          "slug": "bg5-oberflaeche-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum haben Dünndarm und Lunge eine stark vergrößerte Oberfläche?",
+          "concept": "Darmzotten und Lungenbläschen schaffen viel Fläche auf kleinem Raum, damit viele Stoffe schnell ausgetauscht werden.",
+          "sample_solution": "Darmzotten und Lungenbläschen schaffen viel Fläche auf kleinem Raum, damit viele Stoffe schnell ausgetauscht werden.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-oberflaeche"
+        }
+      ]
+    },
+    {
+      "id": "01M7D27HKP82PM6S53Z30JF2QM",
+      "atom_uri": "urn:zam:atom:01M7D27HKP82PM6S53Z30JF2QM",
+      "namespace": "zam-academy-biologie-gymnasium-5",
+      "slug": "bg5-atmung",
+      "title": "Atmung und Gasaustausch",
+      "domain": "biologie/s5",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-atmung",
+      "prerequisites": [
+        {
+          "atom_id": "01M7D27HKPYC8HQSEMA3JM1XC5",
+          "type": "soft",
+          "rationale": "Der Gasaustausch liefert Sauerstoff für die Zellatmung."
+        },
+        {
+          "atom_id": "01M7D27HKPQ9Q4SKE1YAPSCCJ6",
+          "type": "soft",
+          "rationale": "Lungenbläschen vergrößern die Austauschfläche."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-5",
+          "topic_code": "s5",
+          "topic_title": "Ernährung, Atmung & Kreislauf"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "nt_gym",
+          "topic_code": "lb2.3",
+          "topic_title": "Der Mensch als Lebewesen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7D27HKQP617MF7TGP8DTV2S",
+          "slug": "bg5-atmung-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was geschieht beim Gasaustausch in den Lungenbläschen?",
+          "concept": "Sauerstoff gelangt ins Blut, Kohlenstoffdioxid gelangt aus dem Blut in die Atemluft",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-atmung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sauerstoff gelangt ins Blut, Kohlenstoffdioxid gelangt aus dem Blut in die Atemluft",
+              "Kohlenstoffdioxid gelangt ins Blut, Sauerstoff wird ausgeatmet"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7D27HKQ8GK2YDRVX8J85GK6",
+          "slug": "bg5-atmung-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was geschieht beim Gasaustausch in den Körperzellen?",
+          "concept": "Sauerstoff wandert aus dem Blut in die Zellen, Kohlenstoffdioxid aus den Zellen ins Blut.",
+          "sample_solution": "Sauerstoff wandert aus dem Blut in die Zellen, Kohlenstoffdioxid aus den Zellen ins Blut.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-atmung"
+        }
+      ]
+    },
+    {
+      "id": "01M7D27HKQSRKN46NC83ND5P7N",
+      "atom_uri": "urn:zam:atom:01M7D27HKQSRKN46NC83ND5P7N",
+      "namespace": "zam-academy-biologie-gymnasium-5",
+      "slug": "bg5-blutkreislauf",
+      "title": "Der Blutkreislauf als Transportsystem",
+      "domain": "biologie/s5",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-blutkreislauf",
+      "prerequisites": [
+        {
+          "atom_id": "01M7D27HKP82PM6S53Z30JF2QM",
+          "type": "soft",
+          "rationale": "Das Blut transportiert die Atemgase."
+        },
+        {
+          "atom_id": "01M7D27HKPAJST3208HG7ZSFSV",
+          "type": "soft",
+          "rationale": "Harvey widerlegte Galens Vorstellung vom Blut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-5",
+          "topic_code": "s5",
+          "topic_title": "Ernährung, Atmung & Kreislauf"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "nt_gym",
+          "topic_code": "lb2.3",
+          "topic_title": "Der Mensch als Lebewesen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7D27HKQRA21VCQ9Q8M6ESWT",
+          "slug": "bg5-blutkreislauf-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Blutgefäße führen das Blut vom Herzen weg?",
+          "concept": "Arterien",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-blutkreislauf",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Arterien",
+              "Venen"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7D27HKQ7GTG4T80PC8SPSC9",
+          "slug": "bg5-blutkreislauf-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Worin unterscheiden sich Arterien, Venen und Kapillaren?",
+          "concept": "Arterien führen vom Herzen weg, Venen zum Herzen hin, in Kapillaren werden Stoffe zwischen Blut und Zellen ausgetauscht.",
+          "sample_solution": "Arterien führen vom Herzen weg, Venen zum Herzen hin, in Kapillaren werden Stoffe zwischen Blut und Zellen ausgetauscht.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-blutkreislauf"
+        }
+      ]
+    },
+    {
+      "id": "01M7D27HKQ6PTWW7Q4ZH22F9X2",
+      "atom_uri": "urn:zam:atom:01M7D27HKQ6PTWW7Q4ZH22F9X2",
+      "namespace": "zam-academy-biologie-gymnasium-5",
+      "slug": "bg5-puls-atmung",
+      "title": "Puls und Atmung bei Bewegung",
+      "domain": "biologie/s5",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-puls-atmung",
+      "prerequisites": [
+        {
+          "atom_id": "01M7D27HKQSRKN46NC83ND5P7N",
+          "type": "soft",
+          "rationale": "Der Puls zeigt die Arbeit des Herzens."
+        },
+        {
+          "atom_id": "01M7D27HKPYC8HQSEMA3JM1XC5",
+          "type": "soft",
+          "rationale": "Der Bedarf der Muskelzellen erklärt die Messwerte."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-5",
+          "topic_code": "s5",
+          "topic_title": "Ernährung, Atmung & Kreislauf"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "nt_gym",
+          "topic_code": "lb2.3",
+          "topic_title": "Der Mensch als Lebewesen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7D27HKQQ1J3W0X6PTTWN55N",
+          "slug": "bg5-puls-atmung-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum schlägt das Herz beim Rennen schneller?",
+          "concept": "Damit das Blut mehr Sauerstoff und Nährstoffe zu den arbeitenden Muskeln bringt",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-puls-atmung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Damit das Blut mehr Sauerstoff und Nährstoffe zu den arbeitenden Muskeln bringt",
+              "Weil das Herz beim Rennen durchgeschüttelt wird"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7D27HKQ7GG52P0N8K3N08NC",
+          "slug": "bg5-puls-atmung-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum steigen Puls und Atemfrequenz beim Sport?",
+          "concept": "Die Muskelzellen brauchen für die Zellatmung mehr Sauerstoff und Traubenzucker; Herz und Lunge liefern schneller nach.",
+          "sample_solution": "Die Muskelzellen brauchen für die Zellatmung mehr Sauerstoff und Traubenzucker; Herz und Lunge liefern schneller nach.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-puls-atmung"
+        }
+      ]
+    },
+    {
+      "id": "01M7D27HKQB4XVX9A1N8AWS1TG",
+      "atom_uri": "urn:zam:atom:01M7D27HKQB4XVX9A1N8AWS1TG",
+      "namespace": "zam-academy-biologie-gymnasium-5",
+      "slug": "bg5-herz-gesund",
+      "title": "Gesund für Herz und Kreislauf",
+      "domain": "biologie/s5",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-herz-gesund",
+      "prerequisites": [
+        {
+          "atom_id": "01M7D27HKQ6PTWW7Q4ZH22F9X2",
+          "type": "soft",
+          "rationale": "Training verändert Puls und Herzarbeit."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-5",
+          "topic_code": "s5",
+          "topic_title": "Ernährung, Atmung & Kreislauf"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "nt_gym",
+          "topic_code": "lb2.3",
+          "topic_title": "Der Mensch als Lebewesen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7D27HKQW6ASN9R2TYKMBYFQ",
+          "slug": "bg5-herz-gesund-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie viel Bewegung empfiehlt die Weltgesundheitsorganisation Kindern und Jugendlichen?",
+          "concept": "Im Durchschnitt mindestens 60 Minuten am Tag",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-herz-gesund",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Im Durchschnitt mindestens 60 Minuten am Tag",
+              "Mindestens 60 Minuten in der Woche"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7D27HKQW13JQXGQEX4YKHSX",
+          "slug": "bg5-herz-gesund-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was hält Herz und Kreislauf gesund?",
+          "concept": "Regelmäßige Bewegung (im Schnitt 60 Minuten am Tag), ausgewogene Ernährung, Nichtrauchen und genug Schlaf.",
+          "sample_solution": "Regelmäßige Bewegung (im Schnitt 60 Minuten am Tag), ausgewogene Ernährung, Nichtrauchen und genug Schlaf.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-herz-gesund"
+        }
+      ]
+    },
+    {
+      "id": "01M7D27HKQ5GGGY3ZA537ER937",
+      "atom_uri": "urn:zam:atom:01M7D27HKQ5GGGY3ZA537ER937",
+      "namespace": "zam-academy-biologie-gymnasium-5",
+      "slug": "bg5-rauchen",
+      "title": "Rauchen schadet: Lunge und Abhängigkeit",
+      "domain": "biologie/s5",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-rauchen",
+      "prerequisites": [
+        {
+          "atom_id": "01M7D27HKP82PM6S53Z30JF2QM",
+          "type": "soft",
+          "rationale": "Rauchen schädigt die Atemwege und den Gasaustausch."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-5",
+          "topic_code": "s5",
+          "topic_title": "Ernährung, Atmung & Kreislauf"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "nt_gym",
+          "topic_code": "lb2.3",
+          "topic_title": "Der Mensch als Lebewesen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7D27HKQJNGJY3K3HGTQ5J7H",
+          "slug": "bg5-rauchen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welcher Stoff im Tabakrauch macht abhängig?",
+          "concept": "Nikotin",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-rauchen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nikotin",
+              "Teer"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7D27HKQG9S01K79NR433FHK",
+          "slug": "bg5-rauchen-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie schädigt Rauchen die Atemwege?",
+          "concept": "Teer lagert sich ab, die Flimmerhärchen werden gelähmt und Kohlenmonoxid verdrängt Sauerstoff im Blut.",
+          "sample_solution": "Teer lagert sich ab, die Flimmerhärchen werden gelähmt und Kohlenmonoxid verdrängt Sauerstoff im Blut.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-rauchen"
+        }
+      ]
+    },
+    {
+      "id": "01M7D27HKQ2VBB821X7PB5KHY3",
+      "atom_uri": "urn:zam:atom:01M7D27HKQ2VBB821X7PB5KHY3",
+      "namespace": "zam-academy-biologie-gymnasium-5",
+      "slug": "bg5-geschlechtsorgane",
+      "title": "Bau und Funktion der Geschlechtsorgane",
+      "domain": "biologie/s6",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-geschlechtsorgane",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-5",
+          "topic_code": "s6",
+          "topic_title": "Pubertät & Fortpflanzung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "nt_gym",
+          "topic_code": "lb2.3",
+          "topic_title": "Der Mensch als Lebewesen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7D27HKQ6BNJPXTV76WZPDPG",
+          "slug": "bg5-geschlechtsorgane-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wo entstehen die Spermienzellen?",
+          "concept": "In den Hoden",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-geschlechtsorgane",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "In den Hoden",
+              "In der Vorsteherdrüse"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7D27HKQJEPFR5T9TTFRAQCD",
+          "slug": "bg5-geschlechtsorgane-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche Aufgabe haben Eierstock, Eileiter und Gebärmutter?",
+          "concept": "Im Eierstock reifen Eizellen, im Eileiter findet die Befruchtung statt, in der Gebärmutter wächst ein Kind heran.",
+          "sample_solution": "Im Eierstock reifen Eizellen, im Eileiter findet die Befruchtung statt, in der Gebärmutter wächst ein Kind heran.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-geschlechtsorgane"
+        }
+      ]
+    },
+    {
+      "id": "01M7D27HKQY2AYWHS7J6ZJJDP5",
+      "atom_uri": "urn:zam:atom:01M7D27HKQY2AYWHS7J6ZJJDP5",
+      "namespace": "zam-academy-biologie-gymnasium-5",
+      "slug": "bg5-zyklus-befruchtung",
+      "title": "Zyklus, Befruchtung und Zeugung",
+      "domain": "biologie/s6",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-zyklus-befruchtung",
+      "prerequisites": [
+        {
+          "atom_id": "01M7D27HKQ2VBB821X7PB5KHY3",
+          "type": "soft",
+          "rationale": "Zyklus und Befruchtung laufen in den Geschlechtsorganen ab."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-5",
+          "topic_code": "s6",
+          "topic_title": "Pubertät & Fortpflanzung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "nt_gym",
+          "topic_code": "lb2.3",
+          "topic_title": "Der Mensch als Lebewesen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7D27HKQ56PXV4TM0BPPZN55",
+          "slug": "bg5-zyklus-befruchtung-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wo findet die Befruchtung der Eizelle normalerweise statt?",
+          "concept": "Im Eileiter",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-zyklus-befruchtung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Im Eileiter",
+              "In der Scheide"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7D27HKQVER766SJY0G1SWT9",
+          "slug": "bg5-zyklus-befruchtung-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Beschreibe den vereinfachten weiblichen Zyklus in vier Schritten.",
+          "concept": "Menstruation, Aufbau der Schleimhaut und Reifung einer Eizelle, Eisprung etwa in der Mitte, ohne Befruchtung erneute Menstruation.",
+          "sample_solution": "Menstruation, Aufbau der Schleimhaut und Reifung einer Eizelle, Eisprung etwa in der Mitte, ohne Befruchtung erneute Menstruation.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-zyklus-befruchtung"
+        }
+      ]
+    },
+    {
+      "id": "01M7D27HKQQWKBPYHX0E60WAPQ",
+      "atom_uri": "urn:zam:atom:01M7D27HKQQWKBPYHX0E60WAPQ",
+      "namespace": "zam-academy-biologie-gymnasium-5",
+      "slug": "bg5-pubertaet",
+      "title": "Pubertät: Körper und Gefühle verändern sich",
+      "domain": "biologie/s6",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-pubertaet",
+      "prerequisites": [
+        {
+          "atom_id": "01M7D27HKQ2VBB821X7PB5KHY3",
+          "type": "soft",
+          "rationale": "In der Pubertät werden die Geschlechtsorgane reif."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-5",
+          "topic_code": "s6",
+          "topic_title": "Pubertät & Fortpflanzung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "nt_gym",
+          "topic_code": "lb2.3",
+          "topic_title": "Der Mensch als Lebewesen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7D27HKQYGR8RM3BV5113MN9",
+          "slug": "bg5-pubertaet-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Veränderung gibt es in der Pubertät bei Mädchen und bei Jungen?",
+          "concept": "Einen Wachstumsschub und Haare unter den Achseln",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-pubertaet",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Einen Wachstumsschub und Haare unter den Achseln",
+              "Den Stimmbruch"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7D27HKQMVW5DS3RQ52TV8CN",
+          "slug": "bg5-pubertaet-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche Veränderungen der Pubertät betreffen Mädchen und Jungen gleichermaßen?",
+          "concept": "Wachstumsschub, Haare unter den Achseln und im Schambereich, mehr Schweiß und wechselnde Stimmungen.",
+          "sample_solution": "Wachstumsschub, Haare unter den Achseln und im Schambereich, mehr Schweiß und wechselnde Stimmungen.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-pubertaet"
+        }
+      ]
+    },
+    {
+      "id": "01M7D27HKQMHEM02TSM8PE8APS",
+      "atom_uri": "urn:zam:atom:01M7D27HKQMHEM02TSM8PE8APS",
+      "namespace": "zam-academy-biologie-gymnasium-5",
+      "slug": "bg5-mein-koerper",
+      "title": "Mein Körper gehört mir: Nähe und Grenzen",
+      "domain": "biologie/s6",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-mein-koerper",
+      "prerequisites": [
+        {
+          "atom_id": "01M7D27HKQQWKBPYHX0E60WAPQ",
+          "type": "soft",
+          "rationale": "Nähe und Grenzen werden mit der Pubertät neu wichtig."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-5",
+          "topic_code": "s6",
+          "topic_title": "Pubertät & Fortpflanzung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "nt_gym",
+          "topic_code": "lb2.3",
+          "topic_title": "Der Mensch als Lebewesen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7D27HKQ3A8G0GFJFG9J5QGD",
+          "slug": "bg5-mein-koerper-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Ein Erwachsener sagt nach einer Berührung, die sich für dich falsch anfühlt: „Das bleibt unser Geheimnis.“ Was ist richtig?",
+          "concept": "Das ist ein schlechtes Geheimnis, du darfst und sollst es einer Vertrauensperson erzählen",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-mein-koerper",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Das ist ein schlechtes Geheimnis, du darfst und sollst es einer Vertrauensperson erzählen",
+              "Du musst das Geheimnis halten, weil Erwachsene bestimmen"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7D27HKQ8RRMR02AW41509KQ",
+          "slug": "bg5-mein-koerper-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was kannst du tun, wenn sich eine Berührung falsch anfühlt?",
+          "concept": "Das Gefühl ernst nehmen, laut Nein sagen, weggehen und Hilfe holen, zum Beispiel bei der Nummer gegen Kummer 116 111.",
+          "sample_solution": "Das Gefühl ernst nehmen, laut Nein sagen, weggehen und Hilfe holen, zum Beispiel bei der Nummer gegen Kummer 116 111.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-mein-koerper"
+        }
+      ]
+    },
+    {
+      "id": "01M7D27HKQX8BMFC2VNPJA875S",
+      "atom_uri": "urn:zam:atom:01M7D27HKQX8BMFC2VNPJA875S",
+      "namespace": "zam-academy-biologie-gymnasium-5",
+      "slug": "bg5-bluete",
+      "title": "Die Blüte als Fortpflanzungseinheit",
+      "domain": "biologie/s7",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-bluete",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-5",
+          "topic_code": "s7",
+          "topic_title": "Blüten & Samenpflanzen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "nt_gym",
+          "topic_code": "lb2.4",
+          "topic_title": "Samenpflanzen als Lebewesen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7D27HKQVJKBXMD98XRKVG64",
+          "slug": "bg5-bluete-check",
+          "replaces": [
+            "01K4YB5P000000000000000J03"
+          ],
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welcher Teil der Blüte bildet den Pollen?",
+          "concept": "Die Staubblätter, genauer ihre Staubbeutel",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-bluete",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Staubblätter, genauer ihre Staubbeutel",
+              "Die Kronblätter"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7D27HKQEXY8GTVKGSYQ1NBN",
+          "slug": "bg5-bluete-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Nenne die Blütenteile von außen nach innen mit ihrer Aufgabe.",
+          "concept": "Kelchblätter schützen die Knospe, Kronblätter locken an, Staubblätter bilden Pollen, das Fruchtblatt enthält die Samenanlage.",
+          "sample_solution": "Kelchblätter schützen die Knospe, Kronblätter locken an, Staubblätter bilden Pollen, das Fruchtblatt enthält die Samenanlage.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-bluete"
+        }
+      ]
+    },
+    {
+      "id": "01M7D27HKQAVMQTVHF1VC6KHMJ",
+      "atom_uri": "urn:zam:atom:01M7D27HKQAVMQTVHF1VC6KHMJ",
+      "namespace": "zam-academy-biologie-gymnasium-5",
+      "slug": "bg5-bluetendiagramm",
+      "title": "Blütendiagramme: ein Modell der Blüte",
+      "domain": "biologie/s7",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-bluetendiagramm",
+      "prerequisites": [
+        {
+          "atom_id": "01M7D27HKQX8BMFC2VNPJA875S",
+          "type": "soft",
+          "rationale": "Das Diagramm stellt den Blütenbau dar."
+        },
+        {
+          "atom_id": "01M7D27HKPMABTY53HBGTX6W9D",
+          "type": "soft",
+          "rationale": "Das Blütendiagramm ist ein abstrahiertes Modell."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-5",
+          "topic_code": "s7",
+          "topic_title": "Blüten & Samenpflanzen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "nt_gym",
+          "topic_code": "lb2.4",
+          "topic_title": "Samenpflanzen als Lebewesen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7D27HKQVNJHMANBQ6XHZ3WN",
+          "slug": "bg5-bluetendiagramm-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was zeigt ein Blütendiagramm nicht?",
+          "concept": "Die Farbe und den Duft der Blüte",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-bluetendiagramm",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Farbe und den Duft der Blüte",
+              "Die Anzahl der Kronblätter"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7D27HKQDQQ8E5N78M9YSA86",
+          "slug": "bg5-bluetendiagramm-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was zeigt ein Blütendiagramm, und was zeigt es nicht?",
+          "concept": "Anzahl und Anordnung der Blütenteile als Grundriss von oben; nicht Größe, Farbe, Duft oder Form.",
+          "sample_solution": "Anzahl und Anordnung der Blütenteile als Grundriss von oben; nicht Größe, Farbe, Duft oder Form.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-bluetendiagramm"
+        }
+      ]
+    },
+    {
+      "id": "01M7D27HKQT0CM83KY8GJFW378",
+      "atom_uri": "urn:zam:atom:01M7D27HKQT0CM83KY8GJFW378",
+      "namespace": "zam-academy-biologie-gymnasium-5",
+      "slug": "bg5-bestaeubung-befruchtung",
+      "title": "Bestäubung und Befruchtung",
+      "domain": "biologie/s7",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-bestaeubung-befruchtung",
+      "prerequisites": [
+        {
+          "atom_id": "01M7D27HKQX8BMFC2VNPJA875S",
+          "type": "soft",
+          "rationale": "Bestäubung und Befruchtung betreffen Narbe und Samenanlage."
+        },
+        {
+          "atom_id": "01M7D27HKQY2AYWHS7J6ZJJDP5",
+          "type": "soft",
+          "rationale": "Die Befruchtung beim Menschen dient zum Vergleich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-5",
+          "topic_code": "s7",
+          "topic_title": "Blüten & Samenpflanzen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "nt_gym",
+          "topic_code": "lb2.4",
+          "topic_title": "Samenpflanzen als Lebewesen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7D27HKQKSDC5P1QN4XESC73",
+          "slug": "bg5-bestaeubung-befruchtung-check",
+          "replaces": [
+            "01K4YB5P000000000000000J05"
+          ],
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie gelangt die männliche Keimzelle nach der Bestäubung zur Eizelle?",
+          "concept": "Durch einen Pollenschlauch, der durch den Griffel zur Samenanlage wächst",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-bestaeubung-befruchtung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Durch einen Pollenschlauch, der durch den Griffel zur Samenanlage wächst",
+              "Der Wind weht sie direkt in den Fruchtknoten"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7D27HKQV5SE64KEGPY66WAF",
+          "slug": "bg5-bestaeubung-befruchtung-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was ist der Unterschied zwischen Bestäubung und Befruchtung?",
+          "concept": "Bestäubung: Pollen gelangt auf die Narbe. Befruchtung: Eine männliche Keimzelle verschmilzt mit der Eizelle in der Samenanlage.",
+          "sample_solution": "Bestäubung: Pollen gelangt auf die Narbe. Befruchtung: Eine männliche Keimzelle verschmilzt mit der Eizelle in der Samenanlage.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-bestaeubung-befruchtung"
+        }
+      ]
+    },
+    {
+      "id": "01M7D27HKQVW8W4H3AZ5P1M8RE",
+      "atom_uri": "urn:zam:atom:01M7D27HKQVW8W4H3AZ5P1M8RE",
+      "namespace": "zam-academy-biologie-gymnasium-5",
+      "slug": "bg5-wind-tier",
+      "title": "Wind- und Tierbestäubung: Kosten und Nutzen",
+      "domain": "biologie/s7",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-wind-tier",
+      "prerequisites": [
+        {
+          "atom_id": "01M7D27HKQT0CM83KY8GJFW378",
+          "type": "soft",
+          "rationale": "Wind und Tiere übertragen den Pollen bei der Bestäubung."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-5",
+          "topic_code": "s7",
+          "topic_title": "Blüten & Samenpflanzen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "nt_gym",
+          "topic_code": "lb2.4",
+          "topic_title": "Samenpflanzen als Lebewesen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7D27HKQARG3JC8A3W2FBTYB",
+          "slug": "bg5-wind-tier-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum bilden windblütige Pflanzen wie die Hasel so große Mengen Pollen?",
+          "concept": "Weil der Wind den Pollen zufällig verteilt und das meiste keine passende Narbe erreicht",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-wind-tier",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Weil der Wind den Pollen zufällig verteilt und das meiste keine passende Narbe erreicht",
+              "Weil Insekten besonders viel Pollen fressen"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7D27HKQ7X8JC3BX6KHA4R33",
+          "slug": "bg5-wind-tier-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Nenne je einen Vorteil und einen Nachteil der Windbestäubung.",
+          "concept": "Vorteil: keine Kosten für Farbe, Duft und Nektar. Nachteil: riesige Mengen Pollen nötig, weil der Wind ihn zufällig verteilt.",
+          "sample_solution": "Vorteil: keine Kosten für Farbe, Duft und Nektar. Nachteil: riesige Mengen Pollen nötig, weil der Wind ihn zufällig verteilt.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-wind-tier"
+        }
+      ]
+    },
+    {
+      "id": "01M7D27HKQNC42JDF7ZC6FNTW9",
+      "atom_uri": "urn:zam:atom:01M7D27HKQNC42JDF7ZC6FNTW9",
+      "namespace": "zam-academy-biologie-gymnasium-5",
+      "slug": "bg5-pflanzenfamilien",
+      "title": "Vielfalt ordnen: Pflanzenfamilien",
+      "domain": "biologie/s7",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-pflanzenfamilien",
+      "prerequisites": [
+        {
+          "atom_id": "01M7D27HKQAVMQTVHF1VC6KHMJ",
+          "type": "soft",
+          "rationale": "Familien werden über den Blütenbau verglichen."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-5",
+          "topic_code": "s7",
+          "topic_title": "Blüten & Samenpflanzen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "nt_gym",
+          "topic_code": "lb2.4",
+          "topic_title": "Samenpflanzen als Lebewesen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7D27HKQZ30S6K4QPJ8EJEKW",
+          "slug": "bg5-pflanzenfamilien-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Woran erkennst du einen Lippenblütler?",
+          "concept": "An der Krone mit Ober- und Unterlippe und dem vierkantigen Stängel",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-pflanzenfamilien",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "An der Krone mit Ober- und Unterlippe und dem vierkantigen Stängel",
+              "An 4 Kronblättern, die über Kreuz stehen"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7D27HKQPJYXQMT43DNDX433",
+          "slug": "bg5-pflanzenfamilien-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Woran erkennst du einen Kreuzblütler?",
+          "concept": "4 Kelch- und 4 Kronblätter über Kreuz, 6 Staubblätter (4 lange, 2 kurze) und eine Schote als Frucht.",
+          "sample_solution": "4 Kelch- und 4 Kronblätter über Kreuz, 6 Staubblätter (4 lange, 2 kurze) und eine Schote als Frucht.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-pflanzenfamilien"
+        }
+      ]
+    },
+    {
+      "id": "01M7D27HKQ22KENA41BPRP68SQ",
+      "atom_uri": "urn:zam:atom:01M7D27HKQ22KENA41BPRP68SQ",
+      "namespace": "zam-academy-biologie-gymnasium-5",
+      "slug": "bg5-bestimmen",
+      "title": "Pflanzen bestimmen mit dem Schlüssel",
+      "domain": "biologie/s8",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-bestimmen",
+      "prerequisites": [
+        {
+          "atom_id": "01M7D27HKQNC42JDF7ZC6FNTW9",
+          "type": "soft",
+          "rationale": "Bestimmen nutzt morphologische Merkmale."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-5",
+          "topic_code": "s8",
+          "topic_title": "Ökosystem Grünland"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "nt_gym",
+          "topic_code": "lb2.5",
+          "topic_title": "Ökosystem Grünland",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7D27HKQ9YG2Q6H2G9VJ0270",
+          "slug": "bg5-bestimmen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie ist ein dichotomer Bestimmungsschlüssel aufgebaut?",
+          "concept": "Jede Frage hat zwei Antworten, die zur nächsten Frage oder zum Artnamen führen",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-bestimmen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Jede Frage hat zwei Antworten, die zur nächsten Frage oder zum Artnamen führen",
+              "Man blättert so lange, bis ein Bild ungefähr passt"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7D27HKQWPTKJ06PHJKMP7C0",
+          "slug": "bg5-bestimmen-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie arbeitet man mit einem dichotomen Bestimmungsschlüssel?",
+          "concept": "Man beantwortet Schritt für Schritt Fragen mit je zwei Antworten zu sichtbaren Merkmalen, bis ein Artname erreicht ist.",
+          "sample_solution": "Man beantwortet Schritt für Schritt Fragen mit je zwei Antworten zu sichtbaren Merkmalen, bis ein Artname erreicht ist.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-bestimmen"
+        }
+      ]
+    },
+    {
+      "id": "01M7D27HKQS9G5ZBPPGYW0SY0V",
+      "atom_uri": "urn:zam:atom:01M7D27HKQS9G5ZBPPGYW0SY0V",
+      "namespace": "zam-academy-biologie-gymnasium-5",
+      "slug": "bg5-lebensraum-wiese",
+      "title": "Lebensraum Wiese erkunden",
+      "domain": "biologie/s8",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-lebensraum-wiese",
+      "prerequisites": [
+        {
+          "atom_id": "01M7D27HKQ22KENA41BPRP68SQ",
+          "type": "soft",
+          "rationale": "Die Lebensgemeinschaft wird durch Bestimmen der Arten beschrieben."
+        },
+        {
+          "atom_id": "01M7D27HKPR4K787P3E98KQM2J",
+          "type": "soft",
+          "rationale": "Freilandmessungen werden protokolliert."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-5",
+          "topic_code": "s8",
+          "topic_title": "Ökosystem Grünland"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "nt_gym",
+          "topic_code": "lb2.5",
+          "topic_title": "Ökosystem Grünland",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7D27HKQ8R56YTW15XP1T5EZ",
+          "slug": "bg5-lebensraum-wiese-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was gehört zur Lebensgemeinschaft einer Wiese?",
+          "concept": "Alle Lebewesen der Wiese, zum Beispiel Klee, Bienen und Regenwürmer",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-lebensraum-wiese",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Alle Lebewesen der Wiese, zum Beispiel Klee, Bienen und Regenwürmer",
+              "Nur die unbelebten Faktoren wie Boden und Regen"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7D27HKQTG07YGRKWGEXK5SY",
+          "slug": "bg5-lebensraum-wiese-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was gehört zum Lebensraum, was zur Lebensgemeinschaft einer Wiese?",
+          "concept": "Lebensraum: unbelebte Faktoren wie Licht, Temperatur, Niederschlag, Boden. Lebensgemeinschaft: alle Pflanzen, Tiere und Pilze.",
+          "sample_solution": "Lebensraum: unbelebte Faktoren wie Licht, Temperatur, Niederschlag, Boden. Lebensgemeinschaft: alle Pflanzen, Tiere und Pilze.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-lebensraum-wiese"
+        }
+      ]
+    },
+    {
+      "id": "01M7D27HKQ98DXZ4VS8VP7VY5K",
+      "atom_uri": "urn:zam:atom:01M7D27HKQ98DXZ4VS8VP7VY5K",
+      "namespace": "zam-academy-biologie-gymnasium-5",
+      "slug": "bg5-bewirtschaftung",
+      "title": "Grünland bewirtschaften: Futter und Artenvielfalt",
+      "domain": "biologie/s8",
+      "reduction": "formal",
+      "typical_age_min": 10,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-bewirtschaftung",
+      "prerequisites": [
+        {
+          "atom_id": "01M7D27HKQS9G5ZBPPGYW0SY0V",
+          "type": "soft",
+          "rationale": "Die Bewirtschaftung verändert das Ökosystem Wiese."
+        },
+        {
+          "atom_id": "01M7D27HKQVW8W4H3AZ5P1M8RE",
+          "type": "soft",
+          "rationale": "Blühende Wiesen ernähren Bestäuber."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-5",
+          "topic_code": "s8",
+          "topic_title": "Ökosystem Grünland"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "nt_gym",
+          "topic_code": "lb2.5",
+          "topic_title": "Ökosystem Grünland",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7D27HKQ3938REHDFJPDJ8RS",
+          "slug": "bg5-bewirtschaftung-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum ist eine Wiese, die vier- bis fünfmal im Jahr gemäht wird, meist artenarm?",
+          "concept": "Viele Wiesenblumen werden gemäht, bevor sie Samen bilden können",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-bewirtschaftung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Viele Wiesenblumen werden gemäht, bevor sie Samen bilden können",
+              "Häufiges Mähen bringt besonders viele Blumenarten zum Blühen"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7D27HKQSRZHV2XJ2M6EFT3G",
+          "slug": "bg5-bewirtschaftung-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Vergleiche intensives und extensives Grünland.",
+          "concept": "Intensiv: oft gemäht, stark gedüngt, viel Futter, wenige Arten. Extensiv: selten gemäht, wenig gedüngt, weniger Futter, viele Arten.",
+          "sample_solution": "Intensiv: oft gemäht, stark gedüngt, viel Futter, wenige Arten. Extensiv: selten gemäht, wenig gedüngt, weniger Futter, viele Arten.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-5/#lesson=bg5-bewirtschaftung"
+        }
+      ]
+    }
+  ],
+  "retired_items": [
+    {
+      "id": "01K4YB5P000000000000000J04",
+      "reason": "Mehrteiliger Abruf der vier Blütenkreise mit Zusatzdetails (Nektarien, vier Pollensäcke) und einem Blütendiagramm. Die Lektionen bg5-bluete und bg5-bluetendiagramm fragen diese Inhalte in kleineren Karten ab; kein einzelner identischer Nachfolger. Die Historie bleibt erhalten, die neuen Karten starten unbewertet."
+    }
+  ]
+}

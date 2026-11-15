@@ -1,0 +1,2988 @@
+{
+	"$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+	"tile_id": "zam-academy:englisch-mittelschule-5",
+	"version": "2026.11.1",
+	"title": "Englisch 5 Mittelschule (ZAM Academy)",
+	"description": "English as a first foreign language in Bavarian Mittelschule Grade 5 (LehrplanPLUS): 36 lessons, 108 workshop goals, 72 production tasks and 108 linked recall cards. Listening comprehension, spontaneous speech and class exchanges remain supported alongside classroom practice.",
+	"publisher": "ZAM Academy",
+	"sources": [
+		{
+			"uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/mittelschule/5/englisch",
+			"label": "ISB · Englisch 5, Mittelschule",
+			"checked": "2026-11-14"
+		},
+		{
+			"uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/mittelschule/6/englisch",
+			"label": "ISB · Englisch 6, Mittelschule (Abgrenzung)",
+			"checked": "2026-11-14"
+		},
+		{
+			"uri": "https://www.ons.gov.uk/methodology/geography/ukgeographies",
+			"label": "Office for National Statistics · UK geographies",
+			"checked": "2026-11-14"
+		},
+		{
+			"uri": "https://dictionary.cambridge.org/dictionary/learner-english/",
+			"label": "Cambridge Learner's Dictionary",
+			"checked": "2026-11-14"
+		}
+	],
+	"atoms": [
+		{
+			"id": "01M7D7091HXSB1RABPE0KZ7NCD",
+			"atom_uri": "urn:zam:atom:01M7D7091HXSB1RABPE0KZ7NCD",
+			"namespace": "zam-academy-englisch-mittelschule-5",
+			"slug": "e5m-british-isles",
+			"title": "Great Britain, the UK and Ireland",
+			"domain": "englisch/landeskunde",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-british-isles",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-mittelschule-5",
+					"topic_code": "world",
+					"topic_title": "Großbritannien und Weltsprache Englisch"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb2",
+					"topic_title": "Lage, Länder und Hauptstädte Großbritanniens",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Großbritannien: geographische und politische Gliederung",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7091HT31ZVA7G1585EVQ1",
+					"slug": "e5m-british-isles-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche vier Landesteile bilden das United Kingdom?",
+					"concept": "England, Scotland, Wales und Northern Ireland",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-british-isles",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"England, Scotland, Wales und Northern Ireland",
+							"England, Scotland, Wales und Republic of Ireland"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7091H25HBXRCE6PCDJMVQ",
+					"slug": "e5m-british-isles-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie lautet die Hauptstadt von Schottland auf Englisch?",
+					"concept": "Edinburgh",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-british-isles",
+					"sample_solution": "Edinburgh"
+				},
+				{
+					"id": "01M7D7091HYHHR6PQMGEWN44R9",
+					"slug": "e5m-british-isles-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Nenne die Hauptstadt von Wales und die Hauptstadt der Republic of Ireland.",
+					"concept": "Wales: Cardiff · Republic of Ireland: Dublin",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-british-isles",
+					"sample_solution": "Wales: Cardiff · Republic of Ireland: Dublin"
+				}
+			]
+		},
+		{
+			"id": "01M7D7091HTEAG71YA43M4D05K",
+			"atom_uri": "urn:zam:atom:01M7D7091HTEAG71YA43M4D05K",
+			"namespace": "zam-academy-englisch-mittelschule-5",
+			"slug": "e5m-world-language",
+			"title": "English around the world",
+			"domain": "englisch/landeskunde",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-world-language",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D7091HXSB1RABPE0KZ7NCD",
+					"type": "soft",
+					"rationale": "Builds on e5m-british-isles."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-mittelschule-5",
+					"topic_code": "world",
+					"topic_title": "Großbritannien und Weltsprache Englisch"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb2",
+					"topic_title": "Bedeutung des Englischen als Weltsprache",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Verbreitung der Weltsprache Englisch",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7091HHKYC8C4QPQP81Q7N",
+					"slug": "e5m-world-language-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "In welchem Land außerhalb Europas ist Englisch Amtssprache bzw. Muttersprache?",
+					"concept": "Kanada (z. B. neben Australien und Neuseeland)",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-world-language",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Kanada (z. B. neben Australien und Neuseeland)",
+							"Österreich"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7091H22DFQR6MP946D61S",
+					"slug": "e5m-world-language-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Warum bezeichnet man Englisch als Weltsprache?",
+					"concept": "Weil viele Menschen weltweit Englisch als Muttersprache oder gemeinsame Verständigungssprache nutzen.",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-world-language",
+					"sample_solution": "Weil viele Menschen weltweit Englisch als Muttersprache oder gemeinsame Verständigungssprache nutzen."
+				},
+				{
+					"id": "01M7D7091HJMV20HYB2GGGBGR8",
+					"slug": "e5m-world-language-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Nenne drei englischsprachige Länder außerhalb Großbritanniens.",
+					"concept": "Irland, Kanada, Australien (auch Neuseeland, Indien, Südafrika)",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-world-language",
+					"sample_solution": "Irland, Kanada, Australien (auch Neuseeland, Indien, Südafrika)"
+				}
+			]
+		},
+		{
+			"id": "01M7D7091HWM5J4WTKFSK24P7N",
+			"atom_uri": "urn:zam:atom:01M7D7091HWM5J4WTKFSK24P7N",
+			"namespace": "zam-academy-englisch-mittelschule-5",
+			"slug": "e5m-classroom-phrases",
+			"title": "In the classroom",
+			"domain": "englisch/kommunikation",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-classroom-phrases",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-mittelschule-5",
+					"topic_code": "world",
+					"topic_title": "Großbritannien und Weltsprache Englisch"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.1-hoeren",
+					"topic_title": "Einfache Unterrichtsanweisungen verstehen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.1-sprechen",
+					"topic_title": "Im Unterricht nachfragen",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7091HDD9KRTFRKYJZWSQV",
+					"slug": "e5m-classroom-phrases-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie bittest du im Unterricht höflich um Wiederholung, wenn du etwas nicht verstanden hast?",
+					"concept": "Excuse me, could you repeat that, please?",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-classroom-phrases",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Excuse me, could you repeat that, please?",
+							"Open your book now!"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7091HEDNTES3NNYGZ341B",
+					"slug": "e5m-classroom-phrases-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was bedeutet die Unterrichtsanweisung „Open your books at page ten“?",
+					"concept": "Schlagt eure Bücher auf Seite zehn auf.",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-classroom-phrases",
+					"sample_solution": "Schlagt eure Bücher auf Seite zehn auf."
+				},
+				{
+					"id": "01M7D7091HJMHCZKVVHZ5WM32M",
+					"slug": "e5m-classroom-phrases-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie fragst du auf Englisch nach der Bedeutung eines neuen Wortes?",
+					"concept": "What does this word mean?",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-classroom-phrases",
+					"sample_solution": "What does this word mean?"
+				}
+			]
+		},
+		{
+			"id": "01M7D7091HS0QT1108FG2XR196",
+			"atom_uri": "urn:zam:atom:01M7D7091HS0QT1108FG2XR196",
+			"namespace": "zam-academy-englisch-mittelschule-5",
+			"slug": "e5m-greetings-politeness",
+			"title": "Hello and nice to meet you",
+			"domain": "englisch/kommunikation",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-greetings-politeness",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D7091HWM5J4WTKFSK24P7N",
+					"type": "soft",
+					"rationale": "Builds on e5m-classroom-phrases."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-mittelschule-5",
+					"topic_code": "world",
+					"topic_title": "Großbritannien und Weltsprache Englisch"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb2",
+					"topic_title": "Situationsgebundene Gruß- und Höflichkeitsformeln",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.2-wortschatz",
+					"topic_title": "Phrasal verb: to come from",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7091HP405J9DAXBZH5KAE",
+					"slug": "e5m-greetings-politeness-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie antwortest du höflich auf „Thank you very much!“?",
+					"concept": "You're welcome! (oder Not at all!)",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-greetings-politeness",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"You're welcome! (oder Not at all!)",
+							"Good night!"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7091HG6TTJPG0GBV1FNJ4",
+					"slug": "e5m-greetings-politeness-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Mit welcher Begrüßung sprichst du eine Lehrkraft um 15 Uhr nachmittags an?",
+					"concept": "Good afternoon!",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-greetings-politeness",
+					"sample_solution": "Good afternoon!"
+				},
+				{
+					"id": "01M7D7091H6YJH8FQX0CRCX6GT",
+					"slug": "e5m-greetings-politeness-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie stellst du dich mit Namen und bayerischer Herkunft kurz vor?",
+					"concept": "My name is … / I'm … and I come from Bavaria.",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-greetings-politeness",
+					"sample_solution": "My name is … / I'm … and I come from Bavaria."
+				}
+			]
+		},
+		{
+			"id": "01M7D7091HY1F37RNGHDJ84J69",
+			"atom_uri": "urn:zam:atom:01M7D7091HY1F37RNGHDJ84J69",
+			"namespace": "zam-academy-englisch-mittelschule-5",
+			"slug": "e5m-wordbook-grammar-terms",
+			"title": "Dictionary and grammar words",
+			"domain": "englisch/methoden",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-wordbook-grammar-terms",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-mittelschule-5",
+					"topic_code": "world",
+					"topic_title": "Großbritannien und Weltsprache Englisch"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.2-wortschatz",
+					"topic_title": "Grammatikalische Fachbegriffe verstehen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb4",
+					"topic_title": "Zweisprachige Wörterlisten nutzen",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7091HGN9BF0TZTPVTT59V",
+					"slug": "e5m-wordbook-grammar-terms-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welcher englische Fachbegriff steht für ein Eigenschaftswort wie „green“ oder „small“?",
+					"concept": "adjective",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-wordbook-grammar-terms",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"adjective",
+							"preposition"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7091HF0C2TJ9AEHC9B4SJ",
+					"slug": "e5m-wordbook-grammar-terms-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was bedeuten die englischen Fachbegriffe „noun“, „verb“ und „pronoun“?",
+					"concept": "noun = Nomen, verb = Verb, pronoun = Pronomen",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-wordbook-grammar-terms",
+					"sample_solution": "noun = Nomen, verb = Verb, pronoun = Pronomen"
+				},
+				{
+					"id": "01M7D7091HMP1Y612EQJ407SFZ",
+					"slug": "e5m-wordbook-grammar-terms-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Nenne die englischen Fachbegriffe für Einzahl, Mehrzahl und Verhältniswort.",
+					"concept": "singular, plural, preposition",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-wordbook-grammar-terms",
+					"sample_solution": "singular, plural, preposition"
+				}
+			]
+		},
+		{
+			"id": "01M7D7091HDYGHP2N28VWS21T9",
+			"atom_uri": "urn:zam:atom:01M7D7091HDYGHP2N28VWS21T9",
+			"namespace": "zam-academy-englisch-mittelschule-5",
+			"slug": "e5m-sounds-ipa",
+			"title": "Sounds, rhythm and linking",
+			"domain": "englisch/aussprache",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-sounds-ipa",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D7091HS0QT1108FG2XR196",
+					"type": "soft",
+					"rationale": "Builds on e5m-greetings-politeness."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-mittelschule-5",
+					"topic_code": "world",
+					"topic_title": "Großbritannien und Weltsprache Englisch"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.2-aussprache",
+					"topic_title": "Lautschrift-Symbole und verbundene Wörter",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7091HHB4BQJ2D59AWMKRW",
+					"slug": "e5m-sounds-ipa-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welches Wort hat denselben langen Laut /iː/ wie „sheep“?",
+					"concept": "meal",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-sounds-ipa",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"meal",
+							"friend"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7091HQ1B5D24A71MPBRRQ",
+					"slug": "e5m-sounds-ipa-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welchen Vokal hörst du in „friend“ im Gegensatz zu „field“?",
+					"concept": "Kurzes /e/ in friend gegenüber langem /iː/ in field.",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-sounds-ipa",
+					"sample_solution": "Kurzes /e/ in friend gegenüber langem /iː/ in field."
+				},
+				{
+					"id": "01M7D7091H5F4J45M6Y70FCS1R",
+					"slug": "e5m-sounds-ipa-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie verbindet man die Wörter der Höflichkeitswendung „Not at all“ beim Sprechen?",
+					"concept": "Flüssig als eine verbundene Gruppe (Not_at_all).",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-sounds-ipa",
+					"sample_solution": "Flüssig als eine verbundene Gruppe (Not_at_all)."
+				}
+			]
+		},
+		{
+			"id": "01M7D7091H22F7C8ZXMNK4YETE",
+			"atom_uri": "urn:zam:atom:01M7D7091H22F7C8ZXMNK4YETE",
+			"namespace": "zam-academy-englisch-mittelschule-5",
+			"slug": "e5m-family-listening",
+			"title": "Family, friends and neighbours",
+			"domain": "englisch/alltag",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-family-listening",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D7091HS0QT1108FG2XR196",
+					"type": "soft",
+					"rationale": "Builds on e5m-greetings-politeness."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-mittelschule-5",
+					"topic_code": "everyday",
+					"topic_title": "Alltagsleben, Familie und Einkaufen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.1-hoeren",
+					"topic_title": "Mitteilungen über Familie und Freunde verstehen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Familie, Freunde und Nachbarn",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7091HGG9XE158KY01RWHS",
+					"slug": "e5m-family-listening-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welches englische Wort fasst Mutter und Vater zusammen?",
+					"concept": "parents",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-family-listening",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"parents",
+							"neighbours"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7091H57MQC3NANVVC9NH4",
+					"slug": "e5m-family-listening-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was bedeutet das englische Wort „neighbour“ (britisches Englisch)?",
+					"concept": "Nachbar bzw. Nachbarin",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-family-listening",
+					"sample_solution": "Nachbar bzw. Nachbarin"
+				},
+				{
+					"id": "01M7D7091HA9YEW75J7JG9KZDM",
+					"slug": "e5m-family-listening-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Nenne auf Englisch jeweils das Wort für Bruder, Schwester und Großeltern.",
+					"concept": "brother, sister, grandparents",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-family-listening",
+					"sample_solution": "brother, sister, grandparents"
+				}
+			]
+		},
+		{
+			"id": "01M7D7091HS5A41C1TZR57BZ4T",
+			"atom_uri": "urn:zam:atom:01M7D7091HS5A41C1TZR57BZ4T",
+			"namespace": "zam-academy-englisch-mittelschule-5",
+			"slug": "e5m-pets-home-scene",
+			"title": "At home and with pets",
+			"domain": "englisch/alltag",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-pets-home-scene",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D7091H22F7C8ZXMNK4YETE",
+					"type": "soft",
+					"rationale": "Builds on e5m-family-listening."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-mittelschule-5",
+					"topic_code": "everyday",
+					"topic_title": "Alltagsleben, Familie und Einkaufen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.2-wortschatz",
+					"topic_title": "Orts- und Richtungspräpositionen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Wohnen und Haustiere",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7091H1MJ1R5QY78D0YPVX",
+					"slug": "e5m-pets-home-scene-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche Präposition bedeutet „zwischen (zwei Dingen)“?",
+					"concept": "between",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-pets-home-scene",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"between",
+							"behind"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7091HF9C1RH2ZVVWCAMV4",
+					"slug": "e5m-pets-home-scene-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was unterscheidet „in front of“ von „behind“?",
+					"concept": "in front of = vor etwas; behind = hinter etwas.",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-pets-home-scene",
+					"sample_solution": "in front of = vor etwas; behind = hinter etwas."
+				},
+				{
+					"id": "01M7D7091H3TGFGJ6MPW6GATR0",
+					"slug": "e5m-pets-home-scene-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Ergänze die Präposition für eine Bewegung in eine Kiste hinein: „The cat jumps ___ the box.“",
+					"concept": "into",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-pets-home-scene",
+					"sample_solution": "into"
+				}
+			]
+		},
+		{
+			"id": "01M7D7091H7DHG2H4N6JA7R54Y",
+			"atom_uri": "urn:zam:atom:01M7D7091H7DHG2H4N6JA7R54Y",
+			"namespace": "zam-academy-englisch-mittelschule-5",
+			"slug": "e5m-meals-daily-routine",
+			"title": "Meals and daily routine",
+			"domain": "englisch/alltag",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-meals-daily-routine",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D7091H22F7C8ZXMNK4YETE",
+					"type": "soft",
+					"rationale": "Builds on e5m-family-listening."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-mittelschule-5",
+					"topic_code": "everyday",
+					"topic_title": "Alltagsleben, Familie und Einkaufen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.2-wortschatz",
+					"topic_title": "Phrasal verbs (to get up) und Kollokationen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb2",
+					"topic_title": "Alltagskultur vergleichen: Mahlzeiten",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7091H4JM6HV55YD3A8PGN",
+					"slug": "e5m-meals-daily-routine-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche englische Wortverbindung heißt richtig „Hausaufgaben machen“?",
+					"concept": "to do your homework",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-meals-daily-routine",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"to do your homework",
+							"to make your homework"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7091HEYWK71W5112D35EQ",
+					"slug": "e5m-meals-daily-routine-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie lautet das Verb-Nomen-Paar für „zu Mittag essen“ auf Englisch?",
+					"concept": "to have lunch",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-meals-daily-routine",
+					"sample_solution": "to have lunch"
+				},
+				{
+					"id": "01M7D7091HJ2BNDBBP25GYVBHH",
+					"slug": "e5m-meals-daily-routine-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie unterscheidet sich ein britisches „packed lunch“ oft vom Mittagessen vieler Kinder in Deutschland?",
+					"concept": "Es ist meist eine kalte Brotzeitbox (Sandwich, Obst) in der Schule statt einer warmen Mahlzeit zu Hause.",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-meals-daily-routine",
+					"sample_solution": "Es ist meist eine kalte Brotzeitbox (Sandwich, Obst) in der Schule statt einer warmen Mahlzeit zu Hause."
+				}
+			]
+		},
+		{
+			"id": "01M7D7091H2S6VZKE33KQ7M4XG",
+			"atom_uri": "urn:zam:atom:01M7D7091H2S6VZKE33KQ7M4XG",
+			"namespace": "zam-academy-englisch-mittelschule-5",
+			"slug": "e5m-numbers-prices",
+			"title": "Numbers up to 100 and prices",
+			"domain": "englisch/wortschatz",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-numbers-prices",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-mittelschule-5",
+					"topic_code": "everyday",
+					"topic_title": "Alltagsleben, Familie und Einkaufen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.2-wortschatz",
+					"topic_title": "Grundzahlen bis 100",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.1-schreiben",
+					"topic_title": "Rechtschreibung von Zahlwörtern",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7091HD3SBA2ZWP0993MFZ",
+					"slug": "e5m-numbers-prices-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie schreibt man die englische Zahl 42 richtig?",
+					"concept": "forty-two",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-numbers-prices",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"forty-two",
+							"fourty-two"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7091H8ZFESZ482P1F015H",
+					"slug": "e5m-numbers-prices-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie heißt die Zahl 100 auf Englisch?",
+					"concept": "one hundred (oder a hundred)",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-numbers-prices",
+					"sample_solution": "one hundred (oder a hundred)"
+				},
+				{
+					"id": "01M7D7091H3BQDS27N4NHFWHZT",
+					"slug": "e5m-numbers-prices-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Schreibe 79 und 98 als englische Wörter mit Bindestrich.",
+					"concept": "seventy-nine · ninety-eight",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-numbers-prices",
+					"sample_solution": "seventy-nine · ninety-eight"
+				}
+			]
+		},
+		{
+			"id": "01M7D7091HV1PFNPD0MZQV890F",
+			"atom_uri": "urn:zam:atom:01M7D7091HV1PFNPD0MZQV890F",
+			"namespace": "zam-academy-englisch-mittelschule-5",
+			"slug": "e5m-shopping-quantities",
+			"title": "At the market: much, many and a lot of",
+			"domain": "englisch/alltag",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-shopping-quantities",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D7091H2S6VZKE33KQ7M4XG",
+					"type": "soft",
+					"rationale": "Builds on e5m-numbers-prices."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-mittelschule-5",
+					"topic_code": "everyday",
+					"topic_title": "Alltagsleben, Familie und Einkaufen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.1-sprechen",
+					"topic_title": "Dienstleistungssituationen: Einkaufen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.2-wortschatz",
+					"topic_title": "Mengenbezeichnungen: much, many, a lot of, lots of",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7091HC74WAT37X9JZ4837",
+					"slug": "e5m-shopping-quantities-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wann verwendest du bei Mengenfragen „How many“ statt „How much“?",
+					"concept": "Bei zählbaren Nomen im Plural (z. B. How many apples?)",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-shopping-quantities",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Bei zählbaren Nomen im Plural (z. B. How many apples?)",
+							"Bei unzählbaren Nomen wie milk oder money"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7091HS7R8XYJF9JCAKHNY",
+					"slug": "e5m-shopping-quantities-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche Frage stellt man am Marktstand, um nach dem Preis zu fragen?",
+					"concept": "How much is that? / How much is it?",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-shopping-quantities",
+					"sample_solution": "How much is that? / How much is it?"
+				},
+				{
+					"id": "01M7D7091HWVDJ56GXJQG42QGD",
+					"slug": "e5m-shopping-quantities-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche Mengenbezeichnung passt in bejahten Sätzen sowohl vor zählbaren Plural als auch vor unzählbare Nomen?",
+					"concept": "a lot of / lots of",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-shopping-quantities",
+					"sample_solution": "a lot of / lots of"
+				}
+			]
+		},
+		{
+			"id": "01M7D7091H2J2HFHZMBZFJAJ24",
+			"atom_uri": "urn:zam:atom:01M7D7091H2J2HFHZMBZFJAJ24",
+			"namespace": "zam-academy-englisch-mittelschule-5",
+			"slug": "e5m-some-any-no-this-that",
+			"title": "Some, any, no and this or that",
+			"domain": "englisch/grammatik",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-some-any-no-this-that",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D7091HV1PFNPD0MZQV890F",
+					"type": "soft",
+					"rationale": "Builds on e5m-shopping-quantities."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-mittelschule-5",
+					"topic_code": "everyday",
+					"topic_title": "Alltagsleben, Familie und Einkaufen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.2-wortschatz",
+					"topic_title": "Indefinite Begleiter (some, any, no) und Demonstrativpronomen (this, that)",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7091HND4GN465ZN3RVG20",
+					"slug": "e5m-some-any-no-this-that-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welcher Begleiter steht in offenen Informationsfragen und verneinten Sätzen mit „not“?",
+					"concept": "any (z. B. Have you got any eggs?)",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-some-any-no-this-that",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"any (z. B. Have you got any eggs?)",
+							"no (mit zweitem not)"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7091H5VZW38VECMCARF0J",
+					"slug": "e5m-some-any-no-this-that-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie formst du „There isn't any cheese“ ohne „not“ mit „no“ um?",
+					"concept": "There is no cheese.",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-some-any-no-this-that",
+					"sample_solution": "There is no cheese."
+				},
+				{
+					"id": "01M7D7091HJ93R5NDEQCBW2TNK",
+					"slug": "e5m-some-any-no-this-that-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wann nutzt du „this“ und wann „that“ im Singular?",
+					"concept": "this für Nahes direkt bei dir, that für Entfernteres (dort drüben).",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-some-any-no-this-that",
+					"sample_solution": "this für Nahes direkt bei dir, that für Entfernteres (dort drüben)."
+				}
+			]
+		},
+		{
+			"id": "01M7D7091HEHAR346HHNBE5EQM",
+			"atom_uri": "urn:zam:atom:01M7D7091HEHAR346HHNBE5EQM",
+			"namespace": "zam-academy-englisch-mittelschule-5",
+			"slug": "e5m-school-day-listening",
+			"title": "A British school day",
+			"domain": "englisch/schule",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-school-day-listening",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D7091H7DHG2H4N6JA7R54Y",
+					"type": "soft",
+					"rationale": "Builds on e5m-meals-daily-routine."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-mittelschule-5",
+					"topic_code": "school",
+					"topic_title": "Schulleben und Lernstrategien"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.1-hoeren",
+					"topic_title": "Angaben zum britischen Schulalltag entnehmen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Schule, Schulkantine, Lehrkräfte, Mitschüler",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7091H7XM1494AK3N420B8",
+					"slug": "e5m-school-day-listening-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was bedeutet das englische Wort „school canteen“?",
+					"concept": "Schulkantine / Mensa",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-school-day-listening",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Schulkantine / Mensa",
+							"Schulbus"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7091HRGYSW8D80G5KKMBP",
+					"slug": "e5m-school-day-listening-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Worauf achtest du beim Hörverstehen zuerst, wenn ein Nebengeräusch (wie die Pausenklingel) stört?",
+					"concept": "Auf Schlüsselwörter wie Uhrzeiten, Personen, Orte und Schulfächer.",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-school-day-listening",
+					"sample_solution": "Auf Schlüsselwörter wie Uhrzeiten, Personen, Orte und Schulfächer."
+				},
+				{
+					"id": "01M7D7091J2AZTKW5TEM2EVSBN",
+					"slug": "e5m-school-day-listening-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie heißen „Lehrkräfte“ und „Mitschülerinnen und Mitschüler“ auf Englisch?",
+					"concept": "teachers · classmates",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-school-day-listening",
+					"sample_solution": "teachers · classmates"
+				}
+			]
+		},
+		{
+			"id": "01M7D7091HFM9QQ0JKW7RFDW2R",
+			"atom_uri": "urn:zam:atom:01M7D7091HFM9QQ0JKW7RFDW2R",
+			"namespace": "zam-academy-englisch-mittelschule-5",
+			"slug": "e5m-timetable-clock",
+			"title": "Timetable and telling the time",
+			"domain": "englisch/schule",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-timetable-clock",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D7091H2S6VZKE33KQ7M4XG",
+					"type": "soft",
+					"rationale": "Builds on e5m-numbers-prices."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-mittelschule-5",
+					"topic_code": "school",
+					"topic_title": "Schulleben und Lernstrategien"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Stundenplan, Unterrichtsfächer, Unterricht",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.1-lesen",
+					"topic_title": "Konkrete Angaben aus dem Stundenplan",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7091J377D05ZNF8A30055",
+					"slug": "e5m-timetable-clock-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie heißt die Uhrzeit 09:30 auf Englisch?",
+					"concept": "half past nine",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-timetable-clock",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"half past nine",
+							"half to ten"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7091JEA442XGTJM0XFKRW",
+					"slug": "e5m-timetable-clock-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie liest du 11:45 (Viertel vor zwölf) richtig auf Englisch?",
+					"concept": "quarter to twelve",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-timetable-clock",
+					"sample_solution": "quarter to twelve"
+				},
+				{
+					"id": "01M7D7091JM75S1JXKBB9F3XRP",
+					"slug": "e5m-timetable-clock-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche Wörter schreibt man im englischen Stundenplan immer mit großem Anfangsbuchstaben?",
+					"concept": "Wochentage (z. B. Monday) und Schulfächer aus Sprachnamen (English, German)",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-timetable-clock",
+					"sample_solution": "Wochentage (z. B. Monday) und Schulfächer aus Sprachnamen (English, German)"
+				}
+			]
+		},
+		{
+			"id": "01M7D7091HFP4V2RX4K596XVJQ",
+			"atom_uri": "urn:zam:atom:01M7D7091HFP4V2RX4K596XVJQ",
+			"namespace": "zam-academy-englisch-mittelschule-5",
+			"slug": "e5m-way-to-school",
+			"title": "My way to school",
+			"domain": "englisch/schule",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-way-to-school",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D7091HEHAR346HHNBE5EQM",
+					"type": "soft",
+					"rationale": "Builds on e5m-school-day-listening."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-mittelschule-5",
+					"topic_code": "school",
+					"topic_title": "Schulleben und Lernstrategien"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.1-sprechen",
+					"topic_title": "Vom Schulweg berichten und kurz präsentieren",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.1-lesen",
+					"topic_title": "Verkehrsschilder verstehen",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7091JK0BJRFG78WZF1RBT",
+					"slug": "e5m-way-to-school-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie sagt man richtig „zu Fuß zur Schule gehen“?",
+					"concept": "on foot",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-way-to-school",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"on foot",
+							"by foot"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7091J7DJ4NPQH1FTHEFDX",
+					"slug": "e5m-way-to-school-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche Präposition steht vor Fahrzeugen wie „bus“, „bike“ oder „car“?",
+					"concept": "by ohne Artikel (by bus, by bike, by car)",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-way-to-school",
+					"sample_solution": "by ohne Artikel (by bus, by bike, by car)"
+				},
+				{
+					"id": "01M7D7091JVJ36053F0AND5MV8",
+					"slug": "e5m-way-to-school-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was hilft dir bei einer kurzen mündlichen Präsentation über eine Schulweg-Grafik?",
+					"concept": "Stichwortartige Notizen als Gedächtnisstütze und das Zeigen auf Zahlen oder Bilder.",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-way-to-school",
+					"sample_solution": "Stichwortartige Notizen als Gedächtnisstütze und das Zeigen auf Zahlen oder Bilder."
+				}
+			]
+		},
+		{
+			"id": "01M7D7091H7XZH78856JQ5STSE",
+			"atom_uri": "urn:zam:atom:01M7D7091H7XZH78856JQ5STSE",
+			"namespace": "zam-academy-englisch-mittelschule-5",
+			"slug": "e5m-personal-profile",
+			"title": "My personal profile",
+			"domain": "englisch/schreiben",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-personal-profile",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D7091HY1F37RNGHDJ84J69",
+					"type": "soft",
+					"rationale": "Builds on e5m-wordbook-grammar-terms."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-mittelschule-5",
+					"topic_code": "school",
+					"topic_title": "Schulleben und Lernstrategien"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.1-schreiben",
+					"topic_title": "Steckbrief ausfüllen und Orthographie prüfen",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7091JSZA3A312MJ2D738A",
+					"slug": "e5m-personal-profile-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche Wortgruppe zeigt nur Beispiele, die man im Englischen immer großschreibt?",
+					"concept": "English, Monday und I",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-personal-profile",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"English, Monday und I",
+							"Book, Cat und Swim"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7091JT30K3BEVT8P0DZKS",
+					"slug": "e5m-personal-profile-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was bedeutet die Steckbrief-Angabe „Surname“ bzw. „Last name“?",
+					"concept": "Nachname / Familienname",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-personal-profile",
+					"sample_solution": "Nachname / Familienname"
+				},
+				{
+					"id": "01M7D7091JPWPV5XAQFP1M5F29",
+					"slug": "e5m-personal-profile-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie heißt der richtig geschriebene Plural von „hobby“?",
+					"concept": "hobbies (Konsonant + y wird zu -ies)",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-personal-profile",
+					"sample_solution": "hobbies (Konsonant + y wird zu -ies)"
+				}
+			]
+		},
+		{
+			"id": "01M7D7091HDQ0N3GWR3WE81TB2",
+			"atom_uri": "urn:zam:atom:01M7D7091HDQ0N3GWR3WE81TB2",
+			"namespace": "zam-academy-englisch-mittelschule-5",
+			"slug": "e5m-wordwebs-flashcards",
+			"title": "Wordwebs and learning strategies",
+			"domain": "englisch/methoden",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-wordwebs-flashcards",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D7091HY1F37RNGHDJ84J69",
+					"type": "soft",
+					"rationale": "Builds on e5m-wordbook-grammar-terms."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-mittelschule-5",
+					"topic_code": "school",
+					"topic_title": "Schulleben und Lernstrategien"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb4",
+					"topic_title": "Wortschatz im wordweb strukturieren, Lernmittel und Sprachvergleich",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7091J31JQDHZMDVV20JH5",
+					"slug": "e5m-wordwebs-flashcards-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie hilft dir ein „wordweb“ beim Vokabellernen?",
+					"concept": "Es verknüpft Wörter sinnvoll nach Themenfeldern statt sie einzeln zu pauken.",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-wordwebs-flashcards",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Es verknüpft Wörter sinnvoll nach Themenfeldern statt sie einzeln zu pauken.",
+							"Es ersetzt jede Rechtschreibprüfung."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7091J70CMYZ8R3DA0P5NN",
+					"slug": "e5m-wordwebs-flashcards-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Nenne eine Gemeinsamkeit und einen Unterschied zwischen Englisch und Deutsch.",
+					"concept": "Gemeinsamkeit: `s-Genitiv (Peters/Peter's); Unterschied: gewöhnliche Nomen im Englischen klein (book) oder unregelmäßige Plurale wie children.",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-wordwebs-flashcards",
+					"sample_solution": "Gemeinsamkeit: `s-Genitiv (Peters/Peter's); Unterschied: gewöhnliche Nomen im Englischen klein (book) oder unregelmäßige Plurale wie children."
+				},
+				{
+					"id": "01M7D7091JXNNN2ES1J7K6FPXD",
+					"slug": "e5m-wordwebs-flashcards-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche zwei Angaben machen eine Lernkarte (flashcard) besonders wirksam?",
+					"concept": "Englisches Wort + kurzer Beispielsatz auf der Vorderseite, deutsche Bedeutung auf der Rückseite.",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-wordwebs-flashcards",
+					"sample_solution": "Englisches Wort + kurzer Beispielsatz auf der Vorderseite, deutsche Bedeutung auf der Rückseite."
+				}
+			]
+		},
+		{
+			"id": "01M7D7091HWD2Y66QBVQGPBHM8",
+			"atom_uri": "urn:zam:atom:01M7D7091HWD2Y66QBVQGPBHM8",
+			"namespace": "zam-academy-englisch-mittelschule-5",
+			"slug": "e5m-reading-listening-skills",
+			"title": "Finding key facts in posters and ads",
+			"domain": "englisch/methoden",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-reading-listening-skills",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D7091H7XZH78856JQ5STSE",
+					"type": "soft",
+					"rationale": "Builds on e5m-personal-profile."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-mittelschule-5",
+					"topic_code": "school",
+					"topic_title": "Schulleben und Lernstrategien"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.1-lesen",
+					"topic_title": "Alltagstexte wie Verkaufsanzeigen, Prospekte, Plakate",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb4",
+					"topic_title": "Hör- und Lesetechniken (Schlüsselwörter)",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7091J363FYSCH2VTD3K5A",
+					"slug": "e5m-reading-listening-skills-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Worauf achtest du beim suchenden Lesen einer Verkaufsanzeige für den Preis?",
+					"concept": "Auf Zahlen und Währungszeichen wie £ oder p",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-reading-listening-skills",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Auf Zahlen und Währungszeichen wie £ oder p",
+							"Auf jedes unbekannte Adjektiv"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7091J39TFV7KXWR095HDK",
+					"slug": "e5m-reading-listening-skills-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was versteht man unter „suchendem Lesen“ (scanning)?",
+					"concept": "Man sucht den Text mit einer konkreten Frage (Wann? Wo? Wie teuer?) gezielt nach Schlüsselwörtern und Überschriften ab.",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-reading-listening-skills",
+					"sample_solution": "Man sucht den Text mit einer konkreten Frage (Wann? Wo? Wie teuer?) gezielt nach Schlüsselwörtern und Überschriften ab."
+				},
+				{
+					"id": "01M7D7091JPWS1YH7168YNB3XN",
+					"slug": "e5m-reading-listening-skills-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Nenne drei Elemente auf einem Plakat oder Prospekt, die beim ersten Verstehen helfen.",
+					"concept": "Überschriften (headings), Abbildungen und international bekannte Wörter (z. B. concert, museum)",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-reading-listening-skills",
+					"sample_solution": "Überschriften (headings), Abbildungen und international bekannte Wörter (z. B. concert, museum)"
+				}
+			]
+		},
+		{
+			"id": "01M7D7091H3C0RD05DJEEPQVGR",
+			"atom_uri": "urn:zam:atom:01M7D7091H3C0RD05DJEEPQVGR",
+			"namespace": "zam-academy-englisch-mittelschule-5",
+			"slug": "e5m-hobbies-gerund",
+			"title": "Hobbies and I like reading",
+			"domain": "englisch/freizeit",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-hobbies-gerund",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D7091H7XZH78856JQ5STSE",
+					"type": "soft",
+					"rationale": "Builds on e5m-personal-profile."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-mittelschule-5",
+					"topic_code": "leisure",
+					"topic_title": "Freizeit, Hobbys, Feste und Schreiben"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.2-wortschatz",
+					"topic_title": "Gerund: -ing-Form nach I like/dislike …",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Hobbys, Sport, Spiele",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7091J030DBDVHNSKZWJBZ",
+					"slug": "e5m-hobbies-gerund-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche Schreibung der -ing-Form nach „like“ ist richtig?",
+					"concept": "I like swimming and riding.",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-hobbies-gerund",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"I like swimming and riding.",
+							"I like swiming and rideing."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7091J4FE26FWE7NVBEX9K",
+					"slug": "e5m-hobbies-gerund-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was passiert beim Anhängen von -ing mit einem stummen -e wie in „write“?",
+					"concept": "Das stumme -e fällt weg: writing.",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-hobbies-gerund",
+					"sample_solution": "Das stumme -e fällt weg: writing."
+				},
+				{
+					"id": "01M7D7091J07A8NDRX8X0TWRQA",
+					"slug": "e5m-hobbies-gerund-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie bildest du das Gerund nach „like“ oder „dislike“, wenn ein kurzes Verb wie „swim“ auf kurzen betonten Vokal + Endkonsonant endet?",
+					"concept": "Man verdoppelt den Endkonsonanten vor -ing: swimming (I like swimming).",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-hobbies-gerund",
+					"sample_solution": "Man verdoppelt den Endkonsonanten vor -ing: swimming (I like swimming)."
+				}
+			]
+		},
+		{
+			"id": "01M7D7091HGQBR2JYEK5TFFSVE",
+			"atom_uri": "urn:zam:atom:01M7D7091HGQBR2JYEK5TFFSVE",
+			"namespace": "zam-academy-englisch-mittelschule-5",
+			"slug": "e5m-wishes-reasons",
+			"title": "Wishes and reasons: and, but, because",
+			"domain": "englisch/freizeit",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-wishes-reasons",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D7091H3C0RD05DJEEPQVGR",
+					"type": "soft",
+					"rationale": "Builds on e5m-hobbies-gerund."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-mittelschule-5",
+					"topic_code": "leisure",
+					"topic_title": "Freizeit, Hobbys, Feste und Schreiben"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.2-wortschatz",
+					"topic_title": "Infinitivkonstruktionen I'd like (to), want (to) und Konjunktionen and, but, because",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7091JM57RNYE9FFJ50REE",
+					"slug": "e5m-wishes-reasons-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wo steht das Verb im englischen Nebensatz nach „because“?",
+					"concept": "Direkt hinter dem Subjekt (… because I am tired).",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-wishes-reasons",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Direkt hinter dem Subjekt (… because I am tired).",
+							"Immer ganz am Satzende wie im Deutschen."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7091J7E06R31BVPQTTR90",
+					"slug": "e5m-wishes-reasons-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welches Wort fehlt vor dem Verb nach „want“ oder „I'd like“: „I want ___ play football“?",
+					"concept": "to",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-wishes-reasons",
+					"sample_solution": "to"
+				},
+				{
+					"id": "01M7D7091JS0DHZNGPDWQAFM0Q",
+					"slug": "e5m-wishes-reasons-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wann wählst du „but“ statt „and“ oder „because“?",
+					"concept": "but für einen Gegensatz (aber), and für eine Ergänzung, because für eine Begründung.",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-wishes-reasons",
+					"sample_solution": "but für einen Gegensatz (aber), and für eine Ergänzung, because für eine Begründung."
+				}
+			]
+		},
+		{
+			"id": "01M7D7091HHP4WWFTYGK6JYDC2",
+			"atom_uri": "urn:zam:atom:01M7D7091HHP4WWFTYGK6JYDC2",
+			"namespace": "zam-academy-englisch-mittelschule-5",
+			"slug": "e5m-festivals-traditions",
+			"title": "Holidays and British festivals",
+			"domain": "englisch/landeskunde",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-festivals-traditions",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D7091HXSB1RABPE0KZ7NCD",
+					"type": "soft",
+					"rationale": "Builds on e5m-british-isles."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-mittelschule-5",
+					"topic_code": "leisure",
+					"topic_title": "Freizeit, Hobbys, Feste und Schreiben"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Feiertage und Feste, kulturelle Veranstaltungen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb2",
+					"topic_title": "Alltagskultur vergleichen",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7091JKR6M7XVMRQ6AE6P3",
+					"slug": "e5m-festivals-traditions-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie heißen die gesetzlichen Feiertage auf Montagen in Großbritannien?",
+					"concept": "bank holidays",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-festivals-traditions",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"bank holidays",
+							"pancake holidays"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7091JQRSR07P9KTB5TT8N",
+					"slug": "e5m-festivals-traditions-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was feiert man am 5. November in Großbritannien auf „Bonfire Night“?",
+					"concept": "Lagerfeuer und Feuerwerk am Abend (Guy Fawkes Night).",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-festivals-traditions",
+					"sample_solution": "Lagerfeuer und Feuerwerk am Abend (Guy Fawkes Night)."
+				},
+				{
+					"id": "01M7D7091JGR6C2GH7YVBDKS1K",
+					"slug": "e5m-festivals-traditions-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Nenne einen Unterschied zwischen Weihnachten in Deutschland und in Großbritannien.",
+					"concept": "In Großbritannien werden die Geschenke traditionell am Morgen des 25. Dezember ausgepackt, nicht am Heiligabend.",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-festivals-traditions",
+					"sample_solution": "In Großbritannien werden die Geschenke traditionell am Morgen des 25. Dezember ausgepackt, nicht am Heiligabend."
+				}
+			]
+		},
+		{
+			"id": "01M7D7091H2KJ5YCZ3GR560JC7",
+			"atom_uri": "urn:zam:atom:01M7D7091H2KJ5YCZ3GR560JC7",
+			"namespace": "zam-academy-englisch-mittelschule-5",
+			"slug": "e5m-invitations-letters",
+			"title": "Invitations, postcards and shopping lists",
+			"domain": "englisch/schreiben",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-invitations-letters",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D7091H7XZH78856JQ5STSE",
+					"type": "soft",
+					"rationale": "Builds on e5m-personal-profile."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-mittelschule-5",
+					"topic_code": "leisure",
+					"topic_title": "Freizeit, Hobbys, Feste und Schreiben"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.1-schreiben",
+					"topic_title": "Einkaufsliste (note-making) und persönliche Schreiben nach Vorlage",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb3",
+					"topic_title": "Textabsicht, Anrede und Grußformel übernehmen",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7091J8H2Q7JJPZDMJTX01",
+					"slug": "e5m-invitations-letters-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie beginnst du eine persönliche Einladung oder Postkarte an einen Freund auf Englisch?",
+					"concept": "Mit „Dear“ + Vorname und Komma (z. B. Dear Sam,)",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-invitations-letters",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Mit „Dear“ + Vorname und Komma (z. B. Dear Sam,)",
+							"Mit „Best wishes,“ am Anfang"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7091JZE3R4EAW84SPRBT2",
+					"slug": "e5m-invitations-letters-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche Form hat eine Einkaufsliste beim note-making?",
+					"concept": "Knappe Stichpunkte mit einzelnen Wörtern oder Mengenangaben (keine ganzen Sätze).",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-invitations-letters",
+					"sample_solution": "Knappe Stichpunkte mit einzelnen Wörtern oder Mengenangaben (keine ganzen Sätze)."
+				},
+				{
+					"id": "01M7D7091JBPGCKW3G559W10EZ",
+					"slug": "e5m-invitations-letters-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Nenne vier Kernangaben, die in keiner Einladung fehlen dürfen.",
+					"concept": "Anlass, Datum/Tag, Uhrzeit und Ort (plus ggf. Anrede und Grußformel).",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-invitations-letters",
+					"sample_solution": "Anlass, Datum/Tag, Uhrzeit und Ort (plus ggf. Anrede und Grußformel)."
+				}
+			]
+		},
+		{
+			"id": "01M7D7091H9BBTRGHMMRV05BVM",
+			"atom_uri": "urn:zam:atom:01M7D7091H9BBTRGHMMRV05BVM",
+			"namespace": "zam-academy-englisch-mittelschule-5",
+			"slug": "e5m-mediation-messages",
+			"title": "Sprachmittlung: Helping in everyday life",
+			"domain": "englisch/sprachmittlung",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-mediation-messages",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D7091H2KJ5YCZ3GR560JC7",
+					"type": "soft",
+					"rationale": "Builds on e5m-invitations-letters."
+				},
+				{
+					"atom_id": "01M7D7091H2S6VZKE33KQ7M4XG",
+					"type": "soft",
+					"rationale": "Builds on e5m-numbers-prices."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-mittelschule-5",
+					"topic_code": "leisure",
+					"topic_title": "Freizeit, Hobbys, Feste und Schreiben"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.1-sprachmittlung",
+					"topic_title": "Preisangaben und kurze englische Texte sinngemäß auf Deutsch vermitteln",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7091J4QTSYTBNQK6WMKXJ",
+					"slug": "e5m-mediation-messages-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Worauf kommt es bei der Sprachmittlung ins Deutsche an?",
+					"concept": "Alle wichtigen Informationen verständlich, adressatengerecht und sinngemäß weiterzugeben.",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-mediation-messages",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Alle wichtigen Informationen verständlich, adressatengerecht und sinngemäß weiterzugeben.",
+							"Jedes englische Wort starr wörtlich zu übersetzen."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7091JEW3DAMQM5HZG1005",
+					"slug": "e5m-mediation-messages-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche deutsche Uhrzeit vermittelst du bei der Angabe „at 4 p.m.“?",
+					"concept": "Um 16 Uhr (nachmittags).",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-mediation-messages",
+					"sample_solution": "Um 16 Uhr (nachmittags)."
+				},
+				{
+					"id": "01M7D7091J4C8H3JYS75K8QFJ8",
+					"slug": "e5m-mediation-messages-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was musst du bei „Please bring warm jackets because we want to walk by the river“ auf Deutsch weitergeben?",
+					"concept": "Dass man wegen eines Spaziergangs am Fluss warme Jacken mitbringen soll.",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-mediation-messages",
+					"sample_solution": "Dass man wegen eines Spaziergangs am Fluss warme Jacken mitbringen soll."
+				}
+			]
+		},
+		{
+			"id": "01M7D7091HGWPQ9Y2Z9BSC5NJC",
+			"atom_uri": "urn:zam:atom:01M7D7091HGWPQ9Y2Z9BSC5NJC",
+			"namespace": "zam-academy-englisch-mittelschule-5",
+			"slug": "e5m-riddles-rhymes-stories",
+			"title": "Riddles, rhymes and short poems",
+			"domain": "englisch/texte",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-riddles-rhymes-stories",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D7091H2KJ5YCZ3GR560JC7",
+					"type": "soft",
+					"rationale": "Builds on e5m-invitations-letters."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-mittelschule-5",
+					"topic_code": "leisure",
+					"topic_title": "Freizeit, Hobbys, Feste und Schreiben"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb3",
+					"topic_title": "Rätsel und einfache Reime mithilfe von Bausteinen kreativ verändern",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7091J8M3MP67ZH0BYP0C1",
+					"slug": "e5m-riddles-rhymes-stories-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Mit welcher Frage endet typischerweise ein kurzes englisches Tier-Rätsel?",
+					"concept": "What am I?",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-riddles-rhymes-stories",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"What am I?",
+							"Where did I go?"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7091JKPQDC8D6S747016T",
+					"slug": "e5m-riddles-rhymes-stories-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welches Wort reimt sich in Stevensons Gedicht auf „bill“?",
+					"concept": "sill (window sill)",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-riddles-rhymes-stories",
+					"sample_solution": "sill (window sill)"
+				},
+				{
+					"id": "01M7D7091JN9SH6HXTRE7DP7KZ",
+					"slug": "e5m-riddles-rhymes-stories-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie kannst du einen kurzen englischen Reim einfach selbst abwandeln?",
+					"concept": "Einzelne Bausteine wie Figur, Farbe oder Ort gezielt austauschen, sodass Rhythmus und Reim erhalten bleiben.",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-riddles-rhymes-stories",
+					"sample_solution": "Einzelne Bausteine wie Figur, Farbe oder Ort gezielt austauschen, sodass Rhythmus und Reim erhalten bleiben."
+				}
+			]
+		},
+		{
+			"id": "01M7D7091H7PT15SX0CZ7EW9ET",
+			"atom_uri": "urn:zam:atom:01M7D7091H7PT15SX0CZ7EW9ET",
+			"namespace": "zam-academy-englisch-mittelschule-5",
+			"slug": "e5m-articles-plurals",
+			"title": "Articles and regular plurals",
+			"domain": "englisch/grammatik",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-articles-plurals",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D7091HY1F37RNGHDJ84J69",
+					"type": "soft",
+					"rationale": "Builds on e5m-wordbook-grammar-terms."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-mittelschule-5",
+					"topic_code": "grammar1",
+					"topic_title": "Sprachwerkstatt I: Nomen, Begleiter und Pronomen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.2-grammatik",
+					"topic_title": "Bestimmter und unbestimmter Artikel sowie regelmäßige Pluralbildung",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7091J7XVSPRAV1P9G29JK",
+					"slug": "e5m-articles-plurals-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welcher Artikel steht vor „uniform“ und „hour“?",
+					"concept": "a uniform, an hour (der Anfangslaut entscheidet!)",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-articles-plurals",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"a uniform, an hour (der Anfangslaut entscheidet!)",
+							"an uniform, a hour"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7091JQ7ETCZ9AT3ZVWXDV",
+					"slug": "e5m-articles-plurals-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wann hängst du im regelmäßigen Plural -es an (z. B. box)?",
+					"concept": "Nach Zischlauten wie s, sh, ch, x oder z (z. B. boxes, sandwiches).",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-articles-plurals",
+					"sample_solution": "Nach Zischlauten wie s, sh, ch, x oder z (z. B. boxes, sandwiches)."
+				},
+				{
+					"id": "01M7D7091J3WZKB2KXND7MXR7E",
+					"slug": "e5m-articles-plurals-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Bilde die Mehrzahl von „story“ und „boy“ und erkläre den Unterschied.",
+					"concept": "stories (Konsonant + y -> -ies) vs. boys (Vokal + y -> nur -s)",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-articles-plurals",
+					"sample_solution": "stories (Konsonant + y -> -ies) vs. boys (Vokal + y -> nur -s)"
+				}
+			]
+		},
+		{
+			"id": "01M7D7091HV1TD7DDV7PNRJKEJ",
+			"atom_uri": "urn:zam:atom:01M7D7091HV1TD7DDV7PNRJKEJ",
+			"namespace": "zam-academy-englisch-mittelschule-5",
+			"slug": "e5m-irregular-plurals",
+			"title": "Irregular plurals: men, women, children, food, fruit",
+			"domain": "englisch/grammatik",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-irregular-plurals",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D7091H7PT15SX0CZ7EW9ET",
+					"type": "soft",
+					"rationale": "Builds on e5m-articles-plurals."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-mittelschule-5",
+					"topic_code": "grammar1",
+					"topic_title": "Sprachwerkstatt I: Nomen, Begleiter und Pronomen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.2-wortschatz",
+					"topic_title": "Unregelmäßige Plurale men, women, children sowie food, fruit",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.2-grammatik",
+					"topic_title": "Unregelmäßige Pluralbildung",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7091JPYXW15BVZVT36XR2",
+					"slug": "e5m-irregular-plurals-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welcher unregelmäßige Plural ist richtig?",
+					"concept": "two women and three children",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-irregular-plurals",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"two women and three children",
+							"two womans and three childs"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7091JN7HVGGTATRFRXM03",
+					"slug": "e5m-irregular-plurals-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie lauten die unregelmäßigen Pluralformen von „man“, „woman“ und „child“?",
+					"concept": "men, women, children",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-irregular-plurals",
+					"sample_solution": "men, women, children"
+				},
+				{
+					"id": "01M7D7091J2X19WXF2QDKWZ1H9",
+					"slug": "e5m-irregular-plurals-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Mit welchem Verb im Präsens stehen „food“ und „fruit“ als Sammelbegriffe?",
+					"concept": "Im Singular mit „is“ (z. B. Fruit is healthy. There is a lot of food.).",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-irregular-plurals",
+					"sample_solution": "Im Singular mit „is“ (z. B. Fruit is healthy. There is a lot of food.)."
+				}
+			]
+		},
+		{
+			"id": "01M7D7091HT43AD0P0CJHFJ9Z8",
+			"atom_uri": "urn:zam:atom:01M7D7091HT43AD0P0CJHFJ9Z8",
+			"namespace": "zam-academy-englisch-mittelschule-5",
+			"slug": "e5m-subject-pronouns",
+			"title": "Personal pronouns: I, you, he, she, it, we, they",
+			"domain": "englisch/grammatik",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-subject-pronouns",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D7091HY1F37RNGHDJ84J69",
+					"type": "soft",
+					"rationale": "Builds on e5m-wordbook-grammar-terms."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-mittelschule-5",
+					"topic_code": "grammar1",
+					"topic_title": "Sprachwerkstatt I: Nomen, Begleiter und Pronomen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.2-grammatik",
+					"topic_title": "Personalpronomen als Subjekt zur Vermeidung von Wiederholungen",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7091J4CDZE6P5A7F821KF",
+					"slug": "e5m-subject-pronouns-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welches Personalpronomen ersetzt zwei Gegenstände im Plural, etwa „the two red buses“?",
+					"concept": "they",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-subject-pronouns",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"they",
+							"it"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7091JEKQ5BWZNGD2V01S6",
+					"slug": "e5m-subject-pronouns-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welches Subjektpronomen benutzt du im Englischen für ein einzelnes Ding (z. B. a book)?",
+					"concept": "it",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-subject-pronouns",
+					"sample_solution": "it"
+				},
+				{
+					"id": "01M7D7091JFTSV3RKNA2HZE1AJ",
+					"slug": "e5m-subject-pronouns-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Durch welches Pronomen ersetzt du „Tom and I“ als Subjekt?",
+					"concept": "we",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-subject-pronouns",
+					"sample_solution": "we"
+				}
+			]
+		},
+		{
+			"id": "01M7D7091HP72YKBBGGE54K2KX",
+			"atom_uri": "urn:zam:atom:01M7D7091HP72YKBBGGE54K2KX",
+			"namespace": "zam-academy-englisch-mittelschule-5",
+			"slug": "e5m-possessives-genitive",
+			"title": "Possessive determiners and `s-genitive",
+			"domain": "englisch/grammatik",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-possessives-genitive",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D7091HT43AD0P0CJHFJ9Z8",
+					"type": "soft",
+					"rationale": "Builds on e5m-subject-pronouns."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-mittelschule-5",
+					"topic_code": "grammar1",
+					"topic_title": "Sprachwerkstatt I: Nomen, Begleiter und Pronomen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.2-grammatik",
+					"topic_title": "Possessivbegleiter (my, your, …) und `s-Genitiv",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7091JH3C24YP48H574FAY",
+					"slug": "e5m-possessives-genitive-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welches Besitzwort passt zu einer Sache oder einem Tier im Singular („our cat“)?",
+					"concept": "its (ohne Apostroph)",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-possessives-genitive",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"its (ohne Apostroph)",
+							"it's (mit Apostroph)"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7091J4YT83JHKBFWBNA4J",
+					"slug": "e5m-possessives-genitive-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wann hängst du beim `s-Genitiv nur den Apostroph ohne weiteres s an?",
+					"concept": "Bei einem regelmäßigen Plural auf -s (z. B. my parents' car).",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-possessives-genitive",
+					"sample_solution": "Bei einem regelmäßigen Plural auf -s (z. B. my parents' car)."
+				},
+				{
+					"id": "01M7D7091J4QM24RE884SW4P5C",
+					"slug": "e5m-possessives-genitive-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Schreibe „die Bücher der Kinder“ mithilfe des `s-Genitivs auf Englisch.",
+					"concept": "the children's books",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-possessives-genitive",
+					"sample_solution": "the children's books"
+				}
+			]
+		},
+		{
+			"id": "01M7D7091HHMXN1S0QQ3MSKYGQ",
+			"atom_uri": "urn:zam:atom:01M7D7091HHMXN1S0QQ3MSKYGQ",
+			"namespace": "zam-academy-englisch-mittelschule-5",
+			"slug": "e5m-to-be",
+			"title": "The verb 'to be': statements, questions and short answers",
+			"domain": "englisch/grammatik",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-to-be",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D7091HT43AD0P0CJHFJ9Z8",
+					"type": "soft",
+					"rationale": "Builds on e5m-subject-pronouns."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-mittelschule-5",
+					"topic_code": "grammar1",
+					"topic_title": "Sprachwerkstatt I: Nomen, Begleiter und Pronomen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.2-grammatik",
+					"topic_title": "Hilfsverb be, Verneinung, Fragen und Kurzantworten",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7091JM6FJG7W32652V1P4",
+					"slug": "e5m-to-be-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche bejahte Kurzantwort auf „Are you ready?“ ist korrekt?",
+					"concept": "Yes, I am.",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-to-be",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Yes, I am.",
+							"Yes, I'm."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7091JD28DF738HHFCD7PJ",
+					"slug": "e5m-to-be-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie lautet die verneinte Kurzantwort auf „Are Tim and Leo at home?“",
+					"concept": "No, they aren't. (oder No, they are not.)",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-to-be",
+					"sample_solution": "No, they aren't. (oder No, they are not.)"
+				},
+				{
+					"id": "01M7D7091JW2FGDR02SJF7KYNV",
+					"slug": "e5m-to-be-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche Formen von „to be“ gehören zu I, he/she/it und we/they?",
+					"concept": "I am · he/she/it is · we/they are",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-to-be",
+					"sample_solution": "I am · he/she/it is · we/they are"
+				}
+			]
+		},
+		{
+			"id": "01M7D7091H73ZDNXQQWTAD7WC7",
+			"atom_uri": "urn:zam:atom:01M7D7091H73ZDNXQQWTAD7WC7",
+			"namespace": "zam-academy-englisch-mittelschule-5",
+			"slug": "e5m-have-got",
+			"title": "Have got and has got",
+			"domain": "englisch/grammatik",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-have-got",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D7091HT43AD0P0CJHFJ9Z8",
+					"type": "soft",
+					"rationale": "Builds on e5m-subject-pronouns."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-mittelschule-5",
+					"topic_code": "grammar1",
+					"topic_title": "Sprachwerkstatt I: Nomen, Begleiter und Pronomen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.2-grammatik",
+					"topic_title": "Hilfsverb have (got), Verneinung, Fragen und Kurzantworten",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7091JWGB8SQWNHJJYTM1P",
+					"slug": "e5m-have-got-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie lautet die Kurzantwort auf „Has Ben got a sister?“",
+					"concept": "Yes, he has.",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-have-got",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Yes, he has.",
+							"Yes, he has got."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7091JX6G8MVFFA0TJ6CHW",
+					"slug": "e5m-have-got-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie verneinst du „Maya has got a bike“?",
+					"concept": "Maya hasn't got a bike. (oder has not got)",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-have-got",
+					"sample_solution": "Maya hasn't got a bike. (oder has not got)"
+				},
+				{
+					"id": "01M7D7091JQYG6VN70ZGBDN374",
+					"slug": "e5m-have-got-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Forme den Satz „You have got a rubber“ in eine Entscheidungsfrage um.",
+					"concept": "Have you got a rubber?",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-have-got",
+					"sample_solution": "Have you got a rubber?"
+				}
+			]
+		},
+		{
+			"id": "01M7D7091HGED75GFGPERJXC9B",
+			"atom_uri": "urn:zam:atom:01M7D7091HGED75GFGPERJXC9B",
+			"namespace": "zam-academy-englisch-mittelschule-5",
+			"slug": "e5m-simple-present-statements",
+			"title": "Simple present: habits and the he/she/it -s",
+			"domain": "englisch/grammatik",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-simple-present-statements",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D7091HT43AD0P0CJHFJ9Z8",
+					"type": "soft",
+					"rationale": "Builds on e5m-subject-pronouns."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-mittelschule-5",
+					"topic_code": "grammar2",
+					"topic_title": "Sprachwerkstatt II: Zeiten, Fragen und Satzbau"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.2-grammatik",
+					"topic_title": "Simple present für routinemäßige Handlungen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.2-wortschatz",
+					"topic_title": "Häufigkeitsadverbien (z. B. sometimes)",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7091J9RKXK7ET6Y8YJWDK",
+					"slug": "e5m-simple-present-statements-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche Form im simple present ist richtig für „Emily“?",
+					"concept": "Emily always watches cartoons.",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-simple-present-statements",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Emily always watches cartoons.",
+							"Emily watchs always cartoons."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7091JD0RTJHFMWFFQFCVC",
+					"slug": "e5m-simple-present-statements-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wo steht ein Häufigkeitsadverb wie „sometimes“ bei normalen Vollverben?",
+					"concept": "Vor dem Vollverb (z. B. We sometimes play football.).",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-simple-present-statements",
+					"sample_solution": "Vor dem Vollverb (z. B. We sometimes play football.)."
+				},
+				{
+					"id": "01M7D7091J3HHB8JBKJB2VXJSZ",
+					"slug": "e5m-simple-present-statements-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie lauten die he/she/it-Formen von „go“, „do“, „try“ und „have“?",
+					"concept": "goes · does · tries · has",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-simple-present-statements",
+					"sample_solution": "goes · does · tries · has"
+				}
+			]
+		},
+		{
+			"id": "01M7D7091HGQNZ7GDE9K33AB6K",
+			"atom_uri": "urn:zam:atom:01M7D7091HGQNZ7GDE9K33AB6K",
+			"namespace": "zam-academy-englisch-mittelschule-5",
+			"slug": "e5m-simple-present-do-does",
+			"title": "Simple present: don't, doesn't and Do/Does…?",
+			"domain": "englisch/grammatik",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-simple-present-do-does",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D7091HGED75GFGPERJXC9B",
+					"type": "soft",
+					"rationale": "Builds on e5m-simple-present-statements."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-mittelschule-5",
+					"topic_code": "grammar2",
+					"topic_title": "Sprachwerkstatt II: Zeiten, Fragen und Satzbau"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.2-grammatik",
+					"topic_title": "Hilfsverb do, Verneinung, Entscheidungsfragen und Kurzantworten",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7091J3TQJGHBG9WHMQBXZ",
+					"slug": "e5m-simple-present-do-does-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche Frage im simple present stimmt?",
+					"concept": "Does Leo walk to school?",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-simple-present-do-does",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Does Leo walk to school?",
+							"Does Leo walks to school?"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7091JF7W3R5PJG3NRFB4X",
+					"slug": "e5m-simple-present-do-does-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was passiert mit dem -s des Hauptverbs nach „doesn't“ oder „Does“?",
+					"concept": "Es fällt weg: Das Hauptverb steht wieder in der Grundform.",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-simple-present-do-does",
+					"sample_solution": "Es fällt weg: Das Hauptverb steht wieder in der Grundform."
+				},
+				{
+					"id": "01M7D7091JSXDVMVB21QH8NKN0",
+					"slug": "e5m-simple-present-do-does-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Bilde Verneinung und Frage zu „Mia likes tea.“",
+					"concept": "Mia doesn't like tea. · Does Mia like tea?",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-simple-present-do-does",
+					"sample_solution": "Mia doesn't like tea. · Does Mia like tea?"
+				}
+			]
+		},
+		{
+			"id": "01M7D7091HBT6CWRHT29Y7Y5DB",
+			"atom_uri": "urn:zam:atom:01M7D7091HBT6CWRHT29Y7Y5DB",
+			"namespace": "zam-academy-englisch-mittelschule-5",
+			"slug": "e5m-wh-questions",
+			"title": "Wh-questions: who, what, where, when, how, why",
+			"domain": "englisch/grammatik",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-wh-questions",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D7091HGQNZ7GDE9K33AB6K",
+					"type": "soft",
+					"rationale": "Builds on e5m-simple-present-do-does."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-mittelschule-5",
+					"topic_code": "grammar2",
+					"topic_title": "Sprachwerkstatt II: Zeiten, Fragen und Satzbau"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.2-wortschatz",
+					"topic_title": "Interrogativpronomen who, what, where, when, how, why",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.2-grammatik",
+					"topic_title": "Ergänzungsfragen",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7091J1T7KJ14MSFQ2PYA9",
+					"slug": "e5m-wh-questions-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie fragst du richtig „Wo wohnen deine Großeltern?“",
+					"concept": "Where do your grandparents live?",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-wh-questions",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Where do your grandparents live?",
+							"Who do your grandparents live?"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7091J6R49A04PV2WC0DZF",
+					"slug": "e5m-wh-questions-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was unterscheidet die Fragewörter „who“ und „where“?",
+					"concept": "who = wer (Person); where = wo / wohin (Ort).",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-wh-questions",
+					"sample_solution": "who = wer (Person); where = wo / wohin (Ort)."
+				},
+				{
+					"id": "01M7D7091JXS96MHNYNCV1FQY4",
+					"slug": "e5m-wh-questions-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche Fragewörter stehen für „wann“, „wie“ und „warum“?",
+					"concept": "when (wann) · how (wie) · why (warum)",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-wh-questions",
+					"sample_solution": "when (wann) · how (wie) · why (warum)"
+				}
+			]
+		},
+		{
+			"id": "01M7D7091HAR0EZ30152CT82TF",
+			"atom_uri": "urn:zam:atom:01M7D7091HAR0EZ30152CT82TF",
+			"namespace": "zam-academy-englisch-mittelschule-5",
+			"slug": "e5m-imperatives",
+			"title": "Imperatives: polite requests and instructions",
+			"domain": "englisch/grammatik",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-imperatives",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D7091HWM5J4WTKFSK24P7N",
+					"type": "soft",
+					"rationale": "Builds on e5m-classroom-phrases."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-mittelschule-5",
+					"topic_code": "grammar2",
+					"topic_title": "Sprachwerkstatt II: Zeiten, Fragen und Satzbau"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.2-grammatik",
+					"topic_title": "Befehlsform (bejaht und verneint)",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7091JP46J9FEW82PBPC1Y",
+					"slug": "e5m-imperatives-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie formulierst du auf Englisch ein höfliches Verbot an die Klasse?",
+					"concept": "Please don't forget your books!",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-imperatives",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Please don't forget your books!",
+							"Forget not your books, please!"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7091J88AN9RAHBJ45GNSJ",
+					"slug": "e5m-imperatives-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie bildest du die bejahte Befehlsform (imperative) im Englischen?",
+					"concept": "Mit der reinen Grundform des Verbs (z. B. Open your book, please!).",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-imperatives",
+					"sample_solution": "Mit der reinen Grundform des Verbs (z. B. Open your book, please!)."
+				},
+				{
+					"id": "01M7D7091JRN9Q4Z2VJCT9CFWX",
+					"slug": "e5m-imperatives-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie bildest du im Englischen einen verneinten Imperativ (Verbot, z. B. für das Nicht-Rennen im Schulflur)?",
+					"concept": "Mit Don't + Grundform des Verbs am Satzanfang: Don't run in the corridor!",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-imperatives",
+					"sample_solution": "Mit Don't + Grundform des Verbs am Satzanfang: Don't run in the corridor!"
+				}
+			]
+		},
+		{
+			"id": "01M7D7091HVQ5P2ZAA4APE550G",
+			"atom_uri": "urn:zam:atom:01M7D7091HVQ5P2ZAA4APE550G",
+			"namespace": "zam-academy-englisch-mittelschule-5",
+			"slug": "e5m-simple-past-was-were-ed",
+			"title": "Simple past: was, were and regular -ed verbs",
+			"domain": "englisch/grammatik",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-simple-past-was-were-ed",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D7091HHMXN1S0QQ3MSKYGQ",
+					"type": "soft",
+					"rationale": "Builds on e5m-to-be."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-mittelschule-5",
+					"topic_code": "grammar2",
+					"topic_title": "Sprachwerkstatt II: Zeiten, Fragen und Satzbau"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.2-grammatik",
+					"topic_title": "Simple past (be und regelmäßige Verben)",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.2-wortschatz",
+					"topic_title": "Zeitadverbien (yesterday)",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7091JS1PH6KKYASA59XPB",
+					"slug": "e5m-simple-past-was-were-ed-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welcher Satz im simple past ist richtig?",
+					"concept": "Yesterday we were late because the bus stopped.",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-simple-past-was-were-ed",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Yesterday we were late because the bus stopped.",
+							"Yesterday we was late because the bus stoped."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7091JD34ER4418B2YM34E",
+					"slug": "e5m-simple-past-was-were-ed-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wann benutzt du „was“ und wann „were“?",
+					"concept": "was für I, he, she, it; were für you, we, they.",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-simple-past-was-were-ed",
+					"sample_solution": "was für I, he, she, it; were für you, we, they."
+				},
+				{
+					"id": "01M7D7091JFGQG8EECKMXCGG5D",
+					"slug": "e5m-simple-past-was-were-ed-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Bilde die regelmäßigen simple-past-Formen von „like“, „visit“ und „tidy“.",
+					"concept": "liked · visited · tidied",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-simple-past-was-were-ed",
+					"sample_solution": "liked · visited · tidied"
+				}
+			]
+		},
+		{
+			"id": "01M7D7091HKXWJ9QBCWCM2MWSH",
+			"atom_uri": "urn:zam:atom:01M7D7091HKXWJ9QBCWCM2MWSH",
+			"namespace": "zam-academy-englisch-mittelschule-5",
+			"slug": "e5m-simple-past-did-svo",
+			"title": "Simple past with did/didn't and SVO word order",
+			"domain": "englisch/grammatik",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-simple-past-did-svo",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D7091HVQ5P2ZAA4APE550G",
+					"type": "soft",
+					"rationale": "Builds on e5m-simple-past-was-were-ed."
+				},
+				{
+					"atom_id": "01M7D7091HGQNZ7GDE9K33AB6K",
+					"type": "soft",
+					"rationale": "Builds on e5m-simple-present-do-does."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-mittelschule-5",
+					"topic_code": "grammar2",
+					"topic_title": "Sprachwerkstatt II: Zeiten, Fragen und Satzbau"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.2-grammatik",
+					"topic_title": "Simple past (did/didn't, unregelmäßige Formen) und Wortstellungsregel SVO",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.2-wortschatz",
+					"topic_title": "Adverbien der Zeit und des Ortes (today, yesterday, here, there)",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7091J26AW2XP5QVCY9XW3",
+					"slug": "e5m-simple-past-did-svo-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welcher Satz hat richtige Vergangenheit und richtige SVO-Wortstellung?",
+					"concept": "Ben saw his friend at the cinema yesterday.",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-simple-past-did-svo",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Ben saw his friend at the cinema yesterday.",
+							"Ben didn't saw his friend yesterday."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7091J04XC0BT8X3QS1M44",
+					"slug": "e5m-simple-past-did-svo-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche Verbform steht immer nach „did“ oder „didn't“?",
+					"concept": "Die reine Grundform (z. B. Did you go? / We didn't see him.).",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-simple-past-did-svo",
+					"sample_solution": "Die reine Grundform (z. B. Did you go? / We didn't see him.)."
+				},
+				{
+					"id": "01M7D7091J6T7MP1CEE6A6A5AH",
+					"slug": "e5m-simple-past-did-svo-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wofür steht die Grundregel SVO im englischen Aussagesatz, und wo stehen Zeitangaben wie „yesterday“?",
+					"concept": "Subject – Verb – Object bleiben direkt zusammen; Zeit/Ort (yesterday, here) stehen am Satzende oder Satzanfang.",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-5/#lesson=e5m-simple-past-did-svo",
+					"sample_solution": "Subject – Verb – Object bleiben direkt zusammen; Zeit/Ort (yesterday, here) stehen am Satzende oder Satzanfang."
+				}
+			]
+		}
+	]
+}

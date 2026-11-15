@@ -1,0 +1,90 @@
+{
+	"schema": 1,
+	"status": "approved",
+	"approved": "2026-11-15",
+	"source_repository": "https://github.com/zam-os/zam",
+	"source_commit": "e6a235f75fe87b9d57af38bd61011027b891492c",
+	"source": "Thomas am 2026-11-15 in der Claude-Code-Sitzung (Desktop) bei der Vorbereitung von ZAM 0.65.0: Auf die Frage, ob die vier A-Übernahmen aus de-by:gymnasium-5-englisch-starter-grammar-tenses (J01 Kurzantwort auf Have you got…?, J03 does/do in Fragen der 3. Person, J05 be + -ing, J07 Satzstellung S-V-O) bei aktiven vier C-Karten (J02, J04, J06, J08) freigegeben werden, wählte er „Approve“. Ab Zellversion 2026.11.2 trägt jeder der vier Nachfolger ein replaces auf seine alte Karte. Die Jahrgang-6-Zelle bleibt außerhalb dieser Zuordnung.",
+	"sources": [
+		{
+			"file": "tests/fixtures/de-by-gymnasium-5-englisch-starter-grammar-tenses-kvt.json",
+			"sha256": "994353ab9caec6963454c5b971e18d948bff19b6b55b2a559696be0171fec55a",
+			"tile_id": "de-by:gymnasium-5-englisch-starter-grammar-tenses",
+			"version": "2026.08.1"
+		}
+	],
+	"rows": [
+		{
+			"de_by_cell": "de-by:gymnasium-5-englisch-starter-grammar-tenses",
+			"de_by_id": "01K4YE5S000000000000000J01",
+			"de_by_question": "Wie lautet die korrekte bejahende Kurzantwort (Short Answer) auf die Frage 'Have you got a new computer?'?",
+			"category": "A",
+			"academy_slug": "e5-have-got-check",
+			"action": "replace",
+			"reason": "Dieselbe Kurzantwort auf Have you got a new computer?: Yes, I have. gegen Yes, I have got."
+		},
+		{
+			"de_by_cell": "de-by:gymnasium-5-englisch-starter-grammar-tenses",
+			"de_by_id": "01K4YE5S000000000000000J02",
+			"de_by_question": "Konjugiere 'to be' (am, is, are; 'm, 's, 're; isn't, aren't) und 'have got' / 'has got' (haven't got, hasn't got), stelle die Tabelle der Personalpronomen (Subjekt: I, you, he, she, it, we, they; Objekt: me, you, him, her, it, us, them) den Possessivbegleitern (my, your, his, her, its, our, their) gegenüber und übersetze: a) 'Seine Schwester hat keinen Hund.' b) 'Sind sie in der Schule?' – 'Nein, sind sie nicht.'",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"reason": "Mehrteiliger Abruf zu to be, have got, Pronomen und zwei Übersetzungen. Kein einzelner Nachfolger enthält den ganzen Abruf."
+		},
+		{
+			"de_by_cell": "de-by:gymnasium-5-englisch-starter-grammar-tenses",
+			"de_by_id": "01K4YE5S000000000000000J03",
+			"de_by_question": "Welches Hilfsverb muss verwendet werden, um im Simple Present einen Fragesatz in der 3. Person Einzahl (he, she, it) zu bilden (z. B. '... he play tennis?')?",
+			"category": "A",
+			"academy_slug": "e5-simple-present-check",
+			"action": "replace",
+			"reason": "Dieselbe Wahl des Hilfsverbs Does gegen Do in der dritten Person."
+		},
+		{
+			"de_by_cell": "de-by:gymnasium-5-englisch-starter-grammar-tenses",
+			"de_by_id": "01K4YE5S000000000000000J04",
+			"de_by_question": "Erkläre Verwendung, Signalwörter und Bildung des Simple Present: 1. Verwendung (regelmäßige Gewohnheiten, Hobbys, allgemeingültige Fakten), 2. Signalwörter der Häufigkeit (always, often, usually, sometimes, seldom, never, every day), 3. Regel der 3. Person ('He, she, it – das 's' muss mit!': he plays, she watches, it flies), 4. Verneinung mit don't / doesn't + Infinitiv und Fragen mit Do / Does + Subjekt + Infinitiv und übersetze: a) 'Sarah liest jeden Abend ein Buch.' b) 'Spielen deine Freunde Fußball?' – 'Ja, tun sie.'",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"reason": "Mehrteiliger Abruf zu Bildung, Signalwörtern, Verneinung, Fragen und zwei Übersetzungen des simple present."
+		},
+		{
+			"de_by_cell": "de-by:gymnasium-5-englisch-starter-grammar-tenses",
+			"de_by_id": "01K4YE5S000000000000000J05",
+			"de_by_question": "Aus welchen zwei Komponenten wird die englische Verlaufsform Present Continuous (Progressive) gebildet?",
+			"category": "A",
+			"academy_slug": "e5-progressive-check",
+			"action": "replace",
+			"reason": "Dieselbe zweiteilige Bildung be plus Verb-ing gegen do/does plus ing."
+		},
+		{
+			"de_by_cell": "de-by:gymnasium-5-englisch-starter-grammar-tenses",
+			"de_by_id": "01K4YE5S000000000000000J06",
+			"de_by_question": "Erkläre Bildung, Rechtschreibregeln und Signalwörter des Present Continuous: 1. Bildung (am/is/are + verb-ing), 2. Rechtschreibregeln beim Anhängen von -ing (stummes -e entfällt: make -> making; Konsonantenverdopplung nach kurzem Vokal: sit -> sitting, run -> running, swim -> swimming; ie wird zu y: lie -> lying), 3. Signalwörter (now, at the moment, Look!, Listen!), 4. Direkter Gegenüberstellungsvergleich von Simple Present (Gewohnheit) vs. Present Continuous (Handlung im Moment des Sprechens) und setze die richtige Zeitform ein: a) 'Listen! Someone (sing) in the bathroom.' b) 'Tom usually (walk) to school, but today he (ride) his bike.'",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"reason": "Mehrteiliger Abruf zu Schreibung, Signalwörtern und dem Kontrast der Verlaufsform."
+		},
+		{
+			"de_by_cell": "de-by:gymnasium-5-englisch-starter-grammar-tenses",
+			"de_by_id": "01K4YE5S000000000000000J07",
+			"de_by_question": "Welche feste Satzstellung gilt im englischen Hauptsatz verbindlich für Subjekt (S), Verb (V) und Objekt (O)?",
+			"category": "A",
+			"academy_slug": "e5-word-order-check",
+			"action": "replace",
+			"reason": "Dieselbe Satzstellung S-V-O gegen O-V-S."
+		},
+		{
+			"de_by_cell": "de-by:gymnasium-5-englisch-starter-grammar-tenses",
+			"de_by_id": "01K4YE5S000000000000000J08",
+			"de_by_question": "Erkläre die grammatischen Regeln für Modalverben und Satzbau im Englischen: 1. Modalverben can / can't (Können/Fähigkeit) und must / mustn't (Müssen vs. striktes Verbot 'nicht dürfen'!) – kein 's' in der 3. Person und direkter Anschluss des reinen Infinitivs ohne 'to', 2. Imperativ (Aufforderung: reiner Infinitiv; Verbot: Don't + Infinitiv), 3. Feste englische Satzstellung: Subjekt - Verb - Objekt (S-V-O) sowie Ort vor Zeit am Satzende ('place before time') und übersetze: a) 'Du darfst hier nicht schwimmen.' b) 'Wir spielen jeden Samstag im Park Fußball.'",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"reason": "Mehrteiliger Abruf zu Modalverben, Verneinung und Satzbau."
+		}
+	]
+}

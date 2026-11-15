@@ -1,0 +1,1389 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "zam-academy:informatik-gymnasium-6",
+  "version": "2026.11.2",
+  "title": "Informatik 6 Gymnasium (ZAM Academy)",
+  "description": "LehrplanPLUS Natur und Technik 6 (Schwerpunkt Informatik, Gymnasium Bayern): 12 Lektionen in 3 Etappen, interaktive Werkstätten, zweistufige Aufgaben und 36 verknüpfte Abrufkarten.",
+  "publisher": "ZAM Academy",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/6/nt_gym",
+      "label": "ISB · Natur und Technik 6 (Schwerpunkt Informatik), Gymnasium",
+      "checked": "2026-11-15"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01M7G027ZNRMSS8DP5828PHGP1",
+      "atom_uri": "urn:zam:atom:01M7G027ZNRMSS8DP5828PHGP1",
+      "namespace": "zam-academy-informatik-gymnasium-6",
+      "slug": "inf6-darstellungsformen",
+      "title": "Darstellungsformen von Information",
+      "domain": "informatik/darstellung",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/informatik-gymnasium-6/#lesson=inf6-darstellungsformen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-gymnasium-6",
+          "topic_code": "stage-1-informationsdarstellung",
+          "topic_title": "Informationsdarstellung und Objekte"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "nt_gym",
+          "topic_code": "lb2.1",
+          "topic_title": "Informationsdarstellung mit Grafik-, Text- und Multimediadokumenten",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7G02801TSB3X4Q6WHE6V35F",
+          "slug": "inf6-darstellungsformen-vergleich",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Darstellungsform macht das Steigen und Fallen vieler Messwerte (z. B. Temperaturen einer Woche) sofort sichtbar?",
+          "concept": "Ein Diagramm wie etwa ein Liniendiagramm",
+          "source_link": "https://academy.zam-os.org/informatik-gymnasium-6/#lesson=inf6-darstellungsformen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein Diagramm wie etwa ein Liniendiagramm",
+              "Ein langer Fließtext ohne Zahlenreihe"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Ein langer Fließtext ohne Zahlenreihe",
+              "reason": "Im Fließtext müssen alle Einzelwerte erst mühsam im Kopf verglichen werden, während ein Diagramm Tendenzen direkt zeigt."
+            },
+            {
+              "text": "Eine lautlose Pantomime mit den Händen",
+              "reason": "Pantomime eignet sich für spontane Zeichen über Entfernung, kann aber genaue Messreihen nicht präzise vergleichen."
+            }
+          ]
+        },
+        {
+          "id": "01M7G02802Y5X3KP17DPWMWDYX",
+          "slug": "inf6-darstellungsformen-situation",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wann überzeugt eine einfache Skizze mehr als ein ausführlicher Text?",
+          "concept": "Wenn Wege oder räumliche Anordnungen rasch erfasst werden sollen",
+          "source_link": "https://academy.zam-os.org/informatik-gymnasium-6/#lesson=inf6-darstellungsformen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Wenn Wege oder räumliche Anordnungen rasch erfasst werden sollen",
+              "Wenn ein Gedicht wörtlich zitiert werden soll"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Wenn ein Gedicht wörtlich zitiert werden soll",
+              "reason": "Wörtliche Texte erfordern geschriebene Sprache statt einer räumlichen Zeichnung."
+            },
+            {
+              "text": "Wenn im dunklen Raum nur akustisch gewarnt werden soll",
+              "reason": "Im Dunkeln sieht niemand eine Skizze; hier braucht man Ton bzw. ein akustisches Signal."
+            }
+          ]
+        },
+        {
+          "id": "01M7G02803V0M6RVRQDWDG8CSJ",
+          "slug": "inf6-darstellungsformen-bewertung",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Begründe anhand von zwei Beispielen (z. B. lauter Werkraum und Bauplan einer Zelle), nach welchen Kriterien man eine Darstellungsform auswählt.",
+          "concept": "Nach Zweck, Empfänger und Situation für schnellen Überblick und Genauigkeit.",
+          "source_link": "https://academy.zam-os.org/informatik-gymnasium-6/#lesson=inf6-darstellungsformen",
+          "sample_solution": "Eine gute Darstellungsform passt zu Zweck, Empfänger und Situation. Im lauten Werkraum geht Gesprochenes (Ton) unter, weshalb ein klares Handzeichen (Pantomime) oder Piktogramm schneller und sicherer ankommt. Für den inneren Aufbau einer Zelle kombiniert eine beschriftete Zeichnung Form, Lage und Fachbegriffe viel übersichtlicher als reiner Fließtext.",
+          "choice_distractors": [
+            {
+              "text": "Immer möglichst viel Fließtext wählen, weil Bilder und Tabellen ungenau sind.",
+              "reason": "Reiner Fließtext übersieht, dass räumliche Zusammenhänge und Vergleiche bildhaft oft weit schneller erfasst werden."
+            },
+            {
+              "text": "Grundsätzlich nur Videos abspielen, ganz unabhängig vom Lärm oder Empfänger.",
+              "reason": "Ohne Tonspur oder passendes Gerät scheitern Videos im Werkraum oder auf einem einfachen Arbeitsblatt."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M7G027ZPNCT0380WMDFKWCY1",
+      "atom_uri": "urn:zam:atom:01M7G027ZPNCT0380WMDFKWCY1",
+      "namespace": "zam-academy-informatik-gymnasium-6",
+      "slug": "inf6-objekte-attribute-punktnotation",
+      "title": "Objekte, Attribute, Methoden und Punktnotation",
+      "domain": "informatik/darstellung",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/informatik-gymnasium-6/#lesson=inf6-objekte-attribute-punktnotation",
+      "prerequisites": [
+        {
+          "atom_id": "01M7G027ZNRMSS8DP5828PHGP1",
+          "type": "soft",
+          "rationale": "Baut fachlich auf „Darstellungsformen von Information“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-gymnasium-6",
+          "topic_code": "stage-1-informationsdarstellung",
+          "topic_title": "Informationsdarstellung und Objekte"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "nt_gym",
+          "topic_code": "lb2.1",
+          "topic_title": "Informationsdarstellung mit Grafik-, Text- und Multimediadokumenten",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7G02804TPDHGEEXXB919CEX",
+          "slug": "inf6-objekte-attribute-punktnotation-attribut-methode",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Worin unterscheiden sich in der Informatik Attribut und Methode eines Objekts?",
+          "concept": "Ein Attribut beschreibt eine Eigenschaft, eine Methode eine Aktion",
+          "source_link": "https://academy.zam-os.org/informatik-gymnasium-6/#lesson=inf6-objekte-attribute-punktnotation",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein Attribut beschreibt eine Eigenschaft, eine Methode eine Aktion",
+              "Eine Methode speichert die Farbe, ein Attribut verschiebt das Objekt"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Eine Methode speichert die Farbe, ein Attribut verschiebt das Objekt",
+              "reason": "Eigenschaften wie Farbe oder Breite sind Attribute; Aktionen zum Verändern heißen Methoden."
+            },
+            {
+              "text": "Beide Begriffe bedeuten exakt dasselbe und sind frei austauschbar",
+              "reason": "Attribute speichern Zustandswerte, während Methoden Operationen auf diesen Werten ausführen."
+            }
+          ]
+        },
+        {
+          "id": "01M7G02805KERH4AVSTANYH0WB",
+          "slug": "inf6-objekte-attribute-punktnotation-punktnotation-format",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie notierst du in der Punktnotation korrekt, dass beim Objekt ‚kreis1‘ das Attribut ‚Fuellfarbe‘ den Wert ‚gelb‘ erhält?",
+          "concept": "kreis1.Fuellfarbe = gelb",
+          "source_link": "https://academy.zam-os.org/informatik-gymnasium-6/#lesson=inf6-objekte-attribute-punktnotation",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "kreis1.Fuellfarbe = gelb",
+              "Fuellfarbe.kreis1 = gelb"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Fuellfarbe.kreis1 = gelb",
+              "reason": "In der Punktnotation steht immer zuerst der konkrete Objektname vor dem Punkt, erst danach der Attributname."
+            },
+            {
+              "text": "KREIS.Fuellfarbe(gelb)",
+              "reason": "Eine Zuweisung an ein konkretes Objekt beginnt mit dem Objektnamen und nutzt Gleichheitszeichen für den Wert, keine Klassenmethode."
+            }
+          ]
+        },
+        {
+          "id": "01M7G02806Z2ZN2B9TC6X71NPR",
+          "slug": "inf6-objekte-attribute-punktnotation-methodenaufruf",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre den Unterschied zwischen Attributzuweisung und Methodenaufruf in der Punktnotation an ‚rechteck2‘ mit ‚Breite = 80‘ und ‚verschieben(20, 10)‘.",
+          "concept": "Attributzuweisung mit ‚=‘ setzt einen Wert direkt; Methodenaufruf mit Klammern ‚()‘ löst eine Operation aus.",
+          "source_link": "https://academy.zam-os.org/informatik-gymnasium-6/#lesson=inf6-objekte-attribute-punktnotation",
+          "sample_solution": "Bei der Attributzuweisung ‚rechteck2.Breite = 80‘ wird der Eigenschaft ‚Breite‘ des Objekts ‚rechteck2‘ ein neuer Wert zugewiesen. Beim Methodenaufruf ‚rechteck2.verschieben(20, 10)‘ folgt nach dem Methodennamen ein Klammerpaar mit Parametern: Dadurch führt das Objekt die Operation ‚verschieben‘ aus und ändert seine Position entsprechend.",
+          "choice_distractors": [
+            {
+              "text": "Beide Schreibweisen verändern niemals den Zustand des Objekts",
+              "reason": "Sowohl direkte Attributzuweisungen als auch verändernde Methoden ändern gezielt Attributwerte im Zustand eines Objekts."
+            },
+            {
+              "text": "Die runden Klammern in ‚rechteck2.verschieben(20, 10)‘ stehen immer für eine neue Klasse",
+              "reason": "Runde Klammern hinter einem Namen hinter dem Punkt kennzeichnen Parameter eines Methodenaufrufs am Objekt."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M7G027ZQ8P64AYC8EC7A81CJ",
+      "atom_uri": "urn:zam:atom:01M7G027ZQ8P64AYC8EC7A81CJ",
+      "namespace": "zam-academy-informatik-gymnasium-6",
+      "slug": "inf6-klassen-diagramme",
+      "title": "Klassen, Objekt- und Klassendiagramme",
+      "domain": "informatik/darstellung",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/informatik-gymnasium-6/#lesson=inf6-klassen-diagramme",
+      "prerequisites": [
+        {
+          "atom_id": "01M7G027ZPNCT0380WMDFKWCY1",
+          "type": "soft",
+          "rationale": "Baut fachlich auf „Objekte, Attribute, Methoden und Punktnotation“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-gymnasium-6",
+          "topic_code": "stage-1-informationsdarstellung",
+          "topic_title": "Informationsdarstellung und Objekte"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "nt_gym",
+          "topic_code": "lb2.1",
+          "topic_title": "Informationsdarstellung mit Grafik-, Text- und Multimediadokumenten",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7G02807A20YGKT9HZMBZYG5",
+          "slug": "inf6-klassen-diagramme-objekt-vs-klasse",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Worin liegt der Unterschied zwischen einem Objekt und einer Klasse?",
+          "concept": "Die Klasse ist der Bauplan; das Objekt ist ein konkretes Exemplar",
+          "source_link": "https://academy.zam-os.org/informatik-gymnasium-6/#lesson=inf6-klassen-diagramme",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Klasse ist der Bauplan; das Objekt ist ein konkretes Exemplar",
+              "Die Klasse besitzt konkrete Messwerte, das Objekt hat gar keine Attribute"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die Klasse besitzt konkrete Messwerte, das Objekt hat gar keine Attribute",
+              "reason": "Gerade das konkrete Objekt trägt konkrete Attributwerte (z. B. Breite = 60); die Klasse nennt nur die gemeinsamen Namen."
+            },
+            {
+              "text": "Eine Klasse existiert immer nur für genau ein einziges Objekt",
+              "reason": "Nach dem Bauplan einer Klasse lassen sich beliebig viele gleichartige Objekte erzeugen."
+            }
+          ]
+        },
+        {
+          "id": "01M7G02808YG0RYRKA7SASCWYM",
+          "slug": "inf6-klassen-diagramme-beziehung-pfeil",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was drückt im Objekt- und Klassendiagramm ein mit ‚enthält‘ beschrifteter Pfeil zwischen zwei Kästen aus?",
+          "concept": "Ein übergeordnetes Element umfasst untergeordnete Elemente",
+          "source_link": "https://academy.zam-os.org/informatik-gymnasium-6/#lesson=inf6-klassen-diagramme",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein übergeordnetes Element umfasst untergeordnete Elemente",
+              "Beide Objekte sind aus Versehen genau gleich gefärbt"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Beide Objekte sind aus Versehen genau gleich gefärbt",
+              "reason": "Ein Beziehungspfeil ‚enthält‘ beschreibt eine strukturelle Zuordnung von Container und Teil, nicht eine zufällige Farbe."
+            },
+            {
+              "text": "Der Pfeil löscht das Zielobjekt automatisch beim Speichern",
+              "reason": "Die Enthält-Beziehung zeigt die dauerhafte Zusammensetzung eines Dokuments, kein Löschkommando."
+            }
+          ]
+        },
+        {
+          "id": "01M7G0280973VHX7F4EVZSCBSZ",
+          "slug": "inf6-klassen-diagramme-diagramm-vergleich",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Vergleiche Objektkarte/Objektdiagramm mit Klassenkarte/Klassendiagramm am Beispiel zweier Rechtecke in einem Grafikdokument.",
+          "concept": "Objektdiagramm: konkrete Instanzen mit Attributwerten; Klassendiagramm: allgemeine Baupläne ohne konkrete Einzelwerte.",
+          "source_link": "https://academy.zam-os.org/informatik-gymnasium-6/#lesson=inf6-klassen-diagramme",
+          "sample_solution": "Im Objektdiagramm steht für jedes konkrete Element eine eigene Objektkarte, etwa ‚rahmen1 : RECHTECK‘ mit ‚Breite = 120, Fuellfarbe = blau‘ und ‚box2 : RECHTECK‘ mit ‚Breite = 60, Fuellfarbe = gelb‘, verbunden durch ‚enthält‘-Pfeile von ‚plakat : GRAFIKDOKUMENT‘. Das Klassendiagramm fasst alle gleichartigen Objekte abstrakt zu je einer Klassenkarte (GRAFIKDOKUMENT und RECHTECK) zusammen und notiert Attribut- und Methodennamen ohne konkrete Werte.",
+          "choice_distractors": [
+            {
+              "text": "Im Klassendiagramm steht jedes der beiden Rechtecke doppelt mit eigenen Zahlenwerten",
+              "reason": "Konkrete Zahlenwerte einzelner Exemplare gehören ins Objektdiagramm; im Klassendiagramm steht jede Klasse nur einmal als Vorlage."
+            },
+            {
+              "text": "Das Objektdiagramm enthält nur Methodennamen und verbietet jede Angabe eines Objektnamens",
+              "reason": "Objektkarten zeigen gerade konkrete Objekt- und Attributwerte einer Momentaufnahme."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M7G027ZRMHB0BEGZ4F44BERC",
+      "atom_uri": "urn:zam:atom:01M7G027ZRMHB0BEGZ4F44BERC",
+      "namespace": "zam-academy-informatik-gymnasium-6",
+      "slug": "inf6-vektor-pixelgrafik",
+      "title": "Vektor- und Pixelgrafik",
+      "domain": "informatik/darstellung",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/informatik-gymnasium-6/#lesson=inf6-vektor-pixelgrafik",
+      "prerequisites": [
+        {
+          "atom_id": "01M7G027ZQ8P64AYC8EC7A81CJ",
+          "type": "soft",
+          "rationale": "Baut fachlich auf „Klassen, Objekt- und Klassendiagramme“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-gymnasium-6",
+          "topic_code": "stage-1-informationsdarstellung",
+          "topic_title": "Informationsdarstellung und Objekte"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "nt_gym",
+          "topic_code": "lb2.1",
+          "topic_title": "Informationsdarstellung mit Grafik-, Text- und Multimediadokumenten",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7G0280AT9GDVBTJMNSV8XZG",
+          "slug": "inf6-vektor-pixelgrafik-skalierung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Warum bleibt eine Vektorgrafik auch bei starker Vergrößerung scharf, während eine Pixelgrafik treppig wird?",
+          "concept": "Vektorgrafik beschreibt Objekte geometrisch; Pixel ein festes Raster",
+          "source_link": "https://academy.zam-os.org/informatik-gymnasium-6/#lesson=inf6-vektor-pixelgrafik",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Vektorgrafik beschreibt Objekte geometrisch; Pixel ein festes Raster",
+              "Vektorgrafiken speichern von vornherein unendlich viele einzelne Pixel"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Vektorgrafiken speichern von vornherein unendlich viele einzelne Pixel",
+              "reason": "Keine Datei speichert unendlich viele Pixel; Vektorgrafiken berechnen Kanten anhand von Formeln/Koordinaten jederzeit glatt neu."
+            },
+            {
+              "text": "Pixelgrafiken erlauben grundsätzlich nur Schwarz und Weiß",
+              "reason": "Auch Pixelgrafiken können Millionen Farben darstellen – unscharf werden sie beim Zoomen wegen ihres festen Bildpunktrasters."
+            }
+          ],
+          "replaces": [
+            "01K4YT6J000000000000000J01"
+          ]
+        },
+        {
+          "id": "01M7G0280BMZXPPMN2CT0Q9G3S",
+          "slug": "inf6-vektor-pixelgrafik-praxiswahl",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Für welchen Einsatzzweck wählst du eindeutig eine Vektorgrafik statt einer Pixelgrafik?",
+          "concept": "Für Vereinslogo, Grundrissplan oder technischen Schaltplan",
+          "source_link": "https://academy.zam-os.org/informatik-gymnasium-6/#lesson=inf6-vektor-pixelgrafik",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Für Vereinslogo, Grundrissplan oder technischen Schaltplan",
+              "Für eine naturgetreue Urlaubsfotografie mit sanften Schatten"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Für eine naturgetreue Urlaubsfotografie mit sanften Schatten",
+              "reason": "Natürliche Fotos mit vielen feinen Licht- und Farbverläufen benötigen das feine Bildpunktraster einer Pixelgrafik."
+            },
+            {
+              "text": "Für eine gescannte alte Papierfotografie aus dem Fotoalbum",
+              "reason": "Scans von Fotos liegen als Pixelraster vor und lassen sich nicht direkt sinnvoll in einzelne Flächen zerlegen."
+            }
+          ]
+        },
+        {
+          "id": "01M7G0280C4HNR313E9A1GKKGA",
+          "slug": "inf6-vektor-pixelgrafik-entscheidung",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Beurteile für ‚Foto einer Klassenfahrt‘ und ‚Schullogo für Plakat und Briefkopf‘, welche Grafikart geeignet ist, und begründe anhand der Speicherung.",
+          "concept": "Foto als Pixelgrafik für natürliche Verläufe im Raster; Logo als Vektorgrafik für scharfe Skalierung.",
+          "source_link": "https://academy.zam-os.org/informatik-gymnasium-6/#lesson=inf6-vektor-pixelgrafik",
+          "sample_solution": "Das Klassenfahrt-Foto enthält tausende unregelmäßige Helligkeits- und Farbübergänge, die sich als zweidimensionales Pixelraster am natürlichsten abbilden lassen. Das Schullogo hingegen muss sowohl winzig auf Briefköpfen als auch riesig auf Schulplakaten gestochen scharf erscheinen. Als Vektorgrafik besteht es aus geometrischen Objekten (Rechtecke, Kreise, Textfelder), wird bei jeder Größe exakt neu gezeichnet und erlaubt Einzelkorrekturen an jedem Objekt.",
+          "choice_distractors": [
+            {
+              "text": "Beide Motive immer als kleine Pixelgrafik speichern, weil feste Raster bei starkem Zoom scharf bleiben.",
+              "reason": "Kleine Pixelgrafiken pixeln beim Druck auf ein großes Plakat sichtbar auf und wirken treppig."
+            },
+            {
+              "text": "Das Foto lieber von Hand aus tausend Rechtecken nachzeichnen, damit man eine Vektorgrafik erhält.",
+              "reason": "Fotorealistische Motive aus geometrischen Vektorprimitiven nachzubauen wäre extrem unpraktisch und unnatürlich."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M7G027ZSF5RD2EHQP4QE8VMR",
+      "atom_uri": "urn:zam:atom:01M7G027ZSF5RD2EHQP4QE8VMR",
+      "namespace": "zam-academy-informatik-gymnasium-6",
+      "slug": "inf6-vektorgrafik-ebenen",
+      "title": "Vektorgrafikdokumente: Objekte, Gruppen und Ebenen",
+      "domain": "informatik/darstellung",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/informatik-gymnasium-6/#lesson=inf6-vektorgrafik-ebenen",
+      "prerequisites": [
+        {
+          "atom_id": "01M7G027ZRMHB0BEGZ4F44BERC",
+          "type": "soft",
+          "rationale": "Baut fachlich auf „Vektor- und Pixelgrafik“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-gymnasium-6",
+          "topic_code": "stage-1-informationsdarstellung",
+          "topic_title": "Informationsdarstellung und Objekte"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "nt_gym",
+          "topic_code": "lb2.1",
+          "topic_title": "Informationsdarstellung mit Grafik-, Text- und Multimediadokumenten",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7G0280DMSECAV3XEM2MB471",
+          "slug": "inf6-vektorgrafik-ebenen-klassen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche typischen Klassen modellierst du neben GRAFIKDOKUMENT in einer Vektorgrafik über die Enthält-Beziehung?",
+          "concept": "TEXTFELD, RECHTECK, ELLIPSE und LINIE",
+          "source_link": "https://academy.zam-os.org/informatik-gymnasium-6/#lesson=inf6-vektorgrafik-ebenen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "TEXTFELD, RECHTECK, ELLIPSE und LINIE",
+              "ABSATZ, ZEICHEN, FOLIE und ORDNER"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "ABSATZ, ZEICHEN, FOLIE und ORDNER",
+              "reason": "Absatz und Zeichen gehören zum Textdokument, Folie zum Multimediadokument und Ordner zum Dateisystem."
+            },
+            {
+              "text": "PIXEL, WURZEL, BLATT und QUELLE",
+              "reason": "Vektorgrafiken speichern geometrische Grafikobjekte statt Pixel, und Wurzel/Blatt gehören zu Baumstrukturen."
+            }
+          ]
+        },
+        {
+          "id": "01M7G0280EZSVK6DJB3RBMA7JJ",
+          "slug": "inf6-vektorgrafik-ebenen-ebenen-reihenfolge",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie löst du es im Vektorgrafikprogramm, wenn eine kleine Kreisfläche hinter einem großen farbigen Rechteck versteckt liegt?",
+          "concept": "Ebenenreihenfolge anpassen und Kreis nach vorn legen",
+          "source_link": "https://academy.zam-os.org/informatik-gymnasium-6/#lesson=inf6-vektorgrafik-ebenen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ebenenreihenfolge anpassen und Kreis nach vorn legen",
+              "Den Bildschirm einmal aus- und wieder einschalten"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Den Bildschirm einmal aus- und wieder einschalten",
+              "reason": "Die Anzeige bildet nur die gespeicherte Ebenenreihenfolge ab; ein Neustart verändert keine Stapelreihenfolge."
+            },
+            {
+              "text": "Den Kreis zwingend löschen und die Pixelgröße ändern",
+              "reason": "Löschen entfernt das Objekt; zudem arbeiten Vektorgrafiken mit Objektschichten statt festen Pixeln."
+            }
+          ]
+        },
+        {
+          "id": "01M7G0280FHA3KPD4QAQJ7AWCX",
+          "slug": "inf6-vektorgrafik-ebenen-gruppieren-erklaeren",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre den Nutzen von ‚Gruppieren‘ in der Vektorgrafik anhand eines selbst gezeichneten Symbols (z. B. eines Fahrrads aus Kreisen und Linien).",
+          "concept": "Mehrere Einzelobjekte bilden zusammen eine bewegliche Einheit ohne dauerhafte Verschmelzung.",
+          "source_link": "https://academy.zam-os.org/informatik-gymnasium-6/#lesson=inf6-vektorgrafik-ebenen",
+          "sample_solution": "Besteht ein gezeichnetes Fahrrad aus zwei Kreisen, mehreren Linien und einem Textfeld, müsste man beim Verschieben oder Skalieren sonst jedes Teil einzeln auswählen. Durch ‚Gruppieren‘ werden diese Objekte gemeinsam angesprochen – sie lassen sich als Ganzes verschieben und gleichmäßig vergrößern. Gleichzeitig bleibt die Gruppe bei Bedarf durch ‚Gruppierung aufheben‘ wieder in ihre Ursprungsobjekte zerlegbar.",
+          "choice_distractors": [
+            {
+              "text": "Gruppieren verschmilzt alle Formen zu einer unveränderlichen Pixelgrafik",
+              "reason": "Im Vektorgrafikdokument bleiben gruppierte Formen Vektorobjekte und können jederzeit wieder entgruppiert werden."
+            },
+            {
+              "text": "Gruppieren löscht alle Linien und lässt nur noch das Textfeld übrig",
+              "reason": "Alle Objekte der Gruppe bleiben vollständig mit ihren Attributen erhalten."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M7G027ZTFGPF0FY6N4JJY00C",
+      "atom_uri": "urn:zam:atom:01M7G027ZTFGPF0FY6N4JJY00C",
+      "namespace": "zam-academy-informatik-gymnasium-6",
+      "slug": "inf6-textdokumente",
+      "title": "Textdokumente: Klassen, Attribute und Layoutobjekte",
+      "domain": "informatik/darstellung",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/informatik-gymnasium-6/#lesson=inf6-textdokumente",
+      "prerequisites": [
+        {
+          "atom_id": "01M7G027ZQ8P64AYC8EC7A81CJ",
+          "type": "soft",
+          "rationale": "Baut fachlich auf „Klassen, Objekt- und Klassendiagramme“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-gymnasium-6",
+          "topic_code": "stage-1-informationsdarstellung",
+          "topic_title": "Informationsdarstellung und Objekte"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "nt_gym",
+          "topic_code": "lb2.1",
+          "topic_title": "Informationsdarstellung mit Grafik-, Text- und Multimediadokumenten",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7G0280GY3AX97GQTJ6QJF19",
+          "slug": "inf6-textdokumente-absatz",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Zu welcher Objektebene eines Textdokuments gehören Attribute wie ‚Zeilenabstand‘ oder ‚Ausrichtung‘ (z. B. Blocksatz)?",
+          "concept": "Zur Klasse ABSATZ",
+          "source_link": "https://academy.zam-os.org/informatik-gymnasium-6/#lesson=inf6-textdokumente",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Zur Klasse ABSATZ",
+              "Zur Klasse ZEICHEN"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Zur Klasse ZEICHEN",
+              "reason": "Die Klasse ZEICHEN verwaltet schriftbezogene Merkmale einzelner Buchstaben (z. B. Schriftart, Schriftgröße, Schriftfarbe), nicht die Ausrichtung ganzer Zeilen."
+            },
+            {
+              "text": "Zur Klasse GRAFIKDOKUMENT",
+              "reason": "Das Textdokument besteht aus Textdokument, Absätzen und Zeichen – nicht aus Grafikdokumenten."
+            }
+          ],
+          "replaces": [
+            "01K4YT6J000000000000000J05"
+          ]
+        },
+        {
+          "id": "01M7G0280H0RJENE2DJ25QJWKD",
+          "slug": "inf6-textdokumente-zeichenattribute",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Attribute ordnest du in der Textverarbeitung eindeutig einem Objekt der Klasse ZEICHEN zu?",
+          "concept": "Schriftart, Schriftgröße, Schriftfarbe und Schriftschnitt",
+          "source_link": "https://academy.zam-os.org/informatik-gymnasium-6/#lesson=inf6-textdokumente",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Schriftart, Schriftgröße, Schriftfarbe und Schriftschnitt",
+              "Linker Einzug und Abstand nach dem Absatz"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Linker Einzug und Abstand nach dem Absatz",
+              "reason": "Einzüge und Abstände zwischen Blöcken wirken immer auf den gesamten Absatz und gehören zur Klasse ABSATZ."
+            },
+            {
+              "text": "Dateigröße der Festplatte und Laufwerksbuchstabe",
+              "reason": "Laufwerksbuchstaben betreffen das Dateisystem, nicht die Formatierung einzelner Zeichen."
+            }
+          ]
+        },
+        {
+          "id": "01M7G0280JACASTNEA0QCW7BAB",
+          "slug": "inf6-textdokumente-hierarchie-software",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Beschreibe die Enthält-Struktur von TEXTDOKUMENT, ABSATZ und ZEICHEN und wie du darin Bilder oder Tabellen sinnvoll einbindest.",
+          "concept": "TEXTDOKUMENT enthält ABSATZ sowie BILD oder TABELLE, ABSATZ enthält ZEICHEN.",
+          "source_link": "https://academy.zam-os.org/informatik-gymnasium-6/#lesson=inf6-textdokumente",
+          "sample_solution": "Im Klassendiagramm eines Textdokuments steht oben die Klasse TEXTDOKUMENT, die über Enthält-Beziehungen aus Objekten der Klasse ABSATZ (sowie eingebetteten Objekten wie BILD oder TABELLE) besteht; jeder ABSATZ enthält wiederum einzelne Objekte der Klasse ZEICHEN. Ändert man die Schriftgröße, wirkt das auf Zeichen; ändert man Ausrichtung oder Zeilenabstand, wirkt das auf den ganzen Absatz – unabhängig vom konkreten Textprogramm.",
+          "choice_distractors": [
+            {
+              "text": "Jedes einzelne ZEICHEN enthält direkt mehrere TEXTDOKUMENTE und TABELLEN.",
+              "reason": "Die Hierarchie verläuft von groß nach klein: TEXTDOKUMENT enthält ABSATZ, und ABSATZ enthält ZEICHEN."
+            },
+            {
+              "text": "BILDER und TABELLEN besitzen im TEXTDOKUMENT niemals eigene Attributwerte.",
+              "reason": "Auch eingefügte Bilder und Tabellen besitzen eigene Attribute wie Größe, Umlauf oder Zeilen- und Spaltenzahl."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M7G027ZV2NQWQXYMW7FAFN0R",
+      "atom_uri": "urn:zam:atom:01M7G027ZV2NQWQXYMW7FAFN0R",
+      "namespace": "zam-academy-informatik-gymnasium-6",
+      "slug": "inf6-multimediadokumente",
+      "title": "Multimediadokumente: Folien, Medien und Modi",
+      "domain": "informatik/darstellung",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/informatik-gymnasium-6/#lesson=inf6-multimediadokumente",
+      "prerequisites": [
+        {
+          "atom_id": "01M7G027ZSF5RD2EHQP4QE8VMR",
+          "type": "soft",
+          "rationale": "Baut fachlich auf „Vektorgrafikdokumente: Objekte, Gruppen und Ebenen“ auf."
+        },
+        {
+          "atom_id": "01M7G027ZTFGPF0FY6N4JJY00C",
+          "type": "soft",
+          "rationale": "Baut fachlich auf „Textdokumente: Klassen, Attribute und Layoutobjekte“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-gymnasium-6",
+          "topic_code": "stage-1-informationsdarstellung",
+          "topic_title": "Informationsdarstellung und Objekte"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "nt_gym",
+          "topic_code": "lb2.1",
+          "topic_title": "Informationsdarstellung mit Grafik-, Text- und Multimediadokumenten",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7G0280K1DKFJF09ACD2EEZW",
+          "slug": "inf6-multimediadokumente-modi",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Worin unterscheiden sich Bearbeitungsmodus und Vorführmodus in einem Präsentationsprogramm?",
+          "concept": "Bearbeiten gestaltet Folien; Vorführen zeigt sie im Vollbild",
+          "source_link": "https://academy.zam-os.org/informatik-gymnasium-6/#lesson=inf6-multimediadokumente",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Bearbeiten gestaltet Folien; Vorführen zeigt sie im Vollbild",
+              "Im Vorführmodus wird automatisch jede Grafik gelöscht"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Im Vorführmodus wird automatisch jede Grafik gelöscht",
+              "reason": "Im Vorführmodus werden sämtliche Inhalte sauber im Vollbild abgespielt, ohne Änderungen an der Datei vorzunehmen."
+            },
+            {
+              "text": "Der Bearbeitungsmodus funktioniert nur ohne Stromanschluss",
+              "reason": "Beide Modi gehören regulär zur Präsentationssoftware – sie trennen Gestalten vom eigentlichen Vortrag."
+            }
+          ]
+        },
+        {
+          "id": "01M7G0280MHXS387N9K24K9NRK",
+          "slug": "inf6-multimediadokumente-animation-methode",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie lässt sich eine Objektanimation auf einer Folie objektorientiert beschreiben?",
+          "concept": "Als Methodenaufruf an einem Objekt auf der Folie",
+          "source_link": "https://academy.zam-os.org/informatik-gymnasium-6/#lesson=inf6-multimediadokumente",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Als Methodenaufruf an einem Objekt auf der Folie",
+              "Als ständige Verkleinerung der Bildschirmauflösung"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Als ständige Verkleinerung der Bildschirmauflösung",
+              "reason": "Objektanimationen steuern gezielt einzelne Elemente auf der Folie über deren Animationseigenschaften und Methoden."
+            },
+            {
+              "text": "Als automatisches Löschen der Datei bei jedem Klick",
+              "reason": "Beim Klick startet die definierte Animationsmethode eines Elements oder der Wechsel zur nächsten Folie."
+            }
+          ]
+        },
+        {
+          "id": "01M7G0280N82637JNTZ5HFCHP3",
+          "slug": "inf6-multimediadokumente-struktur-modi",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Modelliere den Grundaufbau eines Multimediadokuments mit MULTIMEDIADOKUMENT, FOLIE, TEXTFELD, BILD und AUDIO und erkläre das Wechselspiel beider Modi.",
+          "concept": "MULTIMEDIADOKUMENT enthält FOLIEN; jede FOLIE enthält Medienobjekte; Bearbeitungsmodus editiert, Vorführmodus präsentiert.",
+          "source_link": "https://academy.zam-os.org/informatik-gymnasium-6/#lesson=inf6-multimediadokumente",
+          "sample_solution": "Ein Multimediadokument gehört zur Klasse MULTIMEDIADOKUMENT und enthält geordnete Objekte der Klasse FOLIE. Jede FOLIE wiederum enthält Elemente verschiedener Klassen wie TEXTFELD, BILD oder AUDIO, die jeweils eigene Attribute (z. B. Position, Größe, Dateiname) und Methoden (z. B. einblenden(), abspielen()) besitzen. Im Bearbeitungsmodus legt man diese Objekte an und ordnet ihre Attribute, im Vorführmodus prüft und zeigt man Übergänge und Animationen im Vollbild.",
+          "choice_distractors": [
+            {
+              "text": "Ein Multimediadokument darf grundsätzlich genau eine Folie und nur Textfelder enthalten",
+              "reason": "Gerade mehrere Folien mit kombinierten Text-, Bild- und Audioobjekten machen ein Multimediadokument aus."
+            },
+            {
+              "text": "Audioobjekte und Bilder dürfen in Präsentationen nur im Bearbeitungsmodus abgespielt werden",
+              "reason": "Während des Vortrags spielt der Vorführmodus Medien, Animationen und Effekte für das Publikum ab."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M7G027ZW1F847ZEFFF1DKRFX",
+      "atom_uri": "urn:zam:atom:01M7G027ZW1F847ZEFFF1DKRFX",
+      "namespace": "zam-academy-informatik-gymnasium-6",
+      "slug": "inf6-praesentation-qualitaet",
+      "title": "Präsentationen planen und gestalten",
+      "domain": "informatik/praesentation",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/informatik-gymnasium-6/#lesson=inf6-praesentation-qualitaet",
+      "prerequisites": [
+        {
+          "atom_id": "01M7G027ZV2NQWQXYMW7FAFN0R",
+          "type": "soft",
+          "rationale": "Baut fachlich auf „Multimediadokumente: Folien, Medien und Modi“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-gymnasium-6",
+          "topic_code": "stage-2-praesentation-projekt",
+          "topic_title": "Projekt: Multimediapräsentation"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "nt_gym",
+          "topic_code": "lb2.2",
+          "topic_title": "Projekt: Erstellen einer Multimediapräsentation",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7G0280P12X219ENGDCT7Z4Q",
+          "slug": "inf6-praesentation-qualitaet-schrift-kontrast",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Vorgabe sichert Lesbarkeit von Text auf einer Präsentationsfolie auch aus den hinteren Reihen?",
+          "concept": "Ausreichend große Schrift ab 20 pt und sehr hoher Kontrast",
+          "source_link": "https://academy.zam-os.org/informatik-gymnasium-6/#lesson=inf6-praesentation-qualitaet",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ausreichend große Schrift ab 20 pt und sehr hoher Kontrast",
+              "Helle gelbe Schriftgröße 10 pt auf weißem Hintergrund"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Helle gelbe Schriftgröße 10 pt auf weißem Hintergrund",
+              "reason": "Winzige Schrift mit kaum Helligkeitsunterschied zum Hintergrund lässt sich schon aus wenigen Metern kaum entziffern."
+            },
+            {
+              "text": "Langer ausformulierter Text bis an jeden Rand der Folie",
+              "reason": "Vollgeschriebene Folien lenken das Publikum ab, weil niemand gleichzeitig lange Sätze lesen und zuhören kann."
+            }
+          ]
+        },
+        {
+          "id": "01M7G0280QGRRJ7B0D86G9SRG4",
+          "slug": "inf6-praesentation-qualitaet-animation-ziel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wann setzt du Animationen in einer Schülerpräsentation sinnvoll und zielgerichtet ein?",
+          "concept": "Zum schrittweisen Einblenden von Stichpunkten oder Abläufen",
+          "source_link": "https://academy.zam-os.org/informatik-gymnasium-6/#lesson=inf6-praesentation-qualitaet",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Zum schrittweisen Einblenden von Stichpunkten oder Abläufen",
+              "Auf jedem einzelnen Wort mit Dreh- und Hüpf-Effekten"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Auf jedem einzelnen Wort mit Dreh- und Hüpf-Effekten",
+              "reason": "Verspielte Daueranimationen ermüden die Zuschauer und lenken vom Inhalt des Referats ab."
+            },
+            {
+              "text": "Damit überhaupt kein Text auf den Folien erscheinen muss",
+              "reason": "Animationen ersetzen keine klaren Stichpunkte, sondern bauen sie passend zum gesprochenen Vortrag auf."
+            }
+          ]
+        },
+        {
+          "id": "01M7G0280RCHNPA9APZZASQNSY",
+          "slug": "inf6-praesentation-qualitaet-kriterien-zeit",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Ein Vortrag darf 5 Minuten dauern; ein Entwurf hat 8 Folien mit je 90 Wörtern Fließtext in 14 pt. Nenne drei konkrete Verbesserungen.",
+          "concept": "Stichpunkte statt Fließtext, Schrift ab 20 pt wählen, rund vier Inhaltsfolien.",
+          "source_link": "https://academy.zam-os.org/informatik-gymnasium-6/#lesson=inf6-praesentation-qualitaet",
+          "sample_solution": "Erstens muss der Fließtext radikal auf etwa 5 bis 7 knappe Stichpunkte je Folie gekürzt werden, damit Zuhörer folgen können. Zweitens gehört die Schriftgröße von 14 pt auf mindestens 20 bis 24 pt (Überschrift ab ca. 32 pt) mit starkem Hell-Dunkel-Kontrast. Drittens passen 8 dichte Folien kaum in 5 Minuten (300 s): Nach Abzug von Begrüßung, Titel- und Quellenfolie bleiben meist nur rund 45–60 s pro Folie, also ca. 4–5 klare Inhaltsfolien.",
+          "choice_distractors": [
+            {
+              "text": "Einfach schneller sprechen und noch zwei weitere Textfolien hinten einfügen.",
+              "reason": "Durch Hektik versteht das Publikum weniger; eine realistische Folienzahl respektiert den vorgegebenen Zeitrahmen."
+            },
+            {
+              "text": "Schrift kleiner stellen, damit je Folie rund 150 Wörter Fließtext Platz haben.",
+              "reason": "Je mehr Text auf einer Folie steht, desto schlechter unterstützt sie den freien Vortrag."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M7G027ZXT93HNVZG8412DFTX",
+      "atom_uri": "urn:zam:atom:01M7G027ZXT93HNVZG8412DFTX",
+      "namespace": "zam-academy-informatik-gymnasium-6",
+      "slug": "inf6-urheberrecht-quellen",
+      "title": "Urheberrecht und Quellenangaben",
+      "domain": "informatik/praesentation",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/informatik-gymnasium-6/#lesson=inf6-urheberrecht-quellen",
+      "prerequisites": [
+        {
+          "atom_id": "01M7G027ZW1F847ZEFFF1DKRFX",
+          "type": "soft",
+          "rationale": "Baut fachlich auf „Präsentationen planen und gestalten“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-gymnasium-6",
+          "topic_code": "stage-2-praesentation-projekt",
+          "topic_title": "Projekt: Multimediapräsentation"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "nt_gym",
+          "topic_code": "lb2.2",
+          "topic_title": "Projekt: Erstellen einer Multimediapräsentation",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7G0280S9B1CCDRG799FYQM3",
+          "slug": "inf6-urheberrecht-quellen-suchmaschine",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Warum genügt ‚Quelle: Google‘ unter einem heruntergeladenen Foto auf deiner Folie nicht?",
+          "concept": "Suchmaschinen sind keine Urheber und zeigen keine Erlaubnis",
+          "source_link": "https://academy.zam-os.org/informatik-gymnasium-6/#lesson=inf6-urheberrecht-quellen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Suchmaschinen sind keine Urheber und zeigen keine Erlaubnis",
+              "Weil Google nur bei Vektorgrafiken als gültiger Autor zählt"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Weil Google nur bei Vektorgrafiken als gültiger Autor zählt",
+              "reason": "Auch bei Vektorgrafiken hat stets der konkrete Ersteller die Rechte, niemals eine Suchmaschine."
+            },
+            {
+              "text": "Weil ‚Google‘ bei Referaten im Fach Deutsch nicht geschrieben werden darf",
+              "reason": "Die Regel gilt fachübergreifend im Urheberrecht: Eine Suchmaschine belegt weder Urheber noch Erlaubnis."
+            }
+          ]
+        },
+        {
+          "id": "01M7G0280T9S8TAFE3TN2DR1B8",
+          "slug": "inf6-urheberrecht-quellen-bestandteile",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Angaben gehören zu einer vollständigen Quellenangabe für ein frei lizenziertes Internetbild?",
+          "concept": "Urheber, Titel, genaue Internetadresse, Abrufdatum und Lizenz",
+          "source_link": "https://academy.zam-os.org/informatik-gymnasium-6/#lesson=inf6-urheberrecht-quellen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Urheber, Titel, genaue Internetadresse, Abrufdatum und Lizenz",
+              "Nur der Dateiname ‚bild1.jpg‘ und das eigene Geburtsdatum"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Nur der Dateiname ‚bild1.jpg‘ und das eigene Geburtsdatum",
+              "reason": "Ein beliebiger Dateiname nennt weder die ursprüngliche Internetadresse noch den Urheber oder die freie Lizenz."
+            },
+            {
+              "text": "Bloß das kleine Zeichen ‚©‘ ohne weitere Angaben darunter",
+              "reason": "Ein Zeichen allein sagt nicht, wer das Bild geschaffen hat oder wo man es nachprüfen kann."
+            }
+          ]
+        },
+        {
+          "id": "01M7G0280VB34E5XN73JY1E4J2",
+          "slug": "inf6-urheberrecht-quellen-urheberrecht-praxis",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Du möchtest für ein öffentlich gezeigtes Schulprojekt Fotos und Musik einbauen. Vergleiche drei rechtssichere Wege und nenne eine vollständige Beispielquelle.",
+          "concept": "Eigene Werke nutzen, CC-Lizenzen belegen oder Erlaubnis einholen und vollständig zitieren.",
+          "source_link": "https://academy.zam-os.org/informatik-gymnasium-6/#lesson=inf6-urheberrecht-quellen",
+          "sample_solution": "Am sichersten verwendest du eigene Fotos, Zeichnungen oder Texte – dann bist du selbst Urheber. Alternativ nutzt du Medien unter freier Lizenz wie CC0 oder CC BY aus freien Archiven und erfüllst genau die Bedingungen (z. B. Namensnennung). Für fremde geschützte Musik auf einer öffentlichen Webseite brauchst du eine Erlaubnis. Vollständige Quelle: Foto ‚Honigbiene‘ von Anna Beispiel, Wikimedia Commons, CC BY-SA, abgerufen am 14. November 2026 unter commons.wikimedia.org/wiki/File:Honigbiene.jpg.",
+          "choice_distractors": [
+            {
+              "text": "Fremde Fotos dürfen ohne jede Lizenz genutzt werden, solange kein kleines ©-Zeichen erscheint.",
+              "reason": "Das Urheberrecht schützt Fotos und Musik automatisch mit ihrer Entstehung – ganz unabhängig von einem Symbol."
+            },
+            {
+              "text": "Für Schulprojekte darf jeder aktuelle Popsong beliebig und öffentlich im Netz hochgeladen werden.",
+              "reason": "Die gesetzliche Ausnahme für den Unterricht deckt keine freie Veröffentlichung für alle im Internet ab."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M7G027ZY9JPHXV0WMABWTZZE",
+      "atom_uri": "urn:zam:atom:01M7G027ZY9JPHXV0WMABWTZZE",
+      "namespace": "zam-academy-informatik-gymnasium-6",
+      "slug": "inf6-baumstrukturen",
+      "title": "Hierarchische Strukturen und Baumdiagramme",
+      "domain": "informatik/dateisystem",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/informatik-gymnasium-6/#lesson=inf6-baumstrukturen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-gymnasium-6",
+          "topic_code": "stage-3-dateisystem",
+          "topic_title": "Dateisystem als hierarchische Struktur"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "nt_gym",
+          "topic_code": "lb2.3",
+          "topic_title": "Hierarchische Informationsstrukturen – Dateisystem",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7G0280WEH7M6WXHRF9KY6VZ",
+          "slug": "inf6-baumstrukturen-wurzel-blatt",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie heißen im Baumdiagramm der genau eine oberste Knoten ohne Vorgänger und ein Endknoten ohne Nachfolger?",
+          "concept": "Wurzel (oben ohne Vorgänger) und Blatt (Endknoten ohne Nachfolger)",
+          "source_link": "https://academy.zam-os.org/informatik-gymnasium-6/#lesson=inf6-baumstrukturen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Wurzel (oben ohne Vorgänger) und Blatt (Endknoten ohne Nachfolger)",
+              "Blatt (ganz oben) und Pfad (ohne Nachfolger)"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Blatt (ganz oben) und Pfad (ohne Nachfolger)",
+              "reason": "Die Wurzel steht als Ausgangspunkt oben ohne Vorgänger; Blätter sind die Endknoten ohne eigene Kinder."
+            },
+            {
+              "text": "Kante (oberster Punkt) und innerer Knoten (Endpunkt)",
+              "reason": "Kanten sind Verbindungslinien zwischen Knoten; innere Knoten haben mindestens ein Kind."
+            }
+          ]
+        },
+        {
+          "id": "01M7G0280XN3CX3YGY50PZFQCT",
+          "slug": "inf6-baumstrukturen-kantenregel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie viele Kanten verbinden die Knoten in einem Baum mit genau 12 Knoten?",
+          "concept": "Genau 11 Kanten (allgemein n − 1 Kanten)",
+          "source_link": "https://academy.zam-os.org/informatik-gymnasium-6/#lesson=inf6-baumstrukturen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Genau 11 Kanten (allgemein n − 1 Kanten)",
+              "Genau 12 Kanten (genauso viele wie Knoten)"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Genau 12 Kanten (genauso viele wie Knoten)",
+              "reason": "Da nur die oberste Wurzel keine Kante nach oben besitzt, hängen alle übrigen 11 Knoten an je einer eigenen Kante."
+            },
+            {
+              "text": "Mindestens 24 Kanten durch geschlossene Kreise",
+              "reason": "Echte Bäume besitzen niemals geschlossene Kreise; jedes Kind ist genau einmal mit seinem Vorgänger verbunden."
+            }
+          ]
+        },
+        {
+          "id": "01M7G0280Y5HS7Y6NTHC6QJA28",
+          "slug": "inf6-baumstrukturen-begriffe-baum",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre am Beispiel eines Stammbaums oder Turnierbaums alle fünf Fachbegriffe: Wurzel, innerer Knoten, Blatt, Kante und Pfad.",
+          "concept": "Wurzel = Spitze; innerer Knoten = Verzweigung; Blatt = Ende; Kante = direkte Verbindung; Pfad = Weg dazwischen.",
+          "source_link": "https://academy.zam-os.org/informatik-gymnasium-6/#lesson=inf6-baumstrukturen",
+          "sample_solution": "Im Turnierbaum steht ganz oben das Finale als einzige Wurzel (ohne Vorgänger). Die Halbfinale darunter verzweigen weiter und sind innere Knoten mit Kindern. Ganz unten enden die Viertelfinale als Blätter ohne weitere Nachfolger. Jede einzelne Linie von einer Runde zur direkt nächsten ist eine Kante, und der eindeutige Weg über mehrere Kanten vom Finale bis zu einem bestimmten Viertelfinale heißt Pfad.",
+          "choice_distractors": [
+            {
+              "text": "Im Stammbaum darf ein Knoten jederzeit durch einen Kreis von unten wieder seine eigene Wurzel werden",
+              "reason": "Geschlossene Kreise sind in einem Baum ausgeschlossen: Über- und Unterordnung verlaufen stets eindeutig von der Wurzel aus."
+            },
+            {
+              "text": "Jeder Knoten in der Mitte ohne Kinder zählt trotzdem immer als innerer Knoten und niemals als Blatt",
+              "reason": "Sobald ein Knoten keine eigenen Nachfolger hat, zählt er unabhängig von seiner Tiefe als Blatt."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M7G027ZZ1QG8M4J4VSTQW590",
+      "atom_uri": "urn:zam:atom:01M7G027ZZ1QG8M4J4VSTQW590",
+      "namespace": "zam-academy-informatik-gymnasium-6",
+      "slug": "inf6-dateisystem-oop",
+      "title": "Dateisystem: Ordner, Dateien und OOP-Sicht",
+      "domain": "informatik/dateisystem",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/informatik-gymnasium-6/#lesson=inf6-dateisystem-oop",
+      "prerequisites": [
+        {
+          "atom_id": "01M7G027ZQ8P64AYC8EC7A81CJ",
+          "type": "soft",
+          "rationale": "Baut fachlich auf „Klassen, Objekt- und Klassendiagramme“ auf."
+        },
+        {
+          "atom_id": "01M7G027ZY9JPHXV0WMABWTZZE",
+          "type": "soft",
+          "rationale": "Baut fachlich auf „Hierarchische Strukturen und Baumdiagramme“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-gymnasium-6",
+          "topic_code": "stage-3-dateisystem",
+          "topic_title": "Dateisystem als hierarchische Struktur"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "nt_gym",
+          "topic_code": "lb2.3",
+          "topic_title": "Hierarchische Informationsstrukturen – Dateisystem",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7G0280ZR2P6GC8JFFR7EKQV",
+          "slug": "inf6-dateisystem-oop-rekursiv",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was beschreibt die rekursive Enthält-Beziehung der Klasse ORDNER im Klassendiagramm des Dateisystems?",
+          "concept": "Ein Ordner kann neben Dateien wieder weitere Ordner enthalten",
+          "source_link": "https://academy.zam-os.org/informatik-gymnasium-6/#lesson=inf6-dateisystem-oop",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein Ordner kann neben Dateien wieder weitere Ordner enthalten",
+              "Jede einzelne Datei darf beliebig viele Ordner speichern"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Jede einzelne Datei darf beliebig viele Ordner speichern",
+              "reason": "Dateien sind im Dateibaum stets Blätter; nur Container der Klasse ORDNER nehmen weitere Ordner und Dateien auf."
+            },
+            {
+              "text": "Beim Umbenennen wird jeder Ordner sofort doppelt angelegt",
+              "reason": "Rekursive Beziehung heißt, dass Ordner auf sich selbst als mögliche Inhaltsklasse verweisen (Ordner in Ordnern)."
+            }
+          ]
+        },
+        {
+          "id": "01M7G02810MV636AKQDGVDSGW7",
+          "slug": "inf6-dateisystem-oop-ordner-vs-datei",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Rolle übernehmen Dateien und Ordner bei der Baumstruktur eines Dateisystems?",
+          "concept": "Ordner bilden Wurzel und innere Knoten, Dateien stets die Blätter",
+          "source_link": "https://academy.zam-os.org/informatik-gymnasium-6/#lesson=inf6-dateisystem-oop",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ordner bilden Wurzel und innere Knoten, Dateien stets die Blätter",
+              "Dateien liegen oben als innere Knoten, Ordner stets als Endblätter"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Dateien liegen oben als innere Knoten, Ordner stets als Endblätter",
+              "reason": "Dateien speichern Nutzdaten und schließen einen Pfad ab (Blätter), während Ordner Unterordner und Dateien bündeln."
+            },
+            {
+              "text": "Im Dateisystem bekommen alle Dateien automatisch die Klasse ORDNER",
+              "reason": "Dateien (Klasse DATEI) und Ordner (Klasse ORDNER) bilden im Modell zwei klar getrennte Klassen."
+            }
+          ]
+        },
+        {
+          "id": "01M7G0281107Z5PR7CRXTKQ711",
+          "slug": "inf6-dateisystem-oop-oop-und-manager",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Stelle ein kleines Verzeichnis (‚Schule‘ mit Unterordner ‚Info‘ und darin ‚Plakat.svg‘) einmal als Objektdiagramm und einmal als Klassendiagramm vor und nenne zwei Dateimanager-Regeln.",
+          "concept": "Objektdiagramm mit Karten, Klassendiagramm aus ORDNER und DATEI, klare Unterordner mit sprechenden Namen.",
+          "source_link": "https://academy.zam-os.org/informatik-gymnasium-6/#lesson=inf6-dateisystem-oop",
+          "sample_solution": "Im Objektdiagramm stehen konkrete Objektkarten wie ‚Schule : ORDNER‘, ‚Info : ORDNER‘ und ‚Plakat : DATEI‘ mit ‚enthält‘-Pfeilen zwischen ihnen. Abstrahiert genügen im Klassendiagramm die zwei Klassen ‚ORDNER‘ (enthält ‚DATEI‘ sowie rekursiv ‚ORDNER‘) und ‚DATEI‘. Im Dateimanager hält man solche Bäume sauber durch klare thematische Unterordner (z. B. nach Fach) und sprechende Dateinamen ohne problematische Sonderzeichen.",
+          "choice_distractors": [
+            {
+              "text": "Für jede neue Datei im Schulnetz zeichnet man sofort eine eigene neue Klasse ins Klassendiagramm.",
+              "reason": "Das Klassendiagramm beschreibt nicht einzelne Dokumente, sondern den allgemeinen Aufbau mit den zwei Klassen ORDNER und DATEI."
+            },
+            {
+              "text": "Alle Dateien ohne sprechende Namen auf dem Desktop zu sammeln beschleunigt jede Suche deutlich.",
+              "reason": "Unsortierte Sammlungen ohne sprechende Namen führen bei wachsendem Bestand dazu, dass Dateien schwer wiederzufinden sind."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M7G028002MX9BESC3ATFR5J7",
+      "atom_uri": "urn:zam:atom:01M7G028002MX9BESC3ATFR5J7",
+      "namespace": "zam-academy-informatik-gymnasium-6",
+      "slug": "inf6-pfade-dateizugriff",
+      "title": "Dateipfade angeben und verfolgen",
+      "domain": "informatik/dateisystem",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/informatik-gymnasium-6/#lesson=inf6-pfade-dateizugriff",
+      "prerequisites": [
+        {
+          "atom_id": "01M7G027ZZ1QG8M4J4VSTQW590",
+          "type": "soft",
+          "rationale": "Baut fachlich auf „Dateisystem: Ordner, Dateien und OOP-Sicht“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-gymnasium-6",
+          "topic_code": "stage-3-dateisystem",
+          "topic_title": "Dateisystem als hierarchische Struktur"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "nt_gym",
+          "topic_code": "lb2.3",
+          "topic_title": "Hierarchische Informationsstrukturen – Dateisystem",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7G02812CJCW8KSEN5HC7ZMK",
+          "slug": "inf6-pfade-dateizugriff-absolut-relativ",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wodurch unterscheidet sich ein absoluter Pfad von einem relativen Pfad im Dateisystem?",
+          "concept": "Absolut beginnt an der Wurzel; relativ ab dem aktuellen Ordner",
+          "source_link": "https://academy.zam-os.org/informatik-gymnasium-6/#lesson=inf6-pfade-dateizugriff",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Absolut beginnt an der Wurzel; relativ ab dem aktuellen Ordner",
+              "Absolut enthält nur den Dateinamen, relativ immer das Laufwerk"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Absolut enthält nur den Dateinamen, relativ immer das Laufwerk",
+              "reason": "Gerade umgekehrt: Der absolute Pfad beginnt ganz oben bei Laufwerk/Wurzel (z. B. H:\\ oder /), der relative spart diesen Teil ab dem Arbeitsordner."
+            },
+            {
+              "text": "Relative Pfade dürfen niemals einen Unterordner enthalten",
+              "reason": "Auch ein relativer Pfad darf über mehrere tiefere Unterordner (z. B. Bilder\\Logo.svg) führen."
+            }
+          ]
+        },
+        {
+          "id": "01M7G02813KR1X4TXNVBYE40MR",
+          "slug": "inf6-pfade-dateizugriff-trennzeichen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Zeichen trennen in Dateipfaden aufeinanderfolgende Ordner und Dateien (z. B. Windows vs. Netzwerk/Linux)?",
+          "concept": "Backslash ‚\\‘ unter Windows und Schrägstrich ‚/‘ unter Linux/Netz",
+          "source_link": "https://academy.zam-os.org/informatik-gymnasium-6/#lesson=inf6-pfade-dateizugriff",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Backslash ‚\\‘ unter Windows und Schrägstrich ‚/‘ unter Linux/Netz",
+              "Immer ein Semikolon ‚;‘ am Ende jedes Ordnernamens"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Immer ein Semikolon ‚;‘ am Ende jedes Ordnernamens",
+              "reason": "Das Semikolon dient nicht als Verzeichnistrenner in Pfaden; dafür nutzt Windows ‚\\‘ und Linux/macOS/Web ‚/‘."
+            },
+            {
+              "text": "Ein Pluszeichen ‚+‘ vor jedem Unterordner",
+              "reason": "Ordnernamen im Pfad werden durch ‚\\‘ oder ‚/‘ getrennt, niemals durch Rechenzeichen wie ‚+‘."
+            }
+          ]
+        },
+        {
+          "id": "01M7G02814YPHDFXFKXKB5H7QR",
+          "slug": "inf6-pfade-dateizugriff-pfad-netzwerk",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Du stehst im Ordner ‚H:\\Klasse6‘ auf einem schulischen Netzlaufwerk. Gib absoluten und relativen Pfad zur Datei ‚Logo.svg‘ im Unterordner ‚Info\\Bilder‘ an und erkläre den Nutzen im Netz.",
+          "concept": "Absolut: H:\\Klasse6\\Info\\Bilder\\Logo.svg; relativ ab Klasse6: Info\\Bilder\\Logo.svg; ermöglicht eindeutigen Serverzugriff.",
+          "source_link": "https://academy.zam-os.org/informatik-gymnasium-6/#lesson=inf6-pfade-dateizugriff",
+          "sample_solution": "Der absolute Pfad startet an der Netzlaufwerk-Wurzel und lautet ‚H:\\Klasse6\\Info\\Bilder\\Logo.svg‘ (bzw. mit Schrägstrich). Da du dich bereits im Ordner ‚Klasse6‘ befindest, kürzt der relative Pfad den oberen Teil ab und lautet ‚Info\\Bilder\\Logo.svg‘. Durch solche eindeutigen Pfadangaben kann jeder Schulrechner im Netzwerk dieselben Dateien gezielt auf dem zentralen Server aufrufen.",
+          "choice_distractors": [
+            {
+              "text": "Auf Netzlaufwerken funktionieren grundsätzlich nur relative Pfade ohne Laufwerksbuchstaben",
+              "reason": "Gerade laufwerks- oder rechnerübergreifend machen absolute Pfade mit Laufwerk oder Serveradresse das Ziel eindeutig."
+            },
+            {
+              "text": "Wenn man ‚Bilder‘ in ‚Grafiken‘ umbenennt, bleibt ‚H:\\Klasse6\\Info\\Bilder\\Logo.svg‘ trotzdem weiter gültig",
+              "reason": "Da ein Pfad über die exakten Knoten- und Ordnernamen läuft, muss er nach dem Umbenennen eines übergeordneten Ordners angepasst werden."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

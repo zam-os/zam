@@ -1,0 +1,247 @@
+{
+  "schema": 1,
+  "status": "approved",
+  "approved": "2026-11-14",
+  "source": "Thomas am 2026-11-14 in der Claude-Code-Sitzung (Desktop), in der das Paket gebaut wurde, nach Eröffnung von zam-os/zam-academy#136: „Mapping freigegeben, 4 A und Ausmusterung J04 ok“. Die Freigabe umfasst die vier A-Übernahmen (mensch J01, pflanzen J03, pflanzen J05, natur-technik J03), die Stilllegung von pflanzen J04 (01K4YB5P000000000000000J04) mit erhaltener Historie und lässt die übrigen 19 C-Karten aktiv. Ab der ersten Veröffentlichung (Zellversion 2026.11.1) tragen die vier Nachfolger je ein replaces auf ihre alte Karte.",
+  "note": "Mapping for the three Gymnasium Grade 5 cells in zam-os/zam that no other package has claimed (biologie-realschule-5 and nt-mittelschule-5 left them at their school type). 4 A (replace), 0 B, 20 C (19 keep active, 1 retired). Open question for Thomas, outside this approval: the NT cell also covers NT5 Lernbereich 1 (Naturwissenschaftliches Arbeiten) and old Informatik content; should a future NT5 Lernbereich 1 package share it?",
+  "source_repository": "zam-os/zam",
+  "source_commit": "85d871e370414d42557b229cd3149e2e4ae142b3",
+  "sources": [
+    {
+      "file": "tests/fixtures/de-by-gymnasium-5-biologie-mensch-skelett-sexualbiologie-kvt.json",
+      "tile_id": "de-by:gymnasium-5-biologie-mensch-skelett-sexualbiologie",
+      "version": "2026.08.1",
+      "sha256": "5cacb9bd044644821d5c0275bc5d5b2e846bf2ce6f9d49a3aeaff688d5b8ffc9"
+    },
+    {
+      "file": "tests/fixtures/de-by-gymnasium-5-biologie-pflanzen-bluetenbau-samen-kvt.json",
+      "tile_id": "de-by:gymnasium-5-biologie-pflanzen-bluetenbau-samen",
+      "version": "2026.08.1",
+      "sha256": "d3f1a0ea4abbe60fa9b0978a0bc6f554d0e75b5e7068609ed4a2ddf5e46bb52d"
+    },
+    {
+      "file": "tests/fixtures/de-by-gymnasium-5-natur-technik-mikroskop-experiment-oop-kvt.json",
+      "tile_id": "de-by:gymnasium-5-natur-technik-mikroskop-experiment-oop",
+      "version": "2026.08.1",
+      "sha256": "58bbf9d30d0283acc6c8a94604a25890ae7214e231871a0789550cc7bfdca02a"
+    }
+  ],
+  "rows": [
+    {
+      "de_by_cell": "de-by:gymnasium-5-biologie-mensch-skelett-sexualbiologie",
+      "de_by_id": "01K4YB5M000000000000000J01",
+      "de_by_question": "Welche biologische Funktion erfüllen die elastischen Knorpelscheiben (Bandscheiben) zwischen den knöchernen Wirbelkörpern der menschlichen Wirbelsäule?",
+      "category": "A",
+      "academy_slug": "bg5-skelett-check",
+      "action": "replace",
+      "note": "Same atomic retrieval: function of the intervertebral discs (shock absorption and flexibility); the successor asks exactly this as its quick check."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-5-biologie-mensch-skelett-sexualbiologie",
+      "de_by_id": "01K4YB5M000000000000000J02",
+      "de_by_question": "Erkläre die funktionelle Anatomie des menschlichen Skeletts (Schädel, Thorax mit 12 Rippenpaaren zum Schutz von Herz und Lunge, Schulter- und Beckengürtel, Extremitäten), beschreibe die Doppel-S-Krümmung der Wirbelsäule als evolutionäre Anpassung an den aufrechten Gang und analysiere den mikroskopischen Leichtbau eines Röhrenknochens (Knochenhaut / Periost, kompakte Rinde, schwammartige Spongiosa mit Knochenbälkchen entlang der Spannungslinien, Markhöhle mit rotem und gelbem Knochenmark).",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "note": "Composite prompt on the whole skeleton including microscopic bone structure (Kompakta, Spongiosa, bone marrow); beyond NT5 2.3 and not kept on one successor."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-5-biologie-mensch-skelett-sexualbiologie",
+      "de_by_id": "01K4YB5M000000000000000J03",
+      "de_by_question": "Über welche elastischen, reißfesten Bindegewebsstränge sind Skelettmuskeln fest mit den Hebelknochen verbunden?",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "note": "Tendons connect muscle and bone; the package teaches this in bg5-gegenspieler but asks no card with this exact retrieval."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-5-biologie-mensch-skelett-sexualbiologie",
+      "de_by_id": "01K4YB5M000000000000000J04",
+      "de_by_question": "Beschreibe den Feinbau eines echten Gelenks (Gelenkkopf, Gelenkpfanne mit Knorpelüberzug, Gelenkkapsel, Gelenkspalt mit Synovia / Gelenkschmiere, Haltebänder), vergleiche die 4 Gelenktypen nach ihren Freiheitsgraden (Kugelgelenk: Schulter/Hüfte, 3 Achsen; Scharniergelenk: Ellenbogen/Knie, 1 Achse; Sattelgelenk: Daumen, 2 Achsen; Dreh-/Zapfengelenk: Kopfgelenk/Radius-Ulna, 1 Rotationsachse) und erkläre das Antagonistenprinzip am Beispiel von Armbeuger (Bizeps) und Armstrecker (Trizeps).",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "note": "Composite joint prompt (synovia, four joint types, antagonists) spread over bg5-gelenke and bg5-gegenspieler; one history cannot be split."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-5-biologie-mensch-skelett-sexualbiologie",
+      "de_by_id": "01K4YB5M000000000000000J05",
+      "de_by_question": "Welche beiden weiblichen Sexualhormone steuern im Eierstock und in der Gebärmutter den ca. 28-tägigen Menstruationszyklus?",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "note": "Hormonal control of the cycle (oestrogen, progesterone); NT5 2.3 teaches a simplified cycle without hormonal regulation, so this belongs to Biologie 8."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-5-biologie-mensch-skelett-sexualbiologie",
+      "de_by_id": "01K4YB5M000000000000000J06",
+      "de_by_question": "Gliedere primäre Geschlechtsmerkmale (bei Geburt vorhanden: Penis, Hoden vs. Vulva, Vagina, Uterus, Ovarien) und sekundäre Geschlechtsmerkmale (Entwicklung in der Pubertät durch Testosteron/Östrogen: Stimmbruch, Bartwuchs, Brustentwicklung, Schambehaarung), beschreibe die 4 Phasen des 28-tägigen Menstruationszyklus (1. Menstruation/Regelblutung Tag 1–5, 2. Follikel- und Proliferationsphase, 3. Eisprung/Ovulation um Tag 14, 4. Lutealphase mit Gelbkörper) und erläutere die seelischen und sozialen Veränderungen während der Pubertät.",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "note": "Composite prompt on primary and secondary sex characteristics with the hormonal cycle; the hormone part is outside NT5."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-5-biologie-mensch-skelett-sexualbiologie",
+      "de_by_id": "01K4YB5M000000000000000J07",
+      "de_by_question": "Wie nennt man das gemeinsame Organ aus mütterlichem und embryonalem Gewebe, über das das Ungeborene während der Schwangerschaft im Mutterleib ernährt und mit Sauerstoff versorgt wird?",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "note": "Placenta and pregnancy are not part of NT5 2.3 (Befruchtung, Zeugung only); belongs to Biologie 8."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-5-biologie-mensch-skelett-sexualbiologie",
+      "de_by_id": "01K4YB5M000000000000000J08",
+      "de_by_question": "Verfolge die Pränatalentwicklung des Menschen in 4 Etappen: 1. Befruchtung (Kernverschmelzung von Spermium und Eizelle im Eileiter zur diploiden Zygote), 2. Furchung und Einnistung (Blastozyste nistet sich an Tag 6–7 in die Gebärmutterschleimhaut ein), 3. Schwangerschaft (Embryo bis zur 8. Woche mit Organbildung; Fötus ab der 9. Woche mit Wachstum; Stoffaustausch über Plazentaschranke und Nabelschnur; Schutz in der Fruchtblase), 4. Geburtsprozess (Eröffnungswehen, Fruchtblasensprung, Austreibungswehen, Abnabelung und Nachgeburt).",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "note": "Prenatal development in four stages; outside NT5, belongs to Biologie 8."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-5-biologie-pflanzen-bluetenbau-samen",
+      "de_by_id": "01K4YB5P000000000000000J01",
+      "de_by_question": "In welchem Teil des Leitbündels in der Sprossachse wird Wasser mit gelösten Mineralsalzen von der Wurzel aufwärts in die Blätter transportiert?",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "note": "Xylem and phloem in the vascular bundle; the tasks of root, shoot and leaf belong to NT6 1.2."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-5-biologie-pflanzen-bluetenbau-samen",
+      "de_by_id": "01K4YB5P000000000000000J02",
+      "de_by_question": "Erkläre die Arbeitsteilung der 3 vegetativen Grundorgane einer Samenpflanze: 1. Wurzel (Oberflächenvergrößerung durch Wurzelhaare, Wasser- und Mineralstoffaufnahme durch Osmose, Verankerung, Rüben als Speicherorgane), 2. Sprossachse (Mechanische Stütze zum Licht, Leitbündel: Xylem für Wasserstrom, Phloem für Assimilatetransport), 3. Laubblatt (Photosynthese mit Chlorophyll zur Bildung von Glukose und Sauerstoff, Spaltöffnungen / Stomata zur Steuerung des Gasaustausches und Transpirationssogs).",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "note": "Composite prompt on the vegetative organs; NT6 1.2 (Aufgaben der Pflanzenteile)."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-5-biologie-pflanzen-bluetenbau-samen",
+      "de_by_id": "01K4YB5P000000000000000J03",
+      "de_by_question": "Welche Organe einer vollständigen Zwitterblüte bilden die männlichen Keimzellen (Pollenkörner / Blütenstaub)?",
+      "category": "A",
+      "academy_slug": "bg5-bluete-check",
+      "action": "replace",
+      "note": "Same atomic retrieval: which flower part forms the pollen (the stamens with their anthers)."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-5-biologie-pflanzen-bluetenbau-samen",
+      "de_by_id": "01K4YB5P000000000000000J04",
+      "de_by_question": "Beschreibe die 4 Blattkreise einer vollständigen Zwitterblüte von außen nach innen (1. Kelchblätter / Kelch als Knospenschutz, 2. Kronblätter / Krone als Schau- und Anlockapparat mit Nektarien, 3. Staubblätter mit Staubfaden und 4 Pollensäcken im Staubbeutel, 4. Stempel mit klebriger Narbe, Griffel und Fruchtknoten mit Samenanlagen) und erstelle ein schematisches Blütendiagramm für eine typische Kreuzblütler- oder Rosengewächs-Blüte.",
+      "category": "C",
+      "academy_slug": null,
+      "action": "retire",
+      "note": "Composite prompt on the four flower whorls with extra detail (nectaries, four pollen sacs); covered by bg5-bluete in smaller cards, so the old composite could leave active reviews."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-5-biologie-pflanzen-bluetenbau-samen",
+      "de_by_id": "01K4YB5P000000000000000J05",
+      "de_by_question": "Wie gelangt der männliche Zellkern des Pollenkorns nach der Bestäubung von der klebrigen Narbe zur Eizelle tief im Fruchtknoten?",
+      "category": "A",
+      "academy_slug": "bg5-bestaeubung-befruchtung-check",
+      "action": "replace",
+      "note": "Same atomic retrieval: the pollen tube grows through the style and brings the male gamete to the egg cell."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-5-biologie-pflanzen-bluetenbau-samen",
+      "de_by_id": "01K4YB5P000000000000000J06",
+      "de_by_question": "Vergleiche die evolutiven Anpassungen von Insektenblütigen Pflanzen (große farbige Kronblätter, Duft, Nektar, klebrig strukturierter Pollen) mit Windblütigen Pflanzen (unscheinbare Blüten ohne Krone, hängende Kätzchen, Millionen winziger trockener Flugpollen, fedrige Fangnarben, Blüte vor Laubaustrieb) und beschreibe den Befruchtungsvorgang bei Samenpflanzen (Pollenschlauchwachstum durch den Griffel, Eindringen durch die Mikropyle in die Samenanlage, Verschmelzung des männlichen Kerns mit dem Eizellkern zur Zygote).",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "note": "Composite comparison of insect and wind pollination with fertilisation; the package asks smaller cards in bg5-wind-tier and bg5-bestaeubung-befruchtung."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-5-biologie-pflanzen-bluetenbau-samen",
+      "de_by_id": "01K4YB5P000000000000000J07",
+      "de_by_question": "Welche 3 Umweltfaktoren sind für die Keimung eines Samens im Erdreich unverzichtbar (Keimungsbedingungen)?",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "note": "Conditions for germination (water, warmth, oxygen) belong to NT6 1.2 (Einflussfaktoren auf Keimung und Wachstum)."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-5-biologie-pflanzen-bluetenbau-samen",
+      "de_by_id": "01K4YB5P000000000000000J08",
+      "de_by_question": "Beschreibe den Bau eines Samens (feste Samenschale / Testa, Keimling / Embryo mit Keimwurzel, Keimstängel und Keimblättern, stärkehaltiges Nährgewebe / Endosperm), erkläre die 3 Schritte der Keimung (1. Quellung durch Wasseraufnahme, 2. Enzymatische Nährstoffmobilisierung und Zellatmung mit Sauerstoff, 3. Durchbrechen der Keimwurzel und Entfaltung der Keimblätter) und analysiere die 4 Mechanismen der Fruchtausbreitung (Wind-, Tier-, Wasser- und Selbstausbreitung).",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "note": "Seed structure and germination belong to NT6 1.2 (Bestandteile eines Samens)."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-5-natur-technik-mikroskop-experiment-oop",
+      "de_by_id": "01K4YT5N000000000000000J01",
+      "de_by_question": "Welche zentrale Eigenschaft muss ein naturwissenschaftliches Experiment erfüllen, damit seine Ergebnisse wissenschaftlich anerkannt werden können?",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "note": "Reproducibility and control of an experiment; bg5-erkenntnisweg teaches both but asks the phases and a fair design, not this retrieval. The atom also serves NT5 Lernbereich 1, outside this package."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-5-natur-technik-mikroskop-experiment-oop",
+      "de_by_id": "01K4YT5N000000000000000J02",
+      "de_by_question": "Analysiere den zirkulären Prozess des naturwissenschaftlichen Erkenntniswegs in 5 Stufen (1. Naturbeobachtung & theoriegeleitete Fragestellung, 2. Aufstellen einer falsifizierbaren Hypothese, 3. Planung & Durchführung eines Experiments unter Konstanthaltung aller Störvariablen mit genau 1 unabhängigen Variablen, 4. Messwerterfassung, Protokollierung und kritische Fehleranalyse, 5. Verifikation/Falsifikation der Hypothese) und begründe die Funktion der Nullhypothese bzw. des Kontrollansatzes am Beispiel eines Düngerexperiments.",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "note": "Composite five-stage prompt with a fertiliser example; not kept on one successor."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-5-natur-technik-mikroskop-experiment-oop",
+      "de_by_id": "01K4YT5N000000000000000J03",
+      "de_by_question": "Welche 3 zellulären Strukturen findet man typischerweise in einer pflanzlichen Zelle (z. B. Wasserpest/Zwiebelhaut), aber NIEMALS in einer tierischen oder menschlichen Zelle?",
+      "category": "A",
+      "academy_slug": "bg5-zellen-check",
+      "action": "replace",
+      "note": "Same atomic retrieval: the three structures only plant cells have (cell wall, chloroplasts, large vacuole)."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-5-natur-technik-mikroskop-experiment-oop",
+      "de_by_id": "01K4YT5N000000000000000J04",
+      "de_by_question": "Beschreibe die optischen Bauteile und die Bedienung eines Durchlichtmikroskops (Okular, Tubus, Objektivrevolver, Objektive, Objekttisch, Irisblende, Grob- und Feintrieb; Formel: V_gesamt = V_Okular · V_Objektiv), erkläre die fehlerfreie Herstellung eines Frischpräparats (Objektträger, Wassertropfen, Deckglaseindeckung im 45°-Winkel) und vergleiche den Bau einer pflanzlichen Zelle (Zellwand, Zellmembran, Zellkern mit DNA, Cytoplasma, Chloroplasten, Vakuole) mit einer tierischen Zelle (Mundschleimhaut: nur Zellmembran, Zellkern, Cytoplasma).",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "note": "Composite microscopy prompt (parts, magnification formula, wet mount, cell comparison) spread over three lessons; one history cannot be split."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-5-natur-technik-mikroskop-experiment-oop",
+      "de_by_id": "01K4YT5N000000000000000J05",
+      "de_by_question": "Wie nennt man in der objektorientierten Modellierung die Gesamtheit aller aktuellen Attributwerte eines Objekts zu einem bestimmten Zeitpunkt?",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "note": "Object-oriented modelling is not part of the current LehrplanPLUS NT5; outside this package."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-5-natur-technik-mikroskop-experiment-oop",
+      "de_by_id": "01K4YT5N000000000000000J06",
+      "de_by_question": "Definiere die 4 Kernkonzepte der objektorientierten Modellierung in NuT: 1. Klasse (abstrakter Bauplan mit Attributdeklarationen und Methodensignaturen), 2. Objekt / Instanz (konkreter, benannter Vertreter einer Klasse), 3. Zustand (aktuelle Attributwertbelegung), 4. Methode mit Parametern (Befehle/Operationen, die den Objektzustand verändern) und stelle ein Objekt `spielFigur1 : SPIELFIGUR` mit Attributen (PositionX, PositionY, Lebenspunkte, Name) und Methodenaufrufen (z. B. `gehe(dx, dy)`, `erhalteSchaden(punkte)`) in formaler Punktschreibweise dar.",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "note": "Object-oriented modelling, outside this package."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-5-natur-technik-mikroskop-experiment-oop",
+      "de_by_id": "01K4YT5N000000000000000J07",
+      "de_by_question": "Welches Symbol steht in relativen Pfadangaben eines Dateisystems für den unmittelbar übergeordneten Elternordner?",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "note": "File systems belong to NT6 2.3 (Hierarchische Informationsstrukturen); outside this package."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-5-natur-technik-mikroskop-experiment-oop",
+      "de_by_id": "01K4YT5N000000000000000J08",
+      "de_by_question": "Erkläre den hierarchischen Aufbau eines Dateibaums (Wurzel / Root, Ordner, Unterordner, Dateien als Blätter), unterscheide absolute Pfade (lückenlose Route von der Wurzel `C:\\...` bzw. `/...`) von relativen Pfaden (Navigation ausgehend vom aktuellen Arbeitsverzeichnis mit `.` und `..`), erkläre die Bedeutung von Dateiendungen (.docx, .png, .mp4, .pdf) und konstruiere den absoluten und relativen Pfad zu einer Datei `referat.pdf`, die sich im Unterordner `Gymnasium/NuT/` befindet, wenn das aktuelle Arbeitsverzeichnis `Gymnasium/Mathe/` ist.",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "note": "File systems belong to NT6 2.3; outside this package."
+    }
+  ]
+}

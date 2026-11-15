@@ -1,0 +1,3141 @@
+{
+	"$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+	"tile_id": "zam-academy:nt-mittelschule-6",
+	"version": "2026.11.2",
+	"title": "Natur und Technik 6 Mittelschule (ZAM Academy)",
+	"description": "Natur und Technik 6, LehrplanPLUS Bayern: naturwissenschaftliches Arbeiten; Wasser, Gewässer und Boden; Pubertät und vorgeburtliche Entwicklung; Kräfte, Kraftwandler, Arbeit, Energie und Bewegung.",
+	"publisher": "ZAM Academy",
+	"sources": [
+		{
+			"uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/mittelschule/6/nt",
+			"label": "LehrplanPLUS Bayern · Natur und Technik 6 Mittelschule",
+			"checked": "2026-11-14"
+		}
+	],
+	"atoms": [
+		{
+			"id": "01M7D7XM5PZ2T5G0EN15M5TT0C",
+			"atom_uri": "urn:zam:atom:01M7D7XM5PZ2T5G0EN15M5TT0C",
+			"namespace": "zam-academy-nt-mittelschule-6",
+			"slug": "c6-forschen",
+			"title": "Beobachten, messen und begründet folgern",
+			"domain": "nt/nt6/methods",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=c6-forschen",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "nt-mittelschule-6",
+					"topic_code": "stage1",
+					"topic_title": "Forschen und Sicherheit"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "nt",
+					"topic_code": "lb1",
+					"topic_title": "Naturwissenschaftliches Arbeiten",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7XM5QSFHK0S10B56MCPHM",
+					"slug": "c6-forschen-basis",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Was bleibt bei einem fairen Vergleich zum Temperatureinfluss auf die Lösezeit gleich?",
+					"concept": "Wasser- und Stoffmenge, Korngröße und Rühren; nur die Temperatur wird verändert.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=c6-forschen",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Wasser- und Stoffmenge, Korngröße und Rühren; nur die Temperatur wird verändert.",
+							"Temperatur und Rühren werden gleichzeitig verändert, damit der Unterschied deutlicher wird."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7XM5Q5A8E516H497T2X6N",
+					"slug": "c6-forschen-unterscheiden",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche Angaben brauchen die Achsen eines Diagramms zur Lösezeit bei verschiedenen Wassertemperaturen?",
+					"concept": "Waagerecht die Temperatur in Grad Celsius, senkrecht die Lösezeit in Sekunden.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=c6-forschen",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Waagerecht die Temperatur in Grad Celsius, senkrecht die Lösezeit in Sekunden.",
+							"Waagerecht die Temperatur und senkrecht die Lösezeit; die Einheiten müssen nicht an den Achsen stehen."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7XM5QQFFEK4CZJV82RTZY",
+					"slug": "c6-forschen-begrunden",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Warum beweist schnelleres Lösen in einem warmen, stark gerührten Glas allein keinen Temperatureinfluss?",
+					"concept": "Temperatur und Rühren wurden zugleich verändert; ihre Einflüsse sind nicht getrennt.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=c6-forschen",
+					"sample_solution": "Für einen fairen Vergleich bleiben Rühren, Stoffmenge, Korngröße und Wassermenge gleich; nur die Temperatur variiert. Messungen werden wiederholt und protokolliert."
+				}
+			]
+		},
+		{
+			"id": "01M7D7XM5QW09W4XBWRGTHY29K",
+			"atom_uri": "urn:zam:atom:01M7D7XM5QW09W4XBWRGTHY29K",
+			"namespace": "zam-academy-nt-mittelschule-6",
+			"slug": "c6-sicherheit",
+			"title": "Sicher arbeiten und Modelle kritisch lesen",
+			"domain": "nt/nt6/methods",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=c6-sicherheit",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "nt-mittelschule-6",
+					"topic_code": "stage1",
+					"topic_title": "Forschen und Sicherheit"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "nt",
+					"topic_code": "lb1",
+					"topic_title": "Naturwissenschaftliches Arbeiten",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7XM5QKA8ESDRTY52CCDEK",
+					"slug": "c6-sicherheit-basis",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Worauf weist die Flamme in einer roten Gefahrstoffraute hin?",
+					"concept": "Auf entzündbare Stoffe; die genauen Hinweise stehen zusätzlich auf dem Etikett.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=c6-sicherheit",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Auf entzündbare Stoffe; die genauen Hinweise stehen zusätzlich auf dem Etikett.",
+							"Auf brandfördernde Stoffe: Sie müssen nicht selbst brennen, verstärken aber einen Brand."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7XM5QYM779MGGNCHZ3JMY",
+					"slug": "c6-sicherheit-unterscheiden",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Warum beweist ein Wassermolekülmodell nicht, dass eine Wasserprobe trinkbar ist?",
+					"concept": "Es zeigt die Atomzusammensetzung eines Moleküls, aber keine Verunreinigungen oder Krankheitserreger.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=c6-sicherheit",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Es zeigt die Atomzusammensetzung eines Moleküls, aber keine Verunreinigungen oder Krankheitserreger.",
+							"Ein korrektes Wassermolekülmodell beweist, dass die gesamte Probe ausschließlich Wasser enthält."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7XM5QK76BBVWYC79PSM3Q",
+					"slug": "c6-sicherheit-begrunden",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Was tust du bei Glasbruch oder einer unerwarteten Reaktion im Fachraum?",
+					"concept": "Arbeit unterbrechen und sofort die Lehrkraft informieren.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=c6-sicherheit",
+					"sample_solution": "Ich stoppe und informiere die Lehrkraft. Ich starte keinen eigenen Rettungsversuch. Gasnachweise finden nur nach Sicherheitsunterweisung unter fachkundiger Aufsicht statt."
+				}
+			]
+		},
+		{
+			"id": "01M7D7XM5QYZJWENGR54JF737J",
+			"atom_uri": "urn:zam:atom:01M7D7XM5QYZJWENGR54JF737J",
+			"namespace": "zam-academy-nt-mittelschule-6",
+			"slug": "c6-wasser-bedeutung",
+			"title": "Wasser als Lebensraum, Lebensmittel und Transportmittel",
+			"domain": "nt/nt6/water",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=c6-wasser-bedeutung",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "nt-mittelschule-6",
+					"topic_code": "stage2",
+					"topic_title": "Wasser und Moleküle"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "nt",
+					"topic_code": "lb2",
+					"topic_title": "Lebensgrundlagen Wasser und Boden",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7XM5Q051FMMXECWNDGNJM",
+					"slug": "c6-wasser-bedeutung-basis",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche drei Aufgaben erfüllt Wasser für Lebewesen und ihre Umwelt?",
+					"concept": "Lebensraum, Lebensmittel und Transportmittel.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=c6-wasser-bedeutung",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Lebensraum, Lebensmittel und Transportmittel.",
+							"Lebensraum und Lebensmittel; als Transportmittel kann Wasser nicht dienen."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7XM5QP3XWMB4BN7ZCDH7W",
+					"slug": "c6-wasser-bedeutung-unterscheiden",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Beweist klares Aussehen, dass Bachwasser trinkbar ist?",
+					"concept": "Nein. Unsichtbare Verunreinigungen können enthalten sein.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=c6-wasser-bedeutung",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Nein. Unsichtbare Verunreinigungen können enthalten sein.",
+							"Ja. Durchsichtigkeit beweist eine abgeschlossene Trinkwasserprüfung."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7XM5Q4M4MFFHAMMCD96XJ",
+					"slug": "c6-wasser-bedeutung-begrunden",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Warum schützt das Vermeiden von Schadstoffeinträgen mehr als nur das Aussehen eines Gewässers?",
+					"concept": "Es schützt Lebewesen, Wasserqualität und die Nutzung als Lebensgrundlage.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=c6-wasser-bedeutung",
+					"sample_solution": "Wasser ist Lebensraum und transportiert gelöste Stoffe. Schadstoffe können unsichtbar bleiben und trotzdem Lebewesen und Wasserressourcen belasten."
+				}
+			]
+		},
+		{
+			"id": "01M7D7XM5QPV7XV8ZVSGGGQPSV",
+			"atom_uri": "urn:zam:atom:01M7D7XM5QPV7XV8ZVSGGGQPSV",
+			"namespace": "zam-academy-nt-mittelschule-6",
+			"slug": "c6-wasser-eigenschaften",
+			"title": "Einen Stoffsteckbrief für Wasser lesen",
+			"domain": "nt/nt6/water",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=c6-wasser-eigenschaften",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D7XM5PZ2T5G0EN15M5TT0C",
+					"type": "soft",
+					"rationale": "Uses measured properties, units and controlled conditions to interpret a water profile."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "nt-mittelschule-6",
+					"topic_code": "stage2",
+					"topic_title": "Wasser und Moleküle"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "nt",
+					"topic_code": "lb2",
+					"topic_title": "Lebensgrundlagen Wasser und Boden",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7XM5QA98FKPA2E31G0DEJ",
+					"slug": "c6-wasser-eigenschaften-basis",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Wo liegen Schmelz- und Siedepunkt von reinem Wasser bei normalem Luftdruck?",
+					"concept": "Bei ungefähr 0 °C und 100 °C.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=c6-wasser-eigenschaften",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Bei ungefähr 0 °C und 100 °C.",
+							"Bei ungefähr 4 °C und 100 °C."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7XM5QQJQN51WE5YB76K4S",
+					"slug": "c6-wasser-eigenschaften-unterscheiden",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Ist die Form des Becherglases eine Stoffeigenschaft von Wasser?",
+					"concept": "Nein. Sie beschreibt das Gefäß, nicht den Stoff.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=c6-wasser-eigenschaften",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Nein. Sie beschreibt das Gefäß, nicht den Stoff.",
+							"Ja. Die Gefäßform identifiziert die Wasserprobe eindeutig."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7XM5QGK5YJPDPCZAZW7T3",
+					"slug": "c6-wasser-eigenschaften-begrunden",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Warum muss ein Wassersteckbrief Messbedingungen und mehrere Eigenschaften nennen?",
+					"concept": "Einzelne Merkmale sind nicht eindeutig, und Messwerte können von den Bedingungen abhängen.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=c6-wasser-eigenschaften",
+					"sample_solution": "Klarheit allein identifiziert Wasser nicht. Der Siedepunkt hängt unter anderem vom Luftdruck ab; deshalb nennt ein Steckbrief Bedingungen und mehrere passende Befunde."
+				}
+			]
+		},
+		{
+			"id": "01M7D7XM5QFANB9357G4VYCBWX",
+			"atom_uri": "urn:zam:atom:01M7D7XM5QFANB9357G4VYCBWX",
+			"namespace": "zam-academy-nt-mittelschule-6",
+			"slug": "c6-loesen-leiten",
+			"title": "Löslichkeit und Leitfähigkeit unterscheiden",
+			"domain": "nt/nt6/water",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=c6-loesen-leiten",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D7XM5QPV7XV8ZVSGGGQPSV",
+					"type": "soft",
+					"rationale": "Distinguishes the separately investigated water properties solubility and conductivity."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "nt-mittelschule-6",
+					"topic_code": "stage2",
+					"topic_title": "Wasser und Moleküle"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "nt",
+					"topic_code": "lb2",
+					"topic_title": "Lebensgrundlagen Wasser und Boden",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7XM5QRMGBCTYNTWEJ8TN2",
+					"slug": "c6-loesen-leiten-basis",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Ist gelöstes Salz aus dem Wasser verschwunden?",
+					"concept": "Nein. Es ist weiterhin gleichmäßig in der Lösung enthalten.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=c6-loesen-leiten",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Nein. Es ist weiterhin gleichmäßig in der Lösung enthalten.",
+							"Ja. Beim Lösen wird das Salz zu Wasser umgewandelt."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7XM5QQ5ZGE70FDEPBFKGY",
+					"slug": "c6-loesen-leiten-unterscheiden",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Leiten reine Zucker- und Kochsalzlösung gleich gut, weil beide klar sind?",
+					"concept": "Nein. Kochsalzlösung leitet deutlich besser als reine Zuckerlösung.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=c6-loesen-leiten",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Nein. Kochsalzlösung leitet deutlich besser als reine Zuckerlösung.",
+							"Ja. Gleiche Klarheit bedeutet immer gleiche elektrische Leitfähigkeit."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7XM5Q2RB5WRXHXK93TEFD",
+					"slug": "c6-loesen-leiten-begrunden",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Warum beweist eine klare, schlecht leitende Wasserprobe noch nicht, dass sie reines Wasser ist?",
+					"concept": "Auch gelöster Zucker kann enthalten sein, ohne Trübung oder gute Leitfähigkeit zu verursachen.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=c6-loesen-leiten",
+					"sample_solution": "Eine reine Zuckerlösung kann klar sein und kaum leiten. Deshalb beweisen Klarheit und geringe Leitfähigkeit allein keine Reinheit. Mehrere geeignete Untersuchungen sind nötig; daraus folgt noch keine Trinkwasserfreigabe."
+				}
+			]
+		},
+		{
+			"id": "01M7D7XM5QYV6W6J39X9MJH098",
+			"atom_uri": "urn:zam:atom:01M7D7XM5QYV6W6J39X9MJH098",
+			"namespace": "zam-academy-nt-mittelschule-6",
+			"slug": "c6-oberflaeche",
+			"title": "Oberflächenspannung: Tropfen und Wasserläufer",
+			"domain": "nt/nt6/water",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=c6-oberflaeche",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "nt-mittelschule-6",
+					"topic_code": "stage2",
+					"topic_title": "Wasser und Moleküle"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "nt",
+					"topic_code": "lb2",
+					"topic_title": "Lebensgrundlagen Wasser und Boden",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7XM5QXDDEQFRV4DNFXTYE",
+					"slug": "c6-oberflaeche-basis",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Was ist die Ursache der Oberflächenspannung von Wasser im einfachen Teilchenmodell?",
+					"concept": "Die Anziehung der Wasserteilchen untereinander.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=c6-oberflaeche",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Die Anziehung der Wasserteilchen untereinander.",
+							"Eine feste Schicht aus erstarrtem Wasser an der Oberfläche."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7XM5QP0EAEJ1MPR6FV64F",
+					"slug": "c6-oberflaeche-unterscheiden",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Wie wirkt Spülmittel auf die Oberflächenspannung von Wasser?",
+					"concept": "Es verringert sie.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=c6-oberflaeche",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Es verringert sie.",
+							"Es erhöht sie, weil die gereinigte Oberfläche stärker zusammenhält."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7XM5QBHW5YC62W7YQ7HSK",
+					"slug": "c6-oberflaeche-begrunden",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Warum ist die Erklärung „Der Wasserläufer steht auf einer festen Wasserhaut“ ungenau?",
+					"concept": "Die Oberfläche ist keine feste Haut; Oberflächenspannung und wasserabweisende Beine tragen bei.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=c6-oberflaeche",
+					"sample_solution": "Die Teilchen ziehen einander an. Die Grenzfläche kann ein leichtes Tier zusammen mit seinen wasserabweisenden Beinen tragen. Gewicht, Form und Benetzung begrenzen diese Wirkung."
+				}
+			]
+		},
+		{
+			"id": "01M7D7XM5Q3H3F3GJX7HKVVT6F",
+			"atom_uri": "urn:zam:atom:01M7D7XM5Q3H3F3GJX7HKVVT6F",
+			"namespace": "zam-academy-nt-mittelschule-6",
+			"slug": "c6-teilchen-zustaende",
+			"title": "Eis, Wasser und Wasserdampf im Teilchenmodell",
+			"domain": "nt/nt6/water",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=c6-teilchen-zustaende",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D7XM5QPV7XV8ZVSGGGQPSV",
+					"type": "soft",
+					"rationale": "Uses the melting point and stated pressure conditions when interpreting phase coexistence."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "nt-mittelschule-6",
+					"topic_code": "stage2",
+					"topic_title": "Wasser und Moleküle"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "nt",
+					"topic_code": "lb2",
+					"topic_title": "Lebensgrundlagen Wasser und Boden",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7XM5Q21QVBYHP9HQYFTDQ",
+					"slug": "c6-teilchen-zustaende-basis",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche Zustände können bei reinem Wasser am Schmelzpunkt von ungefähr 0 °C bei normalem Luftdruck gemeinsam vorliegen?",
+					"concept": "Festes Eis und flüssiges Wasser; die Temperatur allein nennt nicht die Anteile.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=c6-teilchen-zustaende",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Festes Eis und flüssiges Wasser; die Temperatur allein nennt nicht die Anteile.",
+							"Nur flüssiges Wasser; bei 0 °C muss bereits das gesamte Eis geschmolzen sein."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7XM5Q68BVZ50ABBDXW5YA",
+					"slug": "c6-teilchen-zustaende-unterscheiden",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Werden Wasserteilchen beim Erwärmen einfach größer?",
+					"concept": "Nein. Ihre Bewegung nimmt im Mittel zu; Anordnung und Abstände können sich ändern.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=c6-teilchen-zustaende",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Nein. Ihre Bewegung nimmt im Mittel zu; Anordnung und Abstände können sich ändern.",
+							"Ja. Die Ausdehnung des Wassers entsteht dadurch, dass jedes Molekül größer wird."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7XM5QK8CBYD24YBX2V8Z7",
+					"slug": "c6-teilchen-zustaende-begrunden",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Erkläre mit dem Teilchenmodell, warum Wasserdampf einen verfügbaren Raum ausfüllt.",
+					"concept": "Die Wasserteilchen liegen weit auseinander und bewegen sich frei.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=c6-teilchen-zustaende",
+					"sample_solution": "Im Gas bewegen sich Wasserteilchen frei mit großen Abständen. Sie bleiben Wassermoleküle; ihre Größe oder Atomsorte ändert sich durch den Zustandswechsel nicht."
+				}
+			]
+		},
+		{
+			"id": "01M7D7XM5QBVHX3FWAZEXS407F",
+			"atom_uri": "urn:zam:atom:01M7D7XM5QBVHX3FWAZEXS407F",
+			"namespace": "zam-academy-nt-mittelschule-6",
+			"slug": "c6-zustandswechsel",
+			"title": "Schmelzen, Erstarren, Verdampfen und Kondensieren",
+			"domain": "nt/nt6/water",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=c6-zustandswechsel",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D7XM5Q3H3F3GJX7HKVVT6F",
+					"type": "soft",
+					"rationale": "Uses particle arrangement and movement to explain transitions without changing the substance."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "nt-mittelschule-6",
+					"topic_code": "stage2",
+					"topic_title": "Wasser und Moleküle"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "nt",
+					"topic_code": "lb2",
+					"topic_title": "Lebensgrundlagen Wasser und Boden",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7XM5RA8C1CGMT5JXTDDJ5",
+					"slug": "c6-zustandswechsel-basis",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Was geschieht beim Kondensieren von Wasser?",
+					"concept": "Gasförmiges Wasser wird flüssig.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=c6-zustandswechsel",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Gasförmiges Wasser wird flüssig.",
+							"Wasserstoff und Sauerstoff werden aus Wasser freigesetzt."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7XM5RTV2N1BNNAF189E1Q",
+					"slug": "c6-zustandswechsel-unterscheiden",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Ist die sichtbare weiße Wolke über heißem Wasser gasförmiger Wasserdampf?",
+					"concept": "Nein. Sie besteht aus kleinen flüssigen Wassertröpfchen; Wasserdampf ist unsichtbar.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=c6-zustandswechsel",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Nein. Sie besteht aus kleinen flüssigen Wassertröpfchen; Wasserdampf ist unsichtbar.",
+							"Ja. Jeder sichtbare weiße Nebel ist reines gasförmiges Wasser."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7XM5R0DYND3APWTCPX8K3",
+					"slug": "c6-zustandswechsel-begrunden",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Warum kann Wäsche auch unterhalb von 100 °C trocknen?",
+					"concept": "Wasser verdunstet an der Oberfläche auch unterhalb des Siedepunkts.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=c6-zustandswechsel",
+					"sample_solution": "Verdunsten führt von flüssig zu gasförmig und findet an der Oberfläche auch ohne Sieden statt. Wasser bleibt derselbe Stoff; seine Moleküle werden nicht zerlegt."
+				}
+			]
+		},
+		{
+			"id": "01M7D7XM5QKK70RSGS9VENS6F6",
+			"atom_uri": "urn:zam:atom:01M7D7XM5QKK70RSGS9VENS6F6",
+			"namespace": "zam-academy-nt-mittelschule-6",
+			"slug": "c6-wasseranomalie",
+			"title": "Die Anomalie des Wassers verstehen",
+			"domain": "nt/nt6/water",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=c6-wasseranomalie",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D7XM5Q3H3F3GJX7HKVVT6F",
+					"type": "soft",
+					"rationale": "Uses the open arrangement of ice particles to explain volume and density at equal mass."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "nt-mittelschule-6",
+					"topic_code": "stage2",
+					"topic_title": "Wasser und Moleküle"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "nt",
+					"topic_code": "lb2",
+					"topic_title": "Lebensgrundlagen Wasser und Boden",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7XM5R9DDETARNPR42J2TX",
+					"slug": "c6-wasseranomalie-basis",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Bei welcher Temperatur hat flüssiges Wasser ungefähr seine größte Dichte?",
+					"concept": "Bei 4 °C.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=c6-wasseranomalie",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Bei 4 °C.",
+							"Seine größte Dichte hat es grundsätzlich erst als Eis."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7XM5RT82J9E5ABGD4NA5N",
+					"slug": "c6-wasseranomalie-unterscheiden",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Warum schwimmt Eis auf flüssigem Wasser?",
+					"concept": "Sein offenes Gitter braucht bei gleicher Masse mehr Volumen; Eis ist weniger dicht.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=c6-wasseranomalie",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Sein offenes Gitter braucht bei gleicher Masse mehr Volumen; Eis ist weniger dicht.",
+							"Eis braucht bei gleicher Masse weniger Volumen und hat deshalb eine geringere Dichte."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7XM5RHXDVW9KFKTX59T8K",
+					"slug": "c6-wasseranomalie-begrunden",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Wie kann gefrierendes Wasser zur Frostsprengung beitragen?",
+					"concept": "Es nimmt mehr Volumen ein und kann Felsspalten erweitern.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=c6-wasseranomalie",
+					"sample_solution": "Wasser in einer Felsspalte dehnt sich beim Gefrieren aus. Die Volumenzunahme kann Druck auf den Fels ausüben; wiederholtes Gefrieren kann die Spalte erweitern."
+				}
+			]
+		},
+		{
+			"id": "01M7D7XM5QS3NKGCD3015ABSFB",
+			"atom_uri": "urn:zam:atom:01M7D7XM5QS3NKGCD3015ABSFB",
+			"namespace": "zam-academy-nt-mittelschule-6",
+			"slug": "c6-molekuele",
+			"title": "Atome, Elemente, Verbindungen und Moleküle",
+			"domain": "nt/nt6/water",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=c6-molekuele",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "nt-mittelschule-6",
+					"topic_code": "stage2",
+					"topic_title": "Wasser und Moleküle"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "nt",
+					"topic_code": "lb2",
+					"topic_title": "Lebensgrundlagen Wasser und Boden",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7XM5RCCFT06YDPZCXEVBK",
+					"slug": "c6-molekuele-basis",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question_segments": [
+						{
+							"type": "text",
+							"text": "Welche Atome enthält ein Molekül mit der Formel "
+						},
+						{
+							"type": "math",
+							"tex": "\\mathrm{H}_{2}\\mathrm{O}",
+							"speech": "H zwei O"
+						},
+						{
+							"type": "text",
+							"text": "?"
+						}
+					],
+					"concept": "Zwei Wasserstoffatome und ein Sauerstoffatom.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=c6-molekuele",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Zwei Wasserstoffatome und ein Sauerstoffatom.",
+							"Ein Wasserstoffatom und zwei Sauerstoffatome."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7XM5RP3QXMQBQTCVTHPD5",
+					"slug": "c6-molekuele-unterscheiden",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Woran unterscheidest du ein Element von einer Verbindung?",
+					"concept": "Ein Element enthält eine Atomsorte, eine Verbindung mehrere verschiedene Atomsorten.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=c6-molekuele",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Ein Element enthält eine Atomsorte, eine Verbindung mehrere verschiedene Atomsorten.",
+							"Jeder Stoff mit mehr als einem Atom im Molekül ist automatisch eine Verbindung."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7XM5RX602DSH3SBMW78F9",
+					"slug": "c6-molekuele-begrunden",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Wie viele Wasserstoff- und Sauerstoffatome enthalten zwei Wassermoleküle insgesamt?",
+					"concept": "Vier Wasserstoffatome und zwei Sauerstoffatome.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=c6-molekuele",
+					"sample_solution": "Jedes Wassermolekül enthält zwei H-Atome und ein O-Atom. Bei zwei Molekülen werden beide Anzahlen verdoppelt: vier H-Atome und zwei O-Atome."
+				}
+			]
+		},
+		{
+			"id": "01M7D7XM5Q5EWKWZM0RAPS7GYQ",
+			"atom_uri": "urn:zam:atom:01M7D7XM5Q5EWKWZM0RAPS7GYQ",
+			"namespace": "zam-academy-nt-mittelschule-6",
+			"slug": "c6-wasserzerlegung",
+			"title": "Wasserzerlegung: Stoffumwandlung statt Verdampfen",
+			"domain": "nt/nt6/water",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=c6-wasserzerlegung",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D7XM5QS3NKGCD3015ABSFB",
+					"type": "soft",
+					"rationale": "Needs the atom counts of water, hydrogen and oxygen molecules to conserve atoms."
+				},
+				{
+					"atom_id": "01M7D7XM5QBVHX3FWAZEXS407F",
+					"type": "soft",
+					"rationale": "Compares chemical decomposition with phase changes that preserve water molecules."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "nt-mittelschule-6",
+					"topic_code": "stage2",
+					"topic_title": "Wasser und Moleküle"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "nt",
+					"topic_code": "lb2",
+					"topic_title": "Lebensgrundlagen Wasser und Boden",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7XM5R1Y9M1E4RNZHH8ZK8",
+					"slug": "c6-wasserzerlegung-basis",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche Energiezufuhr benötigt die elektrolytische Wasserzerlegung?",
+					"concept": "Elektrische Energie.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=c6-wasserzerlegung",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": ["Elektrische Energie.", "Wärmeenergie durch Kochen."],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7XM5RQH55GVX4VBC0MA1P",
+					"slug": "c6-wasserzerlegung-unterscheiden",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welches Gasvolumenverhältnis entsteht bei der Wasserzerlegung unter gleichen Messbedingungen?",
+					"concept": "Wasserstoff : Sauerstoff = 2 : 1.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=c6-wasserzerlegung",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Wasserstoff : Sauerstoff = 2 : 1.",
+							"Wasserstoff : Sauerstoff = 1 : 2."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7XM5RS32GVN1XYGJ3FFQZ",
+					"slug": "c6-wasserzerlegung-begrunden",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Was unterscheidet das Verdampfen von Wasser von seiner Elektrolyse?",
+					"concept": "Beim Verdampfen bleibt Wasser; die Elektrolyse bildet Wasserstoff und Sauerstoff.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=c6-wasserzerlegung",
+					"sample_solution": "Verdampfen ist ein Zustandswechsel. Bei der Elektrolyse werden vorhandene Atome mit elektrischer Energie neu verbunden; neue Stoffe entstehen, aber keine neuen Atome."
+				}
+			]
+		},
+		{
+			"id": "01M7D7XM5Q2NZ47N7CQKVFPS43",
+			"atom_uri": "urn:zam:atom:01M7D7XM5Q2NZ47N7CQKVFPS43",
+			"namespace": "zam-academy-nt-mittelschule-6",
+			"slug": "c6-gasnachweise",
+			"title": "Wasserstoff und Sauerstoff nachweisen",
+			"domain": "nt/nt6/water",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=c6-gasnachweise",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D7XM5Q5EWKWZM0RAPS7GYQ",
+					"type": "soft",
+					"rationale": "Identifies the two gaseous products introduced by water decomposition."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "nt-mittelschule-6",
+					"topic_code": "stage2",
+					"topic_title": "Wasser und Moleküle"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "nt",
+					"topic_code": "lb2",
+					"topic_title": "Lebensgrundlagen Wasser und Boden",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7XM5RPEXN64EBA6YR4MRD",
+					"slug": "c6-gasnachweise-basis",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welcher positive Gasnachweis passt zu Wasserstoff?",
+					"concept": "Eine fachgerecht durchgeführte positive Knallgasprobe.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=c6-gasnachweise",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Eine fachgerecht durchgeführte positive Knallgasprobe.",
+							"Ein glimmender Holzspan flammt wieder auf."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7XM5RNEXRBYGYGBMZHSMQ",
+					"slug": "c6-gasnachweise-unterscheiden",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Was beobachtest du bei der positiven Glimmspanprobe für Sauerstoff?",
+					"concept": "Ein glimmender Holzspan flammt wieder auf.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=c6-gasnachweise",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Ein glimmender Holzspan flammt wieder auf.",
+							"Ein glimmender Holzspan erlischt."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7XM5RZT1JJ3C08EM15VTS",
+					"slug": "c6-gasnachweise-begrunden",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Wie unterscheiden sich Wasserstoff und Sauerstoff in Bezug auf Verbrennung?",
+					"concept": "Wasserstoff ist brennbar; Sauerstoff unterstützt Verbrennung und brennt nicht selbst.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=c6-gasnachweise",
+					"sample_solution": "Beide Gase sind farb- und geruchlos. Wasserstoff ist brennbar, Sauerstoff brandfördernd. Geeignete Nachweise finden ausschließlich unter fachkundiger Aufsicht im Unterricht statt."
+				}
+			]
+		},
+		{
+			"id": "01M7D7XM5Q1XJKAQNETQMH7XNT",
+			"atom_uri": "urn:zam:atom:01M7D7XM5Q1XJKAQNETQMH7XNT",
+			"namespace": "zam-academy-nt-mittelschule-6",
+			"slug": "c6-wasserkraft",
+			"title": "Wasser als erneuerbare Energiequelle",
+			"domain": "nt/nt6/water",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=c6-wasserkraft",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D7XM5QYZJWENGR54JF737J",
+					"type": "soft",
+					"rationale": "Uses water as habitat and transport medium to weigh the effects of a weir."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "nt-mittelschule-6",
+					"topic_code": "stage2",
+					"topic_title": "Wasser und Moleküle"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "nt",
+					"topic_code": "lb2",
+					"topic_title": "Lebensgrundlagen Wasser und Boden",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7XM5R56EWP3TRZ80BE888",
+					"slug": "c6-wasserkraft-basis",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche Aufgabe hat die Turbine eines Wasserkraftwerks?",
+					"concept": "Fließendes Wasser treibt sie an; sie überträgt mechanische Energie auf den Generator.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=c6-wasserkraft",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Fließendes Wasser treibt sie an; sie überträgt mechanische Energie auf den Generator.",
+							"Sie wandelt die Bewegungsenergie des Wassers unmittelbar in elektrische Energie um."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7XM5RM0497V2HDP4PMNWK",
+					"slug": "c6-wasserkraft-unterscheiden",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche Energieumwandlung geschieht im Generator?",
+					"concept": "Mechanische Energie wird in elektrische Energie umgewandelt.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=c6-wasserkraft",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Mechanische Energie wird in elektrische Energie umgewandelt.",
+							"Elektrische Energie wird in mechanische Energie umgewandelt."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7XM5R9FRSBHM5KRTJ3CP7",
+					"slug": "c6-wasserkraft-begrunden",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Warum ist erneuerbare Wasserkraft nicht automatisch ohne Umwelteingriff?",
+					"concept": "Wehre und veränderte Abflüsse können Lebensräume und Fischwanderungen beeinträchtigen.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=c6-wasserkraft",
+					"sample_solution": "Der Wasserkreislauf stellt Wasserfluss erneut bereit. Ein Wehr verändert trotzdem das Gewässer. Fischwanderung, Restwasser und der Nutzen der Stromgewinnung müssen abgewogen werden."
+				}
+			]
+		},
+		{
+			"id": "01M7E0HSGS2RJR0P0XNXF0Q1N8",
+			"atom_uri": "urn:zam:atom:01M7E0HSGS2RJR0P0XNXF0Q1N8",
+			"namespace": "zam-academy-nt-mittelschule-6",
+			"slug": "nt6-gewaesser-bestimmen",
+			"title": "Lebewesen bestimmen und Gewässergüte einschätzen",
+			"domain": "nt/nt6/aquatic",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-gewaesser-bestimmen",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "nt-mittelschule-6",
+					"topic_code": "stage4",
+					"topic_title": "Leben im Gewässer"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "nt",
+					"topic_code": "lb2",
+					"topic_title": "Lebensgrundlagen Wasser und Boden",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7E0HSGS883QKMQZ7BX9TWTA",
+					"slug": "nt6-gewaesser-bestimmen-basis",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Wie nutzt du eine Bestimmungshilfe für eine Gewässerlarve?",
+					"concept": "Du vergleichst mehrere sichtbare Merkmale wie Beine und Schwanzfäden.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-gewaesser-bestimmen",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Du vergleichst mehrere sichtbare Merkmale wie Beine und Schwanzfäden.",
+							"Du entscheidest allein nach der Farbe."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7E0HSGTRCNZEAM5HM8VHE3D",
+					"slug": "nt6-gewaesser-bestimmen-grenze",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Warum beweist ein einzelnes Zeigertierchen keine bestimmte Gewässergüte?",
+					"concept": "Auch weitere Funde und Standortbedingungen müssen berücksichtigt werden.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-gewaesser-bestimmen",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Auch weitere Funde und Standortbedingungen müssen berücksichtigt werden.",
+							"Jede Art tritt immer nur bei exakt einem Gütewert auf."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7E0HSGTPQ484AQS7T5838NB",
+					"slug": "nt6-gewaesser-bestimmen-transfer",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Warum ist ein ökologisch guter Bach nicht automatisch eine Trinkwasserquelle?",
+					"concept": "Ökologische Zeiger ersetzen keine Trinkwasseruntersuchung.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-gewaesser-bestimmen",
+					"sample_solution": "Ein günstiges Artenspektrum beschreibt Lebensbedingungen. Es schließt Krankheitserreger und unerwünschte gelöste Stoffe nicht sicher aus. Deshalb gibt es daraus keine Trinkwasserfreigabe."
+				}
+			]
+		},
+		{
+			"id": "01M7E0HSGTPAYPCK635EYJ9K99",
+			"atom_uri": "urn:zam:atom:01M7E0HSGTPAYPCK635EYJ9K99",
+			"namespace": "zam-academy-nt-mittelschule-6",
+			"slug": "nt6-mikroskop-zelle",
+			"title": "Mikroskopieren: Zellen als Grundbaueinheiten",
+			"domain": "nt/nt6/aquatic",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-mikroskop-zelle",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "nt-mittelschule-6",
+					"topic_code": "stage4",
+					"topic_title": "Leben im Gewässer"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "nt",
+					"topic_code": "lb2",
+					"topic_title": "Lebensgrundlagen Wasser und Boden",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7E0HSGTVCVBW0TH1XWDH0DH",
+					"slug": "nt6-mikroskop-zelle-basis",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche drei Bestandteile hat der hier betrachtete Zellgrundbauplan?",
+					"concept": "Zellmembran, Zellplasma und Zellkern.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-mikroskop-zelle",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Zellmembran, Zellplasma und Zellkern.",
+							"Zellwand, Zellplasma und Zellkern; eine Zellmembran haben nur tierische Zellen."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7E0HSGT86WRB8M7KCA7GHW8",
+					"slug": "nt6-mikroskop-zelle-einzeller",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Worin unterscheiden sich ein- und mehrzellige Lebewesen?",
+					"concept": "Ein Einzeller besteht aus einer Zelle, ein Mehrzeller aus vielen Zellen.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-mikroskop-zelle",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Ein Einzeller besteht aus einer Zelle, ein Mehrzeller aus vielen Zellen.",
+							"Einzeller bestehen aus einer Zellart, Mehrzeller aus mehreren Zellarten; die Zellzahl ist dafür unwichtig."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7E0HSGTEMK0NJV54QNQ9SJK",
+					"slug": "nt6-mikroskop-zelle-transfer",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Warum darf eine Mikroskopzeichnung nicht jedes Detail eines Lehrbuchmodells als Beobachtung übernehmen?",
+					"concept": "Nicht alle Modellmerkmale sind im realen Präparat erkennbar.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-mikroskop-zelle",
+					"sample_solution": "Das Modell kann Zellbestandteile besonders deutlich und farbig zeigen. In einem ungefärbten Präparat sind manche davon nicht zu erkennen. Beobachtete Strukturen und ergänztes Modellwissen müssen unterscheidbar bleiben."
+				}
+			]
+		},
+		{
+			"id": "01M7E0HSGTZFN4M6YJJZHMVTY4",
+			"atom_uri": "urn:zam:atom:01M7E0HSGTZFN4M6YJJZHMVTY4",
+			"namespace": "zam-academy-nt-mittelschule-6",
+			"slug": "nt6-fische",
+			"title": "Fische: Körperbau, Bewegung und Kiemenatmung",
+			"domain": "nt/nt6/aquatic",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-fische",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "nt-mittelschule-6",
+					"topic_code": "stage4",
+					"topic_title": "Leben im Gewässer"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "nt",
+					"topic_code": "lb2",
+					"topic_title": "Lebensgrundlagen Wasser und Boden",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7E0HSGT7Y2G9MTY3E5DTA3T",
+					"slug": "nt6-fische-basis",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche Aufgabe haben die Kiemen eines Fisches?",
+					"concept": "Sie nehmen gelösten Sauerstoff aus dem Wasser auf und geben Kohlenstoffdioxid ab.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-fische",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Sie nehmen gelösten Sauerstoff aus dem Wasser auf und geben Kohlenstoffdioxid ab.",
+							"Sie zerlegen Wassermoleküle in Wasserstoff und Sauerstoff."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7E0HSGTB89PMA6BMM2G0M8T",
+					"slug": "nt6-fische-schwimmblase",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche Aufgabe hat die Schwimmblase vieler Knochenfische?",
+					"concept": "Sie unterstützt die Regelung des Auftriebs und der Lage im Wasser.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-fische",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Sie unterstützt die Regelung des Auftriebs und der Lage im Wasser.",
+							"Sie ersetzt als Lunge die Kiemenatmung."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7E0HSGT9XN6GVA3WQ905Z0P",
+					"slug": "nt6-fische-transfer",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Wie hängen Körperform und Flossen beim Schwimmen zusammen?",
+					"concept": "Eine günstige Körperform vermindert Widerstand; Flossen ermöglichen Antrieb, Steuerung und Stabilisierung.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-fische",
+					"sample_solution": "Die Stromlinienform erleichtert die Bewegung im Wasser. Die Schwanzflosse liefert bei vielen Fischen Antrieb; weitere Flossen helfen beim Steuern und Stabilisieren. Bau und Funktion wirken gemeinsam."
+				}
+			]
+		},
+		{
+			"id": "01M7E0HSGT1DTHVS26BPG2K03T",
+			"atom_uri": "urn:zam:atom:01M7E0HSGT1DTHVS26BPG2K03T",
+			"namespace": "zam-academy-nt-mittelschule-6",
+			"slug": "nt6-gewaesser-nahrungsnetz",
+			"title": "Nahrungsketten und Nahrungsnetz im Gewässer",
+			"domain": "nt/nt6/aquatic",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-gewaesser-nahrungsnetz",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "nt-mittelschule-6",
+					"topic_code": "stage4",
+					"topic_title": "Leben im Gewässer"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "nt",
+					"topic_code": "lb2",
+					"topic_title": "Lebensgrundlagen Wasser und Boden",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7E0HSGT937A0PHYK8W7MW01",
+					"slug": "nt6-gewaesser-nahrungsnetz-basis",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Kann ein Tier im Gewässernetz zugleich Fresser und Beute sein?",
+					"concept": "Ja. Ein Jungfisch frisst Kleinkrebse und wird selbst von Raubfischen gefressen.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-gewaesser-nahrungsnetz",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Ja. Ein Jungfisch frisst Kleinkrebse und wird selbst von Raubfischen gefressen.",
+							"Nein. Jedes Tier kann ausschließlich Fresser oder ausschließlich Beute sein."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7E0HSGTEE804X9WXYG06Z0E",
+					"slug": "nt6-gewaesser-nahrungsnetz-netz",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Warum ist ein Nahrungsnetz oft geeigneter als eine einzelne Nahrungskette?",
+					"concept": "Es zeigt mehrere miteinander verbundene Nahrungsbeziehungen.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-gewaesser-nahrungsnetz",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Es zeigt mehrere miteinander verbundene Nahrungsbeziehungen.",
+							"Es beweist, dass jedes Tier nur eine einzige Nahrung nutzt."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7E0HSGT9ZRPX9SGKKD7MFX4",
+					"slug": "nt6-gewaesser-nahrungsnetz-transfer",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Warum ist eine gezeichnete Gewässer-Nahrungskette ein Modell?",
+					"concept": "Sie wählt bestimmte Beziehungen aus und lässt viele Einflüsse weg.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-gewaesser-nahrungsnetz",
+					"sample_solution": "Die Kette zeigt eine mögliche Abfolge, aber nicht alle Arten, Lebensstadien und Jahreszeiten. Ihre Pfeile beschreiben Beziehungen statt genauer Futtermengen. Beobachtungen am Gewässer bleiben deshalb nötig."
+				}
+			]
+		},
+		{
+			"id": "01M7E0HSGTNXWH3WGSN839V4FG",
+			"atom_uri": "urn:zam:atom:01M7E0HSGTNXWH3WGSN839V4FG",
+			"namespace": "zam-academy-nt-mittelschule-6",
+			"slug": "nt6-gewaesserschutz",
+			"title": "Gewässer schützen: Eingriffe und Folgen abwägen",
+			"domain": "nt/nt6/aquatic",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-gewaesserschutz",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "nt-mittelschule-6",
+					"topic_code": "stage4",
+					"topic_title": "Leben im Gewässer"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "nt",
+					"topic_code": "lb2",
+					"topic_title": "Lebensgrundlagen Wasser und Boden",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7E0HSGTPE9EG95GH16P626S",
+					"slug": "nt6-gewaesserschutz-basis",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Warum reicht der Schutz einzelner Gewässertiere ohne Lebensraumschutz oft nicht aus?",
+					"concept": "Die Tiere benötigen geeignete Nahrung, Verstecke und Gewässerbedingungen.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-gewaesserschutz",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Die Tiere benötigen geeignete Nahrung, Verstecke und Gewässerbedingungen.",
+							"Jede Art kann unabhängig von ihrem Lebensraum bestehen."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7E0HSGTP1RHQVQX3EPMVHMH",
+					"slug": "nt6-gewaesserschutz-renaturierung",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Was kann eine Renaturierung eines begradigten Baches fördern?",
+					"concept": "Strukturreiche Teilräume und vielfältigere Lebensbedingungen.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-gewaesserschutz",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Strukturreiche Teilräume und vielfältigere Lebensbedingungen.",
+							"Die sichere Entfernung sämtlicher Schadstoffe durch jede Uferänderung."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7E0HSGT08EMHEABZHJFGZP3",
+					"slug": "nt6-gewaesserschutz-transfer",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Warum kann die Renaturierung eines begradigten Bachs mehr Lebensräume schaffen?",
+					"concept": "Unterschiedliche Strömungen, Uferstrukturen und Verstecke bieten verschiedenen Arten geeignete Teilräume.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-gewaesserschutz",
+					"sample_solution": "Eine naturnähere Gestaltung kann schnell und langsam durchströmte Bereiche, unterschiedliche Tiefen und bewachsene Ufer schaffen. Dadurch finden verschiedene Arten Nahrung, Rückzugsorte und Fortpflanzungsräume. Renaturierung entfernt aber nicht automatisch gelöste Schadstoffe; auch Einträge und Durchgängigkeit müssen geprüft werden."
+				}
+			]
+		},
+		{
+			"id": "01M7D7XM5Q8E1PS3ZW9R0EX1N4",
+			"atom_uri": "urn:zam:atom:01M7D7XM5Q8E1PS3ZW9R0EX1N4",
+			"namespace": "zam-academy-nt-mittelschule-6",
+			"slug": "c6-waldnetz",
+			"title": "Nahrungsnetz und Stoffkreislauf im Wald",
+			"domain": "nt/nt6/soil",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=c6-waldnetz",
+			"prerequisites": [
+				{
+					"atom_id": "01M7E0HSGT1DTHVS26BPG2K03T",
+					"type": "soft",
+					"rationale": "Transfers the food-to-consumer arrow convention from an aquatic web to a forest web and adds decomposers to the substance cycle."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "nt-mittelschule-6",
+					"topic_code": "stage3",
+					"topic_title": "Stoffkreislauf und Boden"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "nt",
+					"topic_code": "lb2",
+					"topic_title": "Lebensgrundlagen Wasser und Boden",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7XM5RF5CDMNZJSAM6Y1WQ",
+					"slug": "c6-waldnetz-basis",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "In welche Richtung zeigt ein Nahrungspfeil in unserem Nahrungsnetz?",
+					"concept": "Vom Futter zum Fresser; er bedeutet „wird gefressen von“.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=c6-waldnetz",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Vom Futter zum Fresser; er bedeutet „wird gefressen von“.",
+							"Vom Fresser zu seinem Futter; er zeigt grundsätzlich die Jagdrichtung."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7XM5RXGWDTFPJSSGVVTPZ",
+					"slug": "c6-waldnetz-unterscheiden",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche drei Rollen gehören zum Stoffkreislauf im Wald?",
+					"concept": "Erzeuger, Verbraucher und Zersetzer.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=c6-waldnetz",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Erzeuger, Verbraucher und Zersetzer.",
+							"Erzeuger und Verbraucher genügen; Zersetzer gehören nicht zum Stoffkreislauf."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7XM5RG0CQWEV2HHVD544D",
+					"slug": "c6-waldnetz-begrunden",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Wie gelangen Stoffe aus abgestorbenen Blättern wieder zu Pflanzen?",
+					"concept": "Zersetzer bauen Reste ab; Mineralstoffe gelangen in den Boden und werden aufgenommen.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=c6-waldnetz",
+					"sample_solution": "Bodentiere, Pilze und Bakterien wirken am Abbau mit. Mineralstoffe können mit Wasser über die Wurzeln aufgenommen werden. Stoffe kreisen; Energie wird zugeführt und als Wärme abgegeben."
+				}
+			]
+		},
+		{
+			"id": "01M7D7XM5Q97ED38Y244AFN616",
+			"atom_uri": "urn:zam:atom:01M7D7XM5Q97ED38Y244AFN616",
+			"namespace": "zam-academy-nt-mittelschule-6",
+			"slug": "c6-fotosynthese",
+			"title": "Fotosynthese als vereinfachte Wortgleichung",
+			"domain": "nt/nt6/soil",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=c6-fotosynthese",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D7XM5Q8E1PS3ZW9R0EX1N4",
+					"type": "soft",
+					"rationale": "Explains why the producer role in a food web depends on building energy-rich substances."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "nt-mittelschule-6",
+					"topic_code": "stage3",
+					"topic_title": "Stoffkreislauf und Boden"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "nt",
+					"topic_code": "lb2",
+					"topic_title": "Lebensgrundlagen Wasser und Boden",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7XM5RBADN79JK7F0AT1QQ",
+					"slug": "c6-fotosynthese-basis",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche Ausgangsstoffe nennt die vereinfachte Fotosynthese-Wortgleichung?",
+					"concept": "Wasser und Kohlenstoffdioxid.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=c6-fotosynthese",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Wasser und Kohlenstoffdioxid.",
+							"Traubenzucker und Sauerstoff."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7XM5R41S49Z8RAVMHTZ6T",
+					"slug": "c6-fotosynthese-unterscheiden",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Ist Licht bei der Fotosynthese ein Ausgangsstoff?",
+					"concept": "Nein. Licht liefert Energie für die Stoffbildung.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=c6-fotosynthese",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Nein. Licht liefert Energie für die Stoffbildung.",
+							"Ja. Licht ist eine Stoffportion, die wie Wasser aufgenommen wird."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7XM5RZ5NWNKJF8391E4MR",
+					"slug": "c6-fotosynthese-begrunden",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Warum heißen grüne Pflanzen Produzenten?",
+					"concept": "Sie bauen mit Lichtenergie aus Wasser und Kohlenstoffdioxid energiereiche Stoffe auf.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=c6-fotosynthese",
+					"sample_solution": "Bei der Fotosynthese entstehen Traubenzucker und Sauerstoff. Licht liefert Energie, Blattgrün ermöglicht ihre Nutzung. Pflanzen benötigen zusätzlich Mineralstoffe aus dem Boden."
+				}
+			]
+		},
+		{
+			"id": "01M7D7XM5QVKK0KH7KK3E9E71E",
+			"atom_uri": "urn:zam:atom:01M7D7XM5QVKK0KH7KK3E9E71E",
+			"namespace": "zam-academy-nt-mittelschule-6",
+			"slug": "c6-bodenleben",
+			"title": "Zersetzung und Bodenlebewesen erkennen",
+			"domain": "nt/nt6/soil",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=c6-bodenleben",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D7XM5Q8E1PS3ZW9R0EX1N4",
+					"type": "soft",
+					"rationale": "Identifies the soil organisms that carry out the decomposer role in the substance cycle."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "nt-mittelschule-6",
+					"topic_code": "stage3",
+					"topic_title": "Stoffkreislauf und Boden"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "nt",
+					"topic_code": "lb2",
+					"topic_title": "Lebensgrundlagen Wasser und Boden",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7XM5R2PS4FGDT8F0G94RW",
+					"slug": "c6-bodenleben-basis",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche Körpermerkmale passen zu einem Regenwurm?",
+					"concept": "Ein geringelter Körper ohne Beine; er gehört zu den Ringelwürmern.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=c6-bodenleben",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Ein geringelter Körper ohne Beine; er gehört zu den Ringelwürmern.",
+							"Ein Körper mit sieben Beinpaaren; er gehört zu den Krebstieren."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7XM5RXVVWPGY3P397CR31",
+					"slug": "c6-bodenleben-unterscheiden",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Wie viele Beine hat eine erwachsene Milbe und zu welcher Gruppe gehört sie?",
+					"concept": "Acht Beine; sie gehört zu den Spinnentieren.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=c6-bodenleben",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Acht Beine; sie gehört zu den Spinnentieren.",
+							"Vierzehn Beine; sie gehört zu den Krebstieren."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7XM5RKTFH9KVFJBHF716J",
+					"slug": "c6-bodenleben-begrunden",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Warum wirken mehrere Gruppen von Bodenlebewesen an der Zersetzung mit?",
+					"concept": "Bodentiere zerkleinern und mischen Reste; Pilze und Bakterien bauen weiter ab.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=c6-bodenleben",
+					"sample_solution": "Die gemeinsame Arbeit wandelt organische Reste um und macht Mineralstoffe verfügbar. Eine Zeichnung ersetzt nicht das behutsame Beobachten und Bestimmen echter Bodenlebewesen."
+				}
+			]
+		},
+		{
+			"id": "01M7D7XM5QC3BX3YH3PKVNX1P2",
+			"atom_uri": "urn:zam:atom:01M7D7XM5QC3BX3YH3PKVNX1P2",
+			"namespace": "zam-academy-nt-mittelschule-6",
+			"slug": "c6-bodenschutz",
+			"title": "Boden als Wasserspeicher und Filter schützen",
+			"domain": "nt/nt6/soil",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=c6-bodenschutz",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D7XM5QVKK0KH7KK3E9E71E",
+					"type": "soft",
+					"rationale": "Uses the living topsoil and decomposition processes when explaining soil protection."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "nt-mittelschule-6",
+					"topic_code": "stage3",
+					"topic_title": "Stoffkreislauf und Boden"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "nt",
+					"topic_code": "lb2",
+					"topic_title": "Lebensgrundlagen Wasser und Boden",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7XM5RCPTDPC43XF9DSP83",
+					"slug": "c6-bodenschutz-basis",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Wie lautet die Reihenfolge des vereinfachten Bodenprofils von oben nach unten?",
+					"concept": "Streu, belebter Oberboden, verwitterter Unterboden, Gestein.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=c6-bodenschutz",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Streu, belebter Oberboden, verwitterter Unterboden, Gestein.",
+							"Gestein, Streu, belebter Oberboden, verwitterter Unterboden."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7XM5RFP8VWZ2KAWHDMJXN",
+					"slug": "c6-bodenschutz-unterscheiden",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Warum ist gefiltertes Bodenwasser nicht automatisch Trinkwasser?",
+					"concept": "Die Filterwirkung ist begrenzt und entfernt nicht alle unerwünschten Stoffe sicher.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=c6-bodenschutz",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Die Filterwirkung ist begrenzt und entfernt nicht alle unerwünschten Stoffe sicher.",
+							"Boden entfernt ausnahmslos alle gelösten Stoffe und Krankheitserreger."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7XM5R4SETJQ7Y921WGKQ7",
+					"slug": "c6-bodenschutz-begrunden",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Wie schützt eine unversiegelte bepflanzte Fläche Boden und Wasserhaushalt?",
+					"concept": "Sie erhält Lebensraum und ermöglicht die Aufnahme und Speicherung von Wasser.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=c6-bodenschutz",
+					"sample_solution": "Poren nehmen Wasser auf und Pflanzenbedeckung schützt den Boden. Versiegelung erschwert die Aufnahme; Schadstoffeinträge müssen vermieden werden, weil die Filterwirkung begrenzt ist."
+				}
+			]
+		},
+		{
+			"id": "01M7E0HSGT1ZN0GNHWJSMWFR4E",
+			"atom_uri": "urn:zam:atom:01M7E0HSGT1ZN0GNHWJSMWFR4E",
+			"namespace": "zam-academy-nt-mittelschule-6",
+			"slug": "nt6-pubertaet-hygiene",
+			"title": "Pubertät: Veränderungen und Körperhygiene",
+			"domain": "nt/nt6/health",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-pubertaet-hygiene",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "nt-mittelschule-6",
+					"topic_code": "stage5",
+					"topic_title": "Körper & Entwicklung"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "nt",
+					"topic_code": "lb3",
+					"topic_title": "Mensch und Gesundheit – Pubertät und vorgeburtliche Entwicklung",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7E0HSGTMETNP1MFCCXYWT25",
+					"slug": "nt6-pubertaet-hygiene-basis",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Warum darf der Beginn der Pubertät nicht als Wettlauf bewertet werden?",
+					"concept": "Zeitpunkt und Verlauf der Entwicklung unterscheiden sich von Mensch zu Mensch.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-pubertaet-hygiene",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Zeitpunkt und Verlauf der Entwicklung unterscheiden sich von Mensch zu Mensch.",
+							"Gleichaltrige sollten körperlich gleich weit entwickelt sein; Unterschiede zeigen eine falsche Entwicklung."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7E0HSGTY4DB01SJ30A55311",
+					"slug": "nt6-pubertaet-hygiene-hygiene",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Warum ersetzt Duftspray nach dem Sport nicht angemessene Körperpflege?",
+					"concept": "Es kann Geruch überdecken, entfernt aber Schweiß und Verschmutzungen nicht.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-pubertaet-hygiene",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Es kann Geruch überdecken, entfernt aber Schweiß und Verschmutzungen nicht.",
+							"Es beseitigt die Ursache des Körpergeruchs, sodass Waschen und Kleidungswechsel entfallen können."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7E0HSGTJF553MSN7H74270W",
+					"slug": "nt6-pubertaet-hygiene-transfer",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Wie hängen stärkere Schweißbildung und tägliche Körperhygiene in der Pubertät zusammen?",
+					"concept": "Mehr Schweiß macht angemessene Reinigung und saubere Kleidung wichtiger.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-pubertaet-hygiene",
+					"sample_solution": "Der Körper verändert sich, deshalb braucht die Pflege mehr Aufmerksamkeit. Regelmäßige angemessene Reinigung und das Wechseln verschwitzter Kleidung unterstützen Gesundheit und Wohlbefinden; Hygiene ist kein Anlass zum Beschämen."
+				}
+			]
+		},
+		{
+			"id": "01M7E0HSGT2VCKCXA92FSFV6T8",
+			"atom_uri": "urn:zam:atom:01M7E0HSGT2VCKCXA92FSFV6T8",
+			"namespace": "zam-academy-nt-mittelschule-6",
+			"slug": "nt6-geschlechtsorgane",
+			"title": "Geschlechtsorgane: Aufbau und Aufgaben",
+			"domain": "nt/nt6/health",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-geschlechtsorgane",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "nt-mittelschule-6",
+					"topic_code": "stage5",
+					"topic_title": "Körper & Entwicklung"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "nt",
+					"topic_code": "lb3",
+					"topic_title": "Mensch und Gesundheit – Pubertät und vorgeburtliche Entwicklung",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7E0HSGTA1KDH1VHT5QJVJBB",
+					"slug": "nt6-geschlechtsorgane-basis",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche Aufgabe haben die Hoden ab der Pubertät?",
+					"concept": "In ihnen entstehen Samenzellen.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-geschlechtsorgane",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"In ihnen entstehen Samenzellen.",
+							"In ihnen werden Samenzellen nur gespeichert; gebildet werden sie in der Prostata."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7E0HSGT6PN01PZZE1V5QKJ9",
+					"slug": "nt6-geschlechtsorgane-organe",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Worin unterscheiden sich Eierstock und Gebärmutter?",
+					"concept": "Im Eierstock reifen Eizellen; in der Gebärmutter kann sich ein Embryo entwickeln.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-geschlechtsorgane",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Im Eierstock reifen Eizellen; in der Gebärmutter kann sich ein Embryo entwickeln.",
+							"In der Gebärmutter reifen Eizellen; im Eierstock kann sich ein Embryo entwickeln."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7E0HSGTGKQ088C1X74GAGX2",
+					"slug": "nt6-geschlechtsorgane-transfer",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Warum sind Eizelle und Eierstock keine austauschbaren Begriffe?",
+					"concept": "Die Eizelle ist eine Keimzelle; der Eierstock ist ein Organ.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-geschlechtsorgane",
+					"sample_solution": "In einem Eierstock reifen Eizellen. Das Organ besteht selbst aus vielen Zellen. Der Zellbegriff benennt deshalb eine andere Ebene des Körperbaus als der Organbegriff."
+				}
+			]
+		},
+		{
+			"id": "01M7E0HSGT7SHNTHF5B774FF86",
+			"atom_uri": "urn:zam:atom:01M7E0HSGT7SHNTHF5B774FF86",
+			"namespace": "zam-academy-nt-mittelschule-6",
+			"slug": "nt6-befruchtung",
+			"title": "Von Keimzellen zu Befruchtung und Einnistung",
+			"domain": "nt/nt6/health",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-befruchtung",
+			"prerequisites": [
+				{
+					"atom_id": "01M7E0HSGT2VCKCXA92FSFV6T8",
+					"type": "soft",
+					"rationale": "Uses the named organs and transport routes when distinguishing fertilisation and implantation."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "nt-mittelschule-6",
+					"topic_code": "stage5",
+					"topic_title": "Körper & Entwicklung"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "nt",
+					"topic_code": "lb3",
+					"topic_title": "Mensch und Gesundheit – Pubertät und vorgeburtliche Entwicklung",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7E0HSGT2SYGANR0DD0MCCHE",
+					"slug": "nt6-befruchtung-basis",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Was geschieht bei der Befruchtung?",
+					"concept": "Die Zellkerne von Ei- und Samenzelle vereinigen sich.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-befruchtung",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Die Zellkerne von Ei- und Samenzelle vereinigen sich.",
+							"Eine Eizelle wird aus dem Eierstock in den Eileiter abgegeben."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7E0HSGTQHHKMZPTDDXAS256",
+					"slug": "nt6-befruchtung-ort",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Worin unterscheiden sich Befruchtung und Einnistung räumlich?",
+					"concept": "Befruchtung meist im Eileiter; Einnistung in der Gebärmutterschleimhaut.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-befruchtung",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Befruchtung meist im Eileiter; Einnistung in der Gebärmutterschleimhaut.",
+							"Befruchtung meist in der Gebärmutter; Einnistung im Eileiter."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7E0HSGTV5Z9TMDGZBX0NW3W",
+					"slug": "nt6-befruchtung-transfer",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Warum gehören Zellteilungen zwischen Befruchtung und Einnistung?",
+					"concept": "Aus der befruchteten Eizelle entsteht auf dem Weg zur Gebärmutter ein mehrzelliger früher Entwicklungsstand.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-befruchtung",
+					"sample_solution": "Nach der Befruchtung teilt sich die neue Zelle wiederholt. Der frühe Zellverband erreicht die Gebärmutter und kann sich dort einnisten. Die drei Begriffe beschreiben aufeinander bezogene, aber verschiedene Schritte."
+				}
+			]
+		},
+		{
+			"id": "01M7E0HSGTYQ7DJBTPG2VCDXC9",
+			"atom_uri": "urn:zam:atom:01M7E0HSGTYQ7DJBTPG2VCDXC9",
+			"namespace": "zam-academy-nt-mittelschule-6",
+			"slug": "nt6-schwangerschaft",
+			"title": "Schwangerschaft und Geburt im Überblick",
+			"domain": "nt/nt6/health",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-schwangerschaft",
+			"prerequisites": [
+				{
+					"atom_id": "01M7E0HSGT7SHNTHF5B774FF86",
+					"type": "soft",
+					"rationale": "Builds on the ordered early development steps to explain subsequent growth and supply."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "nt-mittelschule-6",
+					"topic_code": "stage5",
+					"topic_title": "Körper & Entwicklung"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "nt",
+					"topic_code": "lb3",
+					"topic_title": "Mensch und Gesundheit – Pubertät und vorgeburtliche Entwicklung",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7E0HSGTV0TEMV197QBX1Z0S",
+					"slug": "nt6-schwangerschaft-basis",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche Aufgabe haben Plazenta und Nabelschnur für das ungeborene Kind?",
+					"concept": "Sie ermöglichen Versorgung mit Sauerstoff und Nährstoffen sowie Abtransport von Abfallstoffen.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-schwangerschaft",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Sie ermöglichen Versorgung mit Sauerstoff und Nährstoffen sowie Abtransport von Abfallstoffen.",
+							"Sie leiten Luft aus der mütterlichen Lunge direkt in die Lunge des ungeborenen Kindes."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7E0HSGT4MR2Y8Y3GZFYM5FY",
+					"slug": "nt6-schwangerschaft-schutz",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Warum ist die Plazenta keine vollständige Schutzwand?",
+					"concept": "Einige schädigende Stoffe können zum ungeborenen Kind gelangen.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-schwangerschaft",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Einige schädigende Stoffe können zum ungeborenen Kind gelangen.",
+							"Sie hält ausnahmslos alle schädigenden Stoffe zurück."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7E0HSGTNQHEM3GWR0QHGM8F",
+					"slug": "nt6-schwangerschaft-transfer",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Warum ist vorgeburtliche Entwicklung mehr als bloßes Größerwerden?",
+					"concept": "Organe und Körperformen entstehen, wachsen und reifen.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-schwangerschaft",
+					"sample_solution": "Ein früher Zellverband besitzt noch nicht alle fertigen Strukturen eines Neugeborenen. Während der Schwangerschaft entstehen Organe und entwickeln ihre Funktionen. Wachstum und Reifung gehören deshalb gemeinsam zur Entwicklung."
+				}
+			]
+		},
+		{
+			"id": "01M7E0HSGTAKVJA9SYHGNEY1NA",
+			"atom_uri": "urn:zam:atom:01M7E0HSGTAKVJA9SYHGNEY1NA",
+			"namespace": "zam-academy-nt-mittelschule-6",
+			"slug": "nt6-verhuetung",
+			"title": "Empfängnisverhütung: Kondom und Pille unterscheiden",
+			"domain": "nt/nt6/health",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-verhuetung",
+			"prerequisites": [
+				{
+					"atom_id": "01M7E0HSGT7SHNTHF5B774FF86",
+					"type": "soft",
+					"rationale": "Uses the role of gametes and fertilisation to distinguish barrier and hormonal contraception."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "nt-mittelschule-6",
+					"topic_code": "stage5",
+					"topic_title": "Körper & Entwicklung"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "nt",
+					"topic_code": "lb3",
+					"topic_title": "Mensch und Gesundheit – Pubertät und vorgeburtliche Entwicklung",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7E0HSGTV4JKH07V2FPC9JD3",
+					"slug": "nt6-verhuetung-basis",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Wie wirkt ein Kondom als Verhütungsmittel?",
+					"concept": "Es bildet eine Barriere, die Samenzellen möglichst von der Eizelle fernhält.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-verhuetung",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Es bildet eine Barriere, die Samenzellen möglichst von der Eizelle fernhält.",
+							"Es verhindert den Eisprung durch Hormone."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7E0HSGTVS2A6FS4X3X4QXZR",
+					"slug": "nt6-verhuetung-infektionen",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Schützt die Antibabypille vor sexuell übertragbaren Infektionen?",
+					"concept": "Nein. Sie dient der hormonellen Empfängnisverhütung.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-verhuetung",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Nein. Sie dient der hormonellen Empfängnisverhütung.",
+							"Ja. Die Verhinderung einer Schwangerschaft verhindert zugleich die Übertragung von Krankheitserregern."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7E0HSGT0DRP7CKTBK8FZF3K",
+					"slug": "nt6-verhuetung-transfer",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Warum müssen Wirkungsweise und Schutzgrenzen bei Kondom und Pille getrennt verglichen werden?",
+					"concept": "Die Methoden wirken unterschiedlich und bieten nicht denselben Infektionsschutz.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-verhuetung",
+					"sample_solution": "Das Kondom bildet eine Barriere und senkt bei richtiger Anwendung viele Infektionsrisiken. Die Pille wirkt hormonell und bietet keinen Infektionsschutz. Keine Methode ist unabhängig von ihrer richtigen Anwendung fehlerfrei."
+				}
+			]
+		},
+		{
+			"id": "01M7E0HSGTTD4HN01YTGD3SN0K",
+			"atom_uri": "urn:zam:atom:01M7E0HSGTTD4HN01YTGD3SN0K",
+			"namespace": "zam-academy-nt-mittelschule-6",
+			"slug": "nt6-kraefte-wirkungen",
+			"title": "Kräfte erkennen: Bewegung und Verformung",
+			"domain": "nt/nt6/forces",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-kraefte-wirkungen",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "nt-mittelschule-6",
+					"topic_code": "stage6",
+					"topic_title": "Kräfte untersuchen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "nt",
+					"topic_code": "lb4",
+					"topic_title": "Materie, Stoffe und Technik",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7E0HSGTC407X9CKNBYVQ3WM",
+					"slug": "nt6-kraefte-wirkungen-basis",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche zwei grundlegenden Wirkungen kann eine Kraft haben?",
+					"concept": "Sie kann eine Bewegung ändern oder einen Körper verformen.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-kraefte-wirkungen",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Sie kann eine Bewegung ändern oder einen Körper verformen.",
+							"Sie kann nur das Tempo erhöhen; Abbremsen und Umlenken sind keine Kraftwirkungen."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7E0HSGTG4F6YHHCSFB58YC1",
+					"slug": "nt6-kraefte-wirkungen-einheit",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche Einheit gehört zur physikalischen Kraft?",
+					"concept": "Newton mit dem Einheitenzeichen N.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-kraefte-wirkungen",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Newton mit dem Einheitenzeichen N.",
+							"Kilogramm als Einheit jeder Kraft."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7E0HSGTE91KT6XB6MKKABN1",
+					"slug": "nt6-kraefte-wirkungen-transfer",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Warum beweist eine gleichförmige gerade Bewegung keine unausgeglichene Kraft?",
+					"concept": "Die wirkenden Kräfte können sich ausgleichen.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-kraefte-wirkungen",
+					"sample_solution": "Eine resultierende Kraft ändert die Bewegung. Ein Körper kann sich bei ausgeglichenen Kräften gleichförmig gerade weiterbewegen. Mehrere Kräfte sind deshalb gemeinsam zu betrachten."
+				}
+			]
+		},
+		{
+			"id": "01M7E0HSGTFQRE3W0BSEG24SVC",
+			"atom_uri": "urn:zam:atom:01M7E0HSGTFQRE3W0BSEG24SVC",
+			"namespace": "zam-academy-nt-mittelschule-6",
+			"slug": "nt6-kraftmesser",
+			"title": "Mit der Feder Kräfte messen",
+			"domain": "nt/nt6/forces",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-kraftmesser",
+			"prerequisites": [
+				{
+					"atom_id": "01M7E0HSGTTD4HN01YTGD3SN0K",
+					"type": "soft",
+					"rationale": "Measures a named physical force rather than everyday strength or mass."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "nt-mittelschule-6",
+					"topic_code": "stage6",
+					"topic_title": "Kräfte untersuchen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "nt",
+					"topic_code": "lb4",
+					"topic_title": "Materie, Stoffe und Technik",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7E0HSGTYQTG9ESDSTDBD78F",
+					"slug": "nt6-kraftmesser-basis",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche Eigenschaft nutzt ein Federkraftmesser?",
+					"concept": "Eine größere Kraft bewirkt im geeigneten Messbereich eine größere Federdehnung.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-kraftmesser",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Eine größere Kraft bewirkt im geeigneten Messbereich eine größere Federdehnung.",
+							"Jede angehängte Last dehnt die Feder gleich weit; nur die Anzahl der Laststücke zählt."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7E0HSGTDT6NS2AAMJK8FYJ4",
+					"slug": "nt6-kraftmesser-messbereich",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Warum muss der Messbereich eines Kraftmessers eingehalten werden?",
+					"concept": "Überlastung kann die Feder verändern und Messwerte unzuverlässig machen.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-kraftmesser",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Überlastung kann die Feder verändern und Messwerte unzuverlässig machen.",
+							"Die Skala darf ohne Grenze weitergedacht werden, weil die Feder bei jeder Belastung gleich reagiert."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7E0HSGT03AMFD1X8XEYXSFK",
+					"slug": "nt6-kraftmesser-transfer",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Warum gilt die Dehnungsskala einer Modellfeder nicht für jede reale Feder?",
+					"concept": "Unterschiedliche Federn besitzen unterschiedliche Kraft-Dehnungs-Zusammenhänge.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-kraftmesser",
+					"sample_solution": "Die Modellfeder dehnt sich um zwei Zentimeter je Newton. Andere Federn können bei gleicher Kraft eine andere Dehnung haben und benötigen eine eigene passende Skala. Nullpunkt und Messbereich bleiben wichtig."
+				}
+			]
+		},
+		{
+			"id": "01M7E0HSGTKGCYWQGH1ZD7Y392",
+			"atom_uri": "urn:zam:atom:01M7E0HSGTKGCYWQGH1ZD7Y392",
+			"namespace": "zam-academy-nt-mittelschule-6",
+			"slug": "nt6-arbeit-energie",
+			"title": "Mechanische Arbeit: Kraft und Weg gemeinsam betrachten",
+			"domain": "nt/nt6/tools",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-arbeit-energie",
+			"prerequisites": [
+				{
+					"atom_id": "01M7E0HSGTFQRE3W0BSEG24SVC",
+					"type": "soft",
+					"rationale": "Uses force in newtons with a path to calculate mechanical work."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "nt-mittelschule-6",
+					"topic_code": "stage7",
+					"topic_title": "Werkzeuge & Energie"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "nt",
+					"topic_code": "lb4",
+					"topic_title": "Materie, Stoffe und Technik",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7E0HSGV69QDD1EFJN3RQ0PW",
+					"slug": "nt6-arbeit-energie-basis",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Wovon hängt mechanische Arbeit bei konstanter Kraft entlang des Weges ab?",
+					"concept": "Von der Kraft und dem entlang ihrer Wirkung zurückgelegten Weg.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-arbeit-energie",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Von der Kraft und dem entlang ihrer Wirkung zurückgelegten Weg.",
+							"Nur davon, wie anstrengend sich die Tätigkeit anfühlt."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7E0HSGVEXCCBMNNVCEA1VC4",
+					"slug": "nt6-arbeit-energie-einheit",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche Einheit hat mechanische Arbeit?",
+					"concept": "Joule; ein Joule entspricht einem Newtonmeter.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-arbeit-energie",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Joule; ein Joule entspricht einem Newtonmeter.",
+							"Newton als ausschließliche Einheit der Arbeit."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7E0HSGV30HQ54SE0SN0TQ9Y",
+					"slug": "nt6-arbeit-energie-transfer",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Warum bedeutet das ruhige Halten einer Tasche trotz Anstrengung keine Hubarbeit an der Tasche?",
+					"concept": "Die Tasche legt keinen Weg zurück.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-arbeit-energie",
+					"sample_solution": "Im einfachen Modell braucht Hubarbeit eine Kraft und einen Hubweg. Beim ruhigen Halten ist der Weg null. Die Muskeln der Person benötigen trotzdem Energie; der gesamte menschliche Energiebedarf ist eine andere Betrachtung."
+				}
+			]
+		},
+		{
+			"id": "01M7E0HSGVYRK7JR94BTBAX3ZY",
+			"atom_uri": "urn:zam:atom:01M7E0HSGVYRK7JR94BTBAX3ZY",
+			"namespace": "zam-academy-nt-mittelschule-6",
+			"slug": "nt6-hebel",
+			"title": "Hebel untersuchen: längerer Arm, kleinere Kraft",
+			"domain": "nt/nt6/tools",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-hebel",
+			"prerequisites": [
+				{
+					"atom_id": "01M7E0HSGTTD4HN01YTGD3SN0K",
+					"type": "soft",
+					"rationale": "Compares the magnitude and direction of forces acting around a pivot."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "nt-mittelschule-6",
+					"topic_code": "stage7",
+					"topic_title": "Werkzeuge & Energie"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "nt",
+					"topic_code": "lb4",
+					"topic_title": "Materie, Stoffe und Technik",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7E0HSGVEE2VC05TZRY8CSCH",
+					"slug": "nt6-hebel-basis",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Wie wirkt ein längerer Kraftarm bei festem Lastarm ideal auf die nötige Kraft?",
+					"concept": "Je länger der Kraftarm, desto kleiner die nötige Kraft.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-hebel",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Je länger der Kraftarm, desto kleiner die nötige Kraft.",
+							"Je länger der Kraftarm, desto größer muss die Kraft immer werden."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7E0HSGVCX8M25WPXF62CWHR",
+					"slug": "nt6-hebel-arten",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Was unterscheidet ein- und zweiseitige Hebel?",
+					"concept": "Kraft und Last liegen auf derselben beziehungsweise auf verschiedenen Seiten des Drehpunkts.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-hebel",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Kraft und Last liegen auf derselben beziehungsweise auf verschiedenen Seiten des Drehpunkts.",
+							"Beim einseitigen Hebel liegt der Drehpunkt zwischen Kraft und Last, beim zweiseitigen liegen beide auf derselben Seite."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7E0HSGVXNA8TZHWG0GQNJKC",
+					"slug": "nt6-hebel-transfer",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Warum spart ein idealer Hebel mit längerem Kraftarm keine Energie aus dem Nichts?",
+					"concept": "Die kleinere Kraft wirkt über einen längeren Weg.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-hebel",
+					"sample_solution": "Der Hebel kann die Kraft verringern, aber die Kraftangriffsstelle bewegt sich dafür weiter. Bei gleicher Lastbewegung bleibt die ideale Arbeit erhalten. Reale Verluste erhöhen den benötigten Energieaufwand."
+				}
+			]
+		},
+		{
+			"id": "01M7E0HSGV2K9RGVEJV3MH9P92",
+			"atom_uri": "urn:zam:atom:01M7E0HSGV2K9RGVEJV3MH9P92",
+			"namespace": "zam-academy-nt-mittelschule-6",
+			"slug": "nt6-kraftwandler",
+			"title": "Goldene Regel: Kraft sparen, Weg verlängern",
+			"domain": "nt/nt6/tools",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-kraftwandler",
+			"prerequisites": [
+				{
+					"atom_id": "01M7E0HSGTKGCYWQGH1ZD7Y392",
+					"type": "soft",
+					"rationale": "Compares force times distance in the ideal mechanical-work balance."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "nt-mittelschule-6",
+					"topic_code": "stage7",
+					"topic_title": "Werkzeuge & Energie"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "nt",
+					"topic_code": "lb4",
+					"topic_title": "Materie, Stoffe und Technik",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7E0HSGVHM676TAG0BSPH5QV",
+					"slug": "nt6-kraftwandler-basis",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Wie lautet die Goldene Regel der Mechanik im idealen Fall?",
+					"concept": "Was an Kraft gespart wird, muss an Weg zugesetzt werden.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-kraftwandler",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Was an Kraft gespart wird, muss an Weg zugesetzt werden.",
+							"Kraft und Weg können bei gleicher Lastbewegung beide beliebig verkleinert werden."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7E0HSGVVA86117M8C63F9H5",
+					"slug": "nt6-kraftwandler-rolle",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Was ändert eine ideale feste Rolle hauptsächlich?",
+					"concept": "Die Richtung der Zugkraft.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-kraftwandler",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Die Richtung der Zugkraft.",
+							"Sie halbiert zwangsläufig die nötige Kraft."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7E0HSGV07WR6EVDS19ZATY8",
+					"slug": "nt6-kraftwandler-transfer",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Warum benötigt eine reale Rampe meist mehr Energie als der ideale Vergleich?",
+					"concept": "Zusätzlich wirken unter anderem Reibungsverluste.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-kraftwandler",
+					"sample_solution": "Im idealen Modell gleichen sich kleinere Kraft und längerer Weg genau aus. Reibung überträgt zusätzlich Energie als Wärme. Der tatsächliche Kraft- und Energiebedarf kann deshalb über dem idealen Wert liegen."
+				}
+			]
+		},
+		{
+			"id": "01M7E0HSGVRPNFHPZY88G3EVDV",
+			"atom_uri": "urn:zam:atom:01M7E0HSGVRPNFHPZY88G3EVDV",
+			"namespace": "zam-academy-nt-mittelschule-6",
+			"slug": "nt6-werkzeuge-koerper",
+			"title": "Werkzeuge auswählen und den Körper schonen",
+			"domain": "nt/nt6/tools",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-werkzeuge-koerper",
+			"prerequisites": [
+				{
+					"atom_id": "01M7E0HSGVYRK7JR94BTBAX3ZY",
+					"type": "soft",
+					"rationale": "Uses the force-arm trade-off and real load limits to assess a tool choice."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "nt-mittelschule-6",
+					"topic_code": "stage7",
+					"topic_title": "Werkzeuge & Energie"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "nt",
+					"topic_code": "lb4",
+					"topic_title": "Materie, Stoffe und Technik",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7E0HSGVVRMS09J42XEY6R7M",
+					"slug": "nt6-werkzeuge-koerper-basis",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche Kriterien gehören zu einer körperschonenden Werkzeugwahl?",
+					"concept": "Passung zur Aufgabe, sicherer Zustand und sachgerechte Handhabung.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-werkzeuge-koerper",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Passung zur Aufgabe, sicherer Zustand und sachgerechte Handhabung.",
+							"Ausschließlich ein möglichst langer Griff."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7E0HSGVF4ENVEWD1BM7ZXNR",
+					"slug": "nt6-werkzeuge-koerper-hilfe",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Was ist bei einer unhandlichen Last eine sinnvolle Möglichkeit?",
+					"concept": "Eine geeignete Transporthilfe oder Unterstützung organisieren.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-werkzeuge-koerper",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Eine geeignete Transporthilfe oder Unterstützung organisieren.",
+							"Die Last möglichst weit vom Körper halten, damit der längere Lastarm das Heben erleichtert."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7E0HSGVX46DTMJJ2PVDC0PX",
+					"slug": "nt6-werkzeuge-koerper-transfer",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Warum bedeutet ein längerer Werkzeuggriff nicht automatisch eine sichere Anwendung?",
+					"concept": "Kraftersparnis kann mit größerem Bewegungsraum und Überlastungsrisiken einhergehen.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-werkzeuge-koerper",
+					"sample_solution": "Ein längerer Hebel kann die nötige Kraft senken. Das Werkzeug muss trotzdem für diese Belastung ausgelegt sein und kontrolliert benutzt werden. Passung, Zustand und Einweisung bleiben entscheidend."
+				}
+			]
+		},
+		{
+			"id": "01M7E0HSGV297GAD8FXQ5GAXAE",
+			"atom_uri": "urn:zam:atom:01M7E0HSGV297GAD8FXQ5GAXAE",
+			"namespace": "zam-academy-nt-mittelschule-6",
+			"slug": "nt6-geschwindigkeit",
+			"title": "Gleichförmige Bewegung: Weg, Zeit und Geschwindigkeit",
+			"domain": "nt/nt6/motion",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-geschwindigkeit",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "nt-mittelschule-6",
+					"topic_code": "stage8",
+					"topic_title": "Bewegung & Verkehr"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "nt",
+					"topic_code": "lb4",
+					"topic_title": "Materie, Stoffe und Technik",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7E0HSGVFJSV53VQS7XSB1WM",
+					"slug": "nt6-geschwindigkeit-basis",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Wie berechnest du die Geschwindigkeit bei gleichförmiger Bewegung?",
+					"concept": "Du teilst den Weg durch die benötigte Zeit.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-geschwindigkeit",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Du teilst den Weg durch die benötigte Zeit.",
+							"Du multiplizierst Weg und Zeit miteinander."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7E0HSGVC1GSS58M1CTD86DZ",
+					"slug": "nt6-geschwindigkeit-umrechnen",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Wie rechnest du Meter pro Sekunde in Kilometer pro Stunde um?",
+					"concept": "Du multiplizierst den Zahlenwert mit 3,6.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-geschwindigkeit",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Du multiplizierst den Zahlenwert mit 3,6.",
+							"Du teilst den Zahlenwert immer durch 3,6."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7E0HSGVFVW3S2XE848D2CVA",
+					"slug": "nt6-geschwindigkeit-transfer",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Warum ist Gesamtweg durch Gesamtzeit bei einer Fahrt mit Pausen keine einzelne Momentangeschwindigkeit?",
+					"concept": "Der Quotient beschreibt den Durchschnitt über die gesamte betrachtete Zeit.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-geschwindigkeit",
+					"sample_solution": "Beim Fahren, Bremsen und Warten treten verschiedene Geschwindigkeiten auf. Der Gesamtquotient fasst sie einschließlich der Pausen zusammen und beschreibt nicht jeden einzelnen Zeitpunkt."
+				}
+			]
+		},
+		{
+			"id": "01M7E0HSGV9WS9JASJJFKHPGSP",
+			"atom_uri": "urn:zam:atom:01M7E0HSGV9WS9JASJJFKHPGSP",
+			"namespace": "zam-academy-nt-mittelschule-6",
+			"slug": "nt6-weg-zeit",
+			"title": "Weg-Zeit-Diagramme lesen und Kräfte erkennen",
+			"domain": "nt/nt6/motion",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-weg-zeit",
+			"prerequisites": [
+				{
+					"atom_id": "01M7E0HSGV297GAD8FXQ5GAXAE",
+					"type": "soft",
+					"rationale": "Relates distance increments per time to speed in the graph."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "nt-mittelschule-6",
+					"topic_code": "stage8",
+					"topic_title": "Bewegung & Verkehr"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "nt",
+					"topic_code": "lb4",
+					"topic_title": "Materie, Stoffe und Technik",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7E0HSGV73Z2TC5V0F4P8WYC",
+					"slug": "nt6-weg-zeit-basis",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Was zeigt eine gerade ansteigende Linie im Weg-Zeit-Diagramm?",
+					"concept": "Gleiche Wegzuwächse in gleichen Zeiten, also gleichförmige Bewegung.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-weg-zeit",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Gleiche Wegzuwächse in gleichen Zeiten, also gleichförmige Bewegung.",
+							"Die Form eines geraden Straßenanstiegs."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7E0HSGVJSAJFPJ057PTD090",
+					"slug": "nt6-weg-zeit-pause",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Was bedeutet ein waagerechter Abschnitt im Weg-Zeit-Diagramm?",
+					"concept": "Die Zeit vergeht, ohne dass weiterer Weg zurückgelegt wird.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-weg-zeit",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Die Zeit vergeht, ohne dass weiterer Weg zurückgelegt wird.",
+							"Der Körper bewegt sich mit gleichbleibender Geschwindigkeit weiter, weil die Linie gerade ist."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7E0HSGV5RMYF0VR9TEWXJ6T",
+					"slug": "nt6-weg-zeit-transfer",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Warum ist ein Weg-Zeit-Diagramm kein Bild des Straßenverlaufs?",
+					"concept": "Seine Achsen zeigen Zeit und zurückgelegten Weg, nicht Gelände oder räumliche Richtung.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-weg-zeit",
+					"sample_solution": "Eine steilere Linie beschreibt größeren Wegzuwachs pro Zeit. Sie beweist keinen steileren Berg. Geländeform und Fahrtrichtung benötigen zusätzliche Informationen außerhalb dieser beiden Messgrößen."
+				}
+			]
+		},
+		{
+			"id": "01M7E0HSGVFVF9RMB1V61911AJ",
+			"atom_uri": "urn:zam:atom:01M7E0HSGVFVF9RMB1V61911AJ",
+			"namespace": "zam-academy-nt-mittelschule-6",
+			"slug": "nt6-anhalteweg",
+			"title": "Anhalteweg: Reagieren und Bremsen brauchen Weg",
+			"domain": "nt/nt6/motion",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-anhalteweg",
+			"prerequisites": [
+				{
+					"atom_id": "01M7E0HSGV297GAD8FXQ5GAXAE",
+					"type": "soft",
+					"rationale": "Uses comparable speeds and units before estimating reaction and braking distances."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "nt-mittelschule-6",
+					"topic_code": "stage8",
+					"topic_title": "Bewegung & Verkehr"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "nt",
+					"topic_code": "lb4",
+					"topic_title": "Materie, Stoffe und Technik",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7E0HSGV7TQ6VKZ6GF40TVEM",
+					"slug": "nt6-anhalteweg-basis",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Aus welchen beiden Teilen besteht der Anhalteweg?",
+					"concept": "Aus Reaktionsweg und Bremsweg.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-anhalteweg",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Aus Reaktionsweg und Bremsweg.",
+							"Ausschließlich aus dem Weg nach Beginn des Bremsens."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7E0HSGVQF36GQ2XEHNWS8ET",
+					"slug": "nt6-anhalteweg-tempo",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Wie verändert doppeltes Tempo den Bremsweg in der verwendeten Faustformel?",
+					"concept": "Er wird viermal so groß.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-anhalteweg",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Er wird viermal so groß.",
+							"Er wird nur doppelt so groß."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7E0HSGV91S3CD6BC64DD8JE",
+					"slug": "nt6-anhalteweg-transfer",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Warum darf ein überschlägig berechneter Anhalteweg nicht als Garantie verstanden werden?",
+					"concept": "Reaktionszeit und Bremsbedingungen können vom Modell abweichen.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-anhalteweg",
+					"sample_solution": "Die Faustformel vereinfacht die Situation. Ablenkung, Nässe, Glätte und weitere Einflüsse verändern Reaktions- oder Bremsweg. Der Modellwert ersetzt deshalb weder Abstand noch vorausschauendes Verhalten."
+				}
+			]
+		},
+		{
+			"id": "01M7E0HSGVESNQXRP101XDR5YM",
+			"atom_uri": "urn:zam:atom:01M7E0HSGVESNQXRP101XDR5YM",
+			"namespace": "zam-academy-nt-mittelschule-6",
+			"slug": "nt6-traegheit",
+			"title": "Trägheit: Warum Körper ihre Bewegung beibehalten",
+			"domain": "nt/nt6/motion",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-traegheit",
+			"prerequisites": [
+				{
+					"atom_id": "01M7E0HSGTTD4HN01YTGD3SN0K",
+					"type": "soft",
+					"rationale": "Distinguishes constant motion from a force-induced change of motion."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "nt-mittelschule-6",
+					"topic_code": "stage8",
+					"topic_title": "Bewegung & Verkehr"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "nt",
+					"topic_code": "lb4",
+					"topic_title": "Materie, Stoffe und Technik",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7E0HSGV0WBM6X0Q1K9F5SQZ",
+					"slug": "nt6-traegheit-basis",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Was bedeutet Trägheit eines Körpers?",
+					"concept": "Er behält ohne resultierende äußere Kraft Ruhe oder gleichförmige geradlinige Bewegung bei.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-traegheit",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Er behält ohne resultierende äußere Kraft Ruhe oder gleichförmige geradlinige Bewegung bei.",
+							"Er kommt ohne fortwährend antreibende Kraft auch bei fehlender Reibung von selbst zum Stillstand."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7E0HSGVSQ29JZ3VF98MCA0N",
+					"slug": "nt6-traegheit-masse",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Wie hängt die Trägheit von der Masse ab?",
+					"concept": "Je größer die Masse, desto größer die Trägheit.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-traegheit",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Je größer die Masse, desto größer die Trägheit.",
+							"Je größer die Masse, desto leichter lässt sich bei gleicher Kraft der Bewegungszustand ändern."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7E0HSGV3905RZZD0VTJYBTJ",
+					"slug": "nt6-traegheit-transfer",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Warum müssen neben Menschen auch Gepäckstücke in Fahrzeugen gesichert werden?",
+					"concept": "Auch Gepäck behält beim Bremsen zunächst seine Bewegung bei.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-traegheit",
+					"sample_solution": "Ein unbefestigtes Gepäckstück wird nicht automatisch zusammen mit dem Fahrzeug abgebremst. Eine geeignete Sicherung übt die nötige Kraft aus und verhindert, dass es sich unkontrolliert weiterbewegt."
+				}
+			]
+		},
+		{
+			"id": "01M7E0HSGVDH6XZ3AYTNQANERX",
+			"atom_uri": "urn:zam:atom:01M7E0HSGVDH6XZ3AYTNQANERX",
+			"namespace": "zam-academy-nt-mittelschule-6",
+			"slug": "nt6-verkehr",
+			"title": "Gefahren im Verkehr vorausschauend einschätzen",
+			"domain": "nt/nt6/motion",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-verkehr",
+			"prerequisites": [
+				{
+					"atom_id": "01M7E0HSGVFVF9RMB1V61911AJ",
+					"type": "soft",
+					"rationale": "Uses the model limits of reaction and braking distance to justify anticipatory decisions."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "nt-mittelschule-6",
+					"topic_code": "stage8",
+					"topic_title": "Bewegung & Verkehr"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "nt",
+					"topic_code": "lb4",
+					"topic_title": "Materie, Stoffe und Technik",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7E0HSGVA84GK5N8BRB4YRQ4",
+					"slug": "nt6-verkehr-basis",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Warum ist ein verdeckter Bereich im Verkehr nicht automatisch frei?",
+					"concept": "Dort können Menschen oder Fahrzeuge vorhanden sein, die noch nicht sichtbar sind.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-verkehr",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Dort können Menschen oder Fahrzeuge vorhanden sein, die noch nicht sichtbar sind.",
+							"Was nicht sichtbar ist, kann keine Gefahr darstellen."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7E0HSGV4MBC2NJNNTG6Y6C5",
+					"slug": "nt6-verkehr-ablenkung",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Wie kann Ablenkung den Anhalteweg beeinflussen?",
+					"concept": "Eine spätere Reaktion kann den Reaktionsweg verlängern.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-verkehr",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Eine spätere Reaktion kann den Reaktionsweg verlängern.",
+							"Sie verändert nur den Bremsweg; vor dem Bremsen wird noch kein Weg zurückgelegt."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7E0HSGVF4XB5VQ4KSG20BMH",
+					"slug": "nt6-verkehr-transfer",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Warum ersetzt ein berechneter Anhalteweg kein vorausschauendes Verhalten?",
+					"concept": "Sicht, Reaktionszeit, Fahrbahn und andere Verkehrsteilnehmende können vom Modell abweichen.",
+					"source_link": "https://academy.zam-os.org/nt-mittelschule-6/#lesson=nt6-verkehr",
+					"sample_solution": "Die Rechnung liefert nur einen vereinfachten Vergleich. Verdeckte Gefahren und veränderte Bedingungen bleiben zu beobachten. Aufmerksamkeit, Abstand und angepasstes Verhalten sind deshalb weiterhin nötig."
+				}
+			]
+		}
+	]
+}
