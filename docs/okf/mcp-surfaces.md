@@ -8,7 +8,7 @@ tags:
   - surfaces
   - plugins
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/mcp-surfaces.md"
-timestamp: 2026-11-05T09:00:00.000Z
+timestamp: 2026-11-15T12:00:00.000Z
 ---
 
 `zam mcp` starts ZAM's stdio **Model Context Protocol** server. It is the
@@ -68,7 +68,8 @@ locations:
 
 - `plugin.json` declares the package identity and specification version;
 - `skills/zam/SKILL.md` carries host-neutral ZAM workflow instructions using
-  Agent Skills standard frontmatter;
+  Agent Skills standard frontmatter, and `skills/zam-work/SKILL.md` the
+  guided-work flow beside it ([guided-work.md](guided-work.md));
 - `mcp.json` declares the `zam` stdio server and starts
   `node ${PLUGIN_ROOT}/dist/cli/index.js mcp` from `${PLUGIN_ROOT}`.
 
@@ -222,7 +223,14 @@ The model-visible learning tools cover:
   rating contributes at most ten minutes of study time so an abandoned card
   cannot swamp the series (ADR 2026-08-01 Decision 7). Studio and Recall
   already trim distractions on write with the idle-aware clock;
-- token search, registration, and prerequisite linking;
+- token search, registration, and prerequisite linking. `zam_find_tokens`
+  returns each hit's `card` with its `id` when the learner has one, so a
+  rating goes to that card and never enrols the learner through a token id;
+- guided work ([ADR 2026-11-15](../adr/2026-11-15-guided-work-subtasks-and-review.md)):
+  `zam_work_plan`, `zam_work_hand_over` and `zam_work_close` record a
+  session's subtasks, the learner's hand-over and each close. Every answer
+  carries the whole list and the next step as an `instruction`; none writes a
+  card. See [guided-work.md](guided-work.md);
 - companion learner/model context;
 - monitored practice and sampling: `zam_monitor` returns command lines with
   values in secret positions replaced by `[redacted]`, and synthesis
@@ -649,6 +657,10 @@ A context-bar learner change reloads the persisted mode before the next queue
 is painted, so one learner's preference cannot bleed into another's session.
 
 # Citations
+
+- [ADR 2026-11-15 — Guided Work with Subtasks and Review](../adr/2026-11-15-guided-work-subtasks-and-review.md)
+- Tests: `tests/cli/work-tools.test.ts`, `tests/cli/work-skill.test.ts`, `tests/cli/bridge-relevant-tokens.test.ts`
+- Code: `src/cli/work-handlers.ts`, `skills/zam-work/SKILL.md`
 
 - Code: `src/cli/okf/bundle.ts`, `src/cli/okf/io.ts`
 - Tests: `tests/cli/okf-bundle.test.ts`, `tests/cli/okf-conformance.test.ts`, `tests/cli/okf-confinement.test.ts`

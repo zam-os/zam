@@ -81,6 +81,13 @@ open a terminal.
   `recall`, `options` for a tapped fast check followed by a self-rating, or
   `choice` for a rating derived from the chosen option. The kernel's tap
   ceiling depends on it.
+- **Guided work** (ADR 2026-11-15): subtasks are written only through
+  `zam_work_plan`, `zam_work_hand_over` and `zam_work_close` (kernel
+  `src/kernel/models/subtask.ts`); a colleague's work comes in only through
+  the plan. Each answer's `instruction` carries the flow, so change those
+  texts in `src/cli/work-handlers.ts`, not a longer skill. No card step during
+  the work; the record at the end goes by card id, never by token id. ZAM
+  writes no board.
 - **Material import** (photos, PDFs, ADR 2026-10-05): the model reads the
   file itself; the learner decides each card in one review list (Yes / No /
   Bonus); nothing of the material is stored — only a source link and file

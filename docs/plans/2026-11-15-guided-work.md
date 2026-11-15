@@ -196,11 +196,13 @@ Done on `feat/guided-work`, 2026-11-15. Evidence and deviations:
 
 Goal: D11, and the documents say what the code does. Same PR as the phases before.
 
-- [ ] **6.1** Belief edits, component by component, as D11 lists them: session model (3), observation over interruption (1, 4), modes (5, 6), skill decay (2, 3, 5) and the related line in `beliefs/forgetting/README.md`, symbiosis (6), bidirectional learning (1 and the new sentence on repository knowledge). Keep each belief at seven components or fewer.
-- [ ] **6.2** OKF, through `zam_okf_upsert` and never by hand: update `docs/okf/mcp-surfaces.md` (three new tools, `card.id` in the search result) and add an article `guided-work` that describes the flow as built.
-- [ ] **6.3** Knowledge map: add statements for `src/kernel/models/subtask.ts`, `src/cli/work-handlers.ts` and `skills/zam-work/SKILL.md` to `docs/knowledge-map/map.json`, then run `npm run dev -- knowledge-map validate --repo . --write`.
-- [ ] **6.4** `CLAUDE.md` and `AGENTS.md`: one convention bullet for guided work, the same text in both.
-- [ ] **6.5** Set the ADR to **Accepted** in its header, its status history and `docs/adr/README.md`. **Owner gate:** only on the owner's word.
+- [x] **6.1** Belief edits, component by component, as D11 lists them: session model (3), observation over interruption (1, 4), modes (5, 6), skill decay (2, 3, 5) and the related line in `beliefs/forgetting/README.md`, symbiosis (6), bidirectional learning (1 and the new sentence on repository knowledge). Keep each belief at seven components or fewer.
+- [x] **6.2** OKF, through `zam_okf_upsert` and never by hand: update `docs/okf/mcp-surfaces.md` (three new tools, `card.id` in the search result) and add an article `guided-work` that describes the flow as built.
+- [x] **6.3** Knowledge map: add statements for `src/kernel/models/subtask.ts`, `src/cli/work-handlers.ts` and `skills/zam-work/SKILL.md` to `docs/knowledge-map/map.json`, then run `npm run dev -- knowledge-map validate --repo . --write`.
+- [x] **6.4** `CLAUDE.md` and `AGENTS.md`: one convention bullet for guided work, the same text in both.
+- [x] **6.5** Set the ADR to **Accepted** in its header, its status history and `docs/adr/README.md`. **Owner gate:** only on the owner's word.
+
+Done (6.1–6.4): seven belief files rewritten (the six beliefs D11 names plus the line in `beliefs/forgetting/README.md`); every belief stays at seven components or fewer. OKF written through `upsertArticle` (the `zam_okf_upsert` write path; the MCP tool refuses a worktree under `.claude/`): `mcp-surfaces.md` updated, `guided-work.md` created. Knowledge map: four statements rewritten (`modes`, `autonomy-practice`, `observation`, `bidirectional`), five added under `session-model` (`guided-work`, `subtask-rules`, `work-tools`, `work-record`, `zam-work-skill`), validated with no warning. 6.5: accepted on the owner's word on 2026-11-15.
 
 Exit evidence: `npm run test -- tests/cli/knowledge-map.test.ts` passes; the OKF audit reports no error.
 

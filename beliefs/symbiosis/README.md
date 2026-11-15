@@ -9,9 +9,9 @@
 3. **[Observation over interruption](observation-over-interruption/)** — The most effective learning happens when the learner barely notices it.
 4. **[Disconnection danger](disconnection-danger/)** — Delegating without understanding creates a safety risk. Comprehension must be maintained, not assumed.
 5. **Amplification, not replacement** — The goal is never to make the human unnecessary. It is to make both human and AI more capable together than either alone.
-6. **Competence drives autonomy** — The system grants more autonomy as demonstrated competence grows, measured by [retention and stability](https://github.com/open-spaced-repetition/fsrs4anki).
+6. **Competence suggests autonomy** — Demonstrated competence, measured by [retention and stability](https://github.com/open-spaced-repetition/fsrs4anki), suggests how much to leave to the agent. The learner decides.
 
 ## Related beliefs
 
-- [Skill decay](../forgetting/skill-decay/) explains *why* symbiosis must include periodic practice, even in autonomy mode.
+- [Skill decay](../forgetting/skill-decay/) explains *why* symbiosis must keep the human doing real work, even in autonomy mode.
 - [Learning in context](../learning-in-context/) explains *where* symbiotic learning happens — in real work, not isolated drills.

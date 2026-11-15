@@ -4,11 +4,12 @@
 
 ## Components
 
-1. **Agent skills decay** — Learned agent procedures are scheduled via [FSRS](https://github.com/open-spaced-repetition/fsrs4anki), just like human knowledge. A skill that hasn't been practiced may become unreliable.
-2. **User teaches agent** — When the agent gets stuck, the human guides it. That guidance is saved as an agent skill with linked tokens.
-3. **Shared scheduling model** — The same decay and review mechanics apply to both parties. Neither has permanently reliable knowledge.
+1. **Agent skills decay** — A learned agent procedure that hasn't been used may become unreliable, as the repository and its tools move on. It is checked again when it is next used; it is not scheduled like a card.
+2. **User teaches agent** — When the agent gets stuck, the human guides it. A procedure is saved as an agent skill with linked tokens.
+3. **Neither side is permanently reliable** — Human knowledge decays and is scheduled by FSRS; agent knowledge goes stale and is revalidated in use.
 4. **No black boxes** — Agent knowledge (skills, linked tokens, scheduling state) is inspectable and reviewable by the human.
 5. **Skill discovery** — New skills emerge from collaboration. They are not pre-programmed but discovered through real work.
+6. **Repository knowledge** — When the human questions the agent's solution and the agent lacked context, that context is written into the repository's own knowledge (articles, ADRs), where both sides can read it. Agent skills stay for procedures.
 
 ## Related beliefs
 
