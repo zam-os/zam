@@ -79,6 +79,7 @@ import {
   listAssignmentsByAssigner,
   listAssignmentsForLearner,
   listLibraryTopics,
+  listSubtasks,
   listTokens,
   monitorLogExists,
   needsGenericCurriculumImport,
@@ -1805,6 +1806,9 @@ export async function endSession(db: Database, params: EndSessionParams) {
     : undefined;
   const session = await kernelEndSession(db, params.session);
   const summary = await getSessionSummary(db, params.session);
+  // Guided work (ADR 2026-11-15): the session's subtasks travel with its
+  // end, so a harness without the work tools can still show them.
+  const subtasks = await listSubtasks(db, params.session);
   // The raw log is evidence only while it is captured (ADR 2026-10-08 R6):
   // once the synthesis above was prepared, the session's raw files go and a
   // value-free digest stays; the confirmed candidates carry their own texts.
@@ -1822,6 +1826,7 @@ export async function endSession(db: Database, params: EndSessionParams) {
     startedAt: session.started_at,
     completedAt: session.completed_at,
     summary,
+    subtasks,
     ...(synthesis ? { synthesis } : {}),
   };
 }

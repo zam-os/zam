@@ -100,6 +100,7 @@ import type { CatalogEntry } from "../okf/bundle.js";
 import { registerCliProcessServices } from "../process-services.js";
 import { publishUiIntent } from "../ui-intent.js";
 import { resolveLearnerId } from "../users/identity.js";
+import { workClose, workHandOver, workPlan } from "../work-handlers.js";
 import { executeBridgeCommandJson } from "./bridge.js";
 import {
   createLazyDatabase,
@@ -777,6 +778,154 @@ export function createMcpServer(
         synthesize: params.synthesize,
         patterns: params.patterns,
         minConfidence: params.minConfidence,
+      });
+    }),
+  );
+
+  // 3a. Guided work (ADR 2026-11-15): plan, hand over, close. Each changes
+  // the session's subtasks, so none is pre-approved.
+  const workSubtaskInput = z.object({
+    ordinal: z
+      .number()
+      .int()
+      .min(1)
+      .max(9)
+      .describe(
+        "The subtask's number in the session, 1 to 9; it never changes",
+      ),
+    title: z
+      .string()
+      .optional()
+      .describe("Short title; needed for a new subtask"),
+    doneCriterion: z
+      .string()
+      .optional()
+      .describe("What must be true for the subtask to be done"),
+    kind: z
+      .enum(["text", "terminal", "computer_use"])
+      .optional()
+      .describe("text: code, tests, docs; terminal; computer_use"),
+    owner: z
+      .enum(["user", "agent", "other"])
+      .optional()
+      .describe("Who takes it: the learner, you, or a colleague (other)"),
+    waitsFor: z
+      .array(z.number().int().min(1).max(9))
+      .optional()
+      .describe("Ordinals this subtask waits for"),
+    externalRef: z
+      .string()
+      .nullable()
+      .optional()
+      .describe("Board item link or id, stored and never fetched"),
+    state: z
+      .enum(["done_by_other", "cancelled"])
+      .optional()
+      .describe(
+        "What happened on the board: a colleague finished it, or it was removed",
+      ),
+  });
+
+  server.registerTool(
+    "zam_work_plan",
+    {
+      description:
+        "Guided work: record or update a session's subtasks (at most nine, each with an owner) and get the whole list back with the next step. Call it again to attach board references, to record what a colleague changed on the board, or with an empty list to read the list when a session resumes. Never mark the learner's or your own work done here; use zam_work_close.",
+      inputSchema: {
+        user: z.string().optional().describe("User ID owning the session"),
+        session: z.string().describe("Session ULID from zam_session_start"),
+        subtasks: z
+          .array(workSubtaskInput)
+          .describe("Subtasks to add or change, by ordinal; empty to read"),
+      },
+      annotations: {
+        ...commonAnnotations,
+        destructiveHint: false,
+      },
+    },
+    wrapHandler(async (params) => {
+      return await workPlan(db, {
+        user: params.user,
+        session: params.session,
+        subtasks: params.subtasks,
+      });
+    }),
+  );
+
+  server.registerTool(
+    "zam_work_hand_over",
+    {
+      description:
+        "Guided work: hand the learner's subtask over. Call it after you prepared its surroundings and left the gap. It is your last call this turn: end the turn and wait for the learner.",
+      inputSchema: {
+        user: z.string().optional().describe("User ID owning the session"),
+        session: z.string().describe("Session ULID"),
+        subtask: z
+          .number()
+          .int()
+          .min(1)
+          .max(9)
+          .describe("Ordinal of the subtask"),
+      },
+      annotations: {
+        ...commonAnnotations,
+        destructiveHint: false,
+      },
+    },
+    wrapHandler(async (params) => {
+      return await workHandOver(db, {
+        user: params.user,
+        session: params.session,
+        subtask: params.subtask,
+      });
+    }),
+  );
+
+  server.registerTool(
+    "zam_work_close",
+    {
+      description:
+        "Guided work: close a subtask this session finished, with who did it and whether its result was checked. doneBy user only for the learner's subtask after zam_work_hand_over; doneBy agent for yours, or for the learner's with help agent_did_it when you did it for them. A colleague's work goes through zam_work_plan.",
+      inputSchema: {
+        user: z.string().optional().describe("User ID owning the session"),
+        session: z.string().describe("Session ULID"),
+        subtask: z
+          .number()
+          .int()
+          .min(1)
+          .max(9)
+          .describe("Ordinal of the subtask"),
+        doneBy: z.enum(["user", "agent"]).describe("Who did the work"),
+        checked: z
+          .enum(["passed", "failed", "not_checked"])
+          .describe(
+            "Result of checking the outcome against the done-criterion",
+          ),
+        help: z
+          .enum(["none", "pointer", "pattern", "agent_did_it"])
+          .optional()
+          .describe(
+            "Help the learner got: where to look, a pattern, or you did it",
+          ),
+        commit: z
+          .string()
+          .optional()
+          .describe("Commit id of the work, 7 to 40 hex characters"),
+      },
+      annotations: {
+        ...commonAnnotations,
+        destructiveHint: false,
+      },
+    },
+    wrapHandler(async (params) => {
+      return await workClose(db, {
+        user: params.user,
+        session: params.session,
+        subtask: params.subtask,
+        doneBy: params.doneBy,
+        checked: params.checked,
+        help: params.help,
+        commit: params.commit,
       });
     }),
   );

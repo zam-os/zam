@@ -457,6 +457,7 @@ import {
   isTeamLibrary,
   resolveUser,
 } from "../users/identity.js";
+import { workClose, workHandOver, workPlan } from "../work-handlers.js";
 import {
   activateWorkspacePath,
   defaultWorkspaceDir,
@@ -1707,6 +1708,125 @@ bridgeCommand
       try {
         const result = await handleEndSession(db, { session: opts.session });
         jsonOut(result);
+      } catch (err) {
+        jsonError((err as Error).message);
+      }
+    });
+  });
+
+// ── zam bridge work-plan / work-hand-over / work-close (ADR 2026-11-15) ────
+
+bridgeCommand
+  .command("work-plan")
+  .description(
+    'Record or update a guided-work session\'s subtasks; reads {"subtasks": [...]} on stdin, an empty list only reads (JSON)',
+  )
+  .requiredOption("--session <id>", "Session ID")
+  .option("--user <id>", "User ID (default: whoami)")
+  .action(async (opts) => {
+    let raw: string;
+    if (isServeMode) {
+      raw = serveStdinPayload ?? "";
+    } else {
+      const chunks: Buffer[] = [];
+      for await (const chunk of process.stdin) {
+        chunks.push(chunk as Buffer);
+      }
+      raw = Buffer.concat(chunks).toString("utf-8").trim();
+    }
+    let subtasks: unknown = [];
+    if (raw) {
+      try {
+        const parsed = JSON.parse(raw) as unknown;
+        subtasks = Array.isArray(parsed)
+          ? parsed
+          : (parsed as { subtasks?: unknown } | null)?.subtasks;
+      } catch (err) {
+        jsonError(`Invalid JSON on stdin: ${(err as Error).message}`);
+      }
+    }
+    if (!Array.isArray(subtasks)) {
+      jsonError('stdin must be {"subtasks": [...]} or a list of subtasks');
+    }
+    await withDb(async (db) => {
+      try {
+        jsonOut(
+          await workPlan(db, {
+            user: opts.user,
+            session: opts.session,
+            subtasks: subtasks as Parameters<typeof workPlan>[1]["subtasks"],
+          }),
+        );
+      } catch (err) {
+        jsonError((err as Error).message);
+      }
+    });
+  });
+
+/** A subtask ordinal from the command line, 1 to 9. */
+function parseOrdinal(value: string): number {
+  const ordinal = Number(value);
+  if (!Number.isInteger(ordinal) || ordinal < 1 || ordinal > 9) {
+    jsonError("--subtask must be a whole number from 1 to 9");
+  }
+  return ordinal;
+}
+
+bridgeCommand
+  .command("work-hand-over")
+  .description(
+    "Hand the learner's subtask over; the answer says to end the turn (JSON)",
+  )
+  .requiredOption("--session <id>", "Session ID")
+  .requiredOption("--subtask <n>", "Ordinal of the subtask, 1 to 9")
+  .option("--user <id>", "User ID (default: whoami)")
+  .action(async (opts) => {
+    const subtask = parseOrdinal(opts.subtask);
+    await withDb(async (db) => {
+      try {
+        jsonOut(
+          await workHandOver(db, {
+            user: opts.user,
+            session: opts.session,
+            subtask,
+          }),
+        );
+      } catch (err) {
+        jsonError((err as Error).message);
+      }
+    });
+  });
+
+bridgeCommand
+  .command("work-close")
+  .description(
+    "Close a guided-work subtask this session finished, with who did it and its check (JSON)",
+  )
+  .requiredOption("--session <id>", "Session ID")
+  .requiredOption("--subtask <n>", "Ordinal of the subtask, 1 to 9")
+  .requiredOption("--done-by <who>", "user | agent")
+  .requiredOption("--checked <result>", "passed | failed | not_checked")
+  .option("--help-given <help>", "none | pointer | pattern | agent_did_it")
+  .option("--commit <sha>", "Commit id of the work")
+  .option("--user <id>", "User ID (default: whoami)")
+  .action(async (opts) => {
+    const subtask = parseOrdinal(opts.subtask);
+    if (opts.doneBy !== "user" && opts.doneBy !== "agent") {
+      jsonError("--done-by must be user or agent");
+    }
+    await withDb(async (db) => {
+      try {
+        jsonOut(
+          await workClose(db, {
+            user: opts.user,
+            session: opts.session,
+            subtask,
+            doneBy: opts.doneBy,
+            checked: opts.checked,
+            help: opts.helpGiven,
+            commit: opts.commit,
+          }),
+        );
       } catch (err) {
         jsonError((err as Error).message);
       }

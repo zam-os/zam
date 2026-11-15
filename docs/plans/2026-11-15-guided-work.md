@@ -1,6 +1,6 @@
 # Guided work — implementation plan
 
-**Status:** Phase 1 is built. Phases 2–4 build the rest of the flow, 5–6 clean up and accept the ADR, 7 is the pilot.\
+**Status:** Phases 1 and 2 are built. Phases 3–4 build the rest of the flow, 5–6 clean up and accept the ADR, 7 is the pilot.\
 **Decision:** [ADR 2026-11-15 — Guided Work](../adr/2026-11-15-guided-work-subtasks-and-review.md). Its decisions are cited here as **D1–D11**. Read the ADR first; this plan does not repeat its reasons.\
 **Branch:** `feat/guided-work`, from `main`. One feature, one branch, one PR, one commit per phase.
 
@@ -96,7 +96,7 @@ Pitfall: the team library runs on PostgreSQL. Use the same column idioms as `ses
 
 Goal: Plan, Hand over and Close exist as MCP tools and as bridge commands (D6).
 
-- [ ] **2.1** Handlers in a new file `src/cli/work-handlers.ts`, following `startSession` in `src/cli/bridge-handlers.ts`: `workPlan`, `workHandOver`, `workClose`. Each resolves the user with `resolveHandlerUser`, checks that the session belongs to that user and returns
+- [x] **2.1** Handlers in a new file `src/cli/work-handlers.ts`, following `startSession` in `src/cli/bridge-handlers.ts`: `workPlan`, `workHandOver`, `workClose`. Each resolves the user with `resolveHandlerUser`, checks that the session belongs to that user and returns
 
   ```ts
   { sessionId, subtasks: Subtask[], instruction: string }
@@ -106,13 +106,22 @@ Goal: Plan, Hand over and Close exist as MCP tools and as bridge commands (D6).
   - `workPlan`: names the subtasks the agent must not write. On the first call it also says: ask the learner, in so many words, to take the subtasks that are hardest for them (D3), and create board items only after they chose (D4).
   - `workHandOver`: "End your turn now. Do not edit the files of this subtask. Wait for the learner." It names the subtask and its done-criterion.
   - `workClose`: after `doneBy: 'user'`, "Review this subtask with the learner now" (D7). After the last open subtask, "Draw up the record" (D8).
-- [ ] **2.2** MCP tools in `src/cli/commands/mcp.ts`, registered like `zam_session_start`: `zam_work_plan`, `zam_work_hand_over`, `zam_work_close`. `destructiveHint: false`. They change state, so they are **not** added to the pre-approved list in `src/cli/agent-approval.ts` and not to `STUDIO_BRIDGE_COMMANDS`.
-- [ ] **2.3** Bridge commands in `src/cli/commands/bridge.ts`, following `start-session`: `work-plan` (subtasks as JSON on stdin), `work-hand-over --session <id> --subtask <n>`, `work-close --session <id> --subtask <n> --done-by <user|agent> --checked <passed|failed|not_checked> --help-given <none|pointer|pattern|agent_did_it> [--commit <sha>]`. The option is `--help-given` because Commander reserves `--help`.
-- [ ] **2.4** Types for the three responses in `src/bridge/protocol.ts`. Adding fields is safe; do not change an existing one.
-- [ ] **2.5** `zam_session_end` and `end-session` return the session's subtasks in their summary, so a harness without the new tools can still show them.
-- [ ] **2.6** Tests: `tests/cli/work-tools.test.ts` (each handler, each refusal, the `instruction` texts), an addition to `tests/cli/mcp.test.ts` (the three tools are listed and none is pre-approved), and a bridge test that every error is JSON.
+- [x] **2.2** MCP tools in `src/cli/commands/mcp.ts`, registered like `zam_session_start`: `zam_work_plan`, `zam_work_hand_over`, `zam_work_close`. `destructiveHint: false`. They change state, so they are **not** added to the pre-approved list in `src/cli/agent-approval.ts` and not to `STUDIO_BRIDGE_COMMANDS`.
+- [x] **2.3** Bridge commands in `src/cli/commands/bridge.ts`, following `start-session`: `work-plan` (subtasks as JSON on stdin), `work-hand-over --session <id> --subtask <n>`, `work-close --session <id> --subtask <n> --done-by <user|agent> --checked <passed|failed|not_checked> --help-given <none|pointer|pattern|agent_did_it> [--commit <sha>]`. The option is `--help-given` because Commander reserves `--help`.
+- [x] **2.4** Types for the three responses in `src/bridge/protocol.ts`. Adding fields is safe; do not change an existing one.
+- [x] **2.5** `zam_session_end` and `end-session` return the session's subtasks in their summary, so a harness without the new tools can still show them.
+- [x] **2.6** Tests: `tests/cli/work-tools.test.ts` (each handler, each refusal, the `instruction` texts), an addition to `tests/cli/mcp.test.ts` (the three tools are listed and none is pre-approved), and a bridge test that every error is JSON.
 
 Exit evidence: the three test files pass; `zam bridge work-plan` round-trips a plan against a temporary database.
+
+Done on `feat/guided-work`, 2026-11-15. Evidence and deviations:
+
+- `tests/cli/work-tools.test.ts` covers the handlers, the three MCP tools and the three bridge commands in one file (14 tests); `tests/cli/mcp.test.ts` now pins 52 tools. Lint, `tsc --noEmit` and the full suite pass (455 files, 4774 tests, 32 skipped).
+- The tools take the subtask's ordinal (`subtask: 2`), as Phase 1 settled.
+- `work-plan` reads `{"subtasks": [...]}` or a bare list on stdin; no input or `[]` only reads.
+- Another learner's session is answered as "Session not found", not as forbidden.
+- `instruction` is computed from the list alone (`nextStep` in `src/cli/work-handlers.ts`): it names the learner's subtasks the agent must not write, then the one next step. When every subtask has ended it spells out the record at the end, so Phase 4's skill can stay short.
+- A first plan in which no subtask is the learner's yet tells the agent to ask the learner to take the hardest ones and to record that by setting `owner: user`.
 
 ## Phase 3 — The record at the end
 
