@@ -1422,7 +1422,8 @@ export function createMcpServer(
   server.registerTool(
     "zam_find_tokens",
     {
-      description: "Search/find matching tokens using semantic search",
+      description:
+        "Search/find matching tokens using semantic search. Each result carries the learner's card (with its id) or null when they have no card for that token.",
       inputSchema: {
         user: z.string().optional().describe("User ID"),
         context: z.string().describe("Query context to embed and match"),

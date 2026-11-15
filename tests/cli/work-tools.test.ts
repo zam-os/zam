@@ -6,7 +6,11 @@ import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { InMemoryTransport } from "@modelcontextprotocol/sdk/inMemory.js";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { PRE_APPROVED_TOOLS } from "../../src/cli/agent-approval.js";
-import { endSession as handleEndSession } from "../../src/cli/bridge-handlers.js";
+import {
+  findTokens,
+  endSession as handleEndSession,
+  submitReview,
+} from "../../src/cli/bridge-handlers.js";
 import {
   createMcpServer,
   STUDIO_BRIDGE_COMMANDS,
@@ -17,7 +21,10 @@ import {
   workPlan,
 } from "../../src/cli/work-handlers.js";
 import {
+  createToken,
   type Database,
+  ensureCard,
+  getCard,
   openDatabase,
   setSetting,
   startSession,
@@ -439,5 +446,107 @@ describe("guided-work bridge commands", () => {
     expect(
       runBridge(["work-plan", "--session", "missing"], "[]").error,
     ).toMatch(/Session not found/);
+  });
+});
+
+describe("the record at the end", () => {
+  let tempDir: string;
+  let db: Database;
+  let session: string;
+
+  beforeEach(async () => {
+    tempDir = mkdtempSync(join(tmpdir(), "zam-work-record-"));
+    db = await openDatabase({
+      dbPath: join(tempDir, "test.db"),
+      initialize: true,
+      useConfiguredCloud: false,
+    });
+    await setSetting(db, "user.id", "thomas");
+    session = (await startSession(db, { user_id: "thomas", task: "Interface" }))
+      .id;
+  });
+
+  afterEach(async () => {
+    await db.close();
+    rmSync(tempDir, { recursive: true, force: true });
+  });
+
+  it("records a covered card from the search as Good and makes it not due", async () => {
+    const owned = await createToken(db, {
+      slug: "typescript-interface",
+      concept: "A TypeScript interface names the shape an object must have",
+      domain: "typescript",
+      bloom_level: 2,
+      question: "What does a TypeScript interface describe?",
+    });
+    const card = await ensureCard(db, owned.id, "thomas");
+    await db
+      .prepare(
+        "UPDATE cards SET due_at = '2000-01-01T00:00:00.000Z' WHERE id = ?",
+      )
+      .run(card.id);
+    const notOwned = await createToken(db, {
+      slug: "typescript-interface-merging",
+      concept: "Two TypeScript interface declarations of one name merge",
+      domain: "typescript",
+      bloom_level: 2,
+      question: "What happens to two interface declarations of one name?",
+    });
+
+    const found = await findTokens(db, { context: "TypeScript interface" });
+    const hit = found.tokens.find((t) => t.slug === owned.slug);
+    const miss = found.tokens.find((t) => t.slug === notOwned.slug);
+    expect(hit?.card?.id).toBe(card.id);
+    expect(miss?.card).toBeNull();
+
+    await submitReview(db, {
+      cardId: hit!.card!.id,
+      rating: 3,
+      independent: true,
+      activity: "work-coverage",
+      answerFormat: "recall",
+      doneBy: "user",
+      sessionId: session,
+    });
+
+    const after = await getCard(db, owned.id, "thomas");
+    expect(after?.reps).toBe(1);
+    expect(new Date(after!.due_at).getTime()).toBeGreaterThan(Date.now());
+    const attempt = (await db
+      .prepare(
+        "SELECT activity, independent, rating FROM review_attempts WHERE card_id = ?",
+      )
+      .get(card.id)) as {
+      activity: string;
+      independent: number;
+      rating: number;
+    };
+    expect(attempt).toMatchObject({ activity: "work-coverage", rating: 3 });
+    expect(Number(attempt.independent)).toBe(1);
+    // A token without a card stays without one: the flow never passes its id.
+    expect(await getCard(db, notOwned.id, "thomas")).toBeUndefined();
+  });
+
+  it("refuses a Good rating for a card the learner did not apply by themselves", async () => {
+    const token = await createToken(db, {
+      slug: "typescript-generic",
+      concept: "A generic type parameter stands for a type given at use",
+      domain: "typescript",
+      bloom_level: 2,
+      question: "What does a generic type parameter stand for?",
+    });
+    const card = await ensureCard(db, token.id, "thomas");
+
+    await expect(
+      submitReview(db, {
+        cardId: card.id,
+        rating: 3,
+        independent: false,
+        activity: "work-coverage",
+        answerFormat: "recall",
+        doneBy: "user",
+        sessionId: session,
+      }),
+    ).rejects.toThrow(/Assisted work/);
   });
 });

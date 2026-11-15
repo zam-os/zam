@@ -636,7 +636,9 @@ export interface SessionOpenResponse {
         label: string | null;
         language: string | null;
       }>;
+      /** The learner's card for the token; null when they have none. */
       card: {
+        id: string;
         state: string;
         due_at: string;
         blocked: boolean;

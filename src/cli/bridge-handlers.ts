@@ -1533,8 +1533,12 @@ export async function findTokens(db: Database, params: FindTokensParams) {
       score: t.score,
       similarity: t.similarity,
       knowledgeContexts: contextMap.get(t.id) ?? [],
+      // The card id lets a caller record a review for a card the learner
+      // already has (ADR 2026-11-15, Decision 8). A token without a card
+      // stays null: a review for it would enrol the learner.
       card: card
         ? {
+            id: card.id,
             state: card.state,
             due_at: card.due_at,
             blocked: card.blocked,

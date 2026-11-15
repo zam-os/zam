@@ -18,6 +18,7 @@ interface ExpectedRelevantToken {
   score: number;
   similarity: number | null;
   card: {
+    id: string;
     state: string;
     due_at: string;
     blocked: number;
@@ -31,6 +32,7 @@ interface ExpectedRelevantTokensResult {
 
 describe("bridge relevant-tokens subcommand", () => {
   let tempHome: string;
+  let cardId: string;
   let tempCwd: string;
   let cliPath: string;
 
@@ -64,7 +66,7 @@ describe("bridge relevant-tokens subcommand", () => {
     });
 
     // Create card for thomas on t1, but none on t2
-    await ensureCard(db, t1.id, "thomas");
+    cardId = (await ensureCard(db, t1.id, "thomas")).id;
     await setSetting(db, "user.id", "thomas");
 
     await db.close();
@@ -133,6 +135,7 @@ describe("bridge relevant-tokens subcommand", () => {
     expect(aks).toBeDefined();
     expect(aks!.card).not.toBeNull();
     expect(aks!.card!.state).toBe("new");
+    expect(aks!.card!.id).toBe(cardId);
 
     expect(acr).toBeDefined();
     expect(acr!.card).toBeNull();

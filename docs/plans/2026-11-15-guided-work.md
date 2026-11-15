@@ -1,6 +1,6 @@
 # Guided work — implementation plan
 
-**Status:** Phases 1 and 2 are built. Phases 3–4 build the rest of the flow, 5–6 clean up and accept the ADR, 7 is the pilot.\
+**Status:** Phases 1–3 are built. Phase 4 builds the rest of the flow, 5–6 clean up and accept the ADR, 7 is the pilot.\
 **Decision:** [ADR 2026-11-15 — Guided Work](../adr/2026-11-15-guided-work-subtasks-and-review.md). Its decisions are cited here as **D1–D11**. Read the ADR first; this plan does not repeat its reasons.\
 **Branch:** `feat/guided-work`, from `main`. One feature, one branch, one PR, one commit per phase.
 
@@ -127,11 +127,19 @@ Done on `feat/guided-work`, 2026-11-15. Evidence and deviations:
 
 Goal: the two parts of D8 can be recorded.
 
-- [ ] **3.1** `findTokens` (`src/cli/bridge-handlers.ts`) returns the card id for a card the learner already has: add `id` inside the existing `card` object. Nothing else changes; a token without a card still returns `card: null`. Update the type in `src/bridge/protocol.ts` if one exists and the description of `zam_find_tokens`. The tool stays read-only and pre-approved.
-- [ ] **3.2** No new tool for the confirmation. The work skill (Phase 4) records each kept card with `zam_submit_review`: `cardId`, `rating: 3`, `independent: true`, `activity: "work-coverage"`, `answerFormat: "recall"`, `doneBy: "user"` and the session id. All of these parameters exist today. No `zam_admit_review` before it: nothing was presented.
-- [ ] **3.3** Tests: `findTokens` returns the id for an owned card and `null` for a token without one; a submit with the parameters of 3.2 writes one review and makes a due card not due; the same submit with `tokenId` for a token without a card is **not** part of the flow (assert that the skill text never tells the agent to pass `tokenId`).
+- [x] **3.1** `findTokens` (`src/cli/bridge-handlers.ts`) returns the card id for a card the learner already has: add `id` inside the existing `card` object. Nothing else changes; a token without a card still returns `card: null`. Update the type in `src/bridge/protocol.ts` if one exists and the description of `zam_find_tokens`. The tool stays read-only and pre-approved.
+- [x] **3.2** No new tool for the confirmation. The work skill (Phase 4) records each kept card with `zam_submit_review`: `cardId`, `rating: 3`, `independent: true`, `activity: "work-coverage"`, `answerFormat: "recall"`, `doneBy: "user"` and the session id. All of these parameters exist today. No `zam_admit_review` before it: nothing was presented.
+- [x] **3.3** Tests: `findTokens` returns the id for an owned card and `null` for a token without one; a submit with the parameters of 3.2 writes one review and makes a due card not due; the same submit with `tokenId` for a token without a card is **not** part of the flow (assert that the skill text never tells the agent to pass `tokenId`).
 
 Exit evidence: the tests pass.
+
+Done on `feat/guided-work`, 2026-11-15. Evidence and deviations:
+
+- `findTokens` returns `card.id`; the protocol type, the tool description and `tests/cli/bridge-relevant-tokens.test.ts` say so.
+- `tests/cli/work-tools.test.ts`, "the record at the end": the search returns the id of an owned card and `null` for a token without one; a submit with the parameters of 3.2 writes one review, stores `activity: work-coverage` and `independent` on the attempt, moves the due date into the future and creates no card for the other token; the same submit with `independent: false` is refused.
+- Moved to Phase 4: asserting that the skill never tells the agent to pass a `tokenId`. The skill does not exist yet. The `instruction` text of the last close already says "Never pass a tokenId", and Phase 2's tests check it.
+- Lint, `tsc --noEmit` and the full suite pass (455 files, 4776 tests, 32 skipped).
+- Pitfall found: `tests/cli/bridge-relevant-tokens.test.ts` runs the built CLI in `dist/`. Run `npm run build` (or `npm run test`, which builds first) before running that file alone.
 
 Pitfall: `submitReview` calls `ensureCard` when it gets a `tokenId` and no card exists. That would enrol the learner in a shared or Bonus token. The flow passes `cardId` only.
 
@@ -140,7 +148,7 @@ Pitfall: `submitReview` calls `ensureCard` when it gets a `tokenId` and no card 
 Goal: a short skill carries the flow, and every harness gets it.
 
 - [ ] **4.1** New skill `skills/zam-work/SKILL.md`, at most 80 lines. A draft is in Appendix A. It holds the flow and the rules; the tool results carry the step-by-step instruction.
-- [ ] **4.2** Harness copies `.claude/skills/zam-work/`, `.agent/skills/zam-work/` and `.agents/skills/zam-work/`. The body below the front matter is identical in all four. Add `tests/cli/work-skill.test.ts`, which fails when a body differs.
+- [ ] **4.2** Harness copies `.claude/skills/zam-work/`, `.agent/skills/zam-work/` and `.agents/skills/zam-work/`. The body below the front matter is identical in all four. Add `tests/cli/work-skill.test.ts`, which fails when a body differs, and which asserts that the skill never tells the agent to pass a `tokenId` (moved here from 3.3).
 - [ ] **4.3** Distribution. Today the code knows one skill:
   - `src/kernel/system/hooks.ts` (`distributeGlobalSkills` and the path helpers above it),
   - `src/cli/provisioning/index.ts` (`wireSkills` and its health report),
