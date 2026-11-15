@@ -2,6 +2,7 @@
 
 ## 2026-11-15
 
+- **Update** — [Token and Card Model](token-card-model.md)
 - **Creation** — [Guided Work](guided-work.md)
 - **Update** — [MCP Transport and Surfaces](mcp-surfaces.md)
 

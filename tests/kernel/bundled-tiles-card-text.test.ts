@@ -207,6 +207,7 @@ describe("bundled tiles carry clean card text (ADR 2026-10-14b)", () => {
     // defaults absent `materiality` to `"material"`).
     const BORN_SEGMENTED = new Set([
       "zam-academy-biologie-gymnasium-11-kvt.json 01M724F0PYEXCZD2CVYC6T98KB",
+      "zam-academy-nt-mittelschule-6-kvt.json 01M7D7XM5RCCFT06YDPZCXEVBK",
     ]);
     const undeclared = ALL.filter(
       ({ file, item }) =>

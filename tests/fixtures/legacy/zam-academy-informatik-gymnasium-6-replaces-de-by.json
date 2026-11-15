@@ -1,0 +1,82 @@
+{
+  "schema": 1,
+  "status": "approved",
+  "approved": "2026-11-15",
+  "source": "Thomas am 2026-11-15 in der Claude-Code-Sitzung (Desktop) bei der Vorbereitung von ZAM 0.65.0: Auf die Frage, ob die zwei A-Übernahmen aus de-by:gymnasium-6-natur-technik-informatik-vektorgrafik-texte (J01 verlustfreie Skalierung von Vektorgrafiken, J05 Zeilenabstand und Ausrichtung gehören zur Klasse ABSATZ) bei aktiven sechs C-Karten (J02–J04, J06–J08) freigegeben werden, wählte er „Approve“. Ab Zellversion 2026.11.2 tragen beide Nachfolger ein replaces auf ihre alte Karte.",
+  "notes": "Bestandsabgleich (Entwurf) zu de-by:gymnasium-6-natur-technik-informatik-vektorgrafik-texte. Ohne Thomas' ausdrückliche Freigabe werden keine replaces- oder retired_items-Felder in cell.json veröffentlicht. Die ältere Mischzelle de-by:gymnasium-5-natur-technik-mikroskop-experiment-oop ist bereits vollständig über biologie-gymnasium-5/replaces-de-by.json abgebildet (J05–J08 zu OOP/Dateisystem dort als keep-active mit Verweis auf NT6); siehe docs/informatik-gymnasium-6-coverage.md.",
+  "source_repository": "zam-os/zam",
+  "source_commit": "60cd6c90e820f014a4feb17c6c1ba6734895ae2f",
+  "sources": [
+    {
+      "tile_id": "de-by:gymnasium-6-natur-technik-informatik-vektorgrafik-texte",
+      "fixture": "tests/fixtures/de-by-gymnasium-6-natur-technik-informatik-vektorgrafik-texte.json",
+      "sha256": "fde44ed318c3b620c824db95510d4709fc2c83feee3b2e1e47a87d58fbffdb23"
+    }
+  ],
+  "rows": [
+    {
+      "de_by_id": "01K4YT6J000000000000000J01",
+      "source_tile": "de-by:gymnasium-6-natur-technik-informatik-vektorgrafik-texte",
+      "category": "A",
+      "action": "replace",
+      "academy_slug": "inf6-vektor-pixelgrafik-skalierung",
+      "reason": "Gleiche atomare Wissensabfrage auf Tier 1 (warum Vektorgrafiken verlustfrei skalieren, während Pixelgrafiken ein festes Raster bilden)."
+    },
+    {
+      "de_by_id": "01K4YT6J000000000000000J02",
+      "source_tile": "de-by:gymnasium-6-natur-technik-informatik-vektorgrafik-texte",
+      "category": "C",
+      "action": "keep-active",
+      "academy_slug": null,
+      "reason": "Komplexe Tier-2-Bündelfrage inklusive 24-Bit-TrueColor-Speicherbedarfsrechnung (6 MB), die über den LehrplanPLUS NT6 2.1 hinausgeht; daher nicht automatisch ersetzen."
+    },
+    {
+      "de_by_id": "01K4YT6J000000000000000J03",
+      "source_tile": "de-by:gymnasium-6-natur-technik-informatik-vektorgrafik-texte",
+      "category": "C",
+      "action": "keep-active",
+      "academy_slug": null,
+      "reason": "Fragt additives RGB-Farbmodell (255, 255, 255 = Weiß), das im LehrplanPLUS NT6 2.1 Gymnasium nicht verlangt wird."
+    },
+    {
+      "de_by_id": "01K4YT6J000000000000000J04",
+      "source_tile": "de-by:gymnasium-6-natur-technik-informatik-vektorgrafik-texte",
+      "category": "C",
+      "action": "keep-active",
+      "academy_slug": null,
+      "reason": "Vertiefender Vergleich RGB vs. CMYK mit 24-Bit-Farbtiefe außerhalb von NT6 2.1; Lernhistorie bleibt separat aktiv."
+    },
+    {
+      "de_by_id": "01K4YT6J000000000000000J05",
+      "source_tile": "de-by:gymnasium-6-natur-technik-informatik-vektorgrafik-texte",
+      "category": "A",
+      "action": "replace",
+      "academy_slug": "inf6-textdokumente-absatz",
+      "reason": "Identische atomare Zuordnung der Attribute Zeilenabstand und Ausrichtung zur Klasse ABSATZ."
+    },
+    {
+      "de_by_id": "01K4YT6J000000000000000J06",
+      "source_tile": "de-by:gymnasium-6-natur-technik-informatik-vektorgrafik-texte",
+      "category": "C",
+      "action": "keep-active",
+      "academy_slug": null,
+      "reason": "Verwendet ein 4-Ebenen-Modell inklusive Klasse ABSCHNITT; LehrplanPLUS NT6 2.1 beschränkt sich explizit auf TEXTDOKUMENT, ABSATZ und ZEICHEN."
+    },
+    {
+      "de_by_id": "01K4YT6J000000000000000J07",
+      "source_tile": "de-by:gymnasium-6-natur-technik-informatik-vektorgrafik-texte",
+      "category": "C",
+      "action": "keep-active",
+      "academy_slug": null,
+      "reason": "Prüft gezielt das Werkzeug Masterfolie (Folienmaster), das im LehrplanPLUS NT6 2.1/2.2 nicht verpflichtend gefordert ist."
+    },
+    {
+      "de_by_id": "01K4YT6J000000000000000J08",
+      "source_tile": "de-by:gymnasium-6-natur-technik-informatik-vektorgrafik-texte",
+      "category": "C",
+      "action": "keep-active",
+      "academy_slug": null,
+      "reason": "Umfasst Masterfolie, Folienübergänge und starre 6x6-Regel statt der offenen Qualitätskriterien aus NT6 2.2; Lernhistorie bleibt unberührt."
+    }
+  ]
+}

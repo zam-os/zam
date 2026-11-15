@@ -42,17 +42,16 @@ const ENROL_SMOKE_CELLS = [
   "de-by:gymnasium-11-physik-elektrisches-feld-kondensator-millikan",
   "de-by:gymnasium-12-physik-quantenphysik-lichtelektrischer-effekt-de-broglie-heisenberg",
   "de-by:gymnasium-13-physik-astrophysik-hrd-sternentwicklung-kosmologie-hubble",
-  "de-by:gymnasium-5-natur-technik-mikroskop-experiment-oop",
 ];
 
 describe("Gymnasium Bayern Full Curriculum (Klassen 5–13) Integrity & Quality Audit", () => {
-  it("verifies global uniqueness and schema compliance across all 121 remaining Gymnasium Bayern cells (Grades 5-13)", () => {
+  it("verifies global uniqueness and schema compliance across all 118 remaining Gymnasium Bayern cells (Grades 5-13)", () => {
     const allCells = listBundledCells();
     const byGymCells = allCells.filter((c) =>
       c.tile_id.startsWith("de-by:gymnasium-"),
     );
 
-    expect(byGymCells.length).toBe(121);
+    expect(byGymCells.length).toBe(118);
 
     const allAtomIds = new Set<string>();
     const allItemIds = new Set<string>();
@@ -111,7 +110,7 @@ describe("Gymnasium Bayern Full Curriculum (Klassen 5–13) Integrity & Quality 
       }
     }
 
-    expect(gradeCellCounts[5]).toBe(6);
+    expect(gradeCellCounts[5]).toBe(3);
     expect(gradeCellCounts[6]).toBe(7);
     expect(gradeCellCounts[7]).toBe(11);
     expect(gradeCellCounts[8]).toBe(16);

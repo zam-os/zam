@@ -1,0 +1,15 @@
+{
+	"status": "proposal-only",
+	"approved": null,
+	"source_repository": "https://github.com/zam-os/zam",
+	"source": "Inventory checked on 2026-11-14 in tests/fixtures/curriculum/ and src/kernel/library/bundled-cells.ts at commit 2057e1c35a5e768eb0c59cb74c3700c0101f67a2: zero de-by:mittelschule-* cells exist. de-by:realschule-5-englisch-grundlagen-to-be-have-got is already mapped in englisch-realschule-5. de-by:gymnasium-5-englisch-starter-grammar-tenses belongs to Gymnasium 5 and is left unmapped pending confirmation from Thomas.",
+	"sources": [],
+	"rows": [],
+	"schema": 1,
+	"source_commit": "2057e1c35a5e768eb0c59cb74c3700c0101f67a2",
+	"neighbouring_school_review": {
+		"cell_id": "de-by:gymnasium-5-englisch-starter-grammar-tenses",
+		"assessment": "Existing legacy cell is tagged for Gymnasium Grade 5 (4 atoms, 8 items). No Mittelschule Grade 5 legacy cell exists in zam-os/zam.",
+		"decision_question": "Confirm whether de-by:gymnasium-5-englisch-starter-grammar-tenses remains reserved for a future gymnasium-5 package with zero Mittelschule replacement proposed."
+	}
+}

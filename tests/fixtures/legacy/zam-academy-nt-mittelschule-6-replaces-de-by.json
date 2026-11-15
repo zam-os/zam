@@ -1,0 +1,10 @@
+{
+	"schema": 1,
+	"status": "proposal-only",
+	"approved": null,
+	"source_repository": "zam-os/zam",
+	"source_commit": "2057e1c35a5e768eb0c59cb74c3700c0101f67a2",
+	"note": "No de-by Mittelschule cell exists in bundled-cells.ts or tests/fixtures/curriculum at the recorded commit. Related Realschule and Gymnasium cells belong to their own school types and remain active; no Academy successor is asserted for them. NT5 Academy cards remain in their separate package. No old histories are claimed, replaced or retired by this draft.",
+	"sources": [],
+	"rows": []
+}

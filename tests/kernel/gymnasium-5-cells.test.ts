@@ -13,17 +13,17 @@ import {
   openDatabase,
 } from "../../src/kernel/index.js";
 
-// Mathematik 5 and Geographie 5 moved to their ZAM Academy cells; the
-// superseded school cells are archived in tests/fixtures/legacy/.
+// Mathematik 5, Geographie 5 and (from 0.65.0) Biologie / Natur und Technik 5
+// moved to their ZAM Academy cells; the superseded school cells are archived
+// in tests/fixtures/legacy/.
 const GYM5_CELL_IDS = [
-  "de-by:gymnasium-5-biologie-mensch-skelett-sexualbiologie",
-  "de-by:gymnasium-5-biologie-pflanzen-bluetenbau-samen",
-  "de-by:gymnasium-5-natur-technik-mikroskop-experiment-oop",
   "de-by:gymnasium-5-deutsch-erzaehlen-maerchen-fabeln",
   "de-by:gymnasium-5-deutsch-grammatik-faelle-rechtschreibung",
   "de-by:gymnasium-5-englisch-starter-grammar-tenses",
 ];
 const ACADEMY_GYM5_IDS = [
+  "zam-academy:biologie-gymnasium-5",
+  "zam-academy:englisch-gymnasium-5",
   "zam-academy:franzoesisch-gymnasium-5",
   "zam-academy:geographie-gymnasium-5",
   "zam-academy:mathematik-gymnasium-5",
@@ -103,28 +103,6 @@ describe("Gymnasium Bayern 5 Curriculum Cells (Unterstufe / G9)", () => {
     expect(enrolment.cardCount).toBe(8);
   });
 
-  it("installs and enrols cleanly into NuT 5 Erkenntnisweg und OOM", async () => {
-    const userId = "01K4TESTUSERGYM50000000002";
-    const cellId = "de-by:gymnasium-5-natur-technik-mikroskop-experiment-oop";
-
-    const res = await enrolBundledCell(db, userId, cellId);
-    expect(res.success).toBe(true);
-    expect(res.cardsCreated).toBe(8);
-
-    const nutAtoms = (await db
-      .prepare(
-        "SELECT a.id, a.title, a.slug FROM learning_atoms a WHERE a.namespace LIKE 'nut-%' OR a.namespace LIKE 'informatik-%'",
-      )
-      .all()) as Array<{ id: string; title: string; slug: string }>;
-    expect(nutAtoms.length).toBeGreaterThanOrEqual(4);
-    expect(
-      nutAtoms.some(
-        (a) =>
-          a.slug === "objektorientierte-modellierung-klasse-objekt-zustand",
-      ),
-    ).toBe(true);
-  });
-
   it("installs and enrols cleanly into Deutsch 5 Märchen, Fabeln und Erlebniserzählung", async () => {
     const userId = "01K4TESTUSERGYM50000000003";
     const cellId = "de-by:gymnasium-5-deutsch-erzaehlen-maerchen-fabeln";
@@ -152,8 +130,8 @@ describe("Gymnasium Bayern 5 Curriculum Cells (Unterstufe / G9)", () => {
       totalCardsCreated += res.cardsCreated;
     }
 
-    // 6 cells * 4 atoms * 2 items = 48 cards
-    expect(totalCardsCreated).toBe(48);
+    // 3 cells * 4 atoms * 2 items = 24 cards
+    expect(totalCardsCreated).toBe(24);
 
     const statuses = await getBundledCellsWithStatus(db, userId);
     const gym5Statuses = statuses.filter((s) => GYM5_CELL_IDS.includes(s.id));

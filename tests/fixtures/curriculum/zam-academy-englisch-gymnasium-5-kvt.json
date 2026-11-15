@@ -1,0 +1,3419 @@
+{
+	"$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+	"tile_id": "zam-academy:englisch-gymnasium-5",
+	"version": "2026.11.2",
+	"title": "Englisch 5 Gymnasium (ZAM Academy)",
+	"description": "English at Bavarian Gymnasium grade 5: 40 lessons from greetings and grammar through the UK, Ireland and North America, with 120 recall cards. Listening, live talk and current research need extra practice.",
+	"publisher": "ZAM Academy",
+	"sources": [
+		{
+			"uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/5/englisch",
+			"label": "ISB · Englisch 5, Gymnasium",
+			"checked": "2026-11-14"
+		},
+		{
+			"uri": "https://en.wikipedia.org/wiki/United_Kingdom",
+			"label": "United Kingdom - Wikipedia",
+			"checked": "2026-11-14"
+		},
+		{
+			"uri": "https://en.wikipedia.org/wiki/Great_Britain",
+			"label": "Great Britain - Wikipedia",
+			"checked": "2026-11-14"
+		},
+		{
+			"uri": "https://en.wikipedia.org/wiki/Republic_of_Ireland",
+			"label": "Republic of Ireland - Wikipedia",
+			"checked": "2026-11-14"
+		},
+		{
+			"uri": "https://en.wikipedia.org/wiki/London",
+			"label": "London - Wikipedia",
+			"checked": "2026-11-14"
+		},
+		{
+			"uri": "https://en.wikipedia.org/wiki/Tower_of_London",
+			"label": "Tower of London - Wikipedia",
+			"checked": "2026-11-14"
+		},
+		{
+			"uri": "https://en.wikipedia.org/wiki/Buckingham_Palace",
+			"label": "Buckingham Palace - Wikipedia",
+			"checked": "2026-11-14"
+		},
+		{
+			"uri": "https://en.wikipedia.org/wiki/Elizabeth_Tower",
+			"label": "Big Ben - Wikipedia",
+			"checked": "2026-11-14"
+		},
+		{
+			"uri": "https://en.wikipedia.org/wiki/United_States",
+			"label": "United States - Wikipedia",
+			"checked": "2026-11-14"
+		},
+		{
+			"uri": "https://en.wikipedia.org/wiki/Washington,_D.C.",
+			"label": "Washington, D.C. - Wikipedia",
+			"checked": "2026-11-14"
+		},
+		{
+			"uri": "https://en.wikipedia.org/wiki/New_York_City",
+			"label": "New York City - Wikipedia",
+			"checked": "2026-11-14"
+		},
+		{
+			"uri": "https://en.wikipedia.org/wiki/Canada",
+			"label": "Canada - Wikipedia",
+			"checked": "2026-11-14"
+		},
+		{
+			"uri": "https://en.wikipedia.org/wiki/White_House",
+			"label": "White House - Wikipedia",
+			"checked": "2026-11-14"
+		},
+		{
+			"uri": "https://www.nps.gov/stli/index.htm",
+			"label": "Statue Of Liberty National Monument (U.S. National Park Service)",
+			"checked": "2026-11-14"
+		}
+	],
+	"atoms": [
+		{
+			"id": "01M7D7QT0TBKFF9TA4YJSTBVNN",
+			"atom_uri": "urn:zam:atom:01M7D7QT0TBKFF9TA4YJSTBVNN",
+			"namespace": "zam-academy-englisch-gymnasium-5",
+			"slug": "e5-hello",
+			"title": "Hello again",
+			"domain": "englisch/ankommen",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-hello",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-5",
+					"topic_code": "ankommen",
+					"topic_title": "Hello again"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb2",
+					"topic_title": "Interkulturelle Kompetenzen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7QT0TDJWA3CA1P9XHHYBV",
+					"slug": "e5-hello-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie begrüßt du deine Lehrerin am Morgen?",
+					"concept": "Hello, Mrs Taylor.",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-hello",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Hello, Mrs Taylor.",
+							"Hi, Mrs Taylor, bye!"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7QT0TVMW6DYY5QQPP5MQ7",
+					"slug": "e5-hello-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie lehnst du ein Angebot höflich ab?",
+					"concept": "No, thank you.",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-hello",
+					"sample_solution": "No, thank you."
+				},
+				{
+					"id": "01M7D7QT0TWN29FTFK7NDHQQKH",
+					"slug": "e5-hello-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche Begrüßung passt zu deinem Freund Sam?",
+					"concept": "Hi, Sam.",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-hello",
+					"sample_solution": "Hi, Sam."
+				}
+			]
+		},
+		{
+			"id": "01M7D7QT0TYM01Q8DKS5SEG0MZ",
+			"atom_uri": "urn:zam:atom:01M7D7QT0TYM01Q8DKS5SEG0MZ",
+			"namespace": "zam-academy-englisch-gymnasium-5",
+			"slug": "e5-classroom",
+			"title": "Classroom talk",
+			"domain": "englisch/ankommen",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-classroom",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D7QT0TBKFF9TA4YJSTBVNN",
+					"type": "soft",
+					"rationale": "Classroom talk builds on e5-hello."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-5",
+					"topic_code": "ankommen",
+					"topic_title": "Hello again"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb4",
+					"topic_title": "Methodische Kompetenzen",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7QT0T55BG26FGE7BDNZ1Q",
+					"slug": "e5-classroom-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie bittest du höflich darum, das Buch zu öffnen?",
+					"concept": "Please open your book.",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-classroom",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Please open your book.",
+							"Don't open your book."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7QT0TF3P8FPF2KSDRNZ09",
+					"slug": "e5-classroom-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie lautet das Verbot zum Rennen?",
+					"concept": "Don't run.",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-classroom",
+					"sample_solution": "Don't run."
+				},
+				{
+					"id": "01M7D7QT0TC50GWXR4S7MJC7EH",
+					"slug": "e5-classroom-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie bittest du um eine Wiederholung?",
+					"concept": "Can you say that again, please?",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-classroom",
+					"sample_solution": "Can you say that again, please?"
+				}
+			]
+		},
+		{
+			"id": "01M7D7QT0TCSASC2FCAW3H8ENJ",
+			"atom_uri": "urn:zam:atom:01M7D7QT0TCSASC2FCAW3H8ENJ",
+			"namespace": "zam-academy-englisch-gymnasium-5",
+			"slug": "e5-numbers",
+			"title": "Numbers and dates",
+			"domain": "englisch/ankommen",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-numbers",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-5",
+					"topic_code": "ankommen",
+					"topic_title": "Hello again"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7QT0TM06VY42J9BYCM07F",
+					"slug": "e5-numbers-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche Ordnungszahl gehört zu 22?",
+					"concept": "22nd",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-numbers",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"22nd",
+							"22th"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7QT0TV1PZGPV7R0ETENVD",
+					"slug": "e5-numbers-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche Ordnungszahl gehört zu 11?",
+					"concept": "11th",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-numbers",
+					"sample_solution": "11th"
+				},
+				{
+					"id": "01M7D7QT0TKRWH038E4A717MT6",
+					"slug": "e5-numbers-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie liest du das Datum 1 May?",
+					"concept": "May the first.",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-numbers",
+					"sample_solution": "May the first."
+				}
+			]
+		},
+		{
+			"id": "01M7D7QT0TETHESC41CE4EJ9K8",
+			"atom_uri": "urn:zam:atom:01M7D7QT0TETHESC41CE4EJ9K8",
+			"namespace": "zam-academy-englisch-gymnasium-5",
+			"slug": "e5-time",
+			"title": "What time is it?",
+			"domain": "englisch/ankommen",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-time",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-5",
+					"topic_code": "ankommen",
+					"topic_title": "Hello again"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7QT0T3VN6B6QBVJTXBN2V",
+					"slug": "e5-time-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie liest du 7:30 in Wörtern?",
+					"concept": "half past seven",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-time",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"half past seven",
+							"half to seven"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7QT0TJQA88QNTGHA1H743",
+					"slug": "e5-time-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie liest du 7:45 in Wörtern?",
+					"concept": "quarter to eight",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-time",
+					"sample_solution": "quarter to eight"
+				},
+				{
+					"id": "01M7D7QT0T17TZRDYHVDHEPS34",
+					"slug": "e5-time-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welches Wort steht vor einer Uhrzeit?",
+					"concept": "at seven o'clock",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-time",
+					"sample_solution": "at seven o'clock"
+				}
+			]
+		},
+		{
+			"id": "01M7D7QT0TZE8WQA4VMB32EPN4",
+			"atom_uri": "urn:zam:atom:01M7D7QT0TZE8WQA4VMB32EPN4",
+			"namespace": "zam-academy-englisch-gymnasium-5",
+			"slug": "e5-world",
+			"title": "English in the world",
+			"domain": "englisch/ankommen",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-world",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-5",
+					"topic_code": "ankommen",
+					"topic_title": "Hello again"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb2",
+					"topic_title": "Interkulturelle Kompetenzen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7QT0TVEMZDAJY2F87VVVG",
+					"slug": "e5-world-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Warum nennt der Lehrplan Englisch eine Weltsprache?",
+					"concept": "Viele Menschen nutzen Englisch auch miteinander.",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-world",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Viele Menschen nutzen Englisch auch miteinander.",
+							"Englisch ersetzt jede andere Sprache."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7QT0T8P4K2ZGWECNX831A",
+					"slug": "e5-world-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welches Nachbarland der USA hat Englisch und Französisch als Amtssprachen?",
+					"concept": "Canada",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-world",
+					"sample_solution": "Canada"
+				},
+				{
+					"id": "01M7D7QT0TM6TG8P0W9224888J",
+					"slug": "e5-world-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie gehst du mit British und American English in einem Text um?",
+					"concept": "Ich bleibe bei einer Varietät.",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-world",
+					"sample_solution": "Ich bleibe bei einer Varietät."
+				}
+			]
+		},
+		{
+			"id": "01M7D7QT0TXTQ24FP6BMYHGH8S",
+			"atom_uri": "urn:zam:atom:01M7D7QT0TXTQ24FP6BMYHGH8S",
+			"namespace": "zam-academy-englisch-gymnasium-5",
+			"slug": "e5-family",
+			"title": "My family",
+			"domain": "englisch/familie",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-family",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-5",
+					"topic_code": "familie",
+					"topic_title": "People at home"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7QT0TPCMMDVX62RKSGS74",
+					"slug": "e5-family-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welcher Possessivbegleiter gehört zu she?",
+					"concept": "her rabbit",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-family",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"her rabbit",
+							"its rabbit"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7QT0TV5QVZHJ7KY8A5TT4",
+					"slug": "e5-family-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie heißt der Begleiter zu it ohne Apostroph?",
+					"concept": "its name",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-family",
+					"sample_solution": "its name"
+				},
+				{
+					"id": "01M7D7QT0TB8AGFTRG5BHF5SW5",
+					"slug": "e5-family-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was bedeutet it's?",
+					"concept": "it is",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-family",
+					"sample_solution": "it is"
+				}
+			]
+		},
+		{
+			"id": "01M7D7QT0T7F5FXS8QX15TV01Z",
+			"atom_uri": "urn:zam:atom:01M7D7QT0T7F5FXS8QX15TV01Z",
+			"namespace": "zam-academy-englisch-gymnasium-5",
+			"slug": "e5-to-be",
+			"title": "I am, you are",
+			"domain": "englisch/familie",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-to-be",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-5",
+					"topic_code": "familie",
+					"topic_title": "People at home"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7QT0TQHEJETMPH3H2MJSP",
+					"slug": "e5-to-be-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie lautet die bejahte Kurzantwort auf Are you ready?",
+					"concept": "Yes, I am.",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-to-be",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Yes, I am.",
+							"Yes, I'm."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7QT0TTNRV9S163WQCGM90",
+					"slug": "e5-to-be-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche Form von to be gehört zu she?",
+					"concept": "she is",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-to-be",
+					"sample_solution": "she is"
+				},
+				{
+					"id": "01M7D7QT0TQDR6EC6PX6JP6APG",
+					"slug": "e5-to-be-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie verneinst du they are?",
+					"concept": "they aren't",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-to-be",
+					"sample_solution": "they aren't"
+				}
+			]
+		},
+		{
+			"id": "01M7D7QT0TVFA3CPHW2C1AJ568",
+			"atom_uri": "urn:zam:atom:01M7D7QT0TVFA3CPHW2C1AJ568",
+			"namespace": "zam-academy-englisch-gymnasium-5",
+			"slug": "e5-have-got",
+			"title": "Have you got…?",
+			"domain": "englisch/familie",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-have-got",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D7QT0T7F5FXS8QX15TV01Z",
+					"type": "soft",
+					"rationale": "Have you got…? builds on e5-to-be."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-5",
+					"topic_code": "familie",
+					"topic_title": "People at home"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7QT0T8NCXJJJR1CWBJ85T",
+					"slug": "e5-have-got-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie lautet die bejahte Kurzantwort auf Have you got a new computer?",
+					"concept": "Yes, I have.",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-have-got",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Yes, I have.",
+							"Yes, I have got."
+						],
+						"correct_index": 0
+					},
+					"replaces": [
+						"01K4YE5S000000000000000J01"
+					]
+				},
+				{
+					"id": "01M7D7QT0T5AYWAXNKBXYRB65G",
+					"slug": "e5-have-got-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche Form gehört zu she?",
+					"concept": "has got",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-have-got",
+					"sample_solution": "has got"
+				},
+				{
+					"id": "01M7D7QT0TCX3C1Q254K8YJXCG",
+					"slug": "e5-have-got-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie lautet die verneinte Kurzantwort auf Has Tom got a bike?",
+					"concept": "No, he hasn't.",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-have-got",
+					"sample_solution": "No, he hasn't."
+				}
+			]
+		},
+		{
+			"id": "01M7D7QT0T9B8PBE98NFENC2JH",
+			"atom_uri": "urn:zam:atom:01M7D7QT0T9B8PBE98NFENC2JH",
+			"namespace": "zam-academy-englisch-gymnasium-5",
+			"slug": "e5-home",
+			"title": "At home",
+			"domain": "englisch/familie",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-home",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D7QT0TVFA3CPHW2C1AJ568",
+					"type": "soft",
+					"rationale": "At home builds on e5-have-got."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-5",
+					"topic_code": "familie",
+					"topic_title": "People at home"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7QT0TNZA9DZRFY9CXJE8W",
+					"slug": "e5-home-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie sagst du, dass ein Sofa im Wohnzimmer ist?",
+					"concept": "There is a sofa in the living room.",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-home",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"There is a sofa in the living room.",
+							"There are a sofa in the living room."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7QT0TKBRC17B1EZPTHZE5",
+					"slug": "e5-home-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche Form gilt für zwei Stühle?",
+					"concept": "There are two chairs.",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-home",
+					"sample_solution": "There are two chairs."
+				},
+				{
+					"id": "01M7D7QT0TTBVSTZ5H22NGAP5V",
+					"slug": "e5-home-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie beginnt die Frage nach einem Schreibtisch?",
+					"concept": "Is there a desk?",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-home",
+					"sample_solution": "Is there a desk?"
+				}
+			]
+		},
+		{
+			"id": "01M7D7QT0TH71RAE3AZ6HC9FHS",
+			"atom_uri": "urn:zam:atom:01M7D7QT0TH71RAE3AZ6HC9FHS",
+			"namespace": "zam-academy-englisch-gymnasium-5",
+			"slug": "e5-pets",
+			"title": "Pets and plurals",
+			"domain": "englisch/familie",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-pets",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D7QT0TVFA3CPHW2C1AJ568",
+					"type": "soft",
+					"rationale": "Pets and plurals builds on e5-have-got."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-5",
+					"topic_code": "familie",
+					"topic_title": "People at home"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7QT0TYZ3BW9BVEW7ZVT2H",
+					"slug": "e5-pets-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie lautet der Plural von mouse?",
+					"concept": "mice",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-pets",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"mice",
+							"mouses"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7QT0TK5WZPE9HZ4NWGBWW",
+					"slug": "e5-pets-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie lautet der Plural von child?",
+					"concept": "children",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-pets",
+					"sample_solution": "children"
+				},
+				{
+					"id": "01M7D7QT0T6TS0WDMAE6C6X056",
+					"slug": "e5-pets-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welches phrasal verb bedeutet sich kümmern?",
+					"concept": "look after",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-pets",
+					"sample_solution": "look after"
+				}
+			]
+		},
+		{
+			"id": "01M7D7QT0TE623JKHBWQYSY2GB",
+			"atom_uri": "urn:zam:atom:01M7D7QT0TE623JKHBWQYSY2GB",
+			"namespace": "zam-academy-englisch-gymnasium-5",
+			"slug": "e5-articles",
+			"title": "A, an and the",
+			"domain": "englisch/woerter",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-articles",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-5",
+					"topic_code": "woerter",
+					"topic_title": "Words that point"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7QT0TZ9C7D2C7Z9ZCZCDJ",
+					"slug": "e5-articles-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welcher Artikel passt zu hour?",
+					"concept": "an hour",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-articles",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"an hour",
+							"a hour"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7QT0T7W11SS2K56RSHBMV",
+					"slug": "e5-articles-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welcher Artikel passt zu uniform?",
+					"concept": "a uniform",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-articles",
+					"sample_solution": "a uniform"
+				},
+				{
+					"id": "01M7D7QT0TT49AD8CCXY2Y40AN",
+					"slug": "e5-articles-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Steht a vor einem Plural?",
+					"concept": "Nein, der Plural bleibt ohne a.",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-articles",
+					"sample_solution": "Nein, der Plural bleibt ohne a."
+				}
+			]
+		},
+		{
+			"id": "01M7D7QT0TPRPNHDDZB2KBYE0T",
+			"atom_uri": "urn:zam:atom:01M7D7QT0TPRPNHDDZB2KBYE0T",
+			"namespace": "zam-academy-englisch-gymnasium-5",
+			"slug": "e5-pronouns",
+			"title": "I and me",
+			"domain": "englisch/woerter",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-pronouns",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D7QT0T7F5FXS8QX15TV01Z",
+					"type": "soft",
+					"rationale": "I and me builds on e5-to-be."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-5",
+					"topic_code": "woerter",
+					"topic_title": "Words that point"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7QT0TM0ANNW4M1TSES83Y",
+					"slug": "e5-pronouns-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Sam kennt mich. Welches Pronomen steht nach knows?",
+					"concept": "knows me",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-pronouns",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"knows me",
+							"knows I"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7QT0TFKVGXPZPMAGVBTFJ",
+					"slug": "e5-pronouns-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welches Pronomen steht nach for, wenn die Person he ist?",
+					"concept": "for him",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-pronouns",
+					"sample_solution": "for him"
+				},
+				{
+					"id": "01M7D7QT0TW1HV8Z8P94TD8YD7",
+					"slug": "e5-pronouns-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welches Pronomen steht nach help, wenn die Gruppe wir ist?",
+					"concept": "helps us",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-pronouns",
+					"sample_solution": "helps us"
+				}
+			]
+		},
+		{
+			"id": "01M7D7QT0T3K4B17MRWHR30KE2",
+			"atom_uri": "urn:zam:atom:01M7D7QT0T3K4B17MRWHR30KE2",
+			"namespace": "zam-academy-englisch-gymnasium-5",
+			"slug": "e5-genitive",
+			"title": "Anna's dog",
+			"domain": "englisch/woerter",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-genitive",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D7QT0TXTQ24FP6BMYHGH8S",
+					"type": "soft",
+					"rationale": "Anna's dog builds on e5-family."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-5",
+					"topic_code": "woerter",
+					"topic_title": "Words that point"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7QT0TRMX5NBJ43R941DH5",
+					"slug": "e5-genitive-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie nennst du den Hund von Anna?",
+					"concept": "Anna's dog",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-genitive",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Anna's dog",
+							"Annas dog"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7QT0TBM10TN3BKN7T4F0R",
+					"slug": "e5-genitive-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie heißt das Zimmer der Kinder?",
+					"concept": "the children's room",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-genitive",
+					"sample_solution": "the children's room"
+				},
+				{
+					"id": "01M7D7QT0T984T5HP5GNDNJ3Y2",
+					"slug": "e5-genitive-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie nennst du die Hauptstadt des UK mit of?",
+					"concept": "the capital of the UK",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-genitive",
+					"sample_solution": "the capital of the UK"
+				}
+			]
+		},
+		{
+			"id": "01M7D7QT0TDDDZHBKJ76QSME82",
+			"atom_uri": "urn:zam:atom:01M7D7QT0TDDDZHBKJ76QSME82",
+			"namespace": "zam-academy-englisch-gymnasium-5",
+			"slug": "e5-demonstratives",
+			"title": "This and that",
+			"domain": "englisch/woerter",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-demonstratives",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-5",
+					"topic_code": "woerter",
+					"topic_title": "Words that point"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7QT0TVXAY18B7XRR978ST",
+					"slug": "e5-demonstratives-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche Form passt zu mehreren fernen Taschen?",
+					"concept": "those bags",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-demonstratives",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"those bags",
+							"this bags"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7QT0TNCASA9BMCZVV9BKN",
+					"slug": "e5-demonstratives-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche Form passt zu einem nahen Buch?",
+					"concept": "this book",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-demonstratives",
+					"sample_solution": "this book"
+				},
+				{
+					"id": "01M7D7QT0T6XN5NJ3V61FTMR3D",
+					"slug": "e5-demonstratives-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie lautet der Pronomen-Satz für meine Tasche?",
+					"concept": "This is my bag.",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-demonstratives",
+					"sample_solution": "This is my bag."
+				}
+			]
+		},
+		{
+			"id": "01M7D7QT0T9N2CJ2J3WMW4AVED",
+			"atom_uri": "urn:zam:atom:01M7D7QT0T9N2CJ2J3WMW4AVED",
+			"namespace": "zam-academy-englisch-gymnasium-5",
+			"slug": "e5-some-any",
+			"title": "Some or any?",
+			"domain": "englisch/woerter",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-some-any",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D7QT0TE623JKHBWQYSY2GB",
+					"type": "soft",
+					"rationale": "Some or any? builds on e5-articles."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-5",
+					"topic_code": "woerter",
+					"topic_title": "Words that point"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7QT0TV45VRP6FR3F0E8P2",
+					"slug": "e5-some-any-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welches Wort passt in I haven't got ___ milk?",
+					"concept": "any milk",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-some-any",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"any milk",
+							"some milk"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7QT0T0679XBTMH3MCT5TE",
+					"slug": "e5-some-any-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welches Wort passt in einem Angebot Would you like ___ juice?",
+					"concept": "some",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-some-any",
+					"sample_solution": "some"
+				},
+				{
+					"id": "01M7D7QT0TBHDKY9NWQTXCZEC6",
+					"slug": "e5-some-any-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie sagst du, dass niemand in der Küche ist?",
+					"concept": "There is nobody in the kitchen.",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-some-any",
+					"sample_solution": "There is nobody in the kitchen."
+				}
+			]
+		},
+		{
+			"id": "01M7D7QT0TKWYN6W69D902YB1G",
+			"atom_uri": "urn:zam:atom:01M7D7QT0TKWYN6W69D902YB1G",
+			"namespace": "zam-academy-englisch-gymnasium-5",
+			"slug": "e5-quantifiers",
+			"title": "Much, many, a lot of",
+			"domain": "englisch/saetze",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-quantifiers",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D7QT0TE623JKHBWQYSY2GB",
+					"type": "soft",
+					"rationale": "Much, many, a lot of builds on e5-articles."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-5",
+					"topic_code": "woerter",
+					"topic_title": "Words that point"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7QT0TAA3XB5WAK9TF22C6",
+					"slug": "e5-quantifiers-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie fragst du nach der Menge von homework?",
+					"concept": "How much homework?",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-quantifiers",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"How much homework?",
+							"How many homeworks?"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7QT0TK43RVTMST4M4SRTH",
+					"slug": "e5-quantifiers-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie fragst du nach der Zahl der Äpfel?",
+					"concept": "How many apples?",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-quantifiers",
+					"sample_solution": "How many apples?"
+				},
+				{
+					"id": "01M7D7QT0TTEYGV69V0AXXYYDN",
+					"slug": "e5-quantifiers-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie bleibt information im Satz a lot of?",
+					"concept": "a lot of information",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-quantifiers",
+					"sample_solution": "a lot of information"
+				}
+			]
+		},
+		{
+			"id": "01M7D7QT0THQA0R31A1PHZSXYV",
+			"atom_uri": "urn:zam:atom:01M7D7QT0THQA0R31A1PHZSXYV",
+			"namespace": "zam-academy-englisch-gymnasium-5",
+			"slug": "e5-word-order",
+			"title": "Place before time",
+			"domain": "englisch/saetze",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-word-order",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D7QT0TKWYN6W69D902YB1G",
+					"type": "soft",
+					"rationale": "Place before time builds on e5-quantifiers."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-5",
+					"topic_code": "saetze",
+					"topic_title": "Sentences that fit"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7QT0T7FCPC4H1MBWS61N2",
+					"slug": "e5-word-order-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche Reihenfolge gilt im Aussagesatz für Subjekt, Verb und Objekt?",
+					"concept": "S-V-O (Subject - Verb - Object)",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-word-order",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"S-V-O (Subject - Verb - Object)",
+							"O-V-S (Object - Verb - Subject)"
+						],
+						"correct_index": 0
+					},
+					"replaces": [
+						"01K4YE5S000000000000000J07"
+					]
+				},
+				{
+					"id": "01M7D7QT0TR2B96F62S7KPVWN0",
+					"slug": "e5-word-order-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was steht zuerst, der Ort oder die Zeit?",
+					"concept": "Der Ort steht vor der Zeit.",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-word-order",
+					"sample_solution": "Der Ort steht vor der Zeit."
+				},
+				{
+					"id": "01M7D7QT0TT4X4J9D3BTSWBHQ1",
+					"slug": "e5-word-order-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie verneinst du she read a book?",
+					"concept": "She doesn't read a book.",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-word-order",
+					"sample_solution": "She doesn't read a book."
+				}
+			]
+		},
+		{
+			"id": "01M7D7QT0TK6CQ31A2BM9M8GFW",
+			"atom_uri": "urn:zam:atom:01M7D7QT0TK6CQ31A2BM9M8GFW",
+			"namespace": "zam-academy-englisch-gymnasium-5",
+			"slug": "e5-questions",
+			"title": "Who and whose?",
+			"domain": "englisch/saetze",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-questions",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D7QT0THQA0R31A1PHZSXYV",
+					"type": "soft",
+					"rationale": "Who and whose? builds on e5-word-order."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-5",
+					"topic_code": "saetze",
+					"topic_title": "Sentences that fit"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7QT0TYXRY8KEKKQFW3QY5",
+					"slug": "e5-questions-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche Frage ist richtig, wenn who das Subjekt ist?",
+					"concept": "Who lives here?",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-questions",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Who lives here?",
+							"Do who lives here?"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7QT0TY4R3GZG9AF205RYH",
+					"slug": "e5-questions-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welches Hilfsverb fragt nach she im simple present?",
+					"concept": "Does",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-questions",
+					"sample_solution": "Does"
+				},
+				{
+					"id": "01M7D7QT0T7YZRT0WJF11AQNKX",
+					"slug": "e5-questions-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welches Wort fragt nach dem Besitzer einer Tasche?",
+					"concept": "Whose bag is this?",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-questions",
+					"sample_solution": "Whose bag is this?"
+				}
+			]
+		},
+		{
+			"id": "01M7D7QT0TEN8D0EQYZ5KFFQ5G",
+			"atom_uri": "urn:zam:atom:01M7D7QT0TEN8D0EQYZ5KFFQ5G",
+			"namespace": "zam-academy-englisch-gymnasium-5",
+			"slug": "e5-clauses",
+			"title": "Because, when, that",
+			"domain": "englisch/saetze",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-clauses",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D7QT0TK6CQ31A2BM9M8GFW",
+					"type": "soft",
+					"rationale": "Because, when, that builds on e5-questions."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-5",
+					"topic_code": "saetze",
+					"topic_title": "Sentences that fit"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7QT0TWPTH4HZ5SKBSDD59",
+					"slug": "e5-clauses-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welches Wort nennt den Grund?",
+					"concept": "because",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-clauses",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"because",
+							"when"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7QT0TWPHCFP9P3D5WH80T",
+					"slug": "e5-clauses-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welches Wort leitet einen Objektsatz ein?",
+					"concept": "that",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-clauses",
+					"sample_solution": "that"
+				},
+				{
+					"id": "01M7D7QT0TSXNN22SWRFT4EQD9",
+					"slug": "e5-clauses-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie beginnt ein vorangestellter Zeitsatz?",
+					"concept": "When I get home, …",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-clauses",
+					"sample_solution": "When I get home, …"
+				}
+			]
+		},
+		{
+			"id": "01M7D7QT0T9S7KREPZRFY2HBZG",
+			"atom_uri": "urn:zam:atom:01M7D7QT0T9S7KREPZRFY2HBZG",
+			"namespace": "zam-academy-englisch-gymnasium-5",
+			"slug": "e5-awareness",
+			"title": "Words are not twins",
+			"domain": "englisch/saetze",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-awareness",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-5",
+					"topic_code": "saetze",
+					"topic_title": "Sentences that fit"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7QT0TQTBHKEGPCGN91YJ9",
+					"slug": "e5-awareness-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was bedeutet to become?",
+					"concept": "werden",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-awareness",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"werden",
+							"bekommen"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7QT0T31V2ECS9JRE3M3C0",
+					"slug": "e5-awareness-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was bedeutet to mean?",
+					"concept": "bedeuten",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-awareness",
+					"sample_solution": "bedeuten"
+				},
+				{
+					"id": "01M7D7QT0TZ229T03BTDM1EGEG",
+					"slug": "e5-awareness-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welches Verb passt zu my bike?",
+					"concept": "ride",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-awareness",
+					"sample_solution": "ride"
+				}
+			]
+		},
+		{
+			"id": "01M7D7QT0T67DNZ3GBV0VMVHHE",
+			"atom_uri": "urn:zam:atom:01M7D7QT0T67DNZ3GBV0VMVHHE",
+			"namespace": "zam-academy-englisch-gymnasium-5",
+			"slug": "e5-simple-present",
+			"title": "Every day",
+			"domain": "englisch/zeiten",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-simple-present",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D7QT0T7F5FXS8QX15TV01Z",
+					"type": "soft",
+					"rationale": "Every day builds on e5-to-be."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-5",
+					"topic_code": "zeiten",
+					"topic_title": "Now, usually, yesterday"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7QT0T1XECGS4XRM8R1D7P",
+					"slug": "e5-simple-present-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welches Hilfsverb bildet im simple present die Frage für he, she und it?",
+					"concept": "Does (Does he play...?)",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-simple-present",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Does (Does he play...?)",
+							"Do (Do he play...?)"
+						],
+						"correct_index": 0
+					},
+					"replaces": [
+						"01K4YE5S000000000000000J03"
+					]
+				},
+				{
+					"id": "01M7D7QT0T0TE5EW7C451R0GNB",
+					"slug": "e5-simple-present-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie heißt die dritte Person von play?",
+					"concept": "plays",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-simple-present",
+					"sample_solution": "plays"
+				},
+				{
+					"id": "01M7D7QT0TAMQA2HG0CVB5T25D",
+					"slug": "e5-simple-present-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie verneinst du eat bei she?",
+					"concept": "She doesn't eat.",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-simple-present",
+					"sample_solution": "She doesn't eat."
+				}
+			]
+		},
+		{
+			"id": "01M7D7QT0TZHSNW42XMRG3GS5G",
+			"atom_uri": "urn:zam:atom:01M7D7QT0TZHSNW42XMRG3GS5G",
+			"namespace": "zam-academy-englisch-gymnasium-5",
+			"slug": "e5-progressive",
+			"title": "Right now",
+			"domain": "englisch/zeiten",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-progressive",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D7QT0T67DNZ3GBV0VMVHHE",
+					"type": "soft",
+					"rationale": "Right now builds on e5-simple-present."
+				},
+				{
+					"atom_id": "01M7D7QT0T7F5FXS8QX15TV01Z",
+					"type": "soft",
+					"rationale": "Right now builds on e5-to-be."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-5",
+					"topic_code": "zeiten",
+					"topic_title": "Now, usually, yesterday"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7QT0TY0D9DHVXGGNFQEE7",
+					"slug": "e5-progressive-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Woraus besteht das present progressive?",
+					"concept": "Form von 'to be' (am/is/are) + Verb-ing",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-progressive",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Form von 'to be' (am/is/are) + Verb-ing",
+							"Hilfsverb 'do/does' + Verb-ing"
+						],
+						"correct_index": 0
+					},
+					"replaces": [
+						"01K4YE5S000000000000000J05"
+					]
+				},
+				{
+					"id": "01M7D7QT0TYCTN1VAYRD6T9WY5",
+					"slug": "e5-progressive-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welcher Satz nennt die Gewohnheit?",
+					"concept": "She walks to school every day.",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-progressive",
+					"sample_solution": "She walks to school every day."
+				},
+				{
+					"id": "01M7D7QT0T0A0AKDGQS3RBGVFA",
+					"slug": "e5-progressive-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie lautet die ing-Form von sit?",
+					"concept": "sitting",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-progressive",
+					"sample_solution": "sitting"
+				}
+			]
+		},
+		{
+			"id": "01M7D7QT0T348BCYB7PZXX71GB",
+			"atom_uri": "urn:zam:atom:01M7D7QT0T348BCYB7PZXX71GB",
+			"namespace": "zam-academy-englisch-gymnasium-5",
+			"slug": "e5-modals",
+			"title": "Can and must",
+			"domain": "englisch/zeiten",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-modals",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D7QT0T7F5FXS8QX15TV01Z",
+					"type": "soft",
+					"rationale": "Can and must builds on e5-to-be."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-5",
+					"topic_code": "zeiten",
+					"topic_title": "Now, usually, yesterday"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7QT0TEV6WZHF0CEAHPDGA",
+					"slug": "e5-modals-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welcher Satz ist ein Verbot in der Bibliothek?",
+					"concept": "You mustn't shout.",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-modals",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"You mustn't shout.",
+							"You needn't shout."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7QT0T1ZASQMNY67P23CAF",
+					"slug": "e5-modals-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welches Modalverb nennt eine Fähigkeit?",
+					"concept": "I can swim.",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-modals",
+					"sample_solution": "I can swim."
+				},
+				{
+					"id": "01M7D7QT0TDCHWEDQPMVE2RZAJ",
+					"slug": "e5-modals-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was bedeutet needn't?",
+					"concept": "Es ist nicht nötig.",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-modals",
+					"sample_solution": "Es ist nicht nötig."
+				}
+			]
+		},
+		{
+			"id": "01M7D7QT0THGEA1414WDX349XJ",
+			"atom_uri": "urn:zam:atom:01M7D7QT0THGEA1414WDX349XJ",
+			"namespace": "zam-academy-englisch-gymnasium-5",
+			"slug": "e5-like",
+			"title": "I like reading",
+			"domain": "englisch/zeiten",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-like",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D7QT0T67DNZ3GBV0VMVHHE",
+					"type": "soft",
+					"rationale": "I like reading builds on e5-simple-present."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-5",
+					"topic_code": "zeiten",
+					"topic_title": "Now, usually, yesterday"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7QT0TF434DYX51HCK873Y",
+					"slug": "e5-like-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie sagst du, dass du Lesen allgemein magst?",
+					"concept": "I like reading.",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-like",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"I like reading.",
+							"I'd like to read."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7QT0TM1267NX17AW6DARJ",
+					"slug": "e5-like-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie schließt du dich einem Ja an?",
+					"concept": "Me, too.",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-like",
+					"sample_solution": "Me, too."
+				},
+				{
+					"id": "01M7D7QT0TDJT7XS84TYJ6MA8V",
+					"slug": "e5-like-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie schließt du dich einem Nein an?",
+					"concept": "I don't either.",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-like",
+					"sample_solution": "I don't either."
+				}
+			]
+		},
+		{
+			"id": "01M7D7QT0TE8T76SFRK9988DBT",
+			"atom_uri": "urn:zam:atom:01M7D7QT0TE8T76SFRK9988DBT",
+			"namespace": "zam-academy-englisch-gymnasium-5",
+			"slug": "e5-past",
+			"title": "Yesterday",
+			"domain": "englisch/zeiten",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-past",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D7QT0T67DNZ3GBV0VMVHHE",
+					"type": "soft",
+					"rationale": "Yesterday builds on e5-simple-present."
+				},
+				{
+					"atom_id": "01M7D7QT0T7F5FXS8QX15TV01Z",
+					"type": "soft",
+					"rationale": "Yesterday builds on e5-to-be."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-5",
+					"topic_code": "zeiten",
+					"topic_title": "Now, usually, yesterday"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7QT0TWGPDDW039D05REK0",
+					"slug": "e5-past-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie lautet die Vergangenheit von go?",
+					"concept": "went",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-past",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"went",
+							"goed"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7QT0TDZTSTXEVG4WSDY94",
+					"slug": "e5-past-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche Form von be gehört zu she in der Vergangenheit?",
+					"concept": "she was",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-past",
+					"sample_solution": "she was"
+				},
+				{
+					"id": "01M7D7QT0TEYH4GZ5KJ2X7MYKW",
+					"slug": "e5-past-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie fragst du in der Vergangenheit nach play?",
+					"concept": "Did she play?",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-past",
+					"sample_solution": "Did she play?"
+				}
+			]
+		},
+		{
+			"id": "01M7D7QT0TB7B6J6GVM0TFV9WJ",
+			"atom_uri": "urn:zam:atom:01M7D7QT0TB7B6J6GVM0TFV9WJ",
+			"namespace": "zam-academy-englisch-gymnasium-5",
+			"slug": "e5-school",
+			"title": "A school day",
+			"domain": "englisch/alltag",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-school",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-5",
+					"topic_code": "alltag",
+					"topic_title": "A day in the UK"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7QT0TH7D2DRA4HZD9G32G",
+					"slug": "e5-school-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie heißt das Sportfach auf dem Plan?",
+					"concept": "PE ist Sport.",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-school",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"PE ist Sport.",
+							"homework ist Sport."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7QT0TA5VBTGZYVAQVYN0N",
+					"slug": "e5-school-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie nennst du die Hausaufgabe ohne Plural s?",
+					"concept": "homework",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-school",
+					"sample_solution": "homework"
+				},
+				{
+					"id": "01M7D7QT0TRME74EMBV5J0MX35",
+					"slug": "e5-school-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Sind Year 5 und Klasse 5 automatisch dasselbe?",
+					"concept": "Nein, die Zählung ist verschieden.",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-school",
+					"sample_solution": "Nein, die Zählung ist verschieden."
+				}
+			]
+		},
+		{
+			"id": "01M7D7QT0TK3CZ3BTXZSDM42M5",
+			"atom_uri": "urn:zam:atom:01M7D7QT0TK3CZ3BTXZSDM42M5",
+			"namespace": "zam-academy-englisch-gymnasium-5",
+			"slug": "e5-food",
+			"title": "Food and shopping",
+			"domain": "englisch/alltag",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-food",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D7QT0THGEA1414WDX349XJ",
+					"type": "soft",
+					"rationale": "Food and shopping builds on e5-like."
+				},
+				{
+					"atom_id": "01M7D7QT0TKWYN6W69D902YB1G",
+					"type": "soft",
+					"rationale": "Food and shopping builds on e5-quantifiers."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-5",
+					"topic_code": "alltag",
+					"topic_title": "A day in the UK"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb2",
+					"topic_title": "Interkulturelle Kompetenzen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7QT0TK2GVNXJGF21MVKJX",
+					"slug": "e5-food-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie bestellst du zwei Äpfel und fragst nach dem Preis?",
+					"concept": "I'd like two apples, please. How much is that?",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-food",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"I'd like two apples, please. How much is that?",
+							"How many is the juice?"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7QT0TS9PH5K9T7H8MTVMH",
+					"slug": "e5-food-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welches Wort fragt nach der Zahl der Äpfel?",
+					"concept": "many",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-food",
+					"sample_solution": "many"
+				},
+				{
+					"id": "01M7D7QT0TVCA1Q45VR6QJPEMW",
+					"slug": "e5-food-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Warum kann tea missverständlich sein?",
+					"concept": "Es kann das Getränk oder eine Mahlzeit sein.",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-food",
+					"sample_solution": "Es kann das Getränk oder eine Mahlzeit sein."
+				}
+			]
+		},
+		{
+			"id": "01M7D7QT0TYN0TF9YP8CJQ6B79",
+			"atom_uri": "urn:zam:atom:01M7D7QT0TYN0TF9YP8CJQ6B79",
+			"namespace": "zam-academy-englisch-gymnasium-5",
+			"slug": "e5-clothes",
+			"title": "Clothes",
+			"domain": "englisch/alltag",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-clothes",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-5",
+					"topic_code": "alltag",
+					"topic_title": "A day in the UK"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7QT0TJEHN34S6KVNM6D1B",
+					"slug": "e5-clothes-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie bittest du um eine rote Kappe?",
+					"concept": "I'd like a red cap, please.",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-clothes",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"I'd like a red cap, please.",
+							"I like a red cap doing."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7QT0T6MZJJA66R6N16J0D",
+					"slug": "e5-clothes-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welches phrasal verb zieht eine Jacke an?",
+					"concept": "put on",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-clothes",
+					"sample_solution": "put on"
+				},
+				{
+					"id": "01M7D7QT0T1FDG9SWHN6M29ZGE",
+					"slug": "e5-clothes-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie nennst du eine Hose?",
+					"concept": "a pair of trousers",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-clothes",
+					"sample_solution": "a pair of trousers"
+				}
+			]
+		},
+		{
+			"id": "01M7D7QT0TANVNF3RZYMMMCVW7",
+			"atom_uri": "urn:zam:atom:01M7D7QT0TANVNF3RZYMMMCVW7",
+			"namespace": "zam-academy-englisch-gymnasium-5",
+			"slug": "e5-routine",
+			"title": "My day",
+			"domain": "englisch/alltag",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-routine",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D7QT0T67DNZ3GBV0VMVHHE",
+					"type": "soft",
+					"rationale": "My day builds on e5-simple-present."
+				},
+				{
+					"atom_id": "01M7D7QT0TETHESC41CE4EJ9K8",
+					"type": "soft",
+					"rationale": "My day builds on e5-time."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-5",
+					"topic_code": "alltag",
+					"topic_title": "A day in the UK"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7QT0TA7Z36SNA2KP0Q0XA",
+					"slug": "e5-routine-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wo steht usually vor einem Vollverb?",
+					"concept": "vor dem Vollverb",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-routine",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"vor dem Vollverb",
+							"nach dem Vollverb"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7QT0TC55VT609EXNC9BV5",
+					"slug": "e5-routine-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie heißt aufstehen als phrasal verb?",
+					"concept": "get up",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-routine",
+					"sample_solution": "get up"
+				},
+				{
+					"id": "01M7D7QT0T34F66VADPRQ3QGKT",
+					"slug": "e5-routine-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche feste Verbindung nennt das Frühstück?",
+					"concept": "have breakfast",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-routine",
+					"sample_solution": "have breakfast"
+				}
+			]
+		},
+		{
+			"id": "01M7D7QT0THRMP0VJ8Q3ADA7WG",
+			"atom_uri": "urn:zam:atom:01M7D7QT0THRMP0VJ8Q3ADA7WG",
+			"namespace": "zam-academy-englisch-gymnasium-5",
+			"slug": "e5-festivals",
+			"title": "Festivals and customs",
+			"domain": "englisch/alltag",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-festivals",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-5",
+					"topic_code": "alltag",
+					"topic_title": "A day in the UK"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb2",
+					"topic_title": "Interkulturelle Kompetenzen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7QT0T6V44K8BB6HS9SFYV",
+					"slug": "e5-festivals-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie sprichst du vorsichtig über ein Fest?",
+					"concept": "Many families give presents.",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-festivals",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Many families give presents.",
+							"Everybody in the UK does this."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7QT0T8JQGCX2FB4VE3DKP",
+					"slug": "e5-festivals-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie gratulierst du Sam zum Geburtstag?",
+					"concept": "Happy birthday, Sam.",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-festivals",
+					"sample_solution": "Happy birthday, Sam."
+				},
+				{
+					"id": "01M7D7QT0TW3JV7SS8PZ2CYZY4",
+					"slug": "e5-festivals-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Warum sagst du nicht everybody?",
+					"concept": "Nicht jede Familie feiert gleich.",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-festivals",
+					"sample_solution": "Nicht jede Familie feiert gleich."
+				}
+			]
+		},
+		{
+			"id": "01M7D7QT0T0T2Q151R7JVXDV8V",
+			"atom_uri": "urn:zam:atom:01M7D7QT0T0T2Q151R7JVXDV8V",
+			"namespace": "zam-academy-englisch-gymnasium-5",
+			"slug": "e5-uk",
+			"title": "The UK and Ireland",
+			"domain": "englisch/orte",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-uk",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-5",
+					"topic_code": "orte",
+					"topic_title": "Places and texts"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb2",
+					"topic_title": "Interkulturelle Kompetenzen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7QT0TJT85M6PYREMXHZ7J",
+					"slug": "e5-uk-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was ist Great Britain?",
+					"concept": "die Insel mit England, Scotland und Wales",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-uk",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"die Insel mit England, Scotland und Wales",
+							"nur die Hauptstadt London"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7QT0TYKSJR3FAJNJGJNG9",
+					"slug": "e5-uk-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche vier Landesteile bilden das UK?",
+					"concept": "England, Scotland, Wales and Northern Ireland",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-uk",
+					"sample_solution": "England, Scotland, Wales and Northern Ireland"
+				},
+				{
+					"id": "01M7D7QT0THMWVH72WCQGD0HWK",
+					"slug": "e5-uk-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was ist die Hauptstadt der Republic of Ireland?",
+					"concept": "Dublin",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-uk",
+					"sample_solution": "Dublin"
+				}
+			]
+		},
+		{
+			"id": "01M7D7QT0TPYZYTZ0XF4C59N3H",
+			"atom_uri": "urn:zam:atom:01M7D7QT0TPYZYTZ0XF4C59N3H",
+			"namespace": "zam-academy-englisch-gymnasium-5",
+			"slug": "e5-london",
+			"title": "London sights",
+			"domain": "englisch/orte",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-london",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D7QT0T0T2Q151R7JVXDV8V",
+					"type": "soft",
+					"rationale": "London sights builds on e5-uk."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-5",
+					"topic_code": "orte",
+					"topic_title": "Places and texts"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb2",
+					"topic_title": "Interkulturelle Kompetenzen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7QT0TTVR8DQ6AW5VSDNPF",
+					"slug": "e5-london-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was ist Big Ben?",
+					"concept": "der Spitzname der großen Glocke",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-london",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"der Spitzname der großen Glocke",
+							"ein Fluss in London"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7QT0TZT77GKG8Z3FNFXRV",
+					"slug": "e5-london-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "An welchem Fluss liegt London?",
+					"concept": "am River Thames",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-london",
+					"sample_solution": "am River Thames"
+				},
+				{
+					"id": "01M7D7QT0TNPQNSAVWA0Y1AZH7",
+					"slug": "e5-london-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was ist Buckingham Palace?",
+					"concept": "die offizielle Residenz des Monarchen",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-london",
+					"sample_solution": "die offizielle Residenz des Monarchen"
+				}
+			]
+		},
+		{
+			"id": "01M7D7QT0TM9PV4N21G70WKXF7",
+			"atom_uri": "urn:zam:atom:01M7D7QT0TM9PV4N21G70WKXF7",
+			"namespace": "zam-academy-englisch-gymnasium-5",
+			"slug": "e5-america",
+			"title": "North America",
+			"domain": "englisch/orte",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-america",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D7QT0T0T2Q151R7JVXDV8V",
+					"type": "soft",
+					"rationale": "North America builds on e5-uk."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-5",
+					"topic_code": "orte",
+					"topic_title": "Places and texts"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb2",
+					"topic_title": "Interkulturelle Kompetenzen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7QT0T14F7HWM2EKT1J6MG",
+					"slug": "e5-america-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was ist die Hauptstadt der USA?",
+					"concept": "Washington, D.C.",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-america",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Washington, D.C.",
+							"New York City"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7QT0TVFSZQF9CB860WBCH",
+					"slug": "e5-america-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie heißen die 48 zusammenhängenden Staaten?",
+					"concept": "the Lower 48",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-america",
+					"sample_solution": "the Lower 48"
+				},
+				{
+					"id": "01M7D7QT0TNHEW3ST1CX0EESZA",
+					"slug": "e5-america-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was ist die Hauptstadt von Kanada?",
+					"concept": "Ottawa",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-america",
+					"sample_solution": "Ottawa"
+				}
+			]
+		},
+		{
+			"id": "01M7D7QT0TVFNP0M8GBS9F81PQ",
+			"atom_uri": "urn:zam:atom:01M7D7QT0TVFNP0M8GBS9F81PQ",
+			"namespace": "zam-academy-englisch-gymnasium-5",
+			"slug": "e5-listening",
+			"title": "Listen first",
+			"domain": "englisch/orte",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-listening",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-5",
+					"topic_code": "orte",
+					"topic_title": "Places and texts"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb3",
+					"topic_title": "Text- und Medienkompetenzen",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7QT0TE6JW2GP123VYKE33",
+					"slug": "e5-listening-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche Farbe hat das Kaninchen im Hörtext?",
+					"concept": "white",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-listening",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"white",
+							"black"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7QT0TVFKH2DK29HADNH37",
+					"slug": "e5-listening-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Worum geht es in dem Hörtext?",
+					"concept": "um ein Haustier",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-listening",
+					"sample_solution": "um ein Haustier"
+				},
+				{
+					"id": "01M7D7QT0TZQHAZMF5P6RY4B42",
+					"slug": "e5-listening-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welches Gefühl ist deutlich?",
+					"concept": "Mia is happy.",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-listening",
+					"sample_solution": "Mia is happy."
+				}
+			]
+		},
+		{
+			"id": "01M7D7QT0T54DPY5CS9Y255WEY",
+			"atom_uri": "urn:zam:atom:01M7D7QT0T54DPY5CS9Y255WEY",
+			"namespace": "zam-academy-englisch-gymnasium-5",
+			"slug": "e5-reading",
+			"title": "Read a postcard",
+			"domain": "englisch/orte",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-reading",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-5",
+					"topic_code": "orte",
+					"topic_title": "Places and texts"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb3",
+					"topic_title": "Text- und Medienkompetenzen",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7QT0T0VXHNEWZHGKMMVWR",
+					"slug": "e5-reading-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wo ist Mia auf der Postkarte?",
+					"concept": "in London",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-reading",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"in London",
+							"in Ottawa"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7QT0T9Y738B65S0PE4G9K",
+					"slug": "e5-reading-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welches Tier ist groß?",
+					"concept": "the lion",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-reading",
+					"sample_solution": "the lion"
+				},
+				{
+					"id": "01M7D7QT0T4B3YTAD6HGJ8V6HQ",
+					"slug": "e5-reading-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welchen Fluss sieht Mia?",
+					"concept": "the Thames",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-reading",
+					"sample_solution": "the Thames"
+				}
+			]
+		},
+		{
+			"id": "01M7D7QT0T18FP436E7SNM4Q8J",
+			"atom_uri": "urn:zam:atom:01M7D7QT0T18FP436E7SNM4Q8J",
+			"namespace": "zam-academy-englisch-gymnasium-5",
+			"slug": "e5-mediation",
+			"title": "Tell it across",
+			"domain": "englisch/koennen",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-mediation",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D7QT0T54DPY5CS9Y255WEY",
+					"type": "soft",
+					"rationale": "Tell it across builds on e5-reading."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-5",
+					"topic_code": "koennen",
+					"topic_title": "Use what you know"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb3",
+					"topic_title": "Text- und Medienkompetenzen",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7QT0TZEBRKKGASR36JQKJ",
+					"slug": "e5-mediation-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie vermittelst du den Eintritt von 4 Euro?",
+					"concept": "Tickets cost 4 euros.",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-mediation",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Tickets cost 4 euros.",
+							"The zoo is free."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7QT0TSZ74AB9EHZ508MH4",
+					"slug": "e5-mediation-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie vermittelst du die Öffnung von 10 bis 16 Uhr?",
+					"concept": "The zoo is open from 10 am to 4 pm.",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-mediation",
+					"sample_solution": "The zoo is open from 10 am to 4 pm."
+				},
+				{
+					"id": "01M7D7QT0T8R65799GXKGE361Z",
+					"slug": "e5-mediation-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie gibst du Please bring juice auf Deutsch weiter?",
+					"concept": "Bitte bring Saft mit.",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-mediation",
+					"sample_solution": "Bitte bring Saft mit."
+				}
+			]
+		},
+		{
+			"id": "01M7D7QT0TABHMRJWS469N3ZFP",
+			"atom_uri": "urn:zam:atom:01M7D7QT0TABHMRJWS469N3ZFP",
+			"namespace": "zam-academy-englisch-gymnasium-5",
+			"slug": "e5-writing",
+			"title": "A postcard and an email",
+			"domain": "englisch/koennen",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-writing",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D7QT0T54DPY5CS9Y255WEY",
+					"type": "soft",
+					"rationale": "A postcard and an email builds on e5-reading."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-5",
+					"topic_code": "koennen",
+					"topic_title": "Use what you know"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb3",
+					"topic_title": "Text- und Medienkompetenzen",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7QT0TB50NVA59EDXTNEPP",
+					"slug": "e5-writing-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie beginnt eine Postkarte an Sam?",
+					"concept": "Dear Sam,",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-writing",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Dear Sam,",
+							"Dear Sir or Madam,"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7QT0TEXT2GA1W8FKP393A",
+					"slug": "e5-writing-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie leitest du eine Bildbeschreibung ein?",
+					"concept": "In the picture",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-writing",
+					"sample_solution": "In the picture"
+				},
+				{
+					"id": "01M7D7QT0TFH73YG0FATJQ9X44",
+					"slug": "e5-writing-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie beginnt eine E-Mail an die Freundin Sam?",
+					"concept": "Hi Sam,",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-writing",
+					"sample_solution": "Hi Sam,"
+				}
+			]
+		},
+		{
+			"id": "01M7D7QT0TJ01B08NXAHB43H1B",
+			"atom_uri": "urn:zam:atom:01M7D7QT0TJ01B08NXAHB43H1B",
+			"namespace": "zam-academy-englisch-gymnasium-5",
+			"slug": "e5-sounds",
+			"title": "Sounds and symbols",
+			"domain": "englisch/koennen",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-sounds",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-5",
+					"topic_code": "koennen",
+					"topic_title": "Use what you know"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7QT0TQPQCDMZA5X2XWYQN",
+					"slug": "e5-sounds-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welches Wort hat statt /ɪ/ in ship den langen Laut /iː/?",
+					"concept": "sheep",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-sounds",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"sheep",
+							"shape"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7QT0TET1M0CRDZ0G1C3N5",
+					"slug": "e5-sounds-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welches Zeichen passt zum Vokal in ship?",
+					"concept": "the symbol /ɪ/",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-sounds",
+					"sample_solution": "the symbol /ɪ/"
+				},
+				{
+					"id": "01M7D7QT0T96WWJWGQ7HXARPE9",
+					"slug": "e5-sounds-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welches Zeichen passt zum Anlaut in think?",
+					"concept": "the symbol /θ/",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-sounds",
+					"sample_solution": "the symbol /θ/"
+				}
+			]
+		},
+		{
+			"id": "01M7D7QT0TNH6X0DYTWGAHM63K",
+			"atom_uri": "urn:zam:atom:01M7D7QT0TNH6X0DYTWGAHM63K",
+			"namespace": "zam-academy-englisch-gymnasium-5",
+			"slug": "e5-learning",
+			"title": "Learn in chunks",
+			"domain": "englisch/koennen",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-learning",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-5",
+					"topic_code": "koennen",
+					"topic_title": "Use what you know"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb4",
+					"topic_title": "Methodische Kompetenzen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7QT0THXYAN98DMB21PXZ7",
+					"slug": "e5-learning-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welcher Ausdruck ist ein chunk?",
+					"concept": "I'd like",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-learning",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"I'd like",
+							"informations many"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7QT0TN942V8PGFY4J68N0",
+					"slug": "e5-learning-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie korrigierst du he play?",
+					"concept": "he plays",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-learning",
+					"sample_solution": "he plays"
+				},
+				{
+					"id": "01M7D7QT0TG7FWQ43GAGQ7X999",
+					"slug": "e5-learning-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie korrigierst du Yes, I have got als Kurzantwort?",
+					"concept": "Yes, I have.",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-learning",
+					"sample_solution": "Yes, I have."
+				}
+			]
+		},
+		{
+			"id": "01M7D7QT0TAR8MW589369RA7YY",
+			"atom_uri": "urn:zam:atom:01M7D7QT0TAR8MW589369RA7YY",
+			"namespace": "zam-academy-englisch-gymnasium-5",
+			"slug": "e5-rhyme",
+			"title": "A nursery rhyme",
+			"domain": "englisch/koennen",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-rhyme",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-5",
+					"topic_code": "koennen",
+					"topic_title": "Use what you know"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb3",
+					"topic_title": "Text- und Medienkompetenzen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7D7QT0TSS9HE26PB5RZZ16Q",
+					"slug": "e5-rhyme-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welches Wort reimt sich in den ersten Zeilen auf star?",
+					"concept": "are",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-rhyme",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"are",
+							"sky"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7D7QT0TEFDTXM9XYFQS9PR7",
+					"slug": "e5-rhyme-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welches Wort reimt sich auf high?",
+					"concept": "sky",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-rhyme",
+					"sample_solution": "sky"
+				},
+				{
+					"id": "01M7D7QT0TFGV6CZJ1MEHRG8SV",
+					"slug": "e5-rhyme-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie beginnt die erste Zeile nach Twinkle, twinkle?",
+					"concept": "little star",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-5/#lesson=e5-rhyme",
+					"sample_solution": "little star"
+				}
+			]
+		}
+	]
+}
