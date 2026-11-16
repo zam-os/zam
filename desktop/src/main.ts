@@ -429,6 +429,8 @@ let modelRegistry: ModelRow[] = [];
 let editingModelId: string | null = null;
 /** What a session started now would offer: due reviews plus new cards. */
 let totalDue = 0;
+/** Cards past their schedule before workload and atom limits are applied. */
+let dueCardCount = 0;
 let offeredReviews = 0;
 let offeredNewCards = 0;
 let cardsReviewedThisSession = 0;
@@ -770,6 +772,7 @@ let sessionExtraNewRemaining = 0;
 let sessionCardsRemaining = 0;
 let activeCardConsumedReview = false;
 let activeCardNewBudget: ActiveCardNewBudget = "none";
+let activeCardRated = false;
 let pausedStudySession: StudySessionSnapshot<AtlasLensKindWire> | null = null;
 let resumeSessionInFlight = false;
 
@@ -5334,6 +5337,8 @@ async function selectDatabaseUser(userId: string): Promise<void> {
 
   select.disabled = true;
   try {
+    // End the outgoing learner's paused session before changing identity.
+    await discardPausedStudySession();
     const result = await runBridge<{
       success: boolean;
       userId: string;
@@ -6546,6 +6551,7 @@ async function loadDashboard() {
     // command and its nine reads on every dashboard load.
     beginBootStep("cards");
     const dueInfo = settings.dueSummary;
+    dueCardCount = dueInfo.dueCount;
     offeredReviews = settings.sessionOffer.reviews;
     offeredNewCards = settings.sessionOffer.newCards;
     totalDue = offeredReviews + offeredNewCards;
@@ -6893,6 +6899,7 @@ async function loadNextCard(
   activeAnswerFormat = "recall";
   activeCardConsumedReview = false;
   activeCardNewBudget = "none";
+  activeCardRated = false;
   resetChoiceState();
   activePromptQuestion = "";
   updateReviewControlState();
@@ -7915,6 +7922,7 @@ async function submitRating(ratingVal: number, choiceEvidence?: unknown) {
       const r = ratingVal as 1 | 2 | 3 | 4;
       sessionRatingTally.ratings[r] += 1;
       sessionRatingTally.done += 1;
+      activeCardRated = true;
     }
 
     if (practice && studySessionActive) {
@@ -8221,6 +8229,7 @@ function teardownActiveStudyUi(): void {
   activeAttemptId = null;
   activeCardConsumedReview = false;
   activeCardNewBudget = "none";
+  activeCardRated = false;
   updateReviewControlState();
 }
 
@@ -8252,7 +8261,7 @@ function syncPausedSessionUi(): void {
     if (paused) {
       startBtn.disabled = resumeSessionInFlight;
     } else if (dueSummaryLoaded) {
-      startBtn.disabled = totalDue <= 0;
+      startBtn.disabled = dueCardCount <= 0;
     }
   }
 }
@@ -8271,7 +8280,7 @@ function pauseCurrentStudySession(): void {
     done: sessionRatingTally.done,
     assessedAtoms: [...assessedAtomsThisSession],
     atlasRegion: studyAtlasRegion,
-    hasUnratedActiveCard: activeCard !== null,
+    hasUnratedActiveCard: activeCard !== null && !activeCardRated,
     consumedReviewSlot: activeCardConsumedReview,
     consumedNewBudget: activeCardNewBudget,
   });
@@ -8287,6 +8296,7 @@ function pauseCurrentStudySession(): void {
 async function discardPausedStudySession(): Promise<void> {
   const paused = pausedStudySession;
   pausedStudySession = null;
+  if (paused && zamUiSessionId === paused.sessionId) zamUiSessionId = null;
   syncPausedSessionUi();
   if (paused?.sessionId) {
     try {
@@ -8303,9 +8313,18 @@ async function discardPausedStudySession(): Promise<void> {
 async function resumeStudySession(): Promise<void> {
   const paused = pausedStudySession;
   if (!paused || resumeSessionInFlight) return;
+  if (!paused.sessionId) {
+    await discardPausedStudySession();
+    return;
+  }
+  const userId = desktopUserId;
+  let resumed = false;
   resumeSessionInFlight = true;
   syncPausedSessionUi();
   try {
+    await loadStudyLearningSettings();
+    // A profile switch can discard the snapshot while settings are loading.
+    if (pausedStudySession !== paused || desktopUserId !== userId) return;
     prepareStudyViewForSession();
     sessionStartedDue = paused.startedDue;
     sessionRatingTally.done = paused.done;
@@ -8321,18 +8340,21 @@ async function resumeStudySession(): Promise<void> {
     }
     zamUiSessionId = paused.sessionId;
 
-    await loadStudyLearningSettings();
     await ensureUiLearningSession(
       paused.atlasRegion ? "Atlas region review" : "Desktop learning session",
     );
+    if (pausedStudySession !== paused || desktopUserId !== userId) return;
 
     pausedStudySession = null;
+    resumed = true;
     syncPausedSessionUi();
     switchView("study-view");
     studyAtlasRegion = paused.atlasRegion ? { ...paused.atlasRegion } : null;
     await loadNextCard();
   } catch (err) {
-    if (!pausedStudySession) pausedStudySession = paused;
+    if (resumed && !pausedStudySession && desktopUserId === userId) {
+      pausedStudySession = paused;
+    }
     syncPausedSessionUi();
     console.error("Failed to resume study session:", err);
   } finally {
@@ -9604,6 +9626,19 @@ function scheduleBundledTileReconcile(): void {
   }, 20_000);
 }
 
+function handleServerDbReady(): void {
+  // Session IDs belong to one library, even when both use the same learner ID.
+  pausedStudySession = null;
+  zamUiSessionId = null;
+  desktopUserId = null;
+  databaseCurrentUserId = null;
+  syncPausedSessionUi();
+  void loadDatabaseStatus();
+  bootState = restartBoot(bootState);
+  renderBootOverlay();
+  void loadDashboard();
+}
+
 window.addEventListener("DOMContentLoaded", () => {
   applyTheme(loadThemePreference());
   settingsViewMode = loadSettingsViewMode();
@@ -9632,12 +9667,7 @@ window.addEventListener("DOMContentLoaded", () => {
   });
   initPanel("server-db", () =>
     initServerDbWizard(
-      () => {
-        void loadDatabaseStatus();
-        bootState = restartBoot(bootState);
-        renderBootOverlay();
-        void loadDashboard();
-      },
+      handleServerDbReady,
       { openExternal: (url: string) => void openUrl(url) },
     ),
   );
