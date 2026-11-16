@@ -8313,6 +8313,10 @@ async function discardPausedStudySession(): Promise<void> {
 async function resumeStudySession(): Promise<void> {
   const paused = pausedStudySession;
   if (!paused || resumeSessionInFlight) return;
+  if (!paused.sessionId) {
+    await discardPausedStudySession();
+    return;
+  }
   const userId = desktopUserId;
   let resumed = false;
   resumeSessionInFlight = true;
@@ -9622,6 +9626,19 @@ function scheduleBundledTileReconcile(): void {
   }, 20_000);
 }
 
+function handleServerDbReady(): void {
+  // Session IDs belong to one library, even when both use the same learner ID.
+  pausedStudySession = null;
+  zamUiSessionId = null;
+  desktopUserId = null;
+  databaseCurrentUserId = null;
+  syncPausedSessionUi();
+  void loadDatabaseStatus();
+  bootState = restartBoot(bootState);
+  renderBootOverlay();
+  void loadDashboard();
+}
+
 window.addEventListener("DOMContentLoaded", () => {
   applyTheme(loadThemePreference());
   settingsViewMode = loadSettingsViewMode();
@@ -9650,12 +9667,7 @@ window.addEventListener("DOMContentLoaded", () => {
   });
   initPanel("server-db", () =>
     initServerDbWizard(
-      () => {
-        void loadDatabaseStatus();
-        bootState = restartBoot(bootState);
-        renderBootOverlay();
-        void loadDashboard();
-      },
+      handleServerDbReady,
       { openExternal: (url: string) => void openUrl(url) },
     ),
   );

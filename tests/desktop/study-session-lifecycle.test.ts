@@ -165,6 +165,7 @@ function profileRuntime() {
       "discardPausedStudySession",
       "syncPausedSessionUi",
       "resumeStudySession",
+      "handleServerDbReady",
     ],
     {
       pausedStudySession: snapshot(),
@@ -178,6 +179,9 @@ function profileRuntime() {
       loadDatabaseStatus: vi.fn(),
       loadStudyLearningSettings: vi.fn().mockResolvedValue(true),
       loadDashboard: vi.fn(),
+      bootState: {},
+      restartBoot: vi.fn(() => ({})),
+      renderBootOverlay: vi.fn(),
       updateGraphLearnerFilterUi: vi.fn(),
       prepareStudyViewForSession: vi.fn(),
       ensureUiLearningSession: vi.fn().mockResolvedValue("alice-session"),
@@ -317,6 +321,72 @@ describe("Desktop paused sessions and profiles", () => {
     expect(context.pausedStudySession).toBeNull();
     expect(context.switchView).toHaveBeenCalledWith("study-view");
     expect(context.loadNextCard).toHaveBeenCalledOnce();
+  });
+
+  it("discards a paused session when two libraries use the same learner ID", async () => {
+    const { context, elements, runBridge } = profileRuntime();
+    context.loadDashboard.mockImplementation(async () => {
+      // The new library happens to use the same ID as the outgoing one.
+      context.desktopUserId = "alice";
+    });
+
+    context.handleServerDbReady();
+    await context.loadDashboard.mock.results[0].value;
+    await context.resumeStudySession();
+
+    expect(context.pausedStudySession).toBeNull();
+    expect(context.zamUiSessionId).toBeNull();
+    expect(context.ensureUiLearningSession).not.toHaveBeenCalled();
+    expect(context.loadNextCard).not.toHaveBeenCalled();
+    expect(elements.get("content-study-resume-banner")?.hidden).toBe(true);
+    // The switch has already happened: no old session ID reaches the new DB.
+    expect(runBridge).not.toHaveBeenCalled();
+  });
+
+  it("cancels an in-flight resume when switching libraries with the same learner ID", async () => {
+    const { context } = profileRuntime();
+    let resolveSession!: (id: string) => void;
+    let notifySessionStarted!: () => void;
+    const sessionStarted = new Promise<void>((resolve) => {
+      notifySessionStarted = resolve;
+    });
+    context.ensureUiLearningSession.mockImplementationOnce(
+      () =>
+        new Promise<string>((resolve) => {
+          resolveSession = resolve;
+          notifySessionStarted();
+        }),
+    );
+    context.loadDashboard.mockImplementation(async () => {
+      context.desktopUserId = "alice";
+    });
+
+    const resuming = context.resumeStudySession();
+    await sessionStarted;
+    context.handleServerDbReady();
+    await context.loadDashboard.mock.results[0].value;
+    resolveSession("alice-session");
+    await resuming;
+
+    expect(context.pausedStudySession).toBeNull();
+    expect(context.zamUiSessionId).toBeNull();
+    expect(context.switchView).not.toHaveBeenCalled();
+    expect(context.loadNextCard).not.toHaveBeenCalled();
+    expect(context.resumeSessionInFlight).toBe(false);
+  });
+
+  it("discards a snapshot with no backend session instead of creating a replacement", async () => {
+    const { context, elements, runBridge } = profileRuntime();
+    context.pausedStudySession.sessionId = null;
+
+    await context.resumeStudySession();
+
+    expect(context.pausedStudySession).toBeNull();
+    expect(context.zamUiSessionId).toBeNull();
+    expect(context.ensureUiLearningSession).not.toHaveBeenCalled();
+    expect(context.loadNextCard).not.toHaveBeenCalled();
+    expect(runBridge).not.toHaveBeenCalled();
+    expect(elements.get("content-study-resume-banner")?.hidden).toBe(true);
   });
 });
 
