@@ -6,6 +6,7 @@ import {
   attachCardTextEditor,
   type CardTextEditor,
 } from "./card-text-editor.js";
+import { locateCardForEditor } from "./editor-card-selection.js";
 import { runBridge } from "./bridge-transport.js";
 import { currentLocale, t, tf } from "./i18n.js";
 import { webSourceLink } from "./source-link.js";
@@ -1033,29 +1034,35 @@ export function initLearningContentStudio(): void {
   void initializeStudioContextFilter();
 }
 
-async function initializeStudioContextFilter(): Promise<void> {
-  try {
-    const list = await runBridge<{
-      contexts: Array<{ name: string; label: string | null }>;
-    }>("list-knowledge-contexts");
-    const active = await runBridge<{ activeContext: string | null }>(
-      "get-active-knowledge-context",
-    );
+let contextFilterInitPromise: Promise<void> | null = null;
 
-    contextFilter.innerHTML = `<option value="">${t("lbl_all_contexts")}</option>`;
-    for (const context of list.contexts ?? []) {
-      const option = document.createElement("option");
-      option.value = context.name;
-      option.textContent = context.label
-        ? `${context.label} (${context.name})`
-        : context.name;
-      contextFilter.appendChild(option);
+async function initializeStudioContextFilter(): Promise<void> {
+  const run = (async () => {
+    try {
+      const list = await runBridge<{
+        contexts: Array<{ name: string; label: string | null }>;
+      }>("list-knowledge-contexts");
+      const active = await runBridge<{ activeContext: string | null }>(
+        "get-active-knowledge-context",
+      );
+
+      contextFilter.innerHTML = `<option value="">${t("lbl_all_contexts")}</option>`;
+      for (const context of list.contexts ?? []) {
+        const option = document.createElement("option");
+        option.value = context.name;
+        option.textContent = context.label
+          ? `${context.label} (${context.name})`
+          : context.name;
+        contextFilter.appendChild(option);
+      }
+      contextFilter.value = active.activeContext ?? "";
+    } catch (error) {
+      console.warn("Failed to load Studio knowledge contexts", error);
     }
-    contextFilter.value = active.activeContext ?? "";
-  } catch (error) {
-    console.warn("Failed to load Studio knowledge contexts", error);
-  }
-  await loadStudioData();
+    await loadStudioData();
+  })();
+  contextFilterInitPromise = run;
+  await run;
 }
 
 function bindLearningContentAreas(): void {
@@ -1513,30 +1520,49 @@ function selectCard(card: PersonalCard): void {
 
   updateUIForSelection();
   refreshCardsList(); // Update selected highlight
+  listContainer
+    ?.querySelector(".content-list-item.selected")
+    ?.scrollIntoView({ block: "nearest" });
   void refreshPublicationNotes();
 }
 
+let openEditorGeneration = 0;
+
 /**
  * Focus the editor on a specific card by slug — the "Open in full editor"
- * jump from the study view (ADR 2026-07-16b). Reloads the card list so a card
- * edited elsewhere is present, then selects it. Returns false if the slug is
- * not among the learner's cards.
+ * jump from the study view (ADR 2026-07-16b). Waits for initial context setup,
+ * clears Studio search/category filters that hide the item in the list, widens
+ * a mismatched knowledge context filter, then checks unpublished drafts before
+ * reverting to Personal if the card is still missing.
  */
 export async function openCardInEditor(slug: string): Promise<boolean> {
+  const requestGen = ++openEditorGeneration;
+  if (contextFilterInitPromise) {
+    await contextFilterInitPromise;
+  }
+  if (requestGen !== openEditorGeneration) return false;
   area = "cards";
   syncAreaChrome();
-  segment = "personal";
   openUnchosenKey = null;
-  syncSegmentChrome();
-  await loadStudioData();
-  let card = cardsList.find((item) => item.slug === slug);
-  if (!card) {
-    segment = "unpublished";
-    syncSegmentChrome();
-    await loadStudioData();
-    card = cardsList.find((item) => item.slug === slug);
-  }
-  if (!card) return false;
+  const card = await locateCardForEditor(slug, {
+    getContext: () => contextFilter?.value ?? "",
+    setSegment: (nextSegment) => {
+      segment = nextSegment;
+      syncSegmentChrome();
+    },
+    clearSearchAndCategory: () => {
+      if (searchInput) searchInput.value = "";
+      if (categoryFilter) categoryFilter.value = "all";
+    },
+    clearContext: () => {
+      if (contextFilter) contextFilter.value = "";
+    },
+    loadCards: async () => {
+      await loadStudioData();
+      return cardsList;
+    },
+  });
+  if (requestGen !== openEditorGeneration || !card) return false;
   selectCard(card);
   return true;
 }

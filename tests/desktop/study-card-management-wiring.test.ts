@@ -62,8 +62,12 @@ describe("study-view card-management wiring", () => {
     );
     expect(start).toBeGreaterThan(-1);
     const body = main.slice(start, start + 900);
-    expect(body).toContain("hideStudyBusy()");
-    expect(body).toContain("learningClock.reset()");
+    expect(body).toContain("teardownActiveStudyUi()");
+    const teardownStart = main.indexOf("function teardownActiveStudyUi()");
+    expect(teardownStart).toBeGreaterThan(-1);
+    const teardownBody = main.slice(teardownStart, teardownStart + 900);
+    expect(teardownBody).toContain("hideStudyBusy()");
+    expect(teardownBody).toContain("learningClock.reset()");
   });
 
   it("uses one review-action gate across rating and card management", () => {

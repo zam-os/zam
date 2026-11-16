@@ -3601,6 +3601,26 @@ textarea::placeholder {
   gap: var(--space-2);
 }
 
+.study-resume-banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: 10px 14px;
+  margin-bottom: var(--space-4);
+  background: var(--color-accent-soft);
+  border: 1px solid var(--color-accent);
+  border-radius: var(--radius-control);
+}
+
+.study-resume-status {
+  margin: 0;
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  color: var(--color-accent-ink);
+}
+
 .import-menu-wrap {
   position: relative;
 }
