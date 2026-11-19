@@ -1,0 +1,80 @@
+{
+	"status": "approved",
+	"approved": "2026-11-18",
+	"source": "Thomas approved all three mappings in the Codex chat for Academy PR #152 on 2026-11-18: „Ja, ich gebe alle drei Kartenübernahmen inklusive Lernhistorie frei. Bitte trage die Freigabe ein und aktualisiere PR #152.“",
+	"source_repository": "https://github.com/zam-os/zam",
+	"source_commit": "1c91042159e2488449bd5afc66891842e871ba0f",
+	"sources": [
+		{
+			"file": "tests/fixtures/de-by-realschule-7-geographie-europa-raum-wirtschaft-kvt.json",
+			"tile_id": "de-by:realschule-7-geographie-europa-raum-wirtschaft",
+			"sha256": "78bfb4aa27ea7aa8770a38e2c3bc1347c8929750ec7e1cb3c60c0623510edd53"
+		}
+	],
+	"rows": [
+		{
+			"de_by_cell": "de-by:realschule-7-geographie-europa-raum-wirtschaft",
+			"de_by_id": "01K4G7E0000000000000000J01",
+			"category": "A",
+			"academy_slug": "geo6-europa-natur-check",
+			"action": "replace",
+			"reason": "Same retrieval: name the Ural as the conventional eastern boundary marker. The new wording avoids claiming a unique natural dividing line."
+		},
+		{
+			"de_by_cell": "de-by:realschule-7-geographie-europa-raum-wirtschaft",
+			"de_by_id": "01K4G7E0000000000000000J02",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"reason": "The old multipart terrain and glaciation retrieval goes beyond the selected landmarks and conventional boundaries taught here."
+		},
+		{
+			"de_by_cell": "de-by:realschule-7-geographie-europa-raum-wirtschaft",
+			"de_by_id": "01K4G7E0000000000000000J03",
+			"category": "A",
+			"academy_slug": "geo6-klimaraeume-check",
+			"action": "replace",
+			"reason": "Same retrieval: identify the North Atlantic Current. The new prompt describes its contribution without suggesting it alone causes mild winters."
+		},
+		{
+			"de_by_cell": "de-by:realschule-7-geographie-europa-raum-wirtschaft",
+			"de_by_id": "01K4G7E0000000000000000J04",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"reason": "The old item bundles regional climate comparison with diagram conventions and hard thresholds; the new package teaches these separately and uses representative values."
+		},
+		{
+			"de_by_cell": "de-by:realschule-7-geographie-europa-raum-wirtschaft",
+			"de_by_id": "01K4G7E0000000000000000J05",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"reason": "The old fixed average lapse-rate retrieval has no counterpart; the lessons describe elevation effects qualitatively."
+		},
+		{
+			"de_by_cell": "de-by:realschule-7-geographie-europa-raum-wirtschaft",
+			"de_by_id": "01K4G7E0000000000000000J06",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"reason": "Alpine vegetation belts and hazard prevention are bundled in the old item. The new tourism and weather lessons change the scope."
+		},
+		{
+			"de_by_cell": "de-by:realschule-7-geographie-europa-raum-wirtschaft",
+			"de_by_id": "01K4G7E0000000000000000J07",
+			"category": "A",
+			"academy_slug": "geo6-europa-alltag-check",
+			"action": "replace",
+			"reason": "Same retrieval: name the Schengen Agreement for removal of routine internal border checks."
+		},
+		{
+			"de_by_cell": "de-by:realschule-7-geographie-europa-raum-wirtschaft",
+			"de_by_id": "01K4G7E0000000000000000J08",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"reason": "History, four freedoms and a monetary-policy comparison make one old retrieval. The Grade 6 lesson focuses on everyday effects of the euro and travel."
+		}
+	]
+}

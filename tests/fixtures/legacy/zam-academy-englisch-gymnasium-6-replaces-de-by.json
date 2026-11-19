@@ -1,0 +1,91 @@
+{
+	"schema": 1,
+	"status": "approved",
+	"approved": "2026-11-18",
+	"source_repository": "https://github.com/zam-os/zam",
+	"source_commit": "e517a1ef709e0e6ee5f968c342affeb5b14cef35",
+	"source": "Thomas am 2026-11-18 in dieser Antigravity-Sitzung auf die Frage zur Freigabe der Zuordnung für de-by:gymnasium-6-englisch-past-tenses-present-perfect-adjectives (3 A: J03 -> e6-past-progressive-check, J05 -> e6-present-perfect-check, J07 -> e6-adjectives-check; 5 C keep-active: J01, J02, J04, J06, J08): „Mapping-Freigabe erteilt“.",
+	"neighbouring_grade_review": "de-by:gymnasium-7-englisch-grammar-present-perfect-modals-conditionals enthält in J03 (had to als Past-Ersatz für must) und im ersten Teil von J04 (be able to, have to, be allowed to sowie Conditional Type 1) Inhalte, die im LehrplanPLUS bereits in Englisch 6 (1. Fremdsprache) liegen, während J01/J02 (since/for-Fokus) und J04 (Conditional Type 2) in Jahrgang 7 verbleiben. Die Zelle bleibt bis zu einer Entscheidung von Thomas bei Jahrgang 7 (Frage in Doku und PR vermerkt). de-by:realschule-6-englisch-grammatik-grundlagen gehört zur Realschule und bleibt unberührt.",
+	"sources": [
+		{
+			"file": "tests/fixtures/de-by-gymnasium-6-englisch-past-tenses-present-perfect-adjectives-kvt.json",
+			"sha256": "bc6e93f93d8c66e9b1e4c82357ee6fe448c5597cdd50b3800801505fd3c7429d",
+			"tile_id": "de-by:gymnasium-6-englisch-past-tenses-present-perfect-adjectives",
+			"version": "2026.08.1"
+		}
+	],
+	"rows": [
+		{
+			"de_by_cell": "de-by:gymnasium-6-englisch-past-tenses-present-perfect-adjectives",
+			"de_by_id": "01K4YE6P000000000000000J01",
+			"de_by_question": "Wie wird im Englischen ein verneinter Satz im Simple Past gebildet (z. B. 'We ... [not / go] to the cinema yesterday')?",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"reason": "Die Verneinung des simple past mit didn't + Infinitiv gehört im aktuellen LehrplanPLUS Bayern bereits zu Jahrgang 5 (englisch-gymnasium-5: e5-past-recall). In Jahrgang 6 wird das simple past nur noch im Kontrast zum past progressive und present perfect wiederaufgegriffen; die alte Karte bleibt aktiv."
+		},
+		{
+			"de_by_cell": "de-by:gymnasium-6-englisch-past-tenses-present-perfect-adjectives",
+			"de_by_id": "01K4YE6P000000000000000J02",
+			"de_by_question": "Erkläre Verwendung, Signalwörter und Formen des Simple Past: 1. Verwendung (in der Vergangenheit abgeschlossene Handlungen zu einem festen Zeitpunkt), 2. Signalwörter (yesterday, last week/year, two days ago, in 2020, when I was young), 3. Regelmäßige Verben (+ed: play -> played, stummes e: live -> lived, Konsonantenverdopplung: stop -> stopped, y nach Konsonant: carry -> carried), 4. Wichtige unregelmäßige Verben (2. Form: go -> went, see -> saw, buy -> bought, have -> had, be -> was/were), 5. Verneinung (didn't + Infinitiv) und Fragen (Did + Subjekt + Infinitiv) und übersetze: a) 'Letzten Sonntag sahen wir einen tollen Film.' b) 'Hast du deine Hausaufgaben gestern gemacht?' – 'Ja, habe ich.'",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"reason": "Mehrteiliger Gesamtabruf zum simple past (LehrplanPLUS-Thema von Jahrgang 5) mit fünf Teilfragen und zwei Übersetzungen. Kein einzelner Nachfolger bildet den ganzen Abruf ab."
+		},
+		{
+			"de_by_cell": "de-by:gymnasium-6-englisch-past-tenses-present-perfect-adjectives",
+			"de_by_id": "01K4YE6P000000000000000J03",
+			"de_by_question": "Welche Zeitform steht für eine neu eintretende, plötzliche Handlung, die eine bereits länger andauernde Hintergrundhandlung (im Past Continuous) unterbricht?",
+			"category": "A",
+			"academy_slug": "e6-past-progressive-check",
+			"action": "replace",
+			"reason": "Derselbe atomare Abruf: Das simple past beschreibt die neu eintretende, plötzliche Unterbrechung einer laufenden Handlung im past progressive (gegen present perfect)."
+		},
+		{
+			"de_by_cell": "de-by:gymnasium-6-englisch-past-tenses-present-perfect-adjectives",
+			"de_by_id": "01K4YE6P000000000000000J04",
+			"de_by_question": "Erkläre Bildung und Verwendung des Past Continuous: 1. Bildungsformel (was/were + verb-ing), 2. Verwendung für Handlungen, die zu einem bestimmten Zeitpunkt in der Vergangenheit gerade im Ablauf begriffen waren ('At 8 pm yesterday, I was sleeping'), 3. Kombination von Past Continuous und Simple Past im Satzgefüge mit den Signalwörtern while (leitet meist die andauernde Hintergrundhandlung im Past Continuous ein) und when (leitet das plötzlich eintretende Unterbrechungsereignis im Simple Past ein) und setze die richtigen Zeitformen ein: a) 'While we (have) dinner, the lights suddenly (go) out.' b) 'What you (do) when the storm started?'",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"reason": "Mehrteiliger Abruf zu Bildung, Funktion, while/when und zwei Einsetzsätzen; kein einzelner Nachfolger deckt alle Teile zugleich ab."
+		},
+		{
+			"de_by_cell": "de-by:gymnasium-6-englisch-past-tenses-present-perfect-adjectives",
+			"de_by_id": "01K4YE6P000000000000000J05",
+			"de_by_question": "Welches Signalwort steht am Ende von verneinten Sätzen oder Fragen im Present Perfect mit der Bedeutung 'noch nicht' bzw. 'schon' (z. B. 'I haven't done it ...')?",
+			"category": "A",
+			"academy_slug": "e6-present-perfect-check",
+			"action": "replace",
+			"reason": "Derselbe atomare Abruf: yet am Satzende verneinter Sätze und Fragen im present perfect gegen already."
+		},
+		{
+			"de_by_cell": "de-by:gymnasium-6-englisch-past-tenses-present-perfect-adjectives",
+			"de_by_id": "01K4YE6P000000000000000J06",
+			"de_by_question": "Erkläre Bildung, Verwendung und Signalwörter des Present Perfect: 1. Bildungsformel (have / has + Past Participle / 3. Form: regular -ed / irregular: see -> seen, go -> gone, write -> written), 2. Wann Present Perfect verwendet wird (vergangene Handlung mit direktem Resultat/Auswirkung auf die Gegenwart oder bisherige Lebenserfahrung), 3. Typische Signalwörter (just, already, not yet, ever, never, so far), 4. Der fundamentale Unterschied zu Simple Past (konkreter abgeschlossener Zeitpunkt wie yesterday, in 2020 verlangt zwingend Simple Past!) und übersetze: a) 'Ich habe gerade meine Schlüssel verloren (und kann jetzt nicht ins Haus).' b) 'Warst du jemals in London?' – 'Ja, ich war letztes Jahr dort.'",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"reason": "Mehrteiliger Sammel-Abruf zu Bildung, Gebrauch, Signalwörtern, Zeitenkontrast und zwei Übersetzungen, die sich im Paket auf e6-present-perfect und e6-past-or-perfect verteilen."
+		},
+		{
+			"de_by_cell": "de-by:gymnasium-6-englisch-past-tenses-present-perfect-adjectives",
+			"de_by_id": "01K4YE6P000000000000000J07",
+			"de_by_question": "Wie lauten die unregelmäßigen Steigerungsformen (Komparativ und Superlativ) des englischen Adjektivs 'good' (gut)?",
+			"category": "A",
+			"academy_slug": "e6-adjectives-check",
+			"action": "replace",
+			"reason": "Derselbe atomare Abruf: unregelmäßige Steigerung good – better – (the) best gegen good – gooder – (the) goodest."
+		},
+		{
+			"de_by_cell": "de-by:gymnasium-6-englisch-past-tenses-present-perfect-adjectives",
+			"de_by_id": "01K4YE6P000000000000000J08",
+			"de_by_question": "Erkläre die Regeln für die Steigerung englischer Adjektive und den Gebrauch von Mengenwörtern: 1. Einsilbige Adjektive und zweisilbige auf -y (-er / -est: fast -> faster -> fastest; easy -> easier -> easiest), 2. Mehrsilbige Adjektive (more / most: exciting -> more exciting -> the most exciting), 3. Wichtige unregelmäßige Formen (good - better - best; bad - worse - worst; much/many - more - most), 4. Vergleichsstrukturen (as ... as bei Gleichheit; ... than beim Komparativ: 'Tom is taller than Ben'), 5. Mengenangaben: much (unzählbare Nomen: much water, much time) vs. many (zählbare Pluralnomen: many books, many friends) sowie some (Aussagesätze) vs. any (Verneinung und Fragen) und übersetze: a) 'Dieses Buch ist interessanter als jener Film.' b) 'Hast du irgendwelche Fragen?' – 'Nein, ich habe keine Fragen.'",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"reason": "Mehrteiliger Abruf, der Jahrgang-6-Adjektivsteigerung mit Jahrgang-5-Mengenwörtern (much/many/some/any in englisch-gymnasium-5) und zwei Übersetzungen kombiniert."
+		}
+	]
+}

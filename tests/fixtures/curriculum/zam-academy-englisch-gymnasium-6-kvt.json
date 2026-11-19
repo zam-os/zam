@@ -1,0 +1,3595 @@
+{
+	"$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+	"tile_id": "zam-academy:englisch-gymnasium-6",
+	"version": "2026.11.1",
+	"title": "Englisch 6 Gymnasium (ZAM Academy)",
+	"description": "English at Bavarian Gymnasium grade 6 (first foreign language): 40 lessons on future tenses, past progressive, present perfect, adjective comparison, relative clauses, conditional I, Cornwall, Lake District, Roman Britain and US regions, with 120 recall cards. Listening, live talk and current research need extra practice.",
+	"publisher": "ZAM Academy",
+	"sources": [
+		{
+			"uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/6/englisch/1-fremdsprache",
+			"label": "ISB · Englisch 6 (1. Fremdsprache), Gymnasium",
+			"checked": "2026-11-18"
+		},
+		{
+			"uri": "https://en.wikipedia.org/wiki/Cornwall",
+			"label": "Cornwall - Wikipedia",
+			"checked": "2026-11-18"
+		},
+		{
+			"uri": "https://en.wikipedia.org/wiki/Lake_District",
+			"label": "Lake District - Wikipedia",
+			"checked": "2026-11-18"
+		},
+		{
+			"uri": "https://en.wikipedia.org/wiki/Hadrian%27s_Wall",
+			"label": "Hadrian's Wall - Wikipedia",
+			"checked": "2026-11-18"
+		},
+		{
+			"uri": "https://en.wikipedia.org/wiki/Bath,_Somerset",
+			"label": "Bath, Somerset - Wikipedia",
+			"checked": "2026-11-18"
+		},
+		{
+			"uri": "https://en.wikipedia.org/wiki/Roman_Britain",
+			"label": "Roman Britain - Wikipedia",
+			"checked": "2026-11-18"
+		},
+		{
+			"uri": "https://en.wikipedia.org/wiki/Roman_roads_in_Britannia",
+			"label": "Roman roads in Britannia - Wikipedia",
+			"checked": "2026-11-18"
+		},
+		{
+			"uri": "https://en.wikipedia.org/wiki/Toponymy_of_England",
+			"label": "Toponymy of England - Wikipedia",
+			"checked": "2026-11-18"
+		},
+		{
+			"uri": "https://en.wikipedia.org/wiki/Notting_Hill_Carnival",
+			"label": "Notting Hill Carnival - Wikipedia",
+			"checked": "2026-11-18"
+		},
+		{
+			"uri": "https://en.wikipedia.org/wiki/Shrove_Tuesday",
+			"label": "Shrove Tuesday - Wikipedia",
+			"checked": "2026-11-18"
+		},
+		{
+			"uri": "https://en.wikipedia.org/wiki/Florida",
+			"label": "Florida - Wikipedia",
+			"checked": "2026-11-18"
+		},
+		{
+			"uri": "https://en.wikipedia.org/wiki/Rocky_Mountains",
+			"label": "Rocky Mountains - Wikipedia",
+			"checked": "2026-11-18"
+		},
+		{
+			"uri": "https://en.wikipedia.org/wiki/New_England",
+			"label": "New England - Wikipedia",
+			"checked": "2026-11-18"
+		},
+		{
+			"uri": "https://en.wikipedia.org/wiki/Midwestern_United_States",
+			"label": "Midwestern United States - Wikipedia",
+			"checked": "2026-11-18"
+		},
+		{
+			"uri": "https://en.wikipedia.org/wiki/List_of_regions_of_the_United_States",
+			"label": "List of regions of the United States - Wikipedia",
+			"checked": "2026-11-18"
+		},
+		{
+			"uri": "https://en.wikipedia.org/wiki/I_Wandered_Lonely_as_a_Cloud",
+			"label": "I Wandered Lonely as a Cloud - Wikipedia",
+			"checked": "2026-11-18"
+		}
+	],
+	"atoms": [
+		{
+			"id": "01M7PN26Y1WZ9SX5J203ZDKMD3",
+			"atom_uri": "urn:zam:atom:01M7PN26Y1WZ9SX5J203ZDKMD3",
+			"namespace": "zam-academy-englisch-gymnasium-6",
+			"slug": "e6-station",
+			"title": "At the station",
+			"domain": "englisch/unterwegs",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-station",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-6",
+					"topic_code": "unterwegs",
+					"topic_title": "On the move"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb2",
+					"topic_title": "Interkulturelle Kompetenzen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb3",
+					"topic_title": "Text- und Medienkompetenzen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7PN26Y436TB5YNDS123XAQP",
+					"slug": "e6-station-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche Zeitform drückt im Englischen feste Abfahrtszeiten im Fahrplan aus?",
+					"concept": "Das simple present als timetable-future",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-station",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Das simple present als timetable-future",
+							"Das going-to-future"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7PN26Y5DV1E91PB0VAFST6E",
+					"slug": "e6-station-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie drückst du einen bereits gefassten persönlichen Reiseplan aus?",
+					"concept": "am/is/are going to + Grundform (z. B. We are going to visit Bath.)",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-station",
+					"sample_solution": "am/is/are going to + Grundform (z. B. We are going to visit Bath.)"
+				},
+				{
+					"id": "01M7PN26Y62R0RY4RW6XS5WB1K",
+					"slug": "e6-station-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie bittest du am Schalter höflich um eine Hin- und Rückfahrkarte nach York?",
+					"concept": "Could I have a return ticket to York, please?",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-station",
+					"sample_solution": "Could I have a return ticket to York, please?"
+				}
+			]
+		},
+		{
+			"id": "01M7PN26YBWNCWCY15J2Y5EZAJ",
+			"atom_uri": "urn:zam:atom:01M7PN26YBWNCWCY15J2Y5EZAJ",
+			"namespace": "zam-academy-englisch-gymnasium-6",
+			"slug": "e6-weather",
+			"title": "Weather and plans",
+			"domain": "englisch/unterwegs",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-weather",
+			"prerequisites": [
+				{
+					"atom_id": "01M7PN26Y1WZ9SX5J203ZDKMD3",
+					"type": "soft",
+					"rationale": "will-future ergänzt going-to- und timetable-future."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-6",
+					"topic_code": "unterwegs",
+					"topic_title": "On the move"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7PN26YETX3F2N3G7FDFZSSN",
+					"slug": "e6-weather-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie lautet die verneinte Kurzform von 'will not' im will-future?",
+					"concept": "won't",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-weather",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"won't",
+							"willn't"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7PN26YF76660GJ5RJP10C4S",
+					"slug": "e6-weather-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wofür verwendest du im Englischen das will-future?",
+					"concept": "Für Vorhersagen (z. B. Wetter), Vermutungen und spontane Entschlüsse im Moment des Sprechens",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-weather",
+					"sample_solution": "Für Vorhersagen (z. B. Wetter), Vermutungen und spontane Entschlüsse im Moment des Sprechens"
+				},
+				{
+					"id": "01M7PN26YGKJSYQEY8G4CPVTYW",
+					"slug": "e6-weather-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Übersetze ins Englische: 'Morgen wird es sonnig sein.'",
+					"concept": "Tomorrow it will be sunny.",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-weather",
+					"sample_solution": "Tomorrow it will be sunny."
+				}
+			]
+		},
+		{
+			"id": "01M7PN26YNF80GQ2ZAYVCEJAZ3",
+			"atom_uri": "urn:zam:atom:01M7PN26YNF80GQ2ZAYVCEJAZ3",
+			"namespace": "zam-academy-englisch-gymnasium-6",
+			"slug": "e6-directions",
+			"title": "Finding the way",
+			"domain": "englisch/unterwegs",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-directions",
+			"prerequisites": [
+				{
+					"atom_id": "01M7PN26Y1WZ9SX5J203ZDKMD3",
+					"type": "soft",
+					"rationale": "Wege knüpfen an Ankunft und Orte an."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-6",
+					"topic_code": "unterwegs",
+					"topic_title": "On the move"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb2",
+					"topic_title": "Interkulturelle Kompetenzen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7PN26YRFF8ZQNQFYZ20AT8G",
+					"slug": "e6-directions-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie beginnst du auf der Straße eine höfliche Frage nach dem Weg?",
+					"concept": "Excuse me, could you tell me the way to …?",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-directions",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Excuse me, could you tell me the way to …?",
+							"Tell me the street right now!"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7PN26YS22AJJ6C10WTP5RD6",
+					"slug": "e6-directions-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was bedeutet 'Go straight on and turn left at the traffic lights'?",
+					"concept": "Geh geradeaus weiter und biege an der Ampel links ab.",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-directions",
+					"sample_solution": "Geh geradeaus weiter und biege an der Ampel links ab."
+				},
+				{
+					"id": "01M7PN26YT1GHTXE0SWES8TCP4",
+					"slug": "e6-directions-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie bittest du auf Englisch höflich darum, eine Wegbeschreibung zu wiederholen?",
+					"concept": "Sorry, could you say that again, please?",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-directions",
+					"sample_solution": "Sorry, could you say that again, please?"
+				}
+			]
+		},
+		{
+			"id": "01M7PN26YZ2Q5JT3CRVB312073",
+			"atom_uri": "urn:zam:atom:01M7PN26YZ2Q5JT3CRVB312073",
+			"namespace": "zam-academy-englisch-gymnasium-6",
+			"slug": "e6-doctor",
+			"title": "At the doctor's",
+			"domain": "englisch/unterwegs",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-doctor",
+			"prerequisites": [
+				{
+					"atom_id": "01M7PN26YNF80GQ2ZAYVCEJAZ3",
+					"type": "soft",
+					"rationale": "Apotheke und Ratschläge bauen auf Alltagssituationen auf."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-6",
+					"topic_code": "unterwegs",
+					"topic_title": "On the move"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7PN26Z2980810B1CWXTPM6A",
+					"slug": "e6-doctor-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie fragt eine Ärztin zu Beginn nach deinen Beschwerden?",
+					"concept": "What's the matter?",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-doctor",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"What's the matter?",
+							"How many pains are you?"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7PN26Z31MNNT34FF6KV93VF",
+					"slug": "e6-doctor-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie lautet die englische Verbindung für 'Halsschmerzen'?",
+					"concept": "a sore throat",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-doctor",
+					"sample_solution": "a sore throat"
+				},
+				{
+					"id": "01M7PN26Z4SB0HGWJMF2GKG39J",
+					"slug": "e6-doctor-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Gib auf Englisch den Ratschlag: 'Du solltest warmen Tee trinken.'",
+					"concept": "You should drink warm tea.",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-doctor",
+					"sample_solution": "You should drink warm tea."
+				}
+			]
+		},
+		{
+			"id": "01M7PN26Z997MPMEF05FEMVARJ",
+			"atom_uri": "urn:zam:atom:01M7PN26Z997MPMEF05FEMVARJ",
+			"namespace": "zam-academy-englisch-gymnasium-6",
+			"slug": "e6-listening",
+			"title": "A voice message",
+			"domain": "englisch/unterwegs",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-listening",
+			"prerequisites": [
+				{
+					"atom_id": "01M7PN26Y1WZ9SX5J203ZDKMD3",
+					"type": "soft",
+					"rationale": "Die Sprachnachricht greift Zugzeiten und Gleise auf."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-6",
+					"topic_code": "unterwegs",
+					"topic_title": "On the move"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb3",
+					"topic_title": "Text- und Medienkompetenzen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb4",
+					"topic_title": "Methodische Kompetenzen",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7PN26ZCDR4EZ4BM8ZCT7VZQ",
+					"slug": "e6-listening-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Worauf achtest du beim ersten Hören einer Sprachnachricht (global listening)?",
+					"concept": "Auf Thema, Personen und erkennbare Gefühlslage",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-listening",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Auf Thema, Personen und erkennbare Gefühlslage",
+							"Auf jedes einzelne unbekannte Wort im Transkript"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7PN26ZDAGC3RXVTE2MV4YW7",
+					"slug": "e6-listening-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was suchst du beim zweiten Hören gezielt (detail listening)?",
+					"concept": "Konkrete Einzelangaben wie Uhrzeiten, Orte, Preise oder Gründe",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-listening",
+					"sample_solution": "Konkrete Einzelangaben wie Uhrzeiten, Orte, Preise oder Gründe"
+				},
+				{
+					"id": "01M7PN26ZE087WFSFXC90TAYVC",
+					"slug": "e6-listening-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was bedeutet 'What a relief!' über die Stimmung einer Sprecherin?",
+					"concept": "Die Sprecherin ist erleichtert.",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-listening",
+					"sample_solution": "Die Sprecherin ist erleichtert."
+				}
+			]
+		},
+		{
+			"id": "01M7PN26ZKB01KTE252M28YPZT",
+			"atom_uri": "urn:zam:atom:01M7PN26ZKB01KTE252M28YPZT",
+			"namespace": "zam-academy-englisch-gymnasium-6",
+			"slug": "e6-past-progressive",
+			"title": "While it was raining",
+			"domain": "englisch/vergangenheit",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-past-progressive",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-6",
+					"topic_code": "vergangenheit",
+					"topic_title": "Stories in the past"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7PN26ZP0B760DKKJX6NC0H7",
+					"slug": "e6-past-progressive-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche Zeitform steht für eine neu eintretende, plötzliche Handlung, die eine längere Hintergrundhandlung im past progressive unterbricht?",
+					"concept": "Das simple past",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-past-progressive",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Das simple past",
+							"Das present perfect"
+						],
+						"correct_index": 0
+					},
+					"replaces": [
+						"01K4YE6P000000000000000J03"
+					]
+				},
+				{
+					"id": "01M7PN26ZQTZ5ZXJ6JMC6M9PE4",
+					"slug": "e6-past-progressive-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie wird das past tense progressive gebildet?",
+					"concept": "was oder were + Verb mit der Endung -ing",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-past-progressive",
+					"sample_solution": "was oder were + Verb mit der Endung -ing"
+				},
+				{
+					"id": "01M7PN26ZR4SZBHE8H4PPWWFHN",
+					"slug": "e6-past-progressive-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Setze die richtigen Zeiten ein: 'While I (walk) home, it (start) to rain.'",
+					"concept": "While I was walking home, it started to rain.",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-past-progressive",
+					"sample_solution": "While I was walking home, it started to rain."
+				}
+			]
+		},
+		{
+			"id": "01M7PN26ZXEFHWHE2ZSA47RV13",
+			"atom_uri": "urn:zam:atom:01M7PN26ZXEFHWHE2ZSA47RV13",
+			"namespace": "zam-academy-englisch-gymnasium-6",
+			"slug": "e6-present-perfect",
+			"title": "Look what has happened",
+			"domain": "englisch/vergangenheit",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-present-perfect",
+			"prerequisites": [
+				{
+					"atom_id": "01M7PN26ZKB01KTE252M28YPZT",
+					"type": "soft",
+					"rationale": "Nach der Verlaufsform der Vergangenheit folgt das Gegenwartsresultat."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-6",
+					"topic_code": "vergangenheit",
+					"topic_title": "Stories in the past"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7PN2700QQ531ZRQRDTSE2R7",
+					"slug": "e6-present-perfect-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welches Signalwort steht am Ende von verneinten Sätzen oder Fragen im present perfect für 'noch nicht' bzw. 'schon'?",
+					"concept": "yet",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-present-perfect",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"yet",
+							"already"
+						],
+						"correct_index": 0
+					},
+					"replaces": [
+						"01K4YE6P000000000000000J05"
+					]
+				},
+				{
+					"id": "01M7PN2701FGJZ2TMV9X0TJBAA",
+					"slug": "e6-present-perfect-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie bildest du das present perfect simple und was zeigt der resultative Gebrauch?",
+					"concept": "have oder has + 3. Verbform (past participle); eine vergangene Handlung wirkt als sichtbares Ergebnis im Jetzt",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-present-perfect",
+					"sample_solution": "have oder has + 3. Verbform (past participle); eine vergangene Handlung wirkt als sichtbares Ergebnis im Jetzt"
+				},
+				{
+					"id": "01M7PN270287G19SKCJNFJHXHV",
+					"slug": "e6-present-perfect-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Übersetze ins Englische: 'Ich habe mein Ticket noch nicht gedruckt.'",
+					"concept": "I haven't printed my ticket yet.",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-present-perfect",
+					"sample_solution": "I haven't printed my ticket yet."
+				}
+			]
+		},
+		{
+			"id": "01M7PN27075GNNVSDG7M4Y3KD5",
+			"atom_uri": "urn:zam:atom:01M7PN27075GNNVSDG7M4Y3KD5",
+			"namespace": "zam-academy-englisch-gymnasium-6",
+			"slug": "e6-past-or-perfect",
+			"title": "Yesterday or today?",
+			"domain": "englisch/vergangenheit",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-past-or-perfect",
+			"prerequisites": [
+				{
+					"atom_id": "01M7PN26ZXEFHWHE2ZSA47RV13",
+					"type": "hard",
+					"rationale": "Die Abgrenzung zum simple past setzt die Bildung des present perfect voraus."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-6",
+					"topic_code": "vergangenheit",
+					"topic_title": "Stories in the past"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7PN270ASGVD1SW76G9KMYTF",
+					"slug": "e6-past-or-perfect-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche Zeitform verlangt ein fester, abgeschlossener Zeitpunkt wie 'two days ago' oder 'last year'?",
+					"concept": "Das simple past",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-past-or-perfect",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Das simple past",
+							"Das present perfect simple"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7PN270BQ3DAHJ8JGE4HYA70",
+					"slug": "e6-past-or-perfect-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wann steht im Englischen 'ever' bzw. 'never' mit dem present perfect?",
+					"concept": "Bei Fragen und Aussagen über Lebenserfahrungen bis heute ohne festen Zeitpunkt in der Vergangenheit",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-past-or-perfect",
+					"sample_solution": "Bei Fragen und Aussagen über Lebenserfahrungen bis heute ohne festen Zeitpunkt in der Vergangenheit"
+				},
+				{
+					"id": "01M7PN270CVP3PTNRP5RJSK2P0",
+					"slug": "e6-past-or-perfect-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Setze die passende Zeit ein: 'Have you ever been to Bath? — Yes, I (visit) it in 2024.'",
+					"concept": "visited",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-past-or-perfect",
+					"sample_solution": "visited"
+				}
+			]
+		},
+		{
+			"id": "01M7PN270HPEC2S47HVHPW80V4",
+			"atom_uri": "urn:zam:atom:01M7PN270HPEC2S47HVHPW80V4",
+			"namespace": "zam-academy-englisch-gymnasium-6",
+			"slug": "e6-story-writing",
+			"title": "Tell what happened",
+			"domain": "englisch/vergangenheit",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-story-writing",
+			"prerequisites": [
+				{
+					"atom_id": "01M7PN26ZKB01KTE252M28YPZT",
+					"type": "hard",
+					"rationale": "Erlebnistexte kombinieren Hintergrund im past progressive und simple past."
+				},
+				{
+					"atom_id": "01M7PN27075GNNVSDG7M4Y3KD5",
+					"type": "soft",
+					"rationale": "Die Zeitwahl folgt dem Erzählzusammenhang."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-6",
+					"topic_code": "vergangenheit",
+					"topic_title": "Stories in the past"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb3",
+					"topic_title": "Text- und Medienkompetenzen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7PN270M532DKB0JSN9QNDWX",
+					"slug": "e6-story-writing-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche drei Teile gliedern eine klare Erlebniserzählung oder E-Mail über einen Ausflug?",
+					"concept": "Einleitung (Wer, wann, wo), Hauptteil (Ablauf/Wendepunkt) und Schluss (Ausgang/Gefühl)",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-story-writing",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Einleitung (Wer, wann, wo), Hauptteil (Ablauf/Wendepunkt) und Schluss (Ausgang/Gefühl)",
+							"Nur eine unverbundene Liste von Ortsnamen"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7PN270NDF2Q20AACN880544",
+					"slug": "e6-story-writing-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche Verknüpfungswörter verbinden Handlungen in einer Geschichte besser als nur 'and'?",
+					"concept": "first, while, suddenly, although, after that, finally",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-story-writing",
+					"sample_solution": "first, while, suddenly, although, after that, finally"
+				},
+				{
+					"id": "01M7PN270PJXXPKT42APG9CAPQ",
+					"slug": "e6-story-writing-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Nenne einen freundlichen Schlusssatz für eine persönliche E-Mail an einen Freund.",
+					"concept": "Write back soon! / Best wishes,",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-story-writing",
+					"sample_solution": "Write back soon! / Best wishes,"
+				}
+			]
+		},
+		{
+			"id": "01M7PN270VA49BEB9TDT5EYWYB",
+			"atom_uri": "urn:zam:atom:01M7PN270VA49BEB9TDT5EYWYB",
+			"namespace": "zam-academy-englisch-gymnasium-6",
+			"slug": "e6-sport-music",
+			"title": "Sport, music and hobbies",
+			"domain": "englisch/vergangenheit",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-sport-music",
+			"prerequisites": [
+				{
+					"atom_id": "01M7PN27075GNNVSDG7M4Y3KD5",
+					"type": "soft",
+					"rationale": "Berichte über Veranstaltungen nutzen die Vergangenheitszeiten."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-6",
+					"topic_code": "vergangenheit",
+					"topic_title": "Stories in the past"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7PN270YH3FVA53Q0C9TRSQQ",
+					"slug": "e6-sport-music-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welches Verb gehört im Englischen zu Sportarten wie 'gymnastics' oder 'judo'?",
+					"concept": "do (do gymnastics)",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-sport-music",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"do (do gymnastics)",
+							"go (go gymnastics)"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7PN270Z1G5FDNF9WNCY8C56",
+					"slug": "e6-sport-music-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wann verwendest du bei Hobbys 'play', 'go' und 'do'?",
+					"concept": "play bei Ballspielen und Instrumenten (play the guitar), go + -ing (go swimming), do bei Einzelsport ohne -ing (do gymnastics)",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-sport-music",
+					"sample_solution": "play bei Ballspielen und Instrumenten (play the guitar), go + -ing (go swimming), do bei Einzelsport ohne -ing (do gymnastics)"
+				},
+				{
+					"id": "01M7PN2710ADM2QWBX7B4R4ZQ8",
+					"slug": "e6-sport-music-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welcher typische Bedeutungsunterschied unterscheidet 'to become' von deutsch 'bekommen'?",
+					"concept": "to become bedeutet 'werden'; 'bekommen' heißt to get.",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-sport-music",
+					"sample_solution": "to become bedeutet 'werden'; 'bekommen' heißt to get."
+				}
+			]
+		},
+		{
+			"id": "01M7PN27151P5ZKRH847QVJ670",
+			"atom_uri": "urn:zam:atom:01M7PN27151P5ZKRH847QVJ670",
+			"namespace": "zam-academy-englisch-gymnasium-6",
+			"slug": "e6-adjectives",
+			"title": "Bigger and the best",
+			"domain": "englisch/genauer",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-adjectives",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-6",
+					"topic_code": "genauer",
+					"topic_title": "Saying it more clearly"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7PN2718593EDJ1F98R808DA",
+					"slug": "e6-adjectives-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie lauten die unregelmäßigen Steigerungsformen (Komparativ und Superlativ) des englischen Adjektivs 'good'?",
+					"concept": "good – better – (the) best",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-adjectives",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"good – better – (the) best",
+							"good – gooder – (the) goodest"
+						],
+						"correct_index": 0
+					},
+					"replaces": [
+						"01K4YE6P000000000000000J07"
+					]
+				},
+				{
+					"id": "01M7PN27195F1JVP6STWDP8F3T",
+					"slug": "e6-adjectives-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie steigerst du mehrsilbige Adjektive wie 'exciting' im Komparativ und Superlativ?",
+					"concept": "more exciting, the most exciting",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-adjectives",
+					"sample_solution": "more exciting, the most exciting"
+				},
+				{
+					"id": "01M7PN271AM0N5MV3Y1M0DQS1V",
+					"slug": "e6-adjectives-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Übersetze ins Englische: 'Der Zug ist schneller als das Fahrrad, und mein Rucksack ist so schwer wie deiner.'",
+					"concept": "The train is faster than the bike, and my backpack is as heavy as yours.",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-adjectives",
+					"sample_solution": "The train is faster than the bike, and my backpack is as heavy as yours."
+				}
+			]
+		},
+		{
+			"id": "01M7PN271FA5FHC2JWP3W72DR1",
+			"atom_uri": "urn:zam:atom:01M7PN271FA5FHC2JWP3W72DR1",
+			"namespace": "zam-academy-englisch-gymnasium-6",
+			"slug": "e6-relatives",
+			"title": "Who, which and that",
+			"domain": "englisch/genauer",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-relatives",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-6",
+					"topic_code": "genauer",
+					"topic_title": "Saying it more clearly"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7PN271J5V9TYYH6MH4XP1BH",
+					"slug": "e6-relatives-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welches Relativpronomen verwendest du in defining relative clauses für Personen?",
+					"concept": "who (oder that)",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-relatives",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"who (oder that)",
+							"what"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7PN271KTQ0ATHENWEYQWQEF",
+					"slug": "e6-relatives-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wann steht im Englischen vor einem Relativsatz kein Komma?",
+					"concept": "Bei notwendigen Relativsätzen (defining relative clauses), weil sie Person oder Sache erst eindeutig bestimmen",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-relatives",
+					"sample_solution": "Bei notwendigen Relativsätzen (defining relative clauses), weil sie Person oder Sache erst eindeutig bestimmen"
+				},
+				{
+					"id": "01M7PN271MQQR56XG6H6BD8C4Y",
+					"slug": "e6-relatives-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Verbinde ohne Komma: 'A pharmacy is a shop. It sells medicine.'",
+					"concept": "A pharmacy is a shop which (oder that) sells medicine.",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-relatives",
+					"sample_solution": "A pharmacy is a shop which (oder that) sells medicine."
+				}
+			]
+		},
+		{
+			"id": "01M7PN271S79TKHPV7RT52YW8E",
+			"atom_uri": "urn:zam:atom:01M7PN271S79TKHPV7RT52YW8E",
+			"namespace": "zam-academy-englisch-gymnasium-6",
+			"slug": "e6-contact-clauses",
+			"title": "Drop the pronoun",
+			"domain": "englisch/genauer",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-contact-clauses",
+			"prerequisites": [
+				{
+					"atom_id": "01M7PN271FA5FHC2JWP3W72DR1",
+					"type": "hard",
+					"rationale": "Contact clauses bauen direkt auf defining relative clauses auf."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-6",
+					"topic_code": "genauer",
+					"topic_title": "Saying it more clearly"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7PN271W9897SPPNKXEFXSZ7",
+					"slug": "e6-contact-clauses-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wann kannst du im notwendigen Relativsatz das Relativpronomen who, which oder that weglassen (contact clause)?",
+					"concept": "Wenn es Objekt im Relativsatz ist (ein eigenes Subjekt folgt direkt)",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-contact-clauses",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Wenn es Objekt im Relativsatz ist (ein eigenes Subjekt folgt direkt)",
+							"Wenn danach sofort ein Verb folgt"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7PN271XXWCA85JWNKNKXVGQ",
+					"slug": "e6-contact-clauses-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Warum darf 'who' in 'The girl who called you is nice' nicht wegfallen?",
+					"concept": "Weil who hier das Subjekt des Relativsatzes ist (das Verb called folgt direkt).",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-contact-clauses",
+					"sample_solution": "Weil who hier das Subjekt des Relativsatzes ist (das Verb called folgt direkt)."
+				},
+				{
+					"id": "01M7PN271Y4B9GW767DS06J3WH",
+					"slug": "e6-contact-clauses-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Forme in einen contact clause um: 'The book which I read yesterday was funny.'",
+					"concept": "The book I read yesterday was funny.",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-contact-clauses",
+					"sample_solution": "The book I read yesterday was funny."
+				}
+			]
+		},
+		{
+			"id": "01M7PN2723MVJ8K5RV8NGDCBK2",
+			"atom_uri": "urn:zam:atom:01M7PN2723MVJ8K5RV8NGDCBK2",
+			"namespace": "zam-academy-englisch-gymnasium-6",
+			"slug": "e6-indefinites",
+			"title": "Every, both and neither",
+			"domain": "englisch/genauer",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-indefinites",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-6",
+					"topic_code": "genauer",
+					"topic_title": "Saying it more clearly"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7PN27267Q03ZB46FMFJ2QW5",
+					"slug": "e6-indefinites-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "In welchem Numerus steht das Verb nach 'every', 'each', 'everyone' und 'neither'?",
+					"concept": "Im Singular (Einzahl)",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-indefinites",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Im Singular (Einzahl)",
+							"Immer im Plural (Mehrzahl)"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7PN27270DHV7KFJEEWHGV1C",
+					"slug": "e6-indefinites-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie unterscheiden sich 'both' und 'neither' bei genau zwei Dingen?",
+					"concept": "both bedeutet 'beide' (mit Pluralverb), neither bedeutet 'keines von beiden' (mit Singularverb und ohne zusätzliches not)",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-indefinites",
+					"sample_solution": "both bedeutet 'beide' (mit Pluralverb), neither bedeutet 'keines von beiden' (mit Singularverb und ohne zusätzliches not)"
+				},
+				{
+					"id": "01M7PN2728ZYJPTZ93Z0MFYET3",
+					"slug": "e6-indefinites-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Übersetze ohne doppelte Verneinung: 'Keiner der beiden Busse fährt am Sonntag.'",
+					"concept": "Neither bus runs on Sunday.",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-indefinites",
+					"sample_solution": "Neither bus runs on Sunday."
+				}
+			]
+		},
+		{
+			"id": "01M7PN272DGTSF3C6C38WMH9RA",
+			"atom_uri": "urn:zam:atom:01M7PN272DGTSF3C6C38WMH9RA",
+			"namespace": "zam-academy-englisch-gymnasium-6",
+			"slug": "e6-connectors",
+			"title": "Although, so that, while",
+			"domain": "englisch/genauer",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-connectors",
+			"prerequisites": [
+				{
+					"atom_id": "01M7PN26ZKB01KTE252M28YPZT",
+					"type": "soft",
+					"rationale": "while verknüpft Handlungen auch im past progressive."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-6",
+					"topic_code": "genauer",
+					"topic_title": "Saying it more clearly"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7PN272G0MJM08QQFPKY47XW",
+					"slug": "e6-connectors-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welches Wort darf im englischen Hauptsatz niemals zusätzlich stehen, wenn der Nebensatz mit 'although' beginnt?",
+					"concept": "but",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-connectors",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"but",
+							"a comma"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7PN272HXA3YDS1622WAYNGQ",
+					"slug": "e6-connectors-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was drücken die Konjunktionen 'although', 'so that' und 'while' aus?",
+					"concept": "although = Widerspruch ('obwohl'); so that = Zweck/Folge ('damit'); while = Gleichzeitigkeit oder Gegensatz ('während')",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-connectors",
+					"sample_solution": "although = Widerspruch ('obwohl'); so that = Zweck/Folge ('damit'); while = Gleichzeitigkeit oder Gegensatz ('während')"
+				},
+				{
+					"id": "01M7PN272J1QPDRHVMSX55X551",
+					"slug": "e6-connectors-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Vervollständige sinnvoll: 'Take a torch ___ we can see in the dark.'",
+					"concept": "so that",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-connectors",
+					"sample_solution": "so that"
+				}
+			]
+		},
+		{
+			"id": "01M7PN272Q3PBSGAEWZ0FNHWVZ",
+			"atom_uri": "urn:zam:atom:01M7PN272Q3PBSGAEWZ0FNHWVZ",
+			"namespace": "zam-academy-englisch-gymnasium-6",
+			"slug": "e6-modals",
+			"title": "Could, may, might, should",
+			"domain": "englisch/bedingungen",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-modals",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-6",
+					"topic_code": "bedingungen",
+					"topic_title": "Questions and conditions"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb2",
+					"topic_title": "Interkulturelle Kompetenzen",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7PN272TFT2QK2Z8DJP96MTS",
+					"slug": "e6-modals-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wofür stehen die Modalverben 'may' und 'might' bei Aussagen über das Wetter oder die Zukunft?",
+					"concept": "Für eine Möglichkeit oder Vermutung ('vielleicht / könnte sein')",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-modals",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Für eine Möglichkeit oder Vermutung ('vielleicht / könnte sein')",
+							"Für ein strenges Verbot"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7PN272V04AEPC3JPHHZKGM0",
+					"slug": "e6-modals-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche Form folgt auf Modalverben wie could, may, might und should — auch in der 3. Person?",
+					"concept": "Der reine Infinitiv ohne to und ohne -s am Modalverb",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-modals",
+					"sample_solution": "Der reine Infinitiv ohne to und ohne -s am Modalverb"
+				},
+				{
+					"id": "01M7PN272W5Q939FB5J4KTP5Z4",
+					"slug": "e6-modals-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Formuliere auf Englisch: eine höfliche Bitte ans Fenster und einen Ratschlag mit should.",
+					"concept": "Could you open the window, please? You should take a warm jacket.",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-modals",
+					"sample_solution": "Could you open the window, please? You should take a warm jacket."
+				}
+			]
+		},
+		{
+			"id": "01M7PN2731GDTZ5J4DW7S7W8FZ",
+			"atom_uri": "urn:zam:atom:01M7PN2731GDTZ5J4DW7S7W8FZ",
+			"namespace": "zam-academy-englisch-gymnasium-6",
+			"slug": "e6-substitutes",
+			"title": "Be able to and have to",
+			"domain": "englisch/bedingungen",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-substitutes",
+			"prerequisites": [
+				{
+					"atom_id": "01M7PN272Q3PBSGAEWZ0FNHWVZ",
+					"type": "hard",
+					"rationale": "Ersatzformen ergänzen die Modalverben um fehlende Zeiten."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-6",
+					"topic_code": "bedingungen",
+					"topic_title": "Questions and conditions"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7PN2734AS5P0Q3TFQHNF2N5",
+					"slug": "e6-substitutes-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche Ersatzform drückt das Modalverb 'must' in der Vergangenheit (simple past) aus?",
+					"concept": "had to",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-substitutes",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"had to",
+							"musted"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7PN2735VRAPQ268FH98N90D",
+					"slug": "e6-substitutes-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Nenne die drei Ersatzformen für 'can', 'must' und 'may' (Erlaubnis).",
+					"concept": "can → be able to; must → have to; may → be allowed to",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-substitutes",
+					"sample_solution": "can → be able to; must → have to; may → be allowed to"
+				},
+				{
+					"id": "01M7PN2736HX9ZB042Q0WJQ0A0",
+					"slug": "e6-substitutes-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Erkläre den Unterschied zwischen 'You mustn't pay' und 'You don't have to pay'.",
+					"concept": "mustn't bedeutet 'nicht dürfen' (Verbot); don't have to bedeutet 'nicht müssen' (keine Pflicht).",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-substitutes",
+					"sample_solution": "mustn't bedeutet 'nicht dürfen' (Verbot); don't have to bedeutet 'nicht müssen' (keine Pflicht)."
+				}
+			]
+		},
+		{
+			"id": "01M7PN273BHG9RTHM6YWZP2WC1",
+			"atom_uri": "urn:zam:atom:01M7PN273BHG9RTHM6YWZP2WC1",
+			"namespace": "zam-academy-englisch-gymnasium-6",
+			"slug": "e6-conditional-1",
+			"title": "If it rains…",
+			"domain": "englisch/bedingungen",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-conditional-1",
+			"prerequisites": [
+				{
+					"atom_id": "01M7PN26YBWNCWCY15J2Y5EZAJ",
+					"type": "soft",
+					"rationale": "Hauptsätze im Typ I nutzen häufig das will-future."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-6",
+					"topic_code": "bedingungen",
+					"topic_title": "Questions and conditions"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7PN273E7XDQK7J49YJN96QZ",
+					"slug": "e6-conditional-1-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche Zeitform steht im if-Satz des Konditionalsatzes Typ I?",
+					"concept": "Das simple present (niemals will)",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-conditional-1",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Das simple present (niemals will)",
+							"Das will-future"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7PN273FF4H3HK0R9E2HY4QE",
+					"slug": "e6-conditional-1-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche zwei Baupläne kennst du für den Konditionalsatz I?",
+					"concept": "if + present tense → will-future / can / Imperativ; sowie if + present tense → present tense für allgemeine Regeln",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-conditional-1",
+					"sample_solution": "if + present tense → will-future / can / Imperativ; sowie if + present tense → present tense für allgemeine Regeln"
+				},
+				{
+					"id": "01M7PN273GCQYW0CGGAE533525",
+					"slug": "e6-conditional-1-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Setze die richtigen Verbformen ein: 'If it (rain) tomorrow, we (stay) inside.'",
+					"concept": "If it rains tomorrow, we will stay inside.",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-conditional-1",
+					"sample_solution": "If it rains tomorrow, we will stay inside."
+				}
+			]
+		},
+		{
+			"id": "01M7PN273N6T5785F3WPPKYEZN",
+			"atom_uri": "urn:zam:atom:01M7PN273N6T5785F3WPPKYEZN",
+			"namespace": "zam-academy-englisch-gymnasium-6",
+			"slug": "e6-question-tags",
+			"title": "Isn't it?",
+			"domain": "englisch/bedingungen",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-question-tags",
+			"prerequisites": [
+				{
+					"atom_id": "01M7PN272Q3PBSGAEWZ0FNHWVZ",
+					"type": "soft",
+					"rationale": "Question tags greifen Hilfs- und Modalverben auf."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-6",
+					"topic_code": "bedingungen",
+					"topic_title": "Questions and conditions"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7PN273R9CBB5ZTAWC1TNC12",
+					"slug": "e6-question-tags-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welcher question tag passt zu 'I'm right, …?'",
+					"concept": "aren't I?",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-question-tags",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"aren't I?",
+							"amn't I?"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7PN273SD3SRWJMB87H7FS44",
+					"slug": "e6-question-tags-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Nach welcher Regel bildest du question tags bei Vollverben ohne Hilfsverb?",
+					"concept": "Aussage positiv → negativer tag mit don't/doesn't/didn't + Pronomen; Aussage negativ → positiver tag mit do/does/did + Pronomen",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-question-tags",
+					"sample_solution": "Aussage positiv → negativer tag mit don't/doesn't/didn't + Pronomen; Aussage negativ → positiver tag mit do/does/did + Pronomen"
+				},
+				{
+					"id": "01M7PN273TTWSG9VDSP8TR2BYZ",
+					"slug": "e6-question-tags-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Ergänze die question tags: 'Mia plays tennis, ___?' und 'You didn't miss the bus, ___?'",
+					"concept": "doesn't she? · did you?",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-question-tags",
+					"sample_solution": "doesn't she? · did you?"
+				}
+			]
+		},
+		{
+			"id": "01M7PN273ZDNFQ1CQWMJBJEBDM",
+			"atom_uri": "urn:zam:atom:01M7PN273ZDNFQ1CQWMJBJEBDM",
+			"namespace": "zam-academy-englisch-gymnasium-6",
+			"slug": "e6-prep-questions",
+			"title": "Who are you waiting for?",
+			"domain": "englisch/bedingungen",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-prep-questions",
+			"prerequisites": [
+				{
+					"atom_id": "01M7PN273N6T5785F3WPPKYEZN",
+					"type": "soft",
+					"rationale": "Erweitert die englische Fragebildung."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-6",
+					"topic_code": "bedingungen",
+					"topic_title": "Questions and conditions"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7PN2742687VPHSP5NC5P937",
+					"slug": "e6-prep-questions-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wo steht die Präposition bei einer englischen Frage mit who, what oder which?",
+					"concept": "Am Ende der Frage",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-prep-questions",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Am Ende der Frage",
+							"Immer ganz vorn vor who/what"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7PN2743KBX0SHF0SSFGSTHR",
+					"slug": "e6-prep-questions-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Übersetze ins natürliche Englisch: 'Worauf wartest du?'",
+					"concept": "What are you waiting for? (bzw. 'Who are you waiting for?' bei einer Person)",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-prep-questions",
+					"sample_solution": "What are you waiting for? (bzw. 'Who are you waiting for?' bei einer Person)"
+				},
+				{
+					"id": "01M7PN2744PZRK1A992DMF91DV",
+					"slug": "e6-prep-questions-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Übersetze ins Englische: 'Woher kommt deine Freundin?' und 'Worüber sprecht ihr?'",
+					"concept": "Where does your friend come from? · What are you talking about?",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-prep-questions",
+					"sample_solution": "Where does your friend come from? · What are you talking about?"
+				}
+			]
+		},
+		{
+			"id": "01M7PN2749SSSPDSX8Y0GXW9R9",
+			"atom_uri": "urn:zam:atom:01M7PN2749SSSPDSX8Y0GXW9R9",
+			"namespace": "zam-academy-englisch-gymnasium-6",
+			"slug": "e6-cornwall",
+			"title": "Cornwall",
+			"domain": "englisch/grossbritannien",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-cornwall",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-6",
+					"topic_code": "grossbritannien",
+					"topic_title": "Britain: coasts, lakes and Romans"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb2",
+					"topic_title": "Interkulturelle Kompetenzen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7PN274C97CNH6JS8EJEE6RV",
+					"slug": "e6-cornwall-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "In welchem Teil Englands liegt Cornwall?",
+					"concept": "Ganz im Südwesten (South West England)",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-cornwall",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Ganz im Südwesten (South West England)",
+							"Im Nordosten an der Nordsee"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7PN274DTD7993R978JSQFN9",
+					"slug": "e6-cornwall-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie heißt Cornwall auf Kornisch und welcher Punkt liegt dort am südlichsten auf Great Britain?",
+					"concept": "Kernow; der südlichste Punkt auf Great Britain heißt Lizard Point",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-cornwall",
+					"sample_solution": "Kernow; der südlichste Punkt auf Great Britain heißt Lizard Point"
+				},
+				{
+					"id": "01M7PN274ETCMEYNYRCSB0MHJ7",
+					"slug": "e6-cornwall-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Nenne zwei typische Landschaftsmerkmale von Cornwall.",
+					"concept": "Steile Granitklippen (cliffs) zwischen Atlantik und Ärmelkanal sowie das Hochland Bodmin Moor",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-cornwall",
+					"sample_solution": "Steile Granitklippen (cliffs) zwischen Atlantik und Ärmelkanal sowie das Hochland Bodmin Moor"
+				}
+			]
+		},
+		{
+			"id": "01M7PN274KH0D1E5Y8DT1MYKE8",
+			"atom_uri": "urn:zam:atom:01M7PN274KH0D1E5Y8DT1MYKE8",
+			"namespace": "zam-academy-englisch-gymnasium-6",
+			"slug": "e6-lake-district",
+			"title": "The Lake District",
+			"domain": "englisch/grossbritannien",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-lake-district",
+			"prerequisites": [
+				{
+					"atom_id": "01M7PN2749SSSPDSX8Y0GXW9R9",
+					"type": "soft",
+					"rationale": "Kontrastiert Nordwestengland mit dem Südwesten."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-6",
+					"topic_code": "grossbritannien",
+					"topic_title": "Britain: coasts, lakes and Romans"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb2",
+					"topic_title": "Interkulturelle Kompetenzen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7PN274PR54K9RDX3P86J71K",
+					"slug": "e6-lake-district-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welcher See im Lake District ist der längste und größte See Englands?",
+					"concept": "Windermere",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-lake-district",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Windermere",
+							"Wast Water"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7PN274QZ4PA43XJ3DFR27P5",
+					"slug": "e6-lake-district-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "In welcher Grafschaft liegt der Lake District, und wie heißt Englands höchster Berg dort?",
+					"concept": "In Cumbria (Nordwestengland); der höchste Berg Englands heißt Scafell Pike (978 m)",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-lake-district",
+					"sample_solution": "In Cumbria (Nordwestengland); der höchste Berg Englands heißt Scafell Pike (978 m)"
+				},
+				{
+					"id": "01M7PN274RBZ8J138SD43BSCJC",
+					"slug": "e6-lake-district-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wofür steht im Lake District das Wort 'fells' und wie heißt der tiefste See Englands dort?",
+					"concept": "fells sind die Berge und Höhenzüge; der tiefste See Englands ist Wast Water",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-lake-district",
+					"sample_solution": "fells sind die Berge und Höhenzüge; der tiefste See Englands ist Wast Water"
+				}
+			]
+		},
+		{
+			"id": "01M7PN274XBW5PT46CTDJG393H",
+			"atom_uri": "urn:zam:atom:01M7PN274XBW5PT46CTDJG393H",
+			"namespace": "zam-academy-englisch-gymnasium-6",
+			"slug": "e6-romans-wall",
+			"title": "Hadrian's Wall and Roman roads",
+			"domain": "englisch/grossbritannien",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-romans-wall",
+			"prerequisites": [
+				{
+					"atom_id": "01M7PN274KH0D1E5Y8DT1MYKE8",
+					"type": "soft",
+					"rationale": "Hadrian's Wall liegt nördlich des Lake District in Nordengland."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-6",
+					"topic_code": "grossbritannien",
+					"topic_title": "Britain: coasts, lakes and Romans"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb2",
+					"topic_title": "Interkulturelle Kompetenzen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7PN2750WX3PNYYNY8CR3WP8",
+					"slug": "e6-romans-wall-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wo verläuft Hadrian's Wall im Vergleich zur heutigen schottischen Grenze?",
+					"concept": "Vollständig innerhalb Nordenglands, südlich der Grenze zu Schottland",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-romans-wall",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Vollständig innerhalb Nordenglands, südlich der Grenze zu Schottland",
+							"Genau auf der heutigen politischen Grenze zwischen England und Schottland"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7PN27510P71ARRDVBMQ15GX",
+					"slug": "e6-romans-wall-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wann wurde Hadrian's Wall begonnen, und welche beiden Endpunkte verband die Mauer?",
+					"concept": "Um 122 n. Chr. unter Kaiser Hadrian zwischen Wallsend am Tyne und Bowness-on-Solway",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-romans-wall",
+					"sample_solution": "Um 122 n. Chr. unter Kaiser Hadrian zwischen Wallsend am Tyne und Bowness-on-Solway"
+				},
+				{
+					"id": "01M7PN2752J9NERS4REHJHHWYJ",
+					"slug": "e6-romans-wall-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Auf welches lateinische Wort geht das englische Wort 'street' zurück, und nenne eine bekannte Römerstraße in Britannien.",
+					"concept": "Auf lateinisch strata (gepflasterte Straße); bekannte Römerstraßen sind die Fosse Way und die Watling Street",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-romans-wall",
+					"sample_solution": "Auf lateinisch strata (gepflasterte Straße); bekannte Römerstraßen sind die Fosse Way und die Watling Street"
+				}
+			]
+		},
+		{
+			"id": "01M7PN2757E9BPXGECSZG01Q0C",
+			"atom_uri": "urn:zam:atom:01M7PN2757E9BPXGECSZG01Q0C",
+			"namespace": "zam-academy-englisch-gymnasium-6",
+			"slug": "e6-bath-names",
+			"title": "Bath and old place names",
+			"domain": "englisch/grossbritannien",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-bath-names",
+			"prerequisites": [
+				{
+					"atom_id": "01M7PN274XBW5PT46CTDJG393H",
+					"type": "hard",
+					"rationale": "Vertieft das römische Britannien anhand von Bath und Ortsnamen."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-6",
+					"topic_code": "grossbritannien",
+					"topic_title": "Britain: coasts, lakes and Romans"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb2",
+					"topic_title": "Interkulturelle Kompetenzen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7PN275AH9F6XXBA297T1R5K",
+					"slug": "e6-bath-names-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie hieß die Stadt Bath bei den Römern?",
+					"concept": "Aquae Sulis",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-bath-names",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Aquae Sulis",
+							"Deva"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7PN275BRSM99P8BDQEKCW8E",
+					"slug": "e6-bath-names-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was verraten englische Ortsnamen auf -chester, -caster oder -cester (z. B. Chester, Manchester, Lancaster)?",
+					"concept": "Sie verweisen über das Altenglische auf lateinisch castra (römisches Militärlager/Kastell).",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-bath-names",
+					"sample_solution": "Sie verweisen über das Altenglische auf lateinisch castra (römisches Militärlager/Kastell)."
+				},
+				{
+					"id": "01M7PN275C0M5QSJ5QZN91GYR3",
+					"slug": "e6-bath-names-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche Namen in England bewahren oft keltische Spuren?",
+					"concept": "Viele Flussnamen (z. B. Avon, Thames) sowie Orts- und Regionsnamen im Westen wie Cornwall (Kernow) und Cumbria",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-bath-names",
+					"sample_solution": "Viele Flussnamen (z. B. Avon, Thames) sowie Orts- und Regionsnamen im Westen wie Cornwall (Kernow) und Cumbria"
+				}
+			]
+		},
+		{
+			"id": "01M7PN275H84QD3P3RREAW1SQM",
+			"atom_uri": "urn:zam:atom:01M7PN275H84QD3P3RREAW1SQM",
+			"namespace": "zam-academy-englisch-gymnasium-6",
+			"slug": "e6-city-country",
+			"title": "City, country and festivals",
+			"domain": "englisch/grossbritannien",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-city-country",
+			"prerequisites": [
+				{
+					"atom_id": "01M7PN2749SSSPDSX8Y0GXW9R9",
+					"type": "soft",
+					"rationale": "Stellt ländliche Regionen wie Cornwall Großstädten gegenüber."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-6",
+					"topic_code": "grossbritannien",
+					"topic_title": "Britain: coasts, lakes and Romans"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb2",
+					"topic_title": "Interkulturelle Kompetenzen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7PN275MQJS2NJ57SZNXF76T",
+					"slug": "e6-city-country-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Warum solltest du bei Aussagen über Feste wie Pancake Day 'many families' statt 'everybody' sagen?",
+					"concept": "Weil nicht alle Menschen und Familien Bräuche auf genau dieselbe Weise feiern",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-city-country",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Weil nicht alle Menschen und Familien Bräuche auf genau dieselbe Weise feiern",
+							"Weil in Städten überhaupt keine Feste stattfinden"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7PN275N1KYJNYD7XBJHH8S3",
+					"slug": "e6-city-country-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was ist der Notting Hill Carnival in London?",
+					"concept": "Ein jährliches karibisches Straßenfest mit Steelpan-Musik und Paraden seit 1966 am August Bank Holiday Weekend",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-city-country",
+					"sample_solution": "Ein jährliches karibisches Straßenfest mit Steelpan-Musik und Paraden seit 1966 am August Bank Holiday Weekend"
+				},
+				{
+					"id": "01M7PN275PXWFNJM21XKQ2CMZE",
+					"slug": "e6-city-country-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Nenne je einen typischen Unterschied zwischen Stadt- und Landleben im UK.",
+					"concept": "Städte bieten dichten Nahverkehr, Kinos und multikulturelle Viertel; auf dem Land gibt es mehr Natur und Ruhe, aber weitere Wege.",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-city-country",
+					"sample_solution": "Städte bieten dichten Nahverkehr, Kinos und multikulturelle Viertel; auf dem Land gibt es mehr Natur und Ruhe, aber weitere Wege."
+				}
+			]
+		},
+		{
+			"id": "01M7PN275VYGCKXXGT7RVN9V6N",
+			"atom_uri": "urn:zam:atom:01M7PN275VYGCKXXGT7RVN9V6N",
+			"namespace": "zam-academy-englisch-gymnasium-6",
+			"slug": "e6-florida",
+			"title": "Florida",
+			"domain": "englisch/usa",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-florida",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-6",
+					"topic_code": "usa",
+					"topic_title": "Across the USA"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb2",
+					"topic_title": "Interkulturelle Kompetenzen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7PN275YS8EYFRF8T4KAVBYK",
+					"slug": "e6-florida-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche beiden Gewässer grenzen an die Halbinsel Florida?",
+					"concept": "Der Atlantik im Osten und der Golf von Mexiko im Westen",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-florida",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Der Atlantik im Osten und der Golf von Mexiko im Westen",
+							"Der Pazifik im Westen und die Großen Seen im Norden"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7PN275Z1RQXQ4CZP4BWY69V",
+					"slug": "e6-florida-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "In welcher US-Region liegt Florida und welche geographische Form haben rund zwei Drittel des Staates?",
+					"concept": "Im Südosten der USA; etwa zwei Drittel bilden eine Halbinsel (peninsula).",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-florida",
+					"sample_solution": "Im Südosten der USA; etwa zwei Drittel bilden eine Halbinsel (peninsula)."
+				},
+				{
+					"id": "01M7PN2760CK2JDT3J1KAFDF2H",
+					"slug": "e6-florida-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche besondere Eigenschaft hat Floridas Küste unter den zusammenhängenden US-Bundesstaaten?",
+					"concept": "Florida hat die längste Küstenlinie unter den zusammenhängenden (contiguous) US-Staaten.",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-florida",
+					"sample_solution": "Florida hat die längste Küstenlinie unter den zusammenhängenden (contiguous) US-Staaten."
+				}
+			]
+		},
+		{
+			"id": "01M7PN2765X3WBKHGRC452E3PA",
+			"atom_uri": "urn:zam:atom:01M7PN2765X3WBKHGRC452E3PA",
+			"namespace": "zam-academy-englisch-gymnasium-6",
+			"slug": "e6-rockies",
+			"title": "The Rocky Mountains",
+			"domain": "englisch/usa",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-rockies",
+			"prerequisites": [
+				{
+					"atom_id": "01M7PN275VYGCKXXGT7RVN9V6N",
+					"type": "soft",
+					"rationale": "Kontrastiert das Gebirge im Westen mit der Küste im Südosten."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-6",
+					"topic_code": "usa",
+					"topic_title": "Across the USA"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb2",
+					"topic_title": "Interkulturelle Kompetenzen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7PN27685SNJTZWJPWZ2ADKF",
+					"slug": "e6-rockies-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "In welchem US-Bundesstaat liegen die meisten der höchsten Gipfel der Rocky Mountains?",
+					"concept": "In Colorado",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-rockies",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"In Colorado",
+							"In Florida"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7PN2769VYPVXSK08AGWK2BW",
+					"slug": "e6-rockies-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wo verlaufen die Rocky Mountains und wie schützt man große Teile ihrer Natur?",
+					"concept": "Von Nord nach Süd durch den Westen Nordamerikas; große Flächen stehen als Nationalparks und Waldgebiete unter Schutz",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-rockies",
+					"sample_solution": "Von Nord nach Süd durch den Westen Nordamerikas; große Flächen stehen als Nationalparks und Waldgebiete unter Schutz"
+				},
+				{
+					"id": "01M7PN276AE0CQRDX19CT2DJV1",
+					"slug": "e6-rockies-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Nenne zwei Sommer- und zwei Wintersportarten, für die die Rockies bekannt sind.",
+					"concept": "Sommer: hiking, camping, mountain biking; Winter: skiing, snowboarding",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-rockies",
+					"sample_solution": "Sommer: hiking, camping, mountain biking; Winter: skiing, snowboarding"
+				}
+			]
+		},
+		{
+			"id": "01M7PN276F0NFYV1E8ZF5R42E0",
+			"atom_uri": "urn:zam:atom:01M7PN276F0NFYV1E8ZF5R42E0",
+			"namespace": "zam-academy-englisch-gymnasium-6",
+			"slug": "e6-us-regions",
+			"title": "New England, Midwest and diversity",
+			"domain": "englisch/usa",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-us-regions",
+			"prerequisites": [
+				{
+					"atom_id": "01M7PN275VYGCKXXGT7RVN9V6N",
+					"type": "soft",
+					"rationale": "Ordnet Florida in die Großregionen ein."
+				},
+				{
+					"atom_id": "01M7PN2765X3WBKHGRC452E3PA",
+					"type": "soft",
+					"rationale": "Ordnet die Rockies in den Westen ein."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-6",
+					"topic_code": "usa",
+					"topic_title": "Across the USA"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb2",
+					"topic_title": "Interkulturelle Kompetenzen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7PN276JB0F1XBSBD9B4SBTH",
+					"slug": "e6-us-regions-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Aus wie vielen Bundesstaaten besteht New England und welche ist dort die größte Stadt?",
+					"concept": "Aus sechs Staaten im Nordosten; die größte Stadt ist Boston",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-us-regions",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Aus sechs Staaten im Nordosten; die größte Stadt ist Boston",
+							"Aus zwölf Staaten im Südosten; die größte Stadt ist Miami"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7PN276KHXVA0ZN89W29P414",
+					"slug": "e6-us-regions-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wo liegt der American Midwest und welche Großstadt und Gewässer prägen ihn?",
+					"concept": "In zwölf Staaten der nördlichen Mitte zwischen Appalachen und Rockies; geprägt von Chicago, den Great Lakes, dem Ohio und dem Mississippi",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-us-regions",
+					"sample_solution": "In zwölf Staaten der nördlichen Mitte zwischen Appalachen und Rockies; geprägt von Chicago, den Great Lakes, dem Ohio und dem Mississippi"
+				},
+				{
+					"id": "01M7PN276M7G9EFT48EQENGZXW",
+					"slug": "e6-us-regions-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche vier Großregionen unterscheidet das US Census Bureau?",
+					"concept": "Northeast, Midwest, South und West",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-us-regions",
+					"sample_solution": "Northeast, Midwest, South und West"
+				}
+			]
+		},
+		{
+			"id": "01M7PN276SNDZ7J43G7D1MES8K",
+			"atom_uri": "urn:zam:atom:01M7PN276SNDZ7J43G7D1MES8K",
+			"namespace": "zam-academy-englisch-gymnasium-6",
+			"slug": "e6-daily-comparison",
+			"title": "Comparing everyday life",
+			"domain": "englisch/usa",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-daily-comparison",
+			"prerequisites": [
+				{
+					"atom_id": "01M7PN275H84QD3P3RREAW1SQM",
+					"type": "soft",
+					"rationale": "Überträgt den Stadt-Land-Vergleich auf UK, USA und Deutschland."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-6",
+					"topic_code": "usa",
+					"topic_title": "Across the USA"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb2",
+					"topic_title": "Interkulturelle Kompetenzen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7PN276WND8TF0Z0NV30X75H",
+					"slug": "e6-daily-comparison-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche Frage passt zu einem höflichen Vergleich des Schulalltags ohne Vorurteile?",
+					"concept": "Do many students in your town take the school bus?",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-daily-comparison",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Do many students in your town take the school bus?",
+							"Why do all Americans hate walking?"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7PN276XGQ4KZ7M9202GBP88",
+					"slug": "e6-daily-comparison-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie zeigst du im Gespräch mit einem Austauschpartner echtes Interesse an dem, was er erzählt?",
+					"concept": "Mit freundlichen Reaktionen wie 'That sounds interesting!' und offenen Rückfragen",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-daily-comparison",
+					"sample_solution": "Mit freundlichen Reaktionen wie 'That sounds interesting!' und offenen Rückfragen"
+				},
+				{
+					"id": "01M7PN276YKKQ158NCHJFH2AQ9",
+					"slug": "e6-daily-comparison-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Nenne einen vorsichtigen Vergleich zwischen dem Alltag in Deutschland und im UK oder den USA.",
+					"concept": "In many UK schools pupils wear a school uniform, while in Germany students wear their own clothes.",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-daily-comparison",
+					"sample_solution": "In many UK schools pupils wear a school uniform, while in Germany students wear their own clothes."
+				}
+			]
+		},
+		{
+			"id": "01M7PN2773WG6RE65RPQAQKV81",
+			"atom_uri": "urn:zam:atom:01M7PN2773WG6RE65RPQAQKV81",
+			"namespace": "zam-academy-englisch-gymnasium-6",
+			"slug": "e6-current-events",
+			"title": "Look up a current event",
+			"domain": "englisch/usa",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-current-events",
+			"prerequisites": [
+				{
+					"atom_id": "01M7PN276F0NFYV1E8ZF5R42E0",
+					"type": "soft",
+					"rationale": "Recherchen knüpfen an Regionen und Ereignisse an."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-6",
+					"topic_code": "usa",
+					"topic_title": "Across the USA"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb2",
+					"topic_title": "Interkulturelle Kompetenzen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb4",
+					"topic_title": "Methodische Kompetenzen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7PN2776Z27Y4Q8W9JC0TTGG",
+					"slug": "e6-current-events-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Woher nimmst du Fakten und Zahlen für einen aktuellen Anlass?",
+					"concept": "Nur aus einer selbst geöffneten, verlässlichen Quelle mit Angabe des Datums",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-current-events",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Nur aus einer selbst geöffneten, verlässlichen Quelle mit Angabe des Datums",
+							"Aus geschätzten Zahlen aus dem Gedächtnis"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7PN2777WM56F1FGZR6BRSCC",
+					"slug": "e6-current-events-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche vier W-Fragen helfen bei einer knappen englischen Zusammenfassung eines aktuellen Ereignisses?",
+					"concept": "What happened? When? Where? Who is taking part?",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-current-events",
+					"sample_solution": "What happened? When? Where? Who is taking part?"
+				},
+				{
+					"id": "01M7PN27785XN5R6MPVQV4691Y",
+					"slug": "e6-current-events-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche Präposition steht vor einem konkreten Datum auf Englisch?",
+					"concept": "on (z. B. checked on 18 November)",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-current-events",
+					"sample_solution": "on (z. B. checked on 18 November)"
+				}
+			]
+		},
+		{
+			"id": "01M7PN277D9A7NKBS20M8R3C3S",
+			"atom_uri": "urn:zam:atom:01M7PN277D9A7NKBS20M8R3C3S",
+			"namespace": "zam-academy-englisch-gymnasium-6",
+			"slug": "e6-flyer-website",
+			"title": "Flyers and websites",
+			"domain": "englisch/texte",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-flyer-website",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-6",
+					"topic_code": "texte",
+					"topic_title": "Texts, sights and poetry"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb3",
+					"topic_title": "Text- und Medienkompetenzen",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7PN277G790MF7KX17A7D3BA",
+					"slug": "e6-flyer-website-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Warum beginnen Tourismus-Websites oft mit Imperativen wie 'Step back into Roman Britain!'?",
+					"concept": "Um Besucher direkt anzusprechen und neugierig zu machen",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-flyer-website",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Um Besucher direkt anzusprechen und neugierig zu machen",
+							"Um jede Information möglichst schwer auffindbar zu machen"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7PN277HF8KGNAYSKDHZ46XG",
+					"slug": "e6-flyer-website-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Worauf achtest du beim Vergleichen zweier Info-Websites außer dem reinen Text?",
+					"concept": "Auf Überschriften, Stichwortlisten, Info-Kästen (Öffnungszeiten/Preise) und direkte Ansprache",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-flyer-website",
+					"sample_solution": "Auf Überschriften, Stichwortlisten, Info-Kästen (Öffnungszeiten/Preise) und direkte Ansprache"
+				},
+				{
+					"id": "01M7PN277J2AAXMNN12TVYWWJF",
+					"slug": "e6-flyer-website-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie gehst du beim Lesen einer englischen Website mit einzelnen unbekannten Wörtern um?",
+					"concept": "Man nutzt Überschriften und den Zusammenhang, um zunächst die Hauptaussage zu verstehen, ohne jedes Wort nachzuschlagen.",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-flyer-website",
+					"sample_solution": "Man nutzt Überschriften und den Zusammenhang, um zunächst die Hauptaussage zu verstehen, ohne jedes Wort nachzuschlagen."
+				}
+			]
+		},
+		{
+			"id": "01M7PN277QYXQJ455K9YH4D0E0",
+			"atom_uri": "urn:zam:atom:01M7PN277QYXQJ455K9YH4D0E0",
+			"namespace": "zam-academy-englisch-gymnasium-6",
+			"slug": "e6-menu-recipe",
+			"title": "Menus, recipes and ads",
+			"domain": "englisch/texte",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-menu-recipe",
+			"prerequisites": [
+				{
+					"atom_id": "01M7PN277D9A7NKBS20M8R3C3S",
+					"type": "soft",
+					"rationale": "Erweitert das Lesen kurzer Sachtexte um Speisekarten und Rezepte."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-6",
+					"topic_code": "texte",
+					"topic_title": "Texts, sights and poetry"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb3",
+					"topic_title": "Text- und Medienkompetenzen",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7PN277TKW5V28TNFRK7VV5F",
+					"slug": "e6-menu-recipe-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche Verbform nutzt die Zubereitungsanleitung (Method) in einem englischen Rezept?",
+					"concept": "Den Imperativ (z. B. Whisk, Heat, Pour, Serve)",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-menu-recipe",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Den Imperativ (z. B. Whisk, Heat, Pour, Serve)",
+							"Nur die Zukunftsform mit will"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7PN277VPP7A0A87ZDYD3VH6",
+					"slug": "e6-menu-recipe-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie sind Speisekarten (menus) typischerweise gegliedert?",
+					"concept": "In starters (Vorspeisen), main courses (Hauptgerichte) und desserts (Nachspeisen)",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-menu-recipe",
+					"sample_solution": "In starters (Vorspeisen), main courses (Hauptgerichte) und desserts (Nachspeisen)"
+				},
+				{
+					"id": "01M7PN277WNZM3QWGKASRV5F1X",
+					"slug": "e6-menu-recipe-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Formuliere eine kurze begründete Reaktion auf ein einfaches Rezept auf Englisch.",
+					"concept": "I would like to try this recipe because it only needs five ingredients and is quick to make.",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-menu-recipe",
+					"sample_solution": "I would like to try this recipe because it only needs five ingredients and is quick to make."
+				}
+			]
+		},
+		{
+			"id": "01M7PN27815NWRPMNJRX215QPK",
+			"atom_uri": "urn:zam:atom:01M7PN27815NWRPMNJRX215QPK",
+			"namespace": "zam-academy-englisch-gymnasium-6",
+			"slug": "e6-picture-talk",
+			"title": "Describe a picture",
+			"domain": "englisch/texte",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-picture-talk",
+			"prerequisites": [
+				{
+					"atom_id": "01M7PN27151P5ZKRH847QVJ670",
+					"type": "soft",
+					"rationale": "Bildbeschreibungen nutzen genaue räumliche und beschreibende Mittel."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-6",
+					"topic_code": "texte",
+					"topic_title": "Texts, sights and poetry"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb3",
+					"topic_title": "Text- und Medienkompetenzen",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7PN2784C6MG8XP0QQ2Q25Q7",
+					"slug": "e6-picture-talk-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche Zeitform beschreibt Handlungen von Personen und Tieren auf einem Bild?",
+					"concept": "Das present progressive (z. B. A girl is walking her dog)",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-picture-talk",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Das present progressive (z. B. A girl is walking her dog)",
+							"Das simple past"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7PN2785YTDXVKZJQWZDT7HX",
+					"slug": "e6-picture-talk-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche Präpositionen unterscheiden 'im Vorder-/Hintergrund' und 'links/rechts' im Englischen?",
+					"concept": "in the foreground / middle ground / background (mit in), aber on the left / on the right (mit on)",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-picture-talk",
+					"sample_solution": "in the foreground / middle ground / background (mit in), aber on the left / on the right (mit on)"
+				},
+				{
+					"id": "01M7PN278616M06DYX96AW8WR0",
+					"slug": "e6-picture-talk-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Nenne eine typische Gliederung für eine geordnete Bildbeschreibung.",
+					"concept": "Überblick (The picture shows …), dann foreground, middle ground und background mit There is/are und present progressive",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-picture-talk",
+					"sample_solution": "Überblick (The picture shows …), dann foreground, middle ground und background mit There is/are und present progressive"
+				}
+			]
+		},
+		{
+			"id": "01M7PN278B74A3QZTJAQAQ9TMD",
+			"atom_uri": "urn:zam:atom:01M7PN278B74A3QZTJAQAQ9TMD",
+			"namespace": "zam-academy-englisch-gymnasium-6",
+			"slug": "e6-short-talk",
+			"title": "Give a two-minute talk",
+			"domain": "englisch/texte",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-short-talk",
+			"prerequisites": [
+				{
+					"atom_id": "01M7PN27815NWRPMNJRX215QPK",
+					"type": "soft",
+					"rationale": "Kurzvorträge binden Bilder geordnet ein."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-6",
+					"topic_code": "texte",
+					"topic_title": "Texts, sights and poetry"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7PN278E9C1TR3QQ4B4FYXB5",
+					"slug": "e6-short-talk-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was schreibst du auf eine gute Stichwortkarte (cue card) für einen two-minute talk?",
+					"concept": "Kurze Schlüsselwörter, Namen, Zahlen und Gliederungsstichpunkte",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-short-talk",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Kurze Schlüsselwörter, Namen, Zahlen und Gliederungsstichpunkte",
+							"Jeden Satz vollständig ausgeschrieben zum wörtlichen Ablesen"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7PN278FVKG4MTGVP3Y94EZ1",
+					"slug": "e6-short-talk-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Mit welchem englischen Satz kannst du deinen Kurzvortrag eröffnen und schließen?",
+					"concept": "Today I'm going to talk about … · Thank you for listening. Have you got any questions?",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-short-talk",
+					"sample_solution": "Today I'm going to talk about … · Thank you for listening. Have you got any questions?"
+				},
+				{
+					"id": "01M7PN278GNK9J3RRY7RP5Y63P",
+					"slug": "e6-short-talk-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche Überleitungswörter helfen Zuhörern beim Verfolgen deiner Gliederung?",
+					"concept": "First, … Next, … Finally, … sowie In this picture you can see …",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-short-talk",
+					"sample_solution": "First, … Next, … Finally, … sowie In this picture you can see …"
+				}
+			]
+		},
+		{
+			"id": "01M7PN278NA42Z5XVHM6741HHV",
+			"atom_uri": "urn:zam:atom:01M7PN278NA42Z5XVHM6741HHV",
+			"namespace": "zam-academy-englisch-gymnasium-6",
+			"slug": "e6-poem",
+			"title": "Daffodils by the lake",
+			"domain": "englisch/texte",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-poem",
+			"prerequisites": [
+				{
+					"atom_id": "01M7PN274KH0D1E5Y8DT1MYKE8",
+					"type": "soft",
+					"rationale": "Wordsworths Gedicht spielt am See Ullswater im Lake District."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-6",
+					"topic_code": "texte",
+					"topic_title": "Texts, sights and poetry"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb3",
+					"topic_title": "Text- und Medienkompetenzen",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7PN278RF2369ARG2K0Z6A37",
+					"slug": "e6-poem-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welches Reimpaar schließt die erste Strophe von Wordsworths 'I Wandered Lonely as a Cloud' ab?",
+					"concept": "trees – breeze",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-poem",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"trees – breeze",
+							"cloud – hills"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7PN278S6PCF4GJV18RWZZCR",
+					"slug": "e6-poem-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche Landschaft inspirierte William Wordsworth zu seinem Gedicht über die daffodils?",
+					"concept": "Der See Ullswater im englischen Lake District",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-poem",
+					"sample_solution": "Der See Ullswater im englischen Lake District"
+				},
+				{
+					"id": "01M7PN278TNWJXBBHVCD3SH5FZ",
+					"slug": "e6-poem-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche beiden rhetorischen Bilder prägen die erste Strophe von 'I Wandered Lonely as a Cloud'?",
+					"concept": "Der Sprecher vergleicht sich mit einer einsamen Wolke ('lonely as a cloud'), und die Osterglocken werden wie tanzende Menschen dargestellt ('crowd', 'dancing').",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-poem",
+					"sample_solution": "Der Sprecher vergleicht sich mit einer einsamen Wolke ('lonely as a cloud'), und die Osterglocken werden wie tanzende Menschen dargestellt ('crowd', 'dancing')."
+				}
+			]
+		},
+		{
+			"id": "01M7PN278Z6Y4GTRPH7H0A7TR8",
+			"atom_uri": "urn:zam:atom:01M7PN278Z6Y4GTRPH7H0A7TR8",
+			"namespace": "zam-academy-englisch-gymnasium-6",
+			"slug": "e6-mediation-oral",
+			"title": "Spontaneous mediation",
+			"domain": "englisch/strategien",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-mediation-oral",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-6",
+					"topic_code": "strategien",
+					"topic_title": "Tools for learning"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7PN27928XS1BF1VTXDW0M4G",
+					"slug": "e6-mediation-oral-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie umschreibst du beim Sprechen ein Wort wie 'pharmacy', wenn es dir gerade nicht einfällt?",
+					"concept": "a shop where you can buy medicine",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-mediation-oral",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"a shop where you can buy medicine",
+							"Ich breche das Gespräch einfach ab"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7PN2793BRRHSG7RJKSXBGM2",
+					"slug": "e6-mediation-oral-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Nenne zwei einfache Kompensationsstrategien für fehlende Wörter bei der Sprachmittlung.",
+					"concept": "1. Umschreiben mit Relativsatz (a thing/place which/where …); 2. Verneinung des Gegenteils (not expensive statt cheap)",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-mediation-oral",
+					"sample_solution": "1. Umschreiben mit Relativsatz (a thing/place which/where …); 2. Verneinung des Gegenteils (not expensive statt cheap)"
+				},
+				{
+					"id": "01M7PN2794HGVA2CN201TSB5ZP",
+					"slug": "e6-mediation-oral-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Worauf kommt es beim spontanen mündlichen Vermitteln vor allem an?",
+					"concept": "Nicht Wort für Wort übersetzen, sondern die für das Gegenüber wichtigen Angaben klar weitergeben.",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-mediation-oral",
+					"sample_solution": "Nicht Wort für Wort übersetzen, sondern die für das Gegenüber wichtigen Angaben klar weitergeben."
+				}
+			]
+		},
+		{
+			"id": "01M7PN27992ZPEHYJ4GX55EM5C",
+			"atom_uri": "urn:zam:atom:01M7PN27992ZPEHYJ4GX55EM5C",
+			"namespace": "zam-academy-englisch-gymnasium-6",
+			"slug": "e6-mediation-written",
+			"title": "Written mediation",
+			"domain": "englisch/strategien",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-mediation-written",
+			"prerequisites": [
+				{
+					"atom_id": "01M7PN278Z6Y4GTRPH7H0A7TR8",
+					"type": "hard",
+					"rationale": "Schriftliche Sprachmittlung nutzt Umschreibung und Auswählen der Kerninfos."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-6",
+					"topic_code": "strategien",
+					"topic_title": "Tools for learning"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb3",
+					"topic_title": "Text- und Medienkompetenzen",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7PN279CJBC20G96WK0AT43J",
+					"slug": "e6-mediation-written-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Woran orientierst du die Auswahl der Informationen bei einer schriftlichen Sprachmittlung?",
+					"concept": "An Empfänger (Adressat) und konkreter Situation",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-mediation-written",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"An Empfänger (Adressat) und konkreter Situation",
+							"An der Länge der deutschen Sätze"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7PN279DSVA5G9QP0MW0AFVR",
+					"slug": "e6-mediation-written-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was lässt du beim schriftlichen Vermitteln eines Flyers oder Programms weg?",
+					"concept": "Unnötige Werbefloskeln und Nebensächlichkeiten, die der Empfänger nicht braucht",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-mediation-written",
+					"sample_solution": "Unnötige Werbefloskeln und Nebensächlichkeiten, die der Empfänger nicht braucht"
+				},
+				{
+					"id": "01M7PN279ED4J2A87MX1NFADCK",
+					"slug": "e6-mediation-written-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche Kerninfos gehören fast immer in die Zusammenfassung einer Veranstaltung?",
+					"concept": "Was stattfindet, wann, wo, wie viel es kostet und welche Bedingungen oder Mitbringsel gelten",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-mediation-written",
+					"sample_solution": "Was stattfindet, wann, wo, wie viel es kostet und welche Bedingungen oder Mitbringsel gelten"
+				}
+			]
+		},
+		{
+			"id": "01M7PN279KD30C8HHPPXFDJVT0",
+			"atom_uri": "urn:zam:atom:01M7PN279KD30C8HHPPXFDJVT0",
+			"namespace": "zam-academy-englisch-gymnasium-6",
+			"slug": "e6-intonation",
+			"title": "Stress, sounds and IPA",
+			"domain": "englisch/strategien",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-intonation",
+			"prerequisites": [
+				{
+					"atom_id": "01M7PN273N6T5785F3WPPKYEZN",
+					"type": "soft",
+					"rationale": "Die Melodie unterscheidet sichere und unsichere question tags."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-6",
+					"topic_code": "strategien",
+					"topic_title": "Tools for learning"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb4",
+					"topic_title": "Methodische Kompetenzen",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7PN279PYTSY0MJDRFFE0G04",
+					"slug": "e6-intonation-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie wird die Endung -ed bei Verben gesprochen, deren Stamm bereits auf -t oder -d endet (z. B. visited, started)?",
+					"concept": "Als eigene Silbe /ɪd/",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-intonation",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Als eigene Silbe /ɪd/",
+							"Immer stumm ohne Laut"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7PN279Q1GT85XYA9131C0Q8",
+					"slug": "e6-intonation-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wann steigt die Satzmelodie in englischen Fragen meist an (↗), und wann fällt sie (↘)?",
+					"concept": "Sie steigt bei Yes/No-Fragen und unsicheren question tags; sie fällt bei W-Fragen und sicheren question tags.",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-intonation",
+					"sample_solution": "Sie steigt bei Yes/No-Fragen und unsicheren question tags; sie fällt bei W-Fragen und sicheren question tags."
+				},
+				{
+					"id": "01M7PN279RS9RQ4JS8RFPVGWQX",
+					"slug": "e6-intonation-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Nenne je ein Beispiel für -ed als /t/, /d/ und /ɪd/.",
+					"concept": "walked /t/, played /d/, visited /ɪd/",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-intonation",
+					"sample_solution": "walked /t/, played /d/, visited /ɪd/"
+				}
+			]
+		},
+		{
+			"id": "01M7PN279X5B1EZDAPV3KP6JSJ",
+			"atom_uri": "urn:zam:atom:01M7PN279X5B1EZDAPV3KP6JSJ",
+			"namespace": "zam-academy-englisch-gymnasium-6",
+			"slug": "e6-word-building",
+			"title": "Word building and study tools",
+			"domain": "englisch/strategien",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-word-building",
+			"prerequisites": [
+				{
+					"atom_id": "01M7PN2757E9BPXGECSZG01Q0C",
+					"type": "soft",
+					"rationale": "Erweitert Wortbausteine um Vor- und Nachsilben."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-6",
+					"topic_code": "strategien",
+					"topic_title": "Tools for learning"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb4",
+					"topic_title": "Methodische Kompetenzen",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7PN27A02VD17PYEYYEJC02B",
+					"slug": "e6-word-building-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was bewirkt die Vorsilbe 're-' bei Verben wie 'rewrite' oder 'rebuild'?",
+					"concept": "Sie bedeutet 'noch einmal / wieder' (neu schreiben, wiederaufbauen).",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-word-building",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Sie bedeutet 'noch einmal / wieder' (neu schreiben, wiederaufbauen).",
+							"Sie dreht das Wort ins Gegenteil."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7PN27A1EBMAZRXS72Z4E2D7",
+					"slug": "e6-word-building-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche Bedeutung haben die Wortbausteine 'un-' und '-er' an Beispielen?",
+					"concept": "un- bildet das Gegenteil (safe → unsafe); -er bildet Personen oder Werkzeuge (hike → hiker, teach → teacher).",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-word-building",
+					"sample_solution": "un- bildet das Gegenteil (safe → unsafe); -er bildet Personen oder Werkzeuge (hike → hiker, teach → teacher)."
+				},
+				{
+					"id": "01M7PN27A29XKASP6S1HP50VH8",
+					"slug": "e6-word-building-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche drei Dinge schaust du in einem Wörterbuch außer der deutschen Übersetzung gezielt nach?",
+					"concept": "Wortart, Lautschrift bzw. Aussprache (Hörbeispiel) und unregelmäßige Formen / Beispielsätze",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-word-building",
+					"sample_solution": "Wortart, Lautschrift bzw. Aussprache (Hörbeispiel) und unregelmäßige Formen / Beispielsätze"
+				}
+			]
+		},
+		{
+			"id": "01M7PN27A7BMH4KQ3AGX7N1EVB",
+			"atom_uri": "urn:zam:atom:01M7PN27A7BMH4KQ3AGX7N1EVB",
+			"namespace": "zam-academy-englisch-gymnasium-6",
+			"slug": "e6-language-links",
+			"title": "English, German and other languages",
+			"domain": "englisch/strategien",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-language-links",
+			"prerequisites": [
+				{
+					"atom_id": "01M7PN279X5B1EZDAPV3KP6JSJ",
+					"type": "soft",
+					"rationale": "Nutzt Wortverwandtschaften zwischen Sprachen."
+				},
+				{
+					"atom_id": "01M7PN2731GDTZ5J4DW7S7W8FZ",
+					"type": "soft",
+					"rationale": "Verhindert falsche Übertragungen wie mustn't."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-gymnasium-6",
+					"topic_code": "strategien",
+					"topic_title": "Tools for learning"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb4",
+					"topic_title": "Methodische Kompetenzen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7PN27AAD04BKFGS1B5B7XVZ",
+					"slug": "e6-language-links-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche Übersetzung von 'Ich habe Hunger' vermeidet einen deutschen Übertragungsfehler?",
+					"concept": "I am hungry.",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-language-links",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"I am hungry.",
+							"I have hunger."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7PN27AB9SGVJS7CXFH8B650",
+					"slug": "e6-language-links-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie helfen Deutsch sowie Latein oder Französisch als zweite Fremdsprache beim Verstehen englischer Wörter?",
+					"concept": "Germanische Alltagswörter ähneln dem Deutschen (water/Wasser); viele Fach- und Kulturwörter (museum, possible, castra/Chester) stammen aus Latein/Französisch.",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-language-links",
+					"sample_solution": "Germanische Alltagswörter ähneln dem Deutschen (water/Wasser); viele Fach- und Kulturwörter (museum, possible, castra/Chester) stammen aus Latein/Französisch."
+				},
+				{
+					"id": "01M7PN27ACQAT7FTGAD5ME560W",
+					"slug": "e6-language-links-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Korrigiere zwei typische Interferenzfehler: 'make a photo' und 'You mustn't pay (du musst nicht zahlen)'.",
+					"concept": "take a photo · You don't have to (oder needn't) pay",
+					"source_link": "https://academy.zam-os.org/englisch-gymnasium-6/#lesson=e6-language-links",
+					"sample_solution": "take a photo · You don't have to (oder needn't) pay"
+				}
+			]
+		}
+	]
+}

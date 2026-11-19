@@ -45,13 +45,13 @@ const ENROL_SMOKE_CELLS = [
 ];
 
 describe("Gymnasium Bayern Full Curriculum (Klassen 5–13) Integrity & Quality Audit", () => {
-  it("verifies global uniqueness and schema compliance across all 118 remaining Gymnasium Bayern cells (Grades 5-13)", () => {
+  it("verifies global uniqueness and schema compliance across all 115 remaining Gymnasium Bayern cells (Grades 5-13)", () => {
     const allCells = listBundledCells();
     const byGymCells = allCells.filter((c) =>
       c.tile_id.startsWith("de-by:gymnasium-"),
     );
 
-    expect(byGymCells.length).toBe(118);
+    expect(byGymCells.length).toBe(115);
 
     const allAtomIds = new Set<string>();
     const allItemIds = new Set<string>();
@@ -111,7 +111,7 @@ describe("Gymnasium Bayern Full Curriculum (Klassen 5–13) Integrity & Quality 
     }
 
     expect(gradeCellCounts[5]).toBe(3);
-    expect(gradeCellCounts[6]).toBe(7);
+    expect(gradeCellCounts[6]).toBe(4);
     expect(gradeCellCounts[7]).toBe(11);
     expect(gradeCellCounts[8]).toBe(16);
     expect(gradeCellCounts[9]).toBe(15);

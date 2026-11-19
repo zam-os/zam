@@ -20,7 +20,7 @@ export interface BundledTile extends KvtTile {
 }
 
 // --- begin bundled-tile-imports ---
-// --- Fixture Imports (214 tiles) ---
+// --- Fixture Imports (219 tiles) ---
 import tile1Raw from "../../../tests/fixtures/curriculum/de-by-bos-10-optik-kvt.json" with {
   type: "json",
 };
@@ -39,16 +39,7 @@ import tile71Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-6-biol
 import tile72Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-6-biologie-saeugetiere-voegel-leichtbau-flug-kvt.json" with {
   type: "json",
 };
-import tile73Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-6-englisch-past-tenses-present-perfect-adjectives-kvt.json" with {
-  type: "json",
-};
 import tile74Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-6-geographie-europa-raeume-wirtschaft-eu-kvt.json" with {
-  type: "json",
-};
-import tile75Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-6-geschichte-rom-imperium-limes-bayern-kvt.json" with {
-  type: "json",
-};
-import tile76Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-6-geschichte-urgeschichte-aegypten-griechenland-kvt.json" with {
   type: "json",
 };
 import tile77Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-6-natur-technik-informatik-vektorgrafik-texte-kvt.json" with {
@@ -387,12 +378,6 @@ import tile122Raw from "../../../tests/fixtures/curriculum/de-by-realschule-6-de
 import tile123Raw from "../../../tests/fixtures/curriculum/de-by-realschule-6-englisch-grammatik-grundlagen-kvt.json" with {
   type: "json",
 };
-import tile124Raw from "../../../tests/fixtures/curriculum/de-by-realschule-6-geographie-deutschland-bayern-raum-kvt.json" with {
-  type: "json",
-};
-import tile125Raw from "../../../tests/fixtures/curriculum/de-by-realschule-6-geschichte-urgeschichte-antike-kvt.json" with {
-  type: "json",
-};
 import tile126Raw from "../../../tests/fixtures/curriculum/de-by-realschule-7-biologie-pflanzen-fotosynthese-kvt.json" with {
   type: "json",
 };
@@ -486,6 +471,9 @@ import tile153Raw from "../../../tests/fixtures/curriculum/zam-academy-datennetz
 import tile154Raw from "../../../tests/fixtures/curriculum/zam-academy-deutsch-grundschule-4-kvt.json" with {
   type: "json",
 };
+import tile219Raw from "../../../tests/fixtures/curriculum/zam-academy-deutsch-gymnasium-6-kvt.json" with {
+  type: "json",
+};
 import tile155Raw from "../../../tests/fixtures/curriculum/zam-academy-deutsch-mittelschule-5-kvt.json" with {
   type: "json",
 };
@@ -511,6 +499,9 @@ import tile159Raw from "../../../tests/fixtures/curriculum/zam-academy-deutsch-r
   type: "json",
 };
 import tile211Raw from "../../../tests/fixtures/curriculum/zam-academy-englisch-gymnasium-5-kvt.json" with {
+  type: "json",
+};
+import tile215Raw from "../../../tests/fixtures/curriculum/zam-academy-englisch-gymnasium-6-kvt.json" with {
   type: "json",
 };
 import tile212Raw from "../../../tests/fixtures/curriculum/zam-academy-englisch-mittelschule-5-kvt.json" with {
@@ -546,10 +537,19 @@ import tile171Raw from "../../../tests/fixtures/curriculum/zam-academy-geographi
 import tile172Raw from "../../../tests/fixtures/curriculum/zam-academy-geographie-realschule-5-kvt.json" with {
   type: "json",
 };
+import tile216Raw from "../../../tests/fixtures/curriculum/zam-academy-geographie-realschule-6-kvt.json" with {
+  type: "json",
+};
 import tile173Raw from "../../../tests/fixtures/curriculum/zam-academy-geographie-realschule-8-kvt.json" with {
   type: "json",
 };
 import tile174Raw from "../../../tests/fixtures/curriculum/zam-academy-geographie-realschule-9-kvt.json" with {
+  type: "json",
+};
+import tile217Raw from "../../../tests/fixtures/curriculum/zam-academy-geschichte-gymnasium-6-kvt.json" with {
+  type: "json",
+};
+import tile218Raw from "../../../tests/fixtures/curriculum/zam-academy-geschichte-realschule-6-kvt.json" with {
   type: "json",
 };
 import tile176Raw from "../../../tests/fixtures/curriculum/zam-academy-geschichte-realschule-8-kvt.json" with {
@@ -918,14 +918,8 @@ export const BUNDLED_TILES: Record<string, BundledTile> = {
     tile71Raw as unknown as BundledTile,
   [(tile72Raw as unknown as BundledTile).tile_id]:
     tile72Raw as unknown as BundledTile,
-  [(tile73Raw as unknown as BundledTile).tile_id]:
-    tile73Raw as unknown as BundledTile,
   [(tile74Raw as unknown as BundledTile).tile_id]:
     tile74Raw as unknown as BundledTile,
-  [(tile75Raw as unknown as BundledTile).tile_id]:
-    tile75Raw as unknown as BundledTile,
-  [(tile76Raw as unknown as BundledTile).tile_id]:
-    tile76Raw as unknown as BundledTile,
   [(tile77Raw as unknown as BundledTile).tile_id]:
     tile77Raw as unknown as BundledTile,
   [(tile78Raw as unknown as BundledTile).tile_id]:
@@ -1020,10 +1014,6 @@ export const BUNDLED_TILES: Record<string, BundledTile> = {
     tile122Raw as unknown as BundledTile,
   [(tile123Raw as unknown as BundledTile).tile_id]:
     tile123Raw as unknown as BundledTile,
-  [(tile124Raw as unknown as BundledTile).tile_id]:
-    tile124Raw as unknown as BundledTile,
-  [(tile125Raw as unknown as BundledTile).tile_id]:
-    tile125Raw as unknown as BundledTile,
   [(tile126Raw as unknown as BundledTile).tile_id]:
     tile126Raw as unknown as BundledTile,
   [(tile127Raw as unknown as BundledTile).tile_id]:
@@ -1202,6 +1192,16 @@ export const BUNDLED_TILES: Record<string, BundledTile> = {
     tile213Raw as unknown as BundledTile,
   [(tile214Raw as unknown as BundledTile).tile_id]:
     tile214Raw as unknown as BundledTile,
+  [(tile215Raw as unknown as BundledTile).tile_id]:
+    tile215Raw as unknown as BundledTile,
+  [(tile216Raw as unknown as BundledTile).tile_id]:
+    tile216Raw as unknown as BundledTile,
+  [(tile217Raw as unknown as BundledTile).tile_id]:
+    tile217Raw as unknown as BundledTile,
+  [(tile218Raw as unknown as BundledTile).tile_id]:
+    tile218Raw as unknown as BundledTile,
+  [(tile219Raw as unknown as BundledTile).tile_id]:
+    tile219Raw as unknown as BundledTile,
 };
 // --- end bundled-tile-map ---
 

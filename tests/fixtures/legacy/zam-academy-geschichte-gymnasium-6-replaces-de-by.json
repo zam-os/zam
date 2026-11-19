@@ -1,0 +1,171 @@
+{
+  "schema": 1,
+  "status": "approved",
+  "approved": "2026-11-19",
+  "source_repository": "https://github.com/zam-os/zam",
+  "source_commit": "e517a1ef709e0e6ee5f968c342affeb5b14cef35",
+  "source": "Thomas am 2026-11-18 und explizit bestätigt am 2026-11-19 im Antigravity-Arbeitschat zu zam-os/zam-academy#157 (8 A-Ersetzungen gg6-*-check aus beiden Jgst.-6-Altzellen, 0 B, 8 C keep-active, Nachbarzelle Jgst. 7 unberührt, vollständige Ablösung der beiden Jgst.-6-Altzellen beim ZAM-Sync): „Was das Mapping angeht - erteile ich die Freigabe. Das Alttoken kann der Kaiserkrönung spielt keine Rolle. … Wichtig ist mir nur, dass die Altzellen komplett durch Academyzellen ersetzt sind. Frühere Zellen sollen für neue Lerner nicht mehr erscheinen.“",
+  "neighbouring_grade_review": "de-by:gymnasium-7-geschichte-mittelalter-frankenreich-staedte-kreuzzuege-reformation contains item 01K4H7M0000000000000000J01 on Charlemagne's imperial coronation on Christmas Day 800, which LehrplanPLUS Bayern places in Grade 6 LB 6 (covered by gg6-karl-der-grosse-kaisertum). Item J02 combines Charlemagne with Grade 7 Lehnswesen and Investiturstreit, while J03/J04 are pure Grade 7 topics. Per Thomas's explicit decision on 2026-11-19, the Grade 7 cell stays untouched here, and both legacy Grade 6 cells (de-by:gymnasium-6-geschichte-urgeschichte-aegypten-griechenland and de-by:gymnasium-6-geschichte-rom-imperium-limes-bayern) are to be retired from zam-os/zam bundled-cells.ts to tests/fixtures/legacy/ in the follow-up academy:sync PR so they no longer appear for new learners.",
+  "sources": [
+    {
+      "file": "tests/fixtures/de-by-gymnasium-6-geschichte-urgeschichte-aegypten-griechenland-kvt.json",
+      "tile_id": "de-by:gymnasium-6-geschichte-urgeschichte-aegypten-griechenland",
+      "version": "2026.08.1",
+      "sha256": "5fe08fa9da2ce5dbb2626d34d98f7c83619ec4edee5b5d2a9b7897b539821cb5",
+      "source_path": "tests/fixtures/curriculum/de-by-gymnasium-6-geschichte-urgeschichte-aegypten-griechenland-kvt.json"
+    },
+    {
+      "file": "tests/fixtures/de-by-gymnasium-6-geschichte-rom-imperium-limes-bayern-kvt.json",
+      "tile_id": "de-by:gymnasium-6-geschichte-rom-imperium-limes-bayern",
+      "version": "2026.08.1",
+      "sha256": "755dfa41a6069f30246e005b8a8187c5c2dad9cfa3b40911709ab528ea990f40",
+      "source_path": "tests/fixtures/curriculum/de-by-gymnasium-6-geschichte-rom-imperium-limes-bayern-kvt.json"
+    }
+  ],
+  "rows": [
+    {
+      "de_by_cell": "de-by:gymnasium-6-geschichte-urgeschichte-aegypten-griechenland",
+      "de_by_id": "01K4YH6A000000000000000J01",
+      "old_question": "Was versteht man in der Geschichtswissenschaft unter dem Epochenbegriff der 'Neolithischen Revolution' (Übergang zur Jungsteinzeit vor ca. 10.000 v. Chr.)?",
+      "category": "A",
+      "action": "replace",
+      "academy_slug": "gg6-jungsteinzeit-wandel-check",
+      "reason": "Same atomic retrieval: what the Neolithic Revolution means (transition to sedentary life, farming and livestock). The successor quick check asks this exact question."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-6-geschichte-urgeschichte-aegypten-griechenland",
+      "de_by_id": "01K4YH6A000000000000000J02",
+      "old_question": "Vergleiche die Lebensweise der Menschen in der Altsteinzeit (Paläolithikum: Nomaden, Jäger von Großwild wie Mammut/Rentier und Sammler, Faustkeile aus Feuerstein, Höhlenmalereien in Lascaux/Altamira, Höhlen/Zeltlager) mit der Jungsteinzeit (Neolithikum ab ca. 10.000 v. Chr. im 'Fruchtbaren Halbmond': Sesshaftigkeit in festen Langhäusern, planmäßiger Anbau von Getreide wie Emmer/Einkorn, Domestikation von Schaf, Ziege, Rind, geschliffene Steinbeile, Tonkeramik zur Vorratshaltung, Webtechnik) und analysiere die gesellschaftlichen Folgen (Bevölkerungswachstum, Arbeitsteilung, Entstehung von Privateigentum).",
+      "category": "C",
+      "action": "keep-active",
+      "academy_slug": null,
+      "reason": "Multi-part comparison across Paleolithic and Neolithic economy, housing, tools, art and social consequences; split across gg6-altsteinzeit and gg6-jungsteinzeit-wandel. One history must not be spread over several cards."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-6-geschichte-urgeschichte-aegypten-griechenland",
+      "de_by_id": "01K4YH6A000000000000000J03",
+      "old_question": "Warum bezeichnete der antike griechische Historiker Herodot Ägypten als ein 'Geschenk des Nils' (Aegyptus Nili donum)?",
+      "category": "A",
+      "action": "replace",
+      "academy_slug": "gg6-niljahr-bewaesserung-check",
+      "reason": "Same atomic retrieval: why Herodotus called Egypt a gift of the Nile (annual flood depositing fertile silt). The successor quick check asks this exact question."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-6-geschichte-urgeschichte-aegypten-griechenland",
+      "de_by_id": "01K4YH6A000000000000000J04",
+      "old_question": "Analysiere die 5 Kriterien einer Hochkultur am Beispiel des Alten Ägypten: 1. Organisierte Bewässerungswirtschaft am Nil (Kanäle, Schöpfwerke / Schaduf, Dämme, Nilschwellenmessung), 2. Sakrales Gottkönigtum (Pharao als irdischer Sohn des Sonnengottes Re und Garant der Ma'at / Weltordnung), 3. Hierarchische Gesellschaftspyramide (Pharao -> Wesir/Priester -> Schreiber/Beamte -> Handwerker/Kaufleute -> Bauern/Fellachen -> Sklaven), 4. Schriftkultur und Wissenschaft (Hieroglyphen auf Papyrus, Geometrie zur Landvermessung nach der Flut, 365-Tage-Sonnenkalender, Astronomie), 5. Monumentale Monumentalarchitektur und Totenkult (Mumifizierung zur Erhaltung des Ka/Ba, Felsengräber und Pyramiden von Gizeh).",
+      "category": "C",
+      "action": "keep-active",
+      "academy_slug": null,
+      "reason": "Five-part synthesis prompt covering Nile irrigation, divine kingship, society pyramid, hieroglyphs/astronomy and mummification/Gizeh; spread across all five LB 2 lessons."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-6-geschichte-urgeschichte-aegypten-griechenland",
+      "de_by_id": "01K4YH6A000000000000000J05",
+      "old_question": "Wie nannten die antiken Griechen ihre selbstverwalteten, unabhängigen Stadtstaaten, die aus einer befestigten Stadt (mit Akropolis und Agora) und dem umliegenden Umland bestanden?",
+      "category": "A",
+      "action": "replace",
+      "academy_slug": "gg6-griechenland-polis-check",
+      "reason": "Same atomic retrieval: the Greek term for independent city-states with acropolis, agora and surrounding land (Polis). The successor quick check asks this exact question."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-6-geschichte-urgeschichte-aegypten-griechenland",
+      "de_by_id": "01K4YH6A000000000000000J06",
+      "old_question": "Erkläre die verbindenden Elemente aller Griechen trotz politischer Zerrissenheit in hunderte unabhängige Poleis (Götterhimmel auf dem Olymp mit Zeus, Epen Homers Ilias & Odyssee, Heiligtümer wie das Orakel von Delphi, Panhellenische Olympische Spiele ab 776 v. Chr.) und stelle die beiden rivalisierenden Staatsmodelle gegenüber: 1. Sparta (Militärische Oligarchie, Erziehung im Heerlager / Agoge, Kaste der Spartiaten herrscht über unterdrückte Heloten), 2. Athen (Seemacht, Handel auf der Agora, Kultur und Philosophie).",
+      "category": "C",
+      "action": "keep-active",
+      "academy_slug": null,
+      "reason": "Multi-part comparison of pan-Hellenic ties (Olympia, Delphi, Homer) with Sparta (military oligarchy, agoge, helots) and Athens; goes into Sparta details beyond the shared path and spreads over LB 3."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-6-geschichte-urgeschichte-aegypten-griechenland",
+      "de_by_id": "01K4YH6A000000000000000J07",
+      "old_question": "Wie nennt man das antike athenische Verfahren, bei dem Bürger auf Tonscherben (Ostrakon) den Namen eines Politikers einritzten, um drohende Tyrannenherrscher für 10 Jahre zu verbannen?",
+      "category": "A",
+      "action": "replace",
+      "academy_slug": "gg6-weg-zur-demokratie-solon-check",
+      "reason": "Same atomic retrieval: the Athenian procedure of writing a politicians name on a pottery shard to banish him for ten years (Scherbengericht / Ostrakismos)."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-6-geschichte-urgeschichte-aegypten-griechenland",
+      "de_by_id": "01K4YH6A000000000000000J08",
+      "old_question": "Verfolge die historische Entstehung der Attischen Demokratie in 4 Schritten (1. Adelsherrschaft und Drakonische Gesetze, 2. Solon 594 v. Chr.: Schuldentilgung, Verbot der Schuldknechtschaft und Timokratie / 4 Vermögensklassen, 3. Kleisthenes 508 v. Chr.: Phylenreform zur Durchmischung von Adel und Volk, Rat der 500, Ostrakismos, 4. Perikles um 450 v. Chr.: Taggelder / Diäten für Amtsträger zur Ermöglichung der Teilnahme armer Bürger), analysiere die Institutionen der direkten Demokratie (Ekklesia / Volksversammlung auf der Pnyx, Rat der 500 / Bule, Volksgericht / Heliaia, 10 Strategen) und diskutiere kritisch ihre Grenzen (Ausschluss von Frauen, Metöken/Fremden und Sklaven).",
+      "category": "C",
+      "action": "keep-active",
+      "academy_slug": null,
+      "reason": "Four-step constitutional history plus four institutions and exclusions of Athenian democracy; split across gg6-weg-zur-demokratie-solon, gg6-perserkriege-demokratie and gg6-attische-demokratie-perikles."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-6-geschichte-rom-imperium-limes-bayern",
+      "de_by_id": "01K4YH6R000000000000000J01",
+      "old_question": "Mit welchem mächtigen Einspruchsrecht (lateinisch für 'Ich verbiete!') konnten die römischen Volkstribune jede Senatsentscheidung zum Schutz der Plebejer sofort stoppen?",
+      "category": "A",
+      "action": "replace",
+      "academy_slug": "gg6-roemische-republik-check",
+      "reason": "Same atomic retrieval: the Latin veto right used by Roman tribunes of the plebs to stop Senate or magistrate decisions."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-6-geschichte-rom-imperium-limes-bayern",
+      "de_by_id": "01K4YH6R000000000000000J02",
+      "old_question": "Erkläre die Verfassung der Römischen Republik: 1. Die Ständekämpfe zwischen adeligen Patriziern und bürgerlichen Plebejern (Auszug auf den Heiligen Berg / Secessio plebis, Zwölftafelgesetze 450 v. Chr., Einsetzung unantastbarer Volkstribune mit Veto-Recht), 2. Die 3 fundamentalen Verfassungsprinzipien zur Verhinderung einer Alleinherrschaft (Kollegialität: mind. 2 Amtsinhaber, Annuität: Amtszeit auf exakt 1 Jahr begrenzt, Verbot der Ämterhäufung / Iteration), 3. Den klassischen Ämterlaufbahn (Cursus Honorum: Quästor -> Ädil -> Prätor -> Konsul) und die Machtstellung des Senats.",
+      "category": "C",
+      "action": "keep-active",
+      "academy_slug": null,
+      "reason": "Three-part synthesis covering Conflict of the Orders, constitutional principles, Cursus honorum and Senate; split across gg6-roemische-republik, its workshop and tasks."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-6-geschichte-rom-imperium-limes-bayern",
+      "de_by_id": "01K4YH6R000000000000000J03",
+      "old_question": "Welchen Ehrentitel (lateinisch für 'der Erhabene') verlieh der Senat im Jahr 27 v. Chr. Caesars Großneffen und Adoptivsohn Octavian, womit das römische Kaiserreich begründet wurde?",
+      "category": "A",
+      "action": "replace",
+      "academy_slug": "gg6-caesar-augustus-prinzipat-check",
+      "reason": "Same atomic retrieval: the title Augustus conferred on Octavian in 27 BC marking the start of the Roman Principate."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-6-geschichte-rom-imperium-limes-bayern",
+      "de_by_id": "01K4YH6R000000000000000J04",
+      "old_question": "Analysiere den Untergang der Römischen Republik und die Begründung des Kaiserreichs: 1. Ursachen der Krise (Verarmung der Bauernsoldaten durch endlose Eroberungskriege, Entstehung privater Heeresklientelen, die Generälen wie Marius und Sulla folgten, Sklavenaufstände unter Spartacus), 2. Gaius Julius Caesar (Eroberung Galliens 58–51 v. Chr., Überschreitung des Rubikon 'Alea iacta est', Ernennung zum Diktator auf Lebenszeit / Dictator perpetuo, Ermordung an den Iden des März 44 v. Chr.), 3. Das Prinzipat des Augustus ab 27 v. Chr. (Geschickte Fassade: 'Wiederherstellung der Republik' / Res publica restituta bei faktischer Bündelung aller Schlüsselgewalten: Volkstribunizische Gewalt, Prokonsularisches Imperium, Pontifex Maximus) und 4. Die Pax Romana / Pax Augusta.",
+      "category": "C",
+      "action": "keep-active",
+      "academy_slug": null,
+      "reason": "Four-part synthesis covering agrarian/military crisis, Caesar, Augustan Principate and Pax Romana; spread across gg6-expansion-weltreich and gg6-caesar-augustus-prinzipat."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-6-geschichte-rom-imperium-limes-bayern",
+      "de_by_id": "01K4YH6R000000000000000J05",
+      "old_question": "Wie hieß das 179 n. Chr. unter Kaiser Marc Aurel gegründete römische Legionslager an der Mündung des Regen in die Donau, aus dem die heutige bayerische Stadt Regensburg hervorging?",
+      "category": "A",
+      "action": "replace",
+      "academy_slug": "gg6-provinzen-bayern-limes-check",
+      "reason": "Same atomic retrieval: the Roman legionary camp founded in 179 AD at the Danube/Regen confluence that became Regensburg (Castra Regina)."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-6-geschichte-rom-imperium-limes-bayern",
+      "de_by_id": "01K4YH6R000000000000000J06",
+      "old_question": "Erkläre die römische Herrschaft und Kultur im heutigen Bayern: 1. Die augusteischen Alpenfeldzüge 15 v. Chr. durch Drusus und Tiberius zur Sicherung der Nordgrenze und Errichtung der Provinzen Raetia (Hauptstadt Augusta Vindelicum / Augsburg) und Noricum, 2. Der Obergermanisch-Raetische Limes (550 km langer befestigter Grenzwall mit Palisaden, Wachtürmen, Erdwällen, Mauern und Kastellen wie Weißenburg/Biriciana und Künzing zur Grenzkontrolle und Zollabwicklung gegenüber unbesetztem Germanien), 3. Römische Legionslager (z. B. Castra Regina / Regensburg mit der Porta Praetoria), 4. Romanisierung und Infrastruktur (gepflasterte Römerstraßen wie die Via Claudia Augusta, römische Gutshöfe / Villae Rusticae, Thermen mit Hypokausten-Fußbodenheizung und Latrinen).",
+      "category": "C",
+      "action": "keep-active",
+      "academy_slug": null,
+      "reason": "Four-part synthesis on Alpine campaign, Raetia/Noricum, Limes, Castra Regina and Romanisation; split across gg6-provinzen-bayern-limes figures, lab and cards."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-6-geschichte-rom-imperium-limes-bayern",
+      "de_by_id": "01K4YH6R000000000000000J07",
+      "old_question": "In welchem Jahr endete das Weströmische Reich, als der germanische Heerführer Odoaker den letzten weströmischen Kaiser Romulus Augustulus absetzte?",
+      "category": "A",
+      "action": "replace",
+      "academy_slug": "gg6-voelkerwanderung-zerfall-check",
+      "reason": "Same atomic retrieval: the year 476 AD when Odoacer deposed the last Western Roman emperor Romulus Augustulus."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-6-geschichte-rom-imperium-limes-bayern",
+      "de_by_id": "01K4YH6R000000000000000J08",
+      "old_question": "Analysiere die Transformation der Spätantike und den Untergang des Römischen Reiches: 1. Von der Christenverfolgung zur Staatsreligion (Mailänder Vereinbarung 313 n. Chr. unter Konstantin dem Großen, Erhebung des Christentums zur alleinigen Staatsreligion 380/391 n. Chr. unter Theodosius), 2. Reichsteilung von 395 n. Chr. (Weströmisches Reich mit Rom/Ravenna vs. Oströmisches/Byzantinisches Reich mit Konstantinopel), 3. Völkerwanderung (Hunnensturm 375 n. Chr. löst Kettenreaktion germanischer Wanderbewegungen aus: Westgoten plündern Rom 410, Vandalen 455), 4. Absetzung des Romulus Augustulus 476 n. Chr. und das Fortleben des römischen Erbes in Sprache (Latein / romanische Sprachen), Recht (Corpus Iuris) und Städtebau.",
+      "category": "C",
+      "action": "keep-active",
+      "academy_slug": null,
+      "reason": "Four-part synthesis mixing Late Antiquity (313/380), 395 division, Migrations, 476 fall of West Rome and Roman legacy; spread across LB 5 (gg6-christen-staatsreligion) and LB 6."
+    }
+  ]
+}

@@ -87,6 +87,12 @@
     "preview": true
   },
   {
+    "id": "zam-academy:deutsch-gymnasium-6",
+    "version": "2026.11.1",
+    "sha256": "1432225df8f54b8766f7a8f5cdfe863ac470e0bea656ad62bd4163845ea1b34d",
+    "file": "zam-academy-deutsch-gymnasium-6-kvt.json"
+  },
+  {
     "id": "zam-academy:deutsch-mittelschule-5",
     "version": "2026.11.2",
     "sha256": "2534079de82b168cfa8095e192cc538407cb2f689de676b25508153151d2782c",
@@ -140,6 +146,12 @@
     "version": "2026.11.2",
     "sha256": "cdca008f6ae1ba501da077c3f9cd302a586805a080f9a1a25ec88187f3af5940",
     "file": "zam-academy-englisch-gymnasium-5-kvt.json"
+  },
+  {
+    "id": "zam-academy:englisch-gymnasium-6",
+    "version": "2026.11.1",
+    "sha256": "ac47d211007d64ab870d44d3ed27b1686e56aa9eca16518d1a5e377f6cb2e13a",
+    "file": "zam-academy-englisch-gymnasium-6-kvt.json"
   },
   {
     "id": "zam-academy:englisch-mittelschule-5",
@@ -209,6 +221,12 @@
     "preview": true
   },
   {
+    "id": "zam-academy:geographie-realschule-6",
+    "version": "2026.11.2",
+    "sha256": "9132914afb5bf9bbfa4330d2d094cf24114828f29906cb979dbec899abb1dc55",
+    "file": "zam-academy-geographie-realschule-6-kvt.json"
+  },
+  {
     "id": "zam-academy:geographie-realschule-8",
     "version": "2026.10.1",
     "sha256": "2a0d8076bbef4b9492b6be547187908fe440b644a4d97d900b47196f16f7d4b6",
@@ -221,10 +239,22 @@
     "file": "zam-academy-geographie-realschule-9-kvt.json"
   },
   {
+    "id": "zam-academy:geschichte-gymnasium-6",
+    "version": "2026.11.1",
+    "sha256": "8245157a535c4dabe77830f653baef547574c0ecf3d114c2b97ed461a9c4bbaa",
+    "file": "zam-academy-geschichte-gymnasium-6-kvt.json"
+  },
+  {
     "id": "zam-academy:geschichte-realschule-10",
     "version": "2026.10.3",
     "sha256": "2107c61315796373e29067ca4dedd9c1f82f576fbecafc381835375a226f1210",
     "file": "zam-academy-geschichte-realschule-10-kvt.json"
+  },
+  {
+    "id": "zam-academy:geschichte-realschule-6",
+    "version": "2026.11.1",
+    "sha256": "8473095093bf3cd6fb0a404eb7a67824b8066824071cedea6fc6e5139a8ca3cb",
+    "file": "zam-academy-geschichte-realschule-6-kvt.json"
   },
   {
     "id": "zam-academy:geschichte-realschule-8",

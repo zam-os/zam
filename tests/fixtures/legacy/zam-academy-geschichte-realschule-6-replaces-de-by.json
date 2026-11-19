@@ -1,0 +1,92 @@
+{
+  "schema": 1,
+  "status": "approved",
+  "approved": "2026-11-18",
+  "source": "Thomas im Chat der Claude-Code-Desktop-Session zu PR zam-os/zam-academy#153 am 2026-11-18: „Mapping-Freigabe erteilt“. Freigegeben ist der dort vorgelegte Vorschlag 4 A / 0 B / 4 C; die vier C-Karten bleiben aktiv.",
+  "note": "Approved 4 A / 0 B / 4 C: the four A histories move to their successors via replaces; the four C cards stay active (no retired_items).",
+  "source_repository": "zam-os/zam",
+  "source_commit": "e517a1ef709e0e6ee5f968c342affeb5b14cef35",
+  "sources": [
+    {
+      "file": "tests/fixtures/de-by-realschule-6-geschichte-urgeschichte-antike-kvt.json",
+      "source_path": "tests/fixtures/curriculum/de-by-realschule-6-geschichte-urgeschichte-antike-kvt.json",
+      "sha256": "9a5938aef9c8dbb3e9b8e52544004fcdaa981438194b770157bb97ae360d156f",
+      "tile_id": "de-by:realschule-6-geschichte-urgeschichte-antike",
+      "version": "2026.08.1"
+    }
+  ],
+  "rows": [
+    {
+      "de_by_cell": "de-by:realschule-6-geschichte-urgeschichte-antike",
+      "de_by_id": "01K4G6A0000000000000000J01",
+      "de_by_question": "Welche fundamentale Wende in der menschlichen Lebensweise bezeichnet der Begriff 'Neolithische Revolution' am Übergang von der Alt- zur Jungsteinzeit?",
+      "category": "A",
+      "academy_slug": "g6-jungsteinzeit-check",
+      "action": "replace",
+      "reason": "Same atomic retrieval: the old card and g6-jungsteinzeit-check both ask what the term neolithische Revolution denotes and expect the transition to Sesshaftigkeit, Ackerbau and Viehzucht. The new binary check keeps the same correct option shape."
+    },
+    {
+      "de_by_cell": "de-by:realschule-6-geschichte-urgeschichte-antike",
+      "de_by_id": "01K4G6A0000000000000000J02",
+      "de_by_question": "Vergleiche die Lebensweise der Menschen in der Altsteinzeit (Paläolithikum: Nomaden, Jäger & Sammler, Zelte/Höhlen, Faustkeil/Speer, Höhlenmalerei) mit der Jungsteinzeit (Neolithikum: Neolithische Revolution, Sesshaftigkeit in festen Holzhäusern, Getreideanbau/Pflug, Domestizierung von Haustieren wie Rind/Schaf/Hund, Vorratshaltung in gebrannter Keramik/Tongefäßen, geschliffene Steinbeile und Webtechnik).",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "The old tier-2 prompt asks for a full comparison of Alt- and Jungsteinzeit with a long list of details. The new package splits this into g6-altsteinzeit and g6-jungsteinzeit cards and a reasoning card about Sesshaftigkeit; no single successor keeps the whole prompt and answer."
+    },
+    {
+      "de_by_cell": "de-by:realschule-6-geschichte-urgeschichte-antike",
+      "de_by_id": "01K4G6A0000000000000000J03",
+      "de_by_question": "Warum bezeichnete der antike griechische Geschichtsschreiber Herodot das Land Ägypten als 'Geschenk des Nils'?",
+      "category": "A",
+      "academy_slug": "g6-nil-check",
+      "action": "replace",
+      "reason": "Same atomic retrieval: both cards ask why Herodot called Egypt a Geschenk des Nils and expect the annual flood with water and fertile silt. The new check uses the same question with a binary choice."
+    },
+    {
+      "de_by_cell": "de-by:realschule-6-geschichte-urgeschichte-antike",
+      "de_by_id": "01K4G6A0000000000000000J04",
+      "de_by_question": "Analysiere die sechs Merkmale einer 'frühen Hochkultur' am Beispiel des Alten Ägypten: 1. Nilüberschwemmung und organisierte Bewässerungswirtschaft (Dammbau, Kanäle, Schaduf-Schöpfhebel), 2. Schriftkultur (Hieroglyphen auf Papyrus für Vorratsverwaltung und Steuern), 3. Gesellschaftspyramide (Pharao als irdischer Gott / Sohn des Re, Wesir/Beamte/Schreiber, Priester, Handwerker, Bauern/Sklaven), 4. Totenkult und Religion (Mumifizierung, Jenseitsglaube, Totengericht des Osiris, Pyramiden als Königsgräber), 5. Wissenschaft (Kalender, Geometrie/Feldvermessung), 6. Feste Städte und Verwaltung.",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "The old tier-2 prompt combines six features of a Hochkultur with irrigation, writing, society, religion, science and administration. The new package teaches them across g6-nil, g6-pharao, g6-pyramiden, g6-hochkultur and g6-technik-aegypten; one history must not be spread over several cards."
+    },
+    {
+      "de_by_cell": "de-by:realschule-6-geschichte-urgeschichte-antike",
+      "de_by_id": "01K4G6A0000000000000000J05",
+      "de_by_question": "Wer war in der Attischen Demokratie der Antike zur Mitbestimmung in der Volksversammlung (Ekklesia) wahlberechtigt?",
+      "category": "A",
+      "academy_slug": "g6-perikles-check",
+      "action": "replace",
+      "reason": "Same atomic retrieval: both cards ask who could vote in the Athenian Volksversammlung and expect adult male citizens of Athens. The new answer omits the age detail 18/20, which the lesson treats as adult."
+    },
+    {
+      "de_by_cell": "de-by:realschule-6-geschichte-urgeschichte-antike",
+      "de_by_id": "01K4G6A0000000000000000J06",
+      "de_by_question": "Erkläre den Begriff der griechischen Polis (unabhängiger Stadtstaat mit Akropolis und Agora, z. B. Athen vs. Sparta), beschreibe die Institutionen der Attischen Demokratie (Volksversammlung/Ekklesia als oberstes Organ, Rat der 500/Bule per Losverfahren, Archonten, Strategen wie Perikles und Scherbengericht/Ostrakismos zum Schutz vor Tyrannen) und diskutiere die Grenzen der antiken Demokratie im Vergleich zu modernen Demokratien (Ausschluss von Frauen, Metöken/Fremden und Sklaven; direkte statt repräsentative Demokratie).",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "The old tier-2 prompt combines Polis, all democratic institutions including Ostrakismos and Strategen, and a comparison with modern democracy. The new package splits this over g6-polis, g6-verfassungen and g6-perikles; no dedicated successor keeps the whole prompt."
+    },
+    {
+      "de_by_cell": "de-by:realschule-6-geschichte-urgeschichte-antike",
+      "de_by_id": "01K4G6A0000000000000000J07",
+      "de_by_question": "Wer begründete nach den blutigen Bürgerkriegen als erster römischer Kaiser (Prinzipat, 27 v. Chr.) eine lange Friedensepoche (Pax Romana)?",
+      "category": "A",
+      "academy_slug": "g6-caesar-augustus-merken",
+      "action": "replace",
+      "reason": "Same atomic retrieval: both cards ask who became the first Roman emperor in 27 v. Chr. and expect Augustus. The new question drops the Pax Romana phrasing, which the lesson teaches as Pax Augusta."
+    },
+    {
+      "de_by_cell": "de-by:realschule-6-geschichte-urgeschichte-antike",
+      "de_by_id": "01K4G6A0000000000000000J08",
+      "de_by_question": "Skizziere die Verfassung der Römischen Republik (Prinzipien: Kollegialität/mindestens zwei Amtsinhaber, Annuität/Amtsdauer genau 1 Jahr; Ämterlaufbahn Cursus Honorum: Quästor, Ädil, Prätor, Konsuln; Senat als mächtiger Ältestenrat der Patrizier; Volkstribune mit Veto-Recht zum Schutz der Plebejer), analysiere den Übergang zum Prinzipat unter Augustus (Pax Augusta) und beschreibe die römische Herrschaft und Grenzsicherung am Obergermanisch-Raetischen Limes im heutigen Bayern (Kastelle wie Castra Regina/Regensburg, Augusta Vindelicum/Augsburg, Aquädukte, Thermen und Romanisierung).",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "The old tier-2 prompt combines the republican constitution, the Prinzipat and Roman rule on the Limes in Bavaria. The new package splits this over g6-republik, g6-caesar-augustus and g6-provinzen; it also lists Augsburg among Limes sites, which the new lesson places as provincial capital instead."
+    }
+  ]
+}

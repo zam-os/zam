@@ -1,0 +1,40 @@
+{
+	"status": "proposal-only",
+	"approved": null,
+	"source": null,
+	"source_repository": "zam-os/zam",
+	"source_commit": "1c91042159e2488449bd5afc66891842e871ba0f",
+	"sources": [
+		{
+			"file": "tests/fixtures/de-by-gymnasium-7-deutsch-konjunktiv-indirekte-rede-passiv-syntax-kvt.json",
+			"sha256": "d00483db8b14e221103c95e61fe98ac3a0a96089c16872daa9bf3bd07686fd2b",
+			"tile_id": "de-by:gymnasium-7-deutsch-konjunktiv-indirekte-rede-passiv-syntax"
+		}
+	],
+	"rows": [
+		{
+			"old_id": "01K4D7G0000000000000000J01",
+			"category": "C",
+			"action": "keep-active",
+			"reason": "This asks for Konjunktiv I in reported speech, an explicit D7 topic."
+		},
+		{
+			"old_id": "01K4D7G0000000000000000J02",
+			"category": "C",
+			"action": "keep-active",
+			"reason": "The whole Konjunktiv and indirect-speech production task belongs to D7."
+		},
+		{
+			"old_id": "01K4D7G0000000000000000J03",
+			"category": "C",
+			"action": "keep-active",
+			"reason": "This requires naming Zustandspassiv in a specific sentence. The D6 successor asks for Vorgangspassiv and serves a different retrieval."
+		},
+		{
+			"old_id": "01K4D7G0000000000000000J04",
+			"category": "C",
+			"action": "keep-active",
+			"reason": "Only part of the prompt overlaps with D6 active and passive voice. Its infinitive punctuation and full passive-system inventory would be lost in a move."
+		}
+	]
+}
