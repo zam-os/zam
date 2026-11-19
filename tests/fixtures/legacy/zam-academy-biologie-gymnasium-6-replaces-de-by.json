@@ -1,0 +1,171 @@
+{
+  "schema": 1,
+  "status": "approved",
+  "approved": "2026-11-19",
+  "source_repository": "https://github.com/zam-os/zam",
+  "source_commit": "7a08d329919cf6888ba3ba937c3c70451c8e8990",
+  "source": "Thomas explicitly approved the listed history transfers in the Codex chat for Academy PR #158 on 2026-11-19: “Freigabe für die Kartenübernahmen erteilt”",
+  "neighbouring_grade_review": "de-by:gymnasium-5-biologie-pflanzen-bluetenbau-samen J01, J02, J07 and J08 (plant organs, germination conditions, seed structure) point to NT6 1.2 but stay keep-active in the approved mapping of biologie-gymnasium-5; this package does not claim them (question for Thomas in the PR). de-by:realschule-7-biologie-* cells belong to Realschule packages, de-by:gymnasium-7-biologie-* to Grade 7, and are left untouched.",
+  "sources": [
+    {
+      "file": "tests/fixtures/de-by-gymnasium-6-biologie-fische-amphibien-reptilien-evolution-kvt.json",
+      "tile_id": "de-by:gymnasium-6-biologie-fische-amphibien-reptilien-evolution",
+      "version": "2026.08.1",
+      "sha256": "7ffad13f1d571e1d2a8ee2e1b040f58108a4a61ed1feec652d1c6a9365d4ab0c",
+      "source_path": "tests/fixtures/curriculum/de-by-gymnasium-6-biologie-fische-amphibien-reptilien-evolution-kvt.json"
+    },
+    {
+      "file": "tests/fixtures/de-by-gymnasium-6-biologie-saeugetiere-voegel-leichtbau-flug-kvt.json",
+      "tile_id": "de-by:gymnasium-6-biologie-saeugetiere-voegel-leichtbau-flug",
+      "version": "2026.08.1",
+      "sha256": "ab9a7b01f5e7d27c40caeeb53d6a9e906aa0d9764866ea00ae15bd68e8b59805",
+      "source_path": "tests/fixtures/curriculum/de-by-gymnasium-6-biologie-saeugetiere-voegel-leichtbau-flug-kvt.json"
+    }
+  ],
+  "rows": [
+    {
+      "de_by_cell": "de-by:gymnasium-6-biologie-fische-amphibien-reptilien-evolution",
+      "old_question": "Warum fließen in den Kiemenlamellen der Knochenfische das Atemwasser und das Blut in entgegengesetzter Richtung aneinander vorbei (Gegenstromprinzip)?",
+      "category": "C",
+      "action": "keep-active",
+      "academy_slug": null,
+      "reason": "Countercurrent exchange in the gill lamellae with an oxygen yield figure goes beyond NT6 1.3, which only asks for oxygen uptake from water and air (bg6-atmungsorgane). No successor retrieves it; the history stays active.",
+      "de_by_id": "01K4YB6F000000000000000J01"
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-6-biologie-fische-amphibien-reptilien-evolution",
+      "old_question": "Erkläre die anatomischen Anpassungen der Knochenfische an das Leben im Wasser: 1. Kiemenatmung (Kiemenbögen, Kiemenblättchen, Kiemendeckel als Saug-Druck-Pumpe, Gegenstromprinzip mit > 80 % Sauerstoffextraktion), 2. Die Schwimmblase als hydrostatisches Schwebeorgan nach dem Archimedischen Prinzip (Gasaustausch über Blutgefäße/Gaskompass zum Steigen, Sinken und Schweben ohne Muskelkraft), 3. Das Seitenlinienorgan als Ferntastsinn (drucksensitive Sinneshaare in gallertgefüllten Kanälen zur Registrierung von Druckwellen und Strömungen) und 4. Äußere Befruchtung (Laichabgabe ins freie Wasser).",
+      "category": "C",
+      "action": "keep-active",
+      "academy_slug": null,
+      "reason": "Four-part prompt on gills with countercurrent, swim bladder, lateral line and external fertilisation. The package splits these ideas over bg6-atmungsorgane, bg6-schwimmen, bg6-sinnesleistungen and bg6-fortpflanzung-wasser-land; one history must not be spread over several cards.",
+      "de_by_id": "01K4YB6F000000000000000J02"
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-6-biologie-fische-amphibien-reptilien-evolution",
+      "old_question": "Welche Gliedmaßen wachsen bei der Kaulquappe während der Metamorphose als erste sichtbare Beine heran?",
+      "category": "A",
+      "action": "replace",
+      "academy_slug": "bg6-metamorphose-check",
+      "reason": "Same atomic retrieval: which legs grow first during the metamorphosis of the tadpole (the hind legs). The successor asks exactly this as a tier-1 quick check.",
+      "de_by_id": "01K4YB6F000000000000000J03"
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-6-biologie-fische-amphibien-reptilien-evolution",
+      "old_question": "Erkläre das 'Doppelleben' der Amphibien (altgriech. amphi-bios = beidseitiges Leben im Wasser und an Land): 1. Die lückenlose Metamorphose des Grasfrosches in 6 Phasen (Laichballen im Wasser -> Schlupf der Kaulquappe mit Außenkiemen -> Innenkiemen und pflanzenfressender Spiraldarm -> Entwicklung der Hinterbeine -> Durchbruch der Vorderbeine und Lungenbildung -> Rückbildung des Ruderschwanzes und Wechsel zur Fleischfresser-Nahrung beim adulten Landfrosch), 2. Atmung des erwachsenen Frosches (einfache sackförmige Lunge kombiniert mit obligatorischer feuchter Hautatmung durch Schleimdrüsen), 3. Wechselwarmheit / Poikilothermie und Winterstarre im Schlamm.",
+      "category": "C",
+      "action": "keep-active",
+      "academy_slug": null,
+      "reason": "Multi-part prompt on the six phases of metamorphosis, lung and skin breathing and torpor. bg6-metamorphose, bg6-atmungsorgane and bg6-ueberwintern cover the parts separately; no single successor keeps the whole prompt.",
+      "de_by_id": "01K4YB6F000000000000000J04"
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-6-biologie-fische-amphibien-reptilien-evolution",
+      "old_question": "Welche entscheidende evolutive Erfindung ermöglichte den Reptilien (z. B. Eidechsen, Schlangen) die Fortpflanzung an Land völlig unabhängig von Gewässern?",
+      "category": "C",
+      "action": "keep-active",
+      "academy_slug": null,
+      "reason": "The original asks for the shelled amniotic egg. The Academy item also requires internal fertilisation and asks about reptiles and birds. The broader retrieval leaves the original history on the old card.",
+      "de_by_id": "01K4YB6F000000000000000J05"
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-6-biologie-fische-amphibien-reptilien-evolution",
+      "old_question": "Erkläre die 4 anatomischen Schlüsselerfindungen, mit denen die Reptilien (Kriechtiere) als erste Wirbeltiere das Festland vollständig und dauerhaft eroberten: 1. Trockene Hornschuppenhaut aus Keratin (wasserdichter Verdunstungsschutz; Häutung bei Wachstum), 2. Leistungsfähige gekammerte Faltlunge (keine Hautatmung mehr nötig), 3. Innere Befruchtung im weiblichen Körper, 4. Das Amniotenei mit schützender Pergamentschale und extraembryonalen Hüllen (Amnion mit Fruchtwasser als 'Mini-Aquarium', Allantois als Harnsack, Dottersack) und vergleiche Blindschleiche (beinlose Echse mit Augenlidern) und Ringelnatter (Schlange mit Schuppenbrille).",
+      "category": "C",
+      "action": "keep-active",
+      "academy_slug": null,
+      "reason": "Four-part prompt on horny scales, chambered lung, internal fertilisation and the amniote egg with allantois and comparison of slow worm and grass snake; beyond NT6 in detail and spread over several lessons.",
+      "de_by_id": "01K4YB6F000000000000000J06"
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-6-biologie-fische-amphibien-reptilien-evolution",
+      "old_question": "Welches berühmte fossile Brückentier (Mosaikform) beweist mit Merkmalen von Reptilien (Zähne, langer Wirbelschwanz, Krallen) und Merkmalen von Vögeln (echte Schwungfedern, Gabelbein) den evolutiven Übergang von Reptilien zu Vögeln?",
+      "category": "C",
+      "action": "keep-active",
+      "academy_slug": null,
+      "reason": "Archaeopteryx as a transitional fossil is not part of NT6 1.4; evidence for evolution belongs to Biologie 10 (Gymnasium). The history stays active.",
+      "de_by_id": "01K4YB6F000000000000000J07"
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-6-biologie-fische-amphibien-reptilien-evolution",
+      "old_question": "Erstelle eine vergleichende Synopse aller 5 Wirbeltierklassen (Fische, Amphibien, Reptilien, Vögel, Säugetiere) anhand von 5 biologischen Kriterien: 1. Körperbedeckung, 2. Atmungsorgane, 3. Thermoregulation (wechselwarm vs. gleichwarm), 4. Fortpflanzung & Ei-Typ, 5. Herz-Kreislaufsystem und erkläre die evolutionären Schritte des historischen Landgangs der Wirbeltiere vom Quastenflosser über Ur-Amphibien (Ichthyostega) bis zu den Amnioten.",
+      "category": "C",
+      "action": "keep-active",
+      "academy_slug": null,
+      "reason": "Synopsis of all five classes including heart and circulation and the water-to-land transition via lobe-finned fish and Ichthyostega; bg6-wirbeltierklassen covers four of the criteria, the rest goes beyond NT6.",
+      "de_by_id": "01K4YB6F000000000000000J08"
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-6-biologie-saeugetiere-voegel-leichtbau-flug",
+      "old_question": "Welche 3 anatomisch-physiologischen Schlüsselmerkmale definieren eindeutig die Wirbeltierklasse der Säugetiere (Mammalia)?",
+      "category": "A",
+      "action": "replace",
+      "academy_slug": "bg6-wirbeltierklassen-check",
+      "reason": "Same atomic retrieval: the defining features of mammals (hair, constant body temperature, suckling the young with milk). The successor quick check asks exactly this.",
+      "de_by_id": "01K4YB6S000000000000000J01"
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-6-biologie-saeugetiere-voegel-leichtbau-flug",
+      "old_question": "Erkläre die evolutiven Erfolgsmerkmale der Säugetiere: 1. Gleichwarmheit / Endothermie (konstante Kerntemperatur von ca. 36–39 °C unabhängig von der Außentemperatur durch hohe Stoffwechselrate und isolierendes Fell aus Woll- und Grannenharen), 2. Lungenatmung mit Zwerchfell als Hauptatemmuskel, 3. Heterodontes Gebiss (Schneide-, Eck-, Vorbacken- und Backenzähne), 4. Fortpflanzung (echte Lebendgeburt mit Plazenta; intensive Brutpflege und Säugen der Jungen) und vergleiche die 3 Fortbewegungs-Fußkonstruktionen: Sohlengänger (Mensch/Bär), Zehengänger (Hund/Katze) und Zehenspitzengänger / Huftiere (Pferd/Reh).",
+      "category": "C",
+      "action": "keep-active",
+      "academy_slug": null,
+      "reason": "Multi-part prompt on endothermy, diaphragm, heterodont dentition, placenta and three foot postures. bg6-koerpertemperatur, bg6-gebisse and bg6-laufen-graben-klettern cover parts; placenta and diaphragm belong to later grades.",
+      "de_by_id": "01K4YB6S000000000000000J02"
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-6-biologie-saeugetiere-voegel-leichtbau-flug",
+      "old_question": "Welche Zähne bilden beim Fleischfressergebiss der Raubtiere (z. B. Wolf, Katze) die scherenartig ineinandergreifenden 'Reißzähne' zum Durchtrennen von Fleisch und Knochen?",
+      "category": "C",
+      "action": "keep-active",
+      "academy_slug": null,
+      "reason": "Asks which teeth form the carnassials (upper P4 and lower M1). bg6-gebisse asks for their function, not their tooth position; different retrieval.",
+      "de_by_id": "01K4YB6S000000000000000J03"
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-6-biologie-saeugetiere-voegel-leichtbau-flug",
+      "old_question": "Vergleiche die 3 hochspezialisierten Gebiss- und Schädelformen der Säugetiere: 1. Raubtiergebiss / Fleischfresser (dolchartige Eckzähne/Fangzähne zum Töten, scherenartige Reißzähne, Scharnier-Kiefergelenk ohne Mahlbewegung), 2. Pflanzenfressergebiss / Wiederkäuer (fehlende obere Schneidezähne mit harter Hornplatte, zahnfreie Lücke / Diastema, Schmelzleistenzähne zum Mahlen, flaches Mahl-Kiefergelenk für seitliche Kaubewegungen), 3. Nagetiergebiss (wurzellose, meißelförmige Nagezähne mit harter Schmelzvorderseite, die sich durch Abnutzung selbst schärfen) und stelle den Bezug zum Verdauungstrakt her (kurzer Fleischfresserdarm vs. riesiger Gärkammer-Darm der Pflanzenfresser mit Pansen/Blinddarm).",
+      "category": "C",
+      "action": "keep-active",
+      "academy_slug": null,
+      "reason": "Three dentition types including rodents with links to rumen and caecum; bg6-gebisse covers predator and grazer only, so no single successor keeps the whole prompt.",
+      "de_by_id": "01K4YB6S000000000000000J04"
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-6-biologie-saeugetiere-voegel-leichtbau-flug",
+      "old_question": "Wie nennt man die mit feinen Hakenstrahlen (Mikro-Klettverschluss) vernetzten Horngebilde, die die geschlossene, luftundurchlässige Fahne einer Vogelfeder bilden?",
+      "category": "C",
+      "action": "keep-active",
+      "academy_slug": null,
+      "reason": "Asks for the terms Hakenstrahlen and Bogenstrahlen of the feather vane. bg6-fliegen describes the interlocking barbs without these terms; different retrieval.",
+      "de_by_id": "01K4YB6S000000000000000J05"
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-6-biologie-saeugetiere-voegel-leichtbau-flug",
+      "old_question": "Erkläre die bionischen Leichtbauanpassungen des Vogelkörpers an das Fliegen: 1. Skelett (pneumatisierte, luftgefüllte Röhrenknochen mit inneren Verstrebungsbälkchen, zahnloser Hornschnabel, Verschmelzung zur starren Wirbelsäule/Synsacrum, großer Brustbeinkamm / Crista sterni als Ansatz für die mächtigen Flugmuskeln), 2. Federaufbau (Spule, Schaft, Federäste mit Haken- und Bogenstrahlen zur selbstreparierenden Flügelfläche; Daunenfedern zur Wärmeisolation), 3. Atmungssystem mit 5 Paaren von Luftsäcken und Durchströmungslunge (dauerhafter unidirektionaler Sauerstoffstrom bei Ein- und Ausatmung).",
+      "category": "C",
+      "action": "keep-active",
+      "academy_slug": null,
+      "reason": "Multi-part prompt on pneumatised bones, synsacrum, keel, feather structure and air sacs. bg6-fliegen-recall asks for the main flight adaptations in a shorter form; the old whole answer is not kept on one card.",
+      "de_by_id": "01K4YB6S000000000000000J06"
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-6-biologie-saeugetiere-voegel-leichtbau-flug",
+      "old_question": "Welche Flugart nutzen Greifvögel und Störche, um in aufsteigenden warmen Luftströmen (Thermik) ohne jeden Flügelschlag kreisend an Höhe zu gewinnen?",
+      "category": "A",
+      "action": "replace",
+      "academy_slug": "bg6-fliegen-check",
+      "reason": "Same atomic retrieval: the flight type of buzzards and storks rising in warm updrafts without wingbeats (Segelflug). The successor quick check asks exactly this.",
+      "de_by_id": "01K4YB6S000000000000000J07"
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-6-biologie-saeugetiere-voegel-leichtbau-flug",
+      "old_question": "Erkläre die Entstehung des dynamischen Auftriebs am gewölbten Vogelflügel nach dem Bernoulli-Prinzip (höhere Strömungsgeschwindigkeit an der gewölbten Oberseite -> Unterdruck saugt den Flügel nach oben), vergleiche die 4 Flugarten (Ruderflug/Schlagflug, Gleitflug, Segelflug, Rüttelflug beim Turmfalken), beschreibe den Aufbau des Vogeleis mit Kalkschale (Schale mit Poren, Schalenhäute, Luftkammer, Eiklar, Dotterkugel mit Keimscheibe, Hagelschnüre / Chalazen zur Zentrierung) und grenze Nesthocker (nackt, blind, hilflos, z. B. Amsel) von Nestflüchtern (voll befiedert, sehend, sofort mobil, z. B. Ente, Huhn) ab.",
+      "category": "C",
+      "action": "keep-active",
+      "academy_slug": null,
+      "reason": "Multi-part prompt on lift after Bernoulli, four flight types, the structure of the bird egg and altricial versus precocial young; spread over bg6-fliegen and bg6-nesthocker-nestfluechter and partly beyond NT6.",
+      "de_by_id": "01K4YB6S000000000000000J08"
+    }
+  ]
+}

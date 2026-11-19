@@ -7,9 +7,7 @@ import {
   enrolBundledCell,
   findBundledCellsForScope,
   getBundledCellEnrolment,
-  getBundledCellsWithStatus,
   isBundledCellInstalled,
-  listBundledCells,
   openDatabase,
 } from "../../src/kernel/index.js";
 
@@ -21,13 +19,10 @@ import {
 // and are archived in tests/fixtures/legacy/.
 // The two Biologie 6 school cells moved to zam-academy:biologie-realschule-6
 // and are archived in tests/fixtures/legacy/.
-const RS6_CELL_IDS = [
-  "de-by:realschule-6-englisch-grammatik-grundlagen",
-  "de-by:realschule-6-deutsch-wortarten-satzglieder-rechtschreibung",
-  "de-by:realschule-6-deutsch-texte-bericht-vorgangsbeschreibung",
-];
 const ACADEMY_RS6_IDS = [
   "zam-academy:biologie-realschule-6",
+  "zam-academy:deutsch-realschule-6",
+  "zam-academy:englisch-realschule-6",
   "zam-academy:geographie-realschule-6",
   "zam-academy:geschichte-realschule-6",
   "zam-academy:informatik-realschule-8",
@@ -50,38 +45,14 @@ describe("Realschule Bayern 6 Curriculum Cells (Einführungs- und Orientierungss
     rmSync(tempDir, { recursive: true, force: true });
   });
 
-  it("lists all remaining Realschule 6 school cells and their Academy successors", () => {
-    const cells = listBundledCells();
-    expect(cells.length).toBeGreaterThanOrEqual(100);
-
-    for (const cellId of RS6_CELL_IDS) {
-      const cell = cells.find((c) => c.id === cellId);
-      expect(
-        cell,
-        `Cell ${cellId} should be present in bundled cells`,
-      ).toBeDefined();
-      expect(cell?.gradeLabel).toContain("Realschule");
-      expect(cell?.atomCount).toBeGreaterThanOrEqual(2);
-      expect(cell?.inScopeAtomIds.length).toBe(cell?.atomCount);
-    }
-    for (const cellId of ACADEMY_RS6_IDS) {
-      expect(
-        cells.find((c) => c.id === cellId),
-        `Academy cell ${cellId} should be present`,
-      ).toBeDefined();
-    }
-  });
-
   it("finds all Grade 6 Realschule cells using findBundledCellsForScope", () => {
     const rs6Cells = findBundledCellsForScope({
       provider: "lehrplanplus-bayern",
       schoolType: "realschule",
       grade: 6,
     });
-    expect(rs6Cells.length).toBeGreaterThanOrEqual(
-      RS6_CELL_IDS.length + ACADEMY_RS6_IDS.length,
-    );
-    for (const cellId of [...RS6_CELL_IDS, ...ACADEMY_RS6_IDS]) {
+    expect(rs6Cells.length).toBeGreaterThanOrEqual(ACADEMY_RS6_IDS.length);
+    for (const cellId of ACADEMY_RS6_IDS) {
       expect(
         rs6Cells.some((c) => c.id === cellId),
         `findBundledCellsForScope should include ${cellId}`,
@@ -91,61 +62,36 @@ describe("Realschule Bayern 6 Curriculum Cells (Einführungs- und Orientierungss
 
   it("installs and enrols cleanly into Englisch 6 Grammatik Grundlagen", async () => {
     const userId = "01K4TESTUSER000000000000001";
-    const cellId = "de-by:realschule-6-englisch-grammatik-grundlagen";
+    const cellId = "zam-academy:englisch-realschule-6";
 
     expect(await isBundledCellInstalled(db, cellId)).toBe(false);
 
     const res = await enrolBundledCell(db, userId, cellId);
     expect(res.success).toBe(true);
     expect(res.installed).toBe(true);
-    expect(res.cardsCreated).toBe(8); // 4 atoms * 2 practice items
+    expect(res.cardsCreated).toBe(126);
     expect(res.alreadyEnrolled).toBe(false);
 
     expect(await isBundledCellInstalled(db, cellId)).toBe(true);
     const enrolment = await getBundledCellEnrolment(db, userId, cellId);
     expect(enrolment.installed).toBe(true);
     expect(enrolment.enrolled).toBe(true);
-    expect(enrolment.cardCount).toBe(8);
+    expect(enrolment.cardCount).toBe(126);
   });
 
   it("installs and enrols cleanly into Deutsch 6 Berichte und Vorgangsbeschreibung", async () => {
     const userId = "01K4TESTUSER000000000000004";
-    const cellId =
-      "de-by:realschule-6-deutsch-texte-bericht-vorgangsbeschreibung";
+    const cellId = "zam-academy:deutsch-realschule-6";
 
     const res = await enrolBundledCell(db, userId, cellId);
     expect(res.success).toBe(true);
-    expect(res.cardsCreated).toBe(4); // 2 atoms * 2 items
+    expect(res.cardsCreated).toBe(100);
 
     const reportAtoms = (await db
       .prepare(
-        "SELECT a.id, a.title, a.slug FROM learning_atoms a WHERE a.slug = 'unfallbericht-sachbericht-w-fragen-praeteritum-stil'",
+        "SELECT a.id, a.title, a.slug FROM learning_atoms a WHERE a.slug = 'd6-ereignisbericht'",
       )
       .all()) as Array<{ id: string; title: string; slug: string }>;
     expect(reportAtoms.length).toBe(1);
-  });
-
-  it("supports simultaneous enrolment in all remaining Grade 6 Realschule school cells without conflict", async () => {
-    const userId = "01K4TESTUSERALLRS6000000001";
-
-    let totalCardsCreated = 0;
-    for (const cellId of RS6_CELL_IDS) {
-      const res = await enrolBundledCell(db, userId, cellId);
-      expect(res.success).toBe(true);
-      expect(res.installed).toBe(true);
-      totalCardsCreated += res.cardsCreated;
-    }
-
-    // Two cells have eight items each, and one has four.
-    expect(totalCardsCreated).toBe(20);
-
-    const statuses = await getBundledCellsWithStatus(db, userId);
-    const rs6Statuses = statuses.filter((s) => RS6_CELL_IDS.includes(s.id));
-    expect(rs6Statuses.length).toBe(RS6_CELL_IDS.length);
-    for (const status of rs6Statuses) {
-      expect(status.installed).toBe(true);
-      expect(status.enrolled).toBe(true);
-      expect(status.cardCount).toBeGreaterThanOrEqual(4);
-    }
   });
 });

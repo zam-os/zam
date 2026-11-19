@@ -1,0 +1,4098 @@
+{
+	"$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+	"tile_id": "zam-academy:englisch-realschule-6",
+	"version": "2026.11.2",
+	"title": "Englisch 6 Realschule (ZAM Academy)",
+	"description": "Englisch 6 Realschule Bayern: 42 Lektionen zu USA, London, Regionen Großbritanniens, Alltag, Medien, Grammatik und Arbeitstechniken mit 126 Wiederholungsfragen. Natürliches Hören, Live-Sprechen und Ganzschrift ergänzen die App.",
+	"publisher": "ZAM Academy",
+	"sources": [
+		{
+			"uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/6/englisch",
+			"label": "ISB · LehrplanPLUS Englisch 6 Realschule",
+			"checked": "2026-11-17"
+		},
+		{
+			"uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/5/englisch",
+			"label": "ISB · LehrplanPLUS Englisch 5 Realschule (Vorjahr)",
+			"checked": "2026-11-17"
+		},
+		{
+			"uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/7/englisch",
+			"label": "ISB · LehrplanPLUS Englisch 7 Realschule (Folgejahr)",
+			"checked": "2026-11-17"
+		},
+		{
+			"uri": "https://en.wikipedia.org/wiki/United_States",
+			"label": "United States - Wikipedia",
+			"checked": "2026-11-17"
+		},
+		{
+			"uri": "https://en.wikipedia.org/wiki/U.S._state",
+			"label": "U.S. state - Wikipedia",
+			"checked": "2026-11-17"
+		},
+		{
+			"uri": "https://en.wikipedia.org/wiki/Climate_of_the_United_States",
+			"label": "Climate of the United States - Wikipedia",
+			"checked": "2026-11-17"
+		},
+		{
+			"uri": "https://en.wikipedia.org/wiki/Thanksgiving",
+			"label": "Thanksgiving - Wikipedia",
+			"checked": "2026-11-17"
+		},
+		{
+			"uri": "https://www.nps.gov/index.htm",
+			"label": "NPS.gov Homepage (U.S. National Park Service)",
+			"checked": "2026-11-17"
+		},
+		{
+			"uri": "https://en.wikipedia.org/wiki/London",
+			"label": "London - Wikipedia",
+			"checked": "2026-11-17"
+		},
+		{
+			"uri": "https://en.wikipedia.org/wiki/Transport_for_London",
+			"label": "Transport for London - Wikipedia",
+			"checked": "2026-11-17"
+		},
+		{
+			"uri": "https://www.london.gov.uk/",
+			"label": "Home page - London City Hall",
+			"checked": "2026-11-17"
+		},
+		{
+			"uri": "https://en.wikipedia.org/wiki/Scotland",
+			"label": "Scotland - Wikipedia",
+			"checked": "2026-11-17"
+		},
+		{
+			"uri": "https://en.wikipedia.org/wiki/Edinburgh",
+			"label": "Edinburgh - Wikipedia",
+			"checked": "2026-11-17"
+		},
+		{
+			"uri": "https://www.visitscotland.com/",
+			"label": "VisitScotland - Scotland's National Tourist Organisation",
+			"checked": "2026-11-17"
+		},
+		{
+			"uri": "https://en.wikipedia.org/wiki/Wales",
+			"label": "Wales - Wikipedia",
+			"checked": "2026-11-17"
+		},
+		{
+			"uri": "https://en.wikipedia.org/wiki/Cornwall",
+			"label": "Cornwall - Wikipedia",
+			"checked": "2026-11-17"
+		},
+		{
+			"uri": "https://www.gov.uk/government/organisations/charity-commission",
+			"label": "The Charity Commission - GOV.UK",
+			"checked": "2026-11-17"
+		},
+		{
+			"uri": "https://www.klicksafe.de/en/",
+			"label": "klicksafe.de: The EU initiative for more safety on the net",
+			"checked": "2026-11-17"
+		},
+		{
+			"uri": "https://dictionary.cambridge.org/dictionary/learner-english/",
+			"label": "Cambridge Learner’s Dictionary: Definitions & Meanings",
+			"checked": "2026-11-17"
+		},
+		{
+			"uri": "https://www.bbc.co.uk/learningenglish",
+			"label": "BBC Learning English - Homepage",
+			"checked": "2026-11-17"
+		},
+		{
+			"uri": "https://www.bbc.co.uk/bitesize",
+			"label": "Home - BBC Bitesize",
+			"checked": "2026-11-17"
+		}
+	],
+	"atoms": [
+		{
+			"id": "01M7MZP6N1G2VTB6WNX0JV7DKN",
+			"atom_uri": "urn:zam:atom:01M7MZP6N1G2VTB6WNX0JV7DKN",
+			"namespace": "zam-academy-englisch-realschule-6",
+			"slug": "e6-usa-map",
+			"title": "From coast to coast: States and cities",
+			"domain": "englisch/usa",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-usa-map",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-6",
+					"topic_code": "usa",
+					"topic_title": "First stops in the USA"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb2",
+					"topic_title": "Interkulturelle Kompetenzen",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7MZP6N2CQEZ3MZR6JAXDSMM",
+					"slug": "e6-usa-map-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie viele Bundesstaaten bilden die USA insgesamt?",
+					"concept": "50 Bundesstaaten (48 zusammenhängend plus Alaska und Hawaii)",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-usa-map",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"50 Bundesstaaten (48 zusammenhängend plus Alaska und Hawaii)",
+							"48 Bundesstaaten ohne Alaska und Hawaii"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7MZP6N2JRY1SZ6895E73751",
+					"slug": "e6-usa-map-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Warum gehört die US-Hauptstadt Washington, D.C. zu keinem Bundesstaat?",
+					"concept": "Sie bildet den eigenen Bundesdistrikt District of Columbia (D.C.) an der Ostküste.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-usa-map",
+					"sample_solution": "Sie bildet den eigenen Bundesdistrikt District of Columbia (D.C.) an der Ostküste."
+				},
+				{
+					"id": "01M7MZP6N24Z89V0E6GKKSDW6J",
+					"slug": "e6-usa-map-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "In welcher Region und an welchem Ozean liegen Seattle und Los Angeles?",
+					"concept": "Im Westen (West) an der Pazifikküste.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-usa-map",
+					"sample_solution": "Im Westen (West) an der Pazifikküste."
+				}
+			]
+		},
+		{
+			"id": "01M7MZP6N164JJRMXDZQ7ZKFJW",
+			"atom_uri": "urn:zam:atom:01M7MZP6N164JJRMXDZQ7ZKFJW",
+			"namespace": "zam-academy-englisch-realschule-6",
+			"slug": "e6-usa-weather",
+			"title": "Weather and climate across the USA",
+			"domain": "englisch/usa",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-usa-weather",
+			"prerequisites": [
+				{
+					"atom_id": "01M7MZP6N1G2VTB6WNX0JV7DKN",
+					"type": "soft",
+					"rationale": "Weather and climate across the USA builds on e6-usa-map."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-6",
+					"topic_code": "usa",
+					"topic_title": "First stops in the USA"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb2",
+					"topic_title": "Interkulturelle Kompetenzen",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb4",
+					"topic_title": "Methodische Kompetenzen",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7MZP6N2X1D405YBMA638H13",
+					"slug": "e6-usa-weather-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welcher Temperatur in Grad Celsius entsprechen 68 °F im US-Wetterbericht?",
+					"concept": "20,0 °C (angenehm mild)",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-usa-weather",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"20,0 °C (angenehm mild)",
+							"0,0 °C (Gefrierpunkt)"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7MZP6N2N4TX7714TR5113Z1",
+					"slug": "e6-usa-weather-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Bei wie viel Grad Fahrenheit liegt der Gefrierpunkt des Wassers (0,0 °C)?",
+					"concept": "Bei 32 °F.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-usa-weather",
+					"sample_solution": "Bei 32 °F."
+				},
+				{
+					"id": "01M7MZP6N298MNZMB7YPQSFEWK",
+					"slug": "e6-usa-weather-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie beschreibt ein Bericht typisches Wetter in Seattle (50 °F, Regen) im Vergleich zu Miami (86 °F)?",
+					"concept": "In Seattle ist es kühl und regnerisch (10,0 °C), in Miami warm bis heiß (30,0 °C).",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-usa-weather",
+					"sample_solution": "In Seattle ist es kühl und regnerisch (10,0 °C), in Miami warm bis heiß (30,0 °C)."
+				}
+			]
+		},
+		{
+			"id": "01M7MZP6N1M8DA18M0HHZ7W2XB",
+			"atom_uri": "urn:zam:atom:01M7MZP6N1M8DA18M0HHZ7W2XB",
+			"namespace": "zam-academy-englisch-realschule-6",
+			"slug": "e6-usa-teens",
+			"title": "City life and country life in the USA",
+			"domain": "englisch/usa",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-usa-teens",
+			"prerequisites": [
+				{
+					"atom_id": "01M7MZP6N1G2VTB6WNX0JV7DKN",
+					"type": "soft",
+					"rationale": "City life and country life in the USA builds on e6-usa-map."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-6",
+					"topic_code": "usa",
+					"topic_title": "First stops in the USA"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb2",
+					"topic_title": "Interkulturelle Kompetenzen",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7MZP6N2VFFSYESXFE8RN9Q8",
+					"slug": "e6-usa-teens-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie kommen viele Schülerinnen und Schüler in ländlichen US-Regionen morgens zur Schule?",
+					"concept": "Mit dem gelben school bus über längere Entfernungen.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-usa-teens",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Mit dem gelben school bus über längere Entfernungen.",
+							"Immer zu Fuß oder mit einer U-Bahn in fünf Minuten."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7MZP6N2SJS1NJP593ZGK45E",
+					"slug": "e6-usa-teens-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Nenne zwei typische Unterschiede zwischen dem Jugendalltag in einer US-Großstadt (z. B. Brooklyn) und auf dem Land.",
+					"concept": "Großstadt: Wohnung (apartment), kurze Wege zu U-Bahn (subway) und Parks; Land: Haus mit Garten, Schulbus und längere Fahrten mit dem Auto.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-usa-teens",
+					"sample_solution": "Großstadt: Wohnung (apartment), kurze Wege zu U-Bahn (subway) und Parks; Land: Haus mit Garten, Schulbus und längere Fahrten mit dem Auto."
+				},
+				{
+					"id": "01M7MZP6N2DP9W4HN1EZMPW37H",
+					"slug": "e6-usa-teens-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche Gemeinsamkeit haben viele US-Jugendliche in Stadt und Land am Nachmittag?",
+					"concept": "Beide besuchen häufig Schul- oder Sportklubs nach dem Unterricht.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-usa-teens",
+					"sample_solution": "Beide besuchen häufig Schul- oder Sportklubs nach dem Unterricht."
+				}
+			]
+		},
+		{
+			"id": "01M7MZP6N1PCTKAX3HTR60X6X2",
+			"atom_uri": "urn:zam:atom:01M7MZP6N1PCTKAX3HTR60X6X2",
+			"namespace": "zam-academy-englisch-realschule-6",
+			"slug": "e6-usa-green",
+			"title": "Going green: Everyday environmental choices",
+			"domain": "englisch/usa",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-usa-green",
+			"prerequisites": [
+				{
+					"atom_id": "01M7MZP6N1M8DA18M0HHZ7W2XB",
+					"type": "soft",
+					"rationale": "Going green: Everyday environmental choices builds on e6-usa-teens."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-6",
+					"topic_code": "usa",
+					"topic_title": "First stops in the USA"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb2",
+					"topic_title": "Interkulturelle Kompetenzen",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7MZP6N29VER3ZWJDK9BZ6YK",
+					"slug": "e6-usa-green-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche Struktur folgt auf 'avoid' beim Formulieren von Umweltvorsätzen?",
+					"concept": "avoid + -ing-Form (z. B. avoid buying single-use plastic)",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-usa-green",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"avoid + -ing-Form (z. B. avoid buying single-use plastic)",
+							"avoid + to + Grundform (z. B. avoid to buy)"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7MZP6N23XAHTKFRXYAB97K6",
+					"slug": "e6-usa-green-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was bedeutet 'Bring a reusable bottle' auf einem englischen Eco-Club-Flyer?",
+					"concept": "Bringe eine wiederverwendbare Trinkflasche mit.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-usa-green",
+					"sample_solution": "Bringe eine wiederverwendbare Trinkflasche mit."
+				},
+				{
+					"id": "01M7MZP6N220EG43WX2TS3Z3MX",
+					"slug": "e6-usa-green-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Formuliere auf Englisch mit 'decide' einen Vorsatz zum Energiesparen im Klassenzimmer.",
+					"concept": "We have decided to turn off the classroom lights when nobody is in the room.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-usa-green",
+					"sample_solution": "We have decided to turn off the classroom lights when nobody is in the room."
+				}
+			]
+		},
+		{
+			"id": "01M7MZP6N1MJHSSJHSEMD0EFHP",
+			"atom_uri": "urn:zam:atom:01M7MZP6N1MJHSSJHSEMD0EFHP",
+			"namespace": "zam-academy-englisch-realschule-6",
+			"slug": "e6-us-traditions",
+			"title": "Traditions and everyday culture: UK, USA & us",
+			"domain": "englisch/usa",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-us-traditions",
+			"prerequisites": [
+				{
+					"atom_id": "01M7MZP6N1G2VTB6WNX0JV7DKN",
+					"type": "soft",
+					"rationale": "Traditions and everyday culture: UK, USA & us builds on e6-usa-map."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-6",
+					"topic_code": "usa",
+					"topic_title": "First stops in the USA"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb2",
+					"topic_title": "Interkulturelle Kompetenzen",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7MZP6N2W631ZF2PS970Y24D",
+					"slug": "e6-us-traditions-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wann feiern Familien in den USA traditionell Thanksgiving?",
+					"concept": "Am vierten Donnerstag im November.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-us-traditions",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Am vierten Donnerstag im November.",
+							"Am 5. November mit Feuerwerken in London."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7MZP6N2T9C2YFMYWP9PTXQ1",
+					"slug": "e6-us-traditions-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie heißt das britische Herbstwort 'autumn' im amerikanischen Englisch?",
+					"concept": "fall",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-us-traditions",
+					"sample_solution": "fall"
+				},
+				{
+					"id": "01M7MZP6N2JFE66P0NXH0YHGDY",
+					"slug": "e6-us-traditions-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welches amerikanische Wort entspricht dem britischen 'lift' (Aufzug)?",
+					"concept": "elevator",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-us-traditions",
+					"sample_solution": "elevator"
+				}
+			]
+		},
+		{
+			"id": "01M7MZP6N2W124M4P9QNWWS6ZP",
+			"atom_uri": "urn:zam:atom:01M7MZP6N2W124M4P9QNWWS6ZP",
+			"namespace": "zam-academy-englisch-realschule-6",
+			"slug": "e6-london-city",
+			"title": "London: A diverse metropolis",
+			"domain": "englisch/london",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-london-city",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-6",
+					"topic_code": "london",
+					"topic_title": "London: Life in a metropolis"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb2",
+					"topic_title": "Interkulturelle Kompetenzen",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7MZP6N2JGPB0BTP5BP6DBNK",
+					"slug": "e6-london-city-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welcher Fluss teilt London von Westen nach Osten?",
+					"concept": "River Thames (die Themse)",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-london-city",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"River Thames (die Themse)",
+							"Mississippi River"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7MZP6N20NGSZSYWRANCTKY0",
+					"slug": "e6-london-city-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie heißt die Londoner U-Bahn in der Alltagssprache der Stadt?",
+					"concept": "the Tube (London Underground)",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-london-city",
+					"sample_solution": "the Tube (London Underground)"
+				},
+				{
+					"id": "01M7MZP6N2TRAXJYH67G3SQ1YF",
+					"slug": "e6-london-city-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Nenne ein Beispiel für kulturelle Vielfalt und ein Beispiel für wirtschaftliche Kontraste in London.",
+					"concept": "Vielfalt: über 300 gesprochene Sprachen und Märkte wie Brick Lane/Camden; Wirtschaft: internationale Finanzzentren (City, Canary Wharf) neben hohen Wohnkosten.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-london-city",
+					"sample_solution": "Vielfalt: über 300 gesprochene Sprachen und Märkte wie Brick Lane/Camden; Wirtschaft: internationale Finanzzentren (City, Canary Wharf) neben hohen Wohnkosten."
+				}
+			]
+		},
+		{
+			"id": "01M7MZP6N247RZGMYH96APKGG9",
+			"atom_uri": "urn:zam:atom:01M7MZP6N247RZGMYH96APKGG9",
+			"namespace": "zam-academy-englisch-realschule-6",
+			"slug": "e6-london-directions",
+			"title": "Finding your way in London",
+			"domain": "englisch/london",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-london-directions",
+			"prerequisites": [
+				{
+					"atom_id": "01M7MZP6N2W124M4P9QNWWS6ZP",
+					"type": "soft",
+					"rationale": "Finding your way in London builds on e6-london-city."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-6",
+					"topic_code": "london",
+					"topic_title": "London: Life in a metropolis"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb2",
+					"topic_title": "Interkulturelle Kompetenzen",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7MZP6N2WWA9NPGWRF452FFB",
+					"slug": "e6-london-directions-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche Präposition verwendest du für das Überqueren einer Brücke oder Straße von einer Seite zur anderen?",
+					"concept": "across (z. B. Go across the bridge.)",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-london-directions",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"across (z. B. Go across the bridge.)",
+							"above (z. B. Go above the bridge.)"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7MZP6N2D2C69Q989MRB49YP",
+					"slug": "e6-london-directions-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Unterscheide auf Deutsch kurz 'through Green Park' und 'along the river'.",
+					"concept": "through = durch den Park hindurch; along = am Flussufer entlang.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-london-directions",
+					"sample_solution": "through = durch den Park hindurch; along = am Flussufer entlang."
+				},
+				{
+					"id": "01M7MZP6N236K6CFRCKYZNV6GV",
+					"slug": "e6-london-directions-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie bittest du auf Englisch höflich um Wiederholung, wenn du eine Wegbeschreibung nicht verstanden hast?",
+					"concept": "Sorry, could you repeat that, please?",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-london-directions",
+					"sample_solution": "Sorry, could you repeat that, please?"
+				}
+			]
+		},
+		{
+			"id": "01M7MZP6N2R86AYXS78RYNTZS6",
+			"atom_uri": "urn:zam:atom:01M7MZP6N2R86AYXS78RYNTZS6",
+			"namespace": "zam-academy-englisch-realschule-6",
+			"slug": "e6-london-tickets",
+			"title": "Buying tickets and polite requests",
+			"domain": "englisch/london",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-london-tickets",
+			"prerequisites": [
+				{
+					"atom_id": "01M7MZP6N247RZGMYH96APKGG9",
+					"type": "soft",
+					"rationale": "Buying tickets and polite requests builds on e6-london-directions."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-6",
+					"topic_code": "london",
+					"topic_title": "London: Life in a metropolis"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb2",
+					"topic_title": "Interkulturelle Kompetenzen",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7MZP6N2HB0VPT0VSKWX5CD4",
+					"slug": "e6-london-tickets-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche Fahrkarte bestellst du am Schalter für Hin- und Rückfahrt?",
+					"concept": "a return ticket",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-london-tickets",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"a return ticket",
+							"a single ticket"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7MZP6N2BFNG19MDXZATCMJT",
+					"slug": "e6-london-tickets-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was bedeutet 'The next train leaves at 10:15 from Platform 4'?",
+					"concept": "Der nächste Zug fährt um 10:15 Uhr von Gleis 4 ab.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-london-tickets",
+					"sample_solution": "Der nächste Zug fährt um 10:15 Uhr von Gleis 4 ab."
+				},
+				{
+					"id": "01M7MZP6N25KSKMVR3B2FHATGM",
+					"slug": "e6-london-tickets-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Bestelle am Schalter höflich zwei Rückfahrkarten für Kinder nach Greenwich.",
+					"concept": "I'd like two child return tickets to Greenwich, please.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-london-tickets",
+					"sample_solution": "I'd like two child return tickets to Greenwich, please."
+				}
+			]
+		},
+		{
+			"id": "01M7MZP6N2MCT958JV9371T8X2",
+			"atom_uri": "urn:zam:atom:01M7MZP6N2MCT958JV9371T8X2",
+			"namespace": "zam-academy-englisch-realschule-6",
+			"slug": "e6-scotland",
+			"title": "Scotland: Highlands, cities and traditions",
+			"domain": "englisch/britain",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-scotland",
+			"prerequisites": [
+				{
+					"atom_id": "01M7MZP6N2W124M4P9QNWWS6ZP",
+					"type": "soft",
+					"rationale": "Scotland: Highlands, cities and traditions builds on e6-london-city."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-6",
+					"topic_code": "britain",
+					"topic_title": "Regions of Britain: Scotland & beyond"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb2",
+					"topic_title": "Interkulturelle Kompetenzen",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7MZP6N21M077SZZJZJKVFTK",
+					"slug": "e6-scotland-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was bedeutet das schottische Wort 'loch'?",
+					"concept": "See (z. B. Loch Ness, Loch Lomond)",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-scotland",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"See (z. B. Loch Ness, Loch Lomond)",
+							"Hochlandinsel im Norden"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7MZP6N2ZTJZ8SADAE6VFNKK",
+					"slug": "e6-scotland-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Unterscheide die Hauptstadt und die größte Stadt Schottlands.",
+					"concept": "Edinburgh ist die Hauptstadt, Glasgow ist die größte Stadt Schottlands (beide liegen in den Lowlands).",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-scotland",
+					"sample_solution": "Edinburgh ist die Hauptstadt, Glasgow ist die größte Stadt Schottlands (beide liegen in den Lowlands)."
+				},
+				{
+					"id": "01M7MZP6N2XW2JMDTGKYT5A74V",
+					"slug": "e6-scotland-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche zwei Sprachen stehen auf manchen Straßenschildern in den schottischen Highlands?",
+					"concept": "Englisch und Schottisch-Gälisch (Scottish Gaelic).",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-scotland",
+					"sample_solution": "Englisch und Schottisch-Gälisch (Scottish Gaelic)."
+				}
+			]
+		},
+		{
+			"id": "01M7MZP6N2CJ6MGMYDTP24HPD5",
+			"atom_uri": "urn:zam:atom:01M7MZP6N2CJ6MGMYDTP24HPD5",
+			"namespace": "zam-academy-englisch-realschule-6",
+			"slug": "e6-uk-regions",
+			"title": "Life across UK regions: Town, coast and country",
+			"domain": "englisch/britain",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-uk-regions",
+			"prerequisites": [
+				{
+					"atom_id": "01M7MZP6N2MCT958JV9371T8X2",
+					"type": "soft",
+					"rationale": "Life across UK regions: Town, coast and country builds on e6-scotland."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-6",
+					"topic_code": "britain",
+					"topic_title": "Regions of Britain: Scotland & beyond"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb2",
+					"topic_title": "Interkulturelle Kompetenzen",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7MZP6N2E362RA9EC7468KBC",
+					"slug": "e6-uk-regions-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "In welcher Region Großbritanniens sind Ortsschilder zweisprachig auf Walisisch und Englisch?",
+					"concept": "Wales (Cymru)",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-uk-regions",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Wales (Cymru)",
+							"Cornwall im Südwesten Englands"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7MZP6N2M589R7AD183J812H",
+					"slug": "e6-uk-regions-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was prägt das Leben in Küstenregionen wie Cornwall im Sommer und im Winter?",
+					"concept": "Im Sommer beleben Badegäste und Tourismus die Küste, im Winter ist es ruhiger und Buswege zur Schule sind länger.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-uk-regions",
+					"sample_solution": "Im Sommer beleben Badegäste und Tourismus die Küste, im Winter ist es ruhiger und Buswege zur Schule sind länger."
+				},
+				{
+					"id": "01M7MZP6N2P8S539B571CT932W",
+					"slug": "e6-uk-regions-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche Besonderheit verbindet Nordengland (z. B. Yorkshire) über alte Industriestädte hinaus?",
+					"concept": "Grüne Nationalparks (National Parks) und historische Städte wie York.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-uk-regions",
+					"sample_solution": "Grüne Nationalparks (National Parks) und historische Städte wie York."
+				}
+			]
+		},
+		{
+			"id": "01M7MZP6N26MBF8KXXAHPM8V8S",
+			"atom_uri": "urn:zam:atom:01M7MZP6N26MBF8KXXAHPM8V8S",
+			"namespace": "zam-academy-englisch-realschule-6",
+			"slug": "e6-travel-leaflet",
+			"title": "Planning a trip: Mediating travel pages",
+			"domain": "englisch/britain",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-travel-leaflet",
+			"prerequisites": [
+				{
+					"atom_id": "01M7MZP6N2MCT958JV9371T8X2",
+					"type": "soft",
+					"rationale": "Planning a trip: Mediating travel pages builds on e6-scotland."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-6",
+					"topic_code": "britain",
+					"topic_title": "Regions of Britain: Scotland & beyond"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb4",
+					"topic_title": "Methodische Kompetenzen",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7MZP6N2AFCQM8EY8R60FNBH",
+					"slug": "e6-travel-leaflet-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was bedeutet der Hinweis 'last entry 4:00 p.m.' auf einer englischen Besuchsseite?",
+					"concept": "Letzter Einlass um 16:00 Uhr.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-travel-leaflet",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Letzter Einlass um 16:00 Uhr.",
+							"Die Öffnungszeit beginnt um 16:00 Uhr."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7MZP6N24KX1VFN5VDHQYMZQ",
+					"slug": "e6-travel-leaflet-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie hilft dir die Wortfamilie beim Erschließen von 'a reduced ticket'?",
+					"concept": "reduced erinnert an reduzieren → eine ermäßigte Eintrittskarte.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-travel-leaflet",
+					"sample_solution": "reduced erinnert an reduzieren → eine ermäßigte Eintrittskarte."
+				},
+				{
+					"id": "01M7MZP6N2TPWRQQ6EQ5PABRZX",
+					"slug": "e6-travel-leaflet-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Mittle sinngemäß auf Deutsch: 'Bike racks must be booked in advance.'",
+					"concept": "Fahrradstellplätze müssen vorab reserviert werden.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-travel-leaflet",
+					"sample_solution": "Fahrradstellplätze müssen vorab reserviert werden."
+				}
+			]
+		},
+		{
+			"id": "01M7MZP6N2JRSKJDGEKDX058FT",
+			"atom_uri": "urn:zam:atom:01M7MZP6N2JRSKJDGEKDX058FT",
+			"namespace": "zam-academy-englisch-realschule-6",
+			"slug": "e6-music-opinions",
+			"title": "Music and culture: Giving opinions",
+			"domain": "englisch/freetime",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-music-opinions",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-6",
+					"topic_code": "freetime",
+					"topic_title": "Music, sports, travel & charity"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7MZP6N24TBAGACW9G2MJPYS",
+					"slug": "e6-music-opinions-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche Wendung leitet höflich einen Widerspruch vor dem eigenen Vorschlag ein?",
+					"concept": "I see what you mean, but …",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-music-opinions",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"I see what you mean, but …",
+							"You are wrong, stop talking!"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7MZP6N2AW9YA2CX79102P4H",
+					"slug": "e6-music-opinions-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Nenne zwei englische Wendungen, um deine persönliche Meinung zu äußern.",
+					"concept": "I think … und In my opinion, …",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-music-opinions",
+					"sample_solution": "I think … und In my opinion, …"
+				},
+				{
+					"id": "01M7MZP6N21358CDKSC3FE0G96",
+					"slug": "e6-music-opinions-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Stimme einem Vorschlag deines Partners auf Englisch freundlich zu.",
+					"concept": "That's a great idea! I agree with you.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-music-opinions",
+					"sample_solution": "That's a great idea! I agree with you."
+				}
+			]
+		},
+		{
+			"id": "01M7MZP6N2MYHRE7JHG753N5E6",
+			"atom_uri": "urn:zam:atom:01M7MZP6N2MYHRE7JHG753N5E6",
+			"namespace": "zam-academy-englisch-realschule-6",
+			"slug": "e6-us-sports",
+			"title": "Sports and big events in the USA",
+			"domain": "englisch/freetime",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-us-sports",
+			"prerequisites": [
+				{
+					"atom_id": "01M7MZP6N1G2VTB6WNX0JV7DKN",
+					"type": "soft",
+					"rationale": "Sports and big events in the USA builds on e6-usa-map."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-6",
+					"topic_code": "freetime",
+					"topic_title": "Music, sports, travel & charity"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb2",
+					"topic_title": "Interkulturelle Kompetenzen",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7MZP6N2Z65CQH4X21RZKQ64",
+					"slug": "e6-us-sports-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie heißt der in Europa gespielte Fußball im amerikanischen Englisch?",
+					"concept": "soccer",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-us-sports",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"soccer",
+							"football"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7MZP6N21BNDE3RVM3RWNXV9",
+					"slug": "e6-us-sports-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wodurch unterscheidet sich American football von soccer in Ausrüstung und Spielweise?",
+					"concept": "Beim American football tragen Spieler Helme und Schutzpolster und spielen einen ovalen Ball; soccer ist Fußball.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-us-sports",
+					"sample_solution": "Beim American football tragen Spieler Helme und Schutzpolster und spielen einen ovalen Ball; soccer ist Fußball."
+				},
+				{
+					"id": "01M7MZP6N21CMG86K365NQHEV7",
+					"slug": "e6-us-sports-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche Rolle spielen Sportevents wie ein homecoming game an US-Schulen?",
+					"concept": "Teams sind direkt an die Schule gebunden, und Schülerinnen, Schüler, Eltern und die Schulband feuern gemeinsam an.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-us-sports",
+					"sample_solution": "Teams sind direkt an die Schule gebunden, und Schülerinnen, Schüler, Eltern und die Schulband feuern gemeinsam an."
+				}
+			]
+		},
+		{
+			"id": "01M7MZP6N2K1N5W2DM2XDZGB0T",
+			"atom_uri": "urn:zam:atom:01M7MZP6N2K1N5W2DM2XDZGB0T",
+			"namespace": "zam-academy-englisch-realschule-6",
+			"slug": "e6-charity",
+			"title": "Helping others: Charity at school",
+			"domain": "englisch/freetime",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-charity",
+			"prerequisites": [
+				{
+					"atom_id": "01M7MZP6N2JRSKJDGEKDX058FT",
+					"type": "soft",
+					"rationale": "Helping others: Charity at school builds on e6-music-opinions."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-6",
+					"topic_code": "freetime",
+					"topic_title": "Music, sports, travel & charity"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb2",
+					"topic_title": "Interkulturelle Kompetenzen",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7MZP6N2HHK7AKPJYFNZF58S",
+					"slug": "e6-charity-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche Verbform steht nach der Vorschlagsfrage 'How about …?'?",
+					"concept": "Die -ing-Form (z. B. How about meeting at 9:45?)",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-charity",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Die -ing-Form (z. B. How about meeting at 9:45?)",
+							"Der Infinitiv mit to (z. B. How about to meet?)"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7MZP6N2DPE8TF6D44C09VXR",
+					"slug": "e6-charity-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was bedeutet 'to raise money for a charity' auf Deutsch?",
+					"concept": "Geld oder Spenden für einen wohltätigen Zweck sammeln.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-charity",
+					"sample_solution": "Geld oder Spenden für einen wohltätigen Zweck sammeln."
+				},
+				{
+					"id": "01M7MZP6N25V0VE41X4GH0RXP8",
+					"slug": "e6-charity-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Nenne zwei typische schulische Charity-Aktionen aus dem englischsprachigen Raum auf Englisch.",
+					"concept": "bake sale (Kuchenverkauf) und sponsored walk / fun run (Spendenlauf).",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-charity",
+					"sample_solution": "bake sale (Kuchenverkauf) und sponsored walk / fun run (Spendenlauf)."
+				}
+			]
+		},
+		{
+			"id": "01M7MZP6N2S5PNTM5EF75AFCNX",
+			"atom_uri": "urn:zam:atom:01M7MZP6N2S5PNTM5EF75AFCNX",
+			"namespace": "zam-academy-englisch-realschule-6",
+			"slug": "e6-mediation-everyday",
+			"title": "At the restaurant & shop: Everyday mediation",
+			"domain": "englisch/freetime",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-mediation-everyday",
+			"prerequisites": [
+				{
+					"atom_id": "01M7MZP6N26MBF8KXXAHPM8V8S",
+					"type": "soft",
+					"rationale": "At the restaurant & shop: Everyday mediation builds on e6-travel-leaflet."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-6",
+					"topic_code": "freetime",
+					"topic_title": "Music, sports, travel & charity"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb2",
+					"topic_title": "Interkulturelle Kompetenzen",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb4",
+					"topic_title": "Methodische Kompetenzen",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7MZP6N23WTWGDSANACPHWR8",
+					"slug": "e6-mediation-everyday-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie umschreibst du im Gespräch ein Wort über sein Gegenteil (z. B. für 'cheap')?",
+					"concept": "It is the opposite of expensive.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-mediation-everyday",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"It is the opposite of expensive.",
+							"It is another word for expensive."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7MZP6N2T2DVW7PNF950M81M",
+					"slug": "e6-mediation-everyday-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie fragst du als Sprachmittler höflich einen Kellner, ob es eine Suppe ohne Fleisch gibt?",
+					"concept": "Excuse me, does the vegetable soup have any meat in it?",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-mediation-everyday",
+					"sample_solution": "Excuse me, does the vegetable soup have any meat in it?"
+				},
+				{
+					"id": "01M7MZP6N224189SW66SNRQ34S",
+					"slug": "e6-mediation-everyday-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie umschreibst du auf Englisch ein fehlendes Wort über ein Synonym?",
+					"concept": "It is another word for … (z. B. 'Huge' is another word for 'very big').",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-mediation-everyday",
+					"sample_solution": "It is another word for … (z. B. 'Huge' is another word for 'very big')."
+				}
+			]
+		},
+		{
+			"id": "01M7MZP6N2B93HGKYVYDDZMVXR",
+			"atom_uri": "urn:zam:atom:01M7MZP6N2B93HGKYVYDDZMVXR",
+			"namespace": "zam-academy-englisch-realschule-6",
+			"slug": "e6-media-habits",
+			"title": "Screens, benefits and risks",
+			"domain": "englisch/media",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-media-habits",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-6",
+					"topic_code": "media",
+					"topic_title": "Media & digital communication"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb3",
+					"topic_title": "Text- und Medienkompetenzen",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7MZP6N28ABYA40T2KX0K43M",
+					"slug": "e6-media-habits-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welches Online-Verhalten ist ein klares Risiko für die Privatsphäre?",
+					"concept": "Den aktuellen Standort oder Passwörter öffentlich teilen (sharing location/passwords).",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-media-habits",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Den aktuellen Standort oder Passwörter öffentlich teilen (sharing location/passwords).",
+							"Neue englische Wörter in einem Lernwörterbuch nachschlagen."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7MZP6N2MFD8YCXRABNF06KK",
+					"slug": "e6-media-habits-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Nenne zwei sinnvolle Nutzungsmöglichkeiten digitaler Medien für Sechstklässler.",
+					"concept": "Vokabeln/Aussprache nachschlagen und Schulrecherchen oder Hausaufgaben abstimmen.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-media-habits",
+					"sample_solution": "Vokabeln/Aussprache nachschlagen und Schulrecherchen oder Hausaufgaben abstimmen."
+				},
+				{
+					"id": "01M7MZP6N2YJEDBAEBMXHF5N2W",
+					"slug": "e6-media-habits-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Formuliere zwei englische Sicherheitsregeln für Fotos und persönliche Daten in Chats.",
+					"concept": "Never share your password or live location publicly, and always ask before posting a friend's photo.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-media-habits",
+					"sample_solution": "Never share your password or live location publicly, and always ask before posting a friend's photo."
+				}
+			]
+		},
+		{
+			"id": "01M7MZP6N2BE8W76JETJ1BRNJJ",
+			"atom_uri": "urn:zam:atom:01M7MZP6N2BE8W76JETJ1BRNJJ",
+			"namespace": "zam-academy-englisch-realschule-6",
+			"slug": "e6-digital-messages",
+			"title": "Messages, e-mails and netiquette",
+			"domain": "englisch/media",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-digital-messages",
+			"prerequisites": [
+				{
+					"atom_id": "01M7MZP6N2B93HGKYVYDDZMVXR",
+					"type": "soft",
+					"rationale": "Messages, e-mails and netiquette builds on e6-media-habits."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-6",
+					"topic_code": "media",
+					"topic_title": "Media & digital communication"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb2",
+					"topic_title": "Interkulturelle Kompetenzen",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7MZP6N2ENB3HDCDPER34EQZ",
+					"slug": "e6-digital-messages-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche Anrede und Schlussformel passen zu einer höflichen E-Mail an eine Lehrkraft?",
+					"concept": "Dear Mr/Mrs …, … Best regards,",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-digital-messages",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Dear Mr/Mrs …, … Best regards,",
+							"HEY!! … CU later lol"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7MZP6N2PRGJ2HA133C53BKK",
+					"slug": "e6-digital-messages-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welches linking word drückt eine Schlussfolgerung aus ('deshalb / also')?",
+					"concept": "so (z. B. We missed the bus, so we walked.)",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-digital-messages",
+					"sample_solution": "so (z. B. We missed the bus, so we walked.)"
+				},
+				{
+					"id": "01M7MZP6N2JZQ2HWXA83TR1C70",
+					"slug": "e6-digital-messages-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Verbinde zwei Schritte mit 'before' und 'then': check the time / send the e-mail.",
+					"concept": "Before I send the e-mail, I check the time, and then I add a polite closing.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-digital-messages",
+					"sample_solution": "Before I send the e-mail, I check the time, and then I add a polite closing."
+				}
+			]
+		},
+		{
+			"id": "01M7MZP6N2SJMJZADRYTD0PCV5",
+			"atom_uri": "urn:zam:atom:01M7MZP6N2SJMJZADRYTD0PCV5",
+			"namespace": "zam-academy-englisch-realschule-6",
+			"slug": "e6-web-research",
+			"title": "Checking online information",
+			"domain": "englisch/media",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-web-research",
+			"prerequisites": [
+				{
+					"atom_id": "01M7MZP6N2B93HGKYVYDDZMVXR",
+					"type": "soft",
+					"rationale": "Checking online information builds on e6-media-habits."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-6",
+					"topic_code": "media",
+					"topic_title": "Media & digital communication"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb3",
+					"topic_title": "Text- und Medienkompetenzen",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb4",
+					"topic_title": "Methodische Kompetenzen",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7MZP6N290QHT7ZW4SR3JYBR",
+					"slug": "e6-web-research-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was prüfst du als Erstes, wenn du Informationen auf einer englischen Webseite nutzt?",
+					"concept": "Wer die Seite betreibt und ob Überschrift und Abschnitt zur Frage passen.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-web-research",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Wer die Seite betreibt und ob Überschrift und Abschnitt zur Frage passen.",
+							"Ob die Seite bunte Werbebanner und lange Kommentare hat."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7MZP6N2N5TNW616Z95WZKV3",
+					"slug": "e6-web-research-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Warum notiert man bei der Recherche Stichwörter (key words) statt ganzer abgeschriebener Sätze?",
+					"concept": "Mit eigenen Stichpunkten versteht man die Fakten selbst und kann sie verständlich frei vorstellen.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-web-research",
+					"sample_solution": "Mit eigenen Stichpunkten versteht man die Fakten selbst und kann sie verständlich frei vorstellen."
+				},
+				{
+					"id": "01M7MZP6N2V85Q8RG470P5GS0H",
+					"slug": "e6-web-research-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wähle aus 'Location: mostly Wyoming · Famous for: geysers' eine knappe englische Aussage für deinen Kurzvortrag.",
+					"concept": "Yellowstone National Park lies mostly in Wyoming and is famous for its geysers.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-web-research",
+					"sample_solution": "Yellowstone National Park lies mostly in Wyoming and is famous for its geysers."
+				}
+			]
+		},
+		{
+			"id": "01M7MZP6N2FPMCJM616K0NHW14",
+			"atom_uri": "urn:zam:atom:01M7MZP6N2FPMCJM616K0NHW14",
+			"namespace": "zam-academy-englisch-realschule-6",
+			"slug": "e6-some-any",
+			"title": "Indefinite pronouns: some, any, something, anybody",
+			"domain": "englisch/grammar1",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-some-any",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-6",
+					"topic_code": "grammar1",
+					"topic_title": "Grammar I: Pronouns & comparisons"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7MZP6N2SFMEXTRP5ZJ9QR9B",
+					"slug": "e6-some-any-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wann verwendest du in einer englischen Frage 'some' statt 'any'?",
+					"concept": "In höflichen Angeboten und Bitten, bei denen man ein 'Ja' erwartet (z. B. Would you like some tea?).",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-some-any",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"In höflichen Angeboten und Bitten, bei denen man ein 'Ja' erwartet (z. B. Would you like some tea?).",
+							"In jeder normalen Informationsfrage (z. B. Have you got some homework?)."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7MZP6N2BJGP29E7RW6MC89J",
+					"slug": "e6-some-any-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wann stehen 'any', 'anything' und 'anybody' im Englischen?",
+					"concept": "In verneinten Sätzen (haven't got any) und normalen Informationsfragen (Did anybody see …?).",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-some-any",
+					"sample_solution": "In verneinten Sätzen (haven't got any) und normalen Informationsfragen (Did anybody see …?)."
+				},
+				{
+					"id": "01M7MZP6N21MQ272QJEMAMKCVF",
+					"slug": "e6-some-any-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Setze richtig ein: 'I didn't see ___ in the hall, but ___ left a blue jacket.'",
+					"concept": "anything / somebody (oder someone)",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-some-any",
+					"sample_solution": "anything / somebody (oder someone)"
+				}
+			]
+		},
+		{
+			"id": "01M7MZP6N2QS5V4MS2GPBW71TK",
+			"atom_uri": "urn:zam:atom:01M7MZP6N2QS5V4MS2GPBW71TK",
+			"namespace": "zam-academy-englisch-realschule-6",
+			"slug": "e6-possessives",
+			"title": "Possessive pronouns: mine, yours, his, hers, ours, theirs",
+			"domain": "englisch/grammar1",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-possessives",
+			"prerequisites": [
+				{
+					"atom_id": "01M7MZP6N2FPMCJM616K0NHW14",
+					"type": "soft",
+					"rationale": "Possessive pronouns: mine, yours, his, hers, ours, theirs builds on e6-some-any."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-6",
+					"topic_code": "grammar1",
+					"topic_title": "Grammar I: Pronouns & comparisons"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7MZP6N2KS05JMHT05DAET0N",
+					"slug": "e6-possessives-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welches eigenständige Possessivpronomen steht ohne Nomen für 'meins / meiner' (z. B. 'This book is ...')?",
+					"concept": "mine (allein ohne nachfolgendes Nomen)",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-possessives",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"mine (allein ohne nachfolgendes Nomen)",
+							"my (als Begleiter vor einem Nomen)"
+						],
+						"correct_index": 0
+					},
+					"replaces": [
+						"01K4E6G0000000000000000J07"
+					]
+				},
+				{
+					"id": "01M7MZP6N2HYTYBSN019E68HQX",
+					"slug": "e6-possessives-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Nenne alle sechs selbstständigen Possessivpronomen ohne Nomen (ich bis sie Plural).",
+					"concept": "mine, yours, his, hers, ours, theirs.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-possessives",
+					"sample_solution": "mine, yours, his, hers, ours, theirs."
+				},
+				{
+					"id": "01M7MZP6N2C3GA7Q8XAKPWC7F5",
+					"slug": "e6-possessives-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Warum ist 'It is her's.' falsch und wie heißt der Satz richtig?",
+					"concept": "Selbstständige Possessivpronomen bekommen keinen Apostroph: richtig heißt es 'It is hers.'",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-possessives",
+					"sample_solution": "Selbstständige Possessivpronomen bekommen keinen Apostroph: richtig heißt es 'It is hers.'"
+				}
+			]
+		},
+		{
+			"id": "01M7MZP6N2BW1G7HWC1Q03ADAY",
+			"atom_uri": "urn:zam:atom:01M7MZP6N2BW1G7HWC1Q03ADAY",
+			"namespace": "zam-academy-englisch-realschule-6",
+			"slug": "e6-comparatives",
+			"title": "Comparing things: -er/-est, more/most & as … as",
+			"domain": "englisch/grammar1",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-comparatives",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-6",
+					"topic_code": "grammar1",
+					"topic_title": "Grammar I: Pronouns & comparisons"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7MZP6N2J6Y2EJETCRVRVW9X",
+					"slug": "e6-comparatives-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie lautet die unregelmäßige Steigerung (Komparativ und Superlativ) von 'good'?",
+					"concept": "good – better – (the) best",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-comparatives",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"good – better – (the) best",
+							"good – gooder – the goodest"
+						],
+						"correct_index": 0
+					},
+					"replaces": [
+						"01K4E7T0000000000000000J07"
+					]
+				},
+				{
+					"id": "01M7MZP6N2A9SC0EPQHV7BR5HB",
+					"slug": "e6-comparatives-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie steigerst du mehrsilbige Adjektive wie 'interesting' und wie einsilbige mit kurzem Vokal wie 'big'?",
+					"concept": "Mehrsilbig: more interesting / the most interesting; kurz mit betontem Vokal: bigger / the biggest (Verdopplung).",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-comparatives",
+					"sample_solution": "Mehrsilbig: more interesting / the most interesting; kurz mit betontem Vokal: bigger / the biggest (Verdopplung)."
+				},
+				{
+					"id": "01M7MZP6N20F4K1310HAQVEJF0",
+					"slug": "e6-comparatives-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie drückst du Gleichheit ('genauso groß wie') und Ungleichheit mit 'as' aus?",
+					"concept": "Gleichheit: as tall as; Ungleichheit: not as tall as (oder taller than).",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-comparatives",
+					"sample_solution": "Gleichheit: as tall as; Ungleichheit: not as tall as (oder taller than)."
+				}
+			]
+		},
+		{
+			"id": "01M7MZP6N243Y803WTSJ3W5JT5",
+			"atom_uri": "urn:zam:atom:01M7MZP6N243Y803WTSJ3W5JT5",
+			"namespace": "zam-academy-englisch-realschule-6",
+			"slug": "e6-quantifiers",
+			"title": "How much or how many? Quantifiers",
+			"domain": "englisch/grammar1",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-quantifiers",
+			"prerequisites": [
+				{
+					"atom_id": "01M7MZP6N2BW1G7HWC1Q03ADAY",
+					"type": "soft",
+					"rationale": "How much or how many? Quantifiers builds on e6-comparatives."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-6",
+					"topic_code": "grammar1",
+					"topic_title": "Grammar I: Pronouns & comparisons"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7MZP6N2GGW241W65DXWREY9",
+					"slug": "e6-quantifiers-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welches Fragewort passt zu 'luggage' oder 'information'?",
+					"concept": "How much (weil luggage und information im Englischen unzählbar sind).",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-quantifiers",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"How much (weil luggage und information im Englischen unzählbar sind).",
+							"How many (weil beide im Plural auf -s stehen)."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7MZP6N2YPN00Q8DK7Z1A7D7",
+					"slug": "e6-quantifiers-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wann benutzt du im modernen Englisch bevorzugt 'a lot of / lots of' statt 'much' oder 'many'?",
+					"concept": "In bejahten Aussagesätzen (sowohl für zählbare Plural- als auch für unzählbare Nomen).",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-quantifiers",
+					"sample_solution": "In bejahten Aussagesätzen (sowohl für zählbare Plural- als auch für unzählbare Nomen)."
+				},
+				{
+					"id": "01M7MZP6N22S0HP0HWBV19MN5V",
+					"slug": "e6-quantifiers-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Verbessere: 'We got many informations about the city.'",
+					"concept": "We got a lot of (oder lots of) information about the city. (information ohne -s!)",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-quantifiers",
+					"sample_solution": "We got a lot of (oder lots of) information about the city. (information ohne -s!)"
+				}
+			]
+		},
+		{
+			"id": "01M7MZP6N2M4SFYG6Y44JTN0A7",
+			"atom_uri": "urn:zam:atom:01M7MZP6N2M4SFYG6Y44JTN0A7",
+			"namespace": "zam-academy-englisch-realschule-6",
+			"slug": "e6-simple-past-rev",
+			"title": "Simple Past revision: Regular, irregular & did",
+			"domain": "englisch/grammar2",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-simple-past-rev",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-6",
+					"topic_code": "grammar2",
+					"topic_title": "Grammar II: Past, present perfect & future"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7MZP6N2WWM3430RVR3FGW15",
+					"slug": "e6-simple-past-rev-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie bildest du im Simple Past eine Frage oder Verneinung mit dem Hilfsverb 'did'?",
+					"concept": "did / didn't + Grundform (Infinitiv, z. B. Did you visit? / We didn't buy)",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-simple-past-rev",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"did / didn't + Grundform (Infinitiv, z. B. Did you visit? / We didn't buy)",
+							"did / didn't + 2. Verbform (z. B. Did you visited? / We didn't bought)"
+						],
+						"correct_index": 0
+					},
+					"replaces": [
+						"01K4E6G0000000000000000J03"
+					]
+				},
+				{
+					"id": "01M7MZP6N2F1DSKGKMSJQW263X",
+					"slug": "e6-simple-past-rev-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie ändern sich 'stop' und 'cry' beim Anhängen von -ed im Simple Past?",
+					"concept": "stop → stopped (p-Verdopplung nach kurzem betontem Vokal); cry → cried (y nach Konsonant wird ied).",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-simple-past-rev",
+					"sample_solution": "stop → stopped (p-Verdopplung nach kurzem betontem Vokal); cry → cried (y nach Konsonant wird ied)."
+				},
+				{
+					"id": "01M7MZP6N2X6N4VHBVC99GJ2GH",
+					"slug": "e6-simple-past-rev-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Übersetze ins Simple Past: 'Wir kauften gestern keine Souvenirs.'",
+					"concept": "We didn't buy any souvenirs yesterday.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-simple-past-rev",
+					"sample_solution": "We didn't buy any souvenirs yesterday."
+				}
+			]
+		},
+		{
+			"id": "01M7MZP6N24AY4XZ8Z5633ZC88",
+			"atom_uri": "urn:zam:atom:01M7MZP6N24AY4XZ8Z5633ZC88",
+			"namespace": "zam-academy-englisch-realschule-6",
+			"slug": "e6-past-progressive",
+			"title": "Past Progressive: Actions in progress in the past",
+			"domain": "englisch/grammar2",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-past-progressive",
+			"prerequisites": [
+				{
+					"atom_id": "01M7MZP6N2M4SFYG6Y44JTN0A7",
+					"type": "soft",
+					"rationale": "Past Progressive: Actions in progress in the past builds on e6-simple-past-rev."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-6",
+					"topic_code": "grammar2",
+					"topic_title": "Grammar II: Past, present perfect & future"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7MZP6N2F8618DD2KKS56MB6",
+					"slug": "e6-past-progressive-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Aus welchen zwei Bestandteilen wird das Past Progressive (Past Continuous) gebildet?",
+					"concept": "was / were + Grundform mit -ing (z. B. Maya was reading)",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-past-progressive",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"was / were + Grundform mit -ing (z. B. Maya was reading)",
+							"had + 3. Verbform (past participle)"
+						],
+						"correct_index": 0
+					},
+					"replaces": [
+						"01K4E7T0000000000000000J03"
+					]
+				},
+				{
+					"id": "01M7MZP6N2VDCJYTHR6X4SDGQ8",
+					"slug": "e6-past-progressive-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wann benutzt man 'was' und wann 'were' im Past Progressive?",
+					"concept": "was bei I, he, she, it; were bei you, we, they.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-past-progressive",
+					"sample_solution": "was bei I, he, she, it; were bei you, we, they."
+				},
+				{
+					"id": "01M7MZP6N29HSAJ1EFYW4DREVG",
+					"slug": "e6-past-progressive-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Schreibe auf Englisch: 'Gestern um 16:20 Uhr saßen wir nicht am See.'",
+					"concept": "Yesterday at 4:20 p.m., we weren't sitting by the lake.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-past-progressive",
+					"sample_solution": "Yesterday at 4:20 p.m., we weren't sitting by the lake."
+				}
+			]
+		},
+		{
+			"id": "01M7MZP6N24C2TDNJ7A8Q5PC0Q",
+			"atom_uri": "urn:zam:atom:01M7MZP6N24C2TDNJ7A8Q5PC0Q",
+			"namespace": "zam-academy-englisch-realschule-6",
+			"slug": "e6-simple-vs-prog",
+			"title": "Simple vs. Progressive: Present and Past",
+			"domain": "englisch/grammar2",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-simple-vs-prog",
+			"prerequisites": [
+				{
+					"atom_id": "01M7MZP6N24AY4XZ8Z5633ZC88",
+					"type": "soft",
+					"rationale": "Simple vs. Progressive: Present and Past builds on e6-past-progressive."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-6",
+					"topic_code": "grammar2",
+					"topic_title": "Grammar II: Past, present perfect & future"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7MZP6N2DPJ7JWN7SKHGT0S3",
+					"slug": "e6-simple-vs-prog-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wann nutzt man das Present Progressive statt des Simple Present?",
+					"concept": "Für Handlungen, die genau jetzt im Sprechmoment ablaufen (z. B. Look!, now), statt für Gewohnheiten.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-simple-vs-prog",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Für Handlungen, die genau jetzt im Sprechmoment ablaufen (z. B. Look!, now), statt für Gewohnheiten.",
+							"Für regelmäßige Gewohnheiten, feste Fahrpläne und allgemeine Tatsachen (z. B. always, every day)."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7MZP6N2DS33PMTDTK3Y522C",
+					"slug": "e6-simple-vs-prog-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche Zeitform beschreibt beim Erzählen die längere Hintergrundhandlung und welche die plötzliche Unterbrechung?",
+					"concept": "Hintergrundhandlung: Past Progressive (was/were + -ing); kurze Unterbrechung: Simple Past.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-simple-vs-prog",
+					"sample_solution": "Hintergrundhandlung: Past Progressive (was/were + -ing); kurze Unterbrechung: Simple Past."
+				},
+				{
+					"id": "01M7MZP6N21W2RNDHV33ES8BDR",
+					"slug": "e6-simple-vs-prog-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Setze passend ein: 'While we ___ (walk) through the park, it suddenly ___ (start) to rain.'",
+					"concept": "were walking / started",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-simple-vs-prog",
+					"sample_solution": "were walking / started"
+				}
+			]
+		},
+		{
+			"id": "01M7MZP6N2EKNY7C2546KNYZ8R",
+			"atom_uri": "urn:zam:atom:01M7MZP6N2EKNY7C2546KNYZ8R",
+			"namespace": "zam-academy-englisch-realschule-6",
+			"slug": "e6-present-perfect-form",
+			"title": "Present Perfect Simple: Have/has + past participle",
+			"domain": "englisch/grammar2",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-present-perfect-form",
+			"prerequisites": [
+				{
+					"atom_id": "01M7MZP6N2M4SFYG6Y44JTN0A7",
+					"type": "soft",
+					"rationale": "Present Perfect Simple: Have/has + past participle builds on e6-simple-past-rev."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-6",
+					"topic_code": "grammar2",
+					"topic_title": "Grammar II: Past, present perfect & future"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7MZP6N2219SSFX94589R0YY",
+					"slug": "e6-present-perfect-form-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Aus welchen Teilen besteht das Present Perfect Simple?",
+					"concept": "have / has + past participle (3. Verbform)",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-present-perfect-form",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"have / has + past participle (3. Verbform)",
+							"was / were + past participle (3. Verbform)"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7MZP6N2R7ME1WDZ8FPG2HVC",
+					"slug": "e6-present-perfect-form-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie lauten Frage und verneinte Kurzantwort zu 'She has written an e-mail'?",
+					"concept": "Has she written an e-mail? — No, she hasn't.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-present-perfect-form",
+					"sample_solution": "Has she written an e-mail? — No, she hasn't."
+				},
+				{
+					"id": "01M7MZP6N28ATH7R95AW44D6EM",
+					"slug": "e6-present-perfect-form-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wofür steht 's in 'He's lost his cap' — für 'is' oder 'has'?",
+					"concept": "Für 'has' (Present Perfect: he has lost his cap), erkennbar am past participle 'lost' mit dem direkten Objekt 'his cap' (ohne Objekt hieße 'he is lost' einfach 'er hat sich verirrt').",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-present-perfect-form",
+					"sample_solution": "Für 'has' (Present Perfect: he has lost his cap), erkennbar am past participle 'lost' mit dem direkten Objekt 'his cap' (ohne Objekt hieße 'he is lost' einfach 'er hat sich verirrt')."
+				}
+			]
+		},
+		{
+			"id": "01M7MZP6N2WMRVT21VRHSJC3KJ",
+			"atom_uri": "urn:zam:atom:01M7MZP6N2WMRVT21VRHSJC3KJ",
+			"namespace": "zam-academy-englisch-realschule-6",
+			"slug": "e6-present-perfect-use",
+			"title": "Present Perfect: Recent actions & present results",
+			"domain": "englisch/grammar2",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-present-perfect-use",
+			"prerequisites": [
+				{
+					"atom_id": "01M7MZP6N2EKNY7C2546KNYZ8R",
+					"type": "soft",
+					"rationale": "Present Perfect: Recent actions & present results builds on e6-present-perfect-form."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-6",
+					"topic_code": "grammar2",
+					"topic_title": "Grammar II: Past, present perfect & future"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7MZP6N2ACW8NHYZVGQ55Z1N",
+					"slug": "e6-present-perfect-use-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche zwei Gegenwartsbezüge drückt das Present Perfect Simple in Klasse 6 aus?",
+					"concept": "Eine gerade eben abgeschlossene Handlung (recent action) oder ein heutiges Ergebnis einer Handlung (present result).",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-present-perfect-use",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Eine gerade eben abgeschlossene Handlung (recent action) oder ein heutiges Ergebnis einer Handlung (present result).",
+							"Einen abgeschlossenen Zeitpunkt wie 'last summer' oder 'in 2019'."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7MZP6N2JK0QM7TE6KXD6GE4",
+					"slug": "e6-present-perfect-use-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wo steht 'just' und wo steht 'yet' im Present-Perfect-Satz?",
+					"concept": "just steht zwischen have/has und der 3. Form (has just stopped); yet steht am Satzende in Verneinung und Frage.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-present-perfect-use",
+					"sample_solution": "just steht zwischen have/has und der 3. Form (has just stopped); yet steht am Satzende in Verneinung und Frage."
+				},
+				{
+					"id": "01M7MZP6N20NDCMMYN8B090N2C",
+					"slug": "e6-present-perfect-use-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Drücke auf Englisch im Present Perfect aus, dass dein Schlüssel weg ist und du die Tür jetzt nicht öffnen kannst.",
+					"concept": "I have lost my key, so I can't open the door now.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-present-perfect-use",
+					"sample_solution": "I have lost my key, so I can't open the door now."
+				}
+			]
+		},
+		{
+			"id": "01M7MZP6N2TVRHWNPBNJPDW5WV",
+			"atom_uri": "urn:zam:atom:01M7MZP6N2TVRHWNPBNJPDW5WV",
+			"namespace": "zam-academy-englisch-realschule-6",
+			"slug": "e6-will-future",
+			"title": "Will-future: Predictions and instant decisions",
+			"domain": "englisch/grammar2",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-will-future",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-6",
+					"topic_code": "grammar2",
+					"topic_title": "Grammar II: Past, present perfect & future"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7MZP6N2TS1XS5HPG4PM2S06",
+					"slug": "e6-will-future-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Für welche zwei Situationen verwendest du in Klasse 6 das will-future?",
+					"concept": "Für Vorhersagen/Vermutungen (z. B. mit I think / probably) und spontane Entschlüsse im Sprechmoment.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-will-future",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Für Vorhersagen/Vermutungen (z. B. mit I think / probably) und spontane Entschlüsse im Sprechmoment.",
+							"Für bereits lange beschlossene Urlaubspläne aus dem letzten Monat."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7MZP6N22Y9481W3YM06BPC3",
+					"slug": "e6-will-future-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie lautet die verneinte Kurzform von 'will not' (für alle Personen)?",
+					"concept": "won't (niemals *willn't, kein -s in der 3. Person).",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-will-future",
+					"sample_solution": "won't (niemals *willn't, kein -s in der 3. Person)."
+				},
+				{
+					"id": "01M7MZP6N2B09851HS956YBP2E",
+					"slug": "e6-will-future-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Reagiere spontan auf Englisch, weil die Türglocke läutet: 'Ich mache auf!'",
+					"concept": "Hold on, I'll open the door!",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-will-future",
+					"sample_solution": "Hold on, I'll open the door!"
+				}
+			]
+		},
+		{
+			"id": "01M7MZP6N24XSD0BT484SFH7ER",
+			"atom_uri": "urn:zam:atom:01M7MZP6N24XSD0BT484SFH7ER",
+			"namespace": "zam-academy-englisch-realschule-6",
+			"slug": "e6-going-to-future",
+			"title": "Going-to-future: Intentions and visible signs",
+			"domain": "englisch/grammar2",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-going-to-future",
+			"prerequisites": [
+				{
+					"atom_id": "01M7MZP6N2TVRHWNPBNJPDW5WV",
+					"type": "soft",
+					"rationale": "Going-to-future: Intentions and visible signs builds on e6-will-future."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-6",
+					"topic_code": "grammar2",
+					"topic_title": "Grammar II: Past, present perfect & future"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7MZP6N234J801MM8HDQTPJF",
+					"slug": "e6-going-to-future-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche Zukunftsform nutzt man im Englischen für bereits gefasste feste Pläne und Absichten (z. B. für das Wochenende)?",
+					"concept": "going-to-future (am / is / are + going to + Grundform)",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-going-to-future",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"going-to-future (am / is / are + going to + Grundform)",
+							"Simple Past (2. Verbform)"
+						],
+						"correct_index": 0
+					},
+					"replaces": [
+						"01K4E7T0000000000000000J05"
+					]
+				},
+				{
+					"id": "01M7MZP6N2FB0C6Y6F6Q0RY7SR",
+					"slug": "e6-going-to-future-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche zweite Situation neben festen Absichten wird mit dem going-to-future ausgedrückt?",
+					"concept": "Eine Vorhersage anhand klarer sichtbarer Anzeichen in der Gegenwart (z. B. dunkle Wolken: It is going to rain).",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-going-to-future",
+					"sample_solution": "Eine Vorhersage anhand klarer sichtbarer Anzeichen in der Gegenwart (z. B. dunkle Wolken: It is going to rain)."
+				},
+				{
+					"id": "01M7MZP6N23EW25FCRSVKXKMNX",
+					"slug": "e6-going-to-future-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Verbessere den Fehler: 'Tomorrow Tom going to bake an apple pie.'",
+					"concept": "Tomorrow Tom is going to bake an apple pie. (Hilfsverb is vor going to!)",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-going-to-future",
+					"sample_solution": "Tomorrow Tom is going to bake an apple pie. (Hilfsverb is vor going to!)"
+				}
+			]
+		},
+		{
+			"id": "01M7MZP6N2F3BXQWP1VDEN4KP1",
+			"atom_uri": "urn:zam:atom:01M7MZP6N2F3BXQWP1VDEN4KP1",
+			"namespace": "zam-academy-englisch-realschule-6",
+			"slug": "e6-word-formation",
+			"title": "Word building: un-, -ful, -less, -y and -ing",
+			"domain": "englisch/words_texts",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-word-formation",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-6",
+					"topic_code": "words_texts",
+					"topic_title": "Words, texts & strategies"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb4",
+					"topic_title": "Methodische Kompetenzen",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7MZP6N2VHNHMSSSVXMMBTE4",
+					"slug": "e6-word-formation-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was bedeutet die Nachsilbe '-less' am Wortende (z. B. careless, helpless)?",
+					"concept": "ohne (z. B. careless = unachtsam / ohne Sorgfalt)",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-word-formation",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"ohne (z. B. careless = unachtsam / ohne Sorgfalt)",
+							"voll von (z. B. helpful = hilfsbereit)"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7MZP6N2DP8MS6GSB5G18HJ6",
+					"slug": "e6-word-formation-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche Aufgabe hat das Präfix 'un-' und welche das Suffix '-y'?",
+					"concept": "un- bildet das Gegenteil (unfriendly), -y bildet Adjektive aus Nomen (sunny, windy, rainy).",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-word-formation",
+					"sample_solution": "un- bildet das Gegenteil (unfriendly), -y bildet Adjektive aus Nomen (sunny, windy, rainy)."
+				},
+				{
+					"id": "01M7MZP6N2DSTQXG8E3Y5RMW9Y",
+					"slug": "e6-word-formation-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was bewirkt '-ing' am Satzanfang wie in 'Swimming in the loch is cold'?",
+					"concept": "Es nominalisiert das Verb (aus dem Verb swim wird das Nomen das Schwimmen).",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-word-formation",
+					"sample_solution": "Es nominalisiert das Verb (aus dem Verb swim wird das Nomen das Schwimmen)."
+				}
+			]
+		},
+		{
+			"id": "01M7MZP6N2S583MTV7AE8VSGCR",
+			"atom_uri": "urn:zam:atom:01M7MZP6N2S583MTV7AE8VSGCR",
+			"namespace": "zam-academy-englisch-realschule-6",
+			"slug": "e6-chunks-prepositions",
+			"title": "Collocations, phrasal verbs & prepositions",
+			"domain": "englisch/words_texts",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-chunks-prepositions",
+			"prerequisites": [
+				{
+					"atom_id": "01M7MZP6N247RZGMYH96APKGG9",
+					"type": "soft",
+					"rationale": "Collocations, phrasal verbs & prepositions builds on e6-london-directions."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-6",
+					"topic_code": "words_texts",
+					"topic_title": "Words, texts & strategies"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7MZP6N2SZ6M6XDKBWYWAPDJ",
+					"slug": "e6-chunks-prepositions-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie heißt 'zu Fuß gehen' als feste englische Kollokation?",
+					"concept": "to go on foot",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-chunks-prepositions",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"to go on foot",
+							"to go by foot"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7MZP6N2G3QT2PSKQ900334R",
+					"slug": "e6-chunks-prepositions-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welches phrasal verb bedeutet 'auf jemanden oder etwas aufpassen'?",
+					"concept": "to look after (z. B. look after the cat)",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-chunks-prepositions",
+					"sample_solution": "to look after (z. B. look after the cat)"
+				},
+				{
+					"id": "01M7MZP6N2G6QYW6RHN7X2XQSB",
+					"slug": "e6-chunks-prepositions-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welches Verb gehört richtig zu 'a photo' und welches zu 'a mistake'?",
+					"concept": "to take a photo; to make a mistake.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-chunks-prepositions",
+					"sample_solution": "to take a photo; to make a mistake."
+				}
+			]
+		},
+		{
+			"id": "01M7MZP6N29BJR7248EQCQC02Y",
+			"atom_uri": "urn:zam:atom:01M7MZP6N29BJR7248EQCQC02Y",
+			"namespace": "zam-academy-englisch-realschule-6",
+			"slug": "e6-infinitive-ing",
+			"title": "Verb patterns: to-infinitive or -ing?",
+			"domain": "englisch/words_texts",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-infinitive-ing",
+			"prerequisites": [
+				{
+					"atom_id": "01M7MZP6N1PCTKAX3HTR60X6X2",
+					"type": "soft",
+					"rationale": "Verb patterns: to-infinitive or -ing? builds on e6-usa-green."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-6",
+					"topic_code": "words_texts",
+					"topic_title": "Words, texts & strategies"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7MZP6N2WBKPZRKMYH2XYM5N",
+					"slug": "e6-infinitive-ing-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche Verbform steht nach 'decide' und 'hope'?",
+					"concept": "to + Grundform (z. B. decide to visit, hope to see)",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-infinitive-ing",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"to + Grundform (z. B. decide to visit, hope to see)",
+							"Die -ing-Form ohne to (z. B. decide visiting)"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7MZP6N2GFMW6TG14M0KY700",
+					"slug": "e6-infinitive-ing-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Nenne drei englische Verben aus Klasse 6, nach denen die -ing-Form steht.",
+					"concept": "avoid, enjoy, finish (sowie keep).",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-infinitive-ing",
+					"sample_solution": "avoid, enjoy, finish (sowie keep)."
+				},
+				{
+					"id": "01M7MZP6N24HVQFMRVM5V540GE",
+					"slug": "e6-infinitive-ing-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Verbessere den Satz: 'Mia enjoys to listen to folk music.'",
+					"concept": "Mia enjoys listening to folk music.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-infinitive-ing",
+					"sample_solution": "Mia enjoys listening to folk music."
+				}
+			]
+		},
+		{
+			"id": "01M7MZP6N2ZC9K1THR1RCCXYGA",
+			"atom_uri": "urn:zam:atom:01M7MZP6N2ZC9K1THR1RCCXYGA",
+			"namespace": "zam-academy-englisch-realschule-6",
+			"slug": "e6-classroom-grammar-terms",
+			"title": "Classroom phrases & grammar words",
+			"domain": "englisch/words_texts",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-classroom-grammar-terms",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-6",
+					"topic_code": "words_texts",
+					"topic_title": "Words, texts & strategies"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb4",
+					"topic_title": "Methodische Kompetenzen",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7MZP6N24PQAZ7S5PHE9E05B",
+					"slug": "e6-classroom-grammar-terms-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie fragst du im Unterricht höflich nach der aktuellen Buchseite?",
+					"concept": "Excuse me, what page are we on?",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-classroom-grammar-terms",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Excuse me, what page are we on?",
+							"Where is page?"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7MZP6N2MRW6071SG9QY6FPJ",
+					"slug": "e6-classroom-grammar-terms-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wofür stehen im Wörterbuch die Abkürzungen 'n.', 'v.', 'adj.' und 'prep.'?",
+					"concept": "noun (Nomen), verb (Verb), adjective (Adjektiv) und preposition (Präposition).",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-classroom-grammar-terms",
+					"sample_solution": "noun (Nomen), verb (Verb), adjective (Adjektiv) und preposition (Präposition)."
+				},
+				{
+					"id": "01M7MZP6N2JZWKDKTFRN7G9SJH",
+					"slug": "e6-classroom-grammar-terms-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was musst du nachschlagen, wenn in einer Aufgabe 'past participle' verlangt wird?",
+					"concept": "Die 3. Stammform des Verbs (z. B. written, seen, finished).",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-classroom-grammar-terms",
+					"sample_solution": "Die 3. Stammform des Verbs (z. B. written, seen, finished)."
+				}
+			]
+		},
+		{
+			"id": "01M7MZP6N25K1R67BXQKY9KRM2",
+			"atom_uri": "urn:zam:atom:01M7MZP6N25K1R67BXQKY9KRM2",
+			"namespace": "zam-academy-englisch-realschule-6",
+			"slug": "e6-pronunciation",
+			"title": "Sounds, spelling and sentence stress",
+			"domain": "englisch/words_texts",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-pronunciation",
+			"prerequisites": [
+				{
+					"atom_id": "01M7MZP6N2ZC9K1THR1RCCXYGA",
+					"type": "soft",
+					"rationale": "Sounds, spelling and sentence stress builds on e6-classroom-grammar-terms."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-6",
+					"topic_code": "words_texts",
+					"topic_title": "Words, texts & strategies"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb4",
+					"topic_title": "Methodische Kompetenzen",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7MZP6N2F1069TJRTD96Q5S5",
+					"slug": "e6-pronunciation-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wann spricht man Funktionswörter wie 'can' in der starken Betonung (strong form /kæn/)?",
+					"concept": "Bei Hervorhebung, Kontrast oder in Kurzantworten wie 'Yes, I CAN!'.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-pronunciation",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Bei Hervorhebung, Kontrast oder in Kurzantworten wie 'Yes, I CAN!'.",
+							"Immer unbetont mitten im schnellen Aussagesatz."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7MZP6N2S7H7MV8GPBAZ3QX6",
+					"slug": "e6-pronunciation-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welcher Konsonant bleibt in den Wörtern 'island' und 'knight' stumm?",
+					"concept": "In 'island' ist das s stumm (/ˈaɪlənd/), in 'knight' das k (/naɪt/).",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-pronunciation",
+					"sample_solution": "In 'island' ist das s stumm (/ˈaɪlənd/), in 'knight' das k (/naɪt/)."
+				},
+				{
+					"id": "01M7MZP6N2ZBY35414F3XSHXYD",
+					"slug": "e6-pronunciation-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Woran erkennst du in einem Lernwörterbuch wie Cambridge Dictionary, welche Silbe betont wird?",
+					"concept": "Am kleinen senkrechten Betonungsstrich (ˈ) direkt vor der betonten Silbe in der Lautschrift.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-pronunciation",
+					"sample_solution": "Am kleinen senkrechten Betonungsstrich (ˈ) direkt vor der betonten Silbe in der Lautschrift."
+				}
+			]
+		},
+		{
+			"id": "01M7MZP6N2FPAX74A3SA65MF8Q",
+			"atom_uri": "urn:zam:atom:01M7MZP6N2FPAX74A3SA65MF8Q",
+			"namespace": "zam-academy-englisch-realschule-6",
+			"slug": "e6-listening-stories",
+			"title": "Listening: Conversations and short clips",
+			"domain": "englisch/words_texts",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-listening-stories",
+			"prerequisites": [
+				{
+					"atom_id": "01M7MZP6N164JJRMXDZQ7ZKFJW",
+					"type": "soft",
+					"rationale": "Listening: Conversations and short clips builds on e6-usa-weather."
+				},
+				{
+					"atom_id": "01M7MZP6N2R86AYXS78RYNTZS6",
+					"type": "soft",
+					"rationale": "Listening: Conversations and short clips builds on e6-london-tickets."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-6",
+					"topic_code": "words_texts",
+					"topic_title": "Words, texts & strategies"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb4",
+					"topic_title": "Methodische Kompetenzen",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7MZP6N2FFV0TPNJ384J8BH3",
+					"slug": "e6-listening-stories-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Worauf achtest du beim ersten Hören eines etwas längeren englischen Hörtexts?",
+					"concept": "Auf Sprecher, Ort und Gesamtzusammenhang (Globalverstehen), auch wenn ein Einzelwort fehlt.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-listening-stories",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Auf Sprecher, Ort und Gesamtzusammenhang (Globalverstehen), auch wenn ein Einzelwort fehlt.",
+							"Darauf, sofort jedes unbekannte Einzelwort nachzuschlagen."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7MZP6N2VHEYSSMPMM2RDQP9",
+					"slug": "e6-listening-stories-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was sicherst du beim zweiten Hördurchgang gezielt als Notiz?",
+					"concept": "Leicht erschließbare Details wie Uhrzeiten, Zahlen, Namen und konkrete Pläne.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-listening-stories",
+					"sample_solution": "Leicht erschließbare Details wie Uhrzeiten, Zahlen, Namen und konkrete Pläne."
+				},
+				{
+					"id": "01M7MZP6N2SMW0APSRGNPAVMEW",
+					"slug": "e6-listening-stories-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie helfen visuelle Elemente (z. B. Bildkulisse oder Grafik) beim Hörsehverstehen?",
+					"concept": "Sie zeigen Ort, Situation und Stimmung der Sprechenden und stützen das Verstehen.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-listening-stories",
+					"sample_solution": "Sie zeigen Ort, Situation und Stimmung der Sprechenden und stützen das Verstehen."
+				}
+			]
+		},
+		{
+			"id": "01M7MZP6N2HTT4H270GR7ZMVKQ",
+			"atom_uri": "urn:zam:atom:01M7MZP6N2HTT4H270GR7ZMVKQ",
+			"namespace": "zam-academy-englisch-realschule-6",
+			"slug": "e6-reading-techniques",
+			"title": "Reading techniques: Skimming, scanning, gist & detail",
+			"domain": "englisch/words_texts",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-reading-techniques",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-6",
+					"topic_code": "words_texts",
+					"topic_title": "Words, texts & strategies"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb3",
+					"topic_title": "Text- und Medienkompetenzen",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb4",
+					"topic_title": "Methodische Kompetenzen",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7MZP6N2QV2372JSGWKF08S2",
+					"slug": "e6-reading-techniques-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche Lesetechnik sucht einen Text gezielt nach einer bestimmten Zahl, einem Namen oder Datum ab?",
+					"concept": "scanning",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-reading-techniques",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"scanning",
+							"skimming"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7MZP6N2ZYFTEEEBQ326XNHM",
+					"slug": "e6-reading-techniques-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie unterscheiden sich 'skimming (for gist)' und 'reading for detail'?",
+					"concept": "skimming erfasst schnell Hauptthema und Aufbau; reading for detail prüft genaue Arbeitsschritte und Einzelheiten.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-reading-techniques",
+					"sample_solution": "skimming erfasst schnell Hauptthema und Aufbau; reading for detail prüft genaue Arbeitsschritte und Einzelheiten."
+				},
+				{
+					"id": "01M7MZP6N2W3B2MTXCNKM59SPM",
+					"slug": "e6-reading-techniques-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Nenne zwei hilfreiche Arbeitstechniken beim gründlichen Lesen eines englischen Sachtexts.",
+					"concept": "Schlüsselwörter/Textstellen farbig markieren und knappe Stichpunkt-Notizen anfertigen.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-reading-techniques",
+					"sample_solution": "Schlüsselwörter/Textstellen farbig markieren und knappe Stichpunkt-Notizen anfertigen."
+				}
+			]
+		},
+		{
+			"id": "01M7MZP6N27ZHYRF4W8930K0CC",
+			"atom_uri": "urn:zam:atom:01M7MZP6N27ZHYRF4W8930K0CC",
+			"namespace": "zam-academy-englisch-realschule-6",
+			"slug": "e6-text-types",
+			"title": "Stories, instructions, comics & songs",
+			"domain": "englisch/words_texts",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-text-types",
+			"prerequisites": [
+				{
+					"atom_id": "01M7MZP6N2HTT4H270GR7ZMVKQ",
+					"type": "soft",
+					"rationale": "Stories, instructions, comics & songs builds on e6-reading-techniques."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-6",
+					"topic_code": "words_texts",
+					"topic_title": "Words, texts & strategies"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb3",
+					"topic_title": "Text- und Medienkompetenzen",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7MZP6N2P5SKXJ30V4J30DMD",
+					"slug": "e6-text-types-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Woran erkennst du eine englische Anleitung oder ein Rezept sofort am sprachlichen Aufbau?",
+					"concept": "An nummerierten Schritten mit Imperativen (z. B. Mix, Fold, Wait).",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-text-types",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"An nummerierten Schritten mit Imperativen (z. B. Mix, Fold, Wait).",
+							"An Strophen mit Paarreimen am Zeilenende."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7MZP6N2CA6VCKKB2H43GH08",
+					"slug": "e6-text-types-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche vier W-Fragen helfen beim Erschließen einer Erzählung (story)?",
+					"concept": "Who? (Figuren), Where? (Ort), When? (Zeit) und What happens? (Handlung).",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-text-types",
+					"sample_solution": "Who? (Figuren), Where? (Ort), When? (Zeit) und What happens? (Handlung)."
+				},
+				{
+					"id": "01M7MZP6N2AD12X01NJRAH7ZY6",
+					"slug": "e6-text-types-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche Textabsicht hat typischerweise ein Schulplakat oder Veranstaltungs-Flyer?",
+					"concept": "Informieren über Ort, Zeit und Anlass sowie zum Mitmachen einladen.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-text-types",
+					"sample_solution": "Informieren über Ort, Zeit und Anlass sowie zum Mitmachen einladen."
+				}
+			]
+		},
+		{
+			"id": "01M7MZP6N2J3N2CHMD3X5S56Q3",
+			"atom_uri": "urn:zam:atom:01M7MZP6N2J3N2CHMD3X5S56Q3",
+			"namespace": "zam-academy-englisch-realschule-6",
+			"slug": "e6-class-reader",
+			"title": "Reading a whole book: Extensive reading",
+			"domain": "englisch/words_texts",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-class-reader",
+			"prerequisites": [
+				{
+					"atom_id": "01M7MZP6N2HTT4H270GR7ZMVKQ",
+					"type": "soft",
+					"rationale": "Reading a whole book: Extensive reading builds on e6-reading-techniques."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-6",
+					"topic_code": "words_texts",
+					"topic_title": "Words, texts & strategies"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb3",
+					"topic_title": "Text- und Medienkompetenzen",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb4",
+					"topic_title": "Methodische Kompetenzen",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7MZP6N2AKK0EA2C9YD8C4JK",
+					"slug": "e6-class-reader-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie gehst du beim Lesen einer einfachen Ganzschrift mit einzelnen unwichtigen unbekannten Wörtern um?",
+					"concept": "Man überliest sie zunächst, nutzt den Kontext und hält den Lesefluss aufrecht.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-class-reader",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Man überliest sie zunächst, nutzt den Kontext und hält den Lesefluss aufrecht.",
+							"Man schlägt jedes einzelne unbekannte Adjektiv sofort nach."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7MZP6N3E2YB4546NPMEA1Y4",
+					"slug": "e6-class-reader-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wann schlägst du ein unbekanntes Wort in einer Ganzschrift doch nach?",
+					"concept": "Wenn es mehrmals vorkommt und als Schlüsselwort für das Verständnis der Szene wichtig ist.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-class-reader",
+					"sample_solution": "Wenn es mehrmals vorkommt und als Schlüsselwort für das Verständnis der Szene wichtig ist."
+				},
+				{
+					"id": "01M7MZP6N3T733FXANJYNS5Y7A",
+					"slug": "e6-class-reader-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was hältst du nach jedem Kapitel in einem kurzen englischen reading log fest?",
+					"concept": "Hauptfigur(en), Ort, wichtigstes Ereignis und eine kurze Erwartung zum nächsten Kapitel.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-class-reader",
+					"sample_solution": "Hauptfigur(en), Ort, wichtigstes Ereignis und eine kurze Erwartung zum nächsten Kapitel."
+				}
+			]
+		},
+		{
+			"id": "01M7MZP6N2266DN1CS0T30MSWZ",
+			"atom_uri": "urn:zam:atom:01M7MZP6N2266DN1CS0T30MSWZ",
+			"namespace": "zam-academy-englisch-realschule-6",
+			"slug": "e6-writing-linking",
+			"title": "Writing stories & e-mails with linking words",
+			"domain": "englisch/words_texts",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-writing-linking",
+			"prerequisites": [
+				{
+					"atom_id": "01M7MZP6N2BE8W76JETJ1BRNJJ",
+					"type": "soft",
+					"rationale": "Writing stories & e-mails with linking words builds on e6-digital-messages."
+				},
+				{
+					"atom_id": "01M7MZP6N27ZHYRF4W8930K0CC",
+					"type": "soft",
+					"rationale": "Writing stories & e-mails with linking words builds on e6-text-types."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-6",
+					"topic_code": "words_texts",
+					"topic_title": "Words, texts & strategies"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb3",
+					"topic_title": "Text- und Medienkompetenzen",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7MZP6N3MA16NP2MTBEZ4PCT",
+					"slug": "e6-writing-linking-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welches linking word zeigt in einer Bildergeschichte eine Folge oder Lösung ('deshalb / also')?",
+					"concept": "so (z. B. The train left, so they bought new tickets.)",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-writing-linking",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"so (z. B. The train left, so they bought new tickets.)",
+							"before (z. B. Before they bought new tickets)"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7MZP6N32ED4KPMHS6Q6MQXQ",
+					"slug": "e6-writing-linking-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Nenne fünf gebräuchliche linking words aus Klasse 6 zur Textgliederung.",
+					"concept": "next, before, after, then, so.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-writing-linking",
+					"sample_solution": "next, before, after, then, so."
+				},
+				{
+					"id": "01M7MZP6N3GKDFE9J2WZF2S7BX",
+					"slug": "e6-writing-linking-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche formalen Punkte prüfst du nach dem Schreiben einer englischen E-Mail oder Geschichte noch einmal?",
+					"concept": "Rechtschreibung, Zeichensetzung, passende Zeitform sowie bei E-Mails Anrede und Schlussformel.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-writing-linking",
+					"sample_solution": "Rechtschreibung, Zeichensetzung, passende Zeitform sowie bei E-Mails Anrede und Schlussformel."
+				}
+			]
+		},
+		{
+			"id": "01M7MZP6N2P9VVF2299N4Q1F4N",
+			"atom_uri": "urn:zam:atom:01M7MZP6N2P9VVF2299N4Q1F4N",
+			"namespace": "zam-academy-englisch-realschule-6",
+			"slug": "e6-creative-dialogue",
+			"title": "Creative texts & short talks",
+			"domain": "englisch/words_texts",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-creative-dialogue",
+			"prerequisites": [
+				{
+					"atom_id": "01M7MZP6N2266DN1CS0T30MSWZ",
+					"type": "soft",
+					"rationale": "Creative texts & short talks builds on e6-writing-linking."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-6",
+					"topic_code": "words_texts",
+					"topic_title": "Words, texts & strategies"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb3",
+					"topic_title": "Text- und Medienkompetenzen",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb4",
+					"topic_title": "Methodische Kompetenzen",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7MZP6N3ANQ7DV1NEZHJT0GT",
+					"slug": "e6-creative-dialogue-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was gehört auf deine Notizkarte (cue card) für einen freien short talk?",
+					"concept": "Kurze Stichwörter zur Gliederung statt ausformulierter langer Absätze zum Ablesen.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-creative-dialogue",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Kurze Stichwörter zur Gliederung statt ausformulierter langer Absätze zum Ablesen.",
+							"Jeder Satz vollständig ausgeschrieben in ganz kleiner Schrift."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7MZP6N3WV0Q5F9FDBFGDP2W",
+					"slug": "e6-creative-dialogue-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche drei Gestaltungsmittel machen einen vorgetragenen Dialog lebendig?",
+					"concept": "Mimik, Gestik und passende Intonation (Stimmführung).",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-creative-dialogue",
+					"sample_solution": "Mimik, Gestik und passende Intonation (Stimmführung)."
+				},
+				{
+					"id": "01M7MZP6N3GYN26RQJ9FQRJB9V",
+					"slug": "e6-creative-dialogue-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Nenne die vier Teile einer guten Notizkarte für einen einminütigen short talk.",
+					"concept": "1. Begrüßung & Thema, 2. zwei bis drei Fakten, 3. persönlicher Eindruck, 4. Dank & Abschluss.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-creative-dialogue",
+					"sample_solution": "1. Begrüßung & Thema, 2. zwei bis drei Fakten, 3. persönlicher Eindruck, 4. Dank & Abschluss."
+				}
+			]
+		},
+		{
+			"id": "01M7MZP6N2YFEFX4GMWQ7B6D08",
+			"atom_uri": "urn:zam:atom:01M7MZP6N2YFEFX4GMWQ7B6D08",
+			"namespace": "zam-academy-englisch-realschule-6",
+			"slug": "e6-vocab-strategies",
+			"title": "Building word fields and word families",
+			"domain": "englisch/words_texts",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-vocab-strategies",
+			"prerequisites": [
+				{
+					"atom_id": "01M7MZP6N2F3BXQWP1VDEN4KP1",
+					"type": "soft",
+					"rationale": "Building word fields and word families builds on e6-word-formation."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-6",
+					"topic_code": "words_texts",
+					"topic_title": "Words, texts & strategies"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb4",
+					"topic_title": "Methodische Kompetenzen",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7MZP6N3H35Q9C2K6FCBGJ35",
+					"slug": "e6-vocab-strategies-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Worin liegt der Unterschied zwischen einem Wortfeld und einer Wortfamilie?",
+					"concept": "Wortfeld = gemeinsames Thema (z. B. Wetter); Wortfamilie = gleicher Wortstamm (z. B. care, careful, careless).",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-vocab-strategies",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Wortfeld = gemeinsames Thema (z. B. Wetter); Wortfamilie = gleicher Wortstamm (z. B. care, careful, careless).",
+							"Wortfeld = nur Nomen; Wortfamilie = nur englische Zahlen."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7MZP6N3Q6C1TKXC3FNDFW62",
+					"slug": "e6-vocab-strategies-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Warum hilft es, eine neue Vokabel direkt in einem kurzen Beispielsatz zu notieren?",
+					"concept": "Du lernst Bedeutung, Wortart und typische Begleiter (z. B. Präpositionen) gleich im Zusammenhang mit.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-vocab-strategies",
+					"sample_solution": "Du lernst Bedeutung, Wortart und typische Begleiter (z. B. Präpositionen) gleich im Zusammenhang mit."
+				},
+				{
+					"id": "01M7MZP6N3FAJ3N2RR0RD88X18",
+					"slug": "e6-vocab-strategies-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie überbrückst du beim Sprechen ein Wort, das dir gerade fehlt?",
+					"concept": "Durch einfache Umschreibung (It's another word for … / It's the opposite of …) oder Vereinfachung.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-vocab-strategies",
+					"sample_solution": "Durch einfache Umschreibung (It's another word for … / It's the opposite of …) oder Vereinfachung."
+				}
+			]
+		},
+		{
+			"id": "01M7MZP6N2RHWDEH678RMFWVDD",
+			"atom_uri": "urn:zam:atom:01M7MZP6N2RHWDEH678RMFWVDD",
+			"namespace": "zam-academy-englisch-realschule-6",
+			"slug": "e6-my-topics",
+			"title": "Your interests: Presenting a topic",
+			"domain": "englisch/words_texts",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-my-topics",
+			"prerequisites": [
+				{
+					"atom_id": "01M7MZP6N2P9VVF2299N4Q1F4N",
+					"type": "soft",
+					"rationale": "Your interests: Presenting a topic builds on e6-creative-dialogue."
+				},
+				{
+					"atom_id": "01M7MZP6N2WMRVT21VRHSJC3KJ",
+					"type": "soft",
+					"rationale": "Your interests: Presenting a topic builds on e6-present-perfect-use."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-6",
+					"topic_code": "words_texts",
+					"topic_title": "Words, texts & strategies"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb4",
+					"topic_title": "Methodische Kompetenzen",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7MZP6N3BCT96D7GH4E97CX6",
+					"slug": "e6-my-topics-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche Zeitform nutzt du bei der Vorstellung eines Hobbys für das einmalige Start-Erlebnis vor zwei Jahren?",
+					"concept": "Simple Past (z. B. Two years ago, my cousin gave me a skateboard.)",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-my-topics",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Simple Past (z. B. Two years ago, my cousin gave me a skateboard.)",
+							"going-to-future"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7MZP6N37HVS7GTJXTJ3RM3C",
+					"slug": "e6-my-topics-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie verknüpfst du drei Zeitebenen in einem Kurzvortrag über dein Interessensgebiet?",
+					"concept": "Vergangener Start (Simple Past), jetzige Übung/Erfolg (Simple Present / Present Perfect) und künftiges Ziel (will / going-to future).",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-my-topics",
+					"sample_solution": "Vergangener Start (Simple Past), jetzige Übung/Erfolg (Simple Present / Present Perfect) und künftiges Ziel (will / going-to future)."
+				},
+				{
+					"id": "01M7MZP6N3BP84X8RSS13YE7A8",
+					"slug": "e6-my-topics-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie bindest du in einen Schülervortrag Gefühle und anschauliches Material ein?",
+					"concept": "Eigene Eindrücke benennen (e.g. I feel proud / happy) und Karte, Foto oder Gegenstand gezielt zeigen.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-6/#lesson=e6-my-topics",
+					"sample_solution": "Eigene Eindrücke benennen (e.g. I feel proud / happy) und Karte, Foto oder Gegenstand gezielt zeigen."
+				}
+			]
+		}
+	]
+}

@@ -729,15 +729,14 @@ Academy cells total), and three superseded Gymnasium 5 school cells retired to
   **Natur und Technik 6 Mittelschule** (`2026.11.2`, preview, 38 lessons,
   114 items), each with an empty `replaces-de-by.json`.
 
-Release 0.66.0 bundles 78 Academy cells. Five Grade 6 courses join the
-bundle: German, English and History for Gymnasium, and Geography and History
-for Realschule. Five superseded Grade 6 school cells are
-legacy fixtures: English and two History cells for Gymnasium, and Geography
-and History for Realschule. Fresh discovery offers the Academy courses.
-Installing the Academy cells applies the approved links for 18 matching
-practice items and preserves evidence on keep-active items. German Grade 6 has no matching
-legacy cell. The Grade 7 German syntax and Realschule geography school cells
-remain available at their grade.
+Release 0.66.0 bundles 83 Academy cells. Ten courses join from Gymnasium
+Grades 5 and 6 and Realschule Grades 6 and 7. Fourteen superseded school
+cells move to legacy fixtures and leave fresh curriculum discovery. The
+nine approved mappings carry 33 matching practice-item histories to their
+Academy successors when learners take the new cells. Existing keep-active
+cards retain their IDs and history. German Grade 6 Gymnasium has no
+matching legacy school cell. The Grade 7 German syntax, English and
+Realschule geography school cells stay available at their grade.
 
 Different cells may reuse the same atom and some of the same practice items.
 Installation status therefore checks every declared atom and item id, while

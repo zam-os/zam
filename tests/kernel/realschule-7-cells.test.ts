@@ -22,8 +22,6 @@ import {
 // The four Mathematik 7 school cells moved to zam-academy:mathematik-realschule-7
 // and are archived in tests/fixtures/legacy/.
 const RS7_CELL_IDS = [
-  "de-by:realschule-7-physik-mechanik-bewegung-geschwindigkeit",
-  "de-by:realschule-7-physik-waermelehre-temperatur-ausdehnung",
   "de-by:realschule-7-biologie-wirbeltiere-oekologie",
   "de-by:realschule-7-biologie-pflanzen-fotosynthese",
   "de-by:realschule-7-bwr-unternehmen-inventur-bilanz",
@@ -38,6 +36,7 @@ const RS7_CELL_IDS = [
 const ACADEMY_RS7_IDS = [
   "zam-academy:informatik-realschule-8",
   "zam-academy:mathematik-realschule-7",
+  "zam-academy:physik-realschule-7",
 ];
 
 describe("Realschule Bayern 7 Curriculum Cells (Einführungs- und Fundamentstufe)", () => {
@@ -164,8 +163,8 @@ describe("Realschule Bayern 7 Curriculum Cells (Einführungs- und Fundamentstufe
       totalCardsCreated += res.cardsCreated;
     }
 
-    // 110 prior total minus the 30 cards across the 4 retired Mathematik 7 cells = 80 cards
-    expect(totalCardsCreated).toBe(80);
+    // The two superseded physics cells had eight items each.
+    expect(totalCardsCreated).toBe(64);
 
     const statuses = await getBundledCellsWithStatus(db, userId);
     const rs7Statuses = statuses.filter((s) => RS7_CELL_IDS.includes(s.id));

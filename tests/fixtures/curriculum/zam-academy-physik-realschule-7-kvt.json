@@ -1,0 +1,2138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "zam-academy:physik-realschule-7",
+  "version": "2026.11.2",
+  "title": "Physik 7 Realschule · Zweig I (ZAM Academy)",
+  "description": "Mechanik, Optik, Magnetismus und einfache Stromkreise für Jahrgangsstufe 7, Wahlpflichtfächergruppe I, nach LehrplanPLUS Bayern.",
+  "publisher": "ZAM Academy",
+  "published_at": "2026-11-15T12:00:00Z",
+  "sources": [
+    {
+      "uri": "https://academy.zam-os.org/physik-realschule-7/",
+      "label": "ZAM Academy · Physik 7 Realschule",
+      "checked": "2026-11-15"
+    },
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/7/physik/wpfg1",
+      "label": "LehrplanPLUS · Physik 7 (I)",
+      "checked": "2026-11-15"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01M7G14BGVWKX0X06V6M0BP86E",
+      "atom_uri": "urn:zam:atom:01M7G14BGVWKX0X06V6M0BP86E",
+      "namespace": "zam-academy-physik-realschule-7",
+      "slug": "ph7-me-messen",
+      "title": "Länge und Zeit sinnvoll messen",
+      "domain": "physik/mechanik",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=me-messen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-7",
+          "topic_code": "lb1",
+          "topic_title": "Mechanik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "physik",
+          "track": "I",
+          "topic_code": "lb1",
+          "topic_title": "Mechanik"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7G14BGW4XY4X4J1Z7HGBNHM",
+          "slug": "ph7-me-messen-einheit",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=me-messen",
+          "question": "Wie viele Millimeter entsprechen einem Zentimeter?",
+          "concept": "Zehn Millimeter.",
+          "sample_solution": "Zehn Millimeter.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Zehn Millimeter.",
+              "Hundert Millimeter."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7G14BGW35D0720WKQJEF6F6",
+          "slug": "ph7-me-messen-aufloesung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=me-messen",
+          "question": "Wodurch wird die sinnvoll angebbare Stellenzahl beim Ablesen begrenzt?",
+          "concept": "Durch Skalenauflösung und Messunsicherheit.",
+          "sample_solution": "Durch Skalenauflösung und Messunsicherheit.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Durch Skalenauflösung und Messunsicherheit.",
+              "Nur durch die Zahl der verfügbaren Taschenrechnerstellen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7G14BGW95W2YSHCEVG2N4ZZ",
+          "slug": "ph7-me-messen-differenz",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=me-messen",
+          "question": "Wie bestimmst du eine Länge, wenn der Körper nicht an der Nullmarke beginnt?",
+          "concept": "Du ziehst die Anfangsmarke von der Endmarke ab und gibst die Einheit an.",
+          "sample_solution": "Du ziehst die Anfangsmarke von der Endmarke ab und gibst die Einheit an."
+        }
+      ]
+    },
+    {
+      "id": "01M7G14BGVG0TXRKFSBV5V4REX",
+      "atom_uri": "urn:zam:atom:01M7G14BGVG0TXRKFSBV5V4REX",
+      "namespace": "zam-academy-physik-realschule-7",
+      "slug": "ph7-me-bewegung",
+      "title": "Gleichförmige Bewegung und Geschwindigkeit",
+      "domain": "physik/mechanik",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=me-bewegung",
+      "prerequisites": [
+        {
+          "atom_id": "01M7G14BGVWKX0X06V6M0BP86E"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-7",
+          "topic_code": "lb1",
+          "topic_title": "Mechanik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "physik",
+          "track": "I",
+          "topic_code": "lb1",
+          "topic_title": "Mechanik"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7G14BGW76KNYY5265KNV9S5",
+          "slug": "ph7-me-bewegung-gleichfoermig",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=me-bewegung",
+          "question": "Woran erkennst du eine geradlinig gleichförmige Bewegung?",
+          "concept": "Gleiche Wege in gleichen Zeiten bei gleichbleibender Richtung.",
+          "sample_solution": "Gleiche Wege in gleichen Zeiten bei gleichbleibender Richtung.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Gleiche Wege in gleichen Zeiten bei gleichbleibender Richtung.",
+              "Immer längere Wege in gleichen Zeiten."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7G14BGW6QM1KV8BY6B4HQTE",
+          "slug": "ph7-me-bewegung-umrechnen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=me-bewegung",
+          "question": "Wie rechnest du eine Geschwindigkeit von Metern pro Sekunde in Kilometer pro Stunde um?",
+          "concept": "Du multiplizierst den Zahlenwert mit 3,6.",
+          "sample_solution": "Du multiplizierst den Zahlenwert mit 3,6.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Du multiplizierst den Zahlenwert mit 3,6.",
+              "Du teilst den Zahlenwert durch 3,6."
+            ],
+            "correct_index": 0
+          },
+          "replaces": [
+            "01K4P7V0000000000000000J03"
+          ]
+        },
+        {
+          "id": "01M7G14BGW6CGBCGPF1Q3M2AJH",
+          "slug": "ph7-me-bewegung-steigung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=me-bewegung",
+          "question": "Welche Größe beschreibt die Steigung im Zeit-Weg-Diagramm?",
+          "concept": "Die Geschwindigkeit.",
+          "sample_solution": "Die Geschwindigkeit.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Geschwindigkeit.",
+              "Die Masse des bewegten Körpers."
+            ],
+            "correct_index": 0
+          },
+          "replaces": [
+            "01K4P7V0000000000000000J05"
+          ]
+        },
+        {
+          "id": "01M7G14BGX02CP0Z7TB5B5TXTQ",
+          "slug": "ph7-me-bewegung-geschwindigkeit",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=me-bewegung",
+          "question": "Wie berechnest du bei gleichförmiger Bewegung die Geschwindigkeit aus Weg und Zeit?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "v=\\frac{s}{t}",
+              "speech": "v gleich s durch t"
+            }
+          ],
+          "sample_solution": "Du teilst den zurückgelegten Weg durch die dafür benötigte Zeit; mit Metern und Sekunden ergibt sich Meter pro Sekunde."
+        }
+      ]
+    },
+    {
+      "id": "01M7G14BGVQRVGTQ24KE2NEW6F",
+      "atom_uri": "urn:zam:atom:01M7G14BGVQRVGTQ24KE2NEW6F",
+      "namespace": "zam-academy-physik-realschule-7",
+      "slug": "ph7-me-kraft",
+      "title": "Kräfte an ihren Wirkungen erkennen",
+      "domain": "physik/mechanik",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=me-kraft",
+      "prerequisites": [
+        {
+          "atom_id": "01M7G14BGVG0TXRKFSBV5V4REX"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-7",
+          "topic_code": "lb1",
+          "topic_title": "Mechanik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "physik",
+          "track": "I",
+          "topic_code": "lb1",
+          "topic_title": "Mechanik"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7G14BGXVBV5415KN952Q7W4",
+          "slug": "ph7-me-kraft-wirkung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=me-kraft",
+          "question": "Welche zwei Arten von Wirkung kann eine Kraft haben?",
+          "concept": "Sie kann verformen oder den Bewegungszustand ändern.",
+          "sample_solution": "Sie kann verformen oder den Bewegungszustand ändern.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie kann verformen oder den Bewegungszustand ändern.",
+              "Sie kann nur bereits bewegte Körper schneller machen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7G14BGXMJ8NC175QQ3BKZDB",
+          "slug": "ph7-me-kraft-pfeil",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=me-kraft",
+          "question": "Welche Bestimmungsstücke kennzeichnen eine Kraft?",
+          "concept": "Betrag, Richtung und Angriffspunkt.",
+          "sample_solution": "Betrag, Richtung und Angriffspunkt.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Betrag, Richtung und Angriffspunkt.",
+              "Farbe, Temperatur und Masse."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7G14BGX1VREQJ3J5ZHZ9JGQ",
+          "slug": "ph7-me-kraft-bewegung",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=me-kraft",
+          "question": "Warum beweist eine gleichförmige Fahrt keine vorwärts gerichtete Gesamtkraft?",
+          "concept": "Eine Gesamtkraft ändert den Bewegungszustand. Bei ausgeglichenen Kräften kann der Körper geradlinig gleichförmig weiterfahren.",
+          "sample_solution": "Eine Gesamtkraft ändert den Bewegungszustand. Bei ausgeglichenen Kräften kann der Körper geradlinig gleichförmig weiterfahren."
+        }
+      ]
+    },
+    {
+      "id": "01M7G14BGVH28ZF11M1JC5TT1S",
+      "atom_uri": "urn:zam:atom:01M7G14BGVH28ZF11M1JC5TT1S",
+      "namespace": "zam-academy-physik-realschule-7",
+      "slug": "ph7-me-wechselwirkung",
+      "title": "Wechselwirkung und Kräftegleichgewicht trennen",
+      "domain": "physik/mechanik",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=me-wechselwirkung",
+      "prerequisites": [
+        {
+          "atom_id": "01M7G14BGVQRVGTQ24KE2NEW6F"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-7",
+          "topic_code": "lb1",
+          "topic_title": "Mechanik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "physik",
+          "track": "I",
+          "topic_code": "lb1",
+          "topic_title": "Mechanik"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7G14BGX93DZWG113D1GYRNR",
+          "slug": "ph7-me-wechselwirkung-koerper",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=me-wechselwirkung",
+          "question": "Auf wie viele Körper verteilen sich die Kräfte eines Wechselwirkungspaars?",
+          "concept": "Auf zwei verschiedene Körper.",
+          "sample_solution": "Auf zwei verschiedene Körper.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Auf zwei verschiedene Körper.",
+              "Beide wirken auf denselben Körper."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7G14BGXQBHWNYY31C1JPHVN",
+          "slug": "ph7-me-wechselwirkung-paar",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=me-wechselwirkung",
+          "question": "Wie verhalten sich die Kräfte eines Wechselwirkungspaars zueinander?",
+          "concept": "Sie sind gleichzeitig gleich groß und entgegengesetzt gerichtet.",
+          "sample_solution": "Sie sind gleichzeitig gleich groß und entgegengesetzt gerichtet.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie sind gleichzeitig gleich groß und entgegengesetzt gerichtet.",
+              "Die Gegenkraft tritt erst nach der ersten Kraft auf."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7G14BGXE6DGEJCSGZGB3S6F",
+          "slug": "ph7-me-wechselwirkung-buch",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=me-wechselwirkung",
+          "question": "Welche Kräfte gleichen sich an einem ruhenden Buch auf dem Tisch aus?",
+          "concept": "Die Gewichtskraft der Erde auf das Buch und die Stützkraft des Tisches auf das Buch. Die Kontaktgegenkraft des Buchs wirkt dagegen auf den Tisch.",
+          "sample_solution": "Die Gewichtskraft der Erde auf das Buch und die Stützkraft des Tisches auf das Buch. Die Kontaktgegenkraft des Buchs wirkt dagegen auf den Tisch."
+        }
+      ]
+    },
+    {
+      "id": "01M7G14BGVGSGTSWSETCAM2FPW",
+      "atom_uri": "urn:zam:atom:01M7G14BGVGSGTSWSETCAM2FPW",
+      "namespace": "zam-academy-physik-realschule-7",
+      "slug": "ph7-me-feder",
+      "title": "Eine Feder dehnen: das Gesetz von Hooke",
+      "domain": "physik/mechanik",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=me-feder",
+      "prerequisites": [
+        {
+          "atom_id": "01M7G14BGVQRVGTQ24KE2NEW6F"
+        },
+        {
+          "atom_id": "01M7G14BGVWKX0X06V6M0BP86E"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-7",
+          "topic_code": "lb1",
+          "topic_title": "Mechanik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "physik",
+          "track": "I",
+          "topic_code": "lb1",
+          "topic_title": "Mechanik"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7G14BGXDN6VHVFCQ90E8Y8T",
+          "slug": "ph7-me-feder-dehnung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=me-feder",
+          "question": "Was ist die Dehnung einer belasteten Feder?",
+          "concept": "Die Zunahme gegenüber ihrer unbelasteten Länge.",
+          "sample_solution": "Die Zunahme gegenüber ihrer unbelasteten Länge.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Zunahme gegenüber ihrer unbelasteten Länge.",
+              "Die gesamte Länge der belasteten Feder."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7G14BGXBY10K2SHXTGCBMP4",
+          "slug": "ph7-me-feder-grenze",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=me-feder",
+          "question": "Darfst du das Gesetz von Hooke auf beliebig große Belastungen anwenden?",
+          "concept": "Nein, nur im geprüften proportionalen Bereich.",
+          "sample_solution": "Nein, nur im geprüften proportionalen Bereich.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nein, nur im geprüften proportionalen Bereich.",
+              "Ja, jede Feder ist unbegrenzt proportional dehnbar."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7G14BGXHD7AW49VC06QHSG3",
+          "slug": "ph7-me-feder-hooke",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=me-feder",
+          "question": "Wie verknüpft das Gesetz von Hooke Zugkraft, Federhärte und Dehnung?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "F=D\\cdot\\Delta l",
+              "speech": "F gleich D mal Delta l"
+            }
+          ],
+          "sample_solution": "Die Zugkraft ist im Hooke-Bereich das Produkt aus Federhärte und Dehnung. Die Einheiten müssen zueinander passen."
+        }
+      ]
+    },
+    {
+      "id": "01M7G14BGV1GG9JW0F9E8N3JT2",
+      "atom_uri": "urn:zam:atom:01M7G14BGV1GG9JW0F9E8N3JT2",
+      "namespace": "zam-academy-physik-realschule-7",
+      "slug": "ph7-me-masse-gewicht",
+      "title": "Masse, Gewichtskraft und Kraftmesser",
+      "domain": "physik/mechanik",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=me-masse-gewicht",
+      "prerequisites": [
+        {
+          "atom_id": "01M7G14BGVGSGTSWSETCAM2FPW"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-7",
+          "topic_code": "lb1",
+          "topic_title": "Mechanik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "physik",
+          "track": "I",
+          "topic_code": "lb1",
+          "topic_title": "Mechanik"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7G14BGXBBHMZNFWP73QJ3VJ",
+          "slug": "ph7-me-masse-gewicht-einheiten",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=me-masse-gewicht",
+          "question": "In welchen Einheiten gibst du Masse und Gewichtskraft an?",
+          "concept": "Masse in Kilogramm, Gewichtskraft in Newton.",
+          "sample_solution": "Masse in Kilogramm, Gewichtskraft in Newton.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Masse in Kilogramm, Gewichtskraft in Newton.",
+              "Masse in Newton, Gewichtskraft in Kilogramm."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7G14BGX89MQPF49N9ZMEPBP",
+          "slug": "ph7-me-masse-gewicht-ort",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=me-masse-gewicht",
+          "question": "Welche Größe bleibt beim Ortswechsel von der Erde zum Mond gleich?",
+          "concept": "Die Masse des Körpers.",
+          "sample_solution": "Die Masse des Körpers.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Masse des Körpers.",
+              "Die Gewichtskraft des Körpers."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7G14BGXVC7XZTFXC7BFWBAR",
+          "slug": "ph7-me-masse-gewicht-gewichtskraft",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=me-masse-gewicht",
+          "question": "Wie berechnest du die Gewichtskraft aus Masse und Ortsfaktor?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "F_G=m\\cdot g",
+              "speech": "F G gleich m mal g"
+            }
+          ],
+          "sample_solution": "Du multiplizierst die Masse in Kilogramm mit dem Ortsfaktor in Newton je Kilogramm. Das Ergebnis ist eine Kraft in Newton."
+        }
+      ]
+    },
+    {
+      "id": "01M7G14BGW0S3Z36649K49FTJA",
+      "atom_uri": "urn:zam:atom:01M7G14BGW0S3Z36649K49FTJA",
+      "namespace": "zam-academy-physik-realschule-7",
+      "slug": "ph7-me-teilchen",
+      "title": "Fest, flüssig, gasförmig im Teilchenmodell",
+      "domain": "physik/mechanik",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=me-teilchen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-7",
+          "topic_code": "lb1",
+          "topic_title": "Mechanik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "physik",
+          "track": "I",
+          "topic_code": "lb1",
+          "topic_title": "Mechanik"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7G14BGXMM91PTY04EPQMPFN",
+          "slug": "ph7-me-teilchen-abstaende",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=me-teilchen",
+          "question": "Was verkleinert sich beim Zusammendrücken eines Gases im Teilchenmodell vor allem?",
+          "concept": "Die Abstände zwischen den Teilchen.",
+          "sample_solution": "Die Abstände zwischen den Teilchen.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Abstände zwischen den Teilchen.",
+              "Die einzelnen Teilchen selbst."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7G14BGXGH11GNX4FAYQA92Y",
+          "slug": "ph7-me-teilchen-fluessig",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=me-teilchen",
+          "question": "Warum kann eine Flüssigkeit ihre Form dem Gefäß anpassen?",
+          "concept": "Nahe Teilchen können ihre Nachbarn wechseln.",
+          "sample_solution": "Nahe Teilchen können ihre Nachbarn wechseln.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nahe Teilchen können ihre Nachbarn wechseln.",
+              "Ihre Teilchen sind an völlig feste Plätze gebunden."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7G14BGXHZGX178NFS870MAE",
+          "slug": "ph7-me-teilchen-skizze",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=me-teilchen",
+          "question": "Wie unterscheidest du einen Festkörper von einem Gas in einer Teilchenskizze?",
+          "concept": "Im Festkörper liegen die Teilchen nahe an festen Nachbarplätzen. Im Gas sind sie weit voneinander entfernt und bewegen sich ungeordnet; ihre gezeichnete Größe bleibt gleich.",
+          "sample_solution": "Im Festkörper liegen die Teilchen nahe an festen Nachbarplätzen. Im Gas sind sie weit voneinander entfernt und bewegen sich ungeordnet; ihre gezeichnete Größe bleibt gleich."
+        }
+      ]
+    },
+    {
+      "id": "01M7G14BGWC4SGT9YB483M7G0Z",
+      "atom_uri": "urn:zam:atom:01M7G14BGWC4SGT9YB483M7G0Z",
+      "namespace": "zam-academy-physik-realschule-7",
+      "slug": "ph7-me-reibung",
+      "title": "Haften, gleiten und rollen",
+      "domain": "physik/mechanik",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=me-reibung",
+      "prerequisites": [
+        {
+          "atom_id": "01M7G14BGVQRVGTQ24KE2NEW6F"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-7",
+          "topic_code": "lb1",
+          "topic_title": "Mechanik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "physik",
+          "track": "I",
+          "topic_code": "lb1",
+          "topic_title": "Mechanik"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7G14BGX5AMQS300JSWR4HZ5",
+          "slug": "ph7-me-reibung-haften",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=me-reibung",
+          "question": "Welche Reibung verhindert zunächst das Losrutschen einer gezogenen Kiste?",
+          "concept": "Haftreibung.",
+          "sample_solution": "Haftreibung.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Haftreibung.",
+              "Bereits vorhandene Gleitreibung."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7G14BGXGFH2KW7J2KCTG9FC",
+          "slug": "ph7-me-reibung-rollen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=me-reibung",
+          "question": "Wie ist der Rollwiderstand im Vergleich zum Gleiten in vielen vergleichbaren Alltagssituationen?",
+          "concept": "Oft kleiner; das hängt von Material und Bedingungen ab.",
+          "sample_solution": "Oft kleiner; das hängt von Material und Bedingungen ab.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Oft kleiner; das hängt von Material und Bedingungen ab.",
+              "Immer exakt null, unabhängig von der Unterlage."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7G14BGXHQDMM7AB3P5JABS3",
+          "slug": "ph7-me-reibung-verkehr",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=me-reibung",
+          "question": "Warum musst du bei Nässe beim Bremsen und Lenken besonders vorsichtig sein?",
+          "concept": "Nässe kann die übertragbare Haftreibung am Reifenkontakt verringern. Der Reifen kann dann leichter rutschen und die gewünschte Bewegungsänderung nicht mehr übertragen.",
+          "sample_solution": "Nässe kann die übertragbare Haftreibung am Reifenkontakt verringern. Der Reifen kann dann leichter rutschen und die gewünschte Bewegungsänderung nicht mehr übertragen."
+        }
+      ]
+    },
+    {
+      "id": "01M7G14BGWNG07VS86X3AW338A",
+      "atom_uri": "urn:zam:atom:01M7G14BGWNG07VS86X3AW338A",
+      "namespace": "zam-academy-physik-realschule-7",
+      "slug": "ph7-me-volumen",
+      "title": "Volumen messen und Einheiten verbinden",
+      "domain": "physik/mechanik",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=me-volumen",
+      "prerequisites": [
+        {
+          "atom_id": "01M7G14BGVWKX0X06V6M0BP86E"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-7",
+          "topic_code": "lb1",
+          "topic_title": "Mechanik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "physik",
+          "track": "I",
+          "topic_code": "lb1",
+          "topic_title": "Mechanik"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7G14BGX8AVY8CT9ET5TZKD6",
+          "slug": "ph7-me-volumen-milliliter",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=me-volumen",
+          "question": "Welchem Volumen entspricht ein Milliliter?",
+          "concept": "Einem Kubikzentimeter.",
+          "sample_solution": "Einem Kubikzentimeter.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Einem Kubikzentimeter.",
+              "Einem Kubikmeter."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7G14BGXJDFEJ3B93N13QAR2",
+          "slug": "ph7-me-volumen-verdraengung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=me-volumen",
+          "question": "Welche Messgröße liefert bei geeignetem vollständig eingetauchtem Körper sein Volumen?",
+          "concept": "Die Zunahme des Wasserstands im Messzylinder.",
+          "sample_solution": "Die Zunahme des Wasserstands im Messzylinder.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Zunahme des Wasserstands im Messzylinder.",
+              "Die gesamte Endanzeige einschließlich des ursprünglichen Wassers."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7G14BGXG5853JPXECEGWKT1",
+          "slug": "ph7-me-volumen-grenzen",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=me-volumen",
+          "question": "Welche Bedingungen braucht eine brauchbare Volumenmessung durch Wasserverdrängung?",
+          "concept": "Der geeignete Körper muss vollständig eintauchen, unverändert bleiben und darf keine Luftblasen einschließen. Wasserverlust und Ablesefehler müssen vermieden werden.",
+          "sample_solution": "Der geeignete Körper muss vollständig eintauchen, unverändert bleiben und darf keine Luftblasen einschließen. Wasserverlust und Ablesefehler müssen vermieden werden."
+        }
+      ]
+    },
+    {
+      "id": "01M7G14BGWCP59XTQTHZ70NSF4",
+      "atom_uri": "urn:zam:atom:01M7G14BGWCP59XTQTHZ70NSF4",
+      "namespace": "zam-academy-physik-realschule-7",
+      "slug": "ph7-me-dichte",
+      "title": "Dichte: Masse und Volumen zusammen betrachten",
+      "domain": "physik/mechanik",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=me-dichte",
+      "prerequisites": [
+        {
+          "atom_id": "01M7G14BGWNG07VS86X3AW338A"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-7",
+          "topic_code": "lb1",
+          "topic_title": "Mechanik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "physik",
+          "track": "I",
+          "topic_code": "lb1",
+          "topic_title": "Mechanik"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7G14BGX0J4S8TB6XEBSY49B",
+          "slug": "ph7-me-dichte-quotient",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=me-dichte",
+          "question": "Wie bestimmst du die Dichte eines homogenen Körpers aus Masse und Volumen?",
+          "concept": "Du teilst seine Masse durch sein Volumen.",
+          "sample_solution": "Du teilst seine Masse durch sein Volumen.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Du teilst seine Masse durch sein Volumen.",
+              "Du multiplizierst seine Masse mit seinem Volumen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7G14BGXTDRM2JCHKVVCK9RJ",
+          "slug": "ph7-me-dichte-halbieren",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=me-dichte",
+          "question": "Wie ändert sich die Dichte beim Halbieren eines homogenen Körpers unter gleichen Bedingungen?",
+          "concept": "Sie bleibt gleich, weil Masse und Volumen gemeinsam halbiert werden.",
+          "sample_solution": "Sie bleibt gleich, weil Masse und Volumen gemeinsam halbiert werden.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie bleibt gleich, weil Masse und Volumen gemeinsam halbiert werden.",
+              "Sie halbiert sich allein wegen der kleineren Masse."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7G14BGX2Y2A0G7TNT8B2NG8",
+          "slug": "ph7-me-dichte-hohlkoerper",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=me-dichte",
+          "question": "Warum liefert Masse durch Außenvolumen einer hohlen Metallkugel nicht sicher die Dichte ihres Metalls?",
+          "concept": "Das Außenvolumen enthält den Hohlraum. Der Quotient beschreibt die mittlere Dichte der ganzen Kugel; für die Metalldichte ist das Volumen des Metalls nötig.",
+          "sample_solution": "Das Außenvolumen enthält den Hohlraum. Der Quotient beschreibt die mittlere Dichte der ganzen Kugel; für die Metalldichte ist das Volumen des Metalls nötig."
+        }
+      ]
+    },
+    {
+      "id": "01M7G14BGW37VWES25VZAYT6NS",
+      "atom_uri": "urn:zam:atom:01M7G14BGW37VWES25VZAYT6NS",
+      "namespace": "zam-academy-physik-realschule-7",
+      "slug": "ph7-op-sehen",
+      "title": "Sehen: Licht vom Sender zum Empfänger",
+      "domain": "physik/optik",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=op-sehen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-7",
+          "topic_code": "lb2",
+          "topic_title": "Optik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "physik",
+          "track": "I",
+          "topic_code": "lb2",
+          "topic_title": "Optik"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7G14BGX7B71EQV5TGRVCJEF",
+          "slug": "ph7-op-sehen-lichtweg",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=op-sehen",
+          "question": "Welchen Lichtweg brauchst du, um einen nicht selbstleuchtenden Gegenstand zu sehen?",
+          "concept": "Quelle zum Gegenstand, dann gestreutes Licht ins Auge.",
+          "sample_solution": "Quelle zum Gegenstand, dann gestreutes Licht ins Auge.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Quelle zum Gegenstand, dann gestreutes Licht ins Auge.",
+              "Ein Sehstrahl muss vom Auge zum Gegenstand laufen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7G14BGXH8W3QV4DCR9TATMF",
+          "slug": "ph7-op-sehen-mond",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=op-sehen",
+          "question": "Ist der Mond eine selbstleuchtende Lichtquelle?",
+          "concept": "Nein, er streut Licht der Sonne.",
+          "sample_solution": "Nein, er streut Licht der Sonne.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nein, er streut Licht der Sonne.",
+              "Ja, er erzeugt sein sichtbares Licht selbst wie die Sonne."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7G14BGXVFG67YPCWA1D6T8K",
+          "slug": "ph7-op-sehen-nebel",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=op-sehen",
+          "question": "Warum wird ein Lichtbündel im Nebel von der Seite sichtbar?",
+          "concept": "Nebeltröpfchen streuen einen Teil seines Lichts seitlich ins Auge. Sichtbar wird Licht, das den Empfänger erreicht, kein materieller Lichtfaden.",
+          "sample_solution": "Nebeltröpfchen streuen einen Teil seines Lichts seitlich ins Auge. Sichtbar wird Licht, das den Empfänger erreicht, kein materieller Lichtfaden."
+        }
+      ]
+    },
+    {
+      "id": "01M7G14BGWQG78WKBA0MTRGDEA",
+      "atom_uri": "urn:zam:atom:01M7G14BGWQG78WKBA0MTRGDEA",
+      "namespace": "zam-academy-physik-realschule-7",
+      "slug": "ph7-op-schatten",
+      "title": "Schatten und Finsternisse modellieren",
+      "domain": "physik/optik",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=op-schatten",
+      "prerequisites": [
+        {
+          "atom_id": "01M7G14BGW37VWES25VZAYT6NS"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-7",
+          "topic_code": "lb2",
+          "topic_title": "Optik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "physik",
+          "track": "I",
+          "topic_code": "lb2",
+          "topic_title": "Optik"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7G14BGXENK9D1TATRM12P4F",
+          "slug": "ph7-op-schatten-kern",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=op-schatten",
+          "question": "Was unterscheidet Kernschatten von Halbschatten?",
+          "concept": "Im Kernschatten ist die ganze Quelle verdeckt, im Halbschatten nur ein Teil.",
+          "sample_solution": "Im Kernschatten ist die ganze Quelle verdeckt, im Halbschatten nur ein Teil.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Im Kernschatten ist die ganze Quelle verdeckt, im Halbschatten nur ein Teil.",
+              "Im Halbschatten ist immer die ganze Quelle verdeckt."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7G14BGXY997BA69CVQDHKB4",
+          "slug": "ph7-op-schatten-mondfinsternis",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=op-schatten",
+          "question": "Welche Reihenfolge haben Sonne, Erde und Mond bei einer Mondfinsternis?",
+          "concept": "Sonne, Erde, Mond.",
+          "sample_solution": "Sonne, Erde, Mond.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sonne, Erde, Mond.",
+              "Sonne, Mond, Erde."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7G14BGX15Z9G1JZ3YWMPNP0",
+          "slug": "ph7-op-schatten-nicht-monatlich",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=op-schatten",
+          "question": "Warum gibt es nicht bei jedem Neumond eine Sonnenfinsternis?",
+          "concept": "Die Mondbahn ist gegen die Erdbahnebene geneigt. Deshalb läuft der Mondschatten meist an der Erde vorbei; die passende räumliche Ausrichtung fehlt.",
+          "sample_solution": "Die Mondbahn ist gegen die Erdbahnebene geneigt. Deshalb läuft der Mondschatten meist an der Erde vorbei; die passende räumliche Ausrichtung fehlt."
+        }
+      ]
+    },
+    {
+      "id": "01M7G14BGWM1TYSBPK3F59MB0M",
+      "atom_uri": "urn:zam:atom:01M7G14BGWM1TYSBPK3F59MB0M",
+      "namespace": "zam-academy-physik-realschule-7",
+      "slug": "ph7-op-reflexion",
+      "title": "Reflexion: Winkel immer zum Lot messen",
+      "domain": "physik/optik",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=op-reflexion",
+      "prerequisites": [
+        {
+          "atom_id": "01M7G14BGW37VWES25VZAYT6NS"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-7",
+          "topic_code": "lb2",
+          "topic_title": "Optik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "physik",
+          "track": "I",
+          "topic_code": "lb2",
+          "topic_title": "Optik"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7G14BGXGX18H3S900V2FM96",
+          "slug": "ph7-op-reflexion-lot",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=op-reflexion",
+          "question": "Wie steht das Einfallslot zur Oberfläche am Auftreffpunkt?",
+          "concept": "Senkrecht zur Oberfläche.",
+          "sample_solution": "Senkrecht zur Oberfläche.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Senkrecht zur Oberfläche.",
+              "Parallel zur Oberfläche."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7G14BGXYJ0J4AC64MJ5TDCW",
+          "slug": "ph7-op-reflexion-winkel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=op-reflexion",
+          "question": "Wie hängen Einfallswinkel und Reflexionswinkel zusammen?",
+          "concept": "Sie sind gleich groß und werden beide zum Lot gemessen.",
+          "sample_solution": "Sie sind gleich groß und werden beide zum Lot gemessen.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie sind gleich groß und werden beide zum Lot gemessen.",
+              "Sie sind immer zur Oberfläche zu messen und unterschiedlich groß."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7G14BGXB428YP5D6RDM00KE",
+          "slug": "ph7-op-reflexion-diffus",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=op-reflexion",
+          "question": "Warum verteilt eine raue Oberfläche reflektiertes Licht in viele Richtungen?",
+          "concept": "Die kleinen Oberflächenstücke haben unterschiedliche lokale Lote. An jedem gilt das Reflexionsgesetz, insgesamt entstehen dadurch verschiedene reflektierte Richtungen.",
+          "sample_solution": "Die kleinen Oberflächenstücke haben unterschiedliche lokale Lote. An jedem gilt das Reflexionsgesetz, insgesamt entstehen dadurch verschiedene reflektierte Richtungen."
+        }
+      ]
+    },
+    {
+      "id": "01M7G14BGW8Y5GFHZFYVQXPQ7J",
+      "atom_uri": "urn:zam:atom:01M7G14BGW8Y5GFHZFYVQXPQ7J",
+      "namespace": "zam-academy-physik-realschule-7",
+      "slug": "ph7-op-spiegelbild",
+      "title": "Wo liegt das Bild im ebenen Spiegel?",
+      "domain": "physik/optik",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=op-spiegelbild",
+      "prerequisites": [
+        {
+          "atom_id": "01M7G14BGWM1TYSBPK3F59MB0M"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-7",
+          "topic_code": "lb2",
+          "topic_title": "Optik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "physik",
+          "track": "I",
+          "topic_code": "lb2",
+          "topic_title": "Optik"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7G14BGXZAASDDYFTEVMCW5G",
+          "slug": "ph7-op-spiegelbild-abstand",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=op-spiegelbild",
+          "question": "Wie weit liegt ein Bild im ebenen Spiegel hinter der Spiegelebene?",
+          "concept": "Genauso weit wie der Gegenstand davor.",
+          "sample_solution": "Genauso weit wie der Gegenstand davor.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Genauso weit wie der Gegenstand davor.",
+              "Unabhängig vom Gegenstand immer direkt auf der Fläche."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7G14BGXNN4Z5N6FQWNZYYZN",
+          "slug": "ph7-op-spiegelbild-virtuell",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=op-spiegelbild",
+          "question": "Warum ist das Bild im ebenen Spiegel virtuell?",
+          "concept": "Nur rückwärtige Strahlverlängerungen treffen sich hinter dem Spiegel.",
+          "sample_solution": "Nur rückwärtige Strahlverlängerungen treffen sich hinter dem Spiegel.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nur rückwärtige Strahlverlängerungen treffen sich hinter dem Spiegel.",
+              "Echte Lichtstrahlen treffen sich hinter dem Spiegel zu einem Schirmbild."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7G14BGXPA5779S8KDNJF7VW",
+          "slug": "ph7-op-spiegelbild-eigenschaften",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=op-spiegelbild",
+          "question": "Welche Eigenschaften besitzt das Bild eines Gegenstands im ebenen Spiegel?",
+          "concept": "Es ist aufrecht, gleich groß und virtuell. Bild und Gegenstand liegen im gleichen Abstand auf verschiedenen Seiten der Spiegelebene.",
+          "sample_solution": "Es ist aufrecht, gleich groß und virtuell. Bild und Gegenstand liegen im gleichen Abstand auf verschiedenen Seiten der Spiegelebene."
+        }
+      ]
+    },
+    {
+      "id": "01M7G14BGWQM984QJCQH46P8QK",
+      "atom_uri": "urn:zam:atom:01M7G14BGWQM984QJCQH46P8QK",
+      "namespace": "zam-academy-physik-realschule-7",
+      "slug": "ph7-op-brechung",
+      "title": "Brechung: Licht wechselt das Medium",
+      "domain": "physik/optik",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=op-brechung",
+      "prerequisites": [
+        {
+          "atom_id": "01M7G14BGW37VWES25VZAYT6NS"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-7",
+          "topic_code": "lb2",
+          "topic_title": "Optik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "physik",
+          "track": "I",
+          "topic_code": "lb2",
+          "topic_title": "Optik"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7G14BGXZGBNM3BRJP82HS3X",
+          "slug": "ph7-op-brechung-richtung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=op-brechung",
+          "question": "Wie wird ein schräg einfallender Lichtstrahl beim Übergang Luft zu Wasser gebrochen?",
+          "concept": "Zum Lot hin.",
+          "sample_solution": "Zum Lot hin.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Zum Lot hin.",
+              "Vom Lot weg."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7G14BGXHGG9AN2QY5HY5GC3",
+          "slug": "ph7-op-brechung-ursache",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=op-brechung",
+          "question": "Wodurch entsteht die Brechung beim schrägen Übergang zwischen durchsichtigen Medien?",
+          "concept": "Durch die unterschiedliche Lichtgeschwindigkeit in den Medien.",
+          "sample_solution": "Durch die unterschiedliche Lichtgeschwindigkeit in den Medien.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Durch die unterschiedliche Lichtgeschwindigkeit in den Medien.",
+              "Weil das Auge einen Sehstrahl in das Wasser sendet."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7G14BGXAYPCHRWYWNFKHRB8",
+          "slug": "ph7-op-brechung-hebung",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=op-brechung",
+          "question": "Warum erscheint ein Gegenstand unter Wasser höher zu liegen?",
+          "concept": "Sein Licht wird beim Austritt in Luft vom Lot weg gebrochen. Die geraden rückwärtigen Verlängerungen der ankommenden Strahlen weisen auf einen höher liegenden scheinbaren Ort.",
+          "sample_solution": "Sein Licht wird beim Austritt in Luft vom Lot weg gebrochen. Die geraden rückwärtigen Verlängerungen der ankommenden Strahlen weisen auf einen höher liegenden scheinbaren Ort."
+        }
+      ]
+    },
+    {
+      "id": "01M7G14BGWGW0TS90T1WQB1538",
+      "atom_uri": "urn:zam:atom:01M7G14BGWGW0TS90T1WQB1538",
+      "namespace": "zam-academy-physik-realschule-7",
+      "slug": "ph7-op-totalreflexion",
+      "title": "Totalreflexion: Licht bleibt im Medium",
+      "domain": "physik/optik",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=op-totalreflexion",
+      "prerequisites": [
+        {
+          "atom_id": "01M7G14BGWQM984QJCQH46P8QK"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-7",
+          "topic_code": "lb2",
+          "topic_title": "Optik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "physik",
+          "track": "I",
+          "topic_code": "lb2",
+          "topic_title": "Optik"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7G14BGX60XHW8VERF0W1M94",
+          "slug": "ph7-op-totalreflexion-medien",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=op-totalreflexion",
+          "question": "Welche Medienreihenfolge ist für Totalreflexion nötig?",
+          "concept": "Vom optisch dichteren zum optisch dünneren Medium.",
+          "sample_solution": "Vom optisch dichteren zum optisch dünneren Medium.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Vom optisch dichteren zum optisch dünneren Medium.",
+              "Vom optisch dünneren zum optisch dichteren Medium."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7G14BGXJHQVPCCC37SRZX0P",
+          "slug": "ph7-op-totalreflexion-winkel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=op-totalreflexion",
+          "question": "Welche Winkelbedingung braucht Totalreflexion zusätzlich?",
+          "concept": "Der Einfallswinkel liegt oberhalb des Grenzwinkels.",
+          "sample_solution": "Der Einfallswinkel liegt oberhalb des Grenzwinkels.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Einfallswinkel liegt oberhalb des Grenzwinkels.",
+              "Der Strahl fällt zwingend senkrecht auf die Fläche."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7G14BGY3RVYC81KEGQJBCY2",
+          "slug": "ph7-op-totalreflexion-lichtleiter",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=op-totalreflexion",
+          "question": "Wie kann ein geeigneter Lichtleiter Licht im Kern führen?",
+          "concept": "Die Strahlen treffen vom optisch dichteren Kern aus oberhalb des Grenzwinkels auf die Grenzfläche und werden wiederholt totalreflektiert. Reale Verluste bleiben möglich.",
+          "sample_solution": "Die Strahlen treffen vom optisch dichteren Kern aus oberhalb des Grenzwinkels auf die Grenzfläche und werden wiederholt totalreflektiert. Reale Verluste bleiben möglich."
+        }
+      ]
+    },
+    {
+      "id": "01M7G14BGWWW3BJ65D7M6TX0HD",
+      "atom_uri": "urn:zam:atom:01M7G14BGWWW3BJ65D7M6TX0HD",
+      "namespace": "zam-academy-physik-realschule-7",
+      "slug": "ph7-op-dispersion",
+      "title": "Weißes Licht und sein Spektrum",
+      "domain": "physik/optik",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=op-dispersion",
+      "prerequisites": [
+        {
+          "atom_id": "01M7G14BGWQM984QJCQH46P8QK"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-7",
+          "topic_code": "lb2",
+          "topic_title": "Optik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "physik",
+          "track": "I",
+          "topic_code": "lb2",
+          "topic_title": "Optik"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7G14BGYJAX7WB97NYK0K8TR",
+          "slug": "ph7-op-dispersion-ursache",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=op-dispersion",
+          "question": "Warum kann ein Prisma weißes Licht in Spektralfarben zerlegen?",
+          "concept": "Die enthaltenen Farben werden unterschiedlich stark gebrochen.",
+          "sample_solution": "Die enthaltenen Farben werden unterschiedlich stark gebrochen.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die enthaltenen Farben werden unterschiedlich stark gebrochen.",
+              "Das Prisma erzeugt beliebige fehlende Farben aus dem Nichts."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7G14BGY43YFPZ9840PKD561",
+          "slug": "ph7-op-dispersion-kontinuierlich",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=op-dispersion",
+          "question": "Was bedeutet ein kontinuierliches sichtbares Spektrum?",
+          "concept": "Die Spektralfarben gehen ohne scharfe Lücken ineinander über.",
+          "sample_solution": "Die Spektralfarben gehen ohne scharfe Lücken ineinander über.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Spektralfarben gehen ohne scharfe Lücken ineinander über.",
+              "Es besteht ausschließlich aus voneinander getrennten einzelnen Farblinien."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7G14BGYA1CA02ABKBET94CW",
+          "slug": "ph7-op-dispersion-einfarbig",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=op-dispersion",
+          "question": "Warum ergibt nur rotes Licht am Prisma keinen vollständigen Regenbogen?",
+          "concept": "Das Prisma lenkt vorhandene Farben unterschiedlich ab, erzeugt aber die fehlenden Farben nicht. Einfallendes rotes Licht bleibt nach der Ablenkung rot.",
+          "sample_solution": "Das Prisma lenkt vorhandene Farben unterschiedlich ab, erzeugt aber die fehlenden Farben nicht. Einfallendes rotes Licht bleibt nach der Ablenkung rot."
+        }
+      ]
+    },
+    {
+      "id": "01M7G14BGWH1RK9G2ZJWG6PBJ0",
+      "atom_uri": "urn:zam:atom:01M7G14BGWH1RK9G2ZJWG6PBJ0",
+      "namespace": "zam-academy-physik-realschule-7",
+      "slug": "ph7-op-linsen",
+      "title": "Sammellinsen: reelle und virtuelle Bilder",
+      "domain": "physik/optik",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=op-linsen",
+      "prerequisites": [
+        {
+          "atom_id": "01M7G14BGWQM984QJCQH46P8QK"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-7",
+          "topic_code": "lb2",
+          "topic_title": "Optik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "physik",
+          "track": "I",
+          "topic_code": "lb2",
+          "topic_title": "Optik"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7G14BGY86WTXTJ25816BSVN",
+          "slug": "ph7-op-linsen-brennpunkt",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=op-linsen",
+          "question": "Was macht eine Sammellinse im Modell mit achsenparallelem Licht?",
+          "concept": "Sie bündelt es im bildseitigen Brennpunkt.",
+          "sample_solution": "Sie bündelt es im bildseitigen Brennpunkt.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie bündelt es im bildseitigen Brennpunkt.",
+              "Sie lenkt es grundsätzlich ungeordnet in alle Richtungen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7G14BGYCW8HQK7DFH4T5864",
+          "slug": "ph7-op-linsen-reell",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=op-linsen",
+          "question": "Wann liefert eine dünne Sammellinse ein reelles Bild eines Gegenstands?",
+          "concept": "Wenn er außerhalb ihrer Brennweite steht.",
+          "sample_solution": "Wenn er außerhalb ihrer Brennweite steht.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Wenn er außerhalb ihrer Brennweite steht.",
+              "Wenn er zwischen Linse und Brennpunkt steht."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7G14BGY36C7ZGQ0HXMZBCJZ",
+          "slug": "ph7-op-linsen-lupe",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=op-linsen",
+          "question": "Warum lässt sich das aufrechte Lupenbild nicht auf einem Schirm am scheinbaren Bildort auffangen?",
+          "concept": "Der Gegenstand liegt innerhalb der Brennweite. Echte austretende Strahlen laufen auseinander; nur ihre rückwärtigen Verlängerungen treffen sich im virtuellen Bild.",
+          "sample_solution": "Der Gegenstand liegt innerhalb der Brennweite. Echte austretende Strahlen laufen auseinander; nur ihre rückwärtigen Verlängerungen treffen sich im virtuellen Bild."
+        }
+      ]
+    },
+    {
+      "id": "01M7G14BGW72ZMPQ5MKQGHGVBX",
+      "atom_uri": "urn:zam:atom:01M7G14BGW72ZMPQ5MKQGHGVBX",
+      "namespace": "zam-academy-physik-realschule-7",
+      "slug": "ph7-op-geraete",
+      "title": "Auge, Kamera und optische Geräte erklären",
+      "domain": "physik/optik",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=op-geraete",
+      "prerequisites": [
+        {
+          "atom_id": "01M7G14BGWH1RK9G2ZJWG6PBJ0"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-7",
+          "topic_code": "lb2",
+          "topic_title": "Optik"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "physik",
+          "track": "I",
+          "topic_code": "lb2",
+          "topic_title": "Optik"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7G14BGYFJ91B05G7M0TR1W0",
+          "slug": "ph7-op-geraete-empfaenger",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=op-geraete",
+          "question": "Wo entsteht das reelle Bild im Auge und in einer Kamera?",
+          "concept": "Auf der Netzhaut beziehungsweise dem Sensor.",
+          "sample_solution": "Auf der Netzhaut beziehungsweise dem Sensor.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Auf der Netzhaut beziehungsweise dem Sensor.",
+              "In beiden Fällen grundsätzlich auf der Vorderfläche der Linse."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7G14BGYVJ8Y9JSZQCW3Z1GK",
+          "slug": "ph7-op-geraete-kurzsichtig",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=op-geraete",
+          "question": "Welche Linsenart hilft im einfachen Modell bei Kurzsichtigkeit?",
+          "concept": "Eine Zerstreuungslinse.",
+          "sample_solution": "Eine Zerstreuungslinse.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eine Zerstreuungslinse.",
+              "Eine zusätzliche Sammellinse unabhängig von jeder Untersuchung."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7G14BGYE16HSNVVAF8WN9ZM",
+          "slug": "ph7-op-geraete-scharfstellen",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=op-geraete",
+          "question": "Wie unterscheiden sich das Scharfstellen im Auge und im einfachen Kameramodell?",
+          "concept": "Im Auge ändert sich vor allem die Linsenform und damit die Brechkraft. Bei der einfachen Kamera wird der Linsenabstand zum Sensor an den Gegenstandsabstand angepasst.",
+          "sample_solution": "Im Auge ändert sich vor allem die Linsenform und damit die Brechkraft. Bei der einfachen Kamera wird der Linsenabstand zum Sensor an den Gegenstandsabstand angepasst."
+        }
+      ]
+    },
+    {
+      "id": "01M7G14BGWQAYK11T9NREATJQQ",
+      "atom_uri": "urn:zam:atom:01M7G14BGWQAYK11T9NREATJQQ",
+      "namespace": "zam-academy-physik-realschule-7",
+      "slug": "ph7-el-magnete",
+      "title": "Magnete, Pole und Elementarmagnete",
+      "domain": "physik/elektrizitaet-magnetismus",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=el-magnete",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-7",
+          "topic_code": "lb3",
+          "topic_title": "Magnetismus und Elektrizitätslehre"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "physik",
+          "track": "I",
+          "topic_code": "lb3",
+          "topic_title": "Magnetismus und Elektrizitätslehre"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7G14BGYEBKXVN5AFM4CA9AM",
+          "slug": "ph7-el-magnete-pole",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=el-magnete",
+          "question": "Wie wirken gleichnamige Magnetpole aufeinander?",
+          "concept": "Sie stoßen sich ab.",
+          "sample_solution": "Sie stoßen sich ab.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie stoßen sich ab.",
+              "Sie ziehen sich immer an."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7G14BGYTXQ48TPGGKY9MD4W",
+          "slug": "ph7-el-magnete-teilen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=el-magnete",
+          "question": "Welche Pole besitzen die beiden Teilstücke eines geteilten Stabmagneten?",
+          "concept": "Jedes Teilstück besitzt Nord- und Südpol.",
+          "sample_solution": "Jedes Teilstück besitzt Nord- und Südpol.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Jedes Teilstück besitzt Nord- und Südpol.",
+              "Ein Teilstück besitzt ausschließlich Nordpol, das andere ausschließlich Südpol."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7G14BGYG4M6FFX8XQ9AV0ZM",
+          "slug": "ph7-el-magnete-influenz",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=el-magnete",
+          "question": "Wie erklärt das Elementarmagnetmodell die magnetische Influenz bei einem Eisennagel?",
+          "concept": "Ein äußerer Magnet richtet magnetische Bereiche bevorzugt aus. Dadurch wirkt der Nagel selbst magnetisch; je nach Material kann die Wirkung nach Entfernen weitgehend verschwinden.",
+          "sample_solution": "Ein äußerer Magnet richtet magnetische Bereiche bevorzugt aus. Dadurch wirkt der Nagel selbst magnetisch; je nach Material kann die Wirkung nach Entfernen weitgehend verschwinden."
+        }
+      ]
+    },
+    {
+      "id": "01M7G14BGW8TMCZ6ASGE3HGXZV",
+      "atom_uri": "urn:zam:atom:01M7G14BGW8TMCZ6ASGE3HGXZV",
+      "namespace": "zam-academy-physik-realschule-7",
+      "slug": "ph7-el-magnetfeld",
+      "title": "Magnetfelder und der Kompass der Erde",
+      "domain": "physik/elektrizitaet-magnetismus",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=el-magnetfeld",
+      "prerequisites": [
+        {
+          "atom_id": "01M7G14BGWQAYK11T9NREATJQQ"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-7",
+          "topic_code": "lb3",
+          "topic_title": "Magnetismus und Elektrizitätslehre"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "physik",
+          "track": "I",
+          "topic_code": "lb3",
+          "topic_title": "Magnetismus und Elektrizitätslehre"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7G14BGYRDWYCMF0JZGM8QDB",
+          "slug": "ph7-el-magnetfeld-richtung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=el-magnetfeld",
+          "question": "In welche Richtung zeigen magnetische Feldlinien außerhalb eines Stabmagneten?",
+          "concept": "Vom Nordpol zum Südpol.",
+          "sample_solution": "Vom Nordpol zum Südpol.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Vom Nordpol zum Südpol.",
+              "Vom Südpol zum Nordpol."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7G14BGY572W4A7M0TJ6F9AF",
+          "slug": "ph7-el-magnetfeld-kompass",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=el-magnetfeld",
+          "question": "Welche Richtung kennzeichnet der Nordpol einer kleinen Kompassnadel?",
+          "concept": "Die lokale Richtung des Magnetfelds.",
+          "sample_solution": "Die lokale Richtung des Magnetfelds.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die lokale Richtung des Magnetfelds.",
+              "Unabhängig von störenden Magneten immer exakt den geografischen Norden."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7G14BGYWZS5QQG8FC4WQH18",
+          "slug": "ph7-el-magnetfeld-erde",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=el-magnetfeld",
+          "question": "Warum weist der nordsuchende Kompasspol ungefähr zum geografischen Norden?",
+          "concept": "Nahe dem geografischen Norden liegt aus Sicht des einfachen Erdmagnetmodells eine magnetische Südpolregion. Magnetische und geografische Richtung stimmen nicht überall exakt überein.",
+          "sample_solution": "Nahe dem geografischen Norden liegt aus Sicht des einfachen Erdmagnetmodells eine magnetische Südpolregion. Magnetische und geografische Richtung stimmen nicht überall exakt überein."
+        }
+      ]
+    },
+    {
+      "id": "01M7G14BGW4WPCWYJ751KWKMH4",
+      "atom_uri": "urn:zam:atom:01M7G14BGW4WPCWYJ751KWKMH4",
+      "namespace": "zam-academy-physik-realschule-7",
+      "slug": "ph7-el-stromkreis",
+      "title": "Vom Aufbau zum Schaltbild",
+      "domain": "physik/elektrizitaet-magnetismus",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=el-stromkreis",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-7",
+          "topic_code": "lb3",
+          "topic_title": "Magnetismus und Elektrizitätslehre"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "physik",
+          "track": "I",
+          "topic_code": "lb3",
+          "topic_title": "Magnetismus und Elektrizitätslehre"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7G14BGY7NGS9X8N76EX57G4",
+          "slug": "ph7-el-stromkreis-geschlossen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=el-stromkreis",
+          "question": "Welcher Weg ist für ein Lämpchen im einfachen Stromkreis nötig?",
+          "concept": "Ein geschlossener leitender Weg über das Lämpchen zwischen beiden Quellanschlüssen.",
+          "sample_solution": "Ein geschlossener leitender Weg über das Lämpchen zwischen beiden Quellanschlüssen.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein geschlossener leitender Weg über das Lämpchen zwischen beiden Quellanschlüssen.",
+              "Ein einzelner Draht von nur einem Anschluss zur Lampe genügt."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7G14BGYGHBK293D0WZ1Z96M",
+          "slug": "ph7-el-stromkreis-schalter",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=el-stromkreis",
+          "question": "Was bewirkt ein offener Schalter im einzigen Stromweg?",
+          "concept": "Er unterbricht den leitenden Weg.",
+          "sample_solution": "Er unterbricht den leitenden Weg.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Er unterbricht den leitenden Weg.",
+              "Er erzeugt automatisch zusätzlichen elektrischen Strom."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7G14BGYBVM2Y2BVQ3PR5YJ3",
+          "slug": "ph7-el-stromkreis-schaltbild",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=el-stromkreis",
+          "question": "Was muss beim Übertragen eines Schaltbilds auf einen räumlich anderen Aufbau gleich bleiben?",
+          "concept": "Die elektrischen Verbindungen zwischen den Anschlüssen und Knoten müssen übereinstimmen. Die räumliche Form der Leitungen ist dafür nicht entscheidend.",
+          "sample_solution": "Die elektrischen Verbindungen zwischen den Anschlüssen und Knoten müssen übereinstimmen. Die räumliche Form der Leitungen ist dafür nicht entscheidend."
+        }
+      ]
+    },
+    {
+      "id": "01M7G14BGW31YNXG630QPATB8T",
+      "atom_uri": "urn:zam:atom:01M7G14BGW31YNXG630QPATB8T",
+      "namespace": "zam-academy-physik-realschule-7",
+      "slug": "ph7-el-schaltungen",
+      "title": "Schaltungen für eine Aufgabe entwickeln",
+      "domain": "physik/elektrizitaet-magnetismus",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=el-schaltungen",
+      "prerequisites": [
+        {
+          "atom_id": "01M7G14BGW4WPCWYJ751KWKMH4"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-7",
+          "topic_code": "lb3",
+          "topic_title": "Magnetismus und Elektrizitätslehre"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "physik",
+          "track": "I",
+          "topic_code": "lb3",
+          "topic_title": "Magnetismus und Elektrizitätslehre"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7G14BGY9MG2E54G6AVB5AVD",
+          "slug": "ph7-el-schaltungen-reihe",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=el-schaltungen",
+          "question": "Was bewirkt ein offener Schalter im gemeinsamen Reihenweg zweier Lämpchen?",
+          "concept": "Beide Lämpchen bleiben dunkel.",
+          "sample_solution": "Beide Lämpchen bleiben dunkel.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Beide Lämpchen bleiben dunkel.",
+              "Nur das räumlich nächste Lämpchen bleibt dunkel."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7G14BGY54FJ4PK2JKCP2MNP",
+          "slug": "ph7-el-schaltungen-parallel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=el-schaltungen",
+          "question": "Wie können zwei Lämpchen mit eigenen Schaltern unabhängig geschaltet werden?",
+          "concept": "In zwei parallelen Zweigen mit je einem Schalter und Lämpchen.",
+          "sample_solution": "In zwei parallelen Zweigen mit je einem Schalter und Lämpchen.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "In zwei parallelen Zweigen mit je einem Schalter und Lämpchen.",
+              "Mit allen Bauteilen ausschließlich im selben Reihenweg."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7G14BGY5G61CPE9MV2RTCV0",
+          "slug": "ph7-el-schaltungen-und",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=el-schaltungen",
+          "question": "Wie bildet eine einfache Modellschaltung eine UND-Bedingung mit zwei Freigabeschaltern?",
+          "concept": "Beide Schalter liegen in Reihe mit dem Anzeigelämpchen. Nur wenn beide geschlossen sind, ist der gemeinsame Stromweg vollständig.",
+          "sample_solution": "Beide Schalter liegen in Reihe mit dem Anzeigelämpchen. Nur wenn beide geschlossen sind, ist der gemeinsame Stromweg vollständig."
+        }
+      ]
+    },
+    {
+      "id": "01M7G14BGW73HFB5JGAXZG2D2J",
+      "atom_uri": "urn:zam:atom:01M7G14BGW73HFB5JGAXZG2D2J",
+      "namespace": "zam-academy-physik-realschule-7",
+      "slug": "ph7-el-leiter-schutz",
+      "title": "Leiter, Stromwirkungen und Schutz im Alltag",
+      "domain": "physik/elektrizitaet-magnetismus",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=el-leiter-schutz",
+      "prerequisites": [
+        {
+          "atom_id": "01M7G14BGW4WPCWYJ751KWKMH4"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-realschule-7",
+          "topic_code": "lb3",
+          "topic_title": "Magnetismus und Elektrizitätslehre"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "subject": "physik",
+          "track": "I",
+          "topic_code": "lb3",
+          "topic_title": "Magnetismus und Elektrizitätslehre"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7G14BGY21XDW0T5NMJ3YE9F",
+          "slug": "ph7-el-leiter-schutz-kabel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=el-leiter-schutz",
+          "question": "Warum besitzt ein übliches Kabel einen Kupferkern und einen Kunststoffmantel?",
+          "concept": "Kupfer leitet, der Kunststoffmantel isoliert den vorgesehenen Stromweg.",
+          "sample_solution": "Kupfer leitet, der Kunststoffmantel isoliert den vorgesehenen Stromweg.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Kupfer leitet, der Kunststoffmantel isoliert den vorgesehenen Stromweg.",
+              "Kunststoff leitet den Hauptstrom und Kupfer verhindert jeden Stromfluss."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7G14BGYPZNMRP6D97WCE0FW",
+          "slug": "ph7-el-leiter-schutz-schaden",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=el-leiter-schutz",
+          "question": "Was ist bei einem beschädigten Netzgerät zu tun?",
+          "concept": "Nicht weiter benutzen und eine verantwortliche erwachsene Person informieren.",
+          "sample_solution": "Nicht weiter benutzen und eine verantwortliche erwachsene Person informieren.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nicht weiter benutzen und eine verantwortliche erwachsene Person informieren.",
+              "Die blanken Kontakte kurz mit den Fingern auf Funktion prüfen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7G14BGYAV3Z379C9AXSSJE8",
+          "slug": "ph7-el-leiter-schutz-kurzschluss",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "materiality": "material",
+          "source_link": "https://academy.zam-os.org/physik-realschule-7/#lesson=el-leiter-schutz",
+          "question": "Warum ist eine direkte leitende Verbindung der Quellanschlüsse ohne vorgesehenen Verbraucher problematisch?",
+          "concept": "Sie ist ein Kurzschluss. Ein großer Strom kann Quelle und Leitung stark erwärmen; ein Funktionstest braucht einen geeigneten, angeleiteten Aufbau.",
+          "sample_solution": "Sie ist ein Kurzschluss. Ein großer Strom kann Quelle und Leitung stark erwärmen; ein Funktionstest braucht einen geeigneten, angeleiteten Aufbau."
+        }
+      ]
+    }
+  ]
+}

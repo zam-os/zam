@@ -97,7 +97,7 @@ describe("isSafeMathTree", () => {
       }
     }
     // The bundled corpus changes when superseded cells move to legacy.
-    expect(checked).toBeGreaterThan(5900);
+    expect(checked).toBeGreaterThan(5800);
     expect(refused).toEqual([]);
   });
 

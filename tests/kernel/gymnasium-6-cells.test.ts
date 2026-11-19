@@ -18,12 +18,11 @@ import {
 // Mathematik 6 moved to zam-academy:mathematik-gymnasium-6; its two school
 // cells are archived in tests/fixtures/legacy/.
 const GYM6_CELL_IDS = [
-  "de-by:gymnasium-6-biologie-saeugetiere-voegel-leichtbau-flug",
-  "de-by:gymnasium-6-biologie-fische-amphibien-reptilien-evolution",
   "de-by:gymnasium-6-natur-technik-informatik-vektorgrafik-texte",
   "de-by:gymnasium-6-geographie-europa-raeume-wirtschaft-eu",
 ];
 const ACADEMY_GYM6_IDS = [
+  "zam-academy:biologie-gymnasium-6",
   "zam-academy:deutsch-gymnasium-6",
   "zam-academy:englisch-gymnasium-6",
   "zam-academy:geschichte-gymnasium-6",

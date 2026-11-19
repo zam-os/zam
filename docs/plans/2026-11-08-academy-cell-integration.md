@@ -9,9 +9,11 @@ Academy authors follow is `AGENTS.md` in `zam-os/zam-academy`.
 
 ## Where it stands
 
-ZAM 0.66.0 bundles 78 Academy cells and 136 active `de-by:` school cells.
-Five superseded Grade 6 school cells move to the legacy snapshot directory: English and two History cells for Gymnasium, and Geography and History for Realschule.
-There are 87 legacy school-cell snapshots. The five published cells with unapproved A/B mappings still need explicit approval before bundling (Biology 6 Gymnasium, German 5 Gymnasium, German 6 Realschule, English 6 Realschule and Physics 7 Realschule).
+ZAM 0.66.0 bundles 83 Academy cells and 127 active `de-by:` school cells.
+Fourteen superseded school cells move to the legacy snapshot directory.
+The archive includes Grade 5 German and Grade 6 Biology, English and History
+in Gymnasium, plus Grade 6 German, English, Geography and History and Grade 7
+Physics in Realschule. There are 96 legacy school-cell snapshots.
 
 ## One integration round
 
@@ -67,7 +69,14 @@ cell by itself.
 - [x] Retire the school cells superseded by the nine cells of 2026-11-08, the eight earlier `C`-only Realschule cells (Geographie 8, Biologie 8, Deutsch 8, Französisch 8, Geschichte 8, Deutsch 10, Englisch 10), Mathematik 7 Realschule (`2026.11.1`, 7 A / 1 C retire / 22 C keep-active), and Deutsch 5 Realschule (`2026.11.2` preview, 8 A / 5 C retire / 3 C keep-active): 33 school cells moved to `tests/fixtures/legacy/` on 2026-11-13 (0.63.0).
 - [x] Integrate the 10 new Academy cells in 0.64.0 (`biologie-realschule-5`, `biologie-realschule-6` preview, `franzoesisch-gymnasium-5`, `geographie-gymnasium-5`, `geographie-realschule-5` preview, `gpg-mittelschule-5`, `mathematik-gymnasium-7`, `mathematik-mittelschule-9`, `mathematik-mittelschule-10`, `nt-mittelschule-5`) and retire 9 superseded `de-by:` school cells (`gymnasium-5-geographie`, both `gymnasium-7-mathematik`, both `realschule-5-biologie`, `realschule-5-natur-technik`, `realschule-5-geographie`, and both `realschule-6-biologie`): all 9 moved to `tests/fixtures/legacy/` on 2026-11-14 (79 legacy snapshots total), while `realschule-6-geographie-deutschland-bayern-raum` and `realschule-7-biologie-wirbeltiere-oekologie` remain active.
 - [x] Integrate the 5 new Academy cells in 0.65.0 (`biologie-gymnasium-5`, `englisch-gymnasium-5` and `informatik-gymnasium-6` with mappings approved 2026-11-14/15 and republished upstream in zam-academy#144, plus `englisch-mittelschule-5` and `nt-mittelschule-6` preview) and retire the 3 Gymnasium 5 school cells superseded by Biologie 5 Gymnasium (`gymnasium-5-biologie-mensch-skelett-sexualbiologie`, `gymnasium-5-biologie-pflanzen-bluetenbau-samen`, `gymnasium-5-natur-technik-mikroskop-experiment-oop`): 82 legacy snapshots total. `gymnasium-5-englisch-starter-grammar-tenses` and `gymnasium-6-natur-technik-informatik-vektorgrafik-texte` stay active.
-- [x] Integrate German, English and History 6 Gymnasium, plus Geography and History 6 Realschule in 0.66.0. Five superseded Grade 6 school cells move to the legacy snapshot directory: English and two History cells for Gymnasium, and Geography and History for Realschule. German 7 syntax and Geography 7 Realschule stay active.
+- [x] Integrate ten Academy cells and move fourteen superseded school cells to
+  legacy in 0.66.0. The Grade 7 German syntax, English and Geography school
+  cells stay active.
 - [ ] Physik 10/11 Gymnasium (`physik-gymnasium-11`, `keine Stilllegung` decided) and Biologie 11 Gymnasium (`biologie-gymnasium-11` is `einfuehrungsklasse` under `isb-bayern-einfuehrungsklasse`): their 5 + 2 `de-by:` cells deliberately stay bundled and active.
 - [ ] Review preview status and next open upstream apps in `zam-os/zam-academy` (including lifting preview on `nt-mittelschule-6`, `biologie-realschule-6`, `geographie-realschule-5`, `deutsch-realschule-5`, `biologie-gymnasium-11`, and the Grundschule 4 / Mathematik 13 cells when teacher-reviewed).
-- [ ] Remaining `de-by:` school cells (`136` active: `115` Gymnasium, `20` Realschule, `1` BOS): Gymnasium grades 5–7 outside Mathematik (plus Geographie 5 and Französisch 5) and grades 8–13 outside Mathematik 11–13, Physik 11 and Biologie 11; Realschule grade 6 outside Mathematik, Biologie and IT, grade 7 outside Mathematik and IT, plus BwR 8, Wirtschaft und Recht 8/10, Optik 8 (2) and BOS 10 Optik.
+- [ ] Continue replacing the 127 active `de-by:` school cells (111 Gymnasium,
+  15 Realschule, 1 BOS). In Gymnasium grades 5 and 6, the active school cells
+  cover English 5 and Geography and Informatics 6. Realschule's remaining
+  school cells cover subjects in Grade 7, plus business accounting and optics
+  in Grade 8 and economics and law in Grades 8 and 10. The BOS 10 optics cell
+  also remains active.

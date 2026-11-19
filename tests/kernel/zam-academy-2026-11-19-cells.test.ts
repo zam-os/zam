@@ -18,7 +18,7 @@ import {
 
 interface Mapping {
   approved: string | null;
-  sources: { file: string; tile_id: string; sha256: string }[];
+  sources: { file: string; tile_id?: string; sha256: string }[];
   rows: {
     old_id?: string;
     de_by_id?: string;
@@ -32,6 +32,7 @@ const cells = [
   {
     app: "deutsch-gymnasium-6",
     schoolType: "gymnasium",
+    grade: 6,
     subject: "deutsch",
     version: "2026.11.1",
     lessons: 49,
@@ -41,6 +42,7 @@ const cells = [
   {
     app: "englisch-gymnasium-6",
     schoolType: "gymnasium",
+    grade: 6,
     subject: "englisch",
     version: "2026.11.1",
     lessons: 40,
@@ -50,6 +52,7 @@ const cells = [
   {
     app: "geographie-realschule-6",
     schoolType: "realschule",
+    grade: 6,
     subject: "geographie",
     version: "2026.11.2",
     lessons: 25,
@@ -59,6 +62,7 @@ const cells = [
   {
     app: "geschichte-gymnasium-6",
     schoolType: "gymnasium",
+    grade: 6,
     subject: "geschichte",
     version: "2026.11.1",
     lessons: 36,
@@ -68,16 +72,77 @@ const cells = [
   {
     app: "geschichte-realschule-6",
     schoolType: "realschule",
+    grade: 6,
     subject: "geschichte",
     version: "2026.11.1",
     lessons: 42,
     items: 126,
     replacements: 4,
   },
+  {
+    app: "biologie-gymnasium-6",
+    schoolType: "gymnasium",
+    subject: "nt_gym",
+    grade: 6,
+    version: "2026.11.2",
+    lessons: 44,
+    items: 88,
+    replacements: 3,
+  },
+  {
+    app: "deutsch-gymnasium-5",
+    schoolType: "gymnasium",
+    subject: "deutsch",
+    grade: 5,
+    version: "2026.11.2",
+    lessons: 50,
+    items: 100,
+    replacements: 1,
+  },
+  {
+    app: "deutsch-realschule-6",
+    schoolType: "realschule",
+    subject: "deutsch",
+    grade: 6,
+    version: "2026.11.2",
+    lessons: 50,
+    items: 100,
+    replacements: 4,
+  },
+  {
+    app: "englisch-realschule-6",
+    schoolType: "realschule",
+    subject: "englisch",
+    grade: 6,
+    version: "2026.11.2",
+    lessons: 42,
+    items: 126,
+    replacements: 5,
+  },
+  {
+    app: "physik-realschule-7",
+    schoolType: "realschule",
+    subject: "physik",
+    grade: 7,
+    version: "2026.11.2",
+    lessons: 24,
+    items: 73,
+    replacements: 2,
+    track: "I",
+  },
 ] as const;
 
 const fixtures = join(__dirname, "../fixtures");
 const retiredTiles = new Set([
+  "de-by:gymnasium-5-deutsch-erzaehlen-maerchen-fabeln",
+  "de-by:gymnasium-5-deutsch-grammatik-faelle-rechtschreibung",
+  "de-by:gymnasium-6-biologie-fische-amphibien-reptilien-evolution",
+  "de-by:gymnasium-6-biologie-saeugetiere-voegel-leichtbau-flug",
+  "de-by:realschule-6-deutsch-texte-bericht-vorgangsbeschreibung",
+  "de-by:realschule-6-deutsch-wortarten-satzglieder-rechtschreibung",
+  "de-by:realschule-6-englisch-grammatik-grundlagen",
+  "de-by:realschule-7-physik-mechanik-bewegung-geschwindigkeit",
+  "de-by:realschule-7-physik-waermelehre-temperatur-ausdehnung",
   "de-by:realschule-6-geographie-deutschland-bayern-raum",
   "de-by:realschule-6-geschichte-urgeschichte-antike",
   "de-by:gymnasium-6-englisch-past-tenses-present-perfect-adjectives",
@@ -92,7 +157,8 @@ describe.each(cells)("ZAM Academy $app in 0.66.0", (cell) => {
     provider: "lehrplanplus-bayern",
     schoolType: cell.schoolType,
     subject: cell.subject,
-    grade: 6,
+    grade: cell.grade,
+    ...("track" in cell ? { track: cell.track } : {}),
   };
   const mapping = JSON.parse(
     readFileSync(
@@ -101,13 +167,16 @@ describe.each(cells)("ZAM Academy $app in 0.66.0", (cell) => {
     ),
   ) as Mapping;
   const oldTiles = mapping.sources.map((source) => {
-    const file = `${source.tile_id.slice("de-by:".length)}-kvt.json`;
-    const retired = retiredTiles.has(source.tile_id);
-    const fileName = `de-by-${file}`;
+    const fileName = source.file.split("/").at(-1)!;
+    const tileId =
+      source.tile_id ??
+      fileName.replace(/^de-by-/, "de-by:").replace(/-kvt\.json$/, "");
+    const retired = retiredTiles.has(tileId);
     const folder = retired ? "legacy" : "curriculum";
     const bytes = readFileSync(join(fixtures, folder, fileName));
     return {
       source,
+      tileId,
       retired,
       fileName,
       bytes,
@@ -128,13 +197,13 @@ describe.each(cells)("ZAM Academy $app in 0.66.0", (cell) => {
         ] as const,
     );
 
-  it("offers the Academy cell with the published edition only in its Grade 6 scope", () => {
+  it("offers the Academy cell with the published edition only in its curriculum scope", () => {
     expect(tile.version).toBe(cell.version);
     expect(tile.atoms).toHaveLength(cell.lessons);
     expect(items).toHaveLength(cell.items);
     expect(findBundledCellsForScope(scope).map((c) => c.id)).toContain(id);
     expect(needsGenericCurriculumImport(scope)).toBe(false);
-    for (const grade of [5, 7])
+    for (const grade of [cell.grade - 1, cell.grade + 1])
       expect(
         findBundledCellsForScope({ ...scope, grade }).map((c) => c.id),
       ).not.toContain(id);
@@ -160,15 +229,15 @@ describe.each(cells)("ZAM Academy $app in 0.66.0", (cell) => {
         .sort(),
     ).toEqual([...replacements].sort());
     expect(tile.retired_items ?? []).toEqual([]);
-    for (const { source, retired, fileName, bytes } of oldTiles) {
+    for (const { source, tileId, retired, fileName, bytes } of oldTiles) {
       expect(createHash("sha256").update(bytes).digest("hex")).toBe(
         source.sha256,
       );
       if (retired) {
-        expect(getBundledCell(source.tile_id)).toBeUndefined();
+        expect(getBundledCell(tileId)).toBeUndefined();
         expect(existsSync(join(fixtures, "curriculum", fileName))).toBe(false);
       } else {
-        expect(getBundledCell(source.tile_id)).toBeDefined();
+        expect(getBundledCell(tileId)).toBeDefined();
       }
     }
   });
