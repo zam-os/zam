@@ -1,0 +1,3638 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "zam-academy:biologie-gymnasium-6",
+  "version": "2026.11.2",
+  "title": "Biologie 6 Gymnasium (ZAM Academy)",
+  "description": "Natur und Technik 6, Schwerpunkt Biologie: Erkenntnisweg und Methoden, Samen, Früchte und Keimung, Photosynthese und Pflanzenbewegungen, Bewegung, Stoffwechsel, Fortpflanzung und Sinne der Wirbeltiere, Verwandtschaft und Evolution, Ökosystem Gewässer (LehrplanPLUS Bayern, Gymnasium 6).",
+  "publisher": "ZAM Academy",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/6/nt_gym",
+      "label": "LehrplanPLUS Bayern · Natur und Technik 6 Gymnasium",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Experiment",
+      "label": "Klexikon · Experiment",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Hypothese",
+      "label": "Wikipedia · Hypothese",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Abh%C3%A4ngige_und_unabh%C3%A4ngige_Variable",
+      "label": "Wikipedia · Abhängige und unabhängige Variable",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Kontrollexperiment",
+      "label": "Wikipedia · Versuchskontrolle",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Messfehler",
+      "label": "Wikipedia · Fehler",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Wissenschaft",
+      "label": "Klexikon · Wissenschaft",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/V%C3%B6gel",
+      "label": "Klexikon · Vögel",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Mikroskop",
+      "label": "Klexikon · Mikroskop",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Stereomikroskop",
+      "label": "Wikipedia · Stereomikroskop",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Lupe",
+      "label": "Klexikon · Lupe",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Wasserpest",
+      "label": "Wikipedia · Wasserpest",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Modell",
+      "label": "Klexikon · Modell",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Modell",
+      "label": "Wikipedia · Modell",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Ahorn",
+      "label": "Klexikon · Ahorne",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/S%C3%A4ulendiagramm",
+      "label": "Wikipedia · Säulendiagramm",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Liniendiagramm",
+      "label": "Wikipedia · Liniendiagramm",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Quelle",
+      "label": "Klexikon · Quelle",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Anthropomorphismus",
+      "label": "Wikipedia · Anthropomorphismus",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Wolf",
+      "label": "Klexikon · Wolf",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Samen",
+      "label": "Klexikon · Samen",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Frucht",
+      "label": "Klexikon · Frucht",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Gartenbohne",
+      "label": "Wikipedia · Gartenbohne",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Diaspore",
+      "label": "Wikipedia · Diaspore",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/L%C3%B6wenzahn",
+      "label": "Klexikon · Löwenzahn",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Gro%C3%9Fe_Klette",
+      "label": "Wikipedia · Große Klette",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Bionik",
+      "label": "Wikipedia · Bionik",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Klettverschluss",
+      "label": "Wikipedia · Klettverschluss",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Lotoseffekt",
+      "label": "Wikipedia · Lotoseffekt",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Ausl%C3%A4ufer",
+      "label": "Wikipedia · Ausläufer",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Erdbeere",
+      "label": "Klexikon · Erdbeeren",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Gartenerdbeere",
+      "label": "Wikipedia · Gartenerdbeere",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Kartoffel",
+      "label": "Klexikon · Kartoffel",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Keimung",
+      "label": "Wikipedia · Keimung",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Bohne",
+      "label": "Klexikon · Bohne",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Wurzel",
+      "label": "Klexikon · Wurzel",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Blatt",
+      "label": "Klexikon · Blatt",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Sonnenblume",
+      "label": "Wikipedia · Sonnenblume",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Pflanze",
+      "label": "Klexikon · Pflanzen",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Photosynthese",
+      "label": "Klexikon · Photosynthese",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Photosynthese",
+      "label": "Wikipedia · Photosynthese",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Zucker",
+      "label": "Klexikon · Zucker",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Zellatmung",
+      "label": "Wikipedia · Zellatmung",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Sauerstoff",
+      "label": "Klexikon · Sauerstoff",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Energie",
+      "label": "Klexikon · Energie",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Nachwachsender_Rohstoff",
+      "label": "Wikipedia · Nachwachsender Rohstoff",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Fossile_Energie",
+      "label": "Wikipedia · Fossile Energie",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Kohle",
+      "label": "Klexikon · Kohle",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Erd%C3%B6l",
+      "label": "Klexikon · Erdöl",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Biomasse",
+      "label": "Wikipedia · Biomasse",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Phototropismus",
+      "label": "Wikipedia · Pflanzenbewegung",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Mimosa_pudica",
+      "label": "Wikipedia · Mimose",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Gew%C3%B6hnlicher_L%C3%B6wenzahn",
+      "label": "Wikipedia · Gewöhnlicher Löwenzahn",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Fische",
+      "label": "Klexikon · Fische",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Schwimmblase",
+      "label": "Wikipedia · Schwimmblase",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Stromlinienform",
+      "label": "Wikipedia · Stromlinienform",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Forelle",
+      "label": "Klexikon · Forelle",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Feder",
+      "label": "Klexikon · Feder",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Vogelflug",
+      "label": "Wikipedia · Vogelflug",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Sohleng%C3%A4nger",
+      "label": "Wikipedia · Sohlengänger",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Zeheng%C3%A4nger",
+      "label": "Wikipedia · Zehengänger",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Zehenspitzeng%C3%A4nger",
+      "label": "Wikipedia · Spitzengänger",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Maulwurf",
+      "label": "Klexikon · Maulwürfe",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Eichh%C3%B6rnchen",
+      "label": "Klexikon · Eichhörnchen",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Pinguine",
+      "label": "Klexikon · Pinguine",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Gepard",
+      "label": "Klexikon · Gepard",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Flugzeug",
+      "label": "Klexikon · Flugzeug",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Schiff",
+      "label": "Klexikon · Schiff",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Gebiss",
+      "label": "Wikipedia · Gebiss",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Hund",
+      "label": "Klexikon · Hunde",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Rind",
+      "label": "Klexikon · Rinder",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Wiederk%C3%A4uer",
+      "label": "Wikipedia · Wiederkäuer",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Stockente",
+      "label": "Wikipedia · Stockente",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Graureiher",
+      "label": "Wikipedia · Graureiher",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Poikilothermie",
+      "label": "Wikipedia · Wechselwarmes Tier",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Homoiothermie",
+      "label": "Wikipedia · Gleichwarmes Tier",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Eidechsen",
+      "label": "Klexikon · Eidechsen",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Zauneidechse",
+      "label": "Wikipedia · Zauneidechse",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Winterschlaf",
+      "label": "Klexikon · Winterschlaf",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Winterruhe",
+      "label": "Wikipedia · Winterruhe",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/K%C3%A4ltestarre",
+      "label": "Wikipedia · Kältestarre",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Igel",
+      "label": "Klexikon · Igel",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Vogelzug",
+      "label": "Wikipedia · Vogelzug",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Kieme",
+      "label": "Wikipedia · Kieme",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Hautatmung",
+      "label": "Wikipedia · Hautatmung",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Lunge",
+      "label": "Wikipedia · Lunge",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Amphibien",
+      "label": "Klexikon · Amphibien",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Wirbeltiere",
+      "label": "Klexikon · Wirbeltiere",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Amnion",
+      "label": "Wikipedia · Amnion",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Reptilien",
+      "label": "Klexikon · Reptilien",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Ei",
+      "label": "Klexikon · Ei",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Metamorphose_(Zoologie)",
+      "label": "Wikipedia · Metamorphose (Zoologie)",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Grasfrosch",
+      "label": "Wikipedia · Grasfrosch",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Frosch",
+      "label": "Klexikon · Frösche",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Nesthocker",
+      "label": "Wikipedia · Nesthocker",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Nestfl%C3%BCchter",
+      "label": "Wikipedia · Nestflüchter",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Huhn",
+      "label": "Klexikon · Hühner",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Elternaufwand",
+      "label": "Wikipedia · Elternaufwand",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Brutpflege",
+      "label": "Wikipedia · Brutpflege",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Kabeljau",
+      "label": "Wikipedia · Atlantischer Kabeljau",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Dreistachliger_Stichling",
+      "label": "Wikipedia · Dreistachliger Stichling",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Balz",
+      "label": "Wikipedia · Balz",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Echoortung_(Tiere)",
+      "label": "Wikipedia · Echoortung (Tiere)",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Flederm%C3%A4use",
+      "label": "Klexikon · Fledermäuse",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Seitenlinienorgan",
+      "label": "Wikipedia · Seitenlinienorgan",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Grubenorgan",
+      "label": "Wikipedia · Grubenorgan und Labialgruben",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Schlangen",
+      "label": "Klexikon · Schlangen",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Eulen",
+      "label": "Klexikon · Eulen",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Wirbeltiere",
+      "label": "Wikipedia · Wirbeltiere",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Bestimmungsschl%C3%BCssel",
+      "label": "Wikipedia · Bestimmungsschlüssel",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Blindschleiche",
+      "label": "Wikipedia · Blindschleiche",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Wale",
+      "label": "Klexikon · Wale",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Evolution",
+      "label": "Klexikon · Evolution",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Selektion_(Evolution)",
+      "label": "Wikipedia · Selektion (Evolution)",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Charles_Darwin",
+      "label": "Klexikon · Charles Darwin",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Z%C3%BCchtung",
+      "label": "Klexikon · Zucht",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Zuchtwahl",
+      "label": "Wikipedia · Zucht",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Qualzucht",
+      "label": "Wikipedia · Qualzucht",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Haushund",
+      "label": "Wikipedia · Haushund",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Hausrind",
+      "label": "Wikipedia · Hausrind",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://www.gesetze-im-internet.de/tierschg/__2.html",
+      "label": "Gesetze im Internet · § 2 TierSchG",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Haustier",
+      "label": "Klexikon · Haustiere",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Nutztier",
+      "label": "Wikipedia · Nutztier",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Kaninchen",
+      "label": "Klexikon · Kaninchen",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Meerschweinchen",
+      "label": "Klexikon · Meerschweinchen",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Wellensittich",
+      "label": "Klexikon · Wellensittich",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Eierkennzeichnung",
+      "label": "Wikipedia · Eierkennzeichnung",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Sichttiefe",
+      "label": "Wikipedia · Sichttiefe",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Secchi-Scheibe",
+      "label": "Wikipedia · Secchi-Scheibe",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Flie%C3%9Fgeschwindigkeit",
+      "label": "Wikipedia · Strömungsgeschwindigkeit",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Abiotischer_Faktor",
+      "label": "Wikipedia · Abiotische Umweltfaktoren",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Bach",
+      "label": "Klexikon · Bach",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Teich",
+      "label": "Klexikon · Teich",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Plankton",
+      "label": "Klexikon · Plankton",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Hecht",
+      "label": "Klexikon · Hecht",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Libellen",
+      "label": "Klexikon · Libellen",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Rotauge",
+      "label": "Wikipedia · Rotauge",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Teichmuschel",
+      "label": "Wikipedia · Große Teichmuschel",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Eisvogel",
+      "label": "Wikipedia · Eisvogel",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/%C3%96kosystem",
+      "label": "Klexikon · Ökosystem",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Nahrungskette",
+      "label": "Klexikon · Nahrungskette",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Nahrungsnetz",
+      "label": "Wikipedia · Nahrungskette",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Produzent_(%C3%96kologie)",
+      "label": "Wikipedia · Produzent (Ökologie)",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Konsument_(%C3%96kologie)",
+      "label": "Wikipedia · Konsument (Ökologie)",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Destruent",
+      "label": "Wikipedia · Destruent",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Wasserfl%C3%B6he",
+      "label": "Wikipedia · Wasserflöhe",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Eutrophierung",
+      "label": "Wikipedia · Eutrophierung",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/D%C3%BCnger",
+      "label": "Klexikon · Dünger",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Kl%C3%A4ranlage",
+      "label": "Klexikon · Kläranlage",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Fischtreppe",
+      "label": "Wikipedia · Fischtreppe",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Artenvielfalt",
+      "label": "Klexikon · Artenvielfalt",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://www.lfu.bayern.de/wasser/index.htm",
+      "label": "LfU Bayern · Wasser",
+      "checked": "2026-11-16"
+    },
+    {
+      "uri": "https://www.umweltbundesamt.de/themen/wasser/fluesse",
+      "label": "Umweltbundesamt · Flüsse",
+      "checked": "2026-11-16"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01M7HBB12K2G6Z7FSKNY74H4ZC",
+      "atom_uri": "urn:zam:atom:01M7HBB12K2G6Z7FSKNY74H4ZC",
+      "namespace": "zam-academy-biologie-gymnasium-6",
+      "slug": "bg6-erkenntnisweg",
+      "title": "Den Erkenntnisweg planen",
+      "domain": "biologie/s1",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-erkenntnisweg",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-6",
+          "topic_code": "s1",
+          "topic_title": "Forschen wie in der Biologie"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "nt_gym",
+          "topic_code": "lb1.1",
+          "topic_title": "Erkenntnisse gewinnen – kommunizieren – bewerten",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7HBB12MM56PCYVG20GSBJXA",
+          "slug": "bg6-erkenntnisweg-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Aussage ist eine prüfbare Hypothese?",
+          "concept": "Wenn Kresse mehr Licht bekommt, dann wird sie in fünf Tagen größer als im Schatten.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-erkenntnisweg",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Wenn Kresse mehr Licht bekommt, dann wird sie in fünf Tagen größer als im Schatten.",
+              "Kresse ist eine schöne Pflanze für die Fensterbank."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7HBB12NSK4S6YKKMSBFX8FJ",
+          "slug": "bg6-erkenntnisweg-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Nenne die Phasen des naturwissenschaftlichen Erkenntnisweges in der richtigen Reihenfolge.",
+          "concept": "Frage, Hypothese, Untersuchung planen, durchführen, Daten auswerten und deuten, Folgerung (Hypothese bestätigt oder widerlegt, oft neue Frage).",
+          "sample_solution": "Frage, Hypothese, Untersuchung planen, durchführen, Daten auswerten und deuten, Folgerung (Hypothese bestätigt oder widerlegt, oft neue Frage).",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-erkenntnisweg"
+        }
+      ]
+    },
+    {
+      "id": "01M7HBB12P6XWEZ21JFK3EYB7C",
+      "atom_uri": "urn:zam:atom:01M7HBB12P6XWEZ21JFK3EYB7C",
+      "namespace": "zam-academy-biologie-gymnasium-6",
+      "slug": "bg6-variablen-kontrolle",
+      "title": "Variable, Konstante und Kontrollversuch",
+      "domain": "biologie/s1",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-variablen-kontrolle",
+      "prerequisites": [
+        {
+          "atom_id": "01M7HBB12K2G6Z7FSKNY74H4ZC",
+          "type": "soft",
+          "rationale": "Die Planung eines Experiments ist eine Phase des Erkenntnisweges."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-6",
+          "topic_code": "s1",
+          "topic_title": "Forschen wie in der Biologie"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "nt_gym",
+          "topic_code": "lb1.1",
+          "topic_title": "Erkenntnisse gewinnen – kommunizieren – bewerten",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7HBB12QA3SKBS7C25CFES5T",
+          "slug": "bg6-variablen-kontrolle-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Du prüfst, ob Hefe bei Wärme mehr Gas bildet. Was ist in diesem Versuch die Variable?",
+          "concept": "Die Temperatur des Wasserbads",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-variablen-kontrolle",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Temperatur des Wasserbads",
+              "Die Zuckermenge in beiden Kolben"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7HBB12RYCJXS932RT79X6XB",
+          "slug": "bg6-variablen-kontrolle-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was sind Variable, Konstanten und Kontrollversuch bei einem Experiment?",
+          "concept": "Variable: der eine gezielt veränderte Faktor. Konstanten: alle Faktoren, die gleich bleiben. Kontrollversuch: Vergleichsansatz ohne Veränderung.",
+          "sample_solution": "Variable: der eine gezielt veränderte Faktor. Konstanten: alle Faktoren, die gleich bleiben. Kontrollversuch: Vergleichsansatz ohne Veränderung.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-variablen-kontrolle"
+        }
+      ]
+    },
+    {
+      "id": "01M7HBB12SHH0Z5P24TEJG6TKX",
+      "atom_uri": "urn:zam:atom:01M7HBB12SHH0Z5P24TEJG6TKX",
+      "namespace": "zam-academy-biologie-gymnasium-6",
+      "slug": "bg6-fehlerquellen",
+      "title": "Fehlerquellen finden und vermeiden",
+      "domain": "biologie/s1",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-fehlerquellen",
+      "prerequisites": [
+        {
+          "atom_id": "01M7HBB12P6XWEZ21JFK3EYB7C",
+          "type": "soft",
+          "rationale": "Fehlerquellen setzen das Wissen über faire Experimente voraus."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-6",
+          "topic_code": "s1",
+          "topic_title": "Forschen wie in der Biologie"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "nt_gym",
+          "topic_code": "lb1.1",
+          "topic_title": "Erkenntnisse gewinnen – kommunizieren – bewerten",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7HBB12TEZZPFRACFZH0TDWA",
+          "slug": "bg6-fehlerquellen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Eine Gruppe testet die Keimung mit nur drei Samen pro Schale. Warum ist das eine Fehlerquelle?",
+          "concept": "Ein einzelner schlechter Samen verändert das Ergebnis stark; der Zufall wirkt zu sehr.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-fehlerquellen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein einzelner schlechter Samen verändert das Ergebnis stark; der Zufall wirkt zu sehr.",
+              "Drei Samen keimen grundsätzlich langsamer als viele."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7HBB12VXFZB9YJB4XW4247V",
+          "slug": "bg6-fehlerquellen-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Nenne zwei Fehlerquellen bei der Planung und zwei bei der Durchführung einer Untersuchung.",
+          "concept": "Planung: zwei Variablen gleichzeitig, kein Kontrollversuch, zu wenige Proben. Durchführung: ungenau ablesen, ungleiche Bedingungen, spät notieren.",
+          "sample_solution": "Planung: zwei Variablen gleichzeitig, kein Kontrollversuch, zu wenige Proben. Durchführung: ungenau ablesen, ungleiche Bedingungen, spät notieren.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-fehlerquellen"
+        }
+      ]
+    },
+    {
+      "id": "01M7HBB12WMDHEP58N0VD7XCSN",
+      "atom_uri": "urn:zam:atom:01M7HBB12WMDHEP58N0VD7XCSN",
+      "namespace": "zam-academy-biologie-gymnasium-6",
+      "slug": "bg6-beobachten-protokoll",
+      "title": "Beobachten und protokollieren",
+      "domain": "biologie/s1",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-beobachten-protokoll",
+      "prerequisites": [
+        {
+          "atom_id": "01M7HBB12K2G6Z7FSKNY74H4ZC",
+          "type": "soft",
+          "rationale": "Das Protokoll hält die Phasen des Erkenntnisweges fest."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-6",
+          "topic_code": "s1",
+          "topic_title": "Forschen wie in der Biologie"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "nt_gym",
+          "topic_code": "lb1.1",
+          "topic_title": "Erkenntnisse gewinnen – kommunizieren – bewerten",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7HBB12XN0VJZPD3QN7M8MVD",
+          "slug": "bg6-beobachten-protokoll-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welcher Satz ist eine reine Beobachtung?",
+          "concept": "Die Kohlmeise hängt kopfüber am Meisenknödel.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-beobachten-protokoll",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Kohlmeise hängt kopfüber am Meisenknödel.",
+              "Die Kohlmeise frisst, weil sie friert."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7HBB12Y3RSTQKZ8QQ9S0GJM",
+          "slug": "bg6-beobachten-protokoll-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche Teile gehören in ein naturwissenschaftliches Protokoll?",
+          "concept": "Überschrift mit Frage, Datum und Namen; Material und Aufbau (Skizze); Durchführung; Beobachtung mit Messwerten; Auswertung mit Antwort auf die Frage.",
+          "sample_solution": "Überschrift mit Frage, Datum und Namen; Material und Aufbau (Skizze); Durchführung; Beobachtung mit Messwerten; Auswertung mit Antwort auf die Frage.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-beobachten-protokoll"
+        }
+      ]
+    },
+    {
+      "id": "01M7HBB12ZA9TX3R35VW64Y0D6",
+      "atom_uri": "urn:zam:atom:01M7HBB12ZA9TX3R35VW64Y0D6",
+      "namespace": "zam-academy-biologie-gymnasium-6",
+      "slug": "bg6-mikroskop-binokular",
+      "title": "Mikroskop und Binokular",
+      "domain": "biologie/s1",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-mikroskop-binokular",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-6",
+          "topic_code": "s1",
+          "topic_title": "Forschen wie in der Biologie"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "nt_gym",
+          "topic_code": "lb1.1",
+          "topic_title": "Erkenntnisse gewinnen – kommunizieren – bewerten",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7HBB130ZTYW3SH5BSQG4MX1",
+          "slug": "bg6-mikroskop-binokular-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Womit untersuchst du am besten den ganzen Kopf einer Fliege mit räumlichem Eindruck?",
+          "concept": "Mit dem Binokular",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-mikroskop-binokular",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Mit dem Binokular",
+              "Mit dem Lichtmikroskop bei 400-facher Vergrößerung"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7HBB1316JMXWSAZC1KPT09T",
+          "slug": "bg6-mikroskop-binokular-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie berechnest du die Gesamtvergrößerung eines Lichtmikroskops, und wofür eignet sich das Binokular?",
+          "concept": "Gesamtvergrößerung = Okular · Objektiv, z. B. 10 · 40 = 400-fach. Das Binokular zeigt ganze Objekte räumlich bei etwa 10- bis 40-facher Vergrößerung.",
+          "sample_solution": "Gesamtvergrößerung = Okular · Objektiv, z. B. 10 · 40 = 400-fach. Das Binokular zeigt ganze Objekte räumlich bei etwa 10- bis 40-facher Vergrößerung.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-mikroskop-binokular"
+        }
+      ]
+    },
+    {
+      "id": "01M7HBB132H5Q3TRCFWMFDMBPD",
+      "atom_uri": "urn:zam:atom:01M7HBB132H5Q3TRCFWMFDMBPD",
+      "namespace": "zam-academy-biologie-gymnasium-6",
+      "slug": "bg6-praeparieren",
+      "title": "Präparate selbst herstellen",
+      "domain": "biologie/s1",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-praeparieren",
+      "prerequisites": [
+        {
+          "atom_id": "01M7HBB12ZA9TX3R35VW64Y0D6",
+          "type": "soft",
+          "rationale": "Präparate werden für das Mikroskop hergestellt."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-6",
+          "topic_code": "s1",
+          "topic_title": "Forschen wie in der Biologie"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "nt_gym",
+          "topic_code": "lb1.1",
+          "topic_title": "Erkenntnisse gewinnen – kommunizieren – bewerten",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7HBB1337NTRMPZSYBQ94G7P",
+          "slug": "bg6-praeparieren-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum senkst du das Deckgläschen schräg auf den Wassertropfen?",
+          "concept": "Damit keine Luftblasen unter dem Glas eingeschlossen werden",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-praeparieren",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Damit keine Luftblasen unter dem Glas eingeschlossen werden",
+              "Damit sich das Präparat von selbst anfärbt"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7HBB134EN657Q0KGMBY5G1B",
+          "slug": "bg6-praeparieren-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie färbst du ein Präparat unter dem Deckgläschen an?",
+          "concept": "Farbstoff an eine Seite des Deckgläschens geben und mit Filterpapier von der anderen Seite unter dem Glas hindurchziehen.",
+          "sample_solution": "Farbstoff an eine Seite des Deckgläschens geben und mit Filterpapier von der anderen Seite unter dem Glas hindurchziehen.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-praeparieren"
+        }
+      ]
+    },
+    {
+      "id": "01M7HBB135WHG2KQ426YCZFE9H",
+      "atom_uri": "urn:zam:atom:01M7HBB135WHG2KQ426YCZFE9H",
+      "namespace": "zam-academy-biologie-gymnasium-6",
+      "slug": "bg6-modelle",
+      "title": "Modelle und Wirklichkeit",
+      "domain": "biologie/s1",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-modelle",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-6",
+          "topic_code": "s1",
+          "topic_title": "Forschen wie in der Biologie"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "nt_gym",
+          "topic_code": "lb1.1",
+          "topic_title": "Erkenntnisse gewinnen – kommunizieren – bewerten",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7HBB136706PT118S1BWDTVC",
+          "slug": "bg6-modelle-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Aussage über ein Modell ist richtig?",
+          "concept": "Ein Modell zeigt nur einen Ausschnitt der Wirklichkeit und weicht in anderen Punkten ab.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-modelle",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein Modell zeigt nur einen Ausschnitt der Wirklichkeit und weicht in anderen Punkten ab.",
+              "Ein gutes Modell stimmt in allen Punkten mit dem Original überein."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7HBB137CB05VRHK6DF86XMR",
+          "slug": "bg6-modelle-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was ist ein Modell, und worauf musst du beim Arbeiten mit Modellen achten?",
+          "concept": "Eine vereinfachte Darstellung eines Originals, die Wichtiges hervorhebt und anderes weglässt; man vergleicht sie mit dem Original und benennt die Abweichungen.",
+          "sample_solution": "Eine vereinfachte Darstellung eines Originals, die Wichtiges hervorhebt und anderes weglässt; man vergleicht sie mit dem Original und benennt die Abweichungen.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-modelle"
+        }
+      ]
+    },
+    {
+      "id": "01M7HBB1382TYY34027AQH7FPN",
+      "atom_uri": "urn:zam:atom:01M7HBB1382TYY34027AQH7FPN",
+      "namespace": "zam-academy-biologie-gymnasium-6",
+      "slug": "bg6-darstellungsformen",
+      "title": "Tabelle, Diagramm und Je-desto-Sätze",
+      "domain": "biologie/s1",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-darstellungsformen",
+      "prerequisites": [
+        {
+          "atom_id": "01M7HBB12WMDHEP58N0VD7XCSN",
+          "type": "soft",
+          "rationale": "Diagramme stellen protokollierte Messwerte dar."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-6",
+          "topic_code": "s1",
+          "topic_title": "Forschen wie in der Biologie"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "nt_gym",
+          "topic_code": "lb1.1",
+          "topic_title": "Erkenntnisse gewinnen – kommunizieren – bewerten",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7HBB1394ZP0E98J79SESV6T",
+          "slug": "bg6-darstellungsformen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Du misst eine Woche lang jeden Tag die Höhe einer Bohnenpflanze. Welche Darstellung passt am besten?",
+          "concept": "Ein Liniendiagramm mit den Tagen auf der waagerechten Achse",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-darstellungsformen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein Liniendiagramm mit den Tagen auf der waagerechten Achse",
+              "Ein Säulendiagramm mit einer Säule für die ganze Woche"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7HBB13ATNT3A174Y6T540MK",
+          "slug": "bg6-darstellungsformen-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wann wählst du ein Säulendiagramm und wann ein Liniendiagramm?",
+          "concept": "Säulendiagramm: getrennte Ansätze oder Gruppen vergleichen. Liniendiagramm: Verlauf über die Zeit oder mit einer anderen Größe darstellen.",
+          "sample_solution": "Säulendiagramm: getrennte Ansätze oder Gruppen vergleichen. Liniendiagramm: Verlauf über die Zeit oder mit einer anderen Größe darstellen.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-darstellungsformen"
+        }
+      ]
+    },
+    {
+      "id": "01M7HBB13BVQ799W6DHMBT97HS",
+      "atom_uri": "urn:zam:atom:01M7HBB13BVQ799W6DHMBT97HS",
+      "namespace": "zam-academy-biologie-gymnasium-6",
+      "slug": "bg6-quellen-aussagen",
+      "title": "Quellen prüfen, Fakten von Meinungen trennen",
+      "domain": "biologie/s1",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-quellen-aussagen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-6",
+          "topic_code": "s1",
+          "topic_title": "Forschen wie in der Biologie"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "nt_gym",
+          "topic_code": "lb1.1",
+          "topic_title": "Erkenntnisse gewinnen – kommunizieren – bewerten",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7HBB13CRDAMDV1ME34GWHME",
+          "slug": "bg6-quellen-aussagen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Aussage ist beschreibend?",
+          "concept": "Wölfe jagen oft gemeinsam im Rudel.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-quellen-aussagen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Wölfe jagen oft gemeinsam im Rudel.",
+              "Wölfe sind grausame Jäger."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7HBB13DZ1SJJ7MJ6WPAJ57D",
+          "slug": "bg6-quellen-aussagen-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was unterscheidet eine beschreibende von einer bewertenden Aussage?",
+          "concept": "Eine beschreibende Aussage nennt eine beobachtbare oder messbare Tatsache; eine bewertende drückt ein Urteil oder Gefühl aus, auch vermenschlichend.",
+          "sample_solution": "Eine beschreibende Aussage nennt eine beobachtbare oder messbare Tatsache; eine bewertende drückt ein Urteil oder Gefühl aus, auch vermenschlichend.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-quellen-aussagen"
+        }
+      ]
+    },
+    {
+      "id": "01M7HBB13E3TX9B4S2EN2T31MN",
+      "atom_uri": "urn:zam:atom:01M7HBB13E3TX9B4S2EN2T31MN",
+      "namespace": "zam-academy-biologie-gymnasium-6",
+      "slug": "bg6-samen-frucht",
+      "title": "Samen und Frucht",
+      "domain": "biologie/s2",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-samen-frucht",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-6",
+          "topic_code": "s2",
+          "topic_title": "Samen, Früchte & Keimung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "nt_gym",
+          "topic_code": "lb1.2",
+          "topic_title": "Samenpflanzen als Lebewesen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7HBB13FV3CV53GWJN8HVCQ5",
+          "slug": "bg6-samen-frucht-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wozu dient das Nährgewebe eines Samens?",
+          "concept": "Es versorgt den Keimling mit Nährstoffen, bis er selbst Zucker bilden kann.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-samen-frucht",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Es versorgt den Keimling mit Nährstoffen, bis er selbst Zucker bilden kann.",
+              "Es schützt den Samen vor dem Austrocknen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7HBB13G1V23Y6XQ9NSA1M5P",
+          "slug": "bg6-samen-frucht-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Aus welchen drei Teilen besteht ein Samen, und woraus entsteht die Frucht?",
+          "concept": "Samenschale, Embryo (Keimwurzel, Keimstängel, Keimknospe) und Nährgewebe. Die Frucht entsteht aus dem Fruchtknoten.",
+          "sample_solution": "Samenschale, Embryo (Keimwurzel, Keimstängel, Keimknospe) und Nährgewebe. Die Frucht entsteht aus dem Fruchtknoten.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-samen-frucht"
+        }
+      ]
+    },
+    {
+      "id": "01M7HBB13HB791C7BXFVXD5WAJ",
+      "atom_uri": "urn:zam:atom:01M7HBB13HB791C7BXFVXD5WAJ",
+      "namespace": "zam-academy-biologie-gymnasium-6",
+      "slug": "bg6-ausbreitung",
+      "title": "Ausbreitung von Früchten und Samen",
+      "domain": "biologie/s2",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-ausbreitung",
+      "prerequisites": [
+        {
+          "atom_id": "01M7HBB13E3TX9B4S2EN2T31MN",
+          "type": "soft",
+          "rationale": "Die Frucht ist die Ausbreitungseinheit der Samen."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-6",
+          "topic_code": "s2",
+          "topic_title": "Samen, Früchte & Keimung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "nt_gym",
+          "topic_code": "lb1.2",
+          "topic_title": "Samenpflanzen als Lebewesen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7HBB13JZHTDHWV2SSD66V4Q",
+          "slug": "bg6-ausbreitung-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welchen Vorteil hat eine Lockfrucht wie die Kirsche gegenüber einer Flugfrucht?",
+          "concept": "Vögel tragen die Samen gezielter fort, obwohl das Fruchtfleisch die Pflanze viel kostet.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-ausbreitung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Vögel tragen die Samen gezielter fort, obwohl das Fruchtfleisch die Pflanze viel kostet.",
+              "Die Kirsche kann dadurch viel mehr Samen bilden als der Löwenzahn."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7HBB13KJ76V9M5N89J9NK0H",
+          "slug": "bg6-ausbreitung-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Nenne Kosten und Nutzen der Windausbreitung im Vergleich zur Ausbreitung durch Lockfrüchte.",
+          "concept": "Wind: viele billige, leichte Früchte, aber zufälliges Ziel und großer Verlust. Lockfrüchte: Fruchtfleisch teuer, Vögel tragen Samen gezielter fort.",
+          "sample_solution": "Wind: viele billige, leichte Früchte, aber zufälliges Ziel und großer Verlust. Lockfrüchte: Fruchtfleisch teuer, Vögel tragen Samen gezielter fort.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-ausbreitung"
+        }
+      ]
+    },
+    {
+      "id": "01M7HBB13M183GPEFMNKX4Y091",
+      "atom_uri": "urn:zam:atom:01M7HBB13M183GPEFMNKX4Y091",
+      "namespace": "zam-academy-biologie-gymnasium-6",
+      "slug": "bg6-bionik-pflanzen",
+      "title": "Bionik: Pflanzen als Ideengeber",
+      "domain": "biologie/s2",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-bionik-pflanzen",
+      "prerequisites": [
+        {
+          "atom_id": "01M7HBB13HB791C7BXFVXD5WAJ",
+          "type": "soft",
+          "rationale": "Klette und Ahornfrucht sind Ausbreitungsstrukturen."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-6",
+          "topic_code": "s2",
+          "topic_title": "Samen, Früchte & Keimung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "nt_gym",
+          "topic_code": "lb1.2",
+          "topic_title": "Samenpflanzen als Lebewesen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7HBB13ND21RY9EBD2S75VDT",
+          "slug": "bg6-bionik-pflanzen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welches Prinzip übernimmt der Klettverschluss von der Klettfrucht?",
+          "concept": "Viele kleine Haken greifen in Schlaufen oder Haare und halten so fest.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-bionik-pflanzen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Viele kleine Haken greifen in Schlaufen oder Haare und halten so fest.",
+              "Ein klebriger Saft verbindet die beiden Seiten."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7HBB13PQNS1FCKM1NP5TA0H",
+          "slug": "bg6-bionik-pflanzen-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was ist Bionik? Nenne ein Beispiel mit einer Samenpflanze.",
+          "concept": "Übertragen eines Wirkprinzips aus der Natur auf Technik, z. B. Klettfrucht → Klettverschluss, Ahornfrucht → Rotor, Lotusblatt → selbstreinigende Farbe.",
+          "sample_solution": "Übertragen eines Wirkprinzips aus der Natur auf Technik, z. B. Klettfrucht → Klettverschluss, Ahornfrucht → Rotor, Lotusblatt → selbstreinigende Farbe.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-bionik-pflanzen"
+        }
+      ]
+    },
+    {
+      "id": "01M7HBB13QHYJRAD5QC4NQ6ARZ",
+      "atom_uri": "urn:zam:atom:01M7HBB13QHYJRAD5QC4NQ6ARZ",
+      "namespace": "zam-academy-biologie-gymnasium-6",
+      "slug": "bg6-ungeschlechtlich",
+      "title": "Ausläufer: Fortpflanzung ohne Blüte",
+      "domain": "biologie/s2",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-ungeschlechtlich",
+      "prerequisites": [
+        {
+          "atom_id": "01M7HBB13E3TX9B4S2EN2T31MN",
+          "type": "soft",
+          "rationale": "Samen entstehen durch geschlechtliche Fortpflanzung."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-6",
+          "topic_code": "s2",
+          "topic_title": "Samen, Früchte & Keimung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "nt_gym",
+          "topic_code": "lb1.2",
+          "topic_title": "Samenpflanzen als Lebewesen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7HBB13RGDW4WT2WJ2S39A8W",
+          "slug": "bg6-ungeschlechtlich-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was gilt für Erdbeerpflanzen, die aus Ausläufern einer Mutterpflanze entstanden sind?",
+          "concept": "Sie haben dieselben Erbanlagen wie die Mutterpflanze.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-ungeschlechtlich",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie haben dieselben Erbanlagen wie die Mutterpflanze.",
+              "Sie sind durch Bestäubung entstanden."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7HBB13SJ7HME3R5GQS2JZHY",
+          "slug": "bg6-ungeschlechtlich-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Vergleiche Kosten und Nutzen der ungeschlechtlichen und der geschlechtlichen Fortpflanzung bei Samenpflanzen.",
+          "concept": "Ungeschlechtlich: schnell, kein Partner, aber erbgleich und nah. Geschlechtlich: aufwendig, aber verschiedene Nachkommen und weite Ausbreitung.",
+          "sample_solution": "Ungeschlechtlich: schnell, kein Partner, aber erbgleich und nah. Geschlechtlich: aufwendig, aber verschiedene Nachkommen und weite Ausbreitung.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-ungeschlechtlich"
+        }
+      ]
+    },
+    {
+      "id": "01M7HBB13T9B5X9BT0T338M9Q1",
+      "atom_uri": "urn:zam:atom:01M7HBB13T9B5X9BT0T338M9Q1",
+      "namespace": "zam-academy-biologie-gymnasium-6",
+      "slug": "bg6-keimung",
+      "title": "Keimung und Wachstum im Experiment",
+      "domain": "biologie/s2",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-keimung",
+      "prerequisites": [
+        {
+          "atom_id": "01M7HBB13E3TX9B4S2EN2T31MN",
+          "type": "soft",
+          "rationale": "Bei der Keimung wächst der Embryo des Samens aus."
+        },
+        {
+          "atom_id": "01M7HBB12P6XWEZ21JFK3EYB7C",
+          "type": "soft",
+          "rationale": "Keimungsfaktoren werden mit einer Variable und Kontrollversuch geprüft."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-6",
+          "topic_code": "s2",
+          "topic_title": "Samen, Früchte & Keimung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "nt_gym",
+          "topic_code": "lb1.2",
+          "topic_title": "Samenpflanzen als Lebewesen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7HBB13VQAMN30C4X3DTWPGS",
+          "slug": "bg6-keimung-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Kressesamen liegen unter abgekochtem Wasser mit einer Ölschicht und keimen nicht. Welcher Faktor fehlt?",
+          "concept": "Sauerstoff",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-keimung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sauerstoff",
+              "Wasser"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7HBB13WG0B9WXQQT35GZ9P6",
+          "slug": "bg6-keimung-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche Bedingungen braucht ein Samen zum Keimen?",
+          "concept": "Wasser, Sauerstoff und eine passende Temperatur. Licht brauchen viele Samen zum Keimen nicht, wohl aber der Keimling zum Wachsen und Ergrünen.",
+          "sample_solution": "Wasser, Sauerstoff und eine passende Temperatur. Licht brauchen viele Samen zum Keimen nicht, wohl aber der Keimling zum Wachsen und Ergrünen.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-keimung"
+        }
+      ]
+    },
+    {
+      "id": "01M7HBB13XA92TA4KCTQWRHTT3",
+      "atom_uri": "urn:zam:atom:01M7HBB13XA92TA4KCTQWRHTT3",
+      "namespace": "zam-academy-biologie-gymnasium-6",
+      "slug": "bg6-pflanzenteile",
+      "title": "Wurzel, Sprossachse und Blatt arbeiten zusammen",
+      "domain": "biologie/s3",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-pflanzenteile",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-6",
+          "topic_code": "s3",
+          "topic_title": "Photosynthese & Pflanzenbewegung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "nt_gym",
+          "topic_code": "lb1.2",
+          "topic_title": "Samenpflanzen als Lebewesen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7HBB13YRQ2K9E6KW12VFNNY",
+          "slug": "bg6-pflanzenteile-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Aufgabe haben die Wurzelhaare?",
+          "concept": "Sie vergrößern die Oberfläche der Wurzel und nehmen Wasser und Mineralstoffe auf.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-pflanzenteile",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie vergrößern die Oberfläche der Wurzel und nehmen Wasser und Mineralstoffe auf.",
+              "Sie bilden mithilfe von Licht Zucker."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7HBB13ZY3H97KKEEBB65YXZ",
+          "slug": "bg6-pflanzenteile-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Nenne je eine Aufgabe von Wurzel, Sprossachse und Blatt.",
+          "concept": "Wurzel: verankert, nimmt Wasser und Mineralstoffe auf. Sprossachse: trägt Blätter, leitet Wasser und Zucker. Blatt: Photosynthese, Gasaustausch.",
+          "sample_solution": "Wurzel: verankert, nimmt Wasser und Mineralstoffe auf. Sprossachse: trägt Blätter, leitet Wasser und Zucker. Blatt: Photosynthese, Gasaustausch.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-pflanzenteile"
+        }
+      ]
+    },
+    {
+      "id": "01M7HBB140E8A27M7CGK5RD8KD",
+      "atom_uri": "urn:zam:atom:01M7HBB140E8A27M7CGK5RD8KD",
+      "namespace": "zam-academy-biologie-gymnasium-6",
+      "slug": "bg6-photosynthese",
+      "title": "Photosynthese: Zucker aus Licht",
+      "domain": "biologie/s3",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-photosynthese",
+      "prerequisites": [
+        {
+          "atom_id": "01M7HBB13XA92TA4KCTQWRHTT3",
+          "type": "soft",
+          "rationale": "Das Blatt ist der Ort der Photosynthese."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-6",
+          "topic_code": "s3",
+          "topic_title": "Photosynthese & Pflanzenbewegung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "nt_gym",
+          "topic_code": "lb1.2",
+          "topic_title": "Samenpflanzen als Lebewesen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7HBB141ZWKJJ5RF8FT5VN5Q",
+          "slug": "bg6-photosynthese-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Stoffe sind die Ausgangsstoffe der Photosynthese?",
+          "concept": "Kohlenstoffdioxid und Wasser",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-photosynthese",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Kohlenstoffdioxid und Wasser",
+              "Traubenzucker und Sauerstoff"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7HBB142C4XJHN139JKNV6E6",
+          "slug": "bg6-photosynthese-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Gib die Wortgleichung der Photosynthese an.",
+          "concept": "Kohlenstoffdioxid + Wasser → (Lichtenergie, Chlorophyll) → Traubenzucker + Sauerstoff.",
+          "sample_solution": "Kohlenstoffdioxid + Wasser → (Lichtenergie, Chlorophyll) → Traubenzucker + Sauerstoff.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-photosynthese"
+        }
+      ]
+    },
+    {
+      "id": "01M7HBB143ZCVYWF4DVX4WWW5X",
+      "atom_uri": "urn:zam:atom:01M7HBB143ZCVYWF4DVX4WWW5X",
+      "namespace": "zam-academy-biologie-gymnasium-6",
+      "slug": "bg6-zellatmung-photosynthese",
+      "title": "Photosynthese und Zellatmung",
+      "domain": "biologie/s3",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-zellatmung-photosynthese",
+      "prerequisites": [
+        {
+          "atom_id": "01M7HBB140E8A27M7CGK5RD8KD",
+          "type": "soft",
+          "rationale": "Der Zusammenhang baut auf der Photosynthese auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-6",
+          "topic_code": "s3",
+          "topic_title": "Photosynthese & Pflanzenbewegung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "nt_gym",
+          "topic_code": "lb1.2",
+          "topic_title": "Samenpflanzen als Lebewesen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7HBB1442342Q3TXSHEVEFY6",
+          "slug": "bg6-zellatmung-photosynthese-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was gibt eine grüne Pflanze nachts in völliger Dunkelheit ab?",
+          "concept": "Kohlenstoffdioxid aus der Zellatmung",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-zellatmung-photosynthese",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Kohlenstoffdioxid aus der Zellatmung",
+              "Sauerstoff aus der Photosynthese"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7HBB145SBJTKK4ZVEWRRQXK",
+          "slug": "bg6-zellatmung-photosynthese-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie hängen Photosynthese und Zellatmung stofflich und energetisch zusammen?",
+          "concept": "Stofflich: Produkte des einen sind Ausgangsstoffe des anderen, die Stoffe kreisen. Energetisch: Licht → chemische Energie → Energie und Wärme.",
+          "sample_solution": "Stofflich: Produkte des einen sind Ausgangsstoffe des anderen, die Stoffe kreisen. Energetisch: Licht → chemische Energie → Energie und Wärme.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-zellatmung-photosynthese"
+        }
+      ]
+    },
+    {
+      "id": "01M7HBB146JTBTEE7M4N518QAN",
+      "atom_uri": "urn:zam:atom:01M7HBB146JTBTEE7M4N518QAN",
+      "namespace": "zam-academy-biologie-gymnasium-6",
+      "slug": "bg6-bedeutung-photosynthese",
+      "title": "Ohne Photosynthese kein Leben",
+      "domain": "biologie/s3",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-bedeutung-photosynthese",
+      "prerequisites": [
+        {
+          "atom_id": "01M7HBB140E8A27M7CGK5RD8KD",
+          "type": "soft",
+          "rationale": "Die Bedeutung folgt aus den Produkten der Photosynthese."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-6",
+          "topic_code": "s3",
+          "topic_title": "Photosynthese & Pflanzenbewegung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "nt_gym",
+          "topic_code": "lb1.2",
+          "topic_title": "Samenpflanzen als Lebewesen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7HBB1472YKHN1GC1E3CY1BG",
+          "slug": "bg6-bedeutung-photosynthese-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum zählt Erdöl zu den fossilen Brennstoffen und nicht zu den nachwachsenden Rohstoffen?",
+          "concept": "Es entstand vor Millionen Jahren aus Lebewesen und bildet sich in menschlichen Zeiträumen nicht neu.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-bedeutung-photosynthese",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Es entstand vor Millionen Jahren aus Lebewesen und bildet sich in menschlichen Zeiträumen nicht neu.",
+              "Weil es nichts mit der Photosynthese zu tun hat."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7HBB1482T83FSXW202JS679",
+          "slug": "bg6-bedeutung-photosynthese-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum ist die Photosynthese für das Leben auf der Erde und die Energieversorgung der Menschheit grundlegend?",
+          "concept": "Sie liefert Nahrung als Beginn aller Nahrungsketten, Sauerstoff, nachwachsende Rohstoffe, und fossile Brennstoffe speichern Energie aus früherer Photosynthese.",
+          "sample_solution": "Sie liefert Nahrung als Beginn aller Nahrungsketten, Sauerstoff, nachwachsende Rohstoffe, und fossile Brennstoffe speichern Energie aus früherer Photosynthese.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-bedeutung-photosynthese"
+        }
+      ]
+    },
+    {
+      "id": "01M7HBB149CEZTBSD0T9WCCF3F",
+      "atom_uri": "urn:zam:atom:01M7HBB149CEZTBSD0T9WCCF3F",
+      "namespace": "zam-academy-biologie-gymnasium-6",
+      "slug": "bg6-pflanzen-reagieren",
+      "title": "Pflanzen reagieren auf ihre Umwelt",
+      "domain": "biologie/s3",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-pflanzen-reagieren",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-6",
+          "topic_code": "s3",
+          "topic_title": "Photosynthese & Pflanzenbewegung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "nt_gym",
+          "topic_code": "lb1.2",
+          "topic_title": "Samenpflanzen als Lebewesen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7HBB14AWPBCQXKDYXFBPAZG",
+          "slug": "bg6-pflanzen-reagieren-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wozu dient es dem Löwenzahn, seine Blüten nachts zu schließen?",
+          "concept": "Der Pollen bleibt trocken und geschützt; geöffnet ist die Blüte, wenn tagsüber Insekten fliegen.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-pflanzen-reagieren",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Pollen bleibt trocken und geschützt; geöffnet ist die Blüte, wenn tagsüber Insekten fliegen.",
+              "So kann die Blüte nachts mehr Photosynthese betreiben."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7HBB14B7N6YRQFFRBR18MJ2",
+          "slug": "bg6-pflanzen-reagieren-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Nenne für Ernährung, Fortpflanzung und Schutz je eine Reaktion von Pflanzen auf Umweltreize.",
+          "concept": "Ernährung: Spross wächst zum Licht. Fortpflanzung: Löwenzahnblüten öffnen sich im Licht. Schutz: Mimose klappt bei Berührung die Blätter zusammen.",
+          "sample_solution": "Ernährung: Spross wächst zum Licht. Fortpflanzung: Löwenzahnblüten öffnen sich im Licht. Schutz: Mimose klappt bei Berührung die Blätter zusammen.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-pflanzen-reagieren"
+        }
+      ]
+    },
+    {
+      "id": "01M7HBB14C47QAFX6ZAN5K7MDS",
+      "atom_uri": "urn:zam:atom:01M7HBB14C47QAFX6ZAN5K7MDS",
+      "namespace": "zam-academy-biologie-gymnasium-6",
+      "slug": "bg6-phototropismus",
+      "title": "Der Keimling wendet sich zum Licht",
+      "domain": "biologie/s3",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-phototropismus",
+      "prerequisites": [
+        {
+          "atom_id": "01M7HBB149CEZTBSD0T9WCCF3F",
+          "type": "soft",
+          "rationale": "Phototropismus ist eine Reaktion auf den Reiz Licht."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-6",
+          "topic_code": "s3",
+          "topic_title": "Photosynthese & Pflanzenbewegung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "nt_gym",
+          "topic_code": "lb1.2",
+          "topic_title": "Samenpflanzen als Lebewesen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7HBB14DA8X0EK9HQB59JXZG",
+          "slug": "bg6-phototropismus-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Ein Keimling mit abgedeckter Spitze krümmt sich trotz Seitenlicht nicht. Was zeigt das?",
+          "concept": "Die Spitze nimmt das Licht wahr.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-phototropismus",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Spitze nimmt das Licht wahr.",
+              "Die Kappe hält den Keimling mechanisch gerade."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7HBB14E1CWESEX4DV955KZR",
+          "slug": "bg6-phototropismus-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre stark vereinfacht, warum sich ein Keimling zum Licht krümmt.",
+          "concept": "Die Spitze nimmt einseitiges Licht auf, ein Wuchsstoff gelangt auf die Schattenseite, dort strecken sich die Zellen stärker: Krümmung zum Licht.",
+          "sample_solution": "Die Spitze nimmt einseitiges Licht auf, ein Wuchsstoff gelangt auf die Schattenseite, dort strecken sich die Zellen stärker: Krümmung zum Licht.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-phototropismus"
+        }
+      ]
+    },
+    {
+      "id": "01M7HBB14FVD6D9RE1J65X4VS2",
+      "atom_uri": "urn:zam:atom:01M7HBB14FVD6D9RE1J65X4VS2",
+      "namespace": "zam-academy-biologie-gymnasium-6",
+      "slug": "bg6-schwimmen",
+      "title": "Schwimmen: Fische im Wasser",
+      "domain": "biologie/s4",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-schwimmen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-6",
+          "topic_code": "s4",
+          "topic_title": "Schwimmen, Fliegen, Laufen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "nt_gym",
+          "topic_code": "lb1.3",
+          "topic_title": "Biodiversität bei Wirbeltieren – Variabilität und Angepasstheit",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7HBB14GKHYGG5V1EWBXJHE3",
+          "slug": "bg6-schwimmen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Aufgabe hat die Schwimmblase eines Knochenfisches?",
+          "concept": "Sie ermöglicht es dem Fisch, ohne Anstrengung in einer bestimmten Tiefe zu schweben.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-schwimmen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie ermöglicht es dem Fisch, ohne Anstrengung in einer bestimmten Tiefe zu schweben.",
+              "Sie nimmt Sauerstoff aus dem Wasser auf."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7HBB14HY47252DWSJ8AQ2XD",
+          "slug": "bg6-schwimmen-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie ist ein Knochenfisch an das Schwimmen angepasst?",
+          "concept": "Spindelform, Schuppen und Schleim senken den Widerstand; Schwanzflosse treibt an, übrige Flossen stabilisieren und steuern; Schwimmblase zum Schweben.",
+          "sample_solution": "Spindelform, Schuppen und Schleim senken den Widerstand; Schwanzflosse treibt an, übrige Flossen stabilisieren und steuern; Schwimmblase zum Schweben.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-schwimmen"
+        }
+      ]
+    },
+    {
+      "id": "01M7HBB14JNH221GYC2Y8V1NVN",
+      "atom_uri": "urn:zam:atom:01M7HBB14JNH221GYC2Y8V1NVN",
+      "namespace": "zam-academy-biologie-gymnasium-6",
+      "slug": "bg6-fliegen",
+      "title": "Fliegen: Vögel in der Luft",
+      "domain": "biologie/s4",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-fliegen",
+      "prerequisites": [
+        {
+          "atom_id": "01M7HBB14FVD6D9RE1J65X4VS2",
+          "type": "soft",
+          "rationale": "Arttypische und allgemeine Merkmale wurden beim Schwimmen unterschieden."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-6",
+          "topic_code": "s4",
+          "topic_title": "Schwimmen, Fliegen, Laufen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "nt_gym",
+          "topic_code": "lb1.3",
+          "topic_title": "Biodiversität bei Wirbeltieren – Variabilität und Angepasstheit",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7HBB14KTV6J7KX39BFB5QED",
+          "slug": "bg6-fliegen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Flugart nutzen Mäusebussard und Weißstorch, um ohne Flügelschlag in aufsteigender warmer Luft an Höhe zu gewinnen?",
+          "concept": "Den Segelflug",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-fliegen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Den Segelflug",
+              "Den Rüttelflug"
+            ],
+            "correct_index": 0
+          },
+          "replaces": [
+            "01K4YB6S000000000000000J07"
+          ]
+        },
+        {
+          "id": "01M7HBB14MFZX710PRNBAFN18Z",
+          "slug": "bg6-fliegen-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie ist der Körper eines Vogels an das Fliegen angepasst?",
+          "concept": "Leichtbau mit hohlen, verstrebten Röhrenknochen und zahnlosem Hornschnabel; Brustbeinkamm für kräftige Flugmuskeln; Federn bilden geschlossene Flächen.",
+          "sample_solution": "Leichtbau mit hohlen, verstrebten Röhrenknochen und zahnlosem Hornschnabel; Brustbeinkamm für kräftige Flugmuskeln; Federn bilden geschlossene Flächen.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-fliegen"
+        }
+      ]
+    },
+    {
+      "id": "01M7HBB14N49P9RT1QRVSBPTFM",
+      "atom_uri": "urn:zam:atom:01M7HBB14N49P9RT1QRVSBPTFM",
+      "namespace": "zam-academy-biologie-gymnasium-6",
+      "slug": "bg6-laufen-graben-klettern",
+      "title": "Laufen, Graben, Klettern: Bewegung an Land",
+      "domain": "biologie/s4",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-laufen-graben-klettern",
+      "prerequisites": [
+        {
+          "atom_id": "01M7HBB14FVD6D9RE1J65X4VS2",
+          "type": "soft",
+          "rationale": "Angepasstheit der Fortbewegung an den Lebensraum wurde am Fisch eingeführt."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-6",
+          "topic_code": "s4",
+          "topic_title": "Schwimmen, Fliegen, Laufen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "nt_gym",
+          "topic_code": "lb1.3",
+          "topic_title": "Biodiversität bei Wirbeltieren – Variabilität und Angepasstheit",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7HBB14PVG41FYKV3W3VR8NW",
+          "slug": "bg6-laufen-graben-klettern-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welches Tier ist ein Zehenspitzengänger?",
+          "concept": "Das Pferd",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-laufen-graben-klettern",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Das Pferd",
+              "Der Hund"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7HBB14QA5SCK42X5W4ZCRS4",
+          "slug": "bg6-laufen-graben-klettern-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Unterscheide Sohlengänger, Zehengänger und Zehenspitzengänger mit je einem Beispiel.",
+          "concept": "Sohlengänger setzen die ganze Sohle auf (Bär), Zehengänger nur die Zehen (Hund), Zehenspitzengänger die Zehenspitzen mit Huf (Pferd).",
+          "sample_solution": "Sohlengänger setzen die ganze Sohle auf (Bär), Zehengänger nur die Zehen (Hund), Zehenspitzengänger die Zehenspitzen mit Huf (Pferd).",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-laufen-graben-klettern"
+        }
+      ]
+    },
+    {
+      "id": "01M7HBB14R1MFHZJK1E44TYVEB",
+      "atom_uri": "urn:zam:atom:01M7HBB14R1MFHZJK1E44TYVEB",
+      "namespace": "zam-academy-biologie-gymnasium-6",
+      "slug": "bg6-bionik-tiere",
+      "title": "Bionik: Von Tieren lernen",
+      "domain": "biologie/s4",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-bionik-tiere",
+      "prerequisites": [
+        {
+          "atom_id": "01M7HBB14FVD6D9RE1J65X4VS2",
+          "type": "soft",
+          "rationale": "Die Spindelform wird beim Schwimmen erklärt."
+        },
+        {
+          "atom_id": "01M7HBB13M183GPEFMNKX4Y091",
+          "type": "soft",
+          "rationale": "Das Prinzip der Bionik ist von den Pflanzen bekannt."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-6",
+          "topic_code": "s4",
+          "topic_title": "Schwimmen, Fliegen, Laufen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "nt_gym",
+          "topic_code": "lb1.3",
+          "topic_title": "Biodiversität bei Wirbeltieren – Variabilität und Angepasstheit",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7HBB14SYPNAJ5MNZAD2D8BY",
+          "slug": "bg6-bionik-tiere-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welches Prinzip übernimmt eine Sportprothese aus Kohlefaser vom Hinterlauf schneller Läufer?",
+          "concept": "Sie speichert beim Auftreten Energie wie eine Feder und gibt sie beim Abstoßen ab.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-bionik-tiere",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie speichert beim Auftreten Energie wie eine Feder und gibt sie beim Abstoßen ab.",
+              "Sie ist mit Fell bedeckt und hält dadurch warm."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7HBB14TR3ENDEHBY35VTMGN",
+          "slug": "bg6-bionik-tiere-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Nenne zwei Beispiele, wie Fortbewegungsstrukturen von Wirbeltieren technisch genutzt werden.",
+          "concept": "Spindelform von Pinguin und Delfin → Schiffsrumpf; gewölbter Vogelflügel → Tragfläche; federnder Hinterlauf → Laufprothese.",
+          "sample_solution": "Spindelform von Pinguin und Delfin → Schiffsrumpf; gewölbter Vogelflügel → Tragfläche; federnder Hinterlauf → Laufprothese.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-bionik-tiere"
+        }
+      ]
+    },
+    {
+      "id": "01M7HBB14VF1N65EYD6806061S",
+      "atom_uri": "urn:zam:atom:01M7HBB14VF1N65EYD6806061S",
+      "namespace": "zam-academy-biologie-gymnasium-6",
+      "slug": "bg6-gebisse",
+      "title": "Räuber und Weidegänger: Gebisse der Säugetiere",
+      "domain": "biologie/s5",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-gebisse",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-6",
+          "topic_code": "s5",
+          "topic_title": "Nahrung, Wärme & Atmung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "nt_gym",
+          "topic_code": "lb1.3",
+          "topic_title": "Biodiversität bei Wirbeltieren – Variabilität und Angepasstheit",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7HBB14WBYQDP22BJXHVD4EQ",
+          "slug": "bg6-gebisse-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wozu dienen die Reißzähne eines Hundes?",
+          "concept": "Sie zerschneiden Fleisch wie die Klingen einer Schere.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-gebisse",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie zerschneiden Fleisch wie die Klingen einer Schere.",
+              "Sie zermahlen Gras mit seitlichen Kaubewegungen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7HBB14XQ728BBTW90GSMYSF",
+          "slug": "bg6-gebisse-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Vergleiche das Gebiss eines Fleischfressers mit dem eines Pflanzenfressers.",
+          "concept": "Fleischfresser: Fangzähne halten, Reißzähne schneiden, kurzer Darm. Pflanzenfresser (Rind): Hornplatte, breite Mahlzähne, Wiederkäuen, langer Darm.",
+          "sample_solution": "Fleischfresser: Fangzähne halten, Reißzähne schneiden, kurzer Darm. Pflanzenfresser (Rind): Hornplatte, breite Mahlzähne, Wiederkäuen, langer Darm.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-gebisse"
+        }
+      ]
+    },
+    {
+      "id": "01M7HBB14YEGXR3JT8EZJ5Q1WX",
+      "atom_uri": "urn:zam:atom:01M7HBB14YEGXR3JT8EZJ5Q1WX",
+      "namespace": "zam-academy-biologie-gymnasium-6",
+      "slug": "bg6-schnaebel",
+      "title": "Schnabelformen der Vögel",
+      "domain": "biologie/s5",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-schnaebel",
+      "prerequisites": [
+        {
+          "atom_id": "01M7HBB14VF1N65EYD6806061S",
+          "type": "soft",
+          "rationale": "Auch Gebisse zeigen Angepasstheit an die Nahrung."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-6",
+          "topic_code": "s5",
+          "topic_title": "Nahrung, Wärme & Atmung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "nt_gym",
+          "topic_code": "lb1.3",
+          "topic_title": "Biodiversität bei Wirbeltieren – Variabilität und Angepasstheit",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7HBB14ZYY8ZSDGVAV1BGHRN",
+          "slug": "bg6-schnaebel-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie gewinnt die Stockente mit ihrem Schnabel Nahrung?",
+          "concept": "Sie seiht kleine Tiere und Pflanzenteile mit Hornleisten aus dem Wasser.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-schnaebel",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie seiht kleine Tiere und Pflanzenteile mit Hornleisten aus dem Wasser.",
+              "Sie hackt Insektenlarven aus der Baumrinde."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7HBB150906ZP2FXC0BHV7A3",
+          "slug": "bg6-schnaebel-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Nenne drei Schnabelformen und die passende Nahrung.",
+          "concept": "Hakenschnabel (Bussard): Fleisch reißen; Körnerschnabel (Buchfink): Samen knacken; Seihschnabel (Ente): Nahrung aus dem Wasser filtern.",
+          "sample_solution": "Hakenschnabel (Bussard): Fleisch reißen; Körnerschnabel (Buchfink): Samen knacken; Seihschnabel (Ente): Nahrung aus dem Wasser filtern.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-schnaebel"
+        }
+      ]
+    },
+    {
+      "id": "01M7HBB151HH65M59AG5JRJTND",
+      "atom_uri": "urn:zam:atom:01M7HBB151HH65M59AG5JRJTND",
+      "namespace": "zam-academy-biologie-gymnasium-6",
+      "slug": "bg6-koerpertemperatur",
+      "title": "Wechselwarm und gleichwarm",
+      "domain": "biologie/s5",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-koerpertemperatur",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-6",
+          "topic_code": "s5",
+          "topic_title": "Nahrung, Wärme & Atmung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "nt_gym",
+          "topic_code": "lb1.3",
+          "topic_title": "Biodiversität bei Wirbeltieren – Variabilität und Angepasstheit",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7HBB152YVZDPBX2MY83YE0Y",
+          "slug": "bg6-koerpertemperatur-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum braucht eine Maus im Winter mehr Nahrung als im Sommer?",
+          "concept": "Sie hält ihre Körpertemperatur konstant und verliert bei Kälte mehr Wärme, die sie durch Zellatmung ersetzen muss.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-koerpertemperatur",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie hält ihre Körpertemperatur konstant und verliert bei Kälte mehr Wärme, die sie durch Zellatmung ersetzen muss.",
+              "Weil ihre Körpertemperatur im Winter sinkt und sie langsamer wird."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7HBB153BERXF3JKX4NCY9JK",
+          "slug": "bg6-koerpertemperatur-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Unterscheide wechselwarme und gleichwarme Tiere mit je einem Vor- und Nachteil.",
+          "concept": "Wechselwarm: Temperatur folgt Umgebung; braucht wenig Nahrung, bei Kälte starr. Gleichwarm: konstante Temperatur; immer aktiv, braucht viel Nahrung.",
+          "sample_solution": "Wechselwarm: Temperatur folgt Umgebung; braucht wenig Nahrung, bei Kälte starr. Gleichwarm: konstante Temperatur; immer aktiv, braucht viel Nahrung.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-koerpertemperatur"
+        }
+      ]
+    },
+    {
+      "id": "01M7HBB154KG42ZF1KGAT3GHFK",
+      "atom_uri": "urn:zam:atom:01M7HBB154KG42ZF1KGAT3GHFK",
+      "namespace": "zam-academy-biologie-gymnasium-6",
+      "slug": "bg6-ueberwintern",
+      "title": "Durch den Winter: Strategien bei Energiemangel",
+      "domain": "biologie/s5",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-ueberwintern",
+      "prerequisites": [
+        {
+          "atom_id": "01M7HBB151HH65M59AG5JRJTND",
+          "type": "soft",
+          "rationale": "Überwinterungsstrategien hängen von der Temperaturregulation ab."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-6",
+          "topic_code": "s5",
+          "topic_title": "Nahrung, Wärme & Atmung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "nt_gym",
+          "topic_code": "lb1.3",
+          "topic_title": "Biodiversität bei Wirbeltieren – Variabilität und Angepasstheit",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7HBB155BTW00222X2PMJXQP",
+          "slug": "bg6-ueberwintern-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Worin unterscheidet sich die Winterruhe des Eichhörnchens vom Winterschlaf des Igels?",
+          "concept": "Beim Eichhörnchen sinkt die Körpertemperatur nur wenig, und es wacht oft auf, um von Vorräten zu fressen.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-ueberwintern",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Beim Eichhörnchen sinkt die Körpertemperatur nur wenig, und es wacht oft auf, um von Vorräten zu fressen.",
+              "Das Eichhörnchen ist wechselwarm und fällt in Kältestarre."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7HBB156XVAS0SKEQQAFNPS7",
+          "slug": "bg6-ueberwintern-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Unterscheide Winterschlaf und Winterruhe.",
+          "concept": "Winterschlaf: Körpertemperatur stark gesenkt, Tier lebt vom Fett (Igel). Winterruhe: Temperatur kaum gesenkt, wacht oft auf und frisst Vorräte (Eichhörnchen).",
+          "sample_solution": "Winterschlaf: Körpertemperatur stark gesenkt, Tier lebt vom Fett (Igel). Winterruhe: Temperatur kaum gesenkt, wacht oft auf und frisst Vorräte (Eichhörnchen).",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-ueberwintern"
+        }
+      ]
+    },
+    {
+      "id": "01M7HBB157PJQEY2FQCZF4W254",
+      "atom_uri": "urn:zam:atom:01M7HBB157PJQEY2FQCZF4W254",
+      "namespace": "zam-academy-biologie-gymnasium-6",
+      "slug": "bg6-atmungsorgane",
+      "title": "Atmen im Wasser und an Land",
+      "domain": "biologie/s5",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-atmungsorgane",
+      "prerequisites": [
+        {
+          "atom_id": "01M7HBB151HH65M59AG5JRJTND",
+          "type": "soft",
+          "rationale": "Gleichwarme Tiere haben einen hohen Sauerstoffbedarf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-6",
+          "topic_code": "s5",
+          "topic_title": "Nahrung, Wärme & Atmung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "nt_gym",
+          "topic_code": "lb1.3",
+          "topic_title": "Biodiversität bei Wirbeltieren – Variabilität und Angepasstheit",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7HBB158GQC3P4505FSHD189",
+          "slug": "bg6-atmungsorgane-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum erstickt ein Fisch an Land, obwohl Luft mehr Sauerstoff enthält als Wasser?",
+          "concept": "Seine Kiemenblättchen fallen zusammen und verkleben, sodass die Oberfläche für den Gasaustausch zu klein wird.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-atmungsorgane",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Seine Kiemenblättchen fallen zusammen und verkleben, sodass die Oberfläche für den Gasaustausch zu klein wird.",
+              "Weil Fische keinen Sauerstoff brauchen, sondern nur Wasser."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7HBB159SBG3CQJM4H2AEXT9",
+          "slug": "bg6-atmungsorgane-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie hängen Sauerstoffbedarf und Bau der Atmungsorgane zusammen?",
+          "concept": "Je höher der Sauerstoffbedarf, desto größer die innere Oberfläche: Kiemen, einfache Froschlunge mit Hautatmung, Lungenbläschen, Vogellunge mit Luftsäcken.",
+          "sample_solution": "Je höher der Sauerstoffbedarf, desto größer die innere Oberfläche: Kiemen, einfache Froschlunge mit Hautatmung, Lungenbläschen, Vogellunge mit Luftsäcken.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-atmungsorgane"
+        }
+      ]
+    },
+    {
+      "id": "01M7HBB15AA4X1N2FE73HA4CGD",
+      "atom_uri": "urn:zam:atom:01M7HBB15AA4X1N2FE73HA4CGD",
+      "namespace": "zam-academy-biologie-gymnasium-6",
+      "slug": "bg6-fortpflanzung-wasser-land",
+      "title": "Fortpflanzung im Wasser und an Land",
+      "domain": "biologie/s6",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-fortpflanzung-wasser-land",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-6",
+          "topic_code": "s6",
+          "topic_title": "Fortpflanzung & Entwicklung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "nt_gym",
+          "topic_code": "lb1.3",
+          "topic_title": "Biodiversität bei Wirbeltieren – Variabilität und Angepasstheit",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7HBB15B8RFZDKMJTN31405A",
+          "slug": "bg6-fortpflanzung-wasser-land-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum können Fische ihren Laich nicht an Land ablegen?",
+          "concept": "Die Eier haben keine feste Schale und würden an der Luft austrocknen.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-fortpflanzung-wasser-land",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Eier haben keine feste Schale und würden an der Luft austrocknen.",
+              "Weil Fischeier nur mit Kalkschale befruchtet werden können."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7HBB15C9YRQYNYAX59RP1BD",
+          "slug": "bg6-fortpflanzung-wasser-land-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was ermöglicht Reptilien und Vögeln die Fortpflanzung an Land unabhängig von Gewässern?",
+          "concept": "Innere Befruchtung und Eier mit ledriger oder kalkiger Schale, in denen der Embryo in einer flüssigkeitsgefüllten Eihülle vor Austrocknung geschützt ist.",
+          "sample_solution": "Innere Befruchtung und Eier mit ledriger oder kalkiger Schale, in denen der Embryo in einer flüssigkeitsgefüllten Eihülle vor Austrocknung geschützt ist.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-fortpflanzung-wasser-land"
+        }
+      ]
+    },
+    {
+      "id": "01M7HBB15D8QY5E4NBJRJ2MQR9",
+      "atom_uri": "urn:zam:atom:01M7HBB15D8QY5E4NBJRJ2MQR9",
+      "namespace": "zam-academy-biologie-gymnasium-6",
+      "slug": "bg6-metamorphose",
+      "title": "Metamorphose: vom Laich zum Frosch",
+      "domain": "biologie/s6",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-metamorphose",
+      "prerequisites": [
+        {
+          "atom_id": "01M7HBB15AA4X1N2FE73HA4CGD",
+          "type": "soft",
+          "rationale": "Amphibien laichen im Wasser."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-6",
+          "topic_code": "s6",
+          "topic_title": "Fortpflanzung & Entwicklung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "nt_gym",
+          "topic_code": "lb1.3",
+          "topic_title": "Biodiversität bei Wirbeltieren – Variabilität und Angepasstheit",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7HBB15EFG4CWG69GQN5TBK1",
+          "slug": "bg6-metamorphose-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Beine wachsen bei der Kaulquappe zuerst?",
+          "concept": "Die Hinterbeine",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-metamorphose",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Hinterbeine",
+              "Die Vorderbeine"
+            ],
+            "correct_index": 0
+          },
+          "replaces": [
+            "01K4YB6F000000000000000J03"
+          ]
+        },
+        {
+          "id": "01M7HBB15FGW068VZ4Y2Q1WTK0",
+          "slug": "bg6-metamorphose-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Beschreibe die Metamorphose des Grasfrosches in Stichworten.",
+          "concept": "Laich → Kaulquappe mit Außen-, dann Innenkiemen → Hinterbeine → Vorderbeine und Lungen → Schwanz zurückgebildet → Jungfrosch an Land.",
+          "sample_solution": "Laich → Kaulquappe mit Außen-, dann Innenkiemen → Hinterbeine → Vorderbeine und Lungen → Schwanz zurückgebildet → Jungfrosch an Land.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-metamorphose"
+        }
+      ]
+    },
+    {
+      "id": "01M7HBB15GD0PJ97NBBNVT5H2B",
+      "atom_uri": "urn:zam:atom:01M7HBB15GD0PJ97NBBNVT5H2B",
+      "namespace": "zam-academy-biologie-gymnasium-6",
+      "slug": "bg6-nesthocker-nestfluechter",
+      "title": "Nesthocker und Nestflüchter",
+      "domain": "biologie/s6",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-nesthocker-nestfluechter",
+      "prerequisites": [
+        {
+          "atom_id": "01M7HBB15AA4X1N2FE73HA4CGD",
+          "type": "soft",
+          "rationale": "Das Vogelei ist eine Form der Fortpflanzung an Land."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-6",
+          "topic_code": "s6",
+          "topic_title": "Fortpflanzung & Entwicklung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "nt_gym",
+          "topic_code": "lb1.3",
+          "topic_title": "Biodiversität bei Wirbeltieren – Variabilität und Angepasstheit",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7HBB15H4RPEVZ57DZMK97GS",
+          "slug": "bg6-nesthocker-nestfluechter-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welches Tier ist ein Nestflüchter?",
+          "concept": "Die Stockente",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-nesthocker-nestfluechter",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Stockente",
+              "Die Amsel"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7HBB15JX3D4YVQ4JQJ3QHVB",
+          "slug": "bg6-nesthocker-nestfluechter-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Unterscheide Nesthocker und Nestflüchter mit je einem Beispiel.",
+          "concept": "Nesthocker schlüpfen nackt und blind und werden lange gefüttert (Amsel). Nestflüchter haben Daunen oder Fell, offene Augen und sind bald selbständig (Stockente).",
+          "sample_solution": "Nesthocker schlüpfen nackt und blind und werden lange gefüttert (Amsel). Nestflüchter haben Daunen oder Fell, offene Augen und sind bald selbständig (Stockente).",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-nesthocker-nestfluechter"
+        }
+      ]
+    },
+    {
+      "id": "01M7HBB15KSRVM1V7A3AVJD7T1",
+      "atom_uri": "urn:zam:atom:01M7HBB15KSRVM1V7A3AVJD7T1",
+      "namespace": "zam-academy-biologie-gymnasium-6",
+      "slug": "bg6-elternaufwand",
+      "title": "Viele Junge oder viel Fürsorge?",
+      "domain": "biologie/s6",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-elternaufwand",
+      "prerequisites": [
+        {
+          "atom_id": "01M7HBB15GD0PJ97NBBNVT5H2B",
+          "type": "soft",
+          "rationale": "Füttern und Wärmen der Jungen ist Elternaufwand."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-6",
+          "topic_code": "s6",
+          "topic_title": "Fortpflanzung & Entwicklung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "nt_gym",
+          "topic_code": "lb1.3",
+          "topic_title": "Biodiversität bei Wirbeltieren – Variabilität und Angepasstheit",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7HBB15MTPER70G2A3K3DHSJ",
+          "slug": "bg6-elternaufwand-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum legt der Kabeljau so viele Eier?",
+          "concept": "Ohne Brutpflege werden fast alle gefressen oder sterben; nur bei sehr vielen Eiern überleben genug.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-elternaufwand",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ohne Brutpflege werden fast alle gefressen oder sterben; nur bei sehr vielen Eiern überleben genug.",
+              "Weil seine Eier besonders groß und nährstoffreich sind."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7HBB15NJWP0C62CNBH1G9F3",
+          "slug": "bg6-elternaufwand-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie hängen Elternaufwand und Zahl der Nachkommen zusammen?",
+          "concept": "Je mehr Aufwand die Eltern pro Junges treiben, desto weniger Nachkommen haben sie, aber desto größer ist die Überlebenschance jedes Jungen.",
+          "sample_solution": "Je mehr Aufwand die Eltern pro Junges treiben, desto weniger Nachkommen haben sie, aber desto größer ist die Überlebenschance jedes Jungen.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-elternaufwand"
+        }
+      ]
+    },
+    {
+      "id": "01M7HBB15PPT518MSTNZV9SZMT",
+      "atom_uri": "urn:zam:atom:01M7HBB15PPT518MSTNZV9SZMT",
+      "namespace": "zam-academy-biologie-gymnasium-6",
+      "slug": "bg6-kommunikation",
+      "title": "Signale an Artgenossen",
+      "domain": "biologie/s6",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-kommunikation",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-6",
+          "topic_code": "s6",
+          "topic_title": "Fortpflanzung & Entwicklung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "nt_gym",
+          "topic_code": "lb1.3",
+          "topic_title": "Biodiversität bei Wirbeltieren – Variabilität und Angepasstheit",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7HBB15Q27A2GKC1D56RRYBD",
+          "slug": "bg6-kommunikation-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Bedeutung hat der Gesang eines Amselmännchens im Frühjahr?",
+          "concept": "Er zeigt anderen Männchen das besetzte Revier und lockt Weibchen an.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-kommunikation",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Er zeigt anderen Männchen das besetzte Revier und lockt Weibchen an.",
+              "Er warnt alle Tiere des Gartens vor Katzen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7HBB15R5V8D69H4BWVBH1CY",
+          "slug": "bg6-kommunikation-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche Bedeutung haben Signale an Artgenossen für die Fortpflanzung?",
+          "concept": "Sie helfen, Partner der eigenen Art zu finden, Paarungsbereitschaft zu zeigen und Rivalen fernzuhalten, z. B. Amselgesang, Balztracht des Stichlings.",
+          "sample_solution": "Sie helfen, Partner der eigenen Art zu finden, Paarungsbereitschaft zu zeigen und Rivalen fernzuhalten, z. B. Amselgesang, Balztracht des Stichlings.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-kommunikation"
+        }
+      ]
+    },
+    {
+      "id": "01M7HBB15SP5F2WA6PDFZYJGRZ",
+      "atom_uri": "urn:zam:atom:01M7HBB15SP5F2WA6PDFZYJGRZ",
+      "namespace": "zam-academy-biologie-gymnasium-6",
+      "slug": "bg6-sinnesleistungen",
+      "title": "Besondere Sinne: Echo, Strömung, Wärme",
+      "domain": "biologie/s7",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-sinnesleistungen",
+      "prerequisites": [
+        {
+          "atom_id": "01M7HBB14C47QAFX6ZAN5K7MDS",
+          "type": "soft",
+          "rationale": "Die Reiz-Reaktions-Kette wurde bei Pflanze und Mensch verglichen."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-6",
+          "topic_code": "s7",
+          "topic_title": "Sinne der Wirbeltiere"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "nt_gym",
+          "topic_code": "lb1.3",
+          "topic_title": "Biodiversität bei Wirbeltieren – Variabilität und Angepasstheit",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7HBB15TS1S4GMAPQ4ABXCA4",
+          "slug": "bg6-sinnesleistungen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Womit spürt ein Hecht in trübem Wasser eine Beute, die er nicht sieht?",
+          "concept": "Mit dem Seitenlinienorgan, das Wasserbewegungen wahrnimmt",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-sinnesleistungen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Mit dem Seitenlinienorgan, das Wasserbewegungen wahrnimmt",
+              "Mit dem Grubenorgan, das Wärme wahrnimmt"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7HBB15VVS5YHJDXH07GF82M",
+          "slug": "bg6-sinnesleistungen-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Nenne drei besondere Sinnesleistungen von Wirbeltieren und ihre Reize.",
+          "concept": "Ultraschallortung der Fledermaus (Echo), Seitenlinienorgan der Fische (Wasserbewegungen), Grubenorgan der Grubenottern (Wärmestrahlung).",
+          "sample_solution": "Ultraschallortung der Fledermaus (Echo), Seitenlinienorgan der Fische (Wasserbewegungen), Grubenorgan der Grubenottern (Wärmestrahlung).",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-sinnesleistungen"
+        }
+      ]
+    },
+    {
+      "id": "01M7HBB15WNP8GW6ANNEJZZ9WE",
+      "atom_uri": "urn:zam:atom:01M7HBB15WNP8GW6ANNEJZZ9WE",
+      "namespace": "zam-academy-biologie-gymnasium-6",
+      "slug": "bg6-sinne-lebensraum",
+      "title": "Sinne passend zu Lebensraum und Lebensweise",
+      "domain": "biologie/s7",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-sinne-lebensraum",
+      "prerequisites": [
+        {
+          "atom_id": "01M7HBB15SP5F2WA6PDFZYJGRZ",
+          "type": "soft",
+          "rationale": "Sinnesleistungen sind Angepasstheiten an die Lebensweise."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-6",
+          "topic_code": "s7",
+          "topic_title": "Sinne der Wirbeltiere"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "nt_gym",
+          "topic_code": "lb1.3",
+          "topic_title": "Biodiversität bei Wirbeltieren – Variabilität und Angepasstheit",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7HBB15XB9YE5ARSZNJCTJQ5",
+          "slug": "bg6-sinne-lebensraum-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum hat ein Feldhase seine Augen seitlich am Kopf?",
+          "concept": "So überblickt er fast die ganze Umgebung und bemerkt Feinde früh.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-sinne-lebensraum",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "So überblickt er fast die ganze Umgebung und bemerkt Feinde früh.",
+              "So kann er Entfernungen zur Beute genau schätzen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7HBB15YDMXSHNXBZ7CFPQVA",
+          "slug": "bg6-sinne-lebensraum-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum haben Räuber die Augen meist vorn und Beutetiere seitlich am Kopf?",
+          "concept": "Augen vorn: räumliches Sehen, Entfernungen zur Beute schätzen. Augen seitlich: fast Rundumsicht, Feinde früh bemerken.",
+          "sample_solution": "Augen vorn: räumliches Sehen, Entfernungen zur Beute schätzen. Augen seitlich: fast Rundumsicht, Feinde früh bemerken.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-sinne-lebensraum"
+        }
+      ]
+    },
+    {
+      "id": "01M7HBB15ZDE9GWRCYD537ZZZB",
+      "atom_uri": "urn:zam:atom:01M7HBB15ZDE9GWRCYD537ZZZB",
+      "namespace": "zam-academy-biologie-gymnasium-6",
+      "slug": "bg6-wirbeltierklassen",
+      "title": "Die fünf Wirbeltierklassen",
+      "domain": "biologie/s8",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-wirbeltierklassen",
+      "prerequisites": [
+        {
+          "atom_id": "01M7HBB151HH65M59AG5JRJTND",
+          "type": "soft",
+          "rationale": "Körpertemperatur ist ein Klassenmerkmal."
+        },
+        {
+          "atom_id": "01M7HBB15AA4X1N2FE73HA4CGD",
+          "type": "soft",
+          "rationale": "Fortpflanzung ist ein Klassenmerkmal."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-6",
+          "topic_code": "s8",
+          "topic_title": "Verwandtschaft & Evolution"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "nt_gym",
+          "topic_code": "lb1.4",
+          "topic_title": "Verwandtschaft der Wirbeltiere und Evolution",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7HBB160CCHAMK6SPTJQY5H2",
+          "slug": "bg6-wirbeltierklassen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Merkmale kennzeichnen die Klasse der Säugetiere?",
+          "concept": "Haare oder Fell, gleichwarm, Junge werden mit Milch gesäugt",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-wirbeltierklassen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Haare oder Fell, gleichwarm, Junge werden mit Milch gesäugt",
+              "Federn, gleichwarm, Eier mit Kalkschale"
+            ],
+            "correct_index": 0
+          },
+          "replaces": [
+            "01K4YB6S000000000000000J01"
+          ]
+        },
+        {
+          "id": "01M7HBB161YBMQK9XAZV74FXVH",
+          "slug": "bg6-wirbeltierklassen-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Woran erkennst du, zu welcher Wirbeltierklasse ein unbekanntes Tier gehört?",
+          "concept": "An den Klassenmerkmalen Körperbedeckung, Körpertemperatur, Atmung und Fortpflanzung, nicht an Lebensraum oder Körperform.",
+          "sample_solution": "An den Klassenmerkmalen Körperbedeckung, Körpertemperatur, Atmung und Fortpflanzung, nicht an Lebensraum oder Körperform.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-wirbeltierklassen"
+        }
+      ]
+    },
+    {
+      "id": "01M7HBB162XFD8ZJNVPBB7BB8K",
+      "atom_uri": "urn:zam:atom:01M7HBB162XFD8ZJNVPBB7BB8K",
+      "namespace": "zam-academy-biologie-gymnasium-6",
+      "slug": "bg6-evolution",
+      "title": "Evolution: Vorteile durch Unterschiede",
+      "domain": "biologie/s8",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-evolution",
+      "prerequisites": [
+        {
+          "atom_id": "01M7HBB15ZDE9GWRCYD537ZZZB",
+          "type": "soft",
+          "rationale": "Ähnlichkeiten der Klassen weisen auf gemeinsame Vorfahren."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-6",
+          "topic_code": "s8",
+          "topic_title": "Verwandtschaft & Evolution"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "nt_gym",
+          "topic_code": "lb1.4",
+          "topic_title": "Verwandtschaft der Wirbeltiere und Evolution",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7HBB163Q2EQZG1XTFHE4HN4",
+          "slug": "bg6-evolution-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum nimmt in einer Mäusegruppe auf dunklem Boden der Anteil dunkler Mäuse über viele Generationen zu?",
+          "concept": "Dunkle Mäuse werden seltener gefressen, haben mehr Junge und vererben das dunkle Fell.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-evolution",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Dunkle Mäuse werden seltener gefressen, haben mehr Junge und vererben das dunkle Fell.",
+              "Helle Mäuse färben ihr Fell absichtlich dunkler, um sich zu verstecken."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7HBB164VC9R99WHS0Y329NK",
+          "slug": "bg6-evolution-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre das vereinfachte Modell der Evolution in drei Schritten.",
+          "concept": "Lebewesen einer Art unterscheiden sich; Merkmale werden vererbt; wer besser angepasst ist, überlebt häufiger und hat mehr Nachkommen.",
+          "sample_solution": "Lebewesen einer Art unterscheiden sich; Merkmale werden vererbt; wer besser angepasst ist, überlebt häufiger und hat mehr Nachkommen.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-evolution"
+        }
+      ]
+    },
+    {
+      "id": "01M7HBB1653R6SYQF7Z0B0ESD6",
+      "atom_uri": "urn:zam:atom:01M7HBB1653R6SYQF7Z0B0ESD6",
+      "namespace": "zam-academy-biologie-gymnasium-6",
+      "slug": "bg6-zuechtung",
+      "title": "Züchtung: Vom Wolf zum Dackel",
+      "domain": "biologie/s8",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-zuechtung",
+      "prerequisites": [
+        {
+          "atom_id": "01M7HBB162XFD8ZJNVPBB7BB8K",
+          "type": "soft",
+          "rationale": "Züchtung wird mit dem Evolutionsmodell verglichen."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-6",
+          "topic_code": "s8",
+          "topic_title": "Verwandtschaft & Evolution"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "nt_gym",
+          "topic_code": "lb1.4",
+          "topic_title": "Verwandtschaft der Wirbeltiere und Evolution",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7HBB1665DEXSHXCR7AFQBHE",
+          "slug": "bg6-zuechtung-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was unterscheidet Züchtung von natürlicher Evolution?",
+          "concept": "Bei der Züchtung wählt der Mensch nach einem Ziel aus, in der Natur wirkt die Umwelt ohne Ziel.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-zuechtung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Bei der Züchtung wählt der Mensch nach einem Ziel aus, in der Natur wirkt die Umwelt ohne Ziel.",
+              "Bei der Züchtung gibt es keine Vererbung."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7HBB167DTQB5M6XGPJ5HZWY",
+          "slug": "bg6-zuechtung-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was haben Züchtung und Evolution gemeinsam, und worin unterscheiden sie sich?",
+          "concept": "Gemeinsam: Variation, Vererbung, Auswahl. Bei der Züchtung wählt der Mensch nach seinem Ziel und schnell; in der Evolution wirkt die Umwelt ohne Ziel.",
+          "sample_solution": "Gemeinsam: Variation, Vererbung, Auswahl. Bei der Züchtung wählt der Mensch nach seinem Ziel und schnell; in der Evolution wirkt die Umwelt ohne Ziel.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-zuechtung"
+        }
+      ]
+    },
+    {
+      "id": "01M7HBB168ZPDY272PQWY7ZPZN",
+      "atom_uri": "urn:zam:atom:01M7HBB168ZPDY272PQWY7ZPZN",
+      "namespace": "zam-academy-biologie-gymnasium-6",
+      "slug": "bg6-heim-nutztiere",
+      "title": "Heimtiere und Nutztiere verantwortlich halten",
+      "domain": "biologie/s8",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-heim-nutztiere",
+      "prerequisites": [
+        {
+          "atom_id": "01M7HBB1653R6SYQF7Z0B0ESD6",
+          "type": "soft",
+          "rationale": "Nutztiere sind durch Züchtung entstanden."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-6",
+          "topic_code": "s8",
+          "topic_title": "Verwandtschaft & Evolution"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "nt_gym",
+          "topic_code": "lb1.4",
+          "topic_title": "Verwandtschaft der Wirbeltiere und Evolution",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7HBB169ZS6H2QJEP5Q23KFJ",
+          "slug": "bg6-heim-nutztiere-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was bedeutet die erste Ziffer 1 im Code auf einem Hühnerei?",
+          "concept": "Die Henne stammt aus Freilandhaltung.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-heim-nutztiere",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Henne stammt aus Freilandhaltung.",
+              "Das Ei ist ein Bio-Ei aus ökologischer Erzeugung."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7HBB16A4KKZA2HABZ40RYG4",
+          "slug": "bg6-heim-nutztiere-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was bedeutet die erste Ziffer im Code auf einem Hühnerei?",
+          "concept": "Die Haltungsform der Hennen: 0 ökologische Erzeugung, 1 Freilandhaltung, 2 Bodenhaltung, 3 Käfig- oder Kleingruppenhaltung.",
+          "sample_solution": "Die Haltungsform der Hennen: 0 ökologische Erzeugung, 1 Freilandhaltung, 2 Bodenhaltung, 3 Käfig- oder Kleingruppenhaltung.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-heim-nutztiere"
+        }
+      ]
+    },
+    {
+      "id": "01M7HBB16BWGK6NWHTN98XPS58",
+      "atom_uri": "urn:zam:atom:01M7HBB16BWGK6NWHTN98XPS58",
+      "namespace": "zam-academy-biologie-gymnasium-6",
+      "slug": "bg6-gewaesser-untersuchen",
+      "title": "Ein Gewässer untersuchen",
+      "domain": "biologie/s9",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-gewaesser-untersuchen",
+      "prerequisites": [
+        {
+          "atom_id": "01M7HBB12WMDHEP58N0VD7XCSN",
+          "type": "soft",
+          "rationale": "Messwerte im Freiland werden protokolliert."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-6",
+          "topic_code": "s9",
+          "topic_title": "Ökosystem Gewässer"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "nt_gym",
+          "topic_code": "lb1.5",
+          "topic_title": "Ökosystem Gewässer",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7HBB16CDKFG0ZWTMQRGC48F",
+          "slug": "bg6-gewaesser-untersuchen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Ein Korken treibt in 25 Sekunden eine 10 m lange Strecke den Bach hinab. Wie groß ist die Fließgeschwindigkeit?",
+          "concept": "0,4 m pro Sekunde",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-gewaesser-untersuchen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "0,4 m pro Sekunde",
+              "2,5 m pro Sekunde"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7HBB16DTQRW3R96F1PRBWBG",
+          "slug": "bg6-gewaesser-untersuchen-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie misst du Sichttiefe und Fließgeschwindigkeit eines Gewässers?",
+          "concept": "Sichttiefe: weiße Secchi-Scheibe absenken, bis sie verschwindet. Fließgeschwindigkeit: Strecke durch Zeit eines Schwimmkörpers, z. B. 10 m : 20 s.",
+          "sample_solution": "Sichttiefe: weiße Secchi-Scheibe absenken, bis sie verschwindet. Fließgeschwindigkeit: Strecke durch Zeit eines Schwimmkörpers, z. B. 10 m : 20 s.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-gewaesser-untersuchen"
+        }
+      ]
+    },
+    {
+      "id": "01M7HBB16E640QB2ZMWN6SHVMQ",
+      "atom_uri": "urn:zam:atom:01M7HBB16E640QB2ZMWN6SHVMQ",
+      "namespace": "zam-academy-biologie-gymnasium-6",
+      "slug": "bg6-gewaesser-lebewesen",
+      "title": "Lebewesen im Teich bestimmen",
+      "domain": "biologie/s9",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-gewaesser-lebewesen",
+      "prerequisites": [
+        {
+          "atom_id": "01M7HBB16BWGK6NWHTN98XPS58",
+          "type": "soft",
+          "rationale": "Abiotische Faktoren prägen die Zonen."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-6",
+          "topic_code": "s9",
+          "topic_title": "Ökosystem Gewässer"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "nt_gym",
+          "topic_code": "lb1.5",
+          "topic_title": "Ökosystem Gewässer",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7HBB16FZX86RHNSE8GAQX5P",
+          "slug": "bg6-gewaesser-lebewesen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie geht man beim Bestimmen mit einem dichotomen Schlüssel vor?",
+          "concept": "Man entscheidet bei jedem Schritt zwischen zwei Merkmalsbeschreibungen, bis der Name erreicht ist.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-gewaesser-lebewesen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Man entscheidet bei jedem Schritt zwischen zwei Merkmalsbeschreibungen, bis der Name erreicht ist.",
+              "Man vergleicht das Tier mit allen Bildern des Buches gleichzeitig."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7HBB16G51BTGV1DA63216ST",
+          "slug": "bg6-gewaesser-lebewesen-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Nenne die Zonen eines Teichs mit je einer typischen Pflanze.",
+          "concept": "Röhricht (Schilf), Schwimmblattzone (Seerose), Tauchblattzone (Wasserpest), Freiwasser (Algen), Bodenzone mit Schlamm.",
+          "sample_solution": "Röhricht (Schilf), Schwimmblattzone (Seerose), Tauchblattzone (Wasserpest), Freiwasser (Algen), Bodenzone mit Schlamm.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-gewaesser-lebewesen"
+        }
+      ]
+    },
+    {
+      "id": "01M7HBB16H874GKV6AMV9WVEG3",
+      "atom_uri": "urn:zam:atom:01M7HBB16H874GKV6AMV9WVEG3",
+      "namespace": "zam-academy-biologie-gymnasium-6",
+      "slug": "bg6-nahrungsnetz",
+      "title": "Nahrungsnetz und Ökosystem Teich",
+      "domain": "biologie/s9",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-nahrungsnetz",
+      "prerequisites": [
+        {
+          "atom_id": "01M7HBB16E640QB2ZMWN6SHVMQ",
+          "type": "soft",
+          "rationale": "Die Lebewesen des Teichs bilden das Netz."
+        },
+        {
+          "atom_id": "01M7HBB140E8A27M7CGK5RD8KD",
+          "type": "soft",
+          "rationale": "Produzenten bauen durch Photosynthese Biomasse auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-6",
+          "topic_code": "s9",
+          "topic_title": "Ökosystem Gewässer"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "nt_gym",
+          "topic_code": "lb1.5",
+          "topic_title": "Ökosystem Gewässer",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7HBB16JDZDSY58NEF08M7X1",
+          "slug": "bg6-nahrungsnetz-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "In welche Richtung zeigen die Pfeile in einem Nahrungsnetz?",
+          "concept": "Vom Gefressenen zum Fresser",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-nahrungsnetz",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Vom Gefressenen zum Fresser",
+              "Vom Fresser zum Gefressenen"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7HBB16KJWK09VAJPXD016PZ",
+          "slug": "bg6-nahrungsnetz-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was ist ein Ökosystem, und welche Rollen haben Produzenten, Konsumenten und Zersetzer?",
+          "concept": "Gesamtheit von Lebewesen und unbelebter Natur. Produzenten bauen Biomasse auf, Konsumenten fressen andere Lebewesen, Zersetzer bauen tote Reste ab.",
+          "sample_solution": "Gesamtheit von Lebewesen und unbelebter Natur. Produzenten bauen Biomasse auf, Konsumenten fressen andere Lebewesen, Zersetzer bauen tote Reste ab.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-nahrungsnetz"
+        }
+      ]
+    },
+    {
+      "id": "01M7HBB16MMZ0GZEVVN44SQXGC",
+      "atom_uri": "urn:zam:atom:01M7HBB16MMZ0GZEVVN44SQXGC",
+      "namespace": "zam-academy-biologie-gymnasium-6",
+      "slug": "bg6-gewaesser-schutz",
+      "title": "Gewässer nutzen und schützen",
+      "domain": "biologie/s9",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-gewaesser-schutz",
+      "prerequisites": [
+        {
+          "atom_id": "01M7HBB16H874GKV6AMV9WVEG3",
+          "type": "soft",
+          "rationale": "Zersetzer und Produzenten wirken im Ökosystem zusammen."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "biologie-gymnasium-6",
+          "topic_code": "s9",
+          "topic_title": "Ökosystem Gewässer"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "nt_gym",
+          "topic_code": "lb1.5",
+          "topic_title": "Ökosystem Gewässer",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7HBB16N1VSY9SX7NMJXQPFV",
+          "slug": "bg6-gewaesser-schutz-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum kann zu viel Dünger in einem Teich zu Fischsterben führen?",
+          "concept": "Algen wachsen stark, sterben ab, und Zersetzer verbrauchen beim Abbau viel Sauerstoff.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-gewaesser-schutz",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Algen wachsen stark, sterben ab, und Zersetzer verbrauchen beim Abbau viel Sauerstoff.",
+              "Dünger ist für Fische direkt giftig wie ein Pflanzenschutzmittel."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7HBB16PZZ99VECY9JMVHGXC",
+          "slug": "bg6-gewaesser-schutz-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum kann zu viel Dünger in einem Gewässer Fische töten?",
+          "concept": "Mehr Nährstoffe → viele Algen → Algen sterben ab → Zersetzer verbrauchen viel Sauerstoff → Sauerstoffmangel, Fische ersticken.",
+          "sample_solution": "Mehr Nährstoffe → viele Algen → Algen sterben ab → Zersetzer verbrauchen viel Sauerstoff → Sauerstoffmangel, Fische ersticken.",
+          "source_link": "https://academy.zam-os.org/biologie-gymnasium-6/#lesson=bg6-gewaesser-schutz"
+        }
+      ]
+    }
+  ]
+}

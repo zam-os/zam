@@ -1,0 +1,1717 @@
+{
+	"$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+	"tile_id": "zam-academy:geographie-realschule-6",
+	"version": "2026.11.2",
+	"title": "Geographie 6 Realschule (ZAM Academy)",
+	"description": "Bavarian Realschule Grade 6 geography for all tracks: 25 lessons, seven areas, offline maps and models, two levels of practice and 50 cards.",
+	"publisher": "ZAM Academy",
+	"published_at": "2026-11-18T12:00:00Z",
+	"sources": [
+		{
+			"uri": "https://academy.zam-os.org/geographie-realschule-6/",
+			"label": "ZAM Academy: Geographie 6 Realschule"
+		},
+		{
+			"uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/6/geographie",
+			"label": "LehrplanPLUS - Realschule - 6 - Geographie - Fachlehrpläne",
+			"checked": "2026-11-18"
+		},
+		{
+			"uri": "https://european-union.europa.eu/easy-read_en",
+			"label": "Easy to read – about the EU | European Union",
+			"checked": "2026-11-18"
+		},
+		{
+			"uri": "https://atlas.bayern.de/",
+			"label": "BayernAtlas",
+			"checked": "2026-11-18"
+		},
+		{
+			"uri": "https://www.umweltbundesamt.de/service/glossar/klima",
+			"label": "Klima | Umweltbundesamt",
+			"checked": "2026-11-18"
+		},
+		{
+			"uri": "https://www.bbt-se.com/brenner-basistunnel/projektueberblick/",
+			"label": "PROJEKTÜBERBLICK - Brenner Basistunnel",
+			"checked": "2026-11-18"
+		},
+		{
+			"uri": "https://www.bmwgroup-werke.com/content/grpw/websites/bmwgroup-werke_com/dingolfing/de.html",
+			"label": "BMW Group Werk Dingolfing",
+			"checked": "2026-11-18"
+		},
+		{
+			"uri": "https://www.statnett.no/en/The-power-system/interconnectors/",
+			"label": "Interconnectors | Statnett",
+			"checked": "2026-11-18"
+		},
+		{
+			"uri": "https://mapping.emergency.copernicus.eu/news/flood-in-crete-greece-emsr933/",
+			"label": "Flood in Crete, Greece | Copernicus EMS On Demand Mapping",
+			"checked": "2026-11-18"
+		},
+		{
+			"uri": "https://www.euronews.com/2026/10/01/crete-at-the-mercy-of-severe-weather-floods-landslides-power-cuts-and-closed-schools",
+			"label": "Crete at the mercy of severe weather: Floods, landslides, power cuts and closed schools | Euronews",
+			"checked": "2026-11-18"
+		}
+	],
+	"atoms": [
+		{
+			"id": "01M7PMNNHRXCZ7178NAEBSRJVX",
+			"atom_uri": "urn:zam:atom:01M7PMNNHRXCZ7178NAEBSRJVX",
+			"namespace": "zam-academy-geographie-realschule-6",
+			"slug": "geo6-europa-natur",
+			"title": "Europa auf der Karte",
+			"domain": "geographie/europa/europa-natur",
+			"reduction": "narrative",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=europa-natur",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "geographie-realschule-6",
+					"topic_code": "lb1",
+					"topic_title": "Europa – Einheit und Vielfalt eines Kontinents"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "geographie",
+					"topic_code": "lb1",
+					"topic_title": "Europa – Einheit und Vielfalt eines Kontinents",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7PMNNHRHWAJ8N0QBPWFAA8Q",
+					"slug": "geo6-europa-natur-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welches Gebirge dient häufig als Orientierung für die Ostgrenze Europas?",
+					"concept": "Das Uralgebirge",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Das Uralgebirge",
+							"Der Kaukasus"
+						],
+						"correct_index": 0
+					},
+					"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=europa-natur",
+					"replaces": [
+						"01K4G7E0000000000000000J01"
+					]
+				},
+				{
+					"id": "01M7PMNNHR77WYBKN5YEPCEZPW",
+					"slug": "geo6-europa-natur-begruenden",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Warum gibt es im Osten keine einzige natürliche Grenze zwischen Europa und Asien?",
+					"concept": "Europa und Asien bilden eine zusammenhängende Landmasse. Die Grenze beruht auf einer Vereinbarung.",
+					"sample_solution": "Der Ural ist ein häufiger Anhaltspunkt. Im Kaukasusraum hängt der genaue Verlauf von der gewählten Grenzziehung ab.",
+					"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=europa-natur"
+				}
+			]
+		},
+		{
+			"id": "01M7PMNNHRX02RCWTZKF581ZM6",
+			"atom_uri": "urn:zam:atom:01M7PMNNHRX02RCWTZKF581ZM6",
+			"namespace": "zam-academy-geographie-realschule-6",
+			"slug": "geo6-europa-staaten",
+			"title": "Staaten, Hauptstädte und Teilräume",
+			"domain": "geographie/europa/europa-staaten",
+			"reduction": "narrative",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=europa-staaten",
+			"prerequisites": [
+				{
+					"atom_id": "01M7PMNNHRXCZ7178NAEBSRJVX",
+					"type": "soft",
+					"rationale": "This lesson applies concepts from the linked lesson."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "geographie-realschule-6",
+					"topic_code": "lb1",
+					"topic_title": "Europa – Einheit und Vielfalt eines Kontinents"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "geographie",
+					"topic_code": "lb1",
+					"topic_title": "Europa – Einheit und Vielfalt eines Kontinents",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7PMNNHRSZEX7CAB8RD4X735",
+					"slug": "geo6-europa-staaten-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche Hauptstadt gehört zur Türkei?",
+					"concept": "Ankara",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Ankara",
+							"Istanbul"
+						],
+						"correct_index": 0
+					},
+					"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=europa-staaten"
+				},
+				{
+					"id": "01M7PMNNHR92BX7RJMRZXKF1GP",
+					"slug": "geo6-europa-staaten-begruenden",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Warum sagt die Lage einer Hauptstadt allein nicht, auf welchen Kontinenten ein Staat liegt?",
+					"concept": "Die Hauptstadt bezeichnet einen Punkt; das Staatsgebiet kann eine Kontinentgrenze überqueren.",
+					"sample_solution": "Ankara liegt in Asien. Ein Teil der Türkei liegt westlich des Bosporus in Europa.",
+					"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=europa-staaten"
+				}
+			]
+		},
+		{
+			"id": "01M7PMNNHRDPEADMMVWTHZSQ10",
+			"atom_uri": "urn:zam:atom:01M7PMNNHRDPEADMMVWTHZSQ10",
+			"namespace": "zam-academy-geographie-realschule-6",
+			"slug": "geo6-europa-alltag",
+			"title": "Europa im Alltag",
+			"domain": "geographie/europa/europa-alltag",
+			"reduction": "narrative",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=europa-alltag",
+			"prerequisites": [
+				{
+					"atom_id": "01M7PMNNHRX02RCWTZKF581ZM6",
+					"type": "soft",
+					"rationale": "This lesson applies concepts from the linked lesson."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "geographie-realschule-6",
+					"topic_code": "lb1",
+					"topic_title": "Europa – Einheit und Vielfalt eines Kontinents"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "geographie",
+					"topic_code": "lb1",
+					"topic_title": "Europa – Einheit und Vielfalt eines Kontinents",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7PMNNHRWEQXXYE2H7JPM5XH",
+					"slug": "geo6-europa-alltag-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welches Abkommen baut in seinem Raum die regelmäßigen Personenkontrollen an gemeinsamen Grenzen ab?",
+					"concept": "Das Schengener Abkommen",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Das Schengener Abkommen",
+							"Das Pariser Klimaabkommen"
+						],
+						"correct_index": 0
+					},
+					"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=europa-alltag",
+					"replaces": [
+						"01K4G7E0000000000000000J07"
+					]
+				},
+				{
+					"id": "01M7PMNNHR3B21N632RF87QV99",
+					"slug": "geo6-europa-alltag-begruenden",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was unterscheidet die EU vom Schengen-Raum?",
+					"concept": "Die EU ist ein Staatenverbund. Schengen regelt unter anderem Reisen über gemeinsame Grenzen und hat eine andere Mitgliedschaft.",
+					"sample_solution": "Die Schweiz ist zum Beispiel in Schengen, gehört aber nicht zur EU.",
+					"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=europa-alltag"
+				}
+			]
+		},
+		{
+			"id": "01M7PMNNHRW0BBS323YRRS7V66",
+			"atom_uri": "urn:zam:atom:01M7PMNNHRW0BBS323YRRS7V66",
+			"namespace": "zam-academy-geographie-realschule-6",
+			"slug": "geo6-europa-laenderprojekt",
+			"title": "Dein Europaporträt",
+			"domain": "geographie/europa/europa-laenderprojekt",
+			"reduction": "narrative",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=europa-laenderprojekt",
+			"prerequisites": [
+				{
+					"atom_id": "01M7PMNNHRX02RCWTZKF581ZM6",
+					"type": "soft",
+					"rationale": "This lesson applies concepts from the linked lesson."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "geographie-realschule-6",
+					"topic_code": "lb1",
+					"topic_title": "Europa – Einheit und Vielfalt eines Kontinents"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "geographie",
+					"topic_code": "lb1",
+					"topic_title": "Europa – Einheit und Vielfalt eines Kontinents",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7PMNNHRN5K8XA87E611TY0W",
+					"slug": "geo6-europa-laenderprojekt-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was gehört zu einem prüfbaren Befund für ein Länderplakat?",
+					"concept": "Die Beobachtung mit Ort und Quelle.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Die Beobachtung mit Ort und Quelle.",
+							"Ein fremdes Bild ohne Herkunft."
+						],
+						"correct_index": 0
+					},
+					"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=europa-laenderprojekt"
+				},
+				{
+					"id": "01M7PMNNHRRK79DEZH6KRFQ685",
+					"slug": "geo6-europa-laenderprojekt-begruenden",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie machst du einen Kartenbefund auf einem Plakat überprüfbar?",
+					"concept": "Nenne Karte, Urheber, Datum und Ort und erkläre, woran du den Befund in der Karte erkennst.",
+					"sample_solution": "Zum Beispiel verweist du auf das Legendensymbol für bewässerte Flächen und markierst die Region.",
+					"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=europa-laenderprojekt"
+				}
+			]
+		},
+		{
+			"id": "01M7PMNNHR92B2KWS4GSDCYKD5",
+			"atom_uri": "urn:zam:atom:01M7PMNNHR92B2KWS4GSDCYKD5",
+			"namespace": "zam-academy-geographie-realschule-6",
+			"slug": "geo6-wetter-messen",
+			"title": "Wetter beobachten und messen",
+			"domain": "geographie/klima/wetter-messen",
+			"reduction": "narrative",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=wetter-messen",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "geographie-realschule-6",
+					"topic_code": "lb2",
+					"topic_title": "Wetter und Klima"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "geographie",
+					"topic_code": "lb2",
+					"topic_title": "Wetter und Klima",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7PMNNHRTWTX5NEWEEHDETTB",
+					"slug": "geo6-wetter-messen-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was bedeutet Westwind?",
+					"concept": "Der Wind kommt von Westen.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Der Wind kommt von Westen.",
+							"Der Wind zieht nach Westen."
+						],
+						"correct_index": 0
+					},
+					"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=wetter-messen"
+				},
+				{
+					"id": "01M7PMNNHRFNHPBF6ET8R94ZM5",
+					"slug": "geo6-wetter-messen-begruenden",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Warum misst du die Lufttemperatur im Schatten?",
+					"concept": "Direkte Sonne erwärmt das Thermometer und kann eine zu hohe Temperatur der Luft vortäuschen.",
+					"sample_solution": "Ein schattiger, gut belüfteter Ort begrenzt diesen Messfehler.",
+					"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=wetter-messen"
+				}
+			]
+		},
+		{
+			"id": "01M7PMNNHRD3KGH921FETYGNM2",
+			"atom_uri": "urn:zam:atom:01M7PMNNHRD3KGH921FETYGNM2",
+			"namespace": "zam-academy-geographie-realschule-6",
+			"slug": "geo6-wetter-vorhersage",
+			"title": "Wetterberichte vergleichen",
+			"domain": "geographie/klima/wetter-vorhersage",
+			"reduction": "narrative",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=wetter-vorhersage",
+			"prerequisites": [
+				{
+					"atom_id": "01M7PMNNHR92B2KWS4GSDCYKD5",
+					"type": "soft",
+					"rationale": "This lesson applies concepts from the linked lesson."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "geographie-realschule-6",
+					"topic_code": "lb2",
+					"topic_title": "Wetter und Klima"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "geographie",
+					"topic_code": "lb2",
+					"topic_title": "Wetter und Klima",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7PMNNHRHP0A172RGW0C5EK3",
+					"slug": "geo6-wetter-vorhersage-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was musst du vor dem Quellenvergleich prüfen?",
+					"concept": "Ort, Zeitraum und Stand der Prognose.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Ort, Zeitraum und Stand der Prognose.",
+							"Ob die Symbole dieselbe Farbe haben."
+						],
+						"correct_index": 0
+					},
+					"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=wetter-vorhersage"
+				},
+				{
+					"id": "01M7PMNNHRVV4X8R3GSWFZ1B1N",
+					"slug": "geo6-wetter-vorhersage-begruenden",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Woran erkennst du den Unterschied zwischen Wetterbeobachtung und Vorhersage?",
+					"concept": "Die Beobachtung beschreibt bereits erfasstes Wetter; die Vorhersage beschreibt erwartetes Wetter.",
+					"sample_solution": "Ein gemessener Regenwert ist eine Beobachtung. Ein Regensymbol für morgen ist eine Prognose.",
+					"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=wetter-vorhersage"
+				}
+			]
+		},
+		{
+			"id": "01M7PMNNHRKHCYPA1GBVTDAZ69",
+			"atom_uri": "urn:zam:atom:01M7PMNNHRKHCYPA1GBVTDAZ69",
+			"namespace": "zam-academy-geographie-realschule-6",
+			"slug": "geo6-klimadiagramm",
+			"title": "Klimadiagramme lesen und zeichnen",
+			"domain": "geographie/klima/klimadiagramm",
+			"reduction": "narrative",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=klimadiagramm",
+			"prerequisites": [
+				{
+					"atom_id": "01M7PMNNHR92B2KWS4GSDCYKD5",
+					"type": "soft",
+					"rationale": "This lesson applies concepts from the linked lesson."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "geographie-realschule-6",
+					"topic_code": "lb2",
+					"topic_title": "Wetter und Klima"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "geographie",
+					"topic_code": "lb2",
+					"topic_title": "Wetter und Klima",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7PMNNHRHRW2ADBR51739BJJ",
+					"slug": "geo6-klimadiagramm-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie groß ist der Temperaturunterschied zwischen −4 °C und 22 °C?",
+					"concept": "26 °C",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"26 °C",
+							"18 °C"
+						],
+						"correct_index": 0
+					},
+					"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=klimadiagramm"
+				},
+				{
+					"id": "01M7PMNNHRSQ38C032AB6770AH",
+					"slug": "geo6-klimadiagramm-begruenden",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche zwei Monatsgrößen zeigt ein typisches Klimadiagramm?",
+					"concept": "Mittlere Monatstemperatur in °C und mittlere monatliche Niederschlagssumme in mm.",
+					"sample_solution": "Lies Temperatur und Niederschlag an ihren jeweiligen Skalen ab.",
+					"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=klimadiagramm"
+				}
+			]
+		},
+		{
+			"id": "01M7PMNNHRY08EDGJMAFVN45CW",
+			"atom_uri": "urn:zam:atom:01M7PMNNHRY08EDGJMAFVN45CW",
+			"namespace": "zam-academy-geographie-realschule-6",
+			"slug": "geo6-klimaraeume",
+			"title": "Europas Klima und Vegetation",
+			"domain": "geographie/klima/klimaraeume",
+			"reduction": "narrative",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=klimaraeume",
+			"prerequisites": [
+				{
+					"atom_id": "01M7PMNNHRKHCYPA1GBVTDAZ69",
+					"type": "soft",
+					"rationale": "This lesson applies concepts from the linked lesson."
+				},
+				{
+					"atom_id": "01M7PMNNHRXCZ7178NAEBSRJVX",
+					"type": "soft",
+					"rationale": "This lesson applies concepts from the linked lesson."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "geographie-realschule-6",
+					"topic_code": "lb2",
+					"topic_title": "Wetter und Klima"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "geographie",
+					"topic_code": "lb2",
+					"topic_title": "Wetter und Klima",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7PMNNHR9V3R59XPEWAYC6VK",
+					"slug": "geo6-klimaraeume-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche Meeresströmung trägt zum milden Klima in Nordwesteuropa bei?",
+					"concept": "Der Nordatlantikstrom",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Der Nordatlantikstrom",
+							"Der kalte Labradorstrom"
+						],
+						"correct_index": 0
+					},
+					"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=klimaraeume",
+					"replaces": [
+						"01K4G7E0000000000000000J03"
+					]
+				},
+				{
+					"id": "01M7PMNNHRH4A8CC6AJCP5TN6N",
+					"slug": "geo6-klimaraeume-begruenden",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Warum haben viele Atlantikküsten kleinere jährliche Temperaturschwankungen als das Binnenland?",
+					"concept": "Wasser erwärmt sich und kühlt langsamer als Land. Das Meer dämpft den Jahresgang der Temperatur.",
+					"sample_solution": "In ähnlicher Breite bringt der maritime Einfluss häufig mildere Winter und kühlere Sommer.",
+					"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=klimaraeume"
+				}
+			]
+		},
+		{
+			"id": "01M7PMNNHRV3JGJ4TASYFA7K3H",
+			"atom_uri": "urn:zam:atom:01M7PMNNHRV3JGJ4TASYFA7K3H",
+			"namespace": "zam-academy-geographie-realschule-6",
+			"slug": "geo6-hochwasser",
+			"title": "Wenn Flüsse über die Ufer treten",
+			"domain": "geographie/klima/hochwasser",
+			"reduction": "narrative",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=hochwasser",
+			"prerequisites": [
+				{
+					"atom_id": "01M7PMNNHR92B2KWS4GSDCYKD5",
+					"type": "soft",
+					"rationale": "This lesson applies concepts from the linked lesson."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "geographie-realschule-6",
+					"topic_code": "lb2",
+					"topic_title": "Wetter und Klima"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "geographie",
+					"topic_code": "lb2",
+					"topic_title": "Wetter und Klima",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7PMNNHRXQ5A2VFDK6KMT232",
+					"slug": "geo6-hochwasser-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was kann eine freie Flussaue bei Hochwasser leisten?",
+					"concept": "Sie bietet dem Fluss zeitweise Ausbreitungsraum.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Sie bietet dem Fluss zeitweise Ausbreitungsraum.",
+							"Sie verhindert in jedem Fall mehr Regen."
+						],
+						"correct_index": 0
+					},
+					"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=hochwasser"
+				},
+				{
+					"id": "01M7PMNNHREQZSZT6V04YP44BW",
+					"slug": "geo6-hochwasser-begruenden",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Warum kann Bodenversiegelung Hochwasser verstärken?",
+					"concept": "Regen versickert auf versiegelten Flächen schlechter und gelangt schneller in Bäche und Flüsse.",
+					"sample_solution": "Bei Starkregen kann dieser zusätzliche schnelle Abfluss den Hochwasserscheitel erhöhen.",
+					"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=hochwasser"
+				}
+			]
+		},
+		{
+			"id": "01M7PMNNHRA6NGV6XBGAA8DHTC",
+			"atom_uri": "urn:zam:atom:01M7PMNNHRA6NGV6XBGAA8DHTC",
+			"namespace": "zam-academy-geographie-realschule-6",
+			"slug": "geo6-landwirtschaft-standort",
+			"title": "Was wächst wo?",
+			"domain": "geographie/landwirtschaft/landwirtschaft-standort",
+			"reduction": "narrative",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=landwirtschaft-standort",
+			"prerequisites": [
+				{
+					"atom_id": "01M7PMNNHRY08EDGJMAFVN45CW",
+					"type": "soft",
+					"rationale": "This lesson applies concepts from the linked lesson."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "geographie-realschule-6",
+					"topic_code": "lb3",
+					"topic_title": "Landwirtschaft und Nahrungsmittel"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "geographie",
+					"topic_code": "lb3",
+					"topic_title": "Landwirtschaft und Nahrungsmittel",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7PMNNHRED4Z1YHQXJ536K79",
+					"slug": "geo6-landwirtschaft-standort-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Warum ist die Verteilung des Niederschlags wichtig?",
+					"concept": "Wasser muss dann verfügbar sein, wenn die Pflanzen es brauchen.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Wasser muss dann verfügbar sein, wenn die Pflanzen es brauchen.",
+							"Nur der Jahreswert entscheidet über jede Ernte."
+						],
+						"correct_index": 0
+					},
+					"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=landwirtschaft-standort"
+				},
+				{
+					"id": "01M7PMNNHRYSKQ09J0YPB6E0KX",
+					"slug": "geo6-landwirtschaft-standort-begruenden",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Warum können gleiche jährliche Niederschlagssummen zu verschiedenen Anbaubedingungen führen?",
+					"concept": "Der Regen kann in verschiedenen Jahreszeiten fallen. Pflanzen brauchen Wasser vor allem während ihrer jeweiligen Wachstumszeit.",
+					"sample_solution": "Ein trockener Sommer kann trotz regenreichen Winters Bewässerung erfordern.",
+					"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=landwirtschaft-standort"
+				}
+			]
+		},
+		{
+			"id": "01M7PMNNHRW5W8P2M7W6AE1XXS",
+			"atom_uri": "urn:zam:atom:01M7PMNNHRW5W8P2M7W6AE1XXS",
+			"namespace": "zam-academy-geographie-realschule-6",
+			"slug": "geo6-boden-wasser",
+			"title": "Boden und Wasser schützen",
+			"domain": "geographie/landwirtschaft/boden-wasser",
+			"reduction": "narrative",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=boden-wasser",
+			"prerequisites": [
+				{
+					"atom_id": "01M7PMNNHRA6NGV6XBGAA8DHTC",
+					"type": "soft",
+					"rationale": "This lesson applies concepts from the linked lesson."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "geographie-realschule-6",
+					"topic_code": "lb3",
+					"topic_title": "Landwirtschaft und Nahrungsmittel"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "geographie",
+					"topic_code": "lb3",
+					"topic_title": "Landwirtschaft und Nahrungsmittel",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7PMNNHR4V237KFDR7HW51A8",
+					"slug": "geo6-boden-wasser-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was deutet bei gleich aufgebauten Schalen auf stärkeren Bodenabtrag hin?",
+					"concept": "Mehr mitgeführter Boden im Auffanggefäß.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Mehr mitgeführter Boden im Auffanggefäß.",
+							"Helleres Licht über einer Schale."
+						],
+						"correct_index": 0
+					},
+					"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=boden-wasser"
+				},
+				{
+					"id": "01M7PMNNHRXPES9V193V372Q4T",
+					"slug": "geo6-boden-wasser-begruenden",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie vermindert eine Pflanzendecke Bodenerosion durch Regen?",
+					"concept": "Blätter fangen Tropfen ab und Wurzeln halten Boden fest.",
+					"sample_solution": "So werden weniger Teilchen gelöst und mit dem abfließenden Wasser weggetragen.",
+					"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=boden-wasser"
+				}
+			]
+		},
+		{
+			"id": "01M7PMNNHRWEX1E1M9NRR170W4",
+			"atom_uri": "urn:zam:atom:01M7PMNNHRWEX1E1M9NRR170W4",
+			"namespace": "zam-academy-geographie-realschule-6",
+			"slug": "geo6-lebensmittel",
+			"title": "Vom Hof bis zum Einkauf",
+			"domain": "geographie/landwirtschaft/lebensmittel",
+			"reduction": "narrative",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=lebensmittel",
+			"prerequisites": [
+				{
+					"atom_id": "01M7PMNNHRA6NGV6XBGAA8DHTC",
+					"type": "soft",
+					"rationale": "This lesson applies concepts from the linked lesson."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "geographie-realschule-6",
+					"topic_code": "lb3",
+					"topic_title": "Landwirtschaft und Nahrungsmittel"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "geographie",
+					"topic_code": "lb3",
+					"topic_title": "Landwirtschaft und Nahrungsmittel",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7PMNNHRGPHX4PJ6NJFT6EVW",
+					"slug": "geo6-lebensmittel-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was bedeutet saisonal bei Obst?",
+					"concept": "Es wird zu seiner üblichen Erntezeit angeboten.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Es wird zu seiner üblichen Erntezeit angeboten.",
+							"Es kommt immer aus dem eigenen Ort."
+						],
+						"correct_index": 0
+					},
+					"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=lebensmittel"
+				},
+				{
+					"id": "01M7PMNNHRJCZ3BK3HQMZDSAPN",
+					"slug": "geo6-lebensmittel-begruenden",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Warum hat regionales Gemüse nicht automatisch eine kleinere Umweltbelastung?",
+					"concept": "Neben dem Transport zählen Anbau, Heizung, Bewässerung und Lagerung.",
+					"sample_solution": "Ein kurzes Lieferstück kann durch hohen Energieeinsatz bei der Erzeugung aufgewogen werden.",
+					"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=lebensmittel"
+				}
+			]
+		},
+		{
+			"id": "01M7PMNNHRBS0XBMPGKSZ9MVTN",
+			"atom_uri": "urn:zam:atom:01M7PMNNHRBS0XBMPGKSZ9MVTN",
+			"namespace": "zam-academy-geographie-realschule-6",
+			"slug": "geo6-meer-fisch",
+			"title": "Fischerei, Aquakultur und Plastik",
+			"domain": "geographie/landwirtschaft/meer-fisch",
+			"reduction": "narrative",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=meer-fisch",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "geographie-realschule-6",
+					"topic_code": "lb3",
+					"topic_title": "Landwirtschaft und Nahrungsmittel"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "geographie",
+					"topic_code": "lb3",
+					"topic_title": "Landwirtschaft und Nahrungsmittel",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7PMNNHRN6BRBKXDSCZN0SYR",
+					"slug": "geo6-meer-fisch-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was ist Beifang?",
+					"concept": "Ungewollt mitgefangene Tiere.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Ungewollt mitgefangene Tiere.",
+							"Absichtlich gezüchtete Muscheln."
+						],
+						"correct_index": 0
+					},
+					"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=meer-fisch"
+				},
+				{
+					"id": "01M7PMNNHRT8T78YFBH6HNMZK6",
+					"slug": "geo6-meer-fisch-begruenden",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wann spricht man bei Fischerei von Überfischung?",
+					"concept": "Wenn einem Bestand auf Dauer mehr Fische entnommen werden, als er durch Nachwuchs ersetzen kann.",
+					"sample_solution": "Zu hohe Fangmengen lassen dann den Bestand zurückgehen.",
+					"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=meer-fisch"
+				}
+			]
+		},
+		{
+			"id": "01M7PMNNHRSGTG9DMTYH8PQHCZ",
+			"atom_uri": "urn:zam:atom:01M7PMNNHRSGTG9DMTYH8PQHCZ",
+			"namespace": "zam-academy-geographie-realschule-6",
+			"slug": "geo6-verkehrswege",
+			"title": "Verkehrsnetze und Transit",
+			"domain": "geographie/verkehr-industrie/verkehrswege",
+			"reduction": "narrative",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=verkehrswege",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "geographie-realschule-6",
+					"topic_code": "lb4",
+					"topic_title": "Verkehr und Industrie"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "geographie",
+					"topic_code": "lb4",
+					"topic_title": "Verkehr und Industrie",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7PMNNHRT4WD3DN6E5TMHMEM",
+					"slug": "geo6-verkehrswege-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche Fahrt ist Transit durch Deutschland?",
+					"concept": "Von Rotterdam über Deutschland nach Mailand.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Von Rotterdam über Deutschland nach Mailand.",
+							"Von München nach Hamburg."
+						],
+						"correct_index": 0
+					},
+					"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=verkehrswege"
+				},
+				{
+					"id": "01M7PMNNHRC8FANHH989TD49BS",
+					"slug": "geo6-verkehrswege-begruenden",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wann ist eine Fahrt Transitverkehr für ein Land?",
+					"concept": "Wenn sie durch das Land führt und sowohl Start als auch Ziel außerhalb des Landes liegen.",
+					"sample_solution": "Rotterdam–Mailand über Deutschland ist deutscher Transit.",
+					"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=verkehrswege"
+				}
+			]
+		},
+		{
+			"id": "01M7PMNNHRHPMR31DHFD3H7PJW",
+			"atom_uri": "urn:zam:atom:01M7PMNNHRHPMR31DHFD3H7PJW",
+			"namespace": "zam-academy-geographie-realschule-6",
+			"slug": "geo6-brenner",
+			"title": "Der Brenner und der Alpentransit",
+			"domain": "geographie/verkehr-industrie/brenner",
+			"reduction": "narrative",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=brenner",
+			"prerequisites": [
+				{
+					"atom_id": "01M7PMNNHRSGTG9DMTYH8PQHCZ",
+					"type": "soft",
+					"rationale": "This lesson applies concepts from the linked lesson."
+				},
+				{
+					"atom_id": "01M7PMNNHRXCZ7178NAEBSRJVX",
+					"type": "soft",
+					"rationale": "This lesson applies concepts from the linked lesson."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "geographie-realschule-6",
+					"topic_code": "lb4",
+					"topic_title": "Verkehr und Industrie"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "geographie",
+					"topic_code": "lb4",
+					"topic_title": "Verkehr und Industrie",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7PMNNHR1VMR9NGB9Q9CADX5",
+					"slug": "geo6-brenner-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Warum ist die geringere Steigung für Güterzüge wichtig?",
+					"concept": "Schwere Züge lassen sich auf flacherer Strecke leichter befördern.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Schwere Züge lassen sich auf flacherer Strecke leichter befördern.",
+							"Die Entfernung zwischen den Ländern verschwindet."
+						],
+						"correct_index": 0
+					},
+					"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=brenner"
+				},
+				{
+					"id": "01M7PMNNHR5HXY4EQERYZVTVZ1",
+					"slug": "geo6-brenner-begruenden",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wieso führt ein neuer Bahntunnel nicht automatisch zu weniger Lkw am Pass?",
+					"concept": "Güter wechseln nur bei passenden Anschlüssen, Kapazitäten und einem nutzbaren Bahnangebot auf die Schiene.",
+					"sample_solution": "Eine Verlagerung lässt sich durch Verkehrszählungen oder Frachtmengen überprüfen.",
+					"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=brenner"
+				}
+			]
+		},
+		{
+			"id": "01M7PMNNHRKVSR26QXKF1WDCV0",
+			"atom_uri": "urn:zam:atom:01M7PMNNHRKVSR26QXKF1WDCV0",
+			"namespace": "zam-academy-geographie-realschule-6",
+			"slug": "geo6-verkehr-zaehlen",
+			"title": "Verkehr zählen und vergleichen",
+			"domain": "geographie/verkehr-industrie/verkehr-zaehlen",
+			"reduction": "narrative",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=verkehr-zaehlen",
+			"prerequisites": [
+				{
+					"atom_id": "01M7PMNNHRSGTG9DMTYH8PQHCZ",
+					"type": "soft",
+					"rationale": "This lesson applies concepts from the linked lesson."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "geographie-realschule-6",
+					"topic_code": "lb4",
+					"topic_title": "Verkehr und Industrie"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "geographie",
+					"topic_code": "lb4",
+					"topic_title": "Verkehr und Industrie",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7PMNNHR1QRMAPXEHFTGFXC6",
+					"slug": "geo6-verkehr-zaehlen-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Warum beginnen die Balken bei null?",
+					"concept": "Damit ihre Längen die Anzahlen fair vergleichen.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Damit ihre Längen die Anzahlen fair vergleichen.",
+							"Damit der kleinste Balken unsichtbar wird."
+						],
+						"correct_index": 0
+					},
+					"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=verkehr-zaehlen"
+				},
+				{
+					"id": "01M7PMNNHRT10MP9HEN6FQEZZN",
+					"slug": "geo6-verkehr-zaehlen-begruenden",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was musst du außer Fahrzeugen zählen, um die Zahl beförderter Menschen zu vergleichen?",
+					"concept": "Die Zahl der Personen je Fahrzeug beziehungsweise dessen Auslastung.",
+					"sample_solution": "Wenige volle Busse können mehr Menschen befördern als viele Autos mit je einer Person.",
+					"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=verkehr-zaehlen"
+				}
+			]
+		},
+		{
+			"id": "01M7PMNNHR88PCQ92XD5EK8DX2",
+			"atom_uri": "urn:zam:atom:01M7PMNNHR88PCQ92XD5EK8DX2",
+			"namespace": "zam-academy-geographie-realschule-6",
+			"slug": "geo6-industrie",
+			"title": "Industriestandorte und das Auto",
+			"domain": "geographie/verkehr-industrie/industrie",
+			"reduction": "narrative",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=industrie",
+			"prerequisites": [
+				{
+					"atom_id": "01M7PMNNHRSGTG9DMTYH8PQHCZ",
+					"type": "soft",
+					"rationale": "This lesson applies concepts from the linked lesson."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "geographie-realschule-6",
+					"topic_code": "lb4",
+					"topic_title": "Verkehr und Industrie"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "geographie",
+					"topic_code": "lb4",
+					"topic_title": "Verkehr und Industrie",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7PMNNHRWWM9PZG3WKPRBY4E",
+					"slug": "geo6-industrie-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welcher Standortfaktor ist in der Regel hart und messbar?",
+					"concept": "Entfernung zur nächsten Autobahnauffahrt.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Entfernung zur nächsten Autobahnauffahrt.",
+							"Das Ansehen der Stadt als Wohnort."
+						],
+						"correct_index": 0
+					},
+					"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=industrie"
+				},
+				{
+					"id": "01M7PMNNHRAS663JPA7KQQ4M8W",
+					"slug": "geo6-industrie-begruenden",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie unterscheiden sich harte von weichen Standortfaktoren?",
+					"concept": "Harte Faktoren sind häufig messbar und wirken direkt auf den Betrieb. Weiche Faktoren betreffen etwa Lebensqualität oder Image.",
+					"sample_solution": "Autobahnentfernung ist messbar. Die wahrgenommene Attraktivität des Wohnumfelds hängt auch von persönlichen Vorlieben ab.",
+					"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=industrie"
+				}
+			]
+		},
+		{
+			"id": "01M7PMNNHR8N5Q22274TR46SXN",
+			"atom_uri": "urn:zam:atom:01M7PMNNHR8N5Q22274TR46SXN",
+			"namespace": "zam-academy-geographie-realschule-6",
+			"slug": "geo6-energiequellen",
+			"title": "Energiequellen in Europa",
+			"domain": "geographie/energie/energiequellen",
+			"reduction": "narrative",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=energiequellen",
+			"prerequisites": [
+				{
+					"atom_id": "01M7PMNNHRXCZ7178NAEBSRJVX",
+					"type": "soft",
+					"rationale": "This lesson applies concepts from the linked lesson."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "geographie-realschule-6",
+					"topic_code": "lb5",
+					"topic_title": "Energie"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "geographie",
+					"topic_code": "lb5",
+					"topic_title": "Energie",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7PMNNHRSVSBJNVEK0QQ94RM",
+					"slug": "geo6-energiequellen-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Warum gilt Erdgas als fossil?",
+					"concept": "Es entsteht geologisch sehr langsam und seine Vorräte sind begrenzt.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Es entsteht geologisch sehr langsam und seine Vorräte sind begrenzt.",
+							"Es wird jeden Tag in denselben Mengen erneuert."
+						],
+						"correct_index": 0
+					},
+					"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=energiequellen"
+				},
+				{
+					"id": "01M7PMNNHR9YJH3H779DXDVENZ",
+					"slug": "geo6-energiequellen-begruenden",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Warum sind fossile Energieträger auf menschlichen Zeitskalen nicht erneuerbar?",
+					"concept": "Sie entstehen sehr viel langsamer, als Menschen sie abbauen und verbrauchen.",
+					"sample_solution": "Genutzte Lagerstätten ersetzen sich daher nicht in absehbarer Zeit.",
+					"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=energiequellen"
+				}
+			]
+		},
+		{
+			"id": "01M7PMNNHR7NXBM65WQQNH8PQC",
+			"atom_uri": "urn:zam:atom:01M7PMNNHR7NXBM65WQQNH8PQC",
+			"namespace": "zam-academy-geographie-realschule-6",
+			"slug": "geo6-nordlink",
+			"title": "Energie verbindet Staaten",
+			"domain": "geographie/energie/nordlink",
+			"reduction": "narrative",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=nordlink",
+			"prerequisites": [
+				{
+					"atom_id": "01M7PMNNHR8N5Q22274TR46SXN",
+					"type": "soft",
+					"rationale": "This lesson applies concepts from the linked lesson."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "geographie-realschule-6",
+					"topic_code": "lb5",
+					"topic_title": "Energie"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "geographie",
+					"topic_code": "lb5",
+					"topic_title": "Energie",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7PMNNHRC14F5KD5HF93D9N9",
+					"slug": "geo6-nordlink-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was transportiert NordLink?",
+					"concept": "Elektrische Energie.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Elektrische Energie.",
+							"Erdgas."
+						],
+						"correct_index": 0
+					},
+					"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=nordlink"
+				},
+				{
+					"id": "01M7PMNNHRJ6MC1726VWXRFJ06",
+					"slug": "geo6-nordlink-begruenden",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Warum kann die Richtung des Stromflusses durch eine grenzüberschreitende Verbindung wechseln?",
+					"concept": "Die verbundenen Netze haben zu unterschiedlichen Zeiten verschieden viel Angebot und Bedarf.",
+					"sample_solution": "Bei hohem Windangebot kann Strom in die eine Richtung gehen; bei Bedarf ist der umgekehrte Austausch möglich.",
+					"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=nordlink"
+				}
+			]
+		},
+		{
+			"id": "01M7PMNNHRSH5SMC7EDRR0FA40",
+			"atom_uri": "urn:zam:atom:01M7PMNNHRSH5SMC7EDRR0FA40",
+			"namespace": "zam-academy-geographie-realschule-6",
+			"slug": "geo6-energie-vor-ort",
+			"title": "Energie in Schule und Haushalt",
+			"domain": "geographie/energie/energie-vor-ort",
+			"reduction": "narrative",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=energie-vor-ort",
+			"prerequisites": [
+				{
+					"atom_id": "01M7PMNNHR8N5Q22274TR46SXN",
+					"type": "soft",
+					"rationale": "This lesson applies concepts from the linked lesson."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "geographie-realschule-6",
+					"topic_code": "lb5",
+					"topic_title": "Energie"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "geographie",
+					"topic_code": "lb5",
+					"topic_title": "Energie",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7PMNNHRGP5V04E53JGMEVK2",
+					"slug": "geo6-energie-vor-ort-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was passiert bei gleicher Leistung, wenn ein Gerät doppelt so lange läuft?",
+					"concept": "Der Energieverbrauch verdoppelt sich.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Der Energieverbrauch verdoppelt sich.",
+							"Die Leistung verdoppelt sich automatisch."
+						],
+						"correct_index": 0
+					},
+					"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=energie-vor-ort"
+				},
+				{
+					"id": "01M7PMNNHRWFZHS9F8P00DQ0XB",
+					"slug": "geo6-energie-vor-ort-begruenden",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie berechnest du bei gleichbleibender Leistung die genutzte elektrische Energie?",
+					"concept": "Multipliziere Leistung in kW mit Betriebszeit in Stunden. Das Ergebnis steht in kWh.",
+					"sample_solution": "100 W sind 0,1 kW. In drei Stunden sind das 0,3 kWh.",
+					"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=energie-vor-ort"
+				}
+			]
+		},
+		{
+			"id": "01M7PMNNHREZENGNK7NXXCF8JY",
+			"atom_uri": "urn:zam:atom:01M7PMNNHREZENGNK7NXXCF8JY",
+			"namespace": "zam-academy-geographie-realschule-6",
+			"slug": "geo6-tourismusraeume",
+			"title": "Urlaubsräume auf Europas Karte",
+			"domain": "geographie/tourismus/tourismusraeume",
+			"reduction": "narrative",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=tourismusraeume",
+			"prerequisites": [
+				{
+					"atom_id": "01M7PMNNHRXCZ7178NAEBSRJVX",
+					"type": "soft",
+					"rationale": "This lesson applies concepts from the linked lesson."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "geographie-realschule-6",
+					"topic_code": "lb6",
+					"topic_title": "Tourismus"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "geographie",
+					"topic_code": "lb6",
+					"topic_title": "Tourismus",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7PMNNHRTDFX5EBYHVC723NJ",
+					"slug": "geo6-tourismusraeume-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche Karte hilft besonders bei der Suche nach einem Wintersportgebiet?",
+					"concept": "Eine Reliefkarte mit Höhenangaben und Skigebieten.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Eine Reliefkarte mit Höhenangaben und Skigebieten.",
+							"Eine Karte nur mit Währungen."
+						],
+						"correct_index": 0
+					},
+					"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=tourismusraeume"
+				},
+				{
+					"id": "01M7PMNNHRFTP4D5HGJG3GXCJS",
+					"slug": "geo6-tourismusraeume-begruenden",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie begründest du eine Reiseform für eine Region anhand einer Karte?",
+					"concept": "Zeige Merkmale wie Küste, Höhenlage oder Stadtdichte und erkläre, welche Aktivitäten sie begünstigen.",
+					"sample_solution": "Strände an der Mittelmeerküste begünstigen Badeurlaub, Gebirgswege in den Alpen Wanderurlaub.",
+					"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=tourismusraeume"
+				}
+			]
+		},
+		{
+			"id": "01M7PMNNHR0S1WDEYSW5PG2HHP",
+			"atom_uri": "urn:zam:atom:01M7PMNNHR0S1WDEYSW5PG2HHP",
+			"namespace": "zam-academy-geographie-realschule-6",
+			"slug": "geo6-tourismus-folgen",
+			"title": "Sommer am Meer, Winter in den Alpen",
+			"domain": "geographie/tourismus/tourismus-folgen",
+			"reduction": "narrative",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=tourismus-folgen",
+			"prerequisites": [
+				{
+					"atom_id": "01M7PMNNHREZENGNK7NXXCF8JY",
+					"type": "soft",
+					"rationale": "This lesson applies concepts from the linked lesson."
+				},
+				{
+					"atom_id": "01M7PMNNHRY08EDGJMAFVN45CW",
+					"type": "soft",
+					"rationale": "This lesson applies concepts from the linked lesson."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "geographie-realschule-6",
+					"topic_code": "lb6",
+					"topic_title": "Tourismus"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "geographie",
+					"topic_code": "lb6",
+					"topic_title": "Tourismus",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7PMNNHRPJ25QZJG920ER2DM",
+					"slug": "geo6-tourismus-folgen-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche Folge betrifft besonders die ökologische Sicht?",
+					"concept": "Zusätzlicher Wasserverbrauch durch Beschneiung.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Zusätzlicher Wasserverbrauch durch Beschneiung.",
+							"Einnahmen für einen Hotelbetrieb."
+						],
+						"correct_index": 0
+					},
+					"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=tourismus-folgen"
+				},
+				{
+					"id": "01M7PMNNHRCD5XDWM7DCCNNAW6",
+					"slug": "geo6-tourismus-folgen-begruenden",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Warum kann ein niedrigerer Wasserverbrauch pro Gast trotzdem mit mehr Gesamtverbrauch einhergehen?",
+					"concept": "Die Zahl der Gäste kann so stark wachsen, dass der geringere Verbrauch je Gast insgesamt übertroffen wird.",
+					"sample_solution": "Für ein Urteil brauchst du sowohl den Verbrauch pro Übernachtung als auch die Zahl der Übernachtungen.",
+					"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=tourismus-folgen"
+				}
+			]
+		},
+		{
+			"id": "01M7PMNNHRVH92D9K28CZCBVDQ",
+			"atom_uri": "urn:zam:atom:01M7PMNNHRVH92D9K28CZCBVDQ",
+			"namespace": "zam-academy-geographie-realschule-6",
+			"slug": "geo6-reiseplanung",
+			"title": "Eine Reise planen und abwägen",
+			"domain": "geographie/tourismus/reiseplanung",
+			"reduction": "narrative",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=reiseplanung",
+			"prerequisites": [
+				{
+					"atom_id": "01M7PMNNHREZENGNK7NXXCF8JY",
+					"type": "soft",
+					"rationale": "This lesson applies concepts from the linked lesson."
+				},
+				{
+					"atom_id": "01M7PMNNHRSGTG9DMTYH8PQHCZ",
+					"type": "soft",
+					"rationale": "This lesson applies concepts from the linked lesson."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "geographie-realschule-6",
+					"topic_code": "lb6",
+					"topic_title": "Tourismus"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "geographie",
+					"topic_code": "lb6",
+					"topic_title": "Tourismus",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7PMNNHRT14Y6MJCC0GFQE96",
+					"slug": "geo6-reiseplanung-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche Messung entspricht eher der Fahrstrecke?",
+					"concept": "Die Länge entlang des tatsächlichen Verkehrswegs.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Die Länge entlang des tatsächlichen Verkehrswegs.",
+							"Die direkte Luftlinie zwischen Start und Ziel."
+						],
+						"correct_index": 0
+					},
+					"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=reiseplanung"
+				},
+				{
+					"id": "01M7PMNNHR0NHD73M3X8WT8NCB",
+					"slug": "geo6-reiseplanung-begruenden",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was unterscheidet Luftlinie und Streckenlänge bei einer Reise?",
+					"concept": "Die Luftlinie verbindet Orte direkt. Die Streckenlänge folgt den tatsächlichen Wegen.",
+					"sample_solution": "Eine lange kurvige Bahnstrecke kann dieselben Orte verbinden wie eine kürzere Luftlinie.",
+					"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=reiseplanung"
+				}
+			]
+		},
+		{
+			"id": "01M7PMNNHRNE1HKTH8HMWC03VJ",
+			"atom_uri": "urn:zam:atom:01M7PMNNHRNE1HKTH8HMWC03VJ",
+			"namespace": "zam-academy-geographie-realschule-6",
+			"slug": "geo6-aktuelles-quellen",
+			"title": "Ein Ereignis verorten und prüfen",
+			"domain": "geographie/methoden/aktuelles-quellen",
+			"reduction": "narrative",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=aktuelles-quellen",
+			"prerequisites": [
+				{
+					"atom_id": "01M7PMNNHRXCZ7178NAEBSRJVX",
+					"type": "soft",
+					"rationale": "This lesson applies concepts from the linked lesson."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "geographie-realschule-6",
+					"topic_code": "lb7",
+					"topic_title": "Aktuelle geographische Fragestellung"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "geographie",
+					"topic_code": "lb7",
+					"topic_title": "Aktuelle geographische Fragestellung",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7PMNNHR02P3TAJWS9E5TG5K",
+					"slug": "geo6-aktuelles-quellen-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche Frage ist geographisch untersuchbar?",
+					"concept": "Warum waren bestimmte Talstraßen nach dem Starkregen unterbrochen?",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Warum waren bestimmte Talstraßen nach dem Starkregen unterbrochen?",
+							"Wie oft kommt der Buchstabe K in Kreta vor?"
+						],
+						"correct_index": 0
+					},
+					"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=aktuelles-quellen"
+				},
+				{
+					"id": "01M7PMNNHRTSR1RG648560AD9M",
+					"slug": "geo6-aktuelles-quellen-begruenden",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche Angaben machen eine Nachricht geographisch überprüfbar?",
+					"concept": "Ort, Zeitpunkt, nachvollziehbare Quelle und überprüfbare Belege wie eine Karte oder Messwerte.",
+					"sample_solution": "Eine Karte braucht außerdem einen passenden Ausschnitt und eine verständliche Legende.",
+					"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=aktuelles-quellen"
+				}
+			]
+		},
+		{
+			"id": "01M7PMNNHRZGQTKTKTH6CAG11X",
+			"atom_uri": "urn:zam:atom:01M7PMNNHRZGQTKTKTH6CAG11X",
+			"namespace": "zam-academy-geographie-realschule-6",
+			"slug": "geo6-aktuelles-urteil",
+			"title": "Belege erklären und ein Urteil vorstellen",
+			"domain": "geographie/methoden/aktuelles-urteil",
+			"reduction": "narrative",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=aktuelles-urteil",
+			"prerequisites": [
+				{
+					"atom_id": "01M7PMNNHRNE1HKTH8HMWC03VJ",
+					"type": "soft",
+					"rationale": "This lesson applies concepts from the linked lesson."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "geographie-realschule-6",
+					"topic_code": "lb7",
+					"topic_title": "Aktuelle geographische Fragestellung"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 6,
+					"subject": "geographie",
+					"topic_code": "lb7",
+					"topic_title": "Aktuelle geographische Fragestellung",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7PMNNHRAVZ4VW7G5023BZTS",
+					"slug": "geo6-aktuelles-urteil-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche Aussage ist ein begründetes Urteil?",
+					"concept": "Eine rechtzeitige Sperrung kann Menschen an der betroffenen Brücke schützen; sie verhindert aber keine Schäden am Bauwerk.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Eine rechtzeitige Sperrung kann Menschen an der betroffenen Brücke schützen; sie verhindert aber keine Schäden am Bauwerk.",
+							"Im Bericht steht, dass eine Brücke beschädigt wurde."
+						],
+						"correct_index": 0
+					},
+					"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=aktuelles-urteil"
+				},
+				{
+					"id": "01M7PMNNHRZ068X3WG7N13CM7E",
+					"slug": "geo6-aktuelles-urteil-begruenden",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Woraus besteht ein geographisch begründetes Urteil über eine Maßnahme?",
+					"concept": "Aus einer Bewertung nach einem genannten Kriterium, passenden räumlichen Belegen und einer Aussage über Grenzen oder Unsicherheiten.",
+					"sample_solution": "Eine Sperrung kann Menschen schützen, schützt aber das Bauwerk selbst nicht vor Hochwasser.",
+					"source_link": "https://academy.zam-os.org/geographie-realschule-6/#lesson=aktuelles-urteil"
+				}
+			]
+		}
+	]
+}

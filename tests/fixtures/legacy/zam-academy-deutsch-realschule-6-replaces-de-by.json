@@ -1,0 +1,97 @@
+{
+	"status": "approved",
+	"approved": "2026-11-19",
+	"source_repository": "https://github.com/zam-os/zam",
+	"source_commit": "7a08d329919cf6888ba3ba937c3c70451c8e8990",
+	"source": "Thomas explicitly approved the listed history transfers in the Codex chat for Academy PR #158 on 2026-11-19: “Freigabe für die Kartenübernahmen erteilt”",
+	"sources": [
+		{
+			"file": "tests/fixtures/de-by-realschule-6-deutsch-texte-bericht-vorgangsbeschreibung-kvt.json",
+			"sha256": "d005374e367fc4941804a5aa4f7b159d3de8843b9dbe94b6b5cc928c6eb23f38",
+			"tile_id": "de-by:realschule-6-deutsch-texte-bericht-vorgangsbeschreibung"
+		},
+		{
+			"file": "tests/fixtures/de-by-realschule-6-deutsch-wortarten-satzglieder-rechtschreibung-kvt.json",
+			"sha256": "239ab169a6e69d14afb2e907ece9b110ba51957f14796bb6d4170d3404367a69",
+			"tile_id": "de-by:realschule-6-deutsch-wortarten-satzglieder-rechtschreibung"
+		}
+	],
+	"rows": [
+		{
+			"category": "C",
+			"action": "keep-active",
+			"reason": "The old prompt declares Präteritum universally mandatory for police/accident reports. The new card explicitly qualifies the ordinary written-event-report convention. A corrected scope is not an exact history match.",
+			"de_by_id": "01K4D6B0000000000000000J01"
+		},
+		{
+			"category": "C",
+			"action": "keep-active",
+			"reason": "The old prompt combines seven W questions, style, chronology, tenses and a dated accident example. These are distributed and qualified in the new lessons; no single successor preserves the complete retrieval.",
+			"de_by_id": "01K4D6B0000000000000000J02"
+		},
+		{
+			"category": "A",
+			"action": "replace",
+			"reason": "The same atomic retrieval is preserved: Präsens for a generally applicable process description.",
+			"academy_slug": "d6-vorgang-check",
+			"de_by_id": "01K4D6B0000000000000000J03"
+		},
+		{
+			"category": "C",
+			"action": "keep-active",
+			"reason": "The old prompt combines materials, chronology, tense, four address forms and specialist vocabulary. The new tasks split this knowledge and do not preserve the entire old retrieval.",
+			"de_by_id": "01K4D6B0000000000000000J04"
+		},
+		{
+			"category": "A",
+			"action": "replace",
+			"reason": "The same atomic retrieval is preserved: the term for grammatically inflectable word classes.",
+			"academy_slug": "d6-wortarten-check",
+			"de_by_id": "01K4D6W0000000000000000J01"
+		},
+		{
+			"category": "C",
+			"action": "keep-active",
+			"reason": "The old five-main-class taxonomy and its long analysis are not the new atomic word-class retrieval. The lesson distinguishes word class from adverbial function and preserves no whole multi-part successor.",
+			"de_by_id": "01K4D6W0000000000000000J02"
+		},
+		{
+			"category": "A",
+			"action": "replace",
+			"reason": "The same atomic retrieval is preserved: Plusquamperfekt formed with hatte/war and Partizip II.",
+			"academy_slug": "d6-zeitformen-check",
+			"de_by_id": "01K4D6W0000000000000000J03"
+		},
+		{
+			"category": "C",
+			"action": "keep-active",
+			"reason": "The old retrieval combines all six forms of lesen with a rigid rule about anteriority. The package teaches the forms and temporal relationships separately; no complete identical retrieval is preserved.",
+			"de_by_id": "01K4D6W0000000000000000J04"
+		},
+		{
+			"category": "C",
+			"action": "keep-active",
+			"reason": "The old wording calls a sentence constituent indivisible and describes the displacement test as unconditionally reliable. The new lesson qualifies the test and checks meaning and grammar.",
+			"de_by_id": "01K4D6W0000000000000000J05"
+		},
+		{
+			"category": "C",
+			"action": "keep-active",
+			"reason": "The old retrieval combines analysis methods, all core constituents, four adverbial types and a complete sample analysis. New lessons divide these into separate retrievals.",
+			"de_by_id": "01K4D6W0000000000000000J06"
+		},
+		{
+			"category": "A",
+			"action": "replace",
+			"reason": "The same atomic retrieval is preserved: the meaningful dieses/jenes/welches substitution test.",
+			"academy_slug": "d6-das-dass-check",
+			"de_by_id": "01K4D6W0000000000000000J07"
+		},
+		{
+			"category": "C",
+			"action": "keep-active",
+			"reason": "The old retrieval combines s spelling, das/dass, nominalisation and nested-clause punctuation. These are separate lessons and cards; one review history cannot be spread across them.",
+			"de_by_id": "01K4D6W0000000000000000J08"
+		}
+	]
+}

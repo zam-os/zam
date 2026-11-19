@@ -45,13 +45,13 @@ const ENROL_SMOKE_CELLS = [
 ];
 
 describe("Gymnasium Bayern Full Curriculum (Klassen 5–13) Integrity & Quality Audit", () => {
-  it("verifies global uniqueness and schema compliance across all 118 remaining Gymnasium Bayern cells (Grades 5-13)", () => {
+  it("verifies global uniqueness and schema compliance across all 111 remaining Gymnasium Bayern cells (Grades 5-13)", () => {
     const allCells = listBundledCells();
     const byGymCells = allCells.filter((c) =>
       c.tile_id.startsWith("de-by:gymnasium-"),
     );
 
-    expect(byGymCells.length).toBe(118);
+    expect(byGymCells.length).toBe(111);
 
     const allAtomIds = new Set<string>();
     const allItemIds = new Set<string>();
@@ -110,8 +110,8 @@ describe("Gymnasium Bayern Full Curriculum (Klassen 5–13) Integrity & Quality 
       }
     }
 
-    expect(gradeCellCounts[5]).toBe(3);
-    expect(gradeCellCounts[6]).toBe(7);
+    expect(gradeCellCounts[5]).toBe(1);
+    expect(gradeCellCounts[6]).toBe(2);
     expect(gradeCellCounts[7]).toBe(11);
     expect(gradeCellCounts[8]).toBe(16);
     expect(gradeCellCounts[9]).toBe(15);
@@ -123,8 +123,8 @@ describe("Gymnasium Bayern Full Curriculum (Klassen 5–13) Integrity & Quality 
     expect(allAtomIds.size).toBe(
       byGymCells.reduce((acc, c) => acc + c.atoms.length, 0),
     );
-    expect(allAtomIds.size).toBeGreaterThanOrEqual(245);
-    expect(allItemIds.size).toBeGreaterThanOrEqual(490);
+    expect(allAtomIds.size).toBe(232);
+    expect(allItemIds.size).toBe(460);
   });
 
   it("finds Wirtschaft and NuT cells under official LehrplanPLUS subject slugs", () => {

@@ -1,0 +1,4452 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "zam-academy:geschichte-realschule-6",
+  "version": "2026.11.1",
+  "title": "Geschichte 6 Realschule (ZAM Academy)",
+  "description": "Geschichte 6 nach LehrplanPLUS Bayern: 42 Lektionen von Methoden und Steinzeit über Ägypten, Griechen und Römer bis zu den Franken und Karl dem Großen, dazu Längsschnitte zu Technik und Persönlichkeiten. Ein gemeinsamer Lernpfad für alle Zweige; jede Karte führt zur passenden Lektion.",
+  "publisher": "ZAM Academy",
+  "published_at": "2026-11-18T06:33:00Z",
+  "sources": [
+    {
+      "uri": "https://academy.zam-os.org/geschichte-realschule-6/",
+      "label": "ZAM Academy: Geschichte 6 Realschule"
+    },
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/6/geschichte",
+      "label": "ISB · LehrplanPLUS Geschichte 6 Realschule",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://www.iceman.it/de",
+      "label": "Südtiroler Archäologiemuseum · Ötzi, der Mann aus dem Eis",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://www.planet-wissen.de/geschichte/archaeologie/methoden_der_archaeologie/index.html",
+      "label": "Planet Wissen · Archäologie: Methoden",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://www.archaeologie.bayern/",
+      "label": "Archäologische Staatssammlung München",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://www.museum-manching.de/",
+      "label": "kelten römer museum manching",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://smaek.de/",
+      "label": "Staatliches Museum Ägyptischer Kunst München (SMÄK)",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://www.planet-wissen.de/geschichte/antike/pharaonen/index.html",
+      "label": "Planet Wissen · Antike: Pharaonen",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://www.planet-wissen.de/geschichte/antike/pharaonen/pwiedaslebenimaltenaegypten100.html",
+      "label": "Planet Wissen · Pharaonen: Leben im alten Ägypten",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://www.planet-wissen.de/geschichte/antike/pyramidenbau/index.html",
+      "label": "Planet Wissen · Antike: Pyramidenbau",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://www.planet-wissen.de/geschichte/antike/hieroglyphen/index.html",
+      "label": "Planet Wissen · Antike: Hieroglyphen",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://www.planet-wissen.de/geschichte/antike/das_klassische_athen/index.html",
+      "label": "Planet Wissen · Antike: Das klassische Athen",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://www.antike-am-koenigsplatz.mwn.de/",
+      "label": "Antike am Königsplatz · Glyptothek und Antikensammlungen München",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://www.planet-wissen.de/geschichte/antike/alexander_der_grosse/index.html",
+      "label": "Planet Wissen · Antike: Alexander der Große",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://www.planet-wissen.de/geschichte/antike/das_antike_rom/index.html",
+      "label": "Planet Wissen · Antike: Rom",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://www.planet-wissen.de/geschichte/antike/das_antike_rom/pwieroemerstaedte100.html",
+      "label": "Planet Wissen · Antikes Rom: Römerstädte",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://www.deutsche-limeskommission.de/",
+      "label": "Deutsche Limeskommission · UNESCO-Welterbe Limes",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://www.thelatinlibrary.com/resgestae.html",
+      "label": "The Latin Library · Augustus: Res Gestae (lateinischer Text)",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://www.thelatinlibrary.com/pliny.ep10.html",
+      "label": "The Latin Library · Plinius, Briefe, Buch 10 (lateinischer Text)",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://www.planet-wissen.de/kultur/religion/islam/index.html",
+      "label": "Planet Wissen · Religion: Islam",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://www.planet-wissen.de/geschichte/mittelalter/karl_der_grosse/index.html",
+      "label": "Planet Wissen · Mittelalter: Karl der Große",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://www.hdbg.de/",
+      "label": "Haus der Bayerischen Geschichte",
+      "checked": "2026-11-18"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01M7PNS6X3HF0DNYFX3YMH1JR0",
+      "atom_uri": "urn:zam:atom:01M7PNS6X3HF0DNYFX3YMH1JR0",
+      "namespace": "zam-academy-geschichte-realschule-6",
+      "slug": "g6-quellen",
+      "title": "Quellen und Darstellungen",
+      "domain": "geschichte/methoden",
+      "reduction": "narrative",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-quellen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-6",
+          "topic_code": "lb1",
+          "topic_title": "Geschichte erforschen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb1",
+          "topic_title": "Methoden und Arbeitstechniken",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JR1",
+          "slug": "g6-quellen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-quellen",
+          "question": "Welches dieser Materialien ist eine Quelle zur Zeit des Kaisers Augustus?",
+          "concept": "Eine Münze, die um Christi Geburt geprägt wurde.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eine Münze, die um Christi Geburt geprägt wurde.",
+              "Ein Kapitel über Augustus im Schulbuch."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Ein Kapitel über Augustus im Schulbuch.",
+              "reason": "Das Schulbuch ist heute entstanden und erzählt über Augustus: eine Darstellung."
+            },
+            {
+              "text": "Eine Dokumentation über Rom von 2024.",
+              "reason": "Auch ein heutiger Film ist eine Darstellung, keine Quelle aus der Zeit des Augustus."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JR2",
+          "slug": "g6-quellen-merken",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-quellen",
+          "question": "Wie nennt man ein Material, das erst später über die Vergangenheit erzählt, etwa ein Schulbuchtext?",
+          "concept": "Eine Darstellung",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eine Darstellung",
+              "Eine Sachquelle"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Eine Sachquelle",
+              "reason": "Sachquellen sind Gegenstände aus der untersuchten Zeit selbst."
+            },
+            {
+              "text": "Eine Überlieferung",
+              "reason": "Überlieferung ist eine Quelle aus der Zeit, die absichtlich für die Nachwelt geschaffen wurde."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JR3",
+          "slug": "g6-quellen-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-quellen",
+          "question": "Caesar beschreibt sich in seinem Bericht über den Gallischen Krieg als gerechten Feldherrn. Erkläre, warum du diesem Urteil nicht einfach glauben solltest.",
+          "concept": "Caesar schrieb selbst und wollte gut dastehen; die besiegten Gallier kommen nicht zu Wort, daher braucht man weitere Quellen.",
+          "sample_solution": "Caesar hat den Bericht selbst geschrieben. Er wollte in Rom gut dastehen und hatte deshalb einen Grund, sich gerecht und klug darzustellen. Die besiegten Gallier kommen nicht selbst zu Wort. Ich brauche weitere Quellen, zum Beispiel Funde aus gallischen Siedlungen oder Berichte anderer Römer.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M7PNS6X3HF0DNYFX3YMH1JR4",
+      "atom_uri": "urn:zam:atom:01M7PNS6X3HF0DNYFX3YMH1JR4",
+      "namespace": "zam-academy-geschichte-realschule-6",
+      "slug": "g6-zeitleiste",
+      "title": "Zeit messen: vor und nach Christi Geburt",
+      "domain": "geschichte/methoden",
+      "reduction": "narrative",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-zeitleiste",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-6",
+          "topic_code": "lb1",
+          "topic_title": "Geschichte erforschen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb1",
+          "topic_title": "Methoden und Arbeitstechniken",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JR5",
+          "slug": "g6-zeitleiste-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-zeitleiste",
+          "question": "In welchem Jahrhundert liegt das Jahr 753 v. Chr.?",
+          "concept": "Im 8. Jahrhundert v. Chr.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Im 8. Jahrhundert v. Chr.",
+              "Im 7. Jahrhundert v. Chr."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Im 7. Jahrhundert v. Chr.",
+              "reason": "Das 7. Jahrhundert v. Chr. reicht von 700 bis 601 v. Chr.; 753 liegt davor."
+            },
+            {
+              "text": "Im 75. Jahrhundert v. Chr.",
+              "reason": "Ein Jahrhundert hat hundert Jahre, nicht zehn. Teile durch hundert und runde auf: 7,53 wird zu 8."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JR6",
+          "slug": "g6-zeitleiste-merken",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-zeitleiste",
+          "question": "Welches Jahr folgt in unserer Zeitrechnung direkt auf das Jahr 1 v. Chr.?",
+          "concept": "Das Jahr 1 n. Chr.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Das Jahr 1 n. Chr.",
+              "Das Jahr 0"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Das Jahr 0",
+              "reason": "Ein Jahr 0 gibt es in unserer Zeitrechnung nicht."
+            },
+            {
+              "text": "Das Jahr 2 v. Chr.",
+              "reason": "Vor Christi Geburt zählt man rückwärts; 2 v. Chr. liegt vor 1 v. Chr."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JR7",
+          "slug": "g6-zeitleiste-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-zeitleiste",
+          "question": "Ordne 3000 v. Chr., 800 n. Chr. und 753 v. Chr. zeitlich und erkläre, wie du vorgegangen bist.",
+          "concept": "3000 v. Chr., 753 v. Chr., 800 n. Chr.: Vor Christi Geburt zählt man rückwärts, alles mit n. Chr. liegt danach.",
+          "sample_solution": "Die richtige Reihenfolge ist 3000 v. Chr., 753 v. Chr., 800 n. Chr. Vor Christi Geburt zählt man rückwärts, deshalb liegt 3000 v. Chr. weiter zurück als 753 v. Chr. Alle Jahre mit „n. Chr.“ liegen nach Christi Geburt und damit später als jedes Jahr vor Christus.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M7PNS6X3HF0DNYFX3YMH1JR8",
+      "atom_uri": "urn:zam:atom:01M7PNS6X3HF0DNYFX3YMH1JR8",
+      "namespace": "zam-academy-geschichte-realschule-6",
+      "slug": "g6-karten",
+      "title": "Geschichtskarten und Schaubilder lesen",
+      "domain": "geschichte/methoden",
+      "reduction": "narrative",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-karten",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-6",
+          "topic_code": "lb1",
+          "topic_title": "Geschichte erforschen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb1",
+          "topic_title": "Methoden und Arbeitstechniken",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JR9",
+          "slug": "g6-karten-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-karten",
+          "question": "Wo erfährst du, was die Farben und Pfeile einer Geschichtskarte bedeuten?",
+          "concept": "In der Legende der Karte.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "In der Legende der Karte.",
+              "Im Maßstab der Karte."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Im Maßstab der Karte.",
+              "reason": "Der Maßstab zeigt Entfernungen, nicht die Bedeutung der Zeichen."
+            },
+            {
+              "text": "Im Titel der Karte.",
+              "reason": "Der Titel nennt Thema und Zeit, aber nicht jedes Zeichen."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JRA",
+          "slug": "g6-karten-merken",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-karten",
+          "question": "Welche Angabe einer Geschichtskarte brauchst du, um Entfernungen abzuschätzen?",
+          "concept": "Den Maßstab",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Den Maßstab",
+              "Die Legende"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die Legende",
+              "reason": "Die Legende erklärt Zeichen und Farben, nicht Entfernungen."
+            },
+            {
+              "text": "Den Titel",
+              "reason": "Der Titel nennt Thema und Zeit der Karte."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JRB",
+          "slug": "g6-karten-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-karten",
+          "question": "Nenne vier Fragen, die du einer Geschichtskarte immer stellst, und erkläre bei einer, warum sie wichtig ist.",
+          "concept": "Thema, Zeitraum, Legende und Maßstab; ohne Legende weiß man nicht, was Pfeile und Farben bedeuten.",
+          "sample_solution": "Ich frage: Was ist das Thema? Welchen Zeitraum zeigt die Karte? Was bedeuten die Zeichen in der Legende? Wie groß sind die Entfernungen laut Maßstab? Die Legende ist besonders wichtig, denn ohne sie weiß ich nicht, ob ein Pfeil einen Kriegszug, einen Handelsweg oder eine Wanderung zeigt.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M7PNS6X3HF0DNYFX3YMH1JRC",
+      "atom_uri": "urn:zam:atom:01M7PNS6X3HF0DNYFX3YMH1JRC",
+      "namespace": "zam-academy-geschichte-realschule-6",
+      "slug": "g6-archaeologie",
+      "title": "Archäologie: vom Fund zur Geschichte",
+      "domain": "geschichte/methoden",
+      "reduction": "narrative",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-archaeologie",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-6",
+          "topic_code": "lb1",
+          "topic_title": "Geschichte erforschen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb1",
+          "topic_title": "Methoden und Arbeitstechniken",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JRD",
+          "slug": "g6-archaeologie-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-archaeologie",
+          "question": "Was zeigt die Pfeilspitze in Ötzis Schulter am sichersten?",
+          "concept": "Dass er von einem Pfeil getroffen wurde.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Dass er von einem Pfeil getroffen wurde.",
+              "Dass er ein gefürchteter Krieger war."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Dass er ein gefürchteter Krieger war.",
+              "reason": "Ein Treffer sagt nichts darüber, ob er selbst kämpfte oder gefürchtet war."
+            },
+            {
+              "text": "Dass ein Nachbardorf ihn angriff.",
+              "reason": "Wer schoss, verrät die Pfeilspitze nicht; das bleibt eine Vermutung."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JRE",
+          "slug": "g6-archaeologie-merken",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-archaeologie",
+          "question": "Wann lebte der Mann aus dem Eis, Ötzi, ungefähr?",
+          "concept": "Um 3300 v. Chr.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Um 3300 v. Chr.",
+              "Um 33 000 v. Chr."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Um 33 000 v. Chr.",
+              "reason": "Das wäre mitten in der Altsteinzeit; Ötzi lebte in der späten Jungsteinzeit."
+            },
+            {
+              "text": "Um 330 n. Chr.",
+              "reason": "Das wäre die späte Römerzeit; Ötzi ist rund 5300 Jahre alt."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JRF",
+          "slug": "g6-archaeologie-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-archaeologie",
+          "question": "Erkläre an Ötzis Kupferbeil den Unterschied zwischen Befund und Deutung.",
+          "concept": "Befund: das gefundene Kupferbeil; Deutung: wertvolles Kupfer spricht für eine angesehene Stellung, bleibt aber unsicher.",
+          "sample_solution": "Der Befund ist das Beil selbst: ein Holzstiel mit einer Klinge aus Kupfer, das neben Ötzi im Eis lag. Die Deutung lautet: Weil Kupfer damals selten und wertvoll war, hatte Ötzi vermutlich eine angesehene Stellung. Der Befund ist sicher, die Deutung ist gut begründet, könnte aber durch neue Funde verändert werden.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M7PNS6X3HF0DNYFX3YMH1JRG",
+      "atom_uri": "urn:zam:atom:01M7PNS6X3HF0DNYFX3YMH1JRG",
+      "namespace": "zam-academy-geschichte-realschule-6",
+      "slug": "g6-informieren",
+      "title": "Schulbuch, Sachbuch und Film nutzen",
+      "domain": "geschichte/methoden",
+      "reduction": "narrative",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-informieren",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-6",
+          "topic_code": "lb1",
+          "topic_title": "Geschichte erforschen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb1",
+          "topic_title": "Methoden und Arbeitstechniken",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JRH",
+          "slug": "g6-informieren-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-informieren",
+          "question": "Wo findest du in deinem Schulbuch am schnellsten, auf welchen Seiten „Pharao“ vorkommt?",
+          "concept": "Im Register am Ende des Buches.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Im Register am Ende des Buches.",
+              "Im Autorentext des ersten Kapitels."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Im Autorentext des ersten Kapitels.",
+              "reason": "Den Autorentext müsstest du ganz lesen, um das Wort zu finden."
+            },
+            {
+              "text": "In der Bildunterschrift eines Fotos.",
+              "reason": "Eine Bildunterschrift nennt nur das eine Bild, nicht alle Seiten."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JRJ",
+          "slug": "g6-informieren-merken",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-informieren",
+          "question": "Wie heißt das alphabetische Stichwortverzeichnis am Ende eines Schulbuchs?",
+          "concept": "Register",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Register",
+              "Glossar"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Glossar",
+              "reason": "Ein Glossar erklärt Fachbegriffe, verweist aber nicht auf alle Seiten, auf denen sie vorkommen."
+            },
+            {
+              "text": "Anhang",
+              "reason": "Der Anhang enthält zusätzliche Materialien, kein alphabetisches Stichwortverzeichnis."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JRK",
+          "slug": "g6-informieren-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-informieren",
+          "question": "Beschreibe, wie du in deinem Schulbuch Informationen zur Frage „Wie wurden die Pyramiden gebaut?“ findest.",
+          "concept": "Stichwort im Register suchen, Autorentext lesen, Materialien auswerten, Begriffe im Lexikon nachschlagen.",
+          "sample_solution": "Ich schaue im Register unter „Pyramide“ nach und schlage die angegebenen Seiten auf. Dort lese ich zuerst den Autorentext, der den Bau erklärt. Dann sehe ich mir die Materialien an, zum Beispiel ein Rekonstruktionsbild der Baustelle oder einen Quellentext. Unbekannte Begriffe schlage ich im Lexikon des Buches nach.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M7PNS6X3HF0DNYFX3YMH1JRM",
+      "atom_uri": "urn:zam:atom:01M7PNS6X3HF0DNYFX3YMH1JRM",
+      "namespace": "zam-academy-geschichte-realschule-6",
+      "slug": "g6-erzaehlen",
+      "title": "Geschichte erzählen: Comic, Bild und Rollenspiel",
+      "domain": "geschichte/methoden",
+      "reduction": "narrative",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-erzaehlen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-6",
+          "topic_code": "lb1",
+          "topic_title": "Geschichte erforschen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb1",
+          "topic_title": "Methoden und Arbeitstechniken",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JRN",
+          "slug": "g6-erzaehlen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-erzaehlen",
+          "question": "Was ist ein Anachronismus in einem Bild über die Jungsteinzeit?",
+          "concept": "Ein Bauer, der mit einem Eisenpflug arbeitet.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein Bauer, der mit einem Eisenpflug arbeitet.",
+              "Kinder, die vor einem Langhaus spielen."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Kinder, die vor einem Langhaus spielen.",
+              "reason": "Spielende Kinder sind erfunden, passen aber in die Zeit."
+            },
+            {
+              "text": "Ein Hund, der neben den Häusern liegt.",
+              "reason": "Hunde lebten schon in der Steinzeit bei den Menschen."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JRP",
+          "slug": "g6-erzaehlen-merken",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-erzaehlen",
+          "question": "Wie nennt man einen Fehler, der etwas in eine Zeit versetzt, in die es nicht gehört?",
+          "concept": "Anachronismus",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Anachronismus",
+              "Rekonstruktion"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Rekonstruktion",
+              "reason": "Eine Rekonstruktion stellt Vergangenes nach Funden wieder her."
+            },
+            {
+              "text": "Narration",
+              "reason": "Narration heißt Erzählung; sie kann stimmig oder fehlerhaft sein."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JRQ",
+          "slug": "g6-erzaehlen-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-erzaehlen",
+          "question": "Du zeichnest einen Comic über einen Tag bei Jägern und Sammlern der Altsteinzeit. Nenne zwei Dinge, die du zeigen kannst, und eines, das du vermeiden musst.",
+          "concept": "Zeigen: Jagd mit Speeren, Feuer und Zelte aus Fellen; vermeiden: Felder oder feste Häuser, die erst die Jungsteinzeit brachte.",
+          "sample_solution": "Ich kann zeigen, wie die Gruppe mit Speeren jagt und wie sie am Feuer vor einem Zelt aus Fellen sitzt, denn beides ist durch Funde belegt. Vermeiden muss ich zum Beispiel Getreidefelder oder feste Häuser, weil Ackerbau und Sesshaftigkeit erst in der Jungsteinzeit begannen. Sonst entstünde ein Anachronismus.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M7PNS6X3HF0DNYFX3YMH1JRR",
+      "atom_uri": "urn:zam:atom:01M7PNS6X3HF0DNYFX3YMH1JRR",
+      "namespace": "zam-academy-geschichte-realschule-6",
+      "slug": "g6-zeit-und-quellen",
+      "title": "Ich habe eine Geschichte: Zeit und Quellen",
+      "domain": "geschichte/anfaenge",
+      "reduction": "narrative",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-zeit-und-quellen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-6",
+          "topic_code": "lb2",
+          "topic_title": "Steinzeit und Kelten"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb2",
+          "topic_title": "Der Mensch und seine Geschichte",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JRS",
+          "slug": "g6-zeit-und-quellen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-zeit-und-quellen",
+          "question": "Welche Quelle ist ein Überrest und keine absichtliche Überlieferung?",
+          "concept": "Eine zerbrochene Schüssel aus einer Abfallgrube.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eine zerbrochene Schüssel aus einer Abfallgrube.",
+              "Eine Inschrift an einem Siegerdenkmal."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Eine Inschrift an einem Siegerdenkmal.",
+              "reason": "Ein Siegerdenkmal wurde gebaut, damit sich spätere Menschen erinnern: Überlieferung."
+            },
+            {
+              "text": "Eine Chronik über die Taten eines Königs.",
+              "reason": "Eine Chronik schreibt man bewusst für die Nachwelt: Überlieferung."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JRT",
+          "slug": "g6-zeit-und-quellen-merken",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-zeit-und-quellen",
+          "question": "Wie nennt man Quellen, die ohne Absicht für die Nachwelt erhalten blieben?",
+          "concept": "Überreste",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Überreste",
+              "Überlieferung"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Überlieferung",
+              "reason": "Überlieferung wurde gerade mit Absicht für spätere Menschen geschaffen."
+            },
+            {
+              "text": "Chroniken",
+              "reason": "Chroniken schrieb man bewusst für die Nachwelt."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JRV",
+          "slug": "g6-zeit-und-quellen-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-zeit-und-quellen",
+          "question": "Nenne drei Quellen zu deiner eigenen Geschichte und ordne jede einer Quellenart zu.",
+          "concept": "Zum Beispiel Babyfoto (bildlich), Zeugnis (schriftlich), Kuscheltier (gegenständlich), Erzählung der Eltern (mündlich).",
+          "sample_solution": "Mein Babyfoto ist eine bildliche Quelle. Mein Zeugnis aus der Grundschule ist eine schriftliche Quelle. Mein erstes Kuscheltier ist eine gegenständliche Quelle, ein Überrest aus meiner Kindheit. Außerdem kann mir meine Mutter mündlich erzählen, wie ich laufen gelernt habe.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M7PNS6X3HF0DNYFX3YMH1JRW",
+      "atom_uri": "urn:zam:atom:01M7PNS6X3HF0DNYFX3YMH1JRW",
+      "namespace": "zam-academy-geschichte-realschule-6",
+      "slug": "g6-altsteinzeit",
+      "title": "Jäger und Sammler der Altsteinzeit",
+      "domain": "geschichte/anfaenge",
+      "reduction": "narrative",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-altsteinzeit",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-6",
+          "topic_code": "lb2",
+          "topic_title": "Steinzeit und Kelten"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb2",
+          "topic_title": "Der Mensch und seine Geschichte",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JRX",
+          "slug": "g6-altsteinzeit-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-altsteinzeit",
+          "question": "Warum zogen die Menschen der Altsteinzeit immer wieder weiter?",
+          "concept": "Sie folgten den Tierherden durch das Jahr.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie folgten den Tierherden durch das Jahr.",
+              "Sie suchten neue Felder für ihr Getreide."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Sie suchten neue Felder für ihr Getreide.",
+              "reason": "Ackerbau begann erst in der Jungsteinzeit."
+            },
+            {
+              "text": "Sie flohen vor den Steuern ihrer Könige.",
+              "reason": "Könige und Steuern gab es in der Altsteinzeit nicht."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JRY",
+          "slug": "g6-altsteinzeit-merken",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-altsteinzeit",
+          "question": "Wie heißt das bekannteste Werkzeug der Altsteinzeit aus Feuerstein?",
+          "concept": "Faustkeil",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Faustkeil",
+              "Mahlstein"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Mahlstein",
+              "reason": "Mahlsteine zum Mahlen von Getreide gehören zur Jungsteinzeit."
+            },
+            {
+              "text": "Sichel",
+              "reason": "Sicheln zum Ernten von Getreide kamen erst mit dem Ackerbau."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JRZ",
+          "slug": "g6-altsteinzeit-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-altsteinzeit",
+          "question": "Beschreibe den Alltag einer Gruppe von Jägern und Sammlern in der Altsteinzeit. Gehe auf Nahrung, Wohnen und Werkzeuge ein.",
+          "concept": "Jagd und Sammeln, Umherziehen mit den Herden in Fellzelten, Werkzeuge aus Feuerstein, Knochen, Holz; Feuer als Schutz.",
+          "sample_solution": "Die Gruppe lebte von der Jagd auf Rentiere, Pferde oder Mammuts und sammelte Beeren, Nüsse und Wurzeln. Weil die Herden wanderten, zog sie mit und wohnte in Zelten aus Fellen oder an Höhleneingängen. Ihre Werkzeuge stellte sie aus Feuerstein, Knochen, Holz und Geweih her, zum Beispiel Faustkeile, Speere und Nadeln. Das Feuer wärmte und schützte die Gruppe.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M7PNS6X3HF0DNYFX3YMH1JS0",
+      "atom_uri": "urn:zam:atom:01M7PNS6X3HF0DNYFX3YMH1JS0",
+      "namespace": "zam-academy-geschichte-realschule-6",
+      "slug": "g6-jungsteinzeit",
+      "title": "Die Bauern der Jungsteinzeit",
+      "domain": "geschichte/anfaenge",
+      "reduction": "narrative",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-jungsteinzeit",
+      "prerequisites": [
+        {
+          "atom_id": "01M7PNS6X3HF0DNYFX3YMH1JRW",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „Jäger und Sammler der Altsteinzeit“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-6",
+          "topic_code": "lb2",
+          "topic_title": "Steinzeit und Kelten"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb2",
+          "topic_title": "Der Mensch und seine Geschichte",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JS1",
+          "slug": "g6-jungsteinzeit-check",
+          "replaces": [
+            "01K4G6A0000000000000000J01"
+          ],
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-jungsteinzeit",
+          "question": "Was bezeichnet der Begriff „neolithische Revolution“?",
+          "concept": "Den Übergang zu Sesshaftigkeit, Ackerbau und Viehzucht.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Den Übergang zu Sesshaftigkeit, Ackerbau und Viehzucht.",
+              "Die erste Nutzung des Feuers durch Menschen."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die erste Nutzung des Feuers durch Menschen.",
+              "reason": "Feuer nutzten schon die Menschen der Altsteinzeit."
+            },
+            {
+              "text": "Einen Aufstand von Bauern gegen ihren König.",
+              "reason": "Revolution meint hier eine grundlegende Veränderung der Lebensweise, keinen Aufstand."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JS2",
+          "slug": "g6-jungsteinzeit-merken",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-jungsteinzeit",
+          "question": "Ab wann ungefähr lebten im heutigen Bayern die ersten Bauern?",
+          "concept": "Ab etwa 5500 v. Chr.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ab etwa 5500 v. Chr.",
+              "Ab etwa 10 000 v. Chr."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Ab etwa 10 000 v. Chr.",
+              "reason": "So früh begann der Ackerbau im Vorderen Orient, nicht in Bayern."
+            },
+            {
+              "text": "Ab etwa 500 n. Chr.",
+              "reason": "Da begann schon das Mittelalter; Bauern gab es in Bayern viel früher."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JS3",
+          "slug": "g6-jungsteinzeit-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-jungsteinzeit",
+          "question": "Erkläre, warum Ackerbau die Menschen sesshaft machte.",
+          "concept": "Vom Säen bis zur Ernte vergehen Monate, und Vorräte müssen gelagert werden; deshalb blieben die Menschen an einem Ort.",
+          "sample_solution": "Wer Getreide sät, muss viele Monate auf die Ernte warten und das Feld in dieser Zeit pflegen und schützen. Danach müssen die Vorräte gelagert werden, bis die nächste Ernte kommt. Deshalb blieben die Menschen an einem Ort, bauten feste Häuser und legten Dörfer an.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M7PNS6X3HF0DNYFX3YMH1JS4",
+      "atom_uri": "urn:zam:atom:01M7PNS6X3HF0DNYFX3YMH1JS4",
+      "namespace": "zam-academy-geschichte-realschule-6",
+      "slug": "g6-kelten",
+      "title": "Die Kelten in Süddeutschland",
+      "domain": "geschichte/anfaenge",
+      "reduction": "narrative",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-kelten",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-6",
+          "topic_code": "lb2",
+          "topic_title": "Steinzeit und Kelten"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb2",
+          "topic_title": "Der Mensch und seine Geschichte",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JS5",
+          "slug": "g6-kelten-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-kelten",
+          "question": "Warum wissen wir über die Kelten vor allem aus Ausgrabungen?",
+          "concept": "Sie haben selbst kaum etwas aufgeschrieben.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie haben selbst kaum etwas aufgeschrieben.",
+              "Alle römischen Berichte über sie sind verloren."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Alle römischen Berichte über sie sind verloren.",
+              "reason": "Römische Berichte gibt es, zum Beispiel von Caesar; sie zeigen aber eine fremde Sicht."
+            },
+            {
+              "text": "Sie haben ihre Städte vor dem Abzug zerstört.",
+              "reason": "Manche Orte wurden aufgegeben, doch das erklärt nicht, warum es kaum keltische Texte gibt."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JS6",
+          "slug": "g6-kelten-merken",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-kelten",
+          "question": "Wie heißt die große keltische Stadt bei Ingolstadt?",
+          "concept": "Das Oppidum Manching",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Das Oppidum Manching",
+              "Das Kastell Weißenburg"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Das Kastell Weißenburg",
+              "reason": "Weißenburg war ein römisches Kastell am Limes."
+            },
+            {
+              "text": "Das Lager Castra Regina",
+              "reason": "Castra Regina war ein römisches Legionslager in Regensburg."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JS7",
+          "slug": "g6-kelten-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-kelten",
+          "question": "Beschreibe das Oppidum Manching mit drei Merkmalen und erkläre, warum es für die Geschichte Bayerns wichtig ist.",
+          "concept": "Große keltische Stadt bei Ingolstadt mit rund sieben Kilometer langer Mauer, Werkstätten und Münzprägung, lange vor den Römern.",
+          "sample_solution": "Manching war eine große keltische Stadt bei Ingolstadt. Eine etwa sieben Kilometer lange Mauer schützte Häuser, Werkstätten und Speicher, und es wurden sogar Münzen geprägt. Das Oppidum zeigt, dass in Bayern schon vor den Römern Menschen in einer Stadt mit Handwerk und Handel lebten.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M7PNS6X3HF0DNYFX3YMH1JS8",
+      "atom_uri": "urn:zam:atom:01M7PNS6X3HF0DNYFX3YMH1JS8",
+      "namespace": "zam-academy-geschichte-realschule-6",
+      "slug": "g6-nil",
+      "title": "Der Nil: Lebensader Ägyptens",
+      "domain": "geschichte/antike",
+      "reduction": "narrative",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-nil",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-6",
+          "topic_code": "lb3",
+          "topic_title": "Ägypten"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb3",
+          "topic_title": "Ägypten – eine frühe Hochkultur",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JS9",
+          "slug": "g6-nil-check",
+          "replaces": [
+            "01K4G6A0000000000000000J03"
+          ],
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-nil",
+          "question": "Warum nannte Herodot Ägypten ein „Geschenk des Nils“?",
+          "concept": "Die Nilschwemme brachte Wasser und fruchtbaren Schlamm.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Nilschwemme brachte Wasser und fruchtbaren Schlamm.",
+              "Der Nil spülte Gold aus den Bergen ins Land."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Der Nil spülte Gold aus den Bergen ins Land.",
+              "reason": "Gold kam aus Bergwerken in der Wüste, nicht mit der Flut."
+            },
+            {
+              "text": "Der Nil schützte das Land vor allen Feinden.",
+              "reason": "Die Flut war ein Naturereignis für die Landwirtschaft, kein Schutz vor Feinden."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JSA",
+          "slug": "g6-nil-merken",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-nil",
+          "question": "Wie hießen die drei Jahreszeiten am Nil?",
+          "concept": "Achet, Peret und Schemu",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Achet, Peret und Schemu",
+              "Frühling, Sommer und Winter"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Frühling, Sommer und Winter",
+              "reason": "Die Ägypter richteten ihr Jahr nach dem Nil, nicht nach unseren Jahreszeiten."
+            },
+            {
+              "text": "Kemet, Deschret und Delta",
+              "reason": "Kemet und Deschret sind Namen für Landesteile, das Delta liegt im Norden."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JSB",
+          "slug": "g6-nil-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-nil",
+          "question": "Erkläre, warum ohne den Nil im alten Ägypten keine Hochkultur entstanden wäre.",
+          "concept": "In der Wüste ohne Regen machten nur Flut und Schlamm des Nils Felder, Vorräte und damit Staat und Hochkultur möglich.",
+          "sample_solution": "Ägypten ist größtenteils Wüste, und es regnet kaum. Nur am Nil können Menschen Felder anlegen, weil der Fluss jedes Jahr über die Ufer tritt und fruchtbaren Schlamm hinterlässt. Ohne den Nil hätte es dort keine Landwirtschaft, keine Vorräte und keine Hochkultur gegeben. Deshalb verdankt Ägypten sein Leben dem Fluss.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M7PNS6X3HF0DNYFX3YMH1JSC",
+      "atom_uri": "urn:zam:atom:01M7PNS6X3HF0DNYFX3YMH1JSC",
+      "namespace": "zam-academy-geschichte-realschule-6",
+      "slug": "g6-pharao",
+      "title": "Der Pharao: Herrscher und Gott",
+      "domain": "geschichte/antike",
+      "reduction": "narrative",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-pharao",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-6",
+          "topic_code": "lb3",
+          "topic_title": "Ägypten"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb3",
+          "topic_title": "Ägypten – eine frühe Hochkultur",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JSD",
+          "slug": "g6-pharao-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-pharao",
+          "question": "Womit begründete der Pharao seine Herrschaft?",
+          "concept": "Er galt als Sohn des Sonnengottes Re.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Er galt als Sohn des Sonnengottes Re.",
+              "Er wurde jedes Jahr von den Bauern gewählt."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Er wurde jedes Jahr von den Bauern gewählt.",
+              "reason": "Wahlen gab es im alten Ägypten nicht; der Pharao herrschte auf Lebenszeit."
+            },
+            {
+              "text": "Er hatte die meisten Pyramiden geerbt.",
+              "reason": "Pyramiden waren Gräber, keine Grundlage der Herrschaft."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JSE",
+          "slug": "g6-pharao-merken",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-pharao",
+          "question": "Wie hieß die göttliche Ordnung, die der Pharao bewahren sollte?",
+          "concept": "Maat",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Maat",
+              "Kemet"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Kemet",
+              "reason": "Kemet war der Name des fruchtbaren Landes am Nil."
+            },
+            {
+              "text": "Horus",
+              "reason": "Horus ist ein Gott, als dessen Gestalt der Pharao galt."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JSF",
+          "slug": "g6-pharao-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-pharao",
+          "question": "Nenne drei Merkmale einer Monarchie am Beispiel des Pharaos.",
+          "concept": "Ein Einzelner herrscht auf Lebenszeit, ohne Wahl, und vererbt die Herrschaft; beim Pharao galt sie zudem als göttlich.",
+          "sample_solution": "In einer Monarchie herrscht ein Einzelner, in Ägypten der Pharao. Er regiert auf Lebenszeit und wird nicht gewählt. Seine Herrschaft wird meist innerhalb der Familie vererbt, sodass Dynastien entstehen. Beim Pharao kommt hinzu, dass seine Macht als göttlich galt.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M7PNS6X3HF0DNYFX3YMH1JSG",
+      "atom_uri": "urn:zam:atom:01M7PNS6X3HF0DNYFX3YMH1JSG",
+      "namespace": "zam-academy-geschichte-realschule-6",
+      "slug": "g6-pyramiden",
+      "title": "Pyramiden und Totenkult untersuchen",
+      "domain": "geschichte/antike",
+      "reduction": "narrative",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-pyramiden",
+      "prerequisites": [
+        {
+          "atom_id": "01M7PNS6X3HF0DNYFX3YMH1JSC",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „Der Pharao: Herrscher und Gott“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-6",
+          "topic_code": "lb3",
+          "topic_title": "Ägypten"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb3",
+          "topic_title": "Ägypten – eine frühe Hochkultur",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JSH",
+          "slug": "g6-pyramiden-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-pyramiden",
+          "question": "Wer baute nach heutigem Wissen die großen Pyramiden?",
+          "concept": "Handwerker und Bauern, die versorgt wurden.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Handwerker und Bauern, die versorgt wurden.",
+              "Kriegsgefangene, die man in Ketten hielt."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Kriegsgefangene, die man in Ketten hielt.",
+              "reason": "Funde wie die Arbeitersiedlung und Gräber der Arbeiter widerlegen die Vorstellung vom Sklavenheer."
+            },
+            {
+              "text": "Wenige Priester mit geheimer Technik.",
+              "reason": "Für den Bau brauchte man Tausende Menschen; Werkzeuge und Rampenreste zeigen bekannte Technik."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JSJ",
+          "slug": "g6-pyramiden-merken",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-pyramiden",
+          "question": "Für welchen Pharao wurde die größte Pyramide in Gizeh gebaut?",
+          "concept": "Für Cheops",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Für Cheops",
+              "Für Djoser"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Für Djoser",
+              "reason": "Djoser ließ die ältere Stufenpyramide in Sakkara bauen."
+            },
+            {
+              "text": "Für Hatschepsut",
+              "reason": "Hatschepsut lebte über tausend Jahre später und baute einen Tempel, keine Pyramide."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JSK",
+          "slug": "g6-pyramiden-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-pyramiden",
+          "question": "Untersuche die Cheops-Pyramide mit drei Kriterien: Größe, Zweck und Aufwand. Ziehe zu jedem einen Schluss.",
+          "concept": "Größe zeigt die Macht des Pharaos, der Zweck als Grab den Jenseitsglauben, der Aufwand eine starke Verwaltung.",
+          "sample_solution": "Die Pyramide war ursprünglich rund 146 Meter hoch; das zeigt die gewaltige Macht des Pharaos Cheops. Sie diente als Grab, was den Glauben an ein Leben nach dem Tod belegt. Für den Bau mussten Tausende Arbeiter über viele Jahre versorgt und eingeteilt werden; das beweist eine gut organisierte Verwaltung.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M7PNS6X3HF0DNYFX3YMH1JSM",
+      "atom_uri": "urn:zam:atom:01M7PNS6X3HF0DNYFX3YMH1JSM",
+      "namespace": "zam-academy-geschichte-realschule-6",
+      "slug": "g6-hochkultur",
+      "title": "Was ist eine Hochkultur?",
+      "domain": "geschichte/antike",
+      "reduction": "narrative",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-hochkultur",
+      "prerequisites": [
+        {
+          "atom_id": "01M7PNS6X3HF0DNYFX3YMH1JS8",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „Der Nil: Lebensader Ägyptens“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-6",
+          "topic_code": "lb3",
+          "topic_title": "Ägypten"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb3",
+          "topic_title": "Ägypten – eine frühe Hochkultur",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JSN",
+          "slug": "g6-hochkultur-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-hochkultur",
+          "question": "Welches Merkmal fehlte den Dörfern der Jungsteinzeit in Mitteleuropa, als Ägypten zur Hochkultur wurde?",
+          "concept": "Eine Schrift, mit der Abgaben notiert wurden.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eine Schrift, mit der Abgaben notiert wurden.",
+              "Häuser, in denen Menschen dauerhaft wohnten."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Häuser, in denen Menschen dauerhaft wohnten.",
+              "reason": "Feste Häuser gab es in Mitteleuropa schon seit der Jungsteinzeit."
+            },
+            {
+              "text": "Felder, auf denen Getreide angebaut wurde.",
+              "reason": "Ackerbau betrieben auch die Bauern in Mitteleuropa schon seit Jahrtausenden."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JSP",
+          "slug": "g6-hochkultur-merken",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-hochkultur",
+          "question": "Wie heißt die ägyptische Schrift aus Bild- und Lautzeichen?",
+          "concept": "Hieroglyphen",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Hieroglyphen",
+              "Keilschrift"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Keilschrift",
+              "reason": "Die Keilschrift entstand in Mesopotamien und wurde in Ton gedrückt."
+            },
+            {
+              "text": "Runen",
+              "reason": "Runen sind Schriftzeichen germanischer Völker aus viel späterer Zeit."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JSQ",
+          "slug": "g6-hochkultur-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-hochkultur",
+          "question": "Begründe mit drei Merkmalen, dass Ägypten um 3000 v. Chr. eine Hochkultur war.",
+          "concept": "Staat mit Pharao und Beamten, Schrift (Hieroglyphen), Großbauten wie Tempel und Pyramiden.",
+          "sample_solution": "Ägypten hatte einen Staat mit einem Herrscher, dem Pharao, und Beamten, die Abgaben verwalteten. Es gab eine Schrift, die Hieroglyphen, die Schreiber auf Papyrus schrieben. Außerdem entstanden große Bauwerke wie Tempel und später Pyramiden. Damit erfüllte Ägypten wichtige Merkmale einer Hochkultur.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M7PNS6X3HF0DNYFX3YMH1JSR",
+      "atom_uri": "urn:zam:atom:01M7PNS6X3HF0DNYFX3YMH1JSR",
+      "namespace": "zam-academy-geschichte-realschule-6",
+      "slug": "g6-polis",
+      "title": "Berge, Meer und Poleis",
+      "domain": "geschichte/antike",
+      "reduction": "narrative",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-polis",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-6",
+          "topic_code": "lb4",
+          "topic_title": "Griechen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb4",
+          "topic_title": "Die griechische Antike",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JSS",
+          "slug": "g6-polis-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-polis",
+          "question": "Warum entstanden in Griechenland viele kleine Stadtstaaten statt eines großen Reiches?",
+          "concept": "Gebirge und Meer trennten die Siedlungsgebiete voneinander.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Gebirge und Meer trennten die Siedlungsgebiete voneinander.",
+              "Ein Gesetz der Götter verbot einen gemeinsamen König."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Ein Gesetz der Götter verbot einen gemeinsamen König.",
+              "reason": "Ein solches Gesetz gab es nicht; die Landschaft erklärt die Trennung."
+            },
+            {
+              "text": "Die Ägypter teilten das Land unter sich auf.",
+              "reason": "Griechenland wurde nicht von Ägypten aufgeteilt."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JST",
+          "slug": "g6-polis-merken",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-polis",
+          "question": "Wie hieß der Burgberg einer griechischen Polis mit den Tempeln?",
+          "concept": "Akropolis",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Akropolis",
+              "Agora"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Agora",
+              "reason": "Die Agora war der Marktplatz für Handel und Versammlungen."
+            },
+            {
+              "text": "Olympia",
+              "reason": "Olympia war ein Heiligtum mit Wettkämpfen, kein Burgberg einer Stadt."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JSV",
+          "slug": "g6-polis-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-polis",
+          "question": "Erkläre den Begriff Polis und nenne drei Merkmale.",
+          "concept": "Griechischer Stadtstaat aus Stadt und Umland mit eigenen Gesetzen, Münzen und Heer, mit Akropolis und Agora.",
+          "sample_solution": "Eine Polis war ein griechischer Stadtstaat, also eine Stadt mit ihrem Umland. Sie hatte eigene Gesetze, eigene Münzen und ein eigenes Heer und entschied selbst über Krieg und Frieden. Typisch waren die Akropolis mit den Tempeln und die Agora als Markt- und Versammlungsplatz.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M7PNS6X3HF0DNYFX3YMH1JSW",
+      "atom_uri": "urn:zam:atom:01M7PNS6X3HF0DNYFX3YMH1JSW",
+      "namespace": "zam-academy-geschichte-realschule-6",
+      "slug": "g6-kolonisation",
+      "title": "Griechen wandern aus: die Kolonisation",
+      "domain": "geschichte/antike",
+      "reduction": "narrative",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-kolonisation",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-6",
+          "topic_code": "lb4",
+          "topic_title": "Griechen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb4",
+          "topic_title": "Die griechische Antike",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JSX",
+          "slug": "g6-kolonisation-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-kolonisation",
+          "question": "Was war ein häufiger Grund für die griechische Kolonisation?",
+          "concept": "Fruchtbares Land war in der Heimat knapp geworden.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Fruchtbares Land war in der Heimat knapp geworden.",
+              "Die Römer hatten Griechenland erobert."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die Römer hatten Griechenland erobert.",
+              "reason": "Rom eroberte Griechenland erst Jahrhunderte später."
+            },
+            {
+              "text": "Ein Erdbeben hatte alle Poleis zerstört.",
+              "reason": "Ein einzelnes Erdbeben erklärt nicht zweihundert Jahre Auswanderung."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JSY",
+          "slug": "g6-kolonisation-merken",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-kolonisation",
+          "question": "Welche heutige Stadt gründeten griechische Siedler als Massalia?",
+          "concept": "Marseille",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Marseille",
+              "Mailand"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Mailand",
+              "reason": "Mailand wurde nicht von Griechen gegründet."
+            },
+            {
+              "text": "Madrid",
+              "reason": "Madrid entstand erst im Mittelalter."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JSZ",
+          "slug": "g6-kolonisation-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-kolonisation",
+          "question": "Nenne zwei Gründe für die griechische Kolonisation und eine Stadt, die damals gegründet wurde.",
+          "concept": "Bevölkerungswachstum bei knappem Land, Handel oder Streit; zum Beispiel Massalia, das heutige Marseille.",
+          "sample_solution": "Viele Griechen wanderten aus, weil die Bevölkerung wuchs und fruchtbares Land knapp war. Andere suchten neue Handelsmöglichkeiten oder mussten nach Streit ihre Polis verlassen. Eine damals gegründete Stadt ist Massalia, das heutige Marseille in Frankreich.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M7PNS6X3HF0DNYFX3YMH1JT0",
+      "atom_uri": "urn:zam:atom:01M7PNS6X3HF0DNYFX3YMH1JT0",
+      "namespace": "zam-academy-geschichte-realschule-6",
+      "slug": "g6-kultur-griechen",
+      "title": "Olympia, Theater und griechische Spuren heute",
+      "domain": "geschichte/antike",
+      "reduction": "narrative",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-kultur-griechen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-6",
+          "topic_code": "lb4",
+          "topic_title": "Griechen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb4",
+          "topic_title": "Die griechische Antike",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JT1",
+          "slug": "g6-kultur-griechen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-kultur-griechen",
+          "question": "Zu Ehren welches Gottes fanden die Spiele in Olympia statt?",
+          "concept": "Zu Ehren des Göttervaters Zeus.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Zu Ehren des Göttervaters Zeus.",
+              "Zu Ehren des Weingottes Dionysos."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Zu Ehren des Weingottes Dionysos.",
+              "reason": "Dionysos ehrte man mit Theaterfesten in Athen."
+            },
+            {
+              "text": "Zu Ehren des Meeresgottes Poseidon.",
+              "reason": "Poseidon hatte eigene Heiligtümer, Olympia gehörte Zeus."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JT2",
+          "slug": "g6-kultur-griechen-merken",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-kultur-griechen",
+          "question": "Seit welchem Jahr fanden nach griechischer Überlieferung Spiele in Olympia statt?",
+          "concept": "Seit 776 v. Chr.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Seit 776 v. Chr.",
+              "Seit 1896 n. Chr."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Seit 1896 n. Chr.",
+              "reason": "1896 wurden die Olympischen Spiele in Athen neu belebt."
+            },
+            {
+              "text": "Seit 753 v. Chr.",
+              "reason": "753 v. Chr. ist das sagenhafte Gründungsjahr Roms."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JT3",
+          "slug": "g6-kultur-griechen-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-kultur-griechen",
+          "question": "Beschreibe die Olympischen Spiele der Antike: Wann, wo, wer und wofür?",
+          "concept": "Seit 776 v. Chr. alle vier Jahre in Olympia für Zeus; nur freie griechische Männer; Sieger bekamen einen Olivenkranz.",
+          "sample_solution": "Die Spiele fanden seit 776 v. Chr. alle vier Jahre in Olympia statt, zu Ehren des Gottes Zeus. Teilnehmen durften nur freie griechische Männer; Frauen, Sklaven und Nichtgriechen waren ausgeschlossen. Es gab Laufen, Ringen, Faustkampf, Wagenrennen und Fünfkampf. Die Sieger bekamen einen Olivenkranz und viel Ruhm in ihrer Heimat.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M7PNS6X3HF0DNYFX3YMH1JT4",
+      "atom_uri": "urn:zam:atom:01M7PNS6X3HF0DNYFX3YMH1JT4",
+      "namespace": "zam-academy-geschichte-realschule-6",
+      "slug": "g6-kunst-griechen",
+      "title": "Tempel und Statuen untersuchen",
+      "domain": "geschichte/antike",
+      "reduction": "narrative",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-kunst-griechen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-6",
+          "topic_code": "lb4",
+          "topic_title": "Griechen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb4",
+          "topic_title": "Die griechische Antike",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JT5",
+          "slug": "g6-kunst-griechen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-kunst-griechen",
+          "question": "Woran erkennst du eine ionische Säule?",
+          "concept": "An den Schnecken an ihrem oberen Ende.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "An den Schnecken an ihrem oberen Ende.",
+              "An den Akanthusblättern am Kapitell."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "An den Akanthusblättern am Kapitell.",
+              "reason": "Akanthusblätter gehören zur korinthischen Säule."
+            },
+            {
+              "text": "An einem flachen, schlichten Kissen oben.",
+              "reason": "Ein schlichtes, kissenförmiges Kapitell ist dorisch."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JT6",
+          "slug": "g6-kunst-griechen-merken",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-kunst-griechen",
+          "question": "Wie heißt die Körperhaltung mit Standbein und Spielbein bei griechischen Statuen?",
+          "concept": "Kontrapost",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Kontrapost",
+              "Kapitell"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Kapitell",
+              "reason": "Das Kapitell ist der obere Abschluss einer Säule."
+            },
+            {
+              "text": "Volute",
+              "reason": "Voluten sind die Schnecken am ionischen Kapitell."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JT7",
+          "slug": "g6-kunst-griechen-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-kunst-griechen",
+          "question": "Untersuche den Parthenon mit drei Kriterien: Was, wann und wozu? Ziehe einen Schluss über Athen.",
+          "concept": "Dorischer Marmortempel der Athene auf der Akropolis, 447 bis 432 v. Chr.; zeigt Reichtum und Macht Athens.",
+          "sample_solution": "Der Parthenon ist ein dorischer Marmortempel auf der Akropolis von Athen. Er wurde von 447 bis 432 v. Chr. gebaut und war der Göttin Athene geweiht, der Schutzgöttin der Stadt. Der aufwendige Bau zeigt, dass Athen damals reich und mächtig war und seine Göttin besonders ehren wollte.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M7PNS6X3HF0DNYFX3YMH1JT8",
+      "atom_uri": "urn:zam:atom:01M7PNS6X3HF0DNYFX3YMH1JT8",
+      "namespace": "zam-academy-geschichte-realschule-6",
+      "slug": "g6-verfassungen",
+      "title": "Wer herrscht? Athens Weg zur Demokratie",
+      "domain": "geschichte/antike",
+      "reduction": "narrative",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-verfassungen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-6",
+          "topic_code": "lb4",
+          "topic_title": "Griechen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb4",
+          "topic_title": "Die griechische Antike",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JT9",
+          "slug": "g6-verfassungen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-verfassungen",
+          "question": "Was bedeutet Aristokratie?",
+          "concept": "Die Herrschaft weniger adliger Familien.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Herrschaft weniger adliger Familien.",
+              "Die Herrschaft aller Bürger einer Stadt."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die Herrschaft aller Bürger einer Stadt.",
+              "reason": "Wenn alle Bürger entscheiden, spricht man von Demokratie."
+            },
+            {
+              "text": "Die Herrschaft eines gewählten Königs.",
+              "reason": "Herrscht ein Einzelner, ist das eine Monarchie."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JTA",
+          "slug": "g6-verfassungen-merken",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-verfassungen",
+          "question": "Wie nennt man die Herrschaft eines Einzelnen, der die Macht ohne Recht an sich gerissen hat?",
+          "concept": "Tyrannis",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Tyrannis",
+              "Monarchie"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Monarchie",
+              "reason": "In der Monarchie herrscht ein König mit anerkanntem Erbrecht."
+            },
+            {
+              "text": "Aristokratie",
+              "reason": "In der Aristokratie herrschen wenige Adelsfamilien."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JTB",
+          "slug": "g6-verfassungen-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-verfassungen",
+          "question": "Erkläre die Reformen Solons und warum sie für die einfachen Bauern wichtig waren.",
+          "concept": "Solon schaffte 594 v. Chr. die Schuldsklaverei ab und ließ alle Bürger in die Volksversammlung; die Reichen behielten mehr Rechte.",
+          "sample_solution": "Vor Solon konnten Bauern, die ihre Schulden nicht bezahlten, als Schuldsklaven verkauft werden. Solon erließ 594 v. Chr. Schulden und verbot die Schuldsklaverei. Außerdem durften alle Bürger an der Volksversammlung teilnehmen. Für die Bauern bedeutete das Schutz vor Sklaverei und erstmals ein wenig Mitsprache, auch wenn die Reichen noch mehr Rechte hatten.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M7PNS6X3HF0DNYFX3YMH1JTC",
+      "atom_uri": "urn:zam:atom:01M7PNS6X3HF0DNYFX3YMH1JTC",
+      "namespace": "zam-academy-geschichte-realschule-6",
+      "slug": "g6-perserkriege",
+      "title": "Die Perserkriege stärken die Demokratie",
+      "domain": "geschichte/antike",
+      "reduction": "narrative",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-perserkriege",
+      "prerequisites": [
+        {
+          "atom_id": "01M7PNS6X3HF0DNYFX3YMH1JT8",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „Wer herrscht? Athens Weg zur Demokratie“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-6",
+          "topic_code": "lb4",
+          "topic_title": "Griechen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb4",
+          "topic_title": "Die griechische Antike",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JTD",
+          "slug": "g6-perserkriege-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-perserkriege",
+          "question": "Warum gewannen die armen Bürger Athens nach den Perserkriegen an Einfluss?",
+          "concept": "Sie hatten als Ruderer der Flotte den Sieg erkämpft.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie hatten als Ruderer der Flotte den Sieg erkämpft.",
+              "Sie hatten den Perserkönig selbst gefangen genommen."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Sie hatten den Perserkönig selbst gefangen genommen.",
+              "reason": "Der Perserkönig wurde nicht gefangen; er zog sich zurück."
+            },
+            {
+              "text": "Sie hatten das Silber für die Rüstungen gespendet.",
+              "reason": "Das Silber stammte aus den staatlichen Bergwerken von Laurion, nicht von armen Bürgern."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JTE",
+          "slug": "g6-perserkriege-merken",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-perserkriege",
+          "question": "In welcher Seeschlacht besiegten die Griechen 480 v. Chr. die persische Flotte?",
+          "concept": "Bei Salamis",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Bei Salamis",
+              "Bei Marathon"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Bei Marathon",
+              "reason": "Bei Marathon siegten 490 v. Chr. die Hopliten an Land."
+            },
+            {
+              "text": "Bei Issos",
+              "reason": "Bei Issos siegte Alexander 333 v. Chr. über die Perser."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JTF",
+          "slug": "g6-perserkriege-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-perserkriege",
+          "question": "Erkläre den Zusammenhang zwischen der Seeschlacht bei Salamis und dem Ausbau der Demokratie in Athen.",
+          "concept": "Arme Bürger ruderten 480 v. Chr. bei Salamis zum Sieg und forderten danach mehr Mitsprache; die Demokratie wurde ausgebaut.",
+          "sample_solution": "Bei Salamis siegte 480 v. Chr. die Flotte. Auf den Schiffen ruderten viele arme Bürger, die sich keine Rüstung leisten konnten und vorher wenig Einfluss hatten. Weil sie Athen gerettet hatten, wurden sie selbstbewusster und forderten mehr Mitsprache. In den folgenden Jahrzehnten wurde die Volksversammlung gestärkt und die Demokratie ausgebaut.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M7PNS6X3HF0DNYFX3YMH1JTG",
+      "atom_uri": "urn:zam:atom:01M7PNS6X3HF0DNYFX3YMH1JTG",
+      "namespace": "zam-academy-geschichte-realschule-6",
+      "slug": "g6-perikles",
+      "title": "Athens Blütezeit: Demokratie unter Perikles",
+      "domain": "geschichte/antike",
+      "reduction": "narrative",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-perikles",
+      "prerequisites": [
+        {
+          "atom_id": "01M7PNS6X3HF0DNYFX3YMH1JTC",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „Die Perserkriege stärken die Demokratie“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-6",
+          "topic_code": "lb4",
+          "topic_title": "Griechen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb4",
+          "topic_title": "Die griechische Antike",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JTH",
+          "slug": "g6-perikles-check",
+          "replaces": [
+            "01K4G6A0000000000000000J05"
+          ],
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-perikles",
+          "question": "Wer durfte in der Volksversammlung Athens abstimmen?",
+          "concept": "Erwachsene Männer mit athenischem Bürgerrecht.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Erwachsene Männer mit athenischem Bürgerrecht.",
+              "Alle Erwachsenen, die in Athen wohnten."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Alle Erwachsenen, die in Athen wohnten.",
+              "reason": "Frauen, Metöken und Sklaven wohnten in Athen, durften aber nicht abstimmen."
+            },
+            {
+              "text": "Nur die Strategen und Mitglieder des Rates.",
+              "reason": "Abstimmen durften alle Bürger, nicht nur die Amtsträger."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JTJ",
+          "slug": "g6-perikles-merken",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-perikles",
+          "question": "Wie nannte man Fremde, die in Athen wohnten, aber kein Bürgerrecht hatten?",
+          "concept": "Metöken",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Metöken",
+              "Theten"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Theten",
+              "reason": "Theten waren arme Bürger Athens mit Bürgerrecht."
+            },
+            {
+              "text": "Hopliten",
+              "reason": "Hopliten waren schwer bewaffnete Fußsoldaten aus der Bürgerschaft."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JTK",
+          "slug": "g6-perikles-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-perikles",
+          "question": "Beschreibe, wie die Demokratie in Athen unter Perikles funktionierte. Nenne drei Einrichtungen oder Regeln.",
+          "concept": "Bürger stimmten direkt in der Volksversammlung ab, Ämter wurden ausgelost und bezahlt; nur erwachsene männliche Bürger durften mitbestimmen.",
+          "sample_solution": "In Athen stimmten die Bürger direkt in der Volksversammlung auf der Pnyx über Gesetze, Krieg und Frieden ab. Die meisten Ämter und die Richter wurden unter den Bürgern ausgelost, nur die Strategen gewählt. Perikles führte Tagegelder ein, damit auch arme Bürger Ämter übernehmen konnten. Mitbestimmen durften aber nur erwachsene Männer mit Bürgerrecht.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M7PNS6X3HF0DNYFX3YMH1JTM",
+      "atom_uri": "urn:zam:atom:01M7PNS6X3HF0DNYFX3YMH1JTM",
+      "namespace": "zam-academy-geschichte-realschule-6",
+      "slug": "g6-rom-anfaenge",
+      "title": "Von der Sage zur Weltmacht",
+      "domain": "geschichte/antike",
+      "reduction": "narrative",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-rom-anfaenge",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-6",
+          "topic_code": "lb5",
+          "topic_title": "Römer"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb5",
+          "topic_title": "Das Imperium Romanum",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JTN",
+          "slug": "g6-rom-anfaenge-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-rom-anfaenge",
+          "question": "Was zeigt die Sage von Romulus und Remus vor allem?",
+          "concept": "Wie die Römer ihre eigene Herkunft deuteten.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Wie die Römer ihre eigene Herkunft deuteten.",
+              "Wann genau die Stadt Rom gegründet wurde."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Wann genau die Stadt Rom gegründet wurde.",
+              "reason": "Das Jahr 753 v. Chr. wurde erst viel später errechnet; Funde sind älter."
+            },
+            {
+              "text": "Dass Wölfe im alten Italien Kinder aufzogen.",
+              "reason": "Die Sage ist eine Erzählung mit Botschaft, kein Bericht über Wölfe."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JTP",
+          "slug": "g6-rom-anfaenge-merken",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-rom-anfaenge",
+          "question": "In welchem Jahr wurde Rom nach der Sage gegründet?",
+          "concept": "753 v. Chr.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "753 v. Chr.",
+              "509 v. Chr."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "509 v. Chr.",
+              "reason": "509 v. Chr. vertrieben die Römer der Überlieferung nach ihren letzten König."
+            },
+            {
+              "text": "776 v. Chr.",
+              "reason": "776 v. Chr. fanden nach griechischer Überlieferung die ersten Spiele in Olympia statt."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JTQ",
+          "slug": "g6-rom-anfaenge-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-rom-anfaenge",
+          "question": "Erzähle die Sage von der Gründung Roms in drei Sätzen und erkläre, warum sie keine verlässliche Quelle für das Gründungsjahr ist.",
+          "concept": "Romulus und Remus, von einer Wölfin gesäugt; das Jahr 753 v. Chr. wurde erst später errechnet, Funde sind älter.",
+          "sample_solution": "Die Zwillinge Romulus und Remus wurden am Tiber ausgesetzt und von einer Wölfin gesäugt. Später gründeten sie eine Stadt, Romulus tötete im Streit seinen Bruder und nannte die Stadt Rom. Die Sage entstand aber erst Jahrhunderte später, und das Jahr 753 v. Chr. haben römische Gelehrte nachträglich errechnet. Funde auf dem Palatin sind sogar älter.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M7PNS6X3HF0DNYFX3YMH1JTR",
+      "atom_uri": "urn:zam:atom:01M7PNS6X3HF0DNYFX3YMH1JTR",
+      "namespace": "zam-academy-geschichte-realschule-6",
+      "slug": "g6-republik",
+      "title": "Die römische Republik: Senat, Konsuln und Volk",
+      "domain": "geschichte/antike",
+      "reduction": "narrative",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-republik",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-6",
+          "topic_code": "lb5",
+          "topic_title": "Römer"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb5",
+          "topic_title": "Das Imperium Romanum",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JTS",
+          "slug": "g6-republik-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-republik",
+          "question": "Warum gab es in Rom immer zwei Konsuln, die nur ein Jahr im Amt blieben?",
+          "concept": "Damit keiner allein und dauerhaft herrschen konnte.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Damit keiner allein und dauerhaft herrschen konnte.",
+              "Damit sie sich Arbeit und Lohn teilen konnten."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Damit sie sich Arbeit und Lohn teilen konnten.",
+              "reason": "Hohe Ämter waren in Rom unbezahlt; es ging um Macht, nicht um Lohn."
+            },
+            {
+              "text": "Weil das Heer zwei Anführer verlangte.",
+              "reason": "Der Grund war politisch: Machtteilung sollte einen neuen König verhindern."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JTT",
+          "slug": "g6-republik-merken",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-republik",
+          "question": "Wie lange durfte ein Diktator in der römischen Republik höchstens herrschen?",
+          "concept": "Sechs Monate",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sechs Monate",
+              "Ein Jahr"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Ein Jahr",
+              "reason": "Ein Jahr war die Amtszeit der Konsuln."
+            },
+            {
+              "text": "Zehn Jahre",
+              "reason": "Zehn Jahre Verbannung drohten in Athen beim Scherbengericht."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JTV",
+          "slug": "g6-republik-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-republik",
+          "question": "Erkläre, wie die Römer in der Republik verhindern wollten, dass wieder ein König herrschte. Nenne zwei Regeln.",
+          "concept": "Hohe Ämter nur für ein Jahr und immer mit mindestens zwei Inhabern; ein Diktator höchstens sechs Monate.",
+          "sample_solution": "Die Römer wählten alle hohen Beamten nur für ein Jahr, sodass niemand lange an der Macht blieb. Außerdem hatte jedes Amt mindestens zwei Inhaber, die sich gegenseitig kontrollierten, zum Beispiel zwei Konsuln. Ein Diktator durfte nur im Notfall und höchstens sechs Monate allein herrschen.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M7PNS6X3HF0DNYFX3YMH1JTW",
+      "atom_uri": "urn:zam:atom:01M7PNS6X3HF0DNYFX3YMH1JTW",
+      "namespace": "zam-academy-geschichte-realschule-6",
+      "slug": "g6-caesar-augustus",
+      "title": "Caesar, Augustus und das Ende der Republik",
+      "domain": "geschichte/antike",
+      "reduction": "narrative",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-caesar-augustus",
+      "prerequisites": [
+        {
+          "atom_id": "01M7PNS6X3HF0DNYFX3YMH1JTR",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „Die römische Republik: Senat, Konsuln und Volk“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-6",
+          "topic_code": "lb5",
+          "topic_title": "Römer"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb5",
+          "topic_title": "Das Imperium Romanum",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JTX",
+          "slug": "g6-caesar-augustus-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-caesar-augustus",
+          "question": "Warum nannte sich Augustus „Princeps“, also „erster Bürger“, und nicht König?",
+          "concept": "Er wollte den Anschein der Republik wahren.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Er wollte den Anschein der Republik wahren.",
+              "Der Senat hatte ihm den Königstitel verweigert."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Der Senat hatte ihm den Königstitel verweigert.",
+              "reason": "Augustus strebte den Königstitel gar nicht an; Könige waren in Rom verhasst."
+            },
+            {
+              "text": "Er hatte tatsächlich nicht mehr Macht als andere.",
+              "reason": "Er befehligte die meisten Legionen und hatte die eigentliche Macht."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JTY",
+          "slug": "g6-caesar-augustus-merken",
+          "replaces": [
+            "01K4G6A0000000000000000J07"
+          ],
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-caesar-augustus",
+          "question": "Wer wurde 27 v. Chr. erster römischer Kaiser?",
+          "concept": "Augustus",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Augustus",
+              "Caesar"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Caesar",
+              "reason": "Caesar war Diktator auf Lebenszeit und wurde 44 v. Chr. ermordet; Kaiser war er nicht."
+            },
+            {
+              "text": "Romulus",
+              "reason": "Romulus ist der sagenhafte Gründer und erste König Roms."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JTZ",
+          "slug": "g6-caesar-augustus-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-caesar-augustus",
+          "question": "Erkläre den Unterschied zwischen dem Diktator Caesar und dem Princeps Augustus.",
+          "concept": "Caesar herrschte offen als Diktator auf Lebenszeit und wurde ermordet; Augustus herrschte als erster Bürger hinter republikanischer Fassade.",
+          "sample_solution": "Caesar ließ sich 44 v. Chr. zum Diktator auf Lebenszeit machen und zeigte offen, dass er allein herrschte. Viele Senatoren sahen darin das Ende der Republik und ermordeten ihn. Augustus herrschte ebenso allein, nannte sich aber nur erster Bürger und ließ Senat und Ämter bestehen. So wahrte er den Anschein der Republik und blieb bis zu seinem Tod an der Macht.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M7PNS6X3HF0DNYFX3YMH1JV0",
+      "atom_uri": "urn:zam:atom:01M7PNS6X3HF0DNYFX3YMH1JV0",
+      "namespace": "zam-academy-geschichte-realschule-6",
+      "slug": "g6-stadt-rom",
+      "title": "Leben in der Großstadt Rom",
+      "domain": "geschichte/antike",
+      "reduction": "narrative",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-stadt-rom",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-6",
+          "topic_code": "lb5",
+          "topic_title": "Römer"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb5",
+          "topic_title": "Das Imperium Romanum",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JV1",
+          "slug": "g6-stadt-rom-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-stadt-rom",
+          "question": "Warum war Rom nachts besonders laut?",
+          "concept": "Lastkarren durften nur nachts in die Stadt fahren.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Lastkarren durften nur nachts in die Stadt fahren.",
+              "In den Thermen fanden nachts große Feste statt."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "In den Thermen fanden nachts große Feste statt.",
+              "reason": "Die Thermen waren vor allem nachmittags geöffnet."
+            },
+            {
+              "text": "Die Feuerwehr übte jede Nacht in den Gassen.",
+              "reason": "Die Feuerwehr patrouillierte, aber das erklärt den Lärm nicht."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JV2",
+          "slug": "g6-stadt-rom-merken",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-stadt-rom",
+          "question": "Wie hießen die mehrstöckigen Mietshäuser im antiken Rom?",
+          "concept": "Insulae",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Insulae",
+              "Thermen"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Thermen",
+              "reason": "Thermen waren öffentliche Bäder."
+            },
+            {
+              "text": "Aquädukte",
+              "reason": "Aquädukte waren Wasserleitungen."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JV3",
+          "slug": "g6-stadt-rom-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-stadt-rom",
+          "question": "Beschreibe das Wohnen in einer Insula. Nenne zwei Gefahren und eine Maßnahme dagegen.",
+          "concept": "Mehrstöckige Mietshäuser ohne Wasser und Toilette; Brände und Einstürze; Augustus begrenzte die Höhe und schuf eine Feuerwehr.",
+          "sample_solution": "Die meisten Römer wohnten in Insulae, mehrstöckigen Mietshäusern mit Läden im Erdgeschoss und engen Wohnungen darüber, meist ohne Wasser und Toilette. Gefährlich waren Brände, weil man mit offenem Feuer kochte und heizte, und Einstürze schlecht gebauter Häuser. Augustus begrenzte die Höhe der Häuser und gründete eine Feuerwehr.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M7PNS6X3HF0DNYFX3YMH1JV4",
+      "atom_uri": "urn:zam:atom:01M7PNS6X3HF0DNYFX3YMH1JV4",
+      "namespace": "zam-academy-geschichte-realschule-6",
+      "slug": "g6-familie",
+      "title": "Die römische Familie und ihre Werte",
+      "domain": "geschichte/antike",
+      "reduction": "narrative",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-familie",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-6",
+          "topic_code": "lb5",
+          "topic_title": "Römer"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb5",
+          "topic_title": "Das Imperium Romanum",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JV5",
+          "slug": "g6-familie-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-familie",
+          "question": "Wer entschied in der römischen Familie, wen eine Tochter heiratete?",
+          "concept": "Der pater familias, also ihr Vater.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der pater familias, also ihr Vater.",
+              "Die Tochter selbst nach ihrem Wunsch."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die Tochter selbst nach ihrem Wunsch.",
+              "reason": "Eigene Wahl war für Töchter die Ausnahme; die Väter vereinbarten die Ehen."
+            },
+            {
+              "text": "Der Senat in einer Abstimmung.",
+              "reason": "Der Senat kümmerte sich um den Staat, nicht um Familienangelegenheiten."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JV6",
+          "slug": "g6-familie-merken",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-familie",
+          "question": "Wie hieß das Familienoberhaupt mit Gewalt über die ganze römische Familie?",
+          "concept": "Pater familias",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Pater familias",
+              "Pontifex maximus"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Pontifex maximus",
+              "reason": "Der Pontifex maximus war der oberste Priester Roms."
+            },
+            {
+              "text": "Patrizier",
+              "reason": "Patrizier waren die alten Adelsfamilien Roms."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JV7",
+          "slug": "g6-familie-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-familie",
+          "question": "Beschreibe die Stellung des pater familias mit drei Beispielen seiner Rechte.",
+          "concept": "Der Vater bestimmte über Heiraten, Vermögen und Strafen; auch erwachsene Söhne besaßen nichts Eigenes.",
+          "sample_solution": "Der pater familias stand an der Spitze der römischen Familie. Er entschied, wen seine Kinder heirateten, verwaltete das ganze Vermögen und durfte seine Kinder bestrafen. Selbst erwachsene Söhne besaßen kein eigenes Vermögen, solange ihr Vater lebte. Seine Gewalt reichte über die ganze familia, auch über die Sklaven.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M7PNS6X3HF0DNYFX3YMH1JV8",
+      "atom_uri": "urn:zam:atom:01M7PNS6X3HF0DNYFX3YMH1JV8",
+      "namespace": "zam-academy-geschichte-realschule-6",
+      "slug": "g6-provinzen",
+      "title": "Die Römer in Bayern: Provinz, Limes und Romanisierung",
+      "domain": "geschichte/antike",
+      "reduction": "narrative",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-provinzen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-6",
+          "topic_code": "lb5",
+          "topic_title": "Römer"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb5",
+          "topic_title": "Das Imperium Romanum",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JV9",
+          "slug": "g6-provinzen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-provinzen",
+          "question": "Welche heutige Stadt war die Hauptstadt der Provinz Raetien?",
+          "concept": "Augsburg, damals Augusta Vindelicum.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Augsburg, damals Augusta Vindelicum.",
+              "Regensburg, damals Castra Regina."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Regensburg, damals Castra Regina.",
+              "reason": "Castra Regina war ein wichtiges Legionslager, aber nicht die Hauptstadt."
+            },
+            {
+              "text": "München, damals Monacum Romanum.",
+              "reason": "München wurde erst im Mittelalter gegründet; „Monacum Romanum“ gab es nicht."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JVA",
+          "slug": "g6-provinzen-merken",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-provinzen",
+          "question": "Wie hieß die römische Provinz, zu der das heutige Südbayern gehörte?",
+          "concept": "Raetien",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Raetien",
+              "Gallien"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Gallien",
+              "reason": "Gallien ist das heutige Frankreich."
+            },
+            {
+              "text": "Britannien",
+              "reason": "Britannien ist das heutige Großbritannien."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JVB",
+          "slug": "g6-provinzen-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-provinzen",
+          "question": "Erkläre den Begriff Romanisierung an zwei Beispielen aus Bayern.",
+          "concept": "Übernahme römischer Lebensweise: Städte wie Augusta Vindelicum (Augsburg), Gutshöfe, Latein mit Wörtern wie Mauer und Fenster.",
+          "sample_solution": "Romanisierung bedeutet, dass die Bewohner einer Provinz nach und nach die römische Lebensweise übernahmen. In Bayern entstanden römische Städte wie Augusta Vindelicum, das heutige Augsburg, und Gutshöfe mit Bädern. Außerdem sprach man zunehmend Latein; Wörter wie Mauer, Fenster und Wein stammen daher.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M7PNS6X3HF0DNYFX3YMH1JVC",
+      "atom_uri": "urn:zam:atom:01M7PNS6X3HF0DNYFX3YMH1JVC",
+      "namespace": "zam-academy-geschichte-realschule-6",
+      "slug": "g6-juden",
+      "title": "Juden im Römischen Reich",
+      "domain": "geschichte/antike",
+      "reduction": "narrative",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-juden",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-6",
+          "topic_code": "lb5",
+          "topic_title": "Römer"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb5",
+          "topic_title": "Das Imperium Romanum",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JVD",
+          "slug": "g6-juden-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-juden",
+          "question": "Was geschah 70 n. Chr. in Jerusalem?",
+          "concept": "Römische Truppen zerstörten den jüdischen Tempel.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Römische Truppen zerstörten den jüdischen Tempel.",
+              "Kaiser Augustus ließ den Tempel neu errichten."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Kaiser Augustus ließ den Tempel neu errichten.",
+              "reason": "Den prächtigen Ausbau des Tempels ließ König Herodes beginnen, nicht Augustus; 70 n. Chr. wurde er zerstört."
+            },
+            {
+              "text": "Die Juden erhielten das Bürgerrecht der Stadt Rom.",
+              "reason": "Mit dem Bürgerrecht hat das Jahr 70 nichts zu tun; es war das Ende eines Aufstands."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JVE",
+          "slug": "g6-juden-merken",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-juden",
+          "question": "Wie nennt man das Leben von Juden verstreut außerhalb ihres Herkunftslandes?",
+          "concept": "Diaspora",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Diaspora",
+              "Hidschra"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Hidschra",
+              "reason": "Die Hidschra ist Mohammeds Auswanderung nach Medina im Jahr 622."
+            },
+            {
+              "text": "Exodus",
+              "reason": "Exodus bezeichnet den in der Bibel erzählten Auszug aus Ägypten."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JVF",
+          "slug": "g6-juden-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-juden",
+          "question": "Erkläre den Begriff Diaspora und wie Juden ohne Tempel ihren Glauben bewahrten.",
+          "concept": "Diaspora heißt Zerstreuung; nach der Tempelzerstörung hielten Synagoge, Tora, Rabbiner und Feste den Glauben lebendig.",
+          "sample_solution": "Diaspora heißt Zerstreuung: Juden lebten verstreut außerhalb ihres Herkunftslandes, in vielen Städten des Römischen Reiches. Nach der Zerstörung des Tempels 70 n. Chr. wurden Synagogen zu Orten des Gebets und des Lernens. Rabbiner lehrten die Tora, und gemeinsame Feste wie Pessach und der Sabbat hielten die Gemeinschaft zusammen.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M7PNS6X3HF0DNYFX3YMH1JVG",
+      "atom_uri": "urn:zam:atom:01M7PNS6X3HF0DNYFX3YMH1JVG",
+      "namespace": "zam-academy-geschichte-realschule-6",
+      "slug": "g6-christentum",
+      "title": "Vom verfolgten Glauben zur Staatsreligion",
+      "domain": "geschichte/antike",
+      "reduction": "narrative",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-christentum",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-6",
+          "topic_code": "lb5",
+          "topic_title": "Römer"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb5",
+          "topic_title": "Das Imperium Romanum",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JVH",
+          "slug": "g6-christentum-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-christentum",
+          "question": "Warum wurden Christen im Römischen Reich verfolgt?",
+          "concept": "Sie verweigerten das Opfer für Götter und Kaiser.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie verweigerten das Opfer für Götter und Kaiser.",
+              "Sie weigerten sich, Latein zu sprechen."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Sie weigerten sich, Latein zu sprechen.",
+              "reason": "Viele Christen sprachen Latein oder Griechisch; die Sprache war kein Grund."
+            },
+            {
+              "text": "Sie hatten Rom 64 n. Chr. angezündet.",
+              "reason": "Nero gab ihnen die Schuld am Brand, Belege dafür gibt es nicht."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JVJ",
+          "slug": "g6-christentum-merken",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-christentum",
+          "question": "In welchem Jahr wurde das Christentum Staatsreligion im Römischen Reich?",
+          "concept": "380 n. Chr.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "380 n. Chr.",
+              "313 n. Chr."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "313 n. Chr.",
+              "reason": "313 n. Chr. erhielten die Christen Religionsfreiheit."
+            },
+            {
+              "text": "64 n. Chr.",
+              "reason": "64 n. Chr. ließ Nero nach dem Brand Roms Christen hinrichten."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JVK",
+          "slug": "g6-christentum-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-christentum",
+          "question": "Erkläre, warum Christen im Römischen Reich verfolgt wurden, obwohl die Römer viele Religionen duldeten.",
+          "concept": "Rom verlangte Opfer für Staatsgötter und Kaiser als Zeichen der Treue; Christen verweigerten sie und galten als staatsfeindlich.",
+          "sample_solution": "Die Römer duldeten fremde Götter, solange alle auch für die Staatsgötter und den Kaiser opferten. Das galt als Zeichen der Treue zum Staat. Christen glaubten nur an einen Gott und verweigerten diese Opfer. Deshalb hielten viele Römer sie für staatsfeindlich, und Kaiser wie Nero oder später Diokletian ließen sie verfolgen.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M7PNS6X3HF0DNYFX3YMH1JVM",
+      "atom_uri": "urn:zam:atom:01M7PNS6X3HF0DNYFX3YMH1JVM",
+      "namespace": "zam-academy-geschichte-realschule-6",
+      "slug": "g6-erbe-roms",
+      "title": "Das Erbe Roms in Europa",
+      "domain": "geschichte/antike",
+      "reduction": "narrative",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-erbe-roms",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-6",
+          "topic_code": "lb5",
+          "topic_title": "Römer"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb5",
+          "topic_title": "Das Imperium Romanum",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JVN",
+          "slug": "g6-erbe-roms-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-erbe-roms",
+          "question": "Welche Sprache ist eine Nachfahrin des Lateins?",
+          "concept": "Spanisch.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Spanisch.",
+              "Englisch."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Englisch.",
+              "reason": "Englisch ist eine germanische Sprache, hat aber viele lateinische Wörter übernommen."
+            },
+            {
+              "text": "Polnisch.",
+              "reason": "Polnisch ist eine slawische Sprache."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JVP",
+          "slug": "g6-erbe-roms-merken",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-erbe-roms",
+          "question": "Wie nennt man die Sprachen, die aus dem Latein entstanden sind?",
+          "concept": "Romanische Sprachen",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Romanische Sprachen",
+              "Germanische Sprachen"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Germanische Sprachen",
+              "reason": "Zu ihnen gehören Deutsch und Englisch; sie stammen nicht vom Latein ab."
+            },
+            {
+              "text": "Slawische Sprachen",
+              "reason": "Zu ihnen gehören etwa Polnisch und Tschechisch."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JVQ",
+          "slug": "g6-erbe-roms-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-erbe-roms",
+          "question": "Nenne drei Beispiele für das Erbe Roms in deinem Alltag und erkläre eines genauer.",
+          "concept": "Zum Beispiel lateinisches Alphabet, Monatsnamen Juli und August nach Caesar und Augustus, Lehnwörter wie Fenster.",
+          "sample_solution": "Erstens benutze ich das lateinische Alphabet, wenn ich schreibe. Zweitens heißen die Monate Juli und August nach Caesar und Augustus. Drittens stammen Wörter wie Fenster oder Mauer aus dem Latein. Der Kalender geht auf Caesar zurück, der ein Jahr mit 365 Tagen und einem Schaltjahr einführte; unser heutiger Kalender ist eine spätere Verbesserung davon.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M7PNS6X3HF0DNYFX3YMH1JVR",
+      "atom_uri": "urn:zam:atom:01M7PNS6X3HF0DNYFX3YMH1JVR",
+      "namespace": "zam-academy-geschichte-realschule-6",
+      "slug": "g6-untergang-roms",
+      "title": "Warum zerfiel das Weströmische Reich?",
+      "domain": "geschichte/mittelalter",
+      "reduction": "narrative",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-untergang-roms",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-6",
+          "topic_code": "lb6",
+          "topic_title": "Frühmittelalter"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb6",
+          "topic_title": "Von der Antike zum Frühmittelalter",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JVS",
+          "slug": "g6-untergang-roms-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-untergang-roms",
+          "question": "Welche Ursache für das Ende Westroms ist eine innere Ursache?",
+          "concept": "Häufige Kaiserwechsel und Bürgerkriege im Reich.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Häufige Kaiserwechsel und Bürgerkriege im Reich.",
+              "Der Zug der Hunnen aus Asien nach Westen."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Der Zug der Hunnen aus Asien nach Westen.",
+              "reason": "Die Hunnen kamen von außen; ihr Zug ist eine äußere Ursache."
+            },
+            {
+              "text": "Die Plünderung Roms durch die Westgoten.",
+              "reason": "Die Westgoten drangen von außen ein; auch das ist eine äußere Ursache."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JVT",
+          "slug": "g6-untergang-roms-merken",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-untergang-roms",
+          "question": "Welches Jahr gilt als Ende des Weströmischen Reiches?",
+          "concept": "476 n. Chr.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "476 n. Chr.",
+              "410 n. Chr."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "410 n. Chr.",
+              "reason": "410 n. Chr. plünderten die Westgoten Rom; das Reich bestand weiter."
+            },
+            {
+              "text": "1453 n. Chr.",
+              "reason": "1453 endete das Oströmische Reich, nicht das Weströmische."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JVV",
+          "slug": "g6-untergang-roms-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-untergang-roms",
+          "question": "Nenne je zwei innere und äußere Ursachen für das Ende des Weströmischen Reiches.",
+          "concept": "Innen: Kaiserwechsel und Bürgerkriege, Geldentwertung und Steuern; außen: Druck germanischer Gruppen und der Zug der Hunnen.",
+          "sample_solution": "Innere Ursachen waren die vielen Kaiserwechsel und Bürgerkriege sowie die Geldentwertung und hohe Steuern. Äußere Ursachen waren der Druck germanischer Gruppen an Rhein und Donau und der Zug der Hunnen, der um 375 n. Chr. weitere Wanderungen auslöste. Zusammen führten sie dazu, dass Odoaker 476 n. Chr. den letzten weströmischen Kaiser absetzte.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M7PNS6X3HF0DNYFX3YMH1JVW",
+      "atom_uri": "urn:zam:atom:01M7PNS6X3HF0DNYFX3YMH1JVW",
+      "namespace": "zam-academy-geschichte-realschule-6",
+      "slug": "g6-dreiteilung",
+      "title": "Wanderungen und die Dreiteilung der Mittelmeerwelt",
+      "domain": "geschichte/mittelalter",
+      "reduction": "narrative",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-dreiteilung",
+      "prerequisites": [
+        {
+          "atom_id": "01M7PNS6X3HF0DNYFX3YMH1JVR",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „Warum zerfiel das Weströmische Reich?“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-6",
+          "topic_code": "lb6",
+          "topic_title": "Frühmittelalter"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb6",
+          "topic_title": "Von der Antike zum Frühmittelalter",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JVX",
+          "slug": "g6-dreiteilung-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-dreiteilung",
+          "question": "Warum setzt man „Völkerwanderung“ oft in Anführungszeichen?",
+          "concept": "Es wanderten keine geschlossenen Völker, sondern gemischte Gruppen.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Es wanderten keine geschlossenen Völker, sondern gemischte Gruppen.",
+              "Die Wanderungen haben in Wirklichkeit nie stattgefunden."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die Wanderungen haben in Wirklichkeit nie stattgefunden.",
+              "reason": "Die Wanderungen gab es; sie verliefen nur anders, als das Wort nahelegt."
+            },
+            {
+              "text": "Nur Römer verwendeten diesen Begriff damals.",
+              "reason": "Der Begriff ist viel später entstanden, nicht in der Römerzeit."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JVY",
+          "slug": "g6-dreiteilung-merken",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-dreiteilung",
+          "question": "Wie hieß die Hauptstadt des Byzantinischen Reiches?",
+          "concept": "Konstantinopel",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Konstantinopel",
+              "Thessaloniki"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Thessaloniki",
+              "reason": "Thessaloniki war eine wichtige Stadt des Reiches, aber nicht die Hauptstadt."
+            },
+            {
+              "text": "Alexandria",
+              "reason": "Alexandria in Ägypten wurde um 640 von muslimischen Heeren erobert."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JVZ",
+          "slug": "g6-dreiteilung-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-dreiteilung",
+          "question": "Beschreibe die Dreiteilung der Mittelmeerwelt um 750: Nenne die drei Bereiche mit je einem Merkmal.",
+          "concept": "Byzanz mit Kaiser in Konstantinopel, islamische Welt der Kalifen von Spanien bis Persien, lateinisch-christlicher Westen mit Papst und Franken.",
+          "sample_solution": "Im Osten lag das Byzantinische Reich mit dem Kaiser in Konstantinopel und griechischer Sprache. Im Süden und Osten des Mittelmeers herrschten muslimische Kalifen von Spanien bis Persien; dort sprach man Arabisch. Im Westen lag das lateinisch-christliche Europa mit dem Papst in Rom und dem Frankenreich.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M7PNS6X3HF0DNYFX3YMH1JW0",
+      "atom_uri": "urn:zam:atom:01M7PNS6X3HF0DNYFX3YMH1JW0",
+      "namespace": "zam-academy-geschichte-realschule-6",
+      "slug": "g6-islam",
+      "title": "Die Ausbreitung des Islam",
+      "domain": "geschichte/mittelalter",
+      "reduction": "narrative",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-islam",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-6",
+          "topic_code": "lb6",
+          "topic_title": "Frühmittelalter"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb6",
+          "topic_title": "Von der Antike zum Frühmittelalter",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JW1",
+          "slug": "g6-islam-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-islam",
+          "question": "Welche Voraussetzung erleichterte die Ausbreitung des Islam?",
+          "concept": "Byzanz und Persien hatten sich im Krieg erschöpft.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Byzanz und Persien hatten sich im Krieg erschöpft.",
+              "Die Franken unterstützten die arabischen Heere."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die Franken unterstützten die arabischen Heere.",
+              "reason": "Die Franken stellten sich den Heeren 732 in Gallien entgegen."
+            },
+            {
+              "text": "Alle Eroberten mussten sofort Muslime werden.",
+              "reason": "Christen und Juden durften gegen eine Steuer ihren Glauben behalten."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JW2",
+          "slug": "g6-islam-merken",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-islam",
+          "question": "In welchem Jahr zog Mohammed von Mekka nach Medina?",
+          "concept": "622",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "622",
+              "632"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "632",
+              "reason": "632 ist Mohammeds Todesjahr."
+            },
+            {
+              "text": "711",
+              "reason": "711 setzten muslimische Heere nach Spanien über."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JW3",
+          "slug": "g6-islam-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-islam",
+          "question": "Erkläre, was die Hidschra ist und warum das Jahr 622 für Muslime wichtig ist.",
+          "concept": "Auswanderung Mohammeds von Mekka nach Medina 622; mit ihr beginnt die islamische Zeitrechnung.",
+          "sample_solution": "Die Hidschra ist die Auswanderung Mohammeds und seiner Anhänger im Jahr 622 von Mekka nach Medina. Mohammed wurde in Mekka verfolgt, weil er nur einen Gott verkündete. In Medina fand er Unterstützung und baute eine Gemeinde auf. Deshalb beginnt mit dem Jahr 622 die islamische Zeitrechnung.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M7PNS6X3HF0DNYFX3YMH1JW4",
+      "atom_uri": "urn:zam:atom:01M7PNS6X3HF0DNYFX3YMH1JW4",
+      "namespace": "zam-academy-geschichte-realschule-6",
+      "slug": "g6-franken",
+      "title": "Das Reich der Franken entsteht",
+      "domain": "geschichte/mittelalter",
+      "reduction": "narrative",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-franken",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-6",
+          "topic_code": "lb6",
+          "topic_title": "Frühmittelalter"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb6",
+          "topic_title": "Von der Antike zum Frühmittelalter",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JW5",
+          "slug": "g6-franken-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-franken",
+          "question": "Warum war Chlodwigs katholische Taufe politisch klug?",
+          "concept": "Er gewann damit Kirche und Bevölkerung Galliens.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Er gewann damit Kirche und Bevölkerung Galliens.",
+              "Der Papst zahlte ihm dafür einen hohen Lohn."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Der Papst zahlte ihm dafür einen hohen Lohn.",
+              "reason": "Ein Lohn des Papstes ist nicht überliefert; der Gewinn war Unterstützung."
+            },
+            {
+              "text": "Die Taufe machte ihn zum römischen Kaiser.",
+              "reason": "Kaiser wurde erst Karl der Große im Jahr 800."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JW6",
+          "slug": "g6-franken-merken",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-franken",
+          "question": "Welcher Frankenkönig ließ sich um 500 katholisch taufen?",
+          "concept": "Chlodwig",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Chlodwig",
+              "Karl Martell"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Karl Martell",
+              "reason": "Karl Martell hielt 732 die muslimischen Heere in Gallien auf."
+            },
+            {
+              "text": "Odoaker",
+              "reason": "Odoaker setzte 476 den letzten weströmischen Kaiser ab."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JW7",
+          "slug": "g6-franken-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-franken",
+          "question": "Beschreibe die Reichsbildung der Franken unter Chlodwig in drei Schritten.",
+          "concept": "König eines Teilstammes um 482, Sieg 486 über den letzten römischen Machthaber in Gallien, katholische Taufe um 500.",
+          "sample_solution": "Chlodwig wurde um 482 König eines fränkischen Teilstammes. Er besiegte 486 den letzten römischen Machthaber in Gallien und schaltete andere fränkische Könige aus. Um 500 ließ er sich katholisch taufen und gewann dadurch die Unterstützung der Bischöfe und der gallorömischen Bevölkerung. So entstand ein großes, stabiles Frankenreich.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M7PNS6X3HF0DNYFX3YMH1JW8",
+      "atom_uri": "urn:zam:atom:01M7PNS6X3HF0DNYFX3YMH1JW8",
+      "namespace": "zam-academy-geschichte-realschule-6",
+      "slug": "g6-karl",
+      "title": "Karl der Große wird Kaiser",
+      "domain": "geschichte/mittelalter",
+      "reduction": "narrative",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-karl",
+      "prerequisites": [
+        {
+          "atom_id": "01M7PNS6X3HF0DNYFX3YMH1JW4",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „Das Reich der Franken entsteht“ auf."
+        },
+        {
+          "atom_id": "01M7PNS6X3HF0DNYFX3YMH1JTW",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „Caesar, Augustus und das Ende der Republik“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-6",
+          "topic_code": "lb6",
+          "topic_title": "Frühmittelalter"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb6",
+          "topic_title": "Von der Antike zum Frühmittelalter",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JW9",
+          "slug": "g6-karl-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-karl",
+          "question": "Was war bei Karls Kaiserkrönung im Vergleich zur Antike neu?",
+          "concept": "Der Papst setzte dem Kaiser die Krone auf.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Papst setzte dem Kaiser die Krone auf.",
+              "Der Kaiser trug den lateinischen Titel Imperator."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Der Kaiser trug den lateinischen Titel Imperator.",
+              "reason": "Den Titel Imperator trugen schon die römischen Kaiser: Kontinuität."
+            },
+            {
+              "text": "Der Kaiser herrschte über viele Völker.",
+              "reason": "Auch Augustus herrschte über viele Völker: Kontinuität."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JWA",
+          "slug": "g6-karl-merken",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-karl",
+          "question": "Welcher Papst krönte Karl den Großen im Jahr 800 zum Kaiser?",
+          "concept": "Leo III.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Leo III.",
+              "Gregor I."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Gregor I.",
+              "reason": "Gregor der Große war Papst um 600, lange vor Karl."
+            },
+            {
+              "text": "Bonifatius",
+              "reason": "Bonifatius war Missionar und Erzbischof, kein Papst."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JWB",
+          "slug": "g6-karl-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-karl",
+          "question": "Beschreibe die Kaiserkrönung Karls des Großen: Wann, wo, durch wen, und warum war sie wichtig?",
+          "concept": "Am 25. Dezember 800 krönte Papst Leo III. Karl in Rom zum Kaiser; erstmals seit 476 wieder ein Kaiser im Westen, eng an die Kirche gebunden.",
+          "sample_solution": "Am 25. Dezember 800 krönte Papst Leo III. den Frankenkönig Karl in der Peterskirche in Rom zum Kaiser. Damit gab es im Westen über 300 Jahre nach dem Ende Westroms wieder einen Kaiser. Wichtig war auch, dass der Papst ihn krönte: Kaisertum und Kirche waren seitdem eng verbunden.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M7PNS6X3HF0DNYFX3YMH1JWC",
+      "atom_uri": "urn:zam:atom:01M7PNS6X3HF0DNYFX3YMH1JWC",
+      "namespace": "zam-academy-geschichte-realschule-6",
+      "slug": "g6-ueberleben",
+      "title": "Überlebenstechniken der Vorgeschichte",
+      "domain": "geschichte/anfaenge",
+      "reduction": "narrative",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-ueberleben",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-6",
+          "topic_code": "lb7",
+          "topic_title": "Technik im Wandel"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb7",
+          "topic_title": "Technik verändert das Leben der Menschen (Längsschnitt)",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JWD",
+          "slug": "g6-ueberleben-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-ueberleben",
+          "question": "Welchen Vorteil brachten Pfeil und Bogen gegenüber dem Faustkeil bei der Jagd?",
+          "concept": "Man konnte Tiere aus größerer Entfernung treffen.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Man konnte Tiere aus größerer Entfernung treffen.",
+              "Man konnte mit ihnen auch Feuer entfachen."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Man konnte mit ihnen auch Feuer entfachen.",
+              "reason": "Feuer machte man mit Feuerstein, Schwefelkies und Zunder, nicht mit dem Bogen."
+            },
+            {
+              "text": "Man brauchte für die Jagd keine Gruppe mehr.",
+              "reason": "Auch mit Pfeil und Bogen jagten Menschen oft gemeinsam."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JWE",
+          "slug": "g6-ueberleben-merken",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-ueberleben",
+          "question": "Wozu diente der Zunderschwamm, den Ötzi bei sich trug?",
+          "concept": "Zum Entfachen von Feuer",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Zum Entfachen von Feuer",
+              "Als Proviant für unterwegs"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Als Proviant für unterwegs",
+              "reason": "Der Zunderschwamm ist nicht essbar; er fängt Funken."
+            },
+            {
+              "text": "Zum Färben von Stoffen",
+              "reason": "Zum Färben nutzte man andere Pflanzen; der Pilz diente als Zunder."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JWF",
+          "slug": "g6-ueberleben-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-ueberleben",
+          "question": "Erkläre an zwei Beispielen, wie Feuer das Leben der Menschen in der Vorgeschichte veränderte.",
+          "concept": "Wärme in der Eiszeit und gekochte, besser verdauliche Nahrung; außerdem Licht und Schutz vor Tieren.",
+          "sample_solution": "Feuer spendete Wärme, sodass Menschen auch in der kalten Eiszeit überleben und in kälteren Gegenden wohnen konnten. Außerdem konnten sie Fleisch und Pflanzen kochen oder braten, wodurch die Nahrung leichter verdaulich wurde. Das Feuer hielt zudem wilde Tiere fern und gab Licht in Höhlen und Zelten.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M7PNS6X3HF0DNYFX3YMH1JWG",
+      "atom_uri": "urn:zam:atom:01M7PNS6X3HF0DNYFX3YMH1JWG",
+      "namespace": "zam-academy-geschichte-realschule-6",
+      "slug": "g6-technik-aegypten",
+      "title": "Wasser lenken: Technik im alten Ägypten",
+      "domain": "geschichte/antike",
+      "reduction": "narrative",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-technik-aegypten",
+      "prerequisites": [
+        {
+          "atom_id": "01M7PNS6X3HF0DNYFX3YMH1JS8",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „Der Nil: Lebensader Ägyptens“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-6",
+          "topic_code": "lb7",
+          "topic_title": "Technik im Wandel"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb7",
+          "topic_title": "Technik verändert das Leben der Menschen (Längsschnitt)",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JWH",
+          "slug": "g6-technik-aegypten-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-technik-aegypten",
+          "question": "Wozu diente das Nilometer?",
+          "concept": "Es maß die Höhe der Nilflut.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Es maß die Höhe der Nilflut.",
+              "Es zeigte die Tiefe des Wassers für Schiffe an."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Es zeigte die Tiefe des Wassers für Schiffe an.",
+              "reason": "Für die Schifffahrt war es nicht gedacht; es ging um Ernte und Abgaben."
+            },
+            {
+              "text": "Es pumpte Wasser auf die Felder.",
+              "reason": "Wasser hob man mit dem Schaduf; das Nilometer maß nur."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JWJ",
+          "slug": "g6-technik-aegypten-merken",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-technik-aegypten",
+          "question": "Wie heißt der ägyptische Schöpfbalken mit Gegengewicht?",
+          "concept": "Schaduf",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Schaduf",
+              "Nilometer"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Nilometer",
+              "reason": "Das Nilometer maß die Höhe der Flut."
+            },
+            {
+              "text": "Papyrus",
+              "reason": "Papyrus war das Schreibmaterial der Ägypter."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JWK",
+          "slug": "g6-technik-aegypten-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-technik-aegypten",
+          "question": "Beschreibe, wie die Ägypter das Nilwasser auf ihre Felder brachten. Nenne zwei Techniken.",
+          "concept": "Beckenbewässerung mit Erdwällen, Kanäle und der Schaduf, ein Schöpfbalken mit Gegengewicht.",
+          "sample_solution": "Die Ägypter teilten ihre Felder mit Erdwällen in Becken, die sich bei der Nilschwemme füllten; dort setzte sich der fruchtbare Schlamm ab. Kanäle leiteten Wasser zu weiter entfernten Feldern. Mit dem Schaduf, einem Schöpfbalken mit Gegengewicht, hoben sie Wasser auf höher gelegene Felder.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M7PNS6X3HF0DNYFX3YMH1JWM",
+      "atom_uri": "urn:zam:atom:01M7PNS6X3HF0DNYFX3YMH1JWM",
+      "namespace": "zam-academy-geschichte-realschule-6",
+      "slug": "g6-technik-antike",
+      "title": "Straßen, Bögen und Beton: Technik bei Griechen und Römern",
+      "domain": "geschichte/antike",
+      "reduction": "narrative",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-technik-antike",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-6",
+          "topic_code": "lb7",
+          "topic_title": "Technik im Wandel"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb7",
+          "topic_title": "Technik verändert das Leben der Menschen (Längsschnitt)",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JWN",
+          "slug": "g6-technik-antike-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-technik-antike",
+          "question": "Warum waren die Römerstraßen für die Herrschaft über das Reich so wichtig?",
+          "concept": "Legionen und Befehle erreichten schnell die Provinzen.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Legionen und Befehle erreichten schnell die Provinzen.",
+              "Auf ihnen durften nur Kaiser und Senatoren fahren."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Auf ihnen durften nur Kaiser und Senatoren fahren.",
+              "reason": "Die Straßen nutzten auch Händler, Boten und Reisende."
+            },
+            {
+              "text": "Sie hielten Feinde wie eine Mauer fern.",
+              "reason": "Straßen verbinden; abwehren sollten Grenzanlagen wie der Limes."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JWP",
+          "slug": "g6-technik-antike-merken",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-technik-antike",
+          "question": "Wie heißen die römischen Wasserleitungen, die Wasser mit leichtem Gefälle in die Städte führten?",
+          "concept": "Aquädukte",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Aquädukte",
+              "Insulae"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Insulae",
+              "reason": "Insulae waren Mietshäuser in Rom."
+            },
+            {
+              "text": "Thermen",
+              "reason": "Thermen waren Bäder, die das Wasser verbrauchten."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JWQ",
+          "slug": "g6-technik-antike-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-technik-antike",
+          "question": "Erkläre an den Römerstraßen, warum Technik eine Weichenstellung für die Geschichte sein kann.",
+          "concept": "Straßen ließen Legionen, Boten und Händler schnell reisen; ohne sie hätte Rom die Provinzen kaum halten können.",
+          "sample_solution": "Die Römerstraßen verbanden das riesige Reich. Legionen konnten schnell an die Grenzen marschieren, Boten brachten Befehle, und Händler transportierten Waren. Später verbreitete sich auf den Straßen auch das Christentum. Ohne dieses Netz hätte Rom die Provinzen kaum so lange beherrschen können. Eine technische Leistung veränderte also den Verlauf der Geschichte.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M7PNS6X3HF0DNYFX3YMH1JWR",
+      "atom_uri": "urn:zam:atom:01M7PNS6X3HF0DNYFX3YMH1JWR",
+      "namespace": "zam-academy-geschichte-realschule-6",
+      "slug": "g6-technik-heute",
+      "title": "Technik heute: Wer gewinnt, wer bestimmt?",
+      "domain": "geschichte/zeitgeschichte",
+      "reduction": "narrative",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-technik-heute",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-6",
+          "topic_code": "lb7",
+          "topic_title": "Technik im Wandel"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb7",
+          "topic_title": "Technik verändert das Leben der Menschen (Längsschnitt)",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JWS",
+          "slug": "g6-technik-heute-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-technik-heute",
+          "question": "Welche Frage hilft dir, die Macht hinter einer Technik zu untersuchen?",
+          "concept": "Wer bestimmt über die Technik und ihre Daten?",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Wer bestimmt über die Technik und ihre Daten?",
+              "Wie viel kostet das neueste Gerät im Laden?"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Wie viel kostet das neueste Gerät im Laden?",
+              "reason": "Der Preis sagt wenig darüber, wer über die Technik bestimmt."
+            },
+            {
+              "text": "In welcher Farbe gibt es das Gerät?",
+              "reason": "Die Farbe ist für Macht und Herrschaft unwichtig."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JWT",
+          "slug": "g6-technik-heute-merken",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-technik-heute",
+          "question": "Welche drei Fragen stellst du im Längsschnitt an jede Technik?",
+          "concept": "Alltag, Macht und Umwelt",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Alltag, Macht und Umwelt",
+              "Preis, Farbe und Marke"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Preis, Farbe und Marke",
+              "reason": "Diese Fragen sagen nichts über die Bedeutung für Menschen und Herrschaft."
+            },
+            {
+              "text": "Erfinder, Jahr und Ort",
+              "reason": "Das sind Daten zur Erfindung, keine Fragen nach ihren Folgen."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JWV",
+          "slug": "g6-technik-heute-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-technik-heute",
+          "question": "Wähle eine heutige Technik und untersuche sie mit den drei Fragen: Alltag, Macht, Umwelt.",
+          "concept": "Am Beispiel Smartphone: erleichtert und lenkt ab (Alltag), Firmen und Staaten sammeln Daten (Macht), Rohstoffe und Strom (Umwelt).",
+          "sample_solution": "Ich untersuche das Smartphone. Im Alltag erleichtert es vieles: Ich kann Freunde erreichen, Wege finden und lernen; es kann aber auch ablenken. Macht haben die Unternehmen, die Apps anbieten und dabei Daten sammeln, und Staaten, die Regeln dafür machen. Für die Umwelt bedeutet es den Abbau von Rohstoffen für Akkus und Stromverbrauch.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M7PNS6X3HF0DNYFX3YMH1JWW",
+      "atom_uri": "urn:zam:atom:01M7PNS6X3HF0DNYFX3YMH1JWW",
+      "namespace": "zam-academy-geschichte-realschule-6",
+      "slug": "g6-hatschepsut",
+      "title": "Hatschepsut: eine Frau als Pharao",
+      "domain": "geschichte/antike",
+      "reduction": "narrative",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-hatschepsut",
+      "prerequisites": [
+        {
+          "atom_id": "01M7PNS6X3HF0DNYFX3YMH1JSC",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „Der Pharao: Herrscher und Gott“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-6",
+          "topic_code": "lb8",
+          "topic_title": "Menschen machen Geschichte"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb8",
+          "topic_title": "Menschen machen Geschichte (Längsschnitt)",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JWX",
+          "slug": "g6-hatschepsut-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-hatschepsut",
+          "question": "Warum ließ sich Hatschepsut mit Königsbart darstellen?",
+          "concept": "Ein Pharao galt in Ägypten als Mann.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein Pharao galt in Ägypten als Mann.",
+              "Frauen trugen damals in Ägypten Bärte."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Frauen trugen damals in Ägypten Bärte.",
+              "reason": "Der Königsbart war künstlich und ein Herrschaftszeichen, kein Zeichen der Mode."
+            },
+            {
+              "text": "Ihr Stiefsohn hatte es ihr befohlen.",
+              "reason": "Ihr Stiefsohn war noch ein Kind und hatte keine Macht über sie."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JWY",
+          "slug": "g6-hatschepsut-merken",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-hatschepsut",
+          "question": "Welches Herrschaftszeichen trug Hatschepsut auf vielen Darstellungen, obwohl sie eine Frau war?",
+          "concept": "Den künstlichen Königsbart",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Den künstlichen Königsbart",
+              "Einen goldenen Lorbeerkranz"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Einen goldenen Lorbeerkranz",
+              "reason": "Lorbeerkränze trugen römische Feldherren und Kaiser."
+            },
+            {
+              "text": "Eine eiserne Krone",
+              "reason": "Eiserne Kronen gab es im alten Ägypten nicht."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JWZ",
+          "slug": "g6-hatschepsut-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-hatschepsut",
+          "question": "Stelle Hatschepsut in einem kurzen Porträt vor: Herkunft, Herrschaft, Leistungen.",
+          "concept": "Pharaonentochter und Witwe Thutmosis’ II., regierte erst für ihren Stiefsohn, dann selbst als Pharao; Tempel in Deir el-Bahari, Expedition nach Punt.",
+          "sample_solution": "Hatschepsut war die Tochter eines Pharaos und die Witwe von Thutmosis II. Zuerst regierte sie für ihren jungen Stiefsohn, dann ließ sie sich selbst zum Pharao krönen und herrschte etwa von 1479 bis 1458 v. Chr. Sie ließ den Tempel in Deir el-Bahari bauen und schickte eine Handelsexpedition nach Punt, die Weihrauch und Myrrhenbäume brachte.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M7PNS6X3HF0DNYFX3YMH1JX0",
+      "atom_uri": "urn:zam:atom:01M7PNS6X3HF0DNYFX3YMH1JX0",
+      "namespace": "zam-academy-geschichte-realschule-6",
+      "slug": "g6-alexander",
+      "title": "Alexander der Große: Eroberer und Städtegründer",
+      "domain": "geschichte/antike",
+      "reduction": "narrative",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-alexander",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-6",
+          "topic_code": "lb8",
+          "topic_title": "Menschen machen Geschichte"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb8",
+          "topic_title": "Menschen machen Geschichte (Längsschnitt)",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JX1",
+          "slug": "g6-alexander-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-alexander",
+          "question": "Warum zerbrach Alexanders Reich nach seinem Tod?",
+          "concept": "Es fehlte ein erwachsener Erbe, die Feldherren stritten.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Es fehlte ein erwachsener Erbe, die Feldherren stritten.",
+              "Die Perser eroberten ihr Reich sofort zurück."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die Perser eroberten ihr Reich sofort zurück.",
+              "reason": "Das Perserreich bestand nicht mehr; die Nachfolger waren Makedonen."
+            },
+            {
+              "text": "Die Römer besiegten seine Armee in Babylon.",
+              "reason": "Rom war damals noch eine Macht in Italien und kämpfte nicht in Babylon."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JX2",
+          "slug": "g6-alexander-merken",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-alexander",
+          "question": "In welchem Jahr starb Alexander der Große in Babylon?",
+          "concept": "323 v. Chr.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "323 v. Chr.",
+              "333 v. Chr."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "333 v. Chr.",
+              "reason": "333 v. Chr. siegte Alexander bei Issos über den Perserkönig."
+            },
+            {
+              "text": "356 v. Chr.",
+              "reason": "356 v. Chr. wurde Alexander geboren."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JX3",
+          "slug": "g6-alexander-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-alexander",
+          "question": "Nenne drei Leistungen Alexanders und erkläre, warum sein Reich nach seinem Tod zerfiel.",
+          "concept": "Eroberung des Perserreichs, Städtegründungen wie Alexandria, Verbreitung griechischer Kultur; ohne erwachsenen Erben teilten die Feldherren das Reich.",
+          "sample_solution": "Alexander eroberte in elf Jahren das Perserreich und zog bis an den Indus. Er gründete viele Städte, darunter Alexandria in Ägypten. Durch seine Züge verbreiteten sich griechische Sprache und Kultur bis nach Asien. Nach seinem Tod 323 v. Chr. gab es keinen erwachsenen Erben, seine Feldherren kämpften um die Macht und teilten das Reich unter sich auf.",
+          "materiality": "material"
+        }
+      ]
+    },
+    {
+      "id": "01M7PNS6X3HF0DNYFX3YMH1JX4",
+      "atom_uri": "urn:zam:atom:01M7PNS6X3HF0DNYFX3YMH1JX4",
+      "namespace": "zam-academy-geschichte-realschule-6",
+      "slug": "g6-staatsmaenner",
+      "title": "Augustus und Karl: Selbstdarstellung und Erinnerung",
+      "domain": "geschichte/antike",
+      "reduction": "narrative",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-staatsmaenner",
+      "prerequisites": [
+        {
+          "atom_id": "01M7PNS6X3HF0DNYFX3YMH1JTW",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „Caesar, Augustus und das Ende der Republik“ auf."
+        },
+        {
+          "atom_id": "01M7PNS6X3HF0DNYFX3YMH1JW8",
+          "type": "soft",
+          "rationale": "Baut auf der Lektion „Karl der Große wird Kaiser“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-realschule-6",
+          "topic_code": "lb8",
+          "topic_title": "Menschen machen Geschichte"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb8",
+          "topic_title": "Menschen machen Geschichte (Längsschnitt)",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JX5",
+          "slug": "g6-staatsmaenner-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-staatsmaenner",
+          "question": "Was zeigt eine Statue, auf der Augustus stets jung und kraftvoll erscheint?",
+          "concept": "Wie Augustus gesehen werden wollte.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Wie Augustus gesehen werden wollte.",
+              "Wie Augustus im Alter wirklich aussah."
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Wie Augustus im Alter wirklich aussah.",
+              "reason": "Augustus wurde 75 Jahre alt; die Statuen zeigen ihn bewusst nicht alt."
+            },
+            {
+              "text": "Dass Augustus nie älter als dreißig wurde.",
+              "reason": "Augustus starb erst mit 75 Jahren im Jahr 14 n. Chr."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JX6",
+          "slug": "g6-staatsmaenner-merken",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-staatsmaenner",
+          "question": "Welche bayerische Stadt trägt den Namen des Augustus?",
+          "concept": "Augsburg",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Augsburg",
+              "Regensburg"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Regensburg",
+              "reason": "Regensburg hieß Castra Regina, nach dem Fluss Regen."
+            },
+            {
+              "text": "Passau",
+              "reason": "Passau geht auf das römische Lager Batavis zurück."
+            }
+          ]
+        },
+        {
+          "id": "01M7PNS6X3HF0DNYFX3YMH1JX7",
+          "slug": "g6-staatsmaenner-begruenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/geschichte-realschule-6/#lesson=g6-staatsmaenner",
+          "question": "Erkläre an zwei Beispielen, wie sich Augustus oder Karl der Große selbst darstellte.",
+          "concept": "Beispiel Augustus: Münzen mit seinem Kopf und Ehrennamen und Statuen, die ihn stets jung und siegreich zeigen; dazu sein öffentlich aufgestellter Tatenbericht.",
+          "sample_solution": "Augustus ließ Münzen mit seinem Kopf und seinem Ehrennamen prägen, die im ganzen Reich umliefen. Seine Statuen zeigten ihn immer jung und als siegreichen Feldherrn, auch als er alt war. So wollte er als starker Friedensbringer erscheinen. Auch sein öffentlich aufgestellter Tatenbericht diente diesem Ziel.",
+          "materiality": "material"
+        }
+      ]
+    }
+  ]
+}

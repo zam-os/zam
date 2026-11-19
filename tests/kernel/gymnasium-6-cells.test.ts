@@ -18,15 +18,16 @@ import {
 // Mathematik 6 moved to zam-academy:mathematik-gymnasium-6; its two school
 // cells are archived in tests/fixtures/legacy/.
 const GYM6_CELL_IDS = [
-  "de-by:gymnasium-6-biologie-saeugetiere-voegel-leichtbau-flug",
-  "de-by:gymnasium-6-biologie-fische-amphibien-reptilien-evolution",
   "de-by:gymnasium-6-natur-technik-informatik-vektorgrafik-texte",
-  "de-by:gymnasium-6-geschichte-urgeschichte-aegypten-griechenland",
-  "de-by:gymnasium-6-geschichte-rom-imperium-limes-bayern",
   "de-by:gymnasium-6-geographie-europa-raeume-wirtschaft-eu",
-  "de-by:gymnasium-6-englisch-past-tenses-present-perfect-adjectives",
 ];
-const ACADEMY_GYM6_IDS = ["zam-academy:mathematik-gymnasium-6"];
+const ACADEMY_GYM6_IDS = [
+  "zam-academy:biologie-gymnasium-6",
+  "zam-academy:deutsch-gymnasium-6",
+  "zam-academy:englisch-gymnasium-6",
+  "zam-academy:geschichte-gymnasium-6",
+  "zam-academy:mathematik-gymnasium-6",
+];
 
 describe("Gymnasium Bayern 6 Curriculum Cells (Unterstufe / Orientierungsstufe)", () => {
   let tempDir: string;
@@ -44,7 +45,7 @@ describe("Gymnasium Bayern 6 Curriculum Cells (Unterstufe / Orientierungsstufe)"
     rmSync(tempDir, { recursive: true, force: true });
   });
 
-  it("lists all remaining Gymnasium 6 school cells and their Academy successor", () => {
+  it("lists all remaining Gymnasium 6 school cells and their Academy courses", () => {
     const cells = listBundledCells();
     expect(cells.length).toBeGreaterThanOrEqual(86);
 
@@ -85,43 +86,37 @@ describe("Gymnasium Bayern 6 Curriculum Cells (Unterstufe / Orientierungsstufe)"
 
   it("installs and enrols cleanly into Englisch 6 Past Tenses and Present Perfect", async () => {
     const userId = "01K4TESTUSERGYM60000000001";
-    const cellId =
-      "de-by:gymnasium-6-englisch-past-tenses-present-perfect-adjectives";
+    const cellId = "zam-academy:englisch-gymnasium-6";
 
     expect(await isBundledCellInstalled(db, cellId)).toBe(false);
 
     const res = await enrolBundledCell(db, userId, cellId);
     expect(res.success).toBe(true);
     expect(res.installed).toBe(true);
-    expect(res.cardsCreated).toBe(8); // 4 atoms * 2 practice items
+    expect(res.cardsCreated).toBe(120);
     expect(res.alreadyEnrolled).toBe(false);
 
     expect(await isBundledCellInstalled(db, cellId)).toBe(true);
     const enrolment = await getBundledCellEnrolment(db, userId, cellId);
     expect(enrolment.installed).toBe(true);
     expect(enrolment.enrolled).toBe(true);
-    expect(enrolment.cardCount).toBe(8);
+    expect(enrolment.cardCount).toBe(120);
   });
 
   it("installs and enrols cleanly into Geschichte 6 Rom und Römer in Bayern", async () => {
     const userId = "01K4TESTUSERGYM60000000002";
-    const cellId = "de-by:gymnasium-6-geschichte-rom-imperium-limes-bayern";
+    const cellId = "zam-academy:geschichte-gymnasium-6";
 
     const res = await enrolBundledCell(db, userId, cellId);
     expect(res.success).toBe(true);
-    expect(res.cardsCreated).toBe(8);
+    expect(res.cardsCreated).toBe(72);
 
     const histAtoms = (await db
       .prepare(
-        "SELECT a.id, a.title, a.slug FROM learning_atoms a WHERE a.namespace LIKE 'geschichte-%'",
+        "SELECT a.id, a.title, a.slug FROM learning_atoms a WHERE a.slug = 'gg6-provinzen-bayern-limes'",
       )
       .all()) as Array<{ id: string; title: string; slug: string }>;
-    expect(histAtoms.length).toBeGreaterThanOrEqual(4);
-    expect(
-      histAtoms.some(
-        (a) => a.slug === "roemer-in-bayern-raetien-noricum-limes-kastelle",
-      ),
-    ).toBe(true);
+    expect(histAtoms).toHaveLength(1);
   });
 
   it("installs and enrols cleanly into NuT 6 Vektorgrafik und Dokumentenstrukturen", async () => {
@@ -152,8 +147,7 @@ describe("Gymnasium Bayern 6 Curriculum Cells (Unterstufe / Orientierungsstufe)"
       totalCardsCreated += res.cardsCreated;
     }
 
-    // 7 cells * 4 atoms * 2 items = 56 cards
-    expect(totalCardsCreated).toBe(56);
+    expect(totalCardsCreated).toBe(GYM6_CELL_IDS.length * 8);
 
     const statuses = await getBundledCellsWithStatus(db, userId);
     const gym6Statuses = statuses.filter((s) => GYM6_CELL_IDS.includes(s.id));

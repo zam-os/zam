@@ -1,0 +1,133 @@
+{
+	"schema": 1,
+	"status": "approved",
+	"approved": "2026-11-19",
+	"source_repository": "https://github.com/zam-os/zam",
+	"source_commit": "e6a235f75fe87b9d57af38bd61011027b891492c",
+	"source": "Thomas explicitly approved the listed history transfers in the Codex chat for Academy PR #158 on 2026-11-19: “Freigabe für die Kartenübernahmen erteilt”",
+	"sources": [
+		{
+			"file": "tests/fixtures/de-by-gymnasium-5-deutsch-erzaehlen-maerchen-fabeln-kvt.json",
+			"sha256": "403d19954ed0ec52caa190f91b3d371e3af80dde42242a0145211debd68e4fe6",
+			"source_path": "tests/fixtures/curriculum/de-by-gymnasium-5-deutsch-erzaehlen-maerchen-fabeln-kvt.json"
+		},
+		{
+			"file": "tests/fixtures/de-by-gymnasium-5-deutsch-grammatik-faelle-rechtschreibung-kvt.json",
+			"sha256": "69ebb3a59120f7ac548ea24761d33073c15c007612ad5640791995cee55f87f4",
+			"source_path": "tests/fixtures/curriculum/de-by-gymnasium-5-deutsch-grammatik-faelle-rechtschreibung-kvt.json"
+		}
+	],
+	"rows": [
+		{
+			"category": "A",
+			"action": "replace",
+			"academy_slug": "d5-maerchen-check",
+			"reason": "The old item and its approved successor ask for the same traditional fairy-tale numbers: 3, 7 and 12/13.",
+			"de_by_id": "01K4YD5E000000000000000J01"
+		},
+		{
+			"category": "C",
+			"action": "keep-active",
+			"reason": "The old prompt requires six genre features plus Volksmaerchen versus Kunstmaerchen, and its solution claims an exceptionless good ending. The new shorter card asks for text evidence and explicitly avoids universal genre rules.",
+			"de_by_id": "01K4YD5E000000000000000J02"
+		},
+		{
+			"category": "C",
+			"action": "keep-active",
+			"reason": "Both concern the fox, but the old item recalls a traditional four-part character list while the new item interprets a particular action and its self-serving praise. A shared theme does not prove whole-answer equivalence.",
+			"related_slug": "d5-fabel-check",
+			"de_by_id": "01K4YD5E000000000000000J03"
+		},
+		{
+			"category": "C",
+			"action": "keep-active",
+			"reason": "The old multi-part prompt combines a three-part structure, six animal stereotypes and a historical censorship rationale. The new card asks how to derive a justified lesson from a concrete conflict; it does not preserve that complete retrieval.",
+			"related_slug": "d5-fabel-recall",
+			"de_by_id": "01K4YD5E000000000000000J04"
+		},
+		{
+			"category": "C",
+			"action": "keep-active",
+			"reason": "The old item specifically retrieves Zeitdehnung. The new narrative cards retrieve situation-event-outcome and do not test narrative time stretching as the same atomic fact.",
+			"de_by_id": "01K4YD5E000000000000000J05"
+		},
+		{
+			"category": "C",
+			"action": "keep-active",
+			"reason": "The old answer combines suspense, sensory description, tense and a simplified equation of third-person narration with distance. The new card asks for a short narrative sequence; transferring the whole old retrieval would overstate overlap.",
+			"related_slug": "d5-erzaehlen-recall",
+			"de_by_id": "01K4YD5E000000000000000J06"
+		},
+		{
+			"category": "C",
+			"action": "keep-active",
+			"reason": "The old fast item retrieves removal of the statement full stop before a following reporting clause. The new fast item retrieves the colon after a preceding reporting clause: two different punctuation decisions.",
+			"related_slug": "d5-woertliche-rede-check",
+			"de_by_id": "01K4YD5E000000000000000J07"
+		},
+		{
+			"category": "C",
+			"action": "keep-active",
+			"reason": "The old schema incorrectly includes a comma inside the quote before an inserted reporting clause. The new recall explains the corrected outside commas and does not retain the old compound exercise.",
+			"related_slug": "d5-woertliche-rede-recall",
+			"de_by_id": "01K4YD5E000000000000000J08"
+		},
+		{
+			"category": "C",
+			"action": "keep-active",
+			"reason": "The old item retrieves the genitive question Wessen. The new recall declines a four-case noun group, and its fast sibling asks about the dative. Neither is an equivalent genitive-only retrieval.",
+			"related_slug": "d5-faelle-recall",
+			"de_by_id": "01K4YD5G000000000000000J01"
+		},
+		{
+			"category": "C",
+			"action": "keep-active",
+			"reason": "The old synthesis includes singular and plural declension plus a complete case-and-pronoun analysis. The new item asks for one noun group in the singular and omits the wider analysis.",
+			"related_slug": "d5-faelle-recall",
+			"de_by_id": "01K4YD5G000000000000000J02"
+		},
+		{
+			"category": "C",
+			"action": "keep-active",
+			"reason": "The old item asks which sentence function is the structural centre and governs objects. The new card identifies both verb parts in a concrete perfect sentence, so it tests a different retrieval.",
+			"related_slug": "d5-satzglieder-recall",
+			"de_by_id": "01K4YD5G000000000000000J03"
+		},
+		{
+			"category": "C",
+			"action": "keep-active",
+			"reason": "The old synthesis includes movement, all core functions, four adverbials and a full sentence analysis. The new items separate sentence functions and manner-versus-reason; one small successor cannot inherit the composite mastery.",
+			"related_slug": "d5-adverbiale-recall",
+			"de_by_id": "01K4YD5G000000000000000J04"
+		},
+		{
+			"category": "C",
+			"action": "keep-active",
+			"reason": "The old wording makes an exclusive universal claim; the new item asks where a Dehnungs-h can stand and teaches that long sound alone cannot predict h. This softened claim needs content review before any equivalence decision.",
+			"related_slug": "d5-dehnung-check",
+			"de_by_id": "01K4YD5G000000000000000J05"
+		},
+		{
+			"category": "C",
+			"action": "keep-active",
+			"reason": "The old multi-rule spelling solution has overgeneralisations about every short vowel and even groups diphthongs with consonants. New lessons keep vowel-length patterns and exceptions distinct; no full-answer successor is asserted.",
+			"related_slug": "d5-dehnung-recall",
+			"de_by_id": "01K4YD5G000000000000000J06"
+		},
+		{
+			"category": "C",
+			"action": "keep-active",
+			"reason": "The old card explains Korb via Koerbe. The new fast card applies the same strategy to Hund via Hunde. Transfer of the strategy is practised, but these distinct word-specific retrievals are not assumed equivalent.",
+			"related_slug": "d5-verlaengern-check",
+			"de_by_id": "01K4YD5G000000000000000J07"
+		},
+		{
+			"category": "C",
+			"action": "keep-active",
+			"reason": "The old synthesis bundles final devoicing, three extension probes and nominalisation signals with an overly absolute stem claim. The new cards separate extension and capitals and do not preserve the full multi-part answer.",
+			"related_slug": "d5-verlaengern-recall",
+			"de_by_id": "01K4YD5G000000000000000J08"
+		}
+	],
+	"neighbouring_grade_review": "The legacy inventory contains no Gymnasium Grade 4 or Grade 6 German cell. Realschule and Mittelschule histories belong to their own packages and are outside this mapping."
+}

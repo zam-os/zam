@@ -1,0 +1,2923 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "zam-academy:geschichte-gymnasium-6",
+  "version": "2026.11.1",
+  "title": "Geschichte 6 Gymnasium (ZAM Academy)",
+  "description": "Geschichte 6 Gymnasium Bayern (LehrplanPLUS): Der Mensch und seine Geschichte, Ägypten als frühe Hochkultur, die griechische Antike, Menschen machen Geschichte im Längsschnitt, das Imperium Romanum in Europa und Bayern, der Übergang zum Mittelalter bis Karl der Große sowie Leben in der Familie.",
+  "publisher": "ZAM Academy",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/6/geschichte",
+      "label": "LehrplanPLUS Bayern · Geschichte 6 Gymnasium",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Geschichte",
+      "label": "Klexikon · Geschichte",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Geschichte",
+      "label": "Wikipedia · Geschichte",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Christliche_Zeitrechnung",
+      "label": "Wikipedia · Christliche Zeitrechnung",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Quelle_(Geschichtswissenschaft)",
+      "label": "Wikipedia · Quelle (Geschichtswissenschaft)",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Quelle",
+      "label": "Klexikon · Quelle",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Tradition_(Geschichtswissenschaft)",
+      "label": "Wikipedia · Tradition (Geschichtswissenschaft)",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Arch%C3%A4ologie",
+      "label": "Wikipedia · Archäologie",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Arch%C3%A4ologie",
+      "label": "Klexikon · Archäologie",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Stratigraphie_(Arch%C3%A4ologie)",
+      "label": "Wikipedia · Stratigraphie (Archäologie)",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Altsteinzeit",
+      "label": "Wikipedia · Altsteinzeit",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Steinzeit",
+      "label": "Klexikon · Steinzeit",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Feuer",
+      "label": "Wikipedia · Feuer",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Faustkeil",
+      "label": "Wikipedia · Faustkeil",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Jungsteinzeit",
+      "label": "Wikipedia · Jungsteinzeit",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Neolithische_Revolution",
+      "label": "Wikipedia · Neolithische Revolution",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Hochkultur_(Geschichtswissenschaft)",
+      "label": "Wikipedia · Hochkultur (Geschichtswissenschaft)",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Altes_%C3%84gypten",
+      "label": "Klexikon · Altes Ägypten",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Altes_%C3%84gypten",
+      "label": "Wikipedia · Altes Ägypten",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Nil",
+      "label": "Wikipedia · Nil",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Nil",
+      "label": "Klexikon · Nil",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/%C3%84gyptische_Hieroglyphen",
+      "label": "Wikipedia · Ägyptische Hieroglyphen",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Hieroglyphen",
+      "label": "Klexikon · Hieroglyphen",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Pyramiden_von_Gizeh",
+      "label": "Wikipedia · Pyramiden von Gizeh",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Pyramide",
+      "label": "Klexikon · Pyramide",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Totengericht",
+      "label": "Wikipedia · Totengericht",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Pharao",
+      "label": "Wikipedia · Pharao",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Pharao",
+      "label": "Klexikon · Pharao",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Monarchie",
+      "label": "Wikipedia · Monarchie",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://www.bpb.de/kurz-knapp/lexika/politiklexikon/17865/monarchie/",
+      "label": "bpb · Monarchie",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Antikes_Griechenland",
+      "label": "Wikipedia · Antikes Griechenland",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Altes_Griechenland",
+      "label": "Klexikon · Altes Griechenland",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Polis",
+      "label": "Wikipedia · Polis",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Griechische_Kolonisation",
+      "label": "Wikipedia · Griechische Kolonisation",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Migration",
+      "label": "Wikipedia · Migration",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Migration",
+      "label": "Klexikon · Migration",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Olympische_Spiele_der_Antike",
+      "label": "Wikipedia · Olympische Spiele der Antike",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Olympische_Spiele",
+      "label": "Klexikon · Olympische Spiele",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Theater_der_griechischen_Antike",
+      "label": "Wikipedia · Theater der griechischen Antike",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Solon",
+      "label": "Wikipedia · Solon",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Kleisthenes_von_Athen",
+      "label": "Wikipedia · Kleisthenes von Athen",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Scherbengericht",
+      "label": "Wikipedia · Scherbengericht",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Ostrakon",
+      "label": "Wikipedia · Ostrakon",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Perserkriege",
+      "label": "Wikipedia · Perserkriege",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Triere",
+      "label": "Wikipedia · Triere",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Attische_Demokratie",
+      "label": "Wikipedia · Attische Demokratie",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Perikles",
+      "label": "Wikipedia · Perikles",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Demokratie",
+      "label": "Klexikon · Demokratie",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://www.bpb.de/kurz-knapp/lexika/politiklexikon/17321/demokratie/",
+      "label": "bpb · Demokratie",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Hatschepsut",
+      "label": "Wikipedia · Hatschepsut",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Themistokles",
+      "label": "Wikipedia · Themistokles",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Alexander_der_Gro%C3%9Fe",
+      "label": "Wikipedia · Alexander der Große",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Alexander_der_Gro%C3%9Fe",
+      "label": "Klexikon · Alexander der Große",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Hellenismus",
+      "label": "Wikipedia · Hellenismus",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Gr%C3%BCndung_Roms",
+      "label": "Wikipedia · Rom",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Romulus_und_Remus",
+      "label": "Wikipedia · Romulus und Remus",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/R%C3%B6mische_Republik",
+      "label": "Wikipedia · Römische Republik",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/R%C3%B6mischer_Senat",
+      "label": "Wikipedia · Römischer Senat",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Cursus_honorum",
+      "label": "Wikipedia · Cursus honorum",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Volkstribun",
+      "label": "Wikipedia · Volkstribun",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/R%C3%B6misches_Reich",
+      "label": "Wikipedia · Römisches Reich",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Altes_Rom",
+      "label": "Klexikon · Römisches Reich",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Punische_Kriege",
+      "label": "Wikipedia · Punische Kriege",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Gaius_Iulius_Caesar",
+      "label": "Wikipedia · Gaius Iulius Caesar",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Augustus",
+      "label": "Wikipedia · Augustus",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Prinzipat",
+      "label": "Wikipedia · Prinzipat",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Raetia",
+      "label": "Wikipedia · Raetia",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Noricum",
+      "label": "Wikipedia · Noricum",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Obergermanisch-Raetischer_Limes",
+      "label": "Wikipedia · Obergermanisch-Raetischer Limes",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Romanisierung",
+      "label": "Wikipedia · Romanisierung",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Castra_Regina",
+      "label": "Wikipedia · Castra Regina",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Augusta_Vindelicum",
+      "label": "Wikipedia · Augusta Vindelicum",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Via_Claudia_Augusta",
+      "label": "Wikipedia · Via Claudia Augusta",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://www.archaeologie.bayern/",
+      "label": "Archäologische Staatssammlung",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/J%C3%BCdische_Diaspora",
+      "label": "Wikipedia · Jüdische Diaspora",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/J%C3%BCdischer_Krieg",
+      "label": "Wikipedia · Jüdischer Krieg",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Judentum",
+      "label": "Klexikon · Judentum",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Judentum",
+      "label": "Wikipedia · Judentum",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Urchristentum",
+      "label": "Wikipedia · Urchristentum",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Konstantin_der_Gro%C3%9Fe",
+      "label": "Wikipedia · Konstantin der Große",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Mail%C3%A4nder_Vereinbarung",
+      "label": "Wikipedia · Mailänder Vereinbarung",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Christentum",
+      "label": "Klexikon · Christentum",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Christentum",
+      "label": "Wikipedia · Christentum",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/V%C3%B6lkerwanderung",
+      "label": "Wikipedia · Völkerwanderung",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Sp%C3%A4tantike",
+      "label": "Wikipedia · Spätantike",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Byzantinisches_Reich",
+      "label": "Wikipedia · Byzantinisches Reich",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Islam",
+      "label": "Wikipedia · Islam",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Islam",
+      "label": "Klexikon · Islam",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Frankenreich",
+      "label": "Wikipedia · Fränkisches Reich",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Karl_der_Gro%C3%9Fe",
+      "label": "Wikipedia · Karl der Große",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Karl_der_Gro%C3%9Fe",
+      "label": "Klexikon · Karl der Große",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Karolinger",
+      "label": "Wikipedia · Karolinger",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Kaiser",
+      "label": "Wikipedia · Kaiser",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Mittelalter",
+      "label": "Wikipedia · Mittelalter",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Mittelalter",
+      "label": "Klexikon · Mittelalter",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Epoche_(Geschichte)",
+      "label": "Wikipedia · Zeitalter",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Oikos",
+      "label": "Wikipedia · Oikos",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Familia",
+      "label": "Wikipedia · Familia",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Pater_familias",
+      "label": "Wikipedia · Pater familias",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Familie",
+      "label": "Wikipedia · Familie",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://klexikon.zum.de/wiki/Familie",
+      "label": "Klexikon · Verwandtschaft",
+      "checked": "2026-11-18"
+    },
+    {
+      "uri": "https://de.wikipedia.org/wiki/Geschlechterrolle",
+      "label": "Wikipedia · Geschlechterrolle",
+      "checked": "2026-11-18"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01M7RBPS5H6ZA059S15XANTVH1",
+      "atom_uri": "urn:zam:atom:01M7RBPS5H6ZA059S15XANTVH1",
+      "namespace": "zam-academy-geschichte-gymnasium-6",
+      "slug": "gg6-zeit-und-geschichte",
+      "title": "Zeit als Kompass: Vergangenheit, Gegenwart und Zukunft",
+      "domain": "geschichte/lb1",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-zeit-und-geschichte",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-gymnasium-6",
+          "topic_code": "lb1",
+          "topic_title": "Der Mensch und seine Geschichte"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb1",
+          "topic_title": "Der Mensch und seine Geschichte",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7RBPS5HVNM1GQ2KFTAKHCQZ",
+          "slug": "gg6-zeit-und-geschichte-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie viele Jahre liegen zwischen 10 v. Chr. und 10 n. Chr.?",
+          "concept": "19 Jahre, weil auf das Jahr 1 v. Chr. direkt das Jahr 1 n. Chr. ohne ein Jahr null folgt.",
+          "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-zeit-und-geschichte",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "19 Jahre, weil auf das Jahr 1 v. Chr. direkt das Jahr 1 n. Chr. ohne ein Jahr null folgt.",
+              "20 Jahre, weil zwischen beiden Jahreszahlen ein Jahr null liegt."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7RBPS5HGG8TQNEF7NYG1XAQ",
+          "slug": "gg6-zeit-und-geschichte-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie berechnest du die genaue Jahreszahl zwischen einem Datum v. Chr. und einem Datum n. Chr.?",
+          "concept": "Beträge beider Jahreszahlen addieren und 1 abziehen, weil zwischen 1 v. Chr. und 1 n. Chr. kein Jahr null liegt.",
+          "sample_solution": "Beträge beider Jahreszahlen addieren und 1 abziehen, weil zwischen 1 v. Chr. und 1 n. Chr. kein Jahr null liegt.",
+          "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-zeit-und-geschichte"
+        }
+      ]
+    },
+    {
+      "id": "01M7RBPS5HDB2HV08AC60775V1",
+      "atom_uri": "urn:zam:atom:01M7RBPS5HDB2HV08AC60775V1",
+      "namespace": "zam-academy-geschichte-gymnasium-6",
+      "slug": "gg6-quellen-und-darstellung",
+      "title": "Geschichtsbuch lesen: Quelle oder Darstellung?",
+      "domain": "geschichte/lb1",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-quellen-und-darstellung",
+      "prerequisites": [
+        {
+          "atom_id": "01M7RBPS5H6ZA059S15XANTVH1",
+          "type": "soft",
+          "rationale": "Die Arbeit mit Quellen setzt zeitliche Orientierung voraus."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-gymnasium-6",
+          "topic_code": "lb1",
+          "topic_title": "Der Mensch und seine Geschichte"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb1",
+          "topic_title": "Der Mensch und seine Geschichte",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7RBPS5HB6WTMF3SQNRAA20P",
+          "slug": "gg6-quellen-und-darstellung-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Woran erkennst du im Geschichtsbuch den Unterschied zwischen einer Quelle und einem Darstellungstext?",
+          "concept": "Die Quelle entstand in der historischen Zeit selbst (mit Urheber oder Fundort); der Darstellungstext erklärt sie erst aus heutiger Sicht.",
+          "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-quellen-und-darstellung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Quelle entstand in der historischen Zeit selbst (mit Urheber oder Fundort); der Darstellungstext erklärt sie erst aus heutiger Sicht.",
+              "Quellen sind immer länger als eine Buchseite und haben keine Überschrift."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7RBPS5H1DA9A4V7BRQ90S2X",
+          "slug": "gg6-quellen-und-darstellung-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche vier Quellenarten unterscheidet die Geschichtswissenschaft, und wie grenzen sie sich vom Darstellungstext ab?",
+          "concept": "Schriftliche, gegenständliche, bildliche und mündliche Quellen stammen aus der damaligen Zeit; Darstellungstexte werden erst später rückblickend verfasst.",
+          "sample_solution": "Schriftliche, gegenständliche, bildliche und mündliche Quellen stammen aus der damaligen Zeit; Darstellungstexte werden erst später rückblickend verfasst.",
+          "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-quellen-und-darstellung"
+        }
+      ]
+    },
+    {
+      "id": "01M7RBPS5HEG3F27JEK469KMRZ",
+      "atom_uri": "urn:zam:atom:01M7RBPS5HEG3F27JEK469KMRZ",
+      "namespace": "zam-academy-geschichte-gymnasium-6",
+      "slug": "gg6-archaeologie-ausgrabung",
+      "title": "Überrest, Überlieferung und Arbeit der Archäologie",
+      "domain": "geschichte/lb1",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-archaeologie-ausgrabung",
+      "prerequisites": [
+        {
+          "atom_id": "01M7RBPS5HDB2HV08AC60775V1",
+          "type": "soft",
+          "rationale": "Archäologische Funde sind gegenständliche Überreste."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-gymnasium-6",
+          "topic_code": "lb1",
+          "topic_title": "Der Mensch und seine Geschichte"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb1",
+          "topic_title": "Der Mensch und seine Geschichte",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7RBPS5HVAQT6G32SDH7SXRD",
+          "slug": "gg6-archaeologie-ausgrabung-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was gilt bei einer ungestörten archäologischen Ausgrabung für die Bodenschichten?",
+          "concept": "Tiefer liegende Schichten und ihre Funde sind älter als die Schichten direkt darüber.",
+          "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-archaeologie-ausgrabung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Tiefer liegende Schichten und ihre Funde sind älter als die Schichten direkt darüber.",
+              "Schwere Gegenstände aus Metall sinken immer in die älteste Schicht hinab."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7RBPS5H2YSAVKJJ233T5F73",
+          "slug": "gg6-archaeologie-ausgrabung-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Worin unterscheiden sich historische Überreste von Überlieferungen (Traditionen)?",
+          "concept": "Überreste (z. B. Scherben, Knochen) blieben unabsichtlich aus dem Alltag erhalten; Überlieferungen (z. B. Siegesinschriften) entstanden bewusst für die Nachwelt.",
+          "sample_solution": "Überreste (z. B. Scherben, Knochen) blieben unabsichtlich aus dem Alltag erhalten; Überlieferungen (z. B. Siegesinschriften) entstanden bewusst für die Nachwelt.",
+          "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-archaeologie-ausgrabung"
+        }
+      ]
+    },
+    {
+      "id": "01M7RBPS5HW8V6W6CY9MW08R3F",
+      "atom_uri": "urn:zam:atom:01M7RBPS5HW8V6W6CY9MW08R3F",
+      "namespace": "zam-academy-geschichte-gymnasium-6",
+      "slug": "gg6-altsteinzeit",
+      "title": "Jäger und Sammler: Überleben in der Altsteinzeit",
+      "domain": "geschichte/lb1",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-altsteinzeit",
+      "prerequisites": [
+        {
+          "atom_id": "01M7RBPS5HEG3F27JEK469KMRZ",
+          "type": "soft",
+          "rationale": "Das Wissen über die Altsteinzeit stammt aus Bodenfunden."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-gymnasium-6",
+          "topic_code": "lb1",
+          "topic_title": "Der Mensch und seine Geschichte"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb1",
+          "topic_title": "Der Mensch und seine Geschichte",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7RBPS5HE3B34WFYCG7KBPHY",
+          "slug": "gg6-altsteinzeit-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum bauten die Menschen der Altsteinzeit meist einfache Zelte oder nutzten Höhlen statt fester Dörfer?",
+          "concept": "Sie zogen als Nomaden den wandernden Tierherden nach und brauchten schnell aufbaubare Unterkünfte.",
+          "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-altsteinzeit",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie zogen als Nomaden den wandernden Tierherden nach und brauchten schnell aufbaubare Unterkünfte.",
+              "Sie besaßen noch keine Werkzeuge, um Holz oder Steine überhaupt zu bearbeiten."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7RBPS5HRENMEV7JWAQ75ERR",
+          "slug": "gg6-altsteinzeit-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Nenne drei zentrale Überlebenstechniken der Altsteinzeit und ihre Wirkung auf das Leben der Jäger und Sammler.",
+          "concept": "Beherrschung des Feuers (Wärme, Schutz, Kochen), geschlagene Feuersteinwerkzeuge (Faustkeil, Speer) und bewegliche Zelte für das nomadische Leben.",
+          "sample_solution": "Beherrschung des Feuers (Wärme, Schutz, Kochen), geschlagene Feuersteinwerkzeuge (Faustkeil, Speer) und bewegliche Zelte für das nomadische Leben.",
+          "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-altsteinzeit"
+        }
+      ]
+    },
+    {
+      "id": "01M7RBPS5H8Z6FV56SC0JEY15S",
+      "atom_uri": "urn:zam:atom:01M7RBPS5H8Z6FV56SC0JEY15S",
+      "namespace": "zam-academy-geschichte-gymnasium-6",
+      "slug": "gg6-jungsteinzeit-wandel",
+      "title": "Bauern der Jungsteinzeit: Sesshaft durch Ackerbau und Viehzucht",
+      "domain": "geschichte/lb1",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-jungsteinzeit-wandel",
+      "prerequisites": [
+        {
+          "atom_id": "01M7RBPS5HW8V6W6CY9MW08R3F",
+          "type": "soft",
+          "rationale": "Der Wandel wird durch den Vergleich mit der Altsteinzeit verständlich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-gymnasium-6",
+          "topic_code": "lb1",
+          "topic_title": "Der Mensch und seine Geschichte"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb1",
+          "topic_title": "Der Mensch und seine Geschichte",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7RBPS5HH4RR5DXPBSEGHJWF",
+          "slug": "gg6-jungsteinzeit-wandel-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was versteht man in der Geschichtswissenschaft unter dem Epochenbegriff der „Neolithischen Revolution“ (Übergang zur Jungsteinzeit vor ca. 10 000 v. Chr.)?",
+          "concept": "Den tiefgreifenden Wandel vom nomadischen Jäger- und Sammlerdasein zu Sesshaftigkeit, Ackerbau, Viehzucht und Vorratshaltung.",
+          "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-jungsteinzeit-wandel",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Den tiefgreifenden Wandel vom nomadischen Jäger- und Sammlerdasein zu Sesshaftigkeit, Ackerbau, Viehzucht und Vorratshaltung.",
+              "Den schnellen Bau der ersten Dampfmaschinen und großen Eisenbahnen."
+            ],
+            "correct_index": 0
+          },
+          "replaces": [
+            "01K4YH6A000000000000000J01"
+          ]
+        },
+        {
+          "id": "01M7RBPS5HN1M2V19Z6BCPA1KJ",
+          "slug": "gg6-jungsteinzeit-wandel-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche vier großen Veränderungen kennzeichnen den Übergang von der Altsteinzeit zur Jungsteinzeit?",
+          "concept": "Ackerbau und Viehzucht (produzierende Wirtschaft), Sesshaftigkeit in festen Häusern, Tonkeramik zur Vorratshaltung und neue Berufe durch Arbeitsteilung.",
+          "sample_solution": "Ackerbau und Viehzucht (produzierende Wirtschaft), Sesshaftigkeit in festen Häusern, Tonkeramik zur Vorratshaltung und neue Berufe durch Arbeitsteilung.",
+          "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-jungsteinzeit-wandel"
+        }
+      ]
+    },
+    {
+      "id": "01M7RBPS5HDMV0334XM3S6SNZB",
+      "atom_uri": "urn:zam:atom:01M7RBPS5HDMV0334XM3S6SNZB",
+      "namespace": "zam-academy-geschichte-gymnasium-6",
+      "slug": "gg6-aegypten-nil-karte",
+      "title": "Ägypten auf der Geschichtskarte: Oase am Nil",
+      "domain": "geschichte/lb2",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-aegypten-nil-karte",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-gymnasium-6",
+          "topic_code": "lb2",
+          "topic_title": "Ägypten – eine frühe Hochkultur"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb2",
+          "topic_title": "Ägypten – eine frühe Hochkultur",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7RBPS5H24D7F761TW33T3A9",
+          "slug": "gg6-aegypten-nil-karte-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie konnten ägyptische Schiffe den Nil sowohl nach Norden als auch nach Süden leicht befahren?",
+          "concept": "Nach Norden trieb sie die Strömung des Nils, nach Süden schob sie der häufig wehende Nordwind mit dem Segel.",
+          "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-aegypten-nil-karte",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nach Norden trieb sie die Strömung des Nils, nach Süden schob sie der häufig wehende Nordwind mit dem Segel.",
+              "Der Nil ändert zweimal im Jahr seine Fließrichtung zwischen Meer und Gebirge."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7RBPS5HGP0NFEGZ7Z5MP9CT",
+          "slug": "gg6-aegypten-nil-karte-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was unterschieden die alten Ägypter unter „Schwarzem Land“ und „Rotem Land“, und wozu diente das Rote Land strategisch?",
+          "concept": "Schwarzes Land war der fruchtbare Uferschlamm des Nils, Rotes Land die Wüste rundum – sie schützte Ägypten zugleich lange vor Angriffen.",
+          "sample_solution": "Schwarzes Land war der fruchtbare Uferschlamm des Nils, Rotes Land die Wüste rundum – sie schützte Ägypten zugleich lange vor Angriffen.",
+          "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-aegypten-nil-karte"
+        }
+      ]
+    },
+    {
+      "id": "01M7RBPS5HN4N1GT1RA7X5W85T",
+      "atom_uri": "urn:zam:atom:01M7RBPS5HN4N1GT1RA7X5W85T",
+      "namespace": "zam-academy-geschichte-gymnasium-6",
+      "slug": "gg6-niljahr-bewaesserung",
+      "title": "„Ein Geschenk des Nils“: Nilflut und Bewässerung",
+      "domain": "geschichte/lb2",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-niljahr-bewaesserung",
+      "prerequisites": [
+        {
+          "atom_id": "01M7RBPS5HDMV0334XM3S6SNZB",
+          "type": "soft",
+          "rationale": "Die geografische Lage am Nil erklärt das Klima und die Flut."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-gymnasium-6",
+          "topic_code": "lb2",
+          "topic_title": "Ägypten – eine frühe Hochkultur"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb2",
+          "topic_title": "Ägypten – eine frühe Hochkultur",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7RBPS5HYA9JYS96A7QM6ZD3",
+          "slug": "gg6-niljahr-bewaesserung-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum bezeichnete der antike griechische Historiker Herodot Ägypten als ein „Geschenk des Nils“?",
+          "concept": "Weil die jährliche Nilüberschwemmung fruchtbaren Mineralschlamm ablagerte, der inmitten der Wüste reiche Ernten ermöglichte.",
+          "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-niljahr-bewaesserung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Weil die jährliche Nilüberschwemmung fruchtbaren Mineralschlamm ablagerte, der inmitten der Wüste reiche Ernten ermöglichte.",
+              "Weil der Nil jedes Jahr große Mengen reines Gold aus dem Gebirge anschwemmte."
+            ],
+            "correct_index": 0
+          },
+          "replaces": [
+            "01K4YH6A000000000000000J03"
+          ]
+        },
+        {
+          "id": "01M7RBPS5H1K99T6664ZPQNNSD",
+          "slug": "gg6-niljahr-bewaesserung-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie hießen die drei Jahreszeiten des ägyptischen Niljahrs, und warum brauchte das Land trotzdem Kanäle und Schadufs?",
+          "concept": "Achet (Flut), Peret (Aussaat) und Schemu (Ernte). Kanäle, Dämme und Schöpfwerke (Schaduf) sicherten die Wasserverteilung bis an den Rand des Tals.",
+          "sample_solution": "Achet (Flut), Peret (Aussaat) und Schemu (Ernte). Kanäle, Dämme und Schöpfwerke (Schaduf) sicherten die Wasserverteilung bis an den Rand des Tals.",
+          "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-niljahr-bewaesserung"
+        }
+      ]
+    },
+    {
+      "id": "01M7RBPS5H3BQBV0TCZVV02BKR",
+      "atom_uri": "urn:zam:atom:01M7RBPS5H3BQBV0TCZVV02BKR",
+      "namespace": "zam-academy-geschichte-gymnasium-6",
+      "slug": "gg6-merkmale-hochkultur",
+      "title": "Schrift, Arbeitsteilung und Wissenschaft: Was macht eine Hochkultur aus?",
+      "domain": "geschichte/lb2",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-merkmale-hochkultur",
+      "prerequisites": [
+        {
+          "atom_id": "01M7RBPS5HN4N1GT1RA7X5W85T",
+          "type": "soft",
+          "rationale": "Bewässerungsüberschüsse bilden die Basis einer Hochkultur."
+        },
+        {
+          "atom_id": "01M7RBPS5H8Z6FV56SC0JEY15S",
+          "type": "soft",
+          "rationale": "Hochkulturen bauen auf Ackerbau und Arbeitsteilung auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-gymnasium-6",
+          "topic_code": "lb2",
+          "topic_title": "Ägypten – eine frühe Hochkultur"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb2",
+          "topic_title": "Ägypten – eine frühe Hochkultur",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7RBPS5HP8W005Q91PDGC29B",
+          "slug": "gg6-merkmale-hochkultur-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wozu entwickelten ägyptische Gelehrte neben der Schrift schon früh Geometrie und einen 365-Tage-Kalender?",
+          "concept": "Um den Zeitpunkt der Nilflut vorherzusagen und überflutete Felder nach dem Rückgang des Wassers wieder genau abzustecken.",
+          "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-merkmale-hochkultur",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Um den Zeitpunkt der Nilflut vorherzusagen und überflutete Felder nach dem Rückgang des Wassers wieder genau abzustecken.",
+              "Um mit griechischen Seefahrern um den schnellsten Kalender zu wetten."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7RBPS5HVBDGP24KKKZQKT44",
+          "slug": "gg6-merkmale-hochkultur-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Nenne vier zentrale Merkmale einer Hochkultur am Beispiel des Alten Ägypten (ab 3000 v. Chr.).",
+          "concept": "Überschuss-Landwirtschaft mit Bewässerung, Arbeitsteilung in Berufen, staatliche Verwaltung mit Gesetzen sowie Schrift (Hieroglyphen) und Kalender.",
+          "sample_solution": "Überschuss-Landwirtschaft mit Bewässerung, Arbeitsteilung in Berufen, staatliche Verwaltung mit Gesetzen sowie Schrift (Hieroglyphen) und Kalender.",
+          "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-merkmale-hochkultur"
+        }
+      ]
+    },
+    {
+      "id": "01M7RBPS5HNYNQNZ5FHEBJG0NQ",
+      "atom_uri": "urn:zam:atom:01M7RBPS5HNYNQNZ5FHEBJG0NQ",
+      "namespace": "zam-academy-geschichte-gymnasium-6",
+      "slug": "gg6-pyramiden-religion",
+      "title": "Pyramiden und Jenseitsglaube: Bauwerke untersuchen",
+      "domain": "geschichte/lb2",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-pyramiden-religion",
+      "prerequisites": [
+        {
+          "atom_id": "01M7RBPS5H3BQBV0TCZVV02BKR",
+          "type": "soft",
+          "rationale": "Großbauten setzen Verwaltung, Wissen und Arbeitsteilung voraus."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-gymnasium-6",
+          "topic_code": "lb2",
+          "topic_title": "Ägypten – eine frühe Hochkultur"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb2",
+          "topic_title": "Ägypten – eine frühe Hochkultur",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7RBPS5H0259BRCB3HVM5B0G",
+          "slug": "gg6-pyramiden-religion-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was zeigen heutige Ausgrabungen bei den Arbeitersiedlungen von Gizeh über die Erbauer der Pyramiden?",
+          "concept": "Viele Fachhandwerker und in der Flutzeit eingesetzte Bauern lebten dort organisiert und erhielten Brot, Fleisch und medizinische Versorgung.",
+          "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-pyramiden-religion",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Viele Fachhandwerker und in der Flutzeit eingesetzte Bauern lebten dort organisiert und erhielten Brot, Fleisch und medizinische Versorgung.",
+              "Alle Steine wurden von fremden Söldnern mithilfe großer Dampfkräne gehoben."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7RBPS5H4WRXAV28FGK2K1RJ",
+          "slug": "gg6-pyramiden-religion-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welchen religiösen Zweck hatten Pyramiden im Alten Ägypten, und was verraten sie über die ägyptische Gesellschaft?",
+          "concept": "Sie schützten das Grab des Pharaos für sein Weiterleben nach dem Totengericht und zeigen eine straffe staatliche Versorgung und Baukunst.",
+          "sample_solution": "Sie schützten das Grab des Pharaos für sein Weiterleben nach dem Totengericht und zeigen eine straffe staatliche Versorgung und Baukunst.",
+          "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-pyramiden-religion"
+        }
+      ]
+    },
+    {
+      "id": "01M7RBPS5HFKXEYX299D6SC2KK",
+      "atom_uri": "urn:zam:atom:01M7RBPS5HFKXEYX299D6SC2KK",
+      "namespace": "zam-academy-geschichte-gymnasium-6",
+      "slug": "gg6-pharao-monarchie",
+      "title": "Der Pharao an der Spitze: Die Monarchie beurteilen",
+      "domain": "geschichte/lb2",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-pharao-monarchie",
+      "prerequisites": [
+        {
+          "atom_id": "01M7RBPS5HNYNQNZ5FHEBJG0NQ",
+          "type": "soft",
+          "rationale": "Die Grabmäler zeigen die herausgehobene Stellung des Gottkönigs."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-gymnasium-6",
+          "topic_code": "lb2",
+          "topic_title": "Ägypten – eine frühe Hochkultur"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb2",
+          "topic_title": "Ägypten – eine frühe Hochkultur",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7RBPS5HBD8TB7NF383WNSGP",
+          "slug": "gg6-pharao-monarchie-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche vier Bereiche vereinte der Pharao in der ägyptischen Monarchie in einer Person?",
+          "concept": "Regierungschef, oberster Feldherr, oberster Richter und oberster Priester bzw. Gottkönig.",
+          "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-pharao-monarchie",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Regierungschef, oberster Feldherr, oberster Richter und oberster Priester bzw. Gottkönig.",
+              "Nur das Amt des obersten Baumeisters, während Gerichte frei gewählt wurden."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7RBPS5HSYX2BGVD301Y1HH7",
+          "slug": "gg6-pharao-monarchie-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche drei wesentlichen Merkmale prägten die Monarchie der ägyptischen Pharaonen?",
+          "concept": "Alleinherrschaft eines Einzelnen auf Lebenszeit, Weitergabe durch Erbfolge sowie fehlende Gewaltenteilung – gestützt auf das Gottkönigtum als Garant der Maat.",
+          "sample_solution": "Alleinherrschaft eines Einzelnen auf Lebenszeit, Weitergabe durch Erbfolge sowie fehlende Gewaltenteilung – gestützt auf das Gottkönigtum als Garant der Maat.",
+          "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-pharao-monarchie"
+        }
+      ]
+    },
+    {
+      "id": "01M7RBPS5HAYZKQ3AD8MPFDB8Q",
+      "atom_uri": "urn:zam:atom:01M7RBPS5HAYZKQ3AD8MPFDB8Q",
+      "namespace": "zam-academy-geschichte-gymnasium-6",
+      "slug": "gg6-griechenland-polis",
+      "title": "Landesnatur und Polis: Warum entstanden hunderte Stadtstaaten?",
+      "domain": "geschichte/lb3",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-griechenland-polis",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-gymnasium-6",
+          "topic_code": "lb3",
+          "topic_title": "Die griechische Antike"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb3",
+          "topic_title": "Die griechische Antike",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7RBPS5HBEH6QKQP4PHXPY4W",
+          "slug": "gg6-griechenland-polis-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie nannten die antiken Griechen ihre selbstverwalteten, unabhängigen Stadtstaaten, die aus einer befestigten Stadt (mit Akropolis und Agora) und dem umliegenden Umland bestanden?",
+          "concept": "Polis (Mehrzahl: Poleis)",
+          "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-griechenland-polis",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Polis (Mehrzahl: Poleis)",
+              "Provinz (Verwaltungsbezirk eines Weltreichs)"
+            ],
+            "correct_index": 0
+          },
+          "replaces": [
+            "01K4YH6A000000000000000J05"
+          ]
+        },
+        {
+          "id": "01M7RBPS5HRBTG62M98YBFKDPB",
+          "slug": "gg6-griechenland-polis-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Aus welchen Hauptteilen bestand eine griechische Polis, und warum entstanden überhaupt so viele unabhängige Poleis?",
+          "concept": "Eine Polis umfasste die befestigte Stadt (Akropolis, Agora) samt Umland. Schroffe Gebirge und Inseln trennten die Täler, während das Meer Handel verband.",
+          "sample_solution": "Eine Polis umfasste die befestigte Stadt (Akropolis, Agora) samt Umland. Schroffe Gebirge und Inseln trennten die Täler, während das Meer Handel verband.",
+          "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-griechenland-polis"
+        }
+      ]
+    },
+    {
+      "id": "01M7RBPS5HYWRXNC98E3C3KVMM",
+      "atom_uri": "urn:zam:atom:01M7RBPS5HYWRXNC98E3C3KVMM",
+      "namespace": "zam-academy-geschichte-gymnasium-6",
+      "slug": "gg6-kolonisation-migration",
+      "title": "Griechische Kolonisation und Migration im Vergleich",
+      "domain": "geschichte/lb3",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-kolonisation-migration",
+      "prerequisites": [
+        {
+          "atom_id": "01M7RBPS5HAYZKQ3AD8MPFDB8Q",
+          "type": "soft",
+          "rationale": "Die Auswanderung ging von den selbstständigen Poleis aus."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-gymnasium-6",
+          "topic_code": "lb3",
+          "topic_title": "Die griechische Antike"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb3",
+          "topic_title": "Die griechische Antike",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7RBPS5HHS948JZ8NS6RM7RT",
+          "slug": "gg6-kolonisation-migration-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie unterschieden sich griechische Tochterstädte (wie Syrakus oder Massalia) von Kolonien späterer Kolonialmächte?",
+          "concept": "Sie wurden in der Regel sofort eigene, politisch unabhängige Poleis und blieben der Mutterstadt nur durch Religion, Sprache und Handel verbunden.",
+          "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-kolonisation-migration",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie wurden in der Regel sofort eigene, politisch unabhängige Poleis und blieben der Mutterstadt nur durch Religion, Sprache und Handel verbunden.",
+              "Sie wurden von einem einzigen fernen Großkönig durch Beamte aus Athen direkt regiert."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7RBPS5H60Q3DB87YB7SZ4AR",
+          "slug": "gg6-kolonisation-migration-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was hatten die griechische Kolonisation und heutige Migration gemeinsam, und was war anders?",
+          "concept": "Beide suchen bessere Lebensgrundlagen; doch gründeten griechische Gruppen per Schiff neue unabhängige Poleis statt in bestehende Staaten einzuwandern.",
+          "sample_solution": "Beide suchen bessere Lebensgrundlagen; doch gründeten griechische Gruppen per Schiff neue unabhängige Poleis statt in bestehende Staaten einzuwandern.",
+          "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-kolonisation-migration"
+        }
+      ]
+    },
+    {
+      "id": "01M7RBPS5HTH7KFMDT7NY8ACQD",
+      "atom_uri": "urn:zam:atom:01M7RBPS5HTH7KFMDT7NY8ACQD",
+      "namespace": "zam-academy-geschichte-gymnasium-6",
+      "slug": "gg6-kultur-olympia-theater",
+      "title": "Kultur, Olympia und Quellen: Was alle Griechen verband",
+      "domain": "geschichte/lb3",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-kultur-olympia-theater",
+      "prerequisites": [
+        {
+          "atom_id": "01M7RBPS5HAYZKQ3AD8MPFDB8Q",
+          "type": "soft",
+          "rationale": "Gemeinsame Kultur verband die vielen getrennten Poleis."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-gymnasium-6",
+          "topic_code": "lb3",
+          "topic_title": "Die griechische Antike"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb3",
+          "topic_title": "Die griechische Antike",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7RBPS5HAMB8AKA1ZX78V5B1",
+          "slug": "gg6-kultur-olympia-theater-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Bedeutung hatte der „heilige Gottesfriede“ während der antiken Olympischen Spiele (ab 776 v. Chr.)?",
+          "concept": "Kämpfe ruhten vorübergehend, damit Sportler und Besucher aus zerstrittenen Poleis sicher zum Heiligtum nach Olympia reisen konnten.",
+          "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-kultur-olympia-theater",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Kämpfe ruhten vorübergehend, damit Sportler und Besucher aus zerstrittenen Poleis sicher zum Heiligtum nach Olympia reisen konnten.",
+              "Alle Poleis gaben für immer ihre eigenen Armeen und Stadtmauern auf."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7RBPS5HEHN6VV9RE2JCM3CR",
+          "slug": "gg6-kultur-olympia-theater-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche kulturellen Klammern verbanden die politisch getrennten griechischen Poleis zu einer gemeinsamen Welt?",
+          "concept": "Gemeinsame Sprache und Schrift, die zwölf olympischen Götter und Orakel (Delphi), Homers Epen, Olympische Spiele ab 776 v. Chr. sowie das Theater.",
+          "sample_solution": "Gemeinsame Sprache und Schrift, die zwölf olympischen Götter und Orakel (Delphi), Homers Epen, Olympische Spiele ab 776 v. Chr. sowie das Theater.",
+          "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-kultur-olympia-theater"
+        }
+      ]
+    },
+    {
+      "id": "01M7RBPS5H3GCFX6PQM43QB7FF",
+      "atom_uri": "urn:zam:atom:01M7RBPS5H3GCFX6PQM43QB7FF",
+      "namespace": "zam-academy-geschichte-gymnasium-6",
+      "slug": "gg6-weg-zur-demokratie-solon",
+      "title": "Von der Aristokratie zur Demokratie: Solon und Kleisthenes",
+      "domain": "geschichte/lb3",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-weg-zur-demokratie-solon",
+      "prerequisites": [
+        {
+          "atom_id": "01M7RBPS5HAYZKQ3AD8MPFDB8Q",
+          "type": "soft",
+          "rationale": "In der Polis Athen entwickelten sich neue Verfassungsformen."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-gymnasium-6",
+          "topic_code": "lb3",
+          "topic_title": "Die griechische Antike"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb3",
+          "topic_title": "Die griechische Antike",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7RBPS5HC7QGB9DKZDZ52Z8T",
+          "slug": "gg6-weg-zur-demokratie-solon-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie nennt man das antike athenische Verfahren, bei dem Bürger auf Tonscherben (Ostrakon) den Namen eines Politikers einritzten, um drohende Tyrannenherrscher für 10 Jahre zu verbannen?",
+          "concept": "Das Scherbengericht (Ostrakismos)",
+          "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-weg-zur-demokratie-solon",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Das Scherbengericht (Ostrakismos)",
+              "Die Blutrache der Adelsfamilien"
+            ],
+            "correct_index": 0
+          },
+          "replaces": [
+            "01K4YH6A000000000000000J07"
+          ]
+        },
+        {
+          "id": "01M7RBPS5H6NEZJGJG0KRPTF4A",
+          "slug": "gg6-weg-zur-demokratie-solon-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie trugen Solon (594 v. Chr.) und Kleisthenes (508/507 v. Chr.) zur Entstehung der Demokratie in Athen bei?",
+          "concept": "Solon verbot Schuldknechtschaft und öffnete Rechte nach Vermögen; Kleisthenes mischte die Bevölkerung in zehn Phylen, schuf den Rat der 500 und das Scherbengericht.",
+          "sample_solution": "Solon verbot Schuldknechtschaft und öffnete Rechte nach Vermögen; Kleisthenes mischte die Bevölkerung in zehn Phylen, schuf den Rat der 500 und das Scherbengericht.",
+          "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-weg-zur-demokratie-solon"
+        }
+      ]
+    },
+    {
+      "id": "01M7RBPS5HE9AD0S0T2HCD6NDN",
+      "atom_uri": "urn:zam:atom:01M7RBPS5HE9AD0S0T2HCD6NDN",
+      "namespace": "zam-academy-geschichte-gymnasium-6",
+      "slug": "gg6-perserkriege-demokratie",
+      "title": "Perserkriege und der Aufstieg der Ruderer in Athen",
+      "domain": "geschichte/lb3",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-perserkriege-demokratie",
+      "prerequisites": [
+        {
+          "atom_id": "01M7RBPS5H3GCFX6PQM43QB7FF",
+          "type": "soft",
+          "rationale": "Die Perserkriege veränderten das Machtgewicht innerhalb der Verfassung."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-gymnasium-6",
+          "topic_code": "lb3",
+          "topic_title": "Die griechische Antike"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb3",
+          "topic_title": "Die griechische Antike",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7RBPS5H1DX7FAY1XN20RE9C",
+          "slug": "gg6-perserkriege-demokratie-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum stärkte die siegreiche Seeschlacht bei Salamis (480 v. Chr.) besonders das politische Gewicht der ärmeren Bürger Athens?",
+          "concept": "Die Theten saßen zwar schon in der Volksversammlung, ruderten bei Salamis aber zu Zehntausenden die Trieren und wurden so militärisch unverzichtbar.",
+          "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-perserkriege-demokratie",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Theten saßen zwar schon in der Volksversammlung, ruderten bei Salamis aber zu Zehntausenden die Trieren und wurden so militärisch unverzichtbar.",
+              "Weil nur reiche Pferdebesitzer auf den Ruderbänken sitzen durften."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7RBPS5HTA8149CRH6SE5VS9",
+          "slug": "gg6-perserkriege-demokratie-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum führten die Perserkriege und besonders die Seeschlacht bei Salamis (480 v. Chr.) zum Ausbau der Demokratie in Athen?",
+          "concept": "Auf den Trieren ruderten Tausende Theten. Weil sie Athen retteten, stieg ihr Gewicht in der Volksversammlung stark und ebnete weiteren Reformen den Weg.",
+          "sample_solution": "Auf den Trieren ruderten Tausende Theten. Weil sie Athen retteten, stieg ihr Gewicht in der Volksversammlung stark und ebnete weiteren Reformen den Weg.",
+          "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-perserkriege-demokratie"
+        }
+      ]
+    },
+    {
+      "id": "01M7RBPS5HH3KYX2P08Q5WM0AF",
+      "atom_uri": "urn:zam:atom:01M7RBPS5HH3KYX2P08Q5WM0AF",
+      "namespace": "zam-academy-geschichte-gymnasium-6",
+      "slug": "gg6-attische-demokratie-perikles",
+      "title": "Blütezeit Athens: Die attische Demokratie prüfen und beurteilen",
+      "domain": "geschichte/lb3",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-attische-demokratie-perikles",
+      "prerequisites": [
+        {
+          "atom_id": "01M7RBPS5HE9AD0S0T2HCD6NDN",
+          "type": "soft",
+          "rationale": "Der Sieg von Salamis führte zum Ausbau der attischen Demokratie."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-gymnasium-6",
+          "topic_code": "lb3",
+          "topic_title": "Die griechische Antike"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb3",
+          "topic_title": "Die griechische Antike",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7RBPS5HFEK3PSV3MJVTK1MS",
+          "slug": "gg6-attische-demokratie-perikles-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Personengruppen waren in der attischen Demokratie des 5. Jh. v. Chr. vom Bürgerrecht und der Volksversammlung ausgeschlossen?",
+          "concept": "Frauen, zugezogene Fremde (Metöken) und Sklaven – nur erwachsene männliche Vollbürger stimmten ab.",
+          "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-attische-demokratie-perikles",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Frauen, zugezogene Fremde (Metöken) und Sklaven – nur erwachsene männliche Vollbürger stimmten ab.",
+              "Nur die wohlhabenden Strategen, während alle Frauen im Rat saßen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7RBPS5HWBHAXYT1Y7SR4WFM",
+          "slug": "gg6-attische-demokratie-perikles-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Nenne die vier wichtigsten Organe der attischen Demokratie und ihren größten Unterschied zu einer modernen Demokratie.",
+          "concept": "Volksversammlung (Ekklesia), ausgeloster Rat der 500, Volksgericht und 10 gewählte Strategen. Ausgeschlossen blieben jedoch Frauen, Metöken und Sklaven.",
+          "sample_solution": "Volksversammlung (Ekklesia), ausgeloster Rat der 500, Volksgericht und 10 gewählte Strategen. Ausgeschlossen blieben jedoch Frauen, Metöken und Sklaven.",
+          "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-attische-demokratie-perikles"
+        }
+      ]
+    },
+    {
+      "id": "01M7RBPS5HQJMVH31FN31TAFAN",
+      "atom_uri": "urn:zam:atom:01M7RBPS5HQJMVH31FN31TAFAN",
+      "namespace": "zam-academy-geschichte-gymnasium-6",
+      "slug": "gg6-hatschepsut-herrscherin",
+      "title": "Hatschepsut: Eine Pharaonin im Spannungsfeld der Tradition",
+      "domain": "geschichte/lb4",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-hatschepsut-herrscherin",
+      "prerequisites": [
+        {
+          "atom_id": "01M7RBPS5HFKXEYX299D6SC2KK",
+          "type": "soft",
+          "rationale": "Hatschepsut regierte innerhalb der ägyptischen Monarchie."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-gymnasium-6",
+          "topic_code": "lb4",
+          "topic_title": "Menschen machen Geschichte (Längsschnitt)"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb4",
+          "topic_title": "Menschen machen Geschichte (Längsschnitt)",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7RBPS5HW697YK9DJ6GY720H",
+          "slug": "gg6-hatschepsut-herrscherin-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum ließ sich die Pharaonin Hatschepsut auf vielen Statuen und Reliefs mit einem künstlichen Königsbart darstellen?",
+          "concept": "Um ihre Herrschaft über traditionelle ägyptische Königssymbole als rechtmäßigen Pharao abzusichern.",
+          "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-hatschepsut-herrscherin",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Um ihre Herrschaft über traditionelle ägyptische Königssymbole als rechtmäßigen Pharao abzusichern.",
+              "Weil Bildhauer in Ägypten damals grundsätzlich keine Frauenfiguren meißeln konnten."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7RBPS5H4FK8264HB4Q7HH0K",
+          "slug": "gg6-hatschepsut-herrscherin-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie sicherte Pharaonin Hatschepsut ihre Herrschaft in der ägyptischen Monarchie, und wo lagen ihre Grenzen?",
+          "concept": "Sie nutzte traditionelle Königssymbole (Krone, Bart), Bündnisse mit Priestern und die Handelspolitik nach Punt – blieb aber an Traditionen und Thronfolge gebunden.",
+          "sample_solution": "Sie nutzte traditionelle Königssymbole (Krone, Bart), Bündnisse mit Priestern und die Handelspolitik nach Punt – blieb aber an Traditionen und Thronfolge gebunden.",
+          "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-hatschepsut-herrscherin"
+        }
+      ]
+    },
+    {
+      "id": "01M7RBPS5HGGW49XQM5BPEGEZX",
+      "atom_uri": "urn:zam:atom:01M7RBPS5HGGW49XQM5BPEGEZX",
+      "namespace": "zam-academy-geschichte-gymnasium-6",
+      "slug": "gg6-themistokles-politik",
+      "title": "Themistokles: Politik und Strategie in der Demokratie",
+      "domain": "geschichte/lb4",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-themistokles-politik",
+      "prerequisites": [
+        {
+          "atom_id": "01M7RBPS5HH3KYX2P08Q5WM0AF",
+          "type": "soft",
+          "rationale": "Themistokles handelte nach den Spielregeln der attischen Demokratie."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-gymnasium-6",
+          "topic_code": "lb4",
+          "topic_title": "Menschen machen Geschichte (Längsschnitt)"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb4",
+          "topic_title": "Menschen machen Geschichte (Längsschnitt)",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7RBPS5HEW9XAA2M5KXHDHB6",
+          "slug": "gg6-themistokles-politik-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Worauf war der athenische Politiker Themistokles anders als ein ägyptischer Pharao immer angewiesen, um seinen Flottenplan durchzusetzen?",
+          "concept": "Auf die Zustimmung und Mehrheit der Bürger in der Volksversammlung durch überzeugende Argumente.",
+          "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-themistokles-politik",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Auf die Zustimmung und Mehrheit der Bürger in der Volksversammlung durch überzeugende Argumente.",
+              "Auf die schriftliche Erlaubnis eines erblichen Hochpriesters auf Lebenszeit."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7RBPS5HVV1PC49J6PHF6WSC",
+          "slug": "gg6-themistokles-politik-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was zeigen der Flottenbau und die spätere Verbannung des Themistokles über Macht in einer Demokratie?",
+          "concept": "Ein Politiker kann durch kluge Reden Mehrheiten gewinnen und Großes erreichen, verliert aber jeden Einfluss durch Abwahl oder Scherbengericht.",
+          "sample_solution": "Ein Politiker kann durch kluge Reden Mehrheiten gewinnen und Großes erreichen, verliert aber jeden Einfluss durch Abwahl oder Scherbengericht.",
+          "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-themistokles-politik"
+        }
+      ]
+    },
+    {
+      "id": "01M7RBPS5HPKSMYAN2TDTBV53V",
+      "atom_uri": "urn:zam:atom:01M7RBPS5HPKSMYAN2TDTBV53V",
+      "namespace": "zam-academy-geschichte-gymnasium-6",
+      "slug": "gg6-alexander-weltreich",
+      "title": "Alexander der Große: Feldherr, Eroberer und Grenzen des Weltreichs",
+      "domain": "geschichte/lb4",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-alexander-weltreich",
+      "prerequisites": [
+        {
+          "atom_id": "01M7RBPS5HE9AD0S0T2HCD6NDN",
+          "type": "soft",
+          "rationale": "Alexander führte den großen Feldzug gegen das Perserreich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-gymnasium-6",
+          "topic_code": "lb4",
+          "topic_title": "Menschen machen Geschichte (Längsschnitt)"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb4",
+          "topic_title": "Menschen machen Geschichte (Längsschnitt)",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7RBPS5HR8DSTWH9AN5GD35P",
+          "slug": "gg6-alexander-weltreich-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was zwang Alexander den Großen im Jahr 326 v. Chr. am Fluss Indus zur Umkehr?",
+          "concept": "Seine eigenen erschöpften Soldaten verweigerten nach tausenden Kilometern Marsch den Weiterzug in unbekannte Gebiete.",
+          "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-alexander-weltreich",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Seine eigenen erschöpften Soldaten verweigerten nach tausenden Kilometern Marsch den Weiterzug in unbekannte Gebiete.",
+              "Eine schriftliche Abstimmung der Volksversammlung in Athen verbot ihm weitere Kriege."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7RBPS5H3MH6XVZGKKM5B4VV",
+          "slug": "gg6-alexander-weltreich-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche Grenzen von Alexanders Macht zeigen die Geschichtskarte seines Feldzugs und die Zeit nach 323 v. Chr.?",
+          "concept": "Nach 7600 km meuterte das erschöpfte Heer 326 v. Chr. am Indus; nach seinem frühen Tod 323 v. Chr. zerfiel das Riesenreich mangels fester Nachfolge.",
+          "sample_solution": "Nach 7600 km meuterte das erschöpfte Heer 326 v. Chr. am Indus; nach seinem frühen Tod 323 v. Chr. zerfiel das Riesenreich mangels fester Nachfolge.",
+          "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-alexander-weltreich"
+        }
+      ]
+    },
+    {
+      "id": "01M7RBPS5HAKVB36XRA31FHTWT",
+      "atom_uri": "urn:zam:atom:01M7RBPS5HAKVB36XRA31FHTWT",
+      "namespace": "zam-academy-geschichte-gymnasium-6",
+      "slug": "gg6-einfluss-persoenlichkeiten",
+      "title": "„Machen“ Menschen Geschichte? Ein Vergleich über Epochen hinweg",
+      "domain": "geschichte/lb4",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-einfluss-persoenlichkeiten",
+      "prerequisites": [
+        {
+          "atom_id": "01M7RBPS5HQJMVH31FN31TAFAN",
+          "type": "soft",
+          "rationale": "Vergleicht den Handlungsspielraum in der Monarchie."
+        },
+        {
+          "atom_id": "01M7RBPS5HGGW49XQM5BPEGEZX",
+          "type": "soft",
+          "rationale": "Vergleicht den Handlungsspielraum in der Demokratie."
+        },
+        {
+          "atom_id": "01M7RBPS5HPKSMYAN2TDTBV53V",
+          "type": "soft",
+          "rationale": "Vergleicht Macht und räumliche Grenzen beim Eroberer."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-gymnasium-6",
+          "topic_code": "lb4",
+          "topic_title": "Menschen machen Geschichte (Längsschnitt)"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb4",
+          "topic_title": "Menschen machen Geschichte (Längsschnitt)",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7RBPS5HBM1TJGXXZP5P59J6",
+          "slug": "gg6-einfluss-persoenlichkeiten-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Aussage beschreibt den Einfluss einzelner historischer Persönlichkeiten am treffendsten?",
+          "concept": "Sie können wichtige Weichen stellen, bleiben aber immer von Herrschaftsform, Mitstreitern und äußeren Bedingungen abhängig.",
+          "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-einfluss-persoenlichkeiten",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie können wichtige Weichen stellen, bleiben aber immer von Herrschaftsform, Mitstreitern und äußeren Bedingungen abhängig.",
+              "Große Herrscher handeln in der Geschichte immer völlig frei ohne jede Rücksicht auf andere."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7RBPS5HC93F72AG8C678PR2",
+          "slug": "gg6-einfluss-persoenlichkeiten-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie beeinflusst die Herrschaftsform den Handlungsspielraum einzelner Persönlichkeiten in der Antike?",
+          "concept": "In Monarchien (Hatschepsut, Alexander) lenkt der Herrscher vieles direkt, stößt aber an Tradition und Nachfolge; in der Demokratie (Themistokles) zählen Mehrheiten.",
+          "sample_solution": "In Monarchien (Hatschepsut, Alexander) lenkt der Herrscher vieles direkt, stößt aber an Tradition und Nachfolge; in der Demokratie (Themistokles) zählen Mehrheiten.",
+          "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-einfluss-persoenlichkeiten"
+        }
+      ]
+    },
+    {
+      "id": "01M7RBPS5HC91YW8NJ7YWJPZYQ",
+      "atom_uri": "urn:zam:atom:01M7RBPS5HC91YW8NJ7YWJPZYQ",
+      "namespace": "zam-academy-geschichte-gymnasium-6",
+      "slug": "gg6-rom-gruendung-mythos",
+      "title": "753 v. Chr.: Gründungsmythos Roms und historische Anfänge",
+      "domain": "geschichte/lb5",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-rom-gruendung-mythos",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-gymnasium-6",
+          "topic_code": "lb5",
+          "topic_title": "Das Imperium Romanum"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb5",
+          "topic_title": "Das Imperium Romanum",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7RBPS5HY62GF49Q0RGRX657",
+          "slug": "gg6-rom-gruendung-mythos-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was unterscheidet den Gründungsmythos von Romulus und Remus (753 v. Chr.) von einer wissenschaftlichen Geschichtsdarstellung?",
+          "concept": "Der Mythos entstand viel später zur Verherrlichung Roms; die Forschung untersucht dagegen älteste Hüttenreste, Gräber und die Lage an der Tiberfurt.",
+          "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-rom-gruendung-mythos",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Mythos entstand viel später zur Verherrlichung Roms; die Forschung untersucht dagegen älteste Hüttenreste, Gräber und die Lage an der Tiberfurt.",
+              "Ein Mythos ist immer eine Lüge ohne jeden Bezug zu einem echten Ort."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7RBPS5HY5CATR37EBVCXR5C",
+          "slug": "gg6-rom-gruendung-mythos-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was unterscheidet die Sage von Romulus und Remus (753 v. Chr.) von den archäologischen Anfängen Roms?",
+          "concept": "Der Mythos erklärt stolze Herkunft durch den Kriegsgott Mars; Ausgrabungen zeigen ein langsames Zusammenwachsen von Hirtendörfern an der Tiberfurt.",
+          "sample_solution": "Der Mythos erklärt stolze Herkunft durch den Kriegsgott Mars; Ausgrabungen zeigen ein langsames Zusammenwachsen von Hirtendörfern an der Tiberfurt.",
+          "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-rom-gruendung-mythos"
+        }
+      ]
+    },
+    {
+      "id": "01M7RBPS5H5H1AVTHPJSKJM7VG",
+      "atom_uri": "urn:zam:atom:01M7RBPS5H5H1AVTHPJSKJM7VG",
+      "namespace": "zam-academy-geschichte-gymnasium-6",
+      "slug": "gg6-roemische-republik",
+      "title": "Senat, Konsuln, Volkstribune: Die Römische Republik",
+      "domain": "geschichte/lb5",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-roemische-republik",
+      "prerequisites": [
+        {
+          "atom_id": "01M7RBPS5HC91YW8NJ7YWJPZYQ",
+          "type": "soft",
+          "rationale": "Auf die mythische Königszeit folgte in Rom die Republik."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-gymnasium-6",
+          "topic_code": "lb5",
+          "topic_title": "Das Imperium Romanum"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb5",
+          "topic_title": "Das Imperium Romanum",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7RBPS5HAJ4606TPSEC8FWPE",
+          "slug": "gg6-roemische-republik-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Mit welchem mächtigen Einspruchsrecht (lateinisch für „Ich verbiete!“) konnten die römischen Volkstribune jede Senatsentscheidung zum Schutz der Plebejer sofort stoppen?",
+          "concept": "Mit dem Veto-Recht (Veto)",
+          "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-roemische-republik",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Mit dem Veto-Recht (Veto)",
+              "Mit dem Befehl eines lebenslangen Diktators"
+            ],
+            "correct_index": 0
+          },
+          "replaces": [
+            "01K4YH6R000000000000000J01"
+          ]
+        },
+        {
+          "id": "01M7RBPS5H7ZZTYJMS1BFEF7MB",
+          "slug": "gg6-roemische-republik-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Durch welche Prinzipien verhinderte die Römische Republik zunächst eine Alleinherrschaft?",
+          "concept": "Annuität (Ämter auf 1 Jahr), Kollegialität (zwei gleichberechtigte Kollegen), Beratung im Senat und das Veto-Recht der Volkstribune zum Schutz der Plebejer.",
+          "sample_solution": "Annuität (Ämter auf 1 Jahr), Kollegialität (zwei gleichberechtigte Kollegen), Beratung im Senat und das Veto-Recht der Volkstribune zum Schutz der Plebejer.",
+          "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-roemische-republik"
+        }
+      ]
+    },
+    {
+      "id": "01M7RBPS5HD6KA2E95257VCNBT",
+      "atom_uri": "urn:zam:atom:01M7RBPS5HD6KA2E95257VCNBT",
+      "namespace": "zam-academy-geschichte-gymnasium-6",
+      "slug": "gg6-expansion-weltreich",
+      "title": "Vom Stadtstaat zum Weltreich: Das Imperium Romanum wächst",
+      "domain": "geschichte/lb5",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-expansion-weltreich",
+      "prerequisites": [
+        {
+          "atom_id": "01M7RBPS5H5H1AVTHPJSKJM7VG",
+          "type": "soft",
+          "rationale": "Die Eroberungen rund um das Mittelmeer erfolgten zur Zeit der Republik."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-gymnasium-6",
+          "topic_code": "lb5",
+          "topic_title": "Das Imperium Romanum"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb5",
+          "topic_title": "Das Imperium Romanum",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7RBPS5HW4ZEZ0JDP4ARR96X",
+          "slug": "gg6-expansion-weltreich-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was bezeichneten die Römer seit der Zeit ihrer großen Eroberungen als „Provinz“?",
+          "concept": "Ein erobertes Gebiet außerhalb Italiens, das von einem römischen Statthalter verwaltet wurde und Abgaben zahlte.",
+          "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-expansion-weltreich",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein erobertes Gebiet außerhalb Italiens, das von einem römischen Statthalter verwaltet wurde und Abgaben zahlte.",
+              "Den kleinen Marktplatz in der Mitte der Stadt Rom."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7RBPS5HGA3CESBHXR9ANW4H",
+          "slug": "gg6-expansion-weltreich-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche sozialen und militärischen Folgen hatte die Ausdehnung Roms zum Mittelmeer-Weltreich für die Republik?",
+          "concept": "Viele Bauernsoldaten verarmten, billige Sklaven verdrängten Kleinbauern, und Berufssoldaten folgten eher ihren Feldherren als dem Senat.",
+          "sample_solution": "Viele Bauernsoldaten verarmten, billige Sklaven verdrängten Kleinbauern, und Berufssoldaten folgten eher ihren Feldherren als dem Senat.",
+          "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-expansion-weltreich"
+        }
+      ]
+    },
+    {
+      "id": "01M7RBPS5H31XHK8H5GHZE6WAV",
+      "atom_uri": "urn:zam:atom:01M7RBPS5H31XHK8H5GHZE6WAV",
+      "namespace": "zam-academy-geschichte-gymnasium-6",
+      "slug": "gg6-caesar-augustus-prinzipat",
+      "title": "Caesar und Augustus: Von der Republik zum Prinzipat",
+      "domain": "geschichte/lb5",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-caesar-augustus-prinzipat",
+      "prerequisites": [
+        {
+          "atom_id": "01M7RBPS5HD6KA2E95257VCNBT",
+          "type": "soft",
+          "rationale": "Die Krisen des schnellen Wachstums führten zum Bürgerkrieg und Prinzipat."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-gymnasium-6",
+          "topic_code": "lb5",
+          "topic_title": "Das Imperium Romanum"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb5",
+          "topic_title": "Das Imperium Romanum",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7RBPS5HYDAR6W41QSPP9KY8",
+          "slug": "gg6-caesar-augustus-prinzipat-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welchen Ehrentitel (lateinisch für „der Erhabene“) verlieh der Senat im Jahr 27 v. Chr. Caesars Großneffen und Adoptivsohn Octavian, womit das römische Kaiserreich begründet wurde?",
+          "concept": "Augustus (Imperator Caesar Augustus)",
+          "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-caesar-augustus-prinzipat",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Augustus (Imperator Caesar Augustus)",
+              "Rex (römischer Erbkönig)"
+            ],
+            "correct_index": 0
+          },
+          "replaces": [
+            "01K4YH6R000000000000000J03"
+          ]
+        },
+        {
+          "id": "01M7RBPS5HKDDTT7JEN1XJ5061",
+          "slug": "gg6-caesar-augustus-prinzipat-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie gelang Augustus ab 27 v. Chr. der dauerhafte Übergang von der Republik zum Kaisertum (Prinzipat)?",
+          "concept": "Er ließ Senat und Konsuln dem Namen nach bestehen, bündelte aber als „Erster Bürger“ (Princeps) Oberbefehl über Heer, Veto-Gewalt und Finanzen auf Lebenszeit.",
+          "sample_solution": "Er ließ Senat und Konsuln dem Namen nach bestehen, bündelte aber als „Erster Bürger“ (Princeps) Oberbefehl über Heer, Veto-Gewalt und Finanzen auf Lebenszeit.",
+          "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-caesar-augustus-prinzipat"
+        }
+      ]
+    },
+    {
+      "id": "01M7RBPS5H5PR9YTZJ7DZDXHP7",
+      "atom_uri": "urn:zam:atom:01M7RBPS5H5PR9YTZJ7DZDXHP7",
+      "namespace": "zam-academy-geschichte-gymnasium-6",
+      "slug": "gg6-provinzen-bayern-limes",
+      "title": "Römer in Bayern: Raetien, Noricum, Limes und Romanisierung",
+      "domain": "geschichte/lb5",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-provinzen-bayern-limes",
+      "prerequisites": [
+        {
+          "atom_id": "01M7RBPS5H31XHK8H5GHZE6WAV",
+          "type": "soft",
+          "rationale": "Die Alpenfeldzüge unter Augustus machten Raetien und Noricum zu Provinzen."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-gymnasium-6",
+          "topic_code": "lb5",
+          "topic_title": "Das Imperium Romanum"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb5",
+          "topic_title": "Das Imperium Romanum",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7RBPS5HQ27ZZRCXHCCKM9EW",
+          "slug": "gg6-provinzen-bayern-limes-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie hieß das 179 n. Chr. unter Kaiser Marc Aurel gegründete römische Legionslager an der Mündung des Regen in die Donau, aus dem die heutige bayerische Stadt Regensburg hervorging?",
+          "concept": "Castra Regina (Lager am Regen)",
+          "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-provinzen-bayern-limes",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Castra Regina (Lager am Regen)",
+              "Augusta Vindelicum (Augsburg)"
+            ],
+            "correct_index": 0
+          },
+          "replaces": [
+            "01K4YH6R000000000000000J05"
+          ]
+        },
+        {
+          "id": "01M7RBPS5HW1BY78S4FKT76BS9",
+          "slug": "gg6-provinzen-bayern-limes-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche beiden römischen Provinzen lagen im heutigen Bayern, und was veränderte die Romanisierung dort?",
+          "concept": "Raetia (Hauptstadt Augusta Vindelicum / Augsburg) und Noricum. Feste Straßen, Limes-Kastelle wie Regensburg, Steinhäuser, Thermen und lateinische Wörter prägten die Region.",
+          "sample_solution": "Raetia (Hauptstadt Augusta Vindelicum / Augsburg) und Noricum. Feste Straßen, Limes-Kastelle wie Regensburg, Steinhäuser, Thermen und lateinische Wörter prägten die Region.",
+          "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-provinzen-bayern-limes"
+        }
+      ]
+    },
+    {
+      "id": "01M7RBPS5HPTS2NTBW62087F90",
+      "atom_uri": "urn:zam:atom:01M7RBPS5HPTS2NTBW62087F90",
+      "namespace": "zam-academy-geschichte-gymnasium-6",
+      "slug": "gg6-juden-im-reich-diaspora",
+      "title": "Juden im Römischen Reich: Tempelzerstörung und Diaspora",
+      "domain": "geschichte/lb5",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-juden-im-reich-diaspora",
+      "prerequisites": [
+        {
+          "atom_id": "01M7RBPS5HD6KA2E95257VCNBT",
+          "type": "soft",
+          "rationale": "Judäa lag als Provinz innerhalb des Römischen Reichs."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-gymnasium-6",
+          "topic_code": "lb5",
+          "topic_title": "Das Imperium Romanum"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb5",
+          "topic_title": "Das Imperium Romanum",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7RBPS5HEY6HPYZ1B8FH4VVM",
+          "slug": "gg6-juden-im-reich-diaspora-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was bedeutet der historische Begriff „Diaspora“ im Zusammenhang mit dem Judentum im Römischen Reich?",
+          "concept": "Das verstreute Leben jüdischer Gemeinden außerhalb ihres Ursprungslands Judäa, zum Beispiel in Städten rund um das Mittelmeer.",
+          "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-juden-im-reich-diaspora",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Das verstreute Leben jüdischer Gemeinden außerhalb ihres Ursprungslands Judäa, zum Beispiel in Städten rund um das Mittelmeer.",
+              "Den Namen des wichtigsten römischen Steuerbezirks in Gallien."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7RBPS5H88HRDNZM2JK2N456",
+          "slug": "gg6-juden-im-reich-diaspora-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie kam es zur jüdischen Diaspora im Römischen Reich, und was hielt die Gemeinden zusammen?",
+          "concept": "Nach der Niederschlagung der Aufstände und der Zerstörung des Jerusalemer Tempels 70 n. Chr. lebten viele Juden verstreut ums Mittelmeer, verbunden durch Synagogen und Tora.",
+          "sample_solution": "Nach der Niederschlagung der Aufstände und der Zerstörung des Jerusalemer Tempels 70 n. Chr. lebten viele Juden verstreut ums Mittelmeer, verbunden durch Synagogen und Tora.",
+          "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-juden-im-reich-diaspora"
+        }
+      ]
+    },
+    {
+      "id": "01M7RBPS5H9K5WRJV7DDFW7CK0",
+      "atom_uri": "urn:zam:atom:01M7RBPS5H9K5WRJV7DDFW7CK0",
+      "namespace": "zam-academy-geschichte-gymnasium-6",
+      "slug": "gg6-christen-staatsreligion",
+      "title": "Christen im Römischen Reich: Von der Verfolgung zur Staatsreligion",
+      "domain": "geschichte/lb5",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-christen-staatsreligion",
+      "prerequisites": [
+        {
+          "atom_id": "01M7RBPS5H31XHK8H5GHZE6WAV",
+          "type": "soft",
+          "rationale": "Der Kaiserkult des Prinzipats führte zunächst zu Konflikten mit Christen."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-gymnasium-6",
+          "topic_code": "lb5",
+          "topic_title": "Das Imperium Romanum"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb5",
+          "topic_title": "Das Imperium Romanum",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7RBPS5HB541JMTC63115KQS",
+          "slug": "gg6-christen-staatsreligion-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was änderte sich für die Christen im Römischen Reich durch die Mailänder Vereinbarung von 313 n. Chr. unter Kaiser Konstantin?",
+          "concept": "Das Christentum wurde geduldet, Verfolgungen endeten und Gemeinden bekamen beschlagnahmten Besitz zurück.",
+          "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-christen-staatsreligion",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Das Christentum wurde geduldet, Verfolgungen endeten und Gemeinden bekamen beschlagnahmten Besitz zurück.",
+              "Alle anderen Religionen wurden bereits im Jahr 313 vollständig verboten."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7RBPS5HEAJ0VM1ZQDJG2G6Q",
+          "slug": "gg6-christen-staatsreligion-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Nenne die beiden großen Daten für den Aufstieg des Christentums im Römischen Reich im 4. Jahrhundert n. Chr.",
+          "concept": "313 n. Chr. gewährte Konstantin in der Mailänder Vereinbarung Religionsfreiheit; 380/391 n. Chr. erhob Theodosius das Christentum zur alleinigen Staatsreligion.",
+          "sample_solution": "313 n. Chr. gewährte Konstantin in der Mailänder Vereinbarung Religionsfreiheit; 380/391 n. Chr. erhob Theodosius das Christentum zur alleinigen Staatsreligion.",
+          "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-christen-staatsreligion"
+        }
+      ]
+    },
+    {
+      "id": "01M7RBPS5HAVGEJHWTACPM0PRF",
+      "atom_uri": "urn:zam:atom:01M7RBPS5HAVGEJHWTACPM0PRF",
+      "namespace": "zam-academy-geschichte-gymnasium-6",
+      "slug": "gg6-voelkerwanderung-zerfall",
+      "title": "„Völkerwanderung“ und der Zerfall Westroms",
+      "domain": "geschichte/lb6",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-voelkerwanderung-zerfall",
+      "prerequisites": [
+        {
+          "atom_id": "01M7RBPS5HD6KA2E95257VCNBT",
+          "type": "soft",
+          "rationale": "Zeigt den Zerfall des zuvor gewachsenen Weströmischen Reichs."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-gymnasium-6",
+          "topic_code": "lb6",
+          "topic_title": "Von der Antike zum Mittelalter"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb6",
+          "topic_title": "Von der Antike zum Mittelalter",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7RBPS5H9BF1NWH02GNP9EBE",
+          "slug": "gg6-voelkerwanderung-zerfall-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "In welchem Jahr endete das Weströmische Reich, als der germanische Heerführer Odoaker den letzten weströmischen Kaiser Romulus Augustulus absetzte?",
+          "concept": "476 n. Chr.",
+          "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-voelkerwanderung-zerfall",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "476 n. Chr.",
+              "800 n. Chr."
+            ],
+            "correct_index": 0
+          },
+          "replaces": [
+            "01K4YH6R000000000000000J07"
+          ]
+        },
+        {
+          "id": "01M7RBPS5HSC3JWT8Y3NB57C87",
+          "slug": "gg6-voelkerwanderung-zerfall-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was geschah bei der Reichsteilung 395 und bis zum Jahr 476 n. Chr. im Westteil und im Ostteil des Römischen Reichs?",
+          "concept": "Gemischte Verbände zogen ins Westreich („Völkerwanderung“), 476 endete das weströmische Kaisertum; das Oströmische Reich (Byzanz) blieb hingegen rund tausend Jahre bestehen.",
+          "sample_solution": "Gemischte Verbände zogen ins Westreich („Völkerwanderung“), 476 endete das weströmische Kaisertum; das Oströmische Reich (Byzanz) blieb hingegen rund tausend Jahre bestehen.",
+          "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-voelkerwanderung-zerfall"
+        }
+      ]
+    },
+    {
+      "id": "01M7RBPS5HZ5JRW134AW3PWS9W",
+      "atom_uri": "urn:zam:atom:01M7RBPS5HZ5JRW134AW3PWS9W",
+      "namespace": "zam-academy-geschichte-gymnasium-6",
+      "slug": "gg6-ausbreitung-islam-dreiteilung",
+      "title": "Ausbreitung des Islam und Dreiteilung der Mittelmeerwelt",
+      "domain": "geschichte/lb6",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-ausbreitung-islam-dreiteilung",
+      "prerequisites": [
+        {
+          "atom_id": "01M7RBPS5HAVGEJHWTACPM0PRF",
+          "type": "soft",
+          "rationale": "Auf Westroms Zerfall folgte die Ausbreitung des Islam zur Dreiteilung."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-gymnasium-6",
+          "topic_code": "lb6",
+          "topic_title": "Von der Antike zum Mittelalter"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb6",
+          "topic_title": "Von der Antike zum Mittelalter",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7RBPS5H0KYWPMTXC743BKNE",
+          "slug": "gg6-ausbreitung-islam-dreiteilung-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche drei großen Kultur- und Herrschaftsräume bildeten um 800 die Dreiteilung der früher einheitlichen römischen Mittelmeerwelt?",
+          "concept": "Das Frankenreich im Westen, Byzanz (Ostrom) im Osten und die islamische Welt von Arabien über Nordafrika bis Spanien.",
+          "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-ausbreitung-islam-dreiteilung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Das Frankenreich im Westen, Byzanz (Ostrom) im Osten und die islamische Welt von Arabien über Nordafrika bis Spanien.",
+              "Das Alte Ägypten, Athen und Sparta."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7RBPS5HM36ZSX0FW56MDPBA",
+          "slug": "gg6-ausbreitung-islam-dreiteilung-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie veränderte die Ausbreitung des Islam ab 632 den Mittelmeerraum politisch und kulturell?",
+          "concept": "Islamische Reiche erstreckten sich bis Nordafrika und Spanien; um 800 entstand die Dreiteilung in Frankenreich, Byzanz und islamische Welt – samt regem Wissensaustausch.",
+          "sample_solution": "Islamische Reiche erstreckten sich bis Nordafrika und Spanien; um 800 entstand die Dreiteilung in Frankenreich, Byzanz und islamische Welt – samt regem Wissensaustausch.",
+          "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-ausbreitung-islam-dreiteilung"
+        }
+      ]
+    },
+    {
+      "id": "01M7RBPS5H2AKYTP8291XQB2QQ",
+      "atom_uri": "urn:zam:atom:01M7RBPS5H2AKYTP8291XQB2QQ",
+      "namespace": "zam-academy-geschichte-gymnasium-6",
+      "slug": "gg6-frankenreich-traditionen",
+      "title": "Um 500: Die Reichsbildung der Franken zwischen Tradition und Neuanfang",
+      "domain": "geschichte/lb6",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-frankenreich-traditionen",
+      "prerequisites": [
+        {
+          "atom_id": "01M7RBPS5HAVGEJHWTACPM0PRF",
+          "type": "soft",
+          "rationale": "Auf früherem römischem Boden entstand das Frankenreich."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-gymnasium-6",
+          "topic_code": "lb6",
+          "topic_title": "Von der Antike zum Mittelalter"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb6",
+          "topic_title": "Von der Antike zum Mittelalter",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7RBPS5H50DR6J0FZ61NW126",
+          "slug": "gg6-frankenreich-traditionen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche drei Traditionen verband das Frankenreich seit der Zeit um 500 zu einer stabilen neuen Ordnung?",
+          "concept": "Germanische Gefolgschaft und Königtum, römische Sprache/Städte und das Christentum (Kirche).",
+          "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-frankenreich-traditionen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Germanische Gefolgschaft und Königtum, römische Sprache/Städte und das Christentum (Kirche).",
+              "Nur altägyptische Pharaonenreligion und persische Seefahrt."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7RBPS5HQX3G96FBNEWPNR83",
+          "slug": "gg6-frankenreich-traditionen-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche drei kulturellen Traditionen verbanden die Franken bei ihrer Reichsbildung ab um 500?",
+          "concept": "Germanische Gefolgschaftstreue und Reisekönigtum, römisches Städte-, Rechts- und Spracherbe (Latein) sowie den christlichen Glauben seit Chlodwigs Taufe.",
+          "sample_solution": "Germanische Gefolgschaftstreue und Reisekönigtum, römisches Städte-, Rechts- und Spracherbe (Latein) sowie den christlichen Glauben seit Chlodwigs Taufe.",
+          "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-frankenreich-traditionen"
+        }
+      ]
+    },
+    {
+      "id": "01M7RBPS5HJZVYBKYPSC6KY9DE",
+      "atom_uri": "urn:zam:atom:01M7RBPS5HJZVYBKYPSC6KY9DE",
+      "namespace": "zam-academy-geschichte-gymnasium-6",
+      "slug": "gg6-karl-der-grosse-kaisertum",
+      "title": "800: Karl der Große und das mittelalterliche Kaisertum",
+      "domain": "geschichte/lb6",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-karl-der-grosse-kaisertum",
+      "prerequisites": [
+        {
+          "atom_id": "01M7RBPS5H2AKYTP8291XQB2QQ",
+          "type": "soft",
+          "rationale": "Karl baute auf der fränkischen Reichsbildung seit um 500 auf."
+        },
+        {
+          "atom_id": "01M7RBPS5H31XHK8H5GHZE6WAV",
+          "type": "soft",
+          "rationale": "Vergleicht mittelalterliches und antikes Kaisertum seit Augustus."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-gymnasium-6",
+          "topic_code": "lb6",
+          "topic_title": "Von der Antike zum Mittelalter"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb6",
+          "topic_title": "Von der Antike zum Mittelalter",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7RBPS5H1P28XCGXD5FCY5P5",
+          "slug": "gg6-karl-der-grosse-kaisertum-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was unterschied die Herrschaftsweise Kaiser Karls des Großen (um 800) deutlich von der Regierung der antiken römischen Kaiser in Rom?",
+          "concept": "Karl besaß keine feste Hauptstadt mit riesigem Beamtenapparat, sondern regierte als Reisekönig über Pfalzen wie Aachen und Regensburg.",
+          "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-karl-der-grosse-kaisertum",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Karl besaß keine feste Hauptstadt mit riesigem Beamtenapparat, sondern regierte als Reisekönig über Pfalzen wie Aachen und Regensburg.",
+              "Karl verbot den Bau christlicher Kirchen und förderte die alten griechischen Götter."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7RBPS5H50J78RX6R6FQ0VJX",
+          "slug": "gg6-karl-der-grosse-kaisertum-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Worin zeigten sich bei Karl dem Großen (Kaiserkrönung 800) Kontinuität zur Antike und mittelalterlicher Wandel zugleich?",
+          "concept": "Kontinuität: Kaisertitel, Krönung in Rom, Latein und Bildungsreform. Wandel: Reisekönigtum über Pfalzen wie Aachen statt fester Hauptstadt sowie enges Bündnis mit dem Papst.",
+          "sample_solution": "Kontinuität: Kaisertitel, Krönung in Rom, Latein und Bildungsreform. Wandel: Reisekönigtum über Pfalzen wie Aachen statt fester Hauptstadt sowie enges Bündnis mit dem Papst.",
+          "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-karl-der-grosse-kaisertum"
+        }
+      ]
+    },
+    {
+      "id": "01M7RBPS5HJM8KYQH9PAGH9XZS",
+      "atom_uri": "urn:zam:atom:01M7RBPS5HJM8KYQH9PAGH9XZS",
+      "namespace": "zam-academy-geschichte-gymnasium-6",
+      "slug": "gg6-epochengrenzen-kontinuitaet",
+      "title": "Wann endete die Antike? Epochengrenzen und Kontinuität",
+      "domain": "geschichte/lb6",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-epochengrenzen-kontinuitaet",
+      "prerequisites": [
+        {
+          "atom_id": "01M7RBPS5HJZVYBKYPSC6KY9DE",
+          "type": "soft",
+          "rationale": "Die Kaiserkrönung 800 gehört zu den Schlüsseldaten des Epochenübergangs."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-gymnasium-6",
+          "topic_code": "lb6",
+          "topic_title": "Von der Antike zum Mittelalter"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb6",
+          "topic_title": "Von der Antike zum Mittelalter",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7RBPS5HCDC9YX09HA7AXH4D",
+          "slug": "gg6-epochengrenzen-kontinuitaet-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum nennen Historiker beim Übergang von der Antike zum Mittelalter mehrere Jahreszahlen (wie 395, 476, 500, 632 und 800) statt nur eines Datums?",
+          "concept": "Weil Politik, Religion und Kultur sich verschieden schnell wandelten und Epochengrenzen von Nachgeborenen zur Orientierung gesetzt werden.",
+          "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-epochengrenzen-kontinuitaet",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Weil Politik, Religion und Kultur sich verschieden schnell wandelten und Epochengrenzen von Nachgeborenen zur Orientierung gesetzt werden.",
+              "Weil alle alten Kalender verloren gingen und man sich auf kein genaues Jahr einigen kann."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7RBPS5HBXX62T51TAWZB3WA",
+          "slug": "gg6-epochengrenzen-kontinuitaet-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum lassen sich Epochengrenzen zwischen Antike und Mittelalter nicht an einem einzigen Datum festmachen?",
+          "concept": "Politische, religiöse und kulturelle Umbrüche (395, 476, um 500, 632, 800) erfolgten zu verschiedenen Zeiten, und vieles Römische lebte kontinuierlich fort.",
+          "sample_solution": "Politische, religiöse und kulturelle Umbrüche (395, 476, um 500, 632, 800) erfolgten zu verschiedenen Zeiten, und vieles Römische lebte kontinuierlich fort.",
+          "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-epochengrenzen-kontinuitaet"
+        }
+      ]
+    },
+    {
+      "id": "01M7RBPS5HTTMZADGKX9Z6SQ69",
+      "atom_uri": "urn:zam:atom:01M7RBPS5HTTMZADGKX9Z6SQ69",
+      "namespace": "zam-academy-geschichte-gymnasium-6",
+      "slug": "gg6-familie-athen",
+      "title": "Rollen und Alltag: Familie in der attischen Gesellschaft",
+      "domain": "geschichte/lb7",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-familie-athen",
+      "prerequisites": [
+        {
+          "atom_id": "01M7RBPS5HH3KYX2P08Q5WM0AF",
+          "type": "soft",
+          "rationale": "Verknüpft Familienalltag mit den Bürgerrechten im Athen des 5. Jh. v. Chr."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-gymnasium-6",
+          "topic_code": "lb7",
+          "topic_title": "Gesellschaftsordnung im Kleinen: Leben in der Familie (Längsschnitt)"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb7",
+          "topic_title": "Gesellschaftsordnung im Kleinen: Leben in der Familie (Längsschnitt)",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7RBPS5HFV47FGNVBNK7JPFS",
+          "slug": "gg6-familie-athen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was bildete im klassischen Athen des 5. Jh. v. Chr. zusammen einen „Oikos“?",
+          "concept": "Die gesamte Hausgemeinschaft aus Ehepaar, Kindern und oft auch Sklaven samt Haus, Besitz und Vorräten.",
+          "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-familie-athen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die gesamte Hausgemeinschaft aus Ehepaar, Kindern und oft auch Sklaven samt Haus, Besitz und Vorräten.",
+              "Nur die Volksversammlung aller männlichen Bürger auf dem Pnyx-Hügel."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7RBPS5HY7EJNWX6S7C8Q873",
+          "slug": "gg6-familie-athen-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie spiegelte der Aufbau des athenischen Oikos (5. Jh. v. Chr.) die Gesellschaftsordnung der Polis wider?",
+          "concept": "Nur der Ehemann besaß politische Rechte auf der Agora; Frau und Kinder blieben im Haus (Gynaikonitis), während Haussklaven die Arbeit mittrugen.",
+          "sample_solution": "Nur der Ehemann besaß politische Rechte auf der Agora; Frau und Kinder blieben im Haus (Gynaikonitis), während Haussklaven die Arbeit mittrugen.",
+          "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-familie-athen"
+        }
+      ]
+    },
+    {
+      "id": "01M7RBPS5HMV7GJBAZCH19X4TA",
+      "atom_uri": "urn:zam:atom:01M7RBPS5HMV7GJBAZCH19X4TA",
+      "namespace": "zam-academy-geschichte-gymnasium-6",
+      "slug": "gg6-familie-rom-familia",
+      "title": "Der Pater familias: Struktur und Aufgaben der römischen „familia“",
+      "domain": "geschichte/lb7",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-familie-rom-familia",
+      "prerequisites": [
+        {
+          "atom_id": "01M7RBPS5H31XHK8H5GHZE6WAV",
+          "type": "soft",
+          "rationale": "Ordnet die römische familia ins Zeitalter des Augustus ein."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-gymnasium-6",
+          "topic_code": "lb7",
+          "topic_title": "Gesellschaftsordnung im Kleinen: Leben in der Familie (Längsschnitt)"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb7",
+          "topic_title": "Gesellschaftsordnung im Kleinen: Leben in der Familie (Längsschnitt)",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7RBPS5H2JWJMGC3GZ7NWDVA",
+          "slug": "gg6-familie-rom-familia-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was unterscheidet das römische Wort „familia“ (um Christi Geburt) am stärksten von unserer heutigen Vorstellung einer Kleinfamilie?",
+          "concept": "Zur „familia“ gehörten unter der rechtlichen Gewalt des Pater familias auch alle Sklaven, Freigelassenen und das Hausvermögen.",
+          "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-familie-rom-familia",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Zur „familia“ gehörten unter der rechtlichen Gewalt des Pater familias auch alle Sklaven, Freigelassenen und das Hausvermögen.",
+              "Zur „familia“ gehörten in Rom immer nur die Kinder ohne die Eltern."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7RBPS5H2ANK0JCG5C34HKV1",
+          "slug": "gg6-familie-rom-familia-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wer gehörte im Zeitalter des Augustus zur römischen „familia“, und welche Rechte hatte der Pater familias?",
+          "concept": "Neben Ehefrau und Kindern auch Sklaven, Freigelassene und Besitz unter der strengen Hausgewalt (patria potestas) des Pater familias.",
+          "sample_solution": "Neben Ehefrau und Kindern auch Sklaven, Freigelassene und Besitz unter der strengen Hausgewalt (patria potestas) des Pater familias.",
+          "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-familie-rom-familia"
+        }
+      ]
+    },
+    {
+      "id": "01M7RBPS5H9607QT65V2MZZJ9Z",
+      "atom_uri": "urn:zam:atom:01M7RBPS5H9607QT65V2MZZJ9Z",
+      "namespace": "zam-academy-geschichte-gymnasium-6",
+      "slug": "gg6-familie-wandel-heute",
+      "title": "Familien im Wandel: Neue Rollenbilder heute",
+      "domain": "geschichte/lb7",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-familie-wandel-heute",
+      "prerequisites": [
+        {
+          "atom_id": "01M7RBPS5HTTMZADGKX9Z6SQ69",
+          "type": "soft",
+          "rationale": "Vergleicht heutige Rollen mit Athen."
+        },
+        {
+          "atom_id": "01M7RBPS5HMV7GJBAZCH19X4TA",
+          "type": "soft",
+          "rationale": "Vergleicht heutige Rollen mit der römischen familia."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-gymnasium-6",
+          "topic_code": "lb7",
+          "topic_title": "Gesellschaftsordnung im Kleinen: Leben in der Familie (Längsschnitt)"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb7",
+          "topic_title": "Gesellschaftsordnung im Kleinen: Leben in der Familie (Längsschnitt)",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7RBPS5HQJQVXCHFX2D9J8XR",
+          "slug": "gg6-familie-wandel-heute-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was unterscheidet das Familienrecht in Deutschland heute grundsätzlich vom Familienrecht im antiken Athen und Rom?",
+          "concept": "Frauen und Männer sind rechtlich gleichberechtigt, Sklaverei ist verboten, und Kinder haben eigene Schutz- und Bildungsrechte.",
+          "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-familie-wandel-heute",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Frauen und Männer sind rechtlich gleichberechtigt, Sklaverei ist verboten, und Kinder haben eigene Schutz- und Bildungsrechte.",
+              "Nur der älteste Sohn darf heute erben und einen Beruf wählen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7RBPS5HPKH8G56ZB8B76Z0J",
+          "slug": "gg6-familie-wandel-heute-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Nenne drei Merkmale, die moderne Familien in Deutschland von Familien im antiken Athen oder Rom unterscheiden.",
+          "concept": "Rechtliche Gleichberechtigung von Frau und Mann, eigene Kinderrechte samt allgemeiner Schulpflicht sowie gesellschaftlich anerkannte vielfältige Familienformen ohne Unfreie.",
+          "sample_solution": "Rechtliche Gleichberechtigung von Frau und Mann, eigene Kinderrechte samt allgemeiner Schulpflicht sowie gesellschaftlich anerkannte vielfältige Familienformen ohne Unfreie.",
+          "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-familie-wandel-heute"
+        }
+      ]
+    },
+    {
+      "id": "01M7RBPS5HQY6PE9VF0SZ6S20V",
+      "atom_uri": "urn:zam:atom:01M7RBPS5HQY6PE9VF0SZ6S20V",
+      "namespace": "zam-academy-geschichte-gymnasium-6",
+      "slug": "gg6-familie-laengsschnitt",
+      "title": "Längsschnitt: Familie als Spiegel der Gesellschaftsordnung",
+      "domain": "geschichte/lb7",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-familie-laengsschnitt",
+      "prerequisites": [
+        {
+          "atom_id": "01M7RBPS5H9607QT65V2MZZJ9Z",
+          "type": "soft",
+          "rationale": "Verbindet alle drei Vergleichsstufen zu einem historischen Längsschnitt."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geschichte-gymnasium-6",
+          "topic_code": "lb7",
+          "topic_title": "Gesellschaftsordnung im Kleinen: Leben in der Familie (Längsschnitt)"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb7",
+          "topic_title": "Gesellschaftsordnung im Kleinen: Leben in der Familie (Längsschnitt)",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7RBPS5HCEN8VCFTS0RHFZK1",
+          "slug": "gg6-familie-laengsschnitt-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was ist das Besondere an einem „historischen Längsschnitt“ wie zum Thema Leben in der Familie?",
+          "concept": "Er untersucht ein bestimmtes Thema durch mehrere Epochen hindurch, um Wandel und Zusammenhänge langfristig zu erkennen.",
+          "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-familie-laengsschnitt",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Er untersucht ein bestimmtes Thema durch mehrere Epochen hindurch, um Wandel und Zusammenhänge langfristig zu erkennen.",
+              "Er betrachtet immer nur einen einzigen Tag in einer einzigen Stadt."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7RBPS5JY1ZMY7TAEGK10P3W",
+          "slug": "gg6-familie-laengsschnitt-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum gilt das Familienleben im historischen Längsschnitt als „Spiegel der Gesellschaft im Kleinen“?",
+          "concept": "Weil die Rechte und Rollen von Frauen, Männern und Kindern in Haus und Familie stets direkt die geltende Herrschafts- und Gesellschaftsordnung widerspiegeln.",
+          "sample_solution": "Weil die Rechte und Rollen von Frauen, Männern und Kindern in Haus und Familie stets direkt die geltende Herrschafts- und Gesellschaftsordnung widerspiegeln.",
+          "source_link": "https://academy.zam-os.org/geschichte-gymnasium-6/#lesson=gg6-familie-laengsschnitt"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,168 @@
+{
+	"schema": 1,
+	"status": "approved",
+	"approved": "2026-11-19",
+	"source": "Thomas explicitly approved the listed history transfers in the Codex chat for Academy PR #158 on 2026-11-19: “Freigabe für die Kartenübernahmen erteilt”",
+	"source_repository": "https://github.com/zam-os/zam",
+	"source_commit": "e517a1ef709e0e6ee5f968c342affeb5b14cef35",
+	"sources": [
+		{
+			"file": "tests/fixtures/de-by-realschule-6-englisch-grammatik-grundlagen-kvt.json",
+			"tile_id": "de-by:realschule-6-englisch-grammatik-grundlagen",
+			"version": "2026.08.1",
+			"sha256": "071ddb8c8873995521289549608d07ed6cea671c87c7757ce2358db7b7fc94fa"
+		},
+		{
+			"file": "tests/fixtures/de-by-realschule-7-englisch-grammatik-tenses-kvt.json",
+			"tile_id": "de-by:realschule-7-englisch-grammatik-tenses",
+			"version": "2026.08.1",
+			"sha256": "c1378fe282934048ac31a9eacafe318cc338aa9acfb428a7aa6f2c7a190deefd"
+		}
+	],
+	"rows": [
+		{
+			"de_by_cell": "de-by:realschule-6-englisch-grammatik-grundlagen",
+			"de_by_id": "01K4E6G0000000000000000J01",
+			"de_by_question": "Wie lautet die grundlegende Merkregel für die 3. Person Einzahl (he, she, it) im englischen Simple Present?",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"reason": "Die Grundregel der 3. Person Singular im Simple Present gehört bereits zum Basisstoff aus Klasse 5; die Tier-1-Karte e6-simple-vs-prog-check prüft in Klasse 6 den Aspektunterschied Simple vs. Progressive. Alte Karte bleibt aktiv."
+		},
+		{
+			"de_by_cell": "de-by:realschule-6-englisch-grammatik-grundlagen",
+			"de_by_id": "01K4E6G0000000000000000J02",
+			"de_by_question": "Vergleiche Simple Present (Bildung: Infinitiv / he-she-it + s; Verwendung: regelmäßige Gewohnheiten, Tatsachen, Zeitpläne; Signalwörter: always, usually, often, sometimes, never, every day; Verneinung: don't / doesn't + Infinitiv) mit dem Present Continuous / Progressive (Bildung: am/is/are + Verb-ing; Verwendung: Handlungen, die genau im Augenblick des Sprechens ablaufen; Signalwörter: now, at the moment, Look!, Listen!) und setze ein: a) 'Listen! The birds (sing).' b) 'Emma usually (play) tennis on Fridays.'",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"reason": "Mehrteiliger Sammel-Abruf zu Bildung, Gebrauch, Signalwörtern, Verneinung und zwei Lücken. Das neue Paket zerlegt dies in atomare Karten; alte Karte bleibt aktiv."
+		},
+		{
+			"de_by_cell": "de-by:realschule-6-englisch-grammatik-grundlagen",
+			"de_by_id": "01K4E6G0000000000000000J03",
+			"de_by_question": "Wie wird eine Frage oder Verneinung im englischen Simple Past mit dem Hilfsverb 'did' gebildet?",
+			"category": "A",
+			"academy_slug": "e6-simple-past-rev-check",
+			"action": "replace",
+			"reason": "Derselbe Einzelabruf: Frage und Verneinung im Simple Past mit did / didn't + Grundform (Infinitiv) gegenüber did + 2. Verbform."
+		},
+		{
+			"de_by_cell": "de-by:realschule-6-englisch-grammatik-grundlagen",
+			"de_by_id": "01K4E6G0000000000000000J04",
+			"de_by_question": "Erkläre die Bildung des Simple Past für: 1. Regelmäßige Verben (Infinitiv + -ed, Besonderheiten: stopped, played, cried), 2. Häufige unregelmäßige Verben (go -> went, see -> saw, buy -> bought, have -> had, be -> was/were), 3. Verneinte Sätze und Fragen mit did / didn't + Infinitiv und übersetze: a) 'Gestern ging ich in die Schule.' b) 'Hast du deine Hausaufgaben gemacht?' c) 'Wir sahen den Film nicht.'",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"reason": "Mehrteiliger Gesamtabruf aus drei Regelblöcken und drei Übersetzungen. Kein einzelner Nachfolger deckt den gesamten Abruf ab; Karte bleibt aktiv."
+		},
+		{
+			"de_by_cell": "de-by:realschule-6-englisch-grammatik-grundlagen",
+			"de_by_id": "01K4E6G0000000000000000J05",
+			"de_by_question": "Was drückt das englische Modalverb 'mustn't' im Gegensatz zu 'needn't' aus?",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"reason": "Im LehrplanPLUS Realschule stehen mustn't und needn't in Jahrgangsstufe 7 (E7 1.2 Wortschatz/Grammatik), nicht in Jahrgangsstufe 6. Daher kein Nachfolger in diesem Paket; Karte bleibt aktiv."
+		},
+		{
+			"de_by_cell": "de-by:realschule-6-englisch-grammatik-grundlagen",
+			"de_by_id": "01K4E6G0000000000000000J06",
+			"de_by_question": "Erkläre den bedeutungsentscheidenden Unterschied zwischen den englischen Modalverben: 1. must (Pflicht/Notwendigkeit: müssen), 2. mustn't (striktes Verbot: nicht dürfen!), 3. needn't / don't have to (keine Pflicht: nicht brauchen/nicht müssen), 4. can / can't (Können/Fähigkeit/Erlaubnis) und wähle die passende Form für: a) 'You (mustn't / needn't) touch that wire – it is dangerous!' b) 'Tomorrow is Sunday, so I (mustn't / needn't) get up early.'",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"reason": "Mehrteiliger Modalverb-Abruf zu Klasse-5/7-Inhalten (must, mustn't, needn't, don't have to). Kein Nachfolger in Klasse 6; Karte bleibt aktiv."
+		},
+		{
+			"de_by_cell": "de-by:realschule-6-englisch-grammatik-grundlagen",
+			"de_by_id": "01K4E6G0000000000000000J07",
+			"de_by_question": "Welches Wort ist das korrekte eigenständige Possessivpronomen (steht allein ohne nachfolgendes Nomen) für 'meins / meiner' im Englischen (z. B. 'This book is ...')?",
+			"category": "A",
+			"academy_slug": "e6-possessives-check",
+			"action": "replace",
+			"reason": "Derselbe Einzelabruf: eigenständiges Possessivpronomen mine ohne Nomen im Kontrast zum Possessivbegleiter my."
+		},
+		{
+			"de_by_cell": "de-by:realschule-6-englisch-grammatik-grundlagen",
+			"de_by_id": "01K4E6G0000000000000000J08",
+			"de_by_question": "Erstelle eine vollständige Übersicht über die Personalpronomen als Subjekt (I, you, he, she, it, we, they), als Objekt (me, you, him, her, it, us, them), die Possessivbegleiter mit Nomen (my, your, his, her, its, our, their) und die selbstständigen Possessivpronomen ohne Nomen (mine, yours, his, hers, its, ours, theirs) und fülle die Lücken aus: a) 'Is that (your / yours) bag?' – 'No, it's (her / hers).' b) 'Give (he / him) the ball, it is (his / his's).'",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"reason": "Mehrteiliger Sammel-Abruf aus vier Pronomentabellen und vier Einsetzaufgaben. Kein einzelner Nachfolger übernimmt den kompletten Abruf; Karte bleibt aktiv."
+		},
+		{
+			"de_by_cell": "de-by:realschule-7-englisch-grammatik-tenses",
+			"de_by_id": "01K4E7T0000000000000000J01",
+			"de_by_question": "Welche Zeitform muss im Englischen zwingend gewählt werden, wenn ein Signalwort einen genau abgeschlossenen Zeitpunkt in der Vergangenheit benennt (z. B. 'yesterday', 'in 2018', 'two days ago')?",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"reason": "Der ausdrückliche Kontrast zwischen Simple Past und Present Perfect Simple steht im LehrplanPLUS erst in Jahrgangsstufe 7 (E7 1.2), nicht in Klasse 6. Die Karte bleibt aktiv."
+		},
+		{
+			"de_by_cell": "de-by:realschule-7-englisch-grammatik-tenses",
+			"de_by_id": "01K4E7T0000000000000000J02",
+			"de_by_question": "Vergleiche Present Perfect Simple (have/has + past participle; Bezug/Auswirkung auf Gegenwart oder noch andauernde Zeitspanne; Signalwörter: just, already, yet, ever, never, since, for) und Past Simple (Vergangenheit 2. Form; abgeschlossene Handlung zu bestimmtem Zeitpunkt; Signalwörter: yesterday, last week, in 2020, ago, when...) und setze die Verben in die richtige Zeitform: a) 'I (lose) my keys and I cannot open the door now.' b) 'She (visit) London three years ago.'",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"reason": "Mehrteiliger Vergleich Present Perfect vs. Past Simple einschließlich since/for (beides Klasse 7 im LehrplanPLUS). Karte bleibt aktiv."
+		},
+		{
+			"de_by_cell": "de-by:realschule-7-englisch-grammatik-tenses",
+			"de_by_id": "01K4E7T0000000000000000J03",
+			"de_by_question": "Wie wird das Past Continuous (Past Progressive) im Englischen gebildet?",
+			"category": "A",
+			"academy_slug": "e6-past-progressive-check",
+			"action": "replace",
+			"reason": "The Grade 6 curriculum covers the past progressive. Both items ask for the same construction, was/were + verb-ing."
+		},
+		{
+			"de_by_cell": "de-by:realschule-7-englisch-grammatik-tenses",
+			"de_by_id": "01K4E7T0000000000000000J04",
+			"de_by_question": "Erkläre die Verwendung des Past Continuous (was/were + verb-ing) zur Beschreibung von Handlungen, die zu einem bestimmten Zeitpunkt in der Vergangenheit gerade im Ablauf waren, analysiere das Zusammenspiel mit dem Past Simple bei unterbrochenen Handlungen (Signalwörter: while + Past Progressive vs. when + Past Simple) und übersetze: 'Während Tom schlief, klingelte plötzlich das Telefon.'",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"reason": "Mehrteiliger Synthese-Abruf aus Verwendungsregel, while/when-Analyse und Übersetzung. Karte bleibt aktiv."
+		},
+		{
+			"de_by_cell": "de-by:realschule-7-englisch-grammatik-tenses",
+			"de_by_id": "01K4E7T0000000000000000J05",
+			"de_by_question": "Welche Zukunftsform verwendet man im Englischen für bereits gefasste feste Pläne und Absichten für die Zukunft (z. B. 'Ich habe beschlossen, morgen mein Zimmer aufzuräumen')?",
+			"category": "A",
+			"academy_slug": "e6-going-to-future-check",
+			"action": "replace",
+			"reason": "Both items ask for the going-to future for prior plans and intentions. The successor uses Grade 6 answer choices."
+		},
+		{
+			"de_by_cell": "de-by:realschule-7-englisch-grammatik-tenses",
+			"de_by_id": "01K4E7T0000000000000000J06",
+			"de_by_question": "Unterscheide das will-Future (will + Infinitiv: 1. spontane Entschlüsse im Moment des Sprechens, 2. allgemeine, nicht beeinflussbare Vorhersagen/Vermutungen mit think, hope, probably, 3. Versprechen) vom going-to-Future (am/is/are going to + Infinitiv: 1. feste Absichten und geplante Vorhaben, 2. unmittelbar bevorstehende Ereignisse mit sichtbaren Vorzeichen in der Gegenwart) und wähle die passende Form für: a) 'Look at those dark black clouds! It (rain).' b) 'The doorbell is ringing. – OK, I (open) the door.'",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"reason": "Mehrteiliger Kontrast-Abruf zwischen will- und going-to-future plus zwei Lücken; der LehrplanPLUS E6 behandelt beide Formen ausdrücklich ohne Kontrast. Karte bleibt aktiv."
+		},
+		{
+			"de_by_cell": "de-by:realschule-7-englisch-grammatik-tenses",
+			"de_by_id": "01K4E7T0000000000000000J07",
+			"de_by_question": "Wie lautet die unregelmäßige Steigerung (Komparativ und Superlativ) des englischen Adjektivs 'good'?",
+			"category": "A",
+			"academy_slug": "e6-comparatives-check",
+			"action": "replace",
+			"reason": "Both items ask for the irregular forms good, better and (the) best. This comparison belongs to the Grade 6 curriculum."
+		},
+		{
+			"de_by_cell": "de-by:realschule-7-englisch-grammatik-tenses",
+			"de_by_id": "01K4E7T0000000000000000J08",
+			"de_by_question": "Formuliere die Regeln zur Steigerung englischer Adjektive (1. einsilbige Adjektive mit -er/-est; 2. zweisilbige auf -y mit -ier/-iest; 3. mehrsilbige Adjektive mit more/most), nenne die wichtigsten unregelmäßigen Steigerungsformen (good/better/best, bad/worse/worst, much/many/more/most, little/less/least) und bilde die Vergleichskonstruktionen 'as ... as' (Gleichheit) und '... than' (Ungleichheit) an Beispielen.",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"reason": "Mehrteiliger Gesamtabruf aus drei Steigerungsregeln, fünf unregelmäßigen Reihen und Vergleichskonstruktionen. Karte bleibt aktiv."
+		}
+	]
+}

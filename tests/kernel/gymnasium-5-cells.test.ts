@@ -16,13 +16,10 @@ import {
 // Mathematik 5, Geographie 5 and (from 0.65.0) Biologie / Natur und Technik 5
 // moved to their ZAM Academy cells; the superseded school cells are archived
 // in tests/fixtures/legacy/.
-const GYM5_CELL_IDS = [
-  "de-by:gymnasium-5-deutsch-erzaehlen-maerchen-fabeln",
-  "de-by:gymnasium-5-deutsch-grammatik-faelle-rechtschreibung",
-  "de-by:gymnasium-5-englisch-starter-grammar-tenses",
-];
+const GYM5_CELL_IDS = ["de-by:gymnasium-5-englisch-starter-grammar-tenses"];
 const ACADEMY_GYM5_IDS = [
   "zam-academy:biologie-gymnasium-5",
+  "zam-academy:deutsch-gymnasium-5",
   "zam-academy:englisch-gymnasium-5",
   "zam-academy:franzoesisch-gymnasium-5",
   "zam-academy:geographie-gymnasium-5",
@@ -105,18 +102,18 @@ describe("Gymnasium Bayern 5 Curriculum Cells (Unterstufe / G9)", () => {
 
   it("installs and enrols cleanly into Deutsch 5 Märchen, Fabeln und Erlebniserzählung", async () => {
     const userId = "01K4TESTUSERGYM50000000003";
-    const cellId = "de-by:gymnasium-5-deutsch-erzaehlen-maerchen-fabeln";
+    const cellId = "zam-academy:deutsch-gymnasium-5";
 
     const res = await enrolBundledCell(db, userId, cellId);
     expect(res.success).toBe(true);
-    expect(res.cardsCreated).toBe(8);
+    expect(res.cardsCreated).toBe(100);
 
     const dAtoms = (await db
       .prepare(
-        "SELECT a.id, a.title, a.slug FROM learning_atoms a WHERE a.namespace LIKE 'deutsch-%'",
+        "SELECT a.id, a.title, a.slug FROM learning_atoms a WHERE a.slug = 'd5-maerchen'",
       )
       .all()) as Array<{ id: string; title: string; slug: string }>;
-    expect(dAtoms.length).toBeGreaterThanOrEqual(4);
+    expect(dAtoms).toHaveLength(1);
   });
 
   it("supports simultaneous enrolment in all remaining Grade 5 Gymnasium school cells without conflict", async () => {
@@ -130,8 +127,7 @@ describe("Gymnasium Bayern 5 Curriculum Cells (Unterstufe / G9)", () => {
       totalCardsCreated += res.cardsCreated;
     }
 
-    // 3 cells * 4 atoms * 2 items = 24 cards
-    expect(totalCardsCreated).toBe(24);
+    expect(totalCardsCreated).toBe(8);
 
     const statuses = await getBundledCellsWithStatus(db, userId);
     const gym5Statuses = statuses.filter((s) => GYM5_CELL_IDS.includes(s.id));

@@ -1,0 +1,3333 @@
+{
+	"$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+	"tile_id": "zam-academy:deutsch-gymnasium-5",
+	"version": "2026.11.2",
+	"title": "Deutsch 5 Gymnasium (ZAM Academy)",
+	"description": "50 Lektionen und 100 Wiederholungsfragen zu Sprechen, Lesen, Schreiben und Sprache für Deutsch 5 Gymnasium Bayern.",
+	"publisher": "ZAM Academy",
+	"sources": [
+		{
+			"uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/5/deutsch",
+			"label": "LehrplanPLUS Bayern · Deutsch 5 Gymnasium",
+			"checked": "2026-11-14"
+		},
+		{
+			"uri": "https://de.wikisource.org/wiki/Dornr%C3%B6schen_(1857)",
+			"label": "Brüder Grimm · Dornröschen (1857, KHM 50) · Wikisource",
+			"checked": "2026-11-14"
+		}
+	],
+	"atoms": [
+		{
+			"id": "01M7D0P810RGX045CCPA7HDD5P",
+			"atom_uri": "urn:zam:atom:01M7D0P810RGX045CCPA7HDD5P",
+			"namespace": "zam-academy-deutsch-gymnasium-5",
+			"slug": "d5-zuhoeren",
+			"title": "Gehörtes festhalten",
+			"domain": "deutsch/sprechen",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-zuhoeren",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-gymnasium-5",
+					"topic_code": "sprechen",
+					"topic_title": "Sprechen und Zuhören"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb1",
+					"topic_title": "Sprechen und Zuhören"
+				}
+			],
+			"practice_items": [
+				{
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Eine Durchsage kündigt ein Treffen an. Du hörst die Uhrzeit nicht. Was fragst du?",
+					"concept": "Um wie viel Uhr beginnt das Treffen?",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Um wie viel Uhr beginnt das Treffen?",
+							"Worum geht es in der Durchsage?"
+						],
+						"correct_index": 0
+					},
+					"id": "01M7D0P811FGRB14MFDWBHHYRS",
+					"slug": "d5-zuhoeren-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-zuhoeren"
+				},
+				{
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Woran merkst du, dass du eine Durchsage verstanden hast?",
+					"concept": "Du kannst ihre Hauptaussage in eigenen Worten wiedergeben und Fragen dazu beantworten.",
+					"sample_solution": "Die Bücherei ist am Mittwoch in der großen Pause geschlossen. Bücher kann ich am Donnerstag in Raum 12 zurückgeben; zum Verlängern wende ich mich an Frau Aydin.",
+					"id": "01M7D0P811AWTH16KS8SPJ135Q",
+					"slug": "d5-zuhoeren-recall",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-zuhoeren"
+				}
+			]
+		},
+		{
+			"id": "01M7D0P810TV9B2RV5VW9F3SCB",
+			"atom_uri": "urn:zam:atom:01M7D0P810TV9B2RV5VW9F3SCB",
+			"namespace": "zam-academy-deutsch-gymnasium-5",
+			"slug": "d5-fabelhoeren",
+			"title": "Eine Fabel hörend verstehen",
+			"domain": "deutsch/sprechen",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-fabelhoeren",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-gymnasium-5",
+					"topic_code": "sprechen",
+					"topic_title": "Sprechen und Zuhören"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb1",
+					"topic_title": "Sprechen und Zuhören"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb2",
+					"topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+				}
+			],
+			"practice_items": [
+				{
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Was gehört in eine knappe Zusammenfassung eines gehörten Erzähltexts?",
+					"concept": "Figuren, zentrales Ereignis und Ausgang.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Figuren, zentrales Ereignis und Ausgang.",
+							"Möglichst jede Formulierung im genauen Wortlaut."
+						],
+						"correct_index": 0
+					},
+					"id": "01M7D0P811AGRPEM2D3GBZNF3K",
+					"slug": "d5-fabelhoeren-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-fabelhoeren"
+				},
+				{
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie begründest du eine Meinung zu einer gehörten Figur?",
+					"concept": "Verbinde dein Urteil mit einer konkreten Handlung aus dem Hörtext.",
+					"sample_solution": "„Die Maus handelt am Ende rücksichtsvoll, weil sie sich bedankt und dem Käfer Platz macht.“",
+					"id": "01M7D0P811XZRWMZR8GMWH3WK7",
+					"slug": "d5-fabelhoeren-recall",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-fabelhoeren"
+				}
+			]
+		},
+		{
+			"id": "01M7D0P810PHE94Z3EGYJBKEBB",
+			"atom_uri": "urn:zam:atom:01M7D0P810PHE94Z3EGYJBKEBB",
+			"namespace": "zam-academy-deutsch-gymnasium-5",
+			"slug": "d5-vortrag",
+			"title": "Einen Kurzvortrag vorbereiten",
+			"domain": "deutsch/sprechen",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-vortrag",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-gymnasium-5",
+					"topic_code": "sprechen",
+					"topic_title": "Sprechen und Zuhören"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb1",
+					"topic_title": "Sprechen und Zuhören"
+				}
+			],
+			"practice_items": [
+				{
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welches Medium hilft bei einer Wegbeschreibung in der Schule?",
+					"concept": "Ein einfacher Plan mit Pfeilen.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Ein einfacher Plan mit Pfeilen.",
+							"Ein Foto ohne Bezug zum Weg."
+						],
+						"correct_index": 0
+					},
+					"id": "01M7D0P812YPNTBJQ50W700NT0",
+					"slug": "d5-vortrag-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-vortrag"
+				},
+				{
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was gehört auf einen Stichwortzettel für freies Sprechen?",
+					"concept": "Geordnete Schlüsselwörter und bei Bedarf Zeichen für Pausen oder Bilder.",
+					"sample_solution": "„Aula – Treppe hoch – Pause – links – Tür 12“ genügt als Gedächtnisstütze.",
+					"id": "01M7D0P812D1Q5A1BQ1CYZ5WNZ",
+					"slug": "d5-vortrag-recall",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-vortrag"
+				}
+			]
+		},
+		{
+			"id": "01M7D0P811ZFX8XAS281TQ24JS",
+			"atom_uri": "urn:zam:atom:01M7D0P811ZFX8XAS281TQ24JS",
+			"namespace": "zam-academy-deutsch-gymnasium-5",
+			"slug": "d5-vorlesen",
+			"title": "Erzählen und wirkungsvoll vorlesen",
+			"domain": "deutsch/sprechen",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-vorlesen",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-gymnasium-5",
+					"topic_code": "sprechen",
+					"topic_title": "Sprechen und Zuhören"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb1",
+					"topic_title": "Sprechen und Zuhören"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb2",
+					"topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+				}
+			],
+			"practice_items": [
+				{
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Lies: „Dann klopfte es. Dreimal. Unter dem Korb saß ein Spatz.“ Welche Pause folgt direkt auf einen Satzschluss und hebt das Klopfen hervor?",
+					"concept": "Nach „Dann klopfte es.“",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Nach „Dann klopfte es.“",
+							"Zwischen „Unter dem Korb“ und „saß ein Spatz“."
+						],
+						"correct_index": 0
+					},
+					"id": "01M7D0P8120068P4TCR3XJYVG7",
+					"slug": "d5-vorlesen-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-vorlesen"
+				},
+				{
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie machst du eine Überraschung beim Vorlesen hörbar?",
+					"concept": "Setze eine kurze Pause und betone die entscheidende Stelle.",
+					"sample_solution": "Warte kurz nach „Dann klopfte es“ und lies „Dreimal“ deutlich und langsam.",
+					"id": "01M7D0P81251HN3MV3KPDGMWVY",
+					"slug": "d5-vorlesen-recall",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-vorlesen"
+				}
+			]
+		},
+		{
+			"id": "01M7D0P811AJ40KY52P6JPASBE",
+			"atom_uri": "urn:zam:atom:01M7D0P811AJ40KY52P6JPASBE",
+			"namespace": "zam-academy-deutsch-gymnasium-5",
+			"slug": "d5-gespraech",
+			"title": "Im Gespräch einen Streit klären",
+			"domain": "deutsch/sprechen",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-gespraech",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-gymnasium-5",
+					"topic_code": "sprechen",
+					"topic_title": "Sprechen und Zuhören"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb1",
+					"topic_title": "Sprechen und Zuhören"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				}
+			],
+			"practice_items": [
+				{
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Ari möchte lüften, weil es stickig ist. Jo friert am Fenster. Welche Lösung berücksichtigt beide?",
+					"concept": "Wir lüften zwei Minuten und Jo rückt kurz vom Fenster weg.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Wir lüften zwei Minuten und Jo rückt kurz vom Fenster weg.",
+							"Ari entscheidet, weil er zuerst gesprochen hat."
+						],
+						"correct_index": 0
+					},
+					"id": "01M7D0P812GW13PTFANV0KNYNP",
+					"slug": "d5-gespraech-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-gespraech"
+				},
+				{
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie begründest du eine Bitte im Streit sachlich?",
+					"concept": "Nenne deinen Wunsch und den Grund, ohne die Person anzugreifen.",
+					"sample_solution": "„Ich möchte kurz lüften, weil ich mich in der stickigen Luft schlecht konzentrieren kann.“",
+					"id": "01M7D0P812HZZT4A059PDS32XQ",
+					"slug": "d5-gespraech-recall",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-gespraech"
+				}
+			]
+		},
+		{
+			"id": "01M7D0P8119D5N6P6EV1S3SZ6M",
+			"atom_uri": "urn:zam:atom:01M7D0P8119D5N6P6EV1S3SZ6M",
+			"namespace": "zam-academy-deutsch-gymnasium-5",
+			"slug": "d5-meinung",
+			"title": "Eine Meinung nachvollziehbar begründen",
+			"domain": "deutsch/sprechen",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-meinung",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-gymnasium-5",
+					"topic_code": "sprechen",
+					"topic_title": "Sprechen und Zuhören"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb1",
+					"topic_title": "Sprechen und Zuhören"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb3",
+					"topic_title": "Schreiben"
+				}
+			],
+			"practice_items": [
+				{
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche Begründung passt zum Wunsch nach einer Leseecke?",
+					"concept": "Dort können wir ungestört lesen.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Dort können wir ungestört lesen.",
+							"Ich wünsche mir eine Leseecke, weil ich eine Leseecke möchte."
+						],
+						"correct_index": 0
+					},
+					"id": "01M7D0P812G1W0XTSFFYRTSRWT",
+					"slug": "d5-meinung-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-meinung"
+				},
+				{
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie vertrittst du deine Meinung in einem Gespräch fair?",
+					"concept": "Nenne deinen Standpunkt mit einem passenden Grund und gehe auf andere Beiträge ein.",
+					"sample_solution": "„Ich wünsche mir eine Leseecke, weil ich Ruhe brauche. Wie können wir auch euren Spielwunsch berücksichtigen?“",
+					"id": "01M7D0P812G56N55HC9A9SYV5Z",
+					"slug": "d5-meinung-recall",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-meinung"
+				}
+			]
+		},
+		{
+			"id": "01M7D0P811VJ75YSZ4P8KB6YNF",
+			"atom_uri": "urn:zam:atom:01M7D0P811VJ75YSZ4P8KB6YNF",
+			"namespace": "zam-academy-deutsch-gymnasium-5",
+			"slug": "d5-rolle",
+			"title": "Eine Figur spielen",
+			"domain": "deutsch/sprechen",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-rolle",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-gymnasium-5",
+					"topic_code": "sprechen",
+					"topic_title": "Sprechen und Zuhören"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb1",
+					"topic_title": "Sprechen und Zuhören"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb2",
+					"topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+				}
+			],
+			"practice_items": [
+				{
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche Rückmeldung nennt Beobachtung und Wirkung?",
+					"concept": "Du hast bei „Es ist nichts“ leise gesprochen. Das wirkte unsicher.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Du hast bei „Es ist nichts“ leise gesprochen. Das wirkte unsicher.",
+							"Du hast leise gesprochen; das war leise."
+						],
+						"correct_index": 0
+					},
+					"id": "01M7D0P812CCVDM2Q858671WR5",
+					"slug": "d5-rolle-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-rolle"
+				},
+				{
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wozu klärst du das Motiv einer Figur vor dem Spiel?",
+					"concept": "Du kannst Stimme, Haltung und Handlung passend zu ihrer Absicht wählen.",
+					"sample_solution": "Nuri will den Riss verbergen. Der Blick zum Boden und die leise Stimme zeigen das.",
+					"id": "01M7D0P812ZM73MZ0KDPH9J6A8",
+					"slug": "d5-rolle-recall",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-rolle"
+				}
+			]
+		},
+		{
+			"id": "01M7D0P8110KFNC8G0HVE7EF0S",
+			"atom_uri": "urn:zam:atom:01M7D0P8110KFNC8G0HVE7EF0S",
+			"namespace": "zam-academy-deutsch-gymnasium-5",
+			"slug": "d5-lesespuren",
+			"title": "Lesespuren legen",
+			"domain": "deutsch/lesen",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-lesespuren",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-gymnasium-5",
+					"topic_code": "lesen",
+					"topic_title": "Lesen und Medien"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb2",
+					"topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+				}
+			],
+			"practice_items": [
+				{
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Auf dem Plan zum Büchertausch steht „Mittwoch: Die Klasse sortiert nach Themen“. Welche Frage beantwortet die Zeile?",
+					"concept": "Wann sortiert die Klasse die Bücher?",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Wann sortiert die Klasse die Bücher?",
+							"Wo werden die übrigen Bücher abgegeben?"
+						],
+						"correct_index": 0
+					},
+					"id": "01M7D0P812HCS4XNBS1NBVVH2K",
+					"slug": "d5-lesespuren-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-lesespuren"
+				},
+				{
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie erschließt du ein unbekanntes Wort beim Lesen?",
+					"concept": "Lies den Satz und die Nachbarsätze. Prüfe eine Vermutung und schlage bei Bedarf nach.",
+					"sample_solution": "Bei „übrige Bücher“ hilft die Reihenfolge: Erst wählen alle, dann werden die Bücher gespendet, die noch da sind.",
+					"id": "01M7D0P812MQZ3AMK0WR8CT3BN",
+					"slug": "d5-lesespuren-recall",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-lesespuren"
+				}
+			]
+		},
+		{
+			"id": "01M7D0P81183V17AJ6SS8EZJYJ",
+			"atom_uri": "urn:zam:atom:01M7D0P81183V17AJ6SS8EZJYJ",
+			"namespace": "zam-academy-deutsch-gymnasium-5",
+			"slug": "d5-textsorten",
+			"title": "Märchen, Fabel, Gedicht und Sachtext",
+			"domain": "deutsch/lesen",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-textsorten",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-gymnasium-5",
+					"topic_code": "lesen",
+					"topic_title": "Lesen und Medien"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb2",
+					"topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+				}
+			],
+			"practice_items": [
+				{
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Eine Krähe prahlt vor dem Fuchs und merkt nicht, wie er ihr Futter stiehlt. Was spricht dafür, dass die Szene aus einer Fabel stammt?",
+					"concept": "Tiere zeigen menschliches Verhalten, aus dem man etwas lernen kann.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Tiere zeigen menschliches Verhalten, aus dem man etwas lernen kann.",
+							"Es kommt eine Krähe vor."
+						],
+						"correct_index": 0
+					},
+					"id": "01M7D0P8126BQXRM4H7XQ724F8",
+					"slug": "d5-textsorten-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-textsorten"
+				},
+				{
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Woran unterscheidest du einen literarischen Text von einem Sachtext?",
+					"concept": "Ein literarischer Text gestaltet eine Welt oder Erfahrung. Ein Sachtext vermittelt hier überprüfbare Informationen.",
+					"sample_solution": "Die sprechende Krähe gestaltet eine Handlung. Die Aussage zu Rabenvögeln lässt sich im Tierlexikon prüfen.",
+					"id": "01M7D0P81283SBCNTMH6743CGJ",
+					"slug": "d5-textsorten-recall",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-textsorten"
+				}
+			]
+		},
+		{
+			"id": "01M7D0P811VNNV34F9NRRB7XE4",
+			"atom_uri": "urn:zam:atom:01M7D0P811VNNV34F9NRRB7XE4",
+			"namespace": "zam-academy-deutsch-gymnasium-5",
+			"slug": "d5-maerchen",
+			"title": "Eine Märchenwelt entdecken",
+			"domain": "deutsch/lesen",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-maerchen",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D0P81183V17AJ6SS8EZJYJ",
+					"type": "soft",
+					"rationale": "This lesson uses the prerequisite skill in a new context."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-gymnasium-5",
+					"topic_code": "lesen",
+					"topic_title": "Lesen und Medien"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb2",
+					"topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb3",
+					"topic_title": "Schreiben"
+				}
+			],
+			"practice_items": [
+				{
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche Zahlen kommen in traditionellen Volksmärchen häufig als besondere Zahlen vor?",
+					"concept": "Drei, sieben und zwölf oder dreizehn.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Drei, sieben und zwölf oder dreizehn.",
+							"Zwei, vier und acht als feste Regel."
+						],
+						"correct_index": 0
+					},
+					"id": "01M7D0P81288YDQ2M9HR1P2HM9",
+					"slug": "d5-maerchen-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-maerchen",
+					"replaces": [
+						"01K4YD5E000000000000000J01"
+					]
+				},
+				{
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie belegst du ein Märchenmerkmal an einem Text?",
+					"concept": "Nenne das Merkmal und eine konkrete Textstelle, an der es erkennbar ist.",
+					"sample_solution": "„Ein Schlüssel sprach“ belegt ein wunderbares Element: Ein Gegenstand kann wie ein Mensch sprechen.",
+					"id": "01M7D0P812EXJ11Q18HMRF88XV",
+					"slug": "d5-maerchen-recall",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-maerchen"
+				}
+			]
+		},
+		{
+			"id": "01M7D0P8111STG3H2HM4DBKKBG",
+			"atom_uri": "urn:zam:atom:01M7D0P8111STG3H2HM4DBKKBG",
+			"namespace": "zam-academy-deutsch-gymnasium-5",
+			"slug": "d5-fabel",
+			"title": "Den Konflikt einer Fabel verstehen",
+			"domain": "deutsch/lesen",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-fabel",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D0P81183V17AJ6SS8EZJYJ",
+					"type": "soft",
+					"rationale": "This lesson uses the prerequisite skill in a new context."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-gymnasium-5",
+					"topic_code": "lesen",
+					"topic_title": "Lesen und Medien"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb2",
+					"topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb3",
+					"topic_title": "Schreiben"
+				}
+			],
+			"practice_items": [
+				{
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche Eigenschaft zeigt der Fuchs, der die Krähe zum Singen bringt, um ihren Käse zu nehmen?",
+					"concept": "List und eigennützige Schmeichelei.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"List und eigennützige Schmeichelei.",
+							"Hilfsbereitschaft ohne eigenen Vorteil."
+						],
+						"correct_index": 0
+					},
+					"id": "01M7D0P812BTKFE1XR7NYXV5PS",
+					"slug": "d5-fabel-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-fabel"
+				},
+				{
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie leitest du eine Lehre aus einer Fabel ab?",
+					"concept": "Untersuche Konflikt und Ausgang und übertrage die beobachtete Verhaltensweise auf Menschen.",
+					"sample_solution": "Die Krähe verliert ihren Käse, weil sie dem Lob des Fuchses vertraut: Prüfe eigennütziges Lob.",
+					"id": "01M7D0P812W2FAZN5ZJ6RB742M",
+					"slug": "d5-fabel-recall",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-fabel"
+				}
+			]
+		},
+		{
+			"id": "01M7D0P811K5JSS088BCK98Y87",
+			"atom_uri": "urn:zam:atom:01M7D0P811K5JSS088BCK98Y87",
+			"namespace": "zam-academy-deutsch-gymnasium-5",
+			"slug": "d5-figuren",
+			"title": "Figuren und ihre Entscheidungen verstehen",
+			"domain": "deutsch/lesen",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-figuren",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D0P81183V17AJ6SS8EZJYJ",
+					"type": "soft",
+					"rationale": "This lesson uses the prerequisite skill in a new context."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-gymnasium-5",
+					"topic_code": "lesen",
+					"topic_title": "Lesen und Medien"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb1",
+					"topic_title": "Sprechen und Zuhören"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb2",
+					"topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+				}
+			],
+			"practice_items": [
+				{
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Im Text steht: „Als Leila mitten in der Melodie stockte, summte Jona von der Bank aus weiter.“ Welche Aussage steht ausdrücklich im Text?",
+					"concept": "Jona summt die Melodie weiter.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Jona summt die Melodie weiter.",
+							"Jona möchte Leila vorführen."
+						],
+						"correct_index": 0
+					},
+					"id": "01M7D0P812ZQDXXE92KRKE4CFZ",
+					"slug": "d5-figuren-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-figuren"
+				},
+				{
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie belegst du eine Deutung über eine Figur?",
+					"concept": "Nenne eine konkrete Handlung oder Äußerung und erkläre, wie sie deine Deutung stützt.",
+					"sample_solution": "Jona hilft vermutlich: Als Leila stockt, summt Jona die Melodie weiter.",
+					"id": "01M7D0P812DZM3RYHC9EXHG6KR",
+					"slug": "d5-figuren-recall",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-figuren"
+				}
+			]
+		},
+		{
+			"id": "01M7D0P811PTEDX74QADENF1M0",
+			"atom_uri": "urn:zam:atom:01M7D0P811PTEDX74QADENF1M0",
+			"namespace": "zam-academy-deutsch-gymnasium-5",
+			"slug": "d5-klang",
+			"title": "Klang und Bilder in Gedichten",
+			"domain": "deutsch/lesen",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-klang",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-gymnasium-5",
+					"topic_code": "lesen",
+					"topic_title": "Lesen und Medien"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb1",
+					"topic_title": "Sprechen und Zuhören"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb2",
+					"topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb3",
+					"topic_title": "Schreiben"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				}
+			],
+			"practice_items": [
+				{
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welches Wort ahmt in „Der Bach flüstert leise am Stein. Klack! Ein Kiesel springt und lacht“ ein Geräusch nach?",
+					"concept": "Klack",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Klack",
+							"leise"
+						],
+						"correct_index": 0
+					},
+					"id": "01M7D0P8129TSW55RH7WXYS63Y",
+					"slug": "d5-klang-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-klang"
+				},
+				{
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was kann ein sprachliches Bild in einem Gedicht bewirken?",
+					"concept": "Es lässt dich etwas anschaulich sehen, hören oder fühlen.",
+					"sample_solution": "„Der Bach flüstert“ lässt das leise Rauschen wie eine menschliche Stimme klingen.",
+					"id": "01M7D0P812EMHRV5DB8EDFS1Z8",
+					"slug": "d5-klang-recall",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-klang"
+				}
+			]
+		},
+		{
+			"id": "01M7HEV5R0C8QBRE7CY16K3SY0",
+			"atom_uri": "urn:zam:atom:01M7HEV5R0C8QBRE7CY16K3SY0",
+			"namespace": "zam-academy-deutsch-gymnasium-5",
+			"slug": "d5-spielszene",
+			"title": "Spielszenen lesen und verstehen",
+			"domain": "deutsch/lesen",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-spielszene",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D0P81183V17AJ6SS8EZJYJ",
+					"type": "soft",
+					"rationale": "This lesson uses the prerequisite skill in a new context."
+				},
+				{
+					"atom_id": "01M7D0P811VJ75YSZ4P8KB6YNF",
+					"type": "soft",
+					"rationale": "This lesson uses the prerequisite skill in a new context."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-gymnasium-5",
+					"topic_code": "lesen",
+					"topic_title": "Lesen und Medien"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb1",
+					"topic_title": "Sprechen und Zuhören"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb2",
+					"topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+				}
+			],
+			"practice_items": [
+				{
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche Aufgabe hat eine eingeklammerte Regieanweisung in einer Spielszene, etwa ‚TOM (flüsternd): Wer ist da?‘?",
+					"concept": "Sie beschreibt Mimik, Stimme oder Handlung und wird gespielt statt vorgelesen.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Sie beschreibt Mimik, Stimme oder Handlung und wird gespielt statt vorgelesen.",
+							"Sie gibt den Titel des gesamten Theaterstücks an."
+						],
+						"correct_index": 0
+					},
+					"id": "01M7HEV5R09VH44MCWWST9FXMX",
+					"slug": "d5-spielszene-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-spielszene"
+				},
+				{
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Woran unterscheidest du beim Lesen einer Spielszene Figurenrede und Regieanweisung?",
+					"concept": "Die Figurenrede folgt dem Rollennamen zum Sprechen; die Regieanweisung gibt Hinweise zum Spielen.",
+					"sample_solution": "Bei ‚MIA (tritt näher): Schau einmal!‘ ist ‚(tritt näher)‘ eine Regieanweisung für die Bewegung und ‚Schau einmal!‘ die gesprochene Figurenrede.",
+					"id": "01M7HEV5R0ACKQ1FZH0MEJY8FZ",
+					"slug": "d5-spielszene-recall",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-spielszene"
+				}
+			]
+		},
+		{
+			"id": "01M7D0P811PT005WVPSVTA48QZ",
+			"atom_uri": "urn:zam:atom:01M7D0P811PT005WVPSVTA48QZ",
+			"namespace": "zam-academy-deutsch-gymnasium-5",
+			"slug": "d5-lesetagebuch",
+			"title": "Ein Buch auswählen und vorstellen",
+			"domain": "deutsch/lesen",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-lesetagebuch",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-gymnasium-5",
+					"topic_code": "lesen",
+					"topic_title": "Lesen und Medien"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb1",
+					"topic_title": "Sprechen und Zuhören"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb2",
+					"topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+				}
+			],
+			"practice_items": [
+				{
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Was gehört zu einem nachvollziehbaren Lesetagebucheintrag?",
+					"concept": "Fundstelle, Ereignis und begründeter Eindruck.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Fundstelle, Ereignis und begründeter Eindruck.",
+							"Nur die Zahl der gelesenen Seiten."
+						],
+						"correct_index": 0
+					},
+					"id": "01M7D0P812YH9BE235YE8SBPD1",
+					"slug": "d5-lesetagebuch-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-lesetagebuch"
+				},
+				{
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie stellst du ein Lieblingsbuch vor, ohne das Ende zu verraten?",
+					"concept": "Nenne Titel und Autor, beschreibe die Ausgangslage und begründe deine Empfehlung an einer frühen Stelle.",
+					"sample_solution": "Beispiel mit frei erfundenem Buch: „Amiras Fund“ von Lea Winter erzählt von einem Kind, das einen fremden Hund entdeckt. Ich empfehle das Buch, weil Amira in Kapitel 2 erst die Lage prüft, bevor sie hilft. Wie die Suche nach dem Besitzer endet, verrate ich nicht.",
+					"id": "01M7D0P8125MDYX4CG0ZER27TT",
+					"slug": "d5-lesetagebuch-recall",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-lesetagebuch"
+				}
+			]
+		},
+		{
+			"id": "01M7D0P811RJWPT4D81X2WD3KM",
+			"atom_uri": "urn:zam:atom:01M7D0P811RJWPT4D81X2WD3KM",
+			"namespace": "zam-academy-deutsch-gymnasium-5",
+			"slug": "d5-sachtext",
+			"title": "Sachtexte, Tabellen und Absichten",
+			"domain": "deutsch/lesen",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-sachtext",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-gymnasium-5",
+					"topic_code": "lesen",
+					"topic_title": "Lesen und Medien"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb2",
+					"topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+				}
+			],
+			"practice_items": [
+				{
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Auf einem Plakat steht groß: „BRING EIN BUCH MIT! So finden Bücher neue Leserinnen und Leser.“ Welche Absicht steht im Vordergrund?",
+					"concept": "Zum Mitmachen auffordern.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Zum Mitmachen auffordern.",
+							"Über alle Termine informieren."
+						],
+						"correct_index": 0
+					},
+					"id": "01M7D0P8129ZZCEX7FCSXCWB0E",
+					"slug": "d5-sachtext-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-sachtext"
+				},
+				{
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie stellst du den Ablauf eines Sachtexts grafisch dar?",
+					"concept": "Schreibe die Schritte als kurze Stichwörter und verbinde sie in der richtigen Reihenfolge mit Pfeilen.",
+					"sample_solution": "„Di: Aula, Abgabe → Do: Bücherei, Auswahl“ zeigt Zeit, Ort und Ablauf auf einen Blick.",
+					"id": "01M7D0P812R3VJA8V6C4ZH01N6",
+					"slug": "d5-sachtext-recall",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-sachtext"
+				}
+			]
+		},
+		{
+			"id": "01M7D0P8111DTFZ0YKBCCH86BV",
+			"atom_uri": "urn:zam:atom:01M7D0P8111DTFZ0YKBCCH86BV",
+			"namespace": "zam-academy-deutsch-gymnasium-5",
+			"slug": "d5-diagramme",
+			"title": "Balkendiagramme als Texte lesen",
+			"domain": "deutsch/lesen",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-diagramme",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D0P8110KFNC8G0HVE7EF0S",
+					"type": "soft",
+					"rationale": "This lesson uses the prerequisite skill in a new context."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-gymnasium-5",
+					"topic_code": "lesen",
+					"topic_title": "Lesen und Medien"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb2",
+					"topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb3",
+					"topic_title": "Schreiben"
+				}
+			],
+			"practice_items": [
+				{
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Was bedeutet die Zahl 8 beim Balken „Abenteuer“ der Klassenbefragung?",
+					"concept": "Acht Kinder dieser Klasse wählen Abenteuer.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Acht Kinder dieser Klasse wählen Abenteuer.",
+							"Jedes Kind hat acht Abenteuerbücher gelesen."
+						],
+						"correct_index": 0
+					},
+					"id": "01M7D0P812D53PDMZ6EVE5TKQK",
+					"slug": "d5-diagramme-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-diagramme"
+				},
+				{
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was prüfst du, bevor du eine Aussage aus einem Diagramm übernimmst?",
+					"concept": "Prüfe Thema, untersuchte Gruppe, Einheit und die zugehörigen Werte.",
+					"sample_solution": "Die Werte stammen von 20 Kindern einer Klasse und beschreiben deren eine Buchwahl.",
+					"id": "01M7D0P812XHGTM10MNQMCDBK7",
+					"slug": "d5-diagramme-recall",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-diagramme"
+				}
+			]
+		},
+		{
+			"id": "01M7D0P811Z9Q513VQ1T8DHM9H",
+			"atom_uri": "urn:zam:atom:01M7D0P811Z9Q513VQ1T8DHM9H",
+			"namespace": "zam-academy-deutsch-gymnasium-5",
+			"slug": "d5-medienwahl",
+			"title": "Medien passend und bewusst nutzen",
+			"domain": "deutsch/lesen",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-medienwahl",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-gymnasium-5",
+					"topic_code": "lesen",
+					"topic_title": "Lesen und Medien"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb2",
+					"topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+				}
+			],
+			"practice_items": [
+				{
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Du hast zehn Minuten für drei Sachinformationen über Igel. Zur Wahl stehen ein siebenminütiges Radiointerview mit einer Tierpflegerin, ein 65-minütiger Spielfilm und sein Trailer. Was passt am besten?",
+					"concept": "Das siebenminütige Radiointerview.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Das siebenminütige Radiointerview.",
+							"Der 65-minütige Spielfilm."
+						],
+						"correct_index": 0
+					},
+					"id": "01M7D0P812JP44FNQT7BH8GYS2",
+					"slug": "d5-medienwahl-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-medienwahl"
+				},
+				{
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche Kriterien helfen dir bei einer Medienwahl?",
+					"concept": "Zweck, Verständlichkeit, Alter, Dauer und Zeitpunkt.",
+					"sample_solution": "Vergleiche beim Lernauftrag etwa den kurzen Radiobeitrag mit dem Spielfilm am Abend.",
+					"id": "01M7D0P812H601ZZSYAMZE69JB",
+					"slug": "d5-medienwahl-recall",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-medienwahl"
+				}
+			]
+		},
+		{
+			"id": "01M7D0P811DMCM6SJAWFAHPB0B",
+			"atom_uri": "urn:zam:atom:01M7D0P811DMCM6SJAWFAHPB0B",
+			"namespace": "zam-academy-deutsch-gymnasium-5",
+			"slug": "d5-recherche",
+			"title": "Eine Information finden und prüfen",
+			"domain": "deutsch/lesen",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-recherche",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-gymnasium-5",
+					"topic_code": "lesen",
+					"topic_title": "Lesen und Medien"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb2",
+					"topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+				}
+			],
+			"practice_items": [
+				{
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Für die Öffnungszeiten gibt es drei Treffer: die aktuelle Auskunft der Stadtbücherei, einen Blogbeitrag von 2019 und ein undatiertes Foto. Welche Quelle ist am geeignetsten?",
+					"concept": "Die aktuelle Auskunft der Stadtbücherei.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Die aktuelle Auskunft der Stadtbücherei.",
+							"Der Blogbeitrag von 2019."
+						],
+						"correct_index": 0
+					},
+					"id": "01M7D0P812P1FPW11HACPJ9KSY",
+					"slug": "d5-recherche-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-recherche"
+				},
+				{
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was notierst du, damit andere eine Angabe prüfen können?",
+					"concept": "Die Quelle, die genaue Fundstelle und bei veränderlichen Angaben das Datum.",
+					"sample_solution": "Bei einer Website helfen Seitentitel und Abrufdatum. In einem Buch helfen Titel und Seite.",
+					"id": "01M7D0P812DW2JZR7NCMZJZGYZ",
+					"slug": "d5-recherche-recall",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-recherche"
+				}
+			]
+		},
+		{
+			"id": "01M7D0P8119Q6R8BCZJ5XCB0Y8",
+			"atom_uri": "urn:zam:atom:01M7D0P8119Q6R8BCZJ5XCB0Y8",
+			"namespace": "zam-academy-deutsch-gymnasium-5",
+			"slug": "d5-film",
+			"title": "Wie ein Film Gefühle weckt",
+			"domain": "deutsch/lesen",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-film",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-gymnasium-5",
+					"topic_code": "lesen",
+					"topic_title": "Lesen und Medien"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb2",
+					"topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+				}
+			],
+			"practice_items": [
+				{
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche Einstellung zeigt das Zittern einer Hand am besten?",
+					"concept": "Eine Detailaufnahme der Hand.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Eine Detailaufnahme der Hand.",
+							"Eine Totale vom ganzen Schulhof."
+						],
+						"correct_index": 0
+					},
+					"id": "01M7D0P812XSR4VQQRB4J4MQ4V",
+					"slug": "d5-film-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-film"
+				},
+				{
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie kann der Ton die Stimmung einer Szene verändern?",
+					"concept": "Musik, Geräusche oder Stille beeinflussen, was du erwartest und wie du die Handlung empfindest.",
+					"sample_solution": "Ein plötzliches Knarren kann beim Öffnen einer Tür erschrecken. Vogelstimmen können dieselbe Szene ruhig wirken lassen.",
+					"id": "01M7D0P8124BW90D7CSVFK5E0A",
+					"slug": "d5-film-recall",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-film"
+				}
+			]
+		},
+		{
+			"id": "01M7D0P8114R935TJMMJ68ZXQB",
+			"atom_uri": "urn:zam:atom:01M7D0P8114R935TJMMJ68ZXQB",
+			"namespace": "zam-academy-deutsch-gymnasium-5",
+			"slug": "d5-schreibplan",
+			"title": "Mit einem Schreibplan starten",
+			"domain": "deutsch/schreiben",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-schreibplan",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-gymnasium-5",
+					"topic_code": "schreiben",
+					"topic_title": "Schreiben"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb3",
+					"topic_title": "Schreiben"
+				}
+			],
+			"practice_items": [
+				{
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Dein Aushang soll Kindern erklären, wo und wann sie ihr Buch zum Büchertausch abgeben. Welche Angabe hilft am meisten?",
+					"concept": "Abgabe am Dienstag in der Aula.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Abgabe am Dienstag in der Aula.",
+							"Mein Lieblingsbuch ist grün."
+						],
+						"correct_index": 0
+					},
+					"id": "01M7D0P812GWM8H9VZBW1MQSGX",
+					"slug": "d5-schreibplan-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-schreibplan"
+				},
+				{
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie machst du aus einem Ideenstern einen Schreibplan?",
+					"concept": "Wähle zum Ziel passende Ideen und ordne sie als Schritte oder Abschnitte.",
+					"sample_solution": "Für den Tauschplan zuerst Abgabe mit Ort und Termin, dann Auswahl mit Ort und Termin.",
+					"id": "01M7D0P812V5F88JJA6YK1TF0Z",
+					"slug": "d5-schreibplan-recall",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-schreibplan"
+				}
+			]
+		},
+		{
+			"id": "01M7D0P8116XCHZS0JYW9K6CMA",
+			"atom_uri": "urn:zam:atom:01M7D0P8116XCHZS0JYW9K6CMA",
+			"namespace": "zam-academy-deutsch-gymnasium-5",
+			"slug": "d5-erzaehlen",
+			"title": "Ein Erlebnis spannend erzählen",
+			"domain": "deutsch/schreiben",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-erzaehlen",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D0P8114R935TJMMJ68ZXQB",
+					"type": "soft",
+					"rationale": "This lesson uses the prerequisite skill in a new context."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-gymnasium-5",
+					"topic_code": "schreiben",
+					"topic_title": "Schreiben"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb1",
+					"topic_title": "Sprechen und Zuhören"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb3",
+					"topic_title": "Schreiben"
+				}
+			],
+			"practice_items": [
+				{
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche Fragen helfen bei der Einleitung einer Erlebniserzählung?",
+					"concept": "Wer? Wann? Wo? Was geschieht zu Beginn?",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Wer? Wann? Wo? Was geschieht zu Beginn?",
+							"Warum endet sie so? Wie lautet die Lösung?"
+						],
+						"correct_index": 0
+					},
+					"id": "01M7D0P812PV9XBCEY7F4FTJNJ",
+					"slug": "d5-erzaehlen-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-erzaehlen"
+				},
+				{
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie baust du eine kurze Erlebniserzählung auf?",
+					"concept": "Erzählsituation einführen, Ereignis bis zum entscheidenden Moment entfalten, Ausgang zeigen.",
+					"sample_solution": "Sami holte die Jacke. Ein Klirren und der bewegte Vorhang machten ihn neugierig. Er entdeckte die Hausmeisterin und half bei der Suche.",
+					"id": "01M7D0P8126305EP9DD30QZV0S",
+					"slug": "d5-erzaehlen-recall",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-erzaehlen"
+				}
+			]
+		},
+		{
+			"id": "01M7D0P81184XA261NNV1GQB16",
+			"atom_uri": "urn:zam:atom:01M7D0P81184XA261NNV1GQB16",
+			"namespace": "zam-academy-deutsch-gymnasium-5",
+			"slug": "d5-weiterschreiben",
+			"title": "Eine Geschichte weiterschreiben",
+			"domain": "deutsch/schreiben",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-weiterschreiben",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D0P811K5JSS088BCK98Y87",
+					"type": "soft",
+					"rationale": "This lesson uses the prerequisite skill in a new context."
+				},
+				{
+					"atom_id": "01M7D0P8116XCHZS0JYW9K6CMA",
+					"type": "soft",
+					"rationale": "This lesson uses the prerequisite skill in a new context."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-gymnasium-5",
+					"topic_code": "schreiben",
+					"topic_title": "Schreiben"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb2",
+					"topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb3",
+					"topic_title": "Schreiben"
+				}
+			],
+			"practice_items": [
+				{
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Die Geschichte beginnt mit „Ich stand mit nassen Schuhen in der Bücherei.“ Welcher Satz führt die Ich-Perspektive fort?",
+					"concept": "Ich kniete mich hin und folgte der roten Schnur.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Ich kniete mich hin und folgte der roten Schnur.",
+							"Mira kniete sich hin und folgte der roten Schnur."
+						],
+						"correct_index": 0
+					},
+					"id": "01M7D0P812GP08KZSNWDZ2M5ND",
+					"slug": "d5-weiterschreiben-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-weiterschreiben"
+				},
+				{
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was prüfst du, bevor du einen Geschichtenanfang fortsetzt?",
+					"concept": "Perspektive, Zeitform, Figuren, Ort und offene Hinweise.",
+					"sample_solution": "Hier erzähle ich im Präteritum aus meiner Sicht und greife das Piepsen oder die rote Schnur auf.",
+					"id": "01M7D0P812KJ47HDV0X6KCFJPS",
+					"slug": "d5-weiterschreiben-recall",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-weiterschreiben"
+				}
+			]
+		},
+		{
+			"id": "01M7D0P8111CDPQA4Z77SQRDSM",
+			"atom_uri": "urn:zam:atom:01M7D0P8111CDPQA4Z77SQRDSM",
+			"namespace": "zam-academy-deutsch-gymnasium-5",
+			"slug": "d5-vorgang",
+			"title": "Einen Vorgang verständlich erklären",
+			"domain": "deutsch/schreiben",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-vorgang",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-gymnasium-5",
+					"topic_code": "schreiben",
+					"topic_title": "Schreiben"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb1",
+					"topic_title": "Sprechen und Zuhören"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb3",
+					"topic_title": "Schreiben"
+				}
+			],
+			"practice_items": [
+				{
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Was kommt bei einem Lesezeichen zuerst: ein Loch stanzen oder das Band hindurchziehen?",
+					"concept": "Zuerst das Loch stanzen.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Zuerst das Loch stanzen.",
+							"Zuerst das Band hindurchziehen."
+						],
+						"correct_index": 0
+					},
+					"id": "01M7D0P8129P4T7HQY0DA6B5R4",
+					"slug": "d5-vorgang-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-vorgang"
+				},
+				{
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie machst du eine Vorgangsbeschreibung ausführbar?",
+					"concept": "Nenne Material und Ziel und ordne genaue Handlungsschritte in sinnvoller Reihenfolge.",
+					"sample_solution": "„Stanze oben ein Loch. Zieh danach das Band hindurch und verknote es.“",
+					"id": "01M7D0P81285N9V4JMEXRG948E",
+					"slug": "d5-vorgang-recall",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-vorgang"
+				}
+			]
+		},
+		{
+			"id": "01M7D0P811EXEEZZVRQ2BFHBBY",
+			"atom_uri": "urn:zam:atom:01M7D0P811EXEEZZVRQ2BFHBBY",
+			"namespace": "zam-academy-deutsch-gymnasium-5",
+			"slug": "d5-ereignis",
+			"title": "Über ein Ereignis sachlich informieren",
+			"domain": "deutsch/schreiben",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-ereignis",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-gymnasium-5",
+					"topic_code": "schreiben",
+					"topic_title": "Schreiben"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb3",
+					"topic_title": "Schreiben"
+				}
+			],
+			"practice_items": [
+				{
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche Aussage ist als sachliche Information formuliert?",
+					"concept": "Bei der Tauschbörse wechselten 30 Bücher die Besitzer.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Bei der Tauschbörse wechselten 30 Bücher die Besitzer.",
+							"Bestimmt fanden alle Kinder die Tauschbörse großartig."
+						],
+						"correct_index": 0
+					},
+					"id": "01M7D0P812VMZF58S35MBEZBFZ",
+					"slug": "d5-ereignis-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-ereignis"
+				},
+				{
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie unterscheidet sich sachliches Informieren vom erfindenden Erzählen?",
+					"concept": "Sachliches Informieren gibt gesicherte Angaben nachvollziehbar wieder; erfindendes Erzählen darf eine passende Handlung gestalten.",
+					"sample_solution": "Ein Ereignistext nennt die belegten 30 getauschten Bücher; eine erfundene Geschichte darf eine überraschende Begegnung am Büchertisch erzählen.",
+					"id": "01M7D0P8127B1HEXBP8WDGFF50",
+					"slug": "d5-ereignis-recall",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-ereignis"
+				}
+			]
+		},
+		{
+			"id": "01M7D0P811WZ20FMBCX95F8X4D",
+			"atom_uri": "urn:zam:atom:01M7D0P811WZ20FMBCX95F8X4D",
+			"namespace": "zam-academy-deutsch-gymnasium-5",
+			"slug": "d5-brief",
+			"title": "Eine Bitte schriftlich begründen",
+			"domain": "deutsch/schreiben",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-brief",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-gymnasium-5",
+					"topic_code": "schreiben",
+					"topic_title": "Schreiben"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb3",
+					"topic_title": "Schreiben"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				}
+			],
+			"practice_items": [
+				{
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "In der ersten Zeile steht „Liebe Mina,“. Wie schreibst du in der nächsten Zeile den Anfang „vielen Dank für deine Nachricht“?",
+					"concept": "vielen Dank für deine Nachricht.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"vielen Dank für deine Nachricht.",
+							"Vielen Dank für deine Nachricht."
+						],
+						"correct_index": 0
+					},
+					"id": "01M7D0P812AYZQ48XGJYJDQQMY",
+					"slug": "d5-brief-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-brief"
+				},
+				{
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche Teile braucht ein persönlicher Brief, damit die Empfängerin sich orientieren kann?",
+					"concept": "Ort und Datum, Anrede, Brieftext, Gruß und Name.",
+					"sample_solution": "Eine persönliche Mail kann einen klaren Betreff statt einer Orts- und Datumszeile haben.",
+					"id": "01M7D0P812933SY6SDC64SY61N",
+					"slug": "d5-brief-recall",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-brief"
+				}
+			]
+		},
+		{
+			"id": "01M7D0P811MY4Q3NJ2703QAMW0",
+			"atom_uri": "urn:zam:atom:01M7D0P811MY4Q3NJ2703QAMW0",
+			"namespace": "zam-academy-deutsch-gymnasium-5",
+			"slug": "d5-ueberarbeiten",
+			"title": "Einen Entwurf gezielt überarbeiten",
+			"domain": "deutsch/schreiben",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-ueberarbeiten",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-gymnasium-5",
+					"topic_code": "schreiben",
+					"topic_title": "Schreiben"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb3",
+					"topic_title": "Schreiben"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				}
+			],
+			"practice_items": [
+				{
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Du hast einen ersten Textentwurf geschrieben. Was prüfst du im ersten Durchgang der Überarbeitung?",
+					"concept": "Ob wichtige Angaben fehlen und der Text verständlich geordnet ist.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Ob wichtige Angaben fehlen und der Text verständlich geordnet ist.",
+							"Nur die Großschreibung einzelner Wörter."
+						],
+						"correct_index": 0
+					},
+					"id": "01M7D0P8125HEPC93YAQB9EJ8W",
+					"slug": "d5-ueberarbeiten-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-ueberarbeiten"
+				},
+				{
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie nutzt du eine konkrete Rückmeldung zu deinem Text?",
+					"concept": "Suche die genannte Stelle, ändere sie gezielt und prüfe danach die Wirkung.",
+					"sample_solution": "Auf „Wo treffen wir uns?“ ergänze „am Eingang zur Aula“ und lass die Person den Ort noch einmal finden.",
+					"id": "01M7D0P8126YNWZFDGAKN45QQA",
+					"slug": "d5-ueberarbeiten-recall",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-ueberarbeiten"
+				}
+			]
+		},
+		{
+			"id": "01M7D0P811KGGBD8QJ2HEBSM4C",
+			"atom_uri": "urn:zam:atom:01M7D0P811KGGBD8QJ2HEBSM4C",
+			"namespace": "zam-academy-deutsch-gymnasium-5",
+			"slug": "d5-textverarbeitung",
+			"title": "Einen Text am Bildschirm überarbeiten",
+			"domain": "deutsch/schreiben",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-textverarbeitung",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D0P811MY4Q3NJ2703QAMW0",
+					"type": "soft",
+					"rationale": "This lesson uses the prerequisite skill in a new context."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-gymnasium-5",
+					"topic_code": "schreiben",
+					"topic_title": "Schreiben"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb3",
+					"topic_title": "Schreiben"
+				}
+			],
+			"practice_items": [
+				{
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Warum musst du einen Text trotz Rechtschreibhilfe selbst lesen?",
+					"concept": "Richtig geschriebene Wörter können im Satz falsch sein.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Richtig geschriebene Wörter können im Satz falsch sein.",
+							"Die Rechtschreibhilfe prüft immer die ganze Bedeutung."
+						],
+						"correct_index": 0
+					},
+					"id": "01M7D0P812G232M010J2HE7NTW",
+					"slug": "d5-textverarbeitung-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-textverarbeitung"
+				},
+				{
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie helfen Absätze beim Überarbeiten?",
+					"concept": "Sie machen zusammengehörige Gedanken sichtbar und trennen neue Schritte oder Themen.",
+					"sample_solution": "Eine Einladung trennt Termin und Ort von Hinweisen zum Mitbringen.",
+					"id": "01M7D0P812DKTK6YAJYDHR1SMX",
+					"slug": "d5-textverarbeitung-recall",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-textverarbeitung"
+				}
+			]
+		},
+		{
+			"id": "01M7D0P811MQTRSRM25ZM9XHP4",
+			"atom_uri": "urn:zam:atom:01M7D0P811MQTRSRM25ZM9XHP4",
+			"namespace": "zam-academy-deutsch-gymnasium-5",
+			"slug": "d5-sprachwahl",
+			"title": "Worte für die richtige Situation",
+			"domain": "deutsch/sprache",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-sprachwahl",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-gymnasium-5",
+					"topic_code": "sprache",
+					"topic_title": "Sprache und Rechtschreibung"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb1",
+					"topic_title": "Sprechen und Zuhören"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				}
+			],
+			"practice_items": [
+				{
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Auf einem Schild am Schuleingang steht „Check-in“. Warum passt „Anmeldung“ dort für mehr Personen?",
+					"concept": "Auch Personen ohne Englischkenntnisse verstehen, was sie dort tun sollen.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Auch Personen ohne Englischkenntnisse verstehen, was sie dort tun sollen.",
+							"Englische Wörter sind in jedem Gespräch unhöflich."
+						],
+						"correct_index": 0
+					},
+					"id": "01M7D0P812BXW6EHQ6NMMJ4NRN",
+					"slug": "d5-sprachwahl-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-sprachwahl"
+				},
+				{
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Woran erkennst du einen anschaulichen Vergleich?",
+					"concept": "Er verbindet zwei Dinge, die in einem Merkmal ähnlich sind, oft mit „wie“.",
+					"sample_solution": "„Die Seiten flatterten wie Segel“ betont, wie Wind die Seiten bewegt.",
+					"id": "01M7D0P812W09P3E9GHYBJTAR6",
+					"slug": "d5-sprachwahl-recall",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-sprachwahl"
+				}
+			]
+		},
+		{
+			"id": "01M7D0P811GVTCKZV19PSTEYET",
+			"atom_uri": "urn:zam:atom:01M7D0P811GVTCKZV19PSTEYET",
+			"namespace": "zam-academy-deutsch-gymnasium-5",
+			"slug": "d5-wortarten",
+			"title": "Wortarten und ihre Aufgaben",
+			"domain": "deutsch/sprache",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-wortarten",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-gymnasium-5",
+					"topic_code": "sprache",
+					"topic_title": "Sprache und Rechtschreibung"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				}
+			],
+			"practice_items": [
+				{
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche Wortart hat „zwei“ in „Die zwei kleinen Hunde laufen heute draußen“?",
+					"concept": "Numerale (Zahlwort).",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Numerale (Zahlwort).",
+							"Adverb."
+						],
+						"correct_index": 0
+					},
+					"id": "01M7D0P812K3GWA01HAFB1EWEK",
+					"slug": "d5-wortarten-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-wortarten"
+				},
+				{
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Warum ist „draußen“ in „Die zwei kleinen Hunde laufen heute draußen“ ein Adverb?",
+					"concept": "Es gibt den Ort an und verändert dabei seine Form nicht.",
+					"sample_solution": "„Der Hund läuft draußen“ und „Die Hunde laufen draußen“ behalten dieselbe Form des Adverbs.",
+					"id": "01M7D0P8128XV141BDBM9BY0PF",
+					"slug": "d5-wortarten-recall",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-wortarten"
+				}
+			]
+		},
+		{
+			"id": "01M7D0P811ZEX2KV8N7B2M7R9Q",
+			"atom_uri": "urn:zam:atom:01M7D0P811ZEX2KV8N7B2M7R9Q",
+			"namespace": "zam-academy-deutsch-gymnasium-5",
+			"slug": "d5-faelle",
+			"title": "Die vier Fälle bestimmen",
+			"domain": "deutsch/sprache",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-faelle",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D0P811GVTCKZV19PSTEYET",
+					"type": "soft",
+					"rationale": "This lesson uses the prerequisite skill in a new context."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-gymnasium-5",
+					"topic_code": "sprache",
+					"topic_title": "Sprache und Rechtschreibung"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				}
+			],
+			"practice_items": [
+				{
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Mit welcher Frage ermittelst du den Dativ?",
+					"concept": "Wem?",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Wem?",
+							"Wen oder was?"
+						],
+						"correct_index": 0
+					},
+					"id": "01M7D0P81236MEMBR93BZR9VTV",
+					"slug": "d5-faelle-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-faelle"
+				},
+				{
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie lauten die vier Fälle für „der flinke Hund“ im Singular?",
+					"concept": "Der flinke Hund, des flinken Hundes, dem flinken Hund, den flinken Hund.",
+					"sample_solution": "Nominativ: der flinke Hund. Genitiv: des flinken Hundes. Dativ: dem flinken Hund. Akkusativ: den flinken Hund.",
+					"id": "01M7D0P8125Z140K3NGD0DJP14",
+					"slug": "d5-faelle-recall",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-faelle"
+				}
+			]
+		},
+		{
+			"id": "01M7D0P8116YZ1VD6G5795SDYY",
+			"atom_uri": "urn:zam:atom:01M7D0P8116YZ1VD6G5795SDYY",
+			"namespace": "zam-academy-deutsch-gymnasium-5",
+			"slug": "d5-pronomen",
+			"title": "Mit Pronomen Bezüge klären",
+			"domain": "deutsch/sprache",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-pronomen",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D0P811GVTCKZV19PSTEYET",
+					"type": "soft",
+					"rationale": "This lesson uses the prerequisite skill in a new context."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-gymnasium-5",
+					"topic_code": "sprache",
+					"topic_title": "Sprache und Rechtschreibung"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				}
+			],
+			"practice_items": [
+				{
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Zu welcher Gruppe gehören „mein“, „dein“ und „unser“, wenn sie Zugehörigkeit anzeigen?",
+					"concept": "Possessivpronomen (besitzanzeigende Fürwörter).",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Possessivpronomen (besitzanzeigende Fürwörter).",
+							"Demonstrativpronomen."
+						],
+						"correct_index": 0
+					},
+					"id": "01M7D0P812EDVR5V45QNA8H4T4",
+					"slug": "d5-pronomen-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-pronomen"
+				},
+				{
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie vermeidest du einen unklaren Bezug bei Personalpronomen?",
+					"concept": "Verwende einen Namen, wenn mehrere Personen als Bezug infrage kommen.",
+					"sample_solution": "Statt „Mira winkt Lina, weil sie das Heft fand“: „Mira winkt Lina, weil Lina das Heft fand.“",
+					"id": "01M7D0P812XJYJ9398A6ZACQ62",
+					"slug": "d5-pronomen-recall",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-pronomen"
+				}
+			]
+		},
+		{
+			"id": "01M7D0P8111VAKJP65HP9GNEKM",
+			"atom_uri": "urn:zam:atom:01M7D0P8111VAKJP65HP9GNEKM",
+			"namespace": "zam-academy-deutsch-gymnasium-5",
+			"slug": "d5-adjektive",
+			"title": "Mit Adjektiven vergleichen",
+			"domain": "deutsch/sprache",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-adjektive",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D0P811GVTCKZV19PSTEYET",
+					"type": "soft",
+					"rationale": "This lesson uses the prerequisite skill in a new context."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-gymnasium-5",
+					"topic_code": "sprache",
+					"topic_title": "Sprache und Rechtschreibung"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb3",
+					"topic_title": "Schreiben"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				}
+			],
+			"practice_items": [
+				{
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welches Wort folgt in „Luna ist größer … Milo“?",
+					"concept": "als",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"als",
+							"wie"
+						],
+						"correct_index": 0
+					},
+					"id": "01M7D0P81249K49MWVJ7H52JQB",
+					"slug": "d5-adjektive-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-adjektive"
+				},
+				{
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie heißen die drei Steigerungsstufen von „hoch“?",
+					"concept": "Hoch, höher, am höchsten.",
+					"sample_solution": "Ein hohes Tor, ein höheres Tor, das höchste Tor. Mit „am“ lautet die Höchststufe „am höchsten“.",
+					"id": "01M7D0P8137RV412TDFTG4253S",
+					"slug": "d5-adjektive-recall",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-adjektive"
+				}
+			]
+		},
+		{
+			"id": "01M7D0P8118621GQRAP0T6WQ7G",
+			"atom_uri": "urn:zam:atom:01M7D0P8118621GQRAP0T6WQ7G",
+			"namespace": "zam-academy-deutsch-gymnasium-5",
+			"slug": "d5-zeitformen",
+			"title": "Verbformen und Zeitformen",
+			"domain": "deutsch/sprache",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-zeitformen",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D0P811GVTCKZV19PSTEYET",
+					"type": "soft",
+					"rationale": "This lesson uses the prerequisite skill in a new context."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-gymnasium-5",
+					"topic_code": "sprache",
+					"topic_title": "Sprache und Rechtschreibung"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb3",
+					"topic_title": "Schreiben"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				}
+			],
+			"practice_items": [
+				{
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche Form ist in „Wir sind gelaufen“ finit?",
+					"concept": "sind",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"sind",
+							"gelaufen"
+						],
+						"correct_index": 0
+					},
+					"id": "01M7D0P813MJN3J00RTKZNDP74",
+					"slug": "d5-zeitformen-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-zeitformen"
+				},
+				{
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche Zeitform zeigt beim Erzählen im Präteritum häufig ein vorheriges Ereignis?",
+					"concept": "Das Plusquamperfekt, gebildet mit „hatte“ oder „war“ und dem Partizip Perfekt.",
+					"sample_solution": "„Ich fand das Heft. Am Morgen hatte ich es verlegt.“ Das Verlegen geschah zuerst.",
+					"id": "01M7D0P8139164HNN7027K2FZC",
+					"slug": "d5-zeitformen-recall",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-zeitformen"
+				}
+			]
+		},
+		{
+			"id": "01M7D0P811G0MPK2WKC5QY48G8",
+			"atom_uri": "urn:zam:atom:01M7D0P811G0MPK2WKC5QY48G8",
+			"namespace": "zam-academy-deutsch-gymnasium-5",
+			"slug": "d5-wortbildung",
+			"title": "Wörter ableiten und zusammensetzen",
+			"domain": "deutsch/sprache",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-wortbildung",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-gymnasium-5",
+					"topic_code": "sprache",
+					"topic_title": "Sprache und Rechtschreibung"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb3",
+					"topic_title": "Schreiben"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				}
+			],
+			"practice_items": [
+				{
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Was ist das Grundwort in „Türschild“?",
+					"concept": "Schild",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Schild",
+							"Tür"
+						],
+						"correct_index": 0
+					},
+					"id": "01M7D0P813JNQ7ZDKKNXM0P62G",
+					"slug": "d5-wortbildung-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-wortbildung"
+				},
+				{
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie unterscheidest du Wortfamilie und Wortfeld?",
+					"concept": "Eine Wortfamilie enthält Wörter mit verwandtem Stamm. Ein Wortfeld sammelt Wörter mit verwandter Bedeutung.",
+					"sample_solution": "„Lesen, Leser, lesbar“ teilen einen Stamm. „Sagen, flüstern, rufen“ sind verschiedene Arten des Sprechens.",
+					"id": "01M7D0P813H6E2F70E2F3451RY",
+					"slug": "d5-wortbildung-recall",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-wortbildung"
+				}
+			]
+		},
+		{
+			"id": "01M7D0P811W67YMA220PQVQHWJ",
+			"atom_uri": "urn:zam:atom:01M7D0P811W67YMA220PQVQHWJ",
+			"namespace": "zam-academy-deutsch-gymnasium-5",
+			"slug": "d5-wortbedeutung",
+			"title": "Wortbedeutungen im Zusammenhang prüfen",
+			"domain": "deutsch/sprache",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-wortbedeutung",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-gymnasium-5",
+					"topic_code": "sprache",
+					"topic_title": "Sprache und Rechtschreibung"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb3",
+					"topic_title": "Schreiben"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				}
+			],
+			"practice_items": [
+				{
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Wie nennt man Wörter mit gegensätzlicher Bedeutung wie „hell“ und „dunkel“?",
+					"concept": "Antonyme.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Antonyme.",
+							"Synonyme."
+						],
+						"correct_index": 0
+					},
+					"id": "01M7D0P81308A3VKYD6J9Q3BX5",
+					"slug": "d5-wortbedeutung-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-wortbedeutung"
+				},
+				{
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie findest du die passende Bedeutung eines mehrdeutigen Wortes?",
+					"concept": "Lies den ganzen Satz und prüfe, welche Bedeutung zum Zusammenhang passt.",
+					"sample_solution": "„Auf der Bank sitzen“ meint das Möbel, „Geld zur Bank bringen“ das Geldinstitut.",
+					"id": "01M7D0P81386FQ2T8YBSQBHXXP",
+					"slug": "d5-wortbedeutung-recall",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-wortbedeutung"
+				}
+			]
+		},
+		{
+			"id": "01M7D0P811WWRHWC1RHE9KGA4B",
+			"atom_uri": "urn:zam:atom:01M7D0P811WWRHWC1RHE9KGA4B",
+			"namespace": "zam-academy-deutsch-gymnasium-5",
+			"slug": "d5-satzglieder",
+			"title": "Satzglieder finden und verschieben",
+			"domain": "deutsch/sprache",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-satzglieder",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D0P811ZEX2KV8N7B2M7R9Q",
+					"type": "soft",
+					"rationale": "This lesson uses the prerequisite skill in a new context."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-gymnasium-5",
+					"topic_code": "sprache",
+					"topic_title": "Sprache und Rechtschreibung"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				}
+			],
+			"practice_items": [
+				{
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche Gruppe kannst du in „Am Morgen gibt Nele dem Hund einen Napf“ geschlossen durch „ihm“ ersetzen?",
+					"concept": "dem Hund",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"dem Hund",
+							"Hund"
+						],
+						"correct_index": 0
+					},
+					"id": "01M7D0P813TY5NTSTY4DZTY72D",
+					"slug": "d5-satzglieder-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-satzglieder"
+				},
+				{
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was ist das Prädikat in „Am Abend hat sie das Tor abgeschlossen“?",
+					"concept": "„Hat abgeschlossen“ besteht aus finitem Hilfsverb und Partizip Perfekt.",
+					"sample_solution": "„Hat“ steht im Satz getrennt von „abgeschlossen“, aber beide Teile gehören zum Prädikat.",
+					"id": "01M7D0P813D11BJ8232X6FK32J",
+					"slug": "d5-satzglieder-recall",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-satzglieder"
+				}
+			]
+		},
+		{
+			"id": "01M7HEV5R0Z2F5VPA1MCYH37TS",
+			"atom_uri": "urn:zam:atom:01M7HEV5R0Z2F5VPA1MCYH37TS",
+			"namespace": "zam-academy-deutsch-gymnasium-5",
+			"slug": "d5-satzklammer",
+			"title": "Mehrteilige Prädikate und Satzklammer",
+			"domain": "deutsch/sprache",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-satzklammer",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D0P811WWRHWC1RHE9KGA4B",
+					"type": "soft",
+					"rationale": "This lesson uses the prerequisite skill in a new context."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-gymnasium-5",
+					"topic_code": "sprache",
+					"topic_title": "Sprache und Rechtschreibung"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				}
+			],
+			"practice_items": [
+				{
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche Wörter bilden im Satz ‚Morgen will Mia das Gedicht laut vortragen‘ gemeinsam das Prädikat?",
+					"concept": "„will“ und „vortragen“",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"„will“ und „vortragen“",
+							"nur „will“ an der zweiten Stelle"
+						],
+						"correct_index": 0
+					},
+					"id": "01M7HEV5R041ZD08QRXWRN44HS",
+					"slug": "d5-satzklammer-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-satzklammer"
+				},
+				{
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was versteht man bei mehrteiligen Prädikaten im Aussagesatz unter der Satzklammer?",
+					"concept": "Die finite Verbform steht an zweiter Stelle und der übrige Verbteil am Satzende um die Satzglieder dazwischen.",
+					"sample_solution": "In ‚Gestern hat Jonas ein neues Heft aufgeschlagen‘ bilden ‚hat‘ links und ‚aufgeschlagen‘ rechts eine Klammer um Subjekt und Objekt.",
+					"id": "01M7HEV5R06Y92PWW1MKAJYJYD",
+					"slug": "d5-satzklammer-recall",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-satzklammer"
+				}
+			]
+		},
+		{
+			"id": "01M7D0P811ZKHC7MJFWQ4WD7JA",
+			"atom_uri": "urn:zam:atom:01M7D0P811ZKHC7MJFWQ4WD7JA",
+			"namespace": "zam-academy-deutsch-gymnasium-5",
+			"slug": "d5-adverbiale",
+			"title": "Zeit, Ort, Art und Grund unterscheiden",
+			"domain": "deutsch/sprache",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-adverbiale",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D0P811WWRHWC1RHE9KGA4B",
+					"type": "soft",
+					"rationale": "This lesson uses the prerequisite skill in a new context."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-gymnasium-5",
+					"topic_code": "sprache",
+					"topic_title": "Sprache und Rechtschreibung"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				}
+			],
+			"practice_items": [
+				{
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Mit welcher Frage findest du ein Kausaladverbiale?",
+					"concept": "Warum oder aus welchem Grund?",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Warum oder aus welchem Grund?",
+							"Wem oder für wen?"
+						],
+						"correct_index": 0
+					},
+					"id": "01M7D0P813TKSRSM9TRSG75VYX",
+					"slug": "d5-adverbiale-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-adverbiale"
+				},
+				{
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie unterscheidest du Modal- und Kausaladverbiale?",
+					"concept": "Modaladverbiale nennen die Art und Weise; Kausaladverbiale den Grund.",
+					"sample_solution": "„Sorgfältig“ beantwortet „Wie übt Lea?“, „wegen des Vortrags“ beantwortet „Warum übt Lea?“.",
+					"id": "01M7D0P8136QBX0D2ZVS78HCZK",
+					"slug": "d5-adverbiale-recall",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-adverbiale"
+				}
+			]
+		},
+		{
+			"id": "01M7D0P81197HE3BJAER2MTD6C",
+			"atom_uri": "urn:zam:atom:01M7D0P81197HE3BJAER2MTD6C",
+			"namespace": "zam-academy-deutsch-gymnasium-5",
+			"slug": "d5-satzbau",
+			"title": "Hauptsatz und Nebensatz verbinden",
+			"domain": "deutsch/sprache",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-satzbau",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D0P811WWRHWC1RHE9KGA4B",
+					"type": "soft",
+					"rationale": "This lesson uses the prerequisite skill in a new context."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-gymnasium-5",
+					"topic_code": "sprache",
+					"topic_title": "Sprache und Rechtschreibung"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				}
+			],
+			"practice_items": [
+				{
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Wo steht „regnet“ im Nebensatz „weil es regnet“?",
+					"concept": "Am Ende des Nebensatzes.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Am Ende des Nebensatzes.",
+							"Direkt nach „weil“."
+						],
+						"correct_index": 0
+					},
+					"id": "01M7D0P813T5NHDHCDVSF6QJV7",
+					"slug": "d5-satzbau-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-satzbau"
+				},
+				{
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was verändert sich, wenn du einen Weil-Nebensatz vor den Hauptsatz stellst?",
+					"concept": "Nach dem vorangestellten Nebensatz und dem Komma folgt direkt die finite Verbform des Hauptsatzes.",
+					"sample_solution": "„Lina bleibt hier, weil es regnet“ wird zu „Weil es regnet, bleibt Lina hier“. „Regnet“ bleibt am Ende des Nebensatzes; danach folgt „bleibt“.",
+					"id": "01M7D0P8131YVRWNAXBWHD4E3D",
+					"slug": "d5-satzbau-recall",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-satzbau"
+				}
+			]
+		},
+		{
+			"id": "01M7D0P811JBNYGE0RD2RA9QH6",
+			"atom_uri": "urn:zam:atom:01M7D0P811JBNYGE0RD2RA9QH6",
+			"namespace": "zam-academy-deutsch-gymnasium-5",
+			"slug": "d5-dehnung",
+			"title": "Lange Vokale richtig schreiben",
+			"domain": "deutsch/sprache",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-dehnung",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-gymnasium-5",
+					"topic_code": "sprache",
+					"topic_title": "Sprache und Rechtschreibung"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				}
+			],
+			"practice_items": [
+				{
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Vor welchen Buchstaben kann ein Dehnungs-h stehen?",
+					"concept": "l, m, n und r",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"l, m, n und r",
+							"b, d, g und p"
+						],
+						"correct_index": 0
+					},
+					"id": "01M7D0P813TCB1MTNX63DBVKZA",
+					"slug": "d5-dehnung-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-dehnung"
+				},
+				{
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie kann ein langer Vokal geschrieben werden?",
+					"concept": "Einfach, beim langen i oft als „ie“, in manchen Wörtern mit Dehnungs-h oder als Doppelvokal.",
+					"sample_solution": "„Tal“ hat einfaches a, „Lied“ hat ie, „Zahn“ hat Dehnungs-h und „Saal“ hat aa.",
+					"id": "01M7D0P813JAF0YATBMS7GJY41",
+					"slug": "d5-dehnung-recall",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-dehnung"
+				}
+			]
+		},
+		{
+			"id": "01M7D0P811D8Y6NX437HS4ZTH8",
+			"atom_uri": "urn:zam:atom:01M7D0P811D8Y6NX437HS4ZTH8",
+			"namespace": "zam-academy-deutsch-gymnasium-5",
+			"slug": "d5-schaerfung",
+			"title": "Kurze Vokale, Doppelkonsonanten, ck und tz",
+			"domain": "deutsch/sprache",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-schaerfung",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-gymnasium-5",
+					"topic_code": "sprache",
+					"topic_title": "Sprache und Rechtschreibung"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				}
+			],
+			"practice_items": [
+				{
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Was steht bei der üblichen Schärfung anstelle von „kk“ und „zz“?",
+					"concept": "ck und tz",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"ck und tz",
+							"k und z"
+						],
+						"correct_index": 0
+					},
+					"id": "01M7D0P813V9JQP5X61RE6GQMT",
+					"slug": "d5-schaerfung-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-schaerfung"
+				},
+				{
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Warum hat „Kante“ kein doppeltes n?",
+					"concept": "Nach dem kurzen a folgen zwei verschiedene Konsonantenlaute, n und t.",
+					"sample_solution": "In „Kamm“ folgt nur m, daher steht dort mm. „Kante“ hat bereits n und t.",
+					"id": "01M7D0P8132D8B5NQ7FKV2JEDG",
+					"slug": "d5-schaerfung-recall",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-schaerfung"
+				}
+			]
+		},
+		{
+			"id": "01M7D0P811C3N5PDQ89R7KGBWR",
+			"atom_uri": "urn:zam:atom:01M7D0P811C3N5PDQ89R7KGBWR",
+			"namespace": "zam-academy-deutsch-gymnasium-5",
+			"slug": "d5-verlaengern",
+			"title": "Wörter verlängern und ableiten",
+			"domain": "deutsch/sprache",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-verlaengern",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D0P811G0MPK2WKC5QY48G8",
+					"type": "soft",
+					"rationale": "This lesson uses the prerequisite skill in a new context."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-gymnasium-5",
+					"topic_code": "sprache",
+					"topic_title": "Sprache und Rechtschreibung"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				}
+			],
+			"practice_items": [
+				{
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Wie findest du sicher heraus, ob „Hund“ auf d oder t endet?",
+					"concept": "Verlängere zu „Hunde“.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Verlängere zu „Hunde“.",
+							"Schreib so, wie der letzte Laut im einzelnen Wort klingt."
+						],
+						"correct_index": 0
+					},
+					"id": "01M7D0P813DYHYD0H1BFZM09C2",
+					"slug": "d5-verlaengern-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-verlaengern"
+				},
+				{
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie prüfst du „gelb“ und „fliegt“ mit der Verlängerungsprobe?",
+					"concept": "Bilde „gelbes Blatt“ und „fliegen“.",
+					"sample_solution": "In „gelbes“ folgt e auf b. In „fliegen“ folgt e auf g. So sind die Laute besser unterscheidbar.",
+					"id": "01M7D0P813KTA953Q12TZFZ44J",
+					"slug": "d5-verlaengern-recall",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-verlaengern"
+				}
+			]
+		},
+		{
+			"id": "01M7HEV5R06GJSX5VVKACDDBWM",
+			"atom_uri": "urn:zam:atom:01M7HEV5R06GJSX5VVKACDDBWM",
+			"namespace": "zam-academy-deutsch-gymnasium-5",
+			"slug": "d5-aehnliche-woerter",
+			"title": "Gleich und ähnlich klingende Wörter unterscheiden",
+			"domain": "deutsch/sprache",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-aehnliche-woerter",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D0P811C3N5PDQ89R7KGBWR",
+					"type": "soft",
+					"rationale": "This lesson uses the prerequisite skill in a new context."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-gymnasium-5",
+					"topic_code": "sprache",
+					"topic_title": "Sprache und Rechtschreibung"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				}
+			],
+			"practice_items": [
+				{
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Warum schreibt man im Satz ‚Ihr seid pünktlich gekommen‘ das Wort ‚seid‘ mit d am Ende?",
+					"concept": "Es ist die gebeugte Verbform von ‚sein‘ zur Person ‚ihr‘.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Es ist die gebeugte Verbform von ‚sein‘ zur Person ‚ihr‘.",
+							"Es bezeichnet eine Zeitdauer von der Vergangenheit bis heute."
+						],
+						"correct_index": 0
+					},
+					"id": "01M7HEV5R0F9E53DA1230FY61N",
+					"slug": "d5-aehnliche-woerter-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-aehnliche-woerter"
+				},
+				{
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie unterscheidest du ‚viel‘ und ‚fiel‘ sowie ‚wieder‘ und ‚wider‘ sicher beim Schreiben?",
+					"concept": "‚fiel‘ gehört als Verbform zu ‚fallen‘, ‚viel‘ nennt eine Menge; ‚wieder‘ heißt erneut, ‚wider‘ bedeutet gegen.",
+					"sample_solution": "In ‚Der Stift fiel hin‘ prüfe ich die Grundform ‚fallen‘; ‚viel Zeit‘ zeigt die Menge. ‚wieder lesen‘ heißt noch einmal, ‚widersprechen‘ heißt dagegen sprechen.",
+					"id": "01M7HEV5R07RQ01SW50RGZXTJR",
+					"slug": "d5-aehnliche-woerter-recall",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-aehnliche-woerter"
+				}
+			]
+		},
+		{
+			"id": "01M7D0P811PK5T3P87SDDT9QW0",
+			"atom_uri": "urn:zam:atom:01M7D0P811PK5T3P87SDDT9QW0",
+			"namespace": "zam-academy-deutsch-gymnasium-5",
+			"slug": "d5-gross-und-s",
+			"title": "Großschreibung und s-Laute prüfen",
+			"domain": "deutsch/sprache",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-gross-und-s",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-gymnasium-5",
+					"topic_code": "sprache",
+					"topic_title": "Sprache und Rechtschreibung"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				}
+			],
+			"practice_items": [
+				{
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Warum schreibt man „muss“ mit ss und „Fuß“ mit ß?",
+					"concept": "In „muss“ ist u kurz, in „Fuß“ lang.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"In „muss“ ist u kurz, in „Fuß“ lang.",
+							"In beiden Wörtern ist u gleich lang."
+						],
+						"correct_index": 0
+					},
+					"id": "01M7D0P813C6FANVNBADR406TR",
+					"slug": "d5-gross-und-s-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-gross-und-s"
+				},
+				{
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Woran erkennst du die Großschreibung in „beim Lesen“?",
+					"concept": "„Lesen“ wird wie ein Nomen gebraucht; „beim“ bedeutet „bei dem“.",
+					"sample_solution": "Die Artikelprobe zeigt die nominale Verwendung: das Lesen, beim Lesen.",
+					"id": "01M7D0P813Z4JBHP4QGNSNNN94",
+					"slug": "d5-gross-und-s-recall",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-gross-und-s"
+				}
+			]
+		},
+		{
+			"id": "01M7HEV5R0P261C41E83BHS264",
+			"atom_uri": "urn:zam:atom:01M7HEV5R0P261C41E83BHS264",
+			"namespace": "zam-academy-deutsch-gymnasium-5",
+			"slug": "d5-nominalisierung",
+			"title": "Nominalisierungen nach Signalwörtern prüfen",
+			"domain": "deutsch/sprache",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-nominalisierung",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D0P811PK5T3P87SDDT9QW0",
+					"type": "soft",
+					"rationale": "This lesson uses the prerequisite skill in a new context."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-gymnasium-5",
+					"topic_code": "sprache",
+					"topic_title": "Sprache und Rechtschreibung"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				}
+			],
+			"practice_items": [
+				{
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Warum schreibst du ‚Spannendes‘ in der Wortgruppe ‚etwas Spannendes erleben‘ mit großem Anfangsbuchstaben?",
+					"concept": "Das Adjektiv steht nach ‚etwas‘ ohne eigenes Bezugsnomen als Nomen und wird großgeschrieben.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Das Adjektiv steht nach ‚etwas‘ ohne eigenes Bezugsnomen als Nomen und wird großgeschrieben.",
+							"Weil jedes gebeugte Adjektiv am Ende -es immer großgeschrieben wird."
+						],
+						"correct_index": 0
+					},
+					"id": "01M7HEV5R0GKC93X5TXYBBNNM1",
+					"slug": "d5-nominalisierung-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-nominalisierung"
+				},
+				{
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Nenne zwei verschiedene Signale für Nominalisierungen und bilde zu jedem ein kurzes Beispiel.",
+					"concept": "Versteckte Artikel in Präpositionen (‚beim Lesen‘) und Mengenangaben ohne Bezugsnomen dahinter (‚viel Gutes‘ vs. ‚viel gutes Essen‘) zeigen Großschreibung an.",
+					"sample_solution": "Ein versteckter Artikel steht in ‚beim Lesen‘ (= bei dem Lesen) oder ‚zum Üben‘ (= zu dem Üben); nach einer Mengenangabe ohne folgendes Nomen schreibt man ‚etwas Neues‘ oder ‚viel Gutes‘ groß (anders als ‚viel gutes Essen‘).",
+					"id": "01M7HEV5R0WHE4XNR7P28C1WFS",
+					"slug": "d5-nominalisierung-recall",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-nominalisierung"
+				}
+			]
+		},
+		{
+			"id": "01M7D0P811KGMJW0WK9X3N8V81",
+			"atom_uri": "urn:zam:atom:01M7D0P811KGMJW0WK9X3N8V81",
+			"namespace": "zam-academy-deutsch-gymnasium-5",
+			"slug": "d5-woertliche-rede",
+			"title": "Wörtliche Rede richtig setzen",
+			"domain": "deutsch/sprache",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-woertliche-rede",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D0P81197HE3BJAER2MTD6C",
+					"type": "soft",
+					"rationale": "This lesson uses the prerequisite skill in a new context."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-gymnasium-5",
+					"topic_code": "sprache",
+					"topic_title": "Sprache und Rechtschreibung"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb3",
+					"topic_title": "Schreiben"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				}
+			],
+			"practice_items": [
+				{
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welches Zeichen folgt direkt auf einen vorangestellten Redebegleitsatz?",
+					"concept": "Ein Doppelpunkt.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Ein Doppelpunkt.",
+							"Ein Komma."
+						],
+						"correct_index": 0
+					},
+					"id": "01M7D0P813Z8B80G60ARE0YHHQ",
+					"slug": "d5-woertliche-rede-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-woertliche-rede"
+				},
+				{
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie setzt du die Zeichen, wenn ein Begleitsatz mitten in einer Äußerung steht?",
+					"concept": "Schließe die erste Rede, setze ein Komma, schreibe den Begleitsatz, setze ein zweites Komma und öffne die Rede wieder.",
+					"sample_solution": "„Morgen“, sagte Mia, „bringe ich es zurück.“ Beide Kommas stehen außerhalb der Anführungszeichen.",
+					"id": "01M7D0P8132QEB8ZXREXYMZM9B",
+					"slug": "d5-woertliche-rede-recall",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-woertliche-rede"
+				}
+			]
+		},
+		{
+			"id": "01M7D0P8116PTQ7123RMN4NHGD",
+			"atom_uri": "urn:zam:atom:01M7D0P8116PTQ7123RMN4NHGD",
+			"namespace": "zam-academy-deutsch-gymnasium-5",
+			"slug": "d5-kommas",
+			"title": "Kommas in Listen und Sätzen",
+			"domain": "deutsch/sprache",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-kommas",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D0P81197HE3BJAER2MTD6C",
+					"type": "soft",
+					"rationale": "This lesson uses the prerequisite skill in a new context."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-gymnasium-5",
+					"topic_code": "sprache",
+					"topic_title": "Sprache und Rechtschreibung"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				}
+			],
+			"practice_items": [
+				{
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Wo steht das Komma in „Nuri komm bitte zur Tür“?",
+					"concept": "Direkt nach „Nuri“.",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Direkt nach „Nuri“.",
+							"Direkt nach „bitte“."
+						],
+						"correct_index": 0
+					},
+					"id": "01M7D0P813JP3MN9N2XS56MT61",
+					"slug": "d5-kommas-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-kommas"
+				},
+				{
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wo setzt du das Komma zwischen einem Hauptsatz und einem Weil-Nebensatz?",
+					"concept": "Das Komma steht an der Grenze zwischen Haupt- und Nebensatz, auch wenn der Nebensatz vorne steht.",
+					"sample_solution": "„Mira bleibt, weil sie hilft.“ Umgestellt: „Weil sie hilft, bleibt Mira.“ Das Komma grenzt jeweils den vollständigen Weil-Satz ab.",
+					"id": "01M7D0P813S01JWB6946WP0ND6",
+					"slug": "d5-kommas-recall",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-kommas"
+				}
+			]
+		},
+		{
+			"id": "01M7D0P8110F2K74BZ4090MHED",
+			"atom_uri": "urn:zam:atom:01M7D0P8110F2K74BZ4090MHED",
+			"namespace": "zam-academy-deutsch-gymnasium-5",
+			"slug": "d5-silbentrennung",
+			"title": "Wörter am Zeilenende trennen",
+			"domain": "deutsch/sprache",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-silbentrennung",
+			"prerequisites": [
+				{
+					"atom_id": "01M7D0P811G0MPK2WKC5QY48G8",
+					"type": "soft",
+					"rationale": "This lesson uses the prerequisite skill in a new context."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-gymnasium-5",
+					"topic_code": "sprache",
+					"topic_title": "Sprache und Rechtschreibung"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				}
+			],
+			"practice_items": [
+				{
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Wie trennst du „backen“ am Zeilenende?",
+					"concept": "ba-cken",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"ba-cken",
+							"bak-ken"
+						],
+						"correct_index": 0
+					},
+					"id": "01M7D0P8133X8K8NBE08NW1Z6V",
+					"slug": "d5-silbentrennung-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-silbentrennung"
+				},
+				{
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Warum ist „A-bend“ keine zulässige Worttrennung am Zeilenende?",
+					"concept": "Ein einzelner Vokalbuchstabe wird am Zeilenende oder Zeilenanfang nicht allein abgetrennt.",
+					"sample_solution": "Schreibe Abend in die nächste Zeile, statt A allein stehen zu lassen.",
+					"id": "01M7D0P813PKENBQE5EDF0FZEK",
+					"slug": "d5-silbentrennung-recall",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-silbentrennung"
+				}
+			]
+		},
+		{
+			"id": "01M7D0P81169VT9T35E8WJC79M",
+			"atom_uri": "urn:zam:atom:01M7D0P81169VT9T35E8WJC79M",
+			"namespace": "zam-academy-deutsch-gymnasium-5",
+			"slug": "d5-woerterbuch",
+			"title": "Im Wörterbuch gezielt nachschlagen",
+			"domain": "deutsch/sprache",
+			"reduction": "formal",
+			"typical_age_min": 10,
+			"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-woerterbuch",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-gymnasium-5",
+					"topic_code": "sprache",
+					"topic_title": "Sprache und Rechtschreibung"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb2",
+					"topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb3",
+					"topic_title": "Schreiben"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "gymnasium",
+					"grade": 5,
+					"subject": "deutsch",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				}
+			],
+			"practice_items": [
+				{
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Unter welchem Stichwort suchst du „gefunden“?",
+					"concept": "finden",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"finden",
+							"fand"
+						],
+						"correct_index": 0
+					},
+					"id": "01M7D0P813K6A18KZQA8TF8X37",
+					"slug": "d5-woerterbuch-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-woerterbuch"
+				},
+				{
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was bedeutet „Pl.: Interviews“ in einem Wörterbuchartikel?",
+					"concept": "Die Pluralform des Stichworts ist „Interviews“.",
+					"sample_solution": "„Das Interview“ bezeichnet ein Gespräch, „die Interviews“ bezeichnet mehrere.",
+					"id": "01M7D0P813QCABPG82Z84X8NX1",
+					"slug": "d5-woerterbuch-recall",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-gymnasium-5/#lesson=d5-woerterbuch"
+				}
+			]
+		}
+	]
+}

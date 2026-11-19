@@ -1,0 +1,168 @@
+{
+  "schema": 1,
+  "status": "approved",
+  "approved": "2026-11-19",
+  "source": "Thomas explicitly approved the listed history transfers in the Codex chat for Academy PR #158 on 2026-11-19: “Freigabe für die Kartenübernahmen erteilt”",
+  "source_repository": "zam-os/zam",
+  "source_commit": "2057e1c35a5e768eb0c59cb74c3700c0101f67a2",
+  "sources": [
+    {
+      "file": "tests/fixtures/de-by-realschule-7-physik-mechanik-bewegung-geschwindigkeit-kvt.json",
+      "tile_id": "de-by:realschule-7-physik-mechanik-bewegung-geschwindigkeit",
+      "version": "2026.08.1",
+      "sha256": "daddb001002a75a11cdb65c1bc5f13dc2094be04732cd0ab754beaf6790f811c"
+    },
+    {
+      "file": "tests/fixtures/de-by-realschule-7-physik-waermelehre-temperatur-ausdehnung-kvt.json",
+      "tile_id": "de-by:realschule-7-physik-waermelehre-temperatur-ausdehnung",
+      "version": "2026.08.1",
+      "sha256": "bd538c33e2901bec9fc26c796c5fe84f9d14342f029c311822430f8deaa49e70"
+    }
+  ],
+  "rows": [
+    {
+      "de_by_cell": "de-by:realschule-7-physik-mechanik-bewegung-geschwindigkeit",
+      "de_by_id": "01K4P7V0000000000000000J01",
+      "de_by_question": "Warum kann man in der Physik von einer 'Ruhe' oder 'Bewegung' eines Körpers nur in Bezug auf ein bestimmtes Bezugssystem sprechen?",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Reference-frame retrieval has no exact Grade 7 lesson successor in this package; keep the original evidence active."
+    },
+    {
+      "de_by_cell": "de-by:realschule-7-physik-mechanik-bewegung-geschwindigkeit",
+      "de_by_id": "01K4P7V0000000000000000J02",
+      "de_by_question": "Definiere den physikalischen Begriff der Bewegung (Ortsveränderung im Laufe der Zeit bezüglich eines Bezugssystems), unterscheide Translationsbewegung (Fortbewegung) von Rotationsbewegung (Drehung um eine Achse) und beschreibe die Bahnlinie (Trajektorie) eines Ventils an einem rollenden Fahrradreifen für a) den Fahrradfahrer und b) einen am Straßenrand stehenden Beobachter (Zykloide).",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "The old synthesis combines reference frames, translation, rotation and the valve cycloid. No new item retains that entire retrieval."
+    },
+    {
+      "de_by_cell": "de-by:realschule-7-physik-mechanik-bewegung-geschwindigkeit",
+      "de_by_id": "01K4P7V0000000000000000J03",
+      "de_by_question": "Mit welchem Umrechnungsfaktor rechnet man eine Geschwindigkeit von der SI-Einheit Meter pro Sekunde (m/s) in Kilometer pro Stunde (km/h) um?",
+      "category": "A",
+      "academy_slug": "ph7-me-bewegung-umrechnen",
+      "action": "replace",
+      "reason": "Same atomic retrieval: multiply the speed value in m/s by 3.6 to obtain km/h."
+    },
+    {
+      "de_by_cell": "de-by:realschule-7-physik-mechanik-bewegung-geschwindigkeit",
+      "de_by_id": "01K4P7V0000000000000000J04",
+      "de_by_question": "Definiere die physikalische Größe Geschwindigkeit v = s / t (Einheit m/s), leite den Umrechnungsfaktor 3,6 aus 1 km = 1000 m und 1 h = 3600 s her und berechne: a) die Geschwindigkeit eines Sprinters in km/h, der 100 m in t = 10,0 s läuft, b) den Bremsweg in Metern, den ein Pkw bei v = 108 km/h während 1 Sekunde Reaktionszeit (ungebremster Reaktionsweg) zurücklegt.",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "The prompt combines speed definition, unit derivation, a sprint calculation and a reaction-distance calculation; it is not identical to a single successor."
+    },
+    {
+      "de_by_cell": "de-by:realschule-7-physik-mechanik-bewegung-geschwindigkeit",
+      "de_by_id": "01K4P7V0000000000000000J05",
+      "de_by_question": "Welche geometrische Bedeutung hat die Steigung des Graphen in einem Weg-Zeit-Diagramm (s-t-Diagramm)?",
+      "category": "A",
+      "academy_slug": "ph7-me-bewegung-steigung",
+      "action": "replace",
+      "reason": "Same atomic retrieval: the slope of the time-distance graph represents speed."
+    },
+    {
+      "de_by_cell": "de-by:realschule-7-physik-mechanik-bewegung-geschwindigkeit",
+      "de_by_id": "01K4P7V0000000000000000J06",
+      "de_by_question": "Charakterisiere die gleichförmige geradlinige Bewegung (konstante Geschwindigkeit, Proportionalität s ~ t, s(t) = v · t), beschreibe das Aussehen des Graphen im s-t-Diagramm (Ursprungsgerade) und im v-t-Diagramm (waagrechte Parallele zur Zeitachse) und erkläre, wie man den zurückgelegten Weg s aus der Fläche unter dem Graphen im v-t-Diagramm ermittelt.",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "The prompt includes velocity-time graphs and area under the graph, beyond this package's Grade 7 time-distance work. No mastery transfer from partial overlap."
+    },
+    {
+      "de_by_cell": "de-by:realschule-7-physik-mechanik-bewegung-geschwindigkeit",
+      "de_by_id": "01K4P7V0000000000000000J07",
+      "de_by_question": "Welche Geschwindigkeit zeigt der Tachometer in einem fahrenden Auto zu jedem Zeitpunkt an?",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "The tachometer/instantaneous-speed retrieval has no identical successor; later mechanics covers the distinction explicitly."
+    },
+    {
+      "de_by_cell": "de-by:realschule-7-physik-mechanik-bewegung-geschwindigkeit",
+      "de_by_id": "01K4P7V0000000000000000J08",
+      "de_by_question": "Unterscheide Momentangeschwindigkeit (Geschwindigkeit zu einem infinitesimal kurzen Zeitpunkt t_0) von der Durchschnittsgeschwindigkeit v_quer = s_gesamt / t_gesamt und berechne die Durchschnittsgeschwindigkeit einer Zugfahrt, bei der die ersten 120 km in 1 Stunde und die folgenden 80 km in 30 Minuten zurückgelegt werden.",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "The combined instantaneous/average-speed synthesis and multi-stage train calculation is not retained as one item."
+    },
+    {
+      "de_by_cell": "de-by:realschule-7-physik-waermelehre-temperatur-ausdehnung",
+      "de_by_id": "01K4P7W0000000000000000J01",
+      "de_by_question": "Was geschieht mit den Teilchen (Atomen/Molekülen) eines Stoffes am absoluten Nullpunkt der Temperatur bei T = 0 K (-273,15 °C)?",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Absolute zero is outside current Grade 7; the historical assertion of all motion ceasing also needs separate correction. No successor or retirement is authorised."
+    },
+    {
+      "de_by_cell": "de-by:realschule-7-physik-waermelehre-temperatur-ausdehnung",
+      "de_by_id": "01K4P7W0000000000000000J02",
+      "de_by_question": "Erkläre den physikalischen Begriff der Temperatur als mikroskopisches Maß für die mittlere kinetische Energie (Geschwindigkeit) der ungerichteten Teilchenbewegung, vergleiche die Fixpunkte der Celsius-Skala (Schmelz- und Siedepunkt von Wasser bei 0 °C und 100 °C) mit der absoluten Kelvin-Skala (T in K = vartheta in °C + 273,15) und rechne eine Körpertemperatur von 37 °C sowie flüssigen Stickstoff (-196 °C) in Kelvin um.",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Temperature scales, Kelvin conversion and thermal kinetic-energy interpretation belong to the later thermal-physics scope, not this Grade 7 cell."
+    },
+    {
+      "de_by_cell": "de-by:realschule-7-physik-waermelehre-temperatur-ausdehnung",
+      "de_by_id": "01K4P7W0000000000000000J03",
+      "de_by_question": "In welche Richtung krümmt sich ein Bimetallstreifen (fest miteinander verbundene Schichten aus Zink und Eisen) beim Erhitzen, wenn sich Zink stärker ausdehnt als Eisen?",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Bimetal curvature is taught in the later thermal-expansion scope; no same-retrieval Grade 7 successor exists."
+    },
+    {
+      "de_by_cell": "de-by:realschule-7-physik-waermelehre-temperatur-ausdehnung",
+      "de_by_id": "01K4P7W0000000000000000J04",
+      "de_by_question": "Erkläre die thermische Längen- und Volumenausdehnung von Festkörpern und Flüssigkeiten mithilfe des Teilchenmodells (größerer Schwingungsraum bei Erwärmung), beschreibe den Aufbau und die Funktion eines Bimetallstreifens und nenne drei technische Anwendungen im Alltag (Thermostat/Bügeleisen, Brandschalter, Zeigertheomometer) sowie Gegenmaßnahmen im Brücken- und Schienenbau (Dehnungsfugen).",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "The combined expansion/bimetal/applications question belongs to thermal physics and has no whole-prompt successor here."
+    },
+    {
+      "de_by_cell": "de-by:realschule-7-physik-waermelehre-temperatur-ausdehnung",
+      "de_by_id": "01K4P7W0000000000000000J05",
+      "de_by_question": "Bei welcher Temperatur besitzt flüssiges Wasser unter Normaldruck seine maximale Dichte (kleinstes spezifisches Volumen)?",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Water's density maximum belongs to the later thermal-physics scope. The historical exact-temperature wording needs separate correction rather than a guessed identity match."
+    },
+    {
+      "de_by_cell": "de-by:realschule-7-physik-waermelehre-temperatur-ausdehnung",
+      "de_by_id": "01K4P7W0000000000000000J06",
+      "de_by_question": "Beschreibe die Dichteanomalie des Wassers im Temperaturintervall zwischen 0 °C und 4 °C (Dichtemaximum bei 4 °C, hexagonales Hohlraumgitter im Eis mit Dichte 0,917 g/cm³) und erkläre die lebenswichtigen ökologischen Konsequenzen für die Überwinterung von Wassertieren in tiefen Seen während strenger Frostperioden.",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Water anomaly, ice structure and overwintering in lakes are outside the current Grade 7 scope; particle-model overlap cannot transfer this mastery."
+    },
+    {
+      "de_by_cell": "de-by:realschule-7-physik-waermelehre-temperatur-ausdehnung",
+      "de_by_id": "01K4P7W0000000000000000J07",
+      "de_by_question": "Welche Art der Wärmeübertragung benötigt als einzige KEINERLEI materielle Teilchen und funktioniert daher auch durch das vollkommene Vakuum des Weltalls (z. B. Sonnenwärme auf der Erde)?",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Heat-transfer mechanisms are not the same retrieval as visible-light propagation or dispersion in Grade 7."
+    },
+    {
+      "de_by_cell": "de-by:realschule-7-physik-waermelehre-temperatur-ausdehnung",
+      "de_by_id": "01K4P7W0000000000000000J08",
+      "de_by_question": "Vergleiche die drei Mechanismen des Wärmetransports (Wärmeleitung, Wärmeströmung / Konvektion, Wärmestrahlung) bezüglich des Transportmechanismus und materieller Voraussetzungen und erkläre anhand dieser drei Prinzipien den Aufbau und die Funktionsweise einer Isolierkanne (Thermoskanne).",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "The full three-mechanism heat-transfer and vacuum-flask synthesis is later thermal physics, with no identical Grade 7 successor."
+    }
+  ]
+}

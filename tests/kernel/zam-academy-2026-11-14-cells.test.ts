@@ -40,7 +40,6 @@ interface Mapping {
 }
 
 const ACTIVE_KEEP_CELLS = new Set([
-  "de-by:realschule-6-geographie-deutschland-bayern-raum",
   "de-by:realschule-7-biologie-wirbeltiere-oekologie",
 ]);
 

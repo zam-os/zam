@@ -8,7 +8,7 @@ tags:
   - tokens
   - cards
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/token-card-model.md"
-timestamp: 2026-11-15T20:00:00Z
+timestamp: 2026-11-19T06:00:00Z
 ---
 
 ZAM's published central-learning model separates five objects:
@@ -728,6 +728,15 @@ Academy cells total), and three superseded Gymnasium 5 school cells retired to
 - **Englisch 5 Mittelschule** (`2026.11.1`, 36 lessons, 108 items) and
   **Natur und Technik 6 Mittelschule** (`2026.11.2`, preview, 38 lessons,
   114 items), each with an empty `replaces-de-by.json`.
+
+Release 0.66.0 bundles 83 Academy cells. Ten courses join from Gymnasium
+Grades 5 and 6 and Realschule Grades 6 and 7. Fourteen superseded school
+cells move to legacy fixtures and leave fresh curriculum discovery. The
+nine approved mappings carry 33 matching practice-item histories to their
+Academy successors when learners take the new cells. Existing keep-active
+cards retain their IDs and history. German Grade 6 Gymnasium has no
+matching legacy school cell. The Grade 7 German syntax, English and
+Realschule geography school cells stay available at their grade.
 
 Different cells may reuse the same atom and some of the same practice items.
 Installation status therefore checks every declared atom and item id, while
