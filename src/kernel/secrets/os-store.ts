@@ -41,6 +41,7 @@ export type OsCommandRunner = (
   file: string,
   args: string[],
   input?: string,
+  env?: NodeJS.ProcessEnv,
 ) => Promise<{ code: number; stdout: string; stderr: string }>;
 
 const SERVICE = "ZAM";
@@ -63,11 +64,11 @@ const OS_COMMAND_TIMEOUT_MS = 20_000;
  */
 export const osCommandRunner =
   (timeoutMs = OS_COMMAND_TIMEOUT_MS): OsCommandRunner =>
-  (file, args, input) =>
+  (file, args, input, env) =>
     new Promise((resolve) => {
       let child: ReturnType<typeof spawn>;
       try {
-        child = spawn(file, args, { stdio: ["pipe", "pipe", "pipe"] });
+        child = spawn(file, args, { stdio: ["pipe", "pipe", "pipe"], env });
       } catch {
         resolve({ code: 127, stdout: "", stderr: "" });
         return;
@@ -213,12 +214,30 @@ const DPAPI_UNPROTECT =
   "try{[Console]::Out.Write([Runtime.InteropServices.Marshal]::PtrToStringBSTR($p))}" +
   "finally{[Runtime.InteropServices.Marshal]::ZeroFreeBSTR($p)}";
 
+/**
+ * The environment for Windows PowerShell 5.1, which runs the DPAPI scripts.
+ * PowerShell 7 puts its own module folder first on PSModulePath; 5.1 then
+ * cannot load Microsoft.PowerShell.Security, so ConvertTo-SecureString is not
+ * found and every read exits 1. Without the variable 5.1 uses its own modules,
+ * so it is removed for these calls and nothing else changes.
+ */
+export function windowsPowerShellEnv(
+  source: NodeJS.ProcessEnv = process.env,
+): NodeJS.ProcessEnv {
+  const env: NodeJS.ProcessEnv = {};
+  for (const [key, value] of Object.entries(source)) {
+    if (key.toUpperCase() !== "PSMODULEPATH") env[key] = value;
+  }
+  return env;
+}
+
 function dpapiStore(run: OsCommandRunner, dir: string): OsSecretStore {
   const ps = (script: string, input: string) =>
     run(
       "powershell.exe",
       ["-NoProfile", "-NonInteractive", "-Command", script],
       input,
+      windowsPowerShellEnv(),
     );
   // A colon in a Windows file name names an NTFS stream; `~` cannot occur
   // in a secret name, so the mapping stays one to one.

@@ -12,6 +12,7 @@ import {
   type OsCommandRunner,
   osCommandRunner,
 } from "../../src/kernel/index.js";
+import { windowsPowerShellEnv } from "../../src/kernel/secrets/os-store.js";
 
 const SECRET = "sk-Fake5ecret+/=value";
 
@@ -27,9 +28,14 @@ function recorder(
     stderr?: string;
   },
 ) {
-  const calls: Array<{ file: string; args: string[]; input: string }> = [];
-  const run: OsCommandRunner = async (file, args, input = "") => {
-    calls.push({ file, args, input });
+  const calls: Array<{
+    file: string;
+    args: string[];
+    input: string;
+    env?: NodeJS.ProcessEnv;
+  }> = [];
+  const run: OsCommandRunner = async (file, args, input = "", env) => {
+    calls.push({ file, args, input, env });
     const res = answer(file, args, input);
     return {
       code: res.code,
@@ -204,6 +210,36 @@ describe("OS secret stores keep secrets off the command line", () => {
     expect(read?.get("credential:b")).toBe(SECRET);
     expect(read?.get("credential:missing")).toBeNull();
     expect(calls[calls.length - 1].args.join(" ")).not.toContain(SECRET);
+  });
+
+  it("Windows DPAPI: PowerShell 5.1 starts without the PowerShell 7 module path", async () => {
+    // Inherited from a PowerShell 7 shell, this path hides
+    // ConvertTo-SecureString from 5.1 and every DPAPI read then fails.
+    const saved = process.env.PSModulePath;
+    process.env.PSModulePath =
+      "C:\\Program Files\\PowerShell\\7\\Modules;C:\\WINDOWS\\system32\\WindowsPowerShell\\v1.0\\Modules";
+    try {
+      const { run, calls } = recorder(() => ({ code: 0 }));
+      const store = createOsSecretStore("win32", run, { dpapiDir: dir });
+      expect(await store?.available()).toBe(true);
+      expect(calls).toHaveLength(1);
+      const keys = Object.keys(calls[0].env ?? {}).filter(
+        (key) => key.toUpperCase() === "PSMODULEPATH",
+      );
+      expect(keys).toEqual([]);
+    } finally {
+      if (saved === undefined) delete process.env.PSModulePath;
+      else process.env.PSModulePath = saved;
+    }
+  });
+
+  it("the PowerShell environment keeps everything except PSModulePath", () => {
+    const env = windowsPowerShellEnv({
+      Path: "C:\\Windows",
+      PSModulePath: "C:\\Program Files\\PowerShell\\7\\Modules",
+      USERPROFILE: "C:\\Users\\example",
+    });
+    expect(env).toEqual({ Path: "C:\\Windows", USERPROFILE: "C:\\Users\\example" });
   });
 
   it("refuses names that could escape the store's own namespace", async () => {
