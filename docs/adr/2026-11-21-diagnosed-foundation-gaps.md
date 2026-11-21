@@ -1,6 +1,6 @@
 # Diagnosed Foundation Gaps: The Evaluator Names a Missing Prerequisite, the Learner Pulls It Forward
 
-**Status:** Proposed\
+**Status:** Accepted — Decision 7 implemented in zam-os/zam#495\
 **Date:** 2026-11-21\
 **Decider:** Thomas (project owner)\
 **Issue:** zam-os/zam#437\
@@ -218,7 +218,13 @@ once the foundation is in place. Today it never comes back outside the CLI
 
 This is a bug fix with its own value, and it goes into its own PR before the
 feature, with a test that rates through `executeReviewAction` alone. That PR
-is zam-os/zam#495.
+is zam-os/zam#495, merged 2026-11-21. It applies the same release to
+confirmed observation ratings (`applySessionSynthesis`) and to `zam card
+update`, which now rates, blocks and releases in one transaction
+(`applyDirectRating`). On PostgreSQL, two concurrent ratings of different
+foundations of one blocked card could each miss the other's success. Every
+rating therefore first takes a per-learner, transaction-scoped lock
+(`lockLearnerRatings` in `src/kernel/scheduler/blocker.ts`).
 
 ## Consequences
 
@@ -250,7 +256,7 @@ is zam-os/zam#495.
 ## Implementation outline
 
 1. Fix PR: `unblockReady` after successful ratings in `executeReviewAction`,
-   with a test (Decision 7). This is zam-os/zam#495.
+   with a test (Decision 7). Done in zam-os/zam#495.
 2. Kernel: `foundation-gap.ts` with `foundationGapOffer` and
    `pullForwardFoundation`. Tests cover the edge re-check, a blocked or
    detached card, the atom-day rule, and a **new** foundation card that is
