@@ -92,3 +92,4 @@ Status: `Draft` → `Proposed` → `Accepted` → `Implemented` (or `Partially i
 | [2026-10-14b](2026-10-14b-card-formulas-images-and-spoken-text.md) | Card Text Beyond Plain Strings: Formulas, Images and Spoken Text | Partially implemented — built; owner checks, the math font and SVG rasterising open |
 | [2026-10-19](2026-10-19-zam-academy-cells.md) | ZAM Academy: Cells from academy.zam-os.org, One-Click Enrolment, Links Back to the Lesson | Implemented — PR #419; manual app checks open |
 | [2026-11-15](2026-11-15-guided-work-subtasks-and-review.md) | Guided Work: Subtasks with an Owner, Evidence from the Result, and a Colleague's Review | Accepted |
+| [2026-11-21](2026-11-21-diagnosed-foundation-gaps.md) | Diagnosed Foundation Gaps: The Evaluator Names a Missing Prerequisite, the Learner Pulls It Forward | Accepted — Decision 7 implemented in #495 |
