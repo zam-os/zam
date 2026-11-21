@@ -34,6 +34,8 @@ const RS7_CELL_IDS = [
   "de-by:realschule-7-franzoesisch-starter-grammatik-verben",
 ];
 const ACADEMY_RS7_IDS = [
+  "zam-academy:biologie-realschule-7",
+  "zam-academy:deutsch-realschule-7",
   "zam-academy:informatik-realschule-8",
   "zam-academy:mathematik-realschule-7",
   "zam-academy:physik-realschule-7",
@@ -55,7 +57,7 @@ describe("Realschule Bayern 7 Curriculum Cells (Einführungs- und Fundamentstufe
     rmSync(tempDir, { recursive: true, force: true });
   });
 
-  it("lists all remaining Realschule 7 school cells and their Academy successors", () => {
+  it("lists all remaining Realschule 7 school cells and the Academy cells", () => {
     const cells = listBundledCells();
     expect(cells.length).toBeGreaterThanOrEqual(96);
 

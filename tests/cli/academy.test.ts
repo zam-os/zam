@@ -236,6 +236,7 @@ describe("the learner's academy actions (ADR 2026-10-19 D4, D5)", () => {
       "zam-academy:biologie-realschule-10",
       "zam-academy:biologie-realschule-5",
       "zam-academy:biologie-realschule-6",
+      "zam-academy:biologie-realschule-7",
       "zam-academy:biologie-realschule-8",
       "zam-academy:bwr-realschule-10",
       "zam-academy:bwr-realschule-9",
@@ -253,17 +254,20 @@ describe("the learner's academy actions (ADR 2026-10-19 D4, D5)", () => {
       "zam-academy:deutsch-realschule-10",
       "zam-academy:deutsch-realschule-5",
       "zam-academy:deutsch-realschule-6",
+      "zam-academy:deutsch-realschule-7",
       "zam-academy:deutsch-realschule-8",
       "zam-academy:deutsch-realschule-9",
       "zam-academy:englisch-gymnasium-5",
       "zam-academy:englisch-gymnasium-6",
       "zam-academy:englisch-mittelschule-5",
+      "zam-academy:englisch-mittelschule-6",
       "zam-academy:englisch-realschule-10",
       "zam-academy:englisch-realschule-5",
       "zam-academy:englisch-realschule-6",
       "zam-academy:englisch-realschule-8",
       "zam-academy:englisch-realschule-9",
       "zam-academy:franzoesisch-gymnasium-5",
+      "zam-academy:franzoesisch-gymnasium-6",
       "zam-academy:franzoesisch-realschule-10",
       "zam-academy:franzoesisch-realschule-8",
       "zam-academy:franzoesisch-realschule-9",
@@ -280,6 +284,7 @@ describe("the learner's academy actions (ADR 2026-10-19 D4, D5)", () => {
       "zam-academy:gpg-mittelschule-5",
       "zam-academy:hsu-grundschule-4",
       "zam-academy:informatik-gymnasium-6",
+      "zam-academy:informatik-mittelschule-6",
       "zam-academy:informatik-realschule-10",
       "zam-academy:informatik-realschule-8",
       "zam-academy:mathematik-grundschule-4",
@@ -301,14 +306,19 @@ describe("the learner's academy actions (ADR 2026-10-19 D4, D5)", () => {
       "zam-academy:mathematik-realschule-7",
       "zam-academy:mathematik-realschule-8",
       "zam-academy:mathematik-realschule-9",
+      "zam-academy:nt-gymnasium-7",
       "zam-academy:nt-mittelschule-5",
       "zam-academy:nt-mittelschule-6",
+      "zam-academy:nt-mittelschule-7",
       "zam-academy:nur-katalog",
       "zam-academy:physik-gymnasium-11",
+      "zam-academy:physik-gymnasium-7",
       "zam-academy:physik-realschule-10",
       "zam-academy:physik-realschule-7",
       "zam-academy:physik-realschule-8",
       "zam-academy:physik-realschule-9",
+      "zam-academy:politik-mittelschule-6",
+      "zam-academy:politik-mittelschule-7",
       "zam-academy:politik-realschule-10",
       "zam-academy:sql",
       "zam-academy:uml",
@@ -444,7 +454,7 @@ describe("the learner's academy actions (ADR 2026-10-19 D4, D5)", () => {
     ).toContain("zam-academy:nur-katalog");
   });
 
-  it("marks a preview from the catalog or from the bundle, offline too", async () => {
+  it("marks catalog previews online and offline without marking regular bundled cells", async () => {
     const grade4 = "zam-academy:hsu-grundschule-4";
     const academy = fakeAcademy([catalogOnly(), UML], {}, [
       "zam-academy:nur-katalog",
@@ -457,8 +467,7 @@ describe("the learner's academy actions (ADR 2026-10-19 D4, D5)", () => {
       cells.find((cell) => cell.id === id)?.preview;
     expect(preview(list.cells, "zam-academy:nur-katalog")).toBe(true);
     expect(preview(list.cells, "zam-academy:uml")).toBe(false);
-    // This catalog does not list it, but the release bundled it as a preview.
-    expect(preview(list.cells, grade4)).toBe(true);
+    expect(preview(list.cells, grade4)).toBe(false);
 
     // The cached catalog still knows the cell only the catalog has.
     const cached = await academyListHandler(db, {
@@ -467,7 +476,7 @@ describe("the learner's academy actions (ADR 2026-10-19 D4, D5)", () => {
     });
     expect(cached.offline).toBe(true);
     expect(preview(cached.cells, "zam-academy:nur-katalog")).toBe(true);
-    expect(preview(cached.cells, grade4)).toBe(true);
+    expect(preview(cached.cells, grade4)).toBe(false);
   });
 
   it("answers from the cache, or the bundled cells, when offline", async () => {
@@ -528,6 +537,7 @@ describe("the learner's academy actions (ADR 2026-10-19 D4, D5)", () => {
       "zam-academy:biologie-realschule-10",
       "zam-academy:biologie-realschule-5",
       "zam-academy:biologie-realschule-6",
+      "zam-academy:biologie-realschule-7",
       "zam-academy:biologie-realschule-8",
       "zam-academy:bwr-realschule-10",
       "zam-academy:bwr-realschule-9",
@@ -545,17 +555,20 @@ describe("the learner's academy actions (ADR 2026-10-19 D4, D5)", () => {
       "zam-academy:deutsch-realschule-10",
       "zam-academy:deutsch-realschule-5",
       "zam-academy:deutsch-realschule-6",
+      "zam-academy:deutsch-realschule-7",
       "zam-academy:deutsch-realschule-8",
       "zam-academy:deutsch-realschule-9",
       "zam-academy:englisch-gymnasium-5",
       "zam-academy:englisch-gymnasium-6",
       "zam-academy:englisch-mittelschule-5",
+      "zam-academy:englisch-mittelschule-6",
       "zam-academy:englisch-realschule-10",
       "zam-academy:englisch-realschule-5",
       "zam-academy:englisch-realschule-6",
       "zam-academy:englisch-realschule-8",
       "zam-academy:englisch-realschule-9",
       "zam-academy:franzoesisch-gymnasium-5",
+      "zam-academy:franzoesisch-gymnasium-6",
       "zam-academy:franzoesisch-realschule-10",
       "zam-academy:franzoesisch-realschule-8",
       "zam-academy:franzoesisch-realschule-9",
@@ -572,6 +585,7 @@ describe("the learner's academy actions (ADR 2026-10-19 D4, D5)", () => {
       "zam-academy:gpg-mittelschule-5",
       "zam-academy:hsu-grundschule-4",
       "zam-academy:informatik-gymnasium-6",
+      "zam-academy:informatik-mittelschule-6",
       "zam-academy:informatik-realschule-10",
       "zam-academy:informatik-realschule-8",
       "zam-academy:mathematik-grundschule-4",
@@ -593,13 +607,18 @@ describe("the learner's academy actions (ADR 2026-10-19 D4, D5)", () => {
       "zam-academy:mathematik-realschule-7",
       "zam-academy:mathematik-realschule-8",
       "zam-academy:mathematik-realschule-9",
+      "zam-academy:nt-gymnasium-7",
       "zam-academy:nt-mittelschule-5",
       "zam-academy:nt-mittelschule-6",
+      "zam-academy:nt-mittelschule-7",
       "zam-academy:physik-gymnasium-11",
+      "zam-academy:physik-gymnasium-7",
       "zam-academy:physik-realschule-10",
       "zam-academy:physik-realschule-7",
       "zam-academy:physik-realschule-8",
       "zam-academy:physik-realschule-9",
+      "zam-academy:politik-mittelschule-6",
+      "zam-academy:politik-mittelschule-7",
       "zam-academy:politik-realschule-10",
       "zam-academy:sql",
       "zam-academy:uml",

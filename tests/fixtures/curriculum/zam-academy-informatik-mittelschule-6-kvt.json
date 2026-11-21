@@ -1,0 +1,1355 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "zam-academy:informatik-mittelschule-6",
+  "version": "2026.11.1",
+  "title": "Informatik 6 Mittelschule (ZAM Academy)",
+  "description": "LehrplanPLUS Informatik 6 (Mittelschule Bayern, LB 1–2): 12 Lektionen in 2 Etappen, interaktive Werkstätten, zweistufige Aufgaben und 36 verknüpfte Abrufkarten.",
+  "publisher": "ZAM Academy",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/mittelschule/6/informatik",
+      "label": "ISB · Informatik 6, Mittelschule",
+      "checked": "2026-11-20"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01M7VTG6G204FVZY998D82CCS2",
+      "atom_uri": "urn:zam:atom:01M7VTG6G204FVZY998D82CCS2",
+      "namespace": "zam-academy-informatik-mittelschule-6",
+      "slug": "ms6-suchstrategien",
+      "title": "Verfeinerte Suchstrategien",
+      "domain": "informatik/recherche",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/informatik-mittelschule-6/#lesson=ms6-suchstrategien",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-mittelschule-6",
+          "topic_code": "stage-1-informationsaustausch",
+          "topic_title": "Digitaler Informationsaustausch"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "informatik",
+          "topic_code": "lb1",
+          "topic_title": "Digitaler Informationsaustausch",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7VTG6GE42KMPH3K7RJ347KZ",
+          "slug": "ms6-suchstrategien-wortfolge",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wozu setzt man bei einer Suchmaschine Anführungszeichen um mehrere Wörter?",
+          "concept": "Sie findet nur Seiten mit exakt dieser Wortfolge",
+          "source_link": "https://academy.zam-os.org/informatik-mittelschule-6/#lesson=ms6-suchstrategien",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie findet nur Seiten mit exakt dieser Wortfolge",
+              "Sie markiert Begriffe nur als besonders wichtige Überschrift"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Sie markiert Begriffe nur als besonders wichtige Überschrift",
+              "reason": "Anführungszeichen gewichten Wörter nicht bloß stärker, sondern erzwingen genau die angegebene zusammenhängende Wortfolge."
+            },
+            {
+              "text": "Sie durchsucht ausschließlich PDF-Dateien auf Schulservern",
+              "reason": "PDF-Dateien wählt man mit dem Operator filetype:pdf aus, nicht mit Anführungszeichen."
+            }
+          ]
+        },
+        {
+          "id": "01M7VTG6GFTRAHAJ7NR167XSQT",
+          "slug": "ms6-suchstrategien-ausschluss",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie schließt du in einer Suchanfrage Treffer zum Thema ‚Shop‘ richtig aus?",
+          "concept": "Mit dem Operator - direkt ohne Leerzeichen vor dem Wort",
+          "source_link": "https://academy.zam-os.org/informatik-mittelschule-6/#lesson=ms6-suchstrategien",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Mit dem Operator - direkt ohne Leerzeichen vor dem Wort",
+              "Mit einem Bindestrich und Leerzeichen vor dem Störwort"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Mit einem Bindestrich und Leerzeichen vor dem Störwort",
+              "reason": "Steht zwischen - und dem Wort ein Leerzeichen, schließt die Suchmaschine das Wort nicht zuverlässig aus."
+            },
+            {
+              "text": "Mit dem Zusatzwort ‚ohne‘ direkt vor dem Störwort",
+              "reason": "Suchmaschinen werten ‚ohne‘ meist als normales Textwort und nicht als technischen Ausschlussoperator wie -shop."
+            }
+          ]
+        },
+        {
+          "id": "01M7VTG6GGDTJA3850KQQNHX2V",
+          "slug": "ms6-suchstrategien-kombination",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre, wie du für ein Referat über den Biber in Bayern mithilfe von drei Suchoperatoren unpassende Seiten mit ‚Bettwäsche‘ oder ‚Shop‘ und veraltete Blogs herausfilterst.",
+          "concept": "Exakte Wortfolge, Ausschlussoperator - und Domain- bzw. Zeitraumfilter gezielt kombinieren.",
+          "source_link": "https://academy.zam-os.org/informatik-mittelschule-6/#lesson=ms6-suchstrategien",
+          "sample_solution": "Zuerst fasst man den Kernbegriff als exakte Wortfolge in Anführungszeichen (\"biber in bayern\"). Danach blendet der Ausschlussoperator ohne Leerzeichen Seiten mit den unerwünschten Begriffen aus (-bettwäsche -shop). Schließlich grenzt site:bayern.de die Herkunft auf verlässliche Landesstellen ein und der Zeitraumfilter sortiert veraltete Beiträge aus.",
+          "choice_distractors": [
+            {
+              "text": "Die Frage als vollständigen Satz mit Fragezeichen eingeben und sofort das erste Ergebnis wählen.",
+              "reason": "Füllwörter verwässern die Trefferliste, und die obersten Suchtreffer sind oft bezahlte Anzeigen statt fachlicher Belege."
+            },
+            {
+              "text": "Zwischen Bindestrich und Ausschlusswort ein Leerzeichen lassen und auf site:-Filter verzichten.",
+              "reason": "Ein Leerzeichen nach dem - macht den Ausschluss unwirksam, und ohne Domainfilter erscheinen zahlreiche beliebige Webseiten."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M7VTG6G39RXPP0WM9V9KCXF6",
+      "atom_uri": "urn:zam:atom:01M7VTG6G39RXPP0WM9V9KCXF6",
+      "namespace": "zam-academy-informatik-mittelschule-6",
+      "slug": "ms6-informationsqualitaet",
+      "title": "Informationen kritisch prüfen und Medienwirkung einschätzen",
+      "domain": "informatik/medienkritik",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/informatik-mittelschule-6/#lesson=ms6-informationsqualitaet",
+      "prerequisites": [
+        {
+          "atom_id": "01M7VTG6G204FVZY998D82CCS2",
+          "type": "soft",
+          "rationale": "Baut fachlich auf „Verfeinerte Suchstrategien“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-mittelschule-6",
+          "topic_code": "stage-1-informationsaustausch",
+          "topic_title": "Digitaler Informationsaustausch"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "informatik",
+          "topic_code": "lb1",
+          "topic_title": "Digitaler Informationsaustausch",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7VTG6GHDCMR5QT932NZRKQ0",
+          "slug": "ms6-informationsqualitaet-impressum",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welcher Bestandteil einer Webseite zeigt als Erstes, wer für den Inhalt verantwortlich ist?",
+          "concept": "Das vollständige Impressum mit Namen und Kontaktdaten",
+          "source_link": "https://academy.zam-os.org/informatik-mittelschule-6/#lesson=ms6-informationsqualitaet",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Das vollständige Impressum mit Namen und Kontaktdaten",
+              "Die Anzahl positiver Kommentare unter dem Artikel"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die Anzahl positiver Kommentare unter dem Artikel",
+              "reason": "Kommentare und Zustimmung zeigen keine redaktionelle Verantwortung und können leicht manipuliert sein."
+            },
+            {
+              "text": "Ein professionelles Layout mit großem Logo oben links",
+              "reason": "Auch anonyme oder werbliche Seiten können seriös aussehen; rechtliche Verantwortung nennt nur das Impressum."
+            }
+          ]
+        },
+        {
+          "id": "01M7VTG6GJWJVNECY55XZGKZZC",
+          "slug": "ms6-informationsqualitaet-pruefung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie prüfst du eine überraschende Behauptung von einer unbekannten Webseite verlässlich nach?",
+          "concept": "In mindestens einer zweiten unabhängigen Fachquelle nachschlagen",
+          "source_link": "https://academy.zam-os.org/informatik-mittelschule-6/#lesson=ms6-informationsqualitaet",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "In mindestens einer zweiten unabhängigen Fachquelle nachschlagen",
+              "Im selben Blog weitere Artikel derselben Autorin lesen"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Im selben Blog weitere Artikel derselben Autorin lesen",
+              "reason": "Weitere Texte derselben Quelle sind nicht unabhängig und wiederholen mögliche Fehler oder Vorurteile."
+            },
+            {
+              "text": "Prüfen, wie oft der Link in sozialen Netzwerken geteilt wurde",
+              "reason": "Hohe Teilungs- oder Klickzahlen messen Aufmerksamkeit und ersetzen keine inhaltliche Gegenprüfung."
+            }
+          ]
+        },
+        {
+          "id": "01M7VTG6GKJA7GQEH6YSZD2G54",
+          "slug": "ms6-informationsqualitaet-bewertung",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Nenne die wichtigsten Kriterien zur Beurteilung von Online-Informationen und erkläre, warum auch die Medienwirkung beachtet werden muss.",
+          "concept": "Informationsgehalt, Vertrauenswürdigkeit, Aktualität und Zweitquelle prüfen; emotionale Effekte durchschauen.",
+          "source_link": "https://academy.zam-os.org/informatik-mittelschule-6/#lesson=ms6-informationsqualitaet",
+          "sample_solution": "Bei Online-Material prüft man Informationsgehalt (belegte Fakten statt Parolen), Vertrauenswürdigkeit (Impressum, Fachkompetenz, keine versteckte Verkaufsabsicht), Aktualität (Erstellungsdatum) sowie eine unabhängige Zweitquelle. Gleichzeitig muss man die Medienwirkung durchschauen, weil schrille Überschriften, dramatische Musik oder aus dem Kontext gerissene Bilder Gefühle wecken und schnelles Urteilen verleiten.",
+          "choice_distractors": [
+            {
+              "text": "Eine übersichtliche Gestaltung und viele Klicks belegen bereits die fachliche Zuverlässigkeit einer Quelle.",
+              "reason": "Aufmachung und Reichweite sagen nichts über Faktengehalt, Absicht oder fachliche Vertrauenswürdigkeit aus."
+            },
+            {
+              "text": "Die Suche bricht nach dem ersten Suchmaschinentreffer ab, weil dort stets geprüfte Quellen stehen.",
+              "reason": "Suchmaschinen ordnen nach Stichwortpassung und Beliebtheit, prüfen aber weder Richtigkeit noch Quellenqualität."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M7VTG6G4N5MJPA5V5D1G5T0D",
+      "atom_uri": "urn:zam:atom:01M7VTG6G4N5MJPA5V5D1G5T0D",
+      "namespace": "zam-academy-informatik-mittelschule-6",
+      "slug": "ms6-urheberrecht-lizenzen",
+      "title": "Urheberrecht und Lizenzmodelle (Creative Commons)",
+      "domain": "informatik/urheberrecht",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/informatik-mittelschule-6/#lesson=ms6-urheberrecht-lizenzen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-mittelschule-6",
+          "topic_code": "stage-1-informationsaustausch",
+          "topic_title": "Digitaler Informationsaustausch"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "informatik",
+          "topic_code": "lb1",
+          "topic_title": "Digitaler Informationsaustausch",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7VTG6GM9BSBK0QM3RC06CC0",
+          "slug": "ms6-urheberrecht-lizenzen-entstehung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Ab wann steht ein selbst aufgenommenes Foto oder ein Text unter dem Schutz des Urheberrechts?",
+          "concept": "Sofort automatisch bei der Erstellung auch ohne ©-Zeichen",
+          "source_link": "https://academy.zam-os.org/informatik-mittelschule-6/#lesson=ms6-urheberrecht-lizenzen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sofort automatisch bei der Erstellung auch ohne ©-Zeichen",
+              "Erst nach einer Anmeldung oder sobald ein ©-Symbol angebracht ist"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Erst nach einer Anmeldung oder sobald ein ©-Symbol angebracht ist",
+              "reason": "In Deutschland entsteht das Urheberrecht ohne Anmeldung und ohne Pflicht zum ©-Vermerk sofort mit dem Werk."
+            },
+            {
+              "text": "Nur wenn das Werk beruflich auf einer Firmenwebseite veröffentlicht wird",
+              "reason": "Auch private Fotos, Schülerzeichnungen und Texte genießen ab ihrer Erstellung vollen Urheberrechtsschutz."
+            }
+          ]
+        },
+        {
+          "id": "01M7VTG6GN5WXR26QSFF0M1RE2",
+          "slug": "ms6-urheberrecht-lizenzen-kuerzel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was verbietet das Creative-Commons-Kürzel ‚ND‘ in ‚CC BY-ND‘?",
+          "concept": "Bearbeitete Fassungen des Werks weiterzugeben",
+          "source_link": "https://academy.zam-os.org/informatik-mittelschule-6/#lesson=ms6-urheberrecht-lizenzen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Bearbeitete Fassungen des Werks weiterzugeben",
+              "Das unveränderte Werk mit Quellenangabe zu nutzen"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Das unveränderte Werk mit Quellenangabe zu nutzen",
+              "reason": "Die unveränderte Weitergabe mit Namensnennung erlaubt CC BY-ND; untersagt ist das Teilen oder Veröffentlichen bearbeiteter Fassungen."
+            },
+            {
+              "text": "Das Werk privat auf dem eigenen Gerät zuzuschneiden",
+              "reason": "Für den eigenen rein privaten Gebrauch ohne Teilen sind Bearbeitungen unter CC BY-ND erlaubt; erst die Weitergabe ist untersagt."
+            }
+          ]
+        },
+        {
+          "id": "01M7VTG6GP4T443PFDBRT8Z3KT",
+          "slug": "ms6-urheberrecht-lizenzen-quelle",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre, warum ‚Quelle: Google‘ unter einem Internetbild falsch ist und welche Angaben eine vollständige Quellenangabe bei CC-BY-Bildern braucht.",
+          "concept": "Suchmaschinen sind keine Urheber; nötig sind Urheber, Titel, genaue URL, Abrufdatum und Lizenz.",
+          "source_link": "https://academy.zam-os.org/informatik-mittelschule-6/#lesson=ms6-urheberrecht-lizenzen",
+          "sample_solution": "Eine Suchmaschine wie Google erstellt keine eigenen Fotos, sondern verweist nur auf fremde Webseiten – sie ersetzt also weder Nutzungsrecht noch Fundort. Zu einer vollständigen Quellenangabe gehören der Name des Urhebers bzw. Rechteinhabers, der Titel des Werks, die genaue Internetadresse (URL), das Abrufdatum sowie die genaue Lizenz (z. B. CC BY).",
+          "choice_distractors": [
+            {
+              "text": "Als Quellenangabe reicht der Name der Suchmaschine, wenn das Bild verkleinert eingefügt wird.",
+              "reason": "Ohne Urheber, genaue Adresse und Lizenz lässt sich die rechtmäßige Nutzung nicht belegen; Verkleinern ändert am Urheberrecht nichts."
+            },
+            {
+              "text": "Frei über eine Suche sichtbare Bilder gelten als gemeinfrei und brauchen keinen Urhebernachweis.",
+              "reason": "Sichtbarkeit im Browser macht ein Werk nicht gemeinfrei; CC BY verlangt ausdrücklich die Namensnennung."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M7VTG6G5MW610CCHQDQMVWK6",
+      "atom_uri": "urn:zam:atom:01M7VTG6G5MW610CCHQDQMVWK6",
+      "namespace": "zam-academy-informatik-mittelschule-6",
+      "slug": "ms6-personenbezogene-daten",
+      "title": "Personenbezogene Daten erkennen und schützen",
+      "domain": "informatik/datenschutz",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/informatik-mittelschule-6/#lesson=ms6-personenbezogene-daten",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-mittelschule-6",
+          "topic_code": "stage-1-informationsaustausch",
+          "topic_title": "Digitaler Informationsaustausch"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "informatik",
+          "topic_code": "lb1",
+          "topic_title": "Digitaler Informationsaustausch",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7VTG6GQC7ZP9H90NYKJ3AZP",
+          "slug": "ms6-personenbezogene-daten-begriff",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wodurch zeichnen sich personenbezogene Daten in Abgrenzung zu allgemeinen Sachangaben aus?",
+          "concept": "Sie beziehen sich auf eine bestimmte oder erkennbare Person",
+          "source_link": "https://academy.zam-os.org/informatik-mittelschule-6/#lesson=ms6-personenbezogene-daten",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie beziehen sich auf eine bestimmte oder erkennbare Person",
+              "Sie umfassen ausschließlich vollständige Vor- und Nachnamen"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Sie umfassen ausschließlich vollständige Vor- und Nachnamen",
+              "reason": "Auch Telefonnummern, Adressen, Fotos, Standortdaten oder eindeutige Umschreibungen ohne Namen sind personenbezogen."
+            },
+            {
+              "text": "Sie dürfen bei privaten Konten jederzeit ohne Einwilligung geteilt werden",
+              "reason": "Personenbezogene Daten stehen unter besonderem Schutz und dürfen gerade nicht unberechtigt weitergegeben werden."
+            }
+          ]
+        },
+        {
+          "id": "01M7VTG6GR6QCR5G9YVD6PZN3Z",
+          "slug": "ms6-personenbezogene-daten-bildrecht",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was gilt nach dem Recht am eigenen Bild vor dem Teilen eines Fotos mit Mitschülern?",
+          "concept": "Vorher die Einwilligung der abgebildeten Personen einholen",
+          "source_link": "https://academy.zam-os.org/informatik-mittelschule-6/#lesson=ms6-personenbezogene-daten",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Vorher die Einwilligung der abgebildeten Personen einholen",
+              "Das Foto teilen, sobald man selbst auch darauf zu sehen ist"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Das Foto teilen, sobald man selbst auch darauf zu sehen ist",
+              "reason": "Dass man ein Foto selbst gemacht hat oder mit abgebildet ist, ersetzt niemals die Einwilligung aller anderen Personen."
+            },
+            {
+              "text": "Einfach teilen, solange unter dem Bild keine echten Namen stehen",
+              "reason": "Erkennbare Gesichter unterliegen auch ohne Namensangabe dem Recht am eigenen Bild."
+            }
+          ]
+        },
+        {
+          "id": "01M7VTG6GSCSTQY398YYMWTCZ0",
+          "slug": "ms6-personenbezogene-daten-alltag",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Beschreibe drei konkrete Schutzmaßnahmen für deine personenbezogenen Daten bei Apps und am Schulcomputer.",
+          "concept": "Datensparsamkeit mit Spitznamen, knappe App-Rechte und Abmelden bzw. Sperren.",
+          "source_link": "https://academy.zam-os.org/informatik-mittelschule-6/#lesson=ms6-personenbezogene-daten",
+          "sample_solution": "Erstens folgt man der Datensparsamkeit und trägt bei Spielen oder Foren möglichst nur Spitznamen statt echter Adressen oder Telefonnummern ein. Zweitens entzieht man Apps überflüssige Berechtigungen wie Standort oder Kontakte. Drittens sperrt man sein Gerät per PIN und meldet sich am Schulcomputer nach jeder Stunde sauber ab.",
+          "choice_distractors": [
+            {
+              "text": "Alle App-Rechte freigeben und am Schulrechner nach der Stunde einfach nur den Monitor ausschalten.",
+              "reason": "Unnötige App-Zugriffe sammeln Privatdaten, und durch Abschalten des Monitors bleibt das Benutzerkonto für Nachfolgende offen."
+            },
+            {
+              "text": "Bei Anmeldungen auf unbekannten Seiten die echte Telefonnummer von Mitschülern eintragen.",
+              "reason": "Fremde personenbezogene Daten ungefragt einzutragen verletzt den Datenschutz anderer statt die eigene Privatsphäre sauber zu schützen."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M7VTG6G6N6R4ZB9JBSCEFD7A",
+      "atom_uri": "urn:zam:atom:01M7VTG6G6N6R4ZB9JBSCEFD7A",
+      "namespace": "zam-academy-informatik-mittelschule-6",
+      "slug": "ms6-passwoerter-virenschutz",
+      "title": "Sichere Passwörter und Schutz vor Schadsoftware",
+      "domain": "informatik/sicherheit",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/informatik-mittelschule-6/#lesson=ms6-passwoerter-virenschutz",
+      "prerequisites": [
+        {
+          "atom_id": "01M7VTG6G5MW610CCHQDQMVWK6",
+          "type": "soft",
+          "rationale": "Baut fachlich auf „Personenbezogene Daten erkennen und schützen“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-mittelschule-6",
+          "topic_code": "stage-1-informationsaustausch",
+          "topic_title": "Digitaler Informationsaustausch"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "informatik",
+          "topic_code": "lb1",
+          "topic_title": "Digitaler Informationsaustausch",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7VTG6GT4B9YYX5EHN6QZA5J",
+          "slug": "ms6-passwoerter-virenschutz-kriterien",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Eigenschaften machen ein Passwort laut BSI im Alltag wirklich stark?",
+          "concept": "Lang, nicht erratbar und einzigartig je Dienst",
+          "source_link": "https://academy.zam-os.org/informatik-mittelschule-6/#lesson=ms6-passwoerter-virenschutz",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Lang, nicht erratbar und einzigartig je Dienst",
+              "Kurz mit Name, Geburtsjahr und einem Ausrufezeichen"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Kurz mit Name, Geburtsjahr und einem Ausrufezeichen",
+              "reason": "Kurze Passwörter mit persönlichen Daten werden trotz Sonderzeichen rasch erraten oder durchprobiert; entscheidend sind Länge, Unvorhersehbarkeit und Einzigartigkeit."
+            },
+            {
+              "text": "Dasselbe komplexe Passwort gleichmäßig für alle Konten",
+              "reason": "Wird ein einziger Dienst gehackt, gefährdet ein mehrfach verwendetes Passwort sofort sämtliche weiteren Konten."
+            }
+          ]
+        },
+        {
+          "id": "01M7VTG6GVP8HWHF5PRS19NTHP",
+          "slug": "ms6-passwoerter-virenschutz-updates",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Warum reichen weder Virenschutz noch Passwort allein aus, wenn Sicherheitsupdates fehlen?",
+          "concept": "Updates schließen Sicherheitslücken in Programmen und System",
+          "source_link": "https://academy.zam-os.org/informatik-mittelschule-6/#lesson=ms6-passwoerter-virenschutz",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Updates schließen Sicherheitslücken in Programmen und System",
+              "Ein aktueller Virenscanner schließt alte Lücken automatisch mit"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Ein aktueller Virenscanner schließt alte Lücken automatisch mit",
+              "reason": "Ein Virenschutzprogramm erkennt bekannte Schädlinge, behebt aber keine Fehler und Lücken im Betriebssystem oder Browser."
+            },
+            {
+              "text": "Ohne Updates melden Webseiten alle gespeicherten Passwörter ab",
+              "reason": "Gespeicherte Passwörter bleiben erhalten; die Gefahr fehlender Updates sind bekannte Einfallstore in veralteten Programmen."
+            }
+          ]
+        },
+        {
+          "id": "01M7VTG6GWTDQDB4T22HT3Z98K",
+          "slug": "ms6-passwoerter-virenschutz-merksatz",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre anhand von Merksatz und langer Passphrase, worauf es bei einem starken Passwort nach BSI ankommt und was zum Geräteschutz gehört.",
+          "concept": "Länge, Nicht-Erratbarkeit per Merksatz oder Passphrase und Einzigartigkeit; dazu Virenschutz und Updates.",
+          "source_link": "https://academy.zam-os.org/informatik-mittelschule-6/#lesson=ms6-passwoerter-virenschutz",
+          "sample_solution": "Entscheidend sind große Länge, Nicht-Erratbarkeit (keine Namen, Geburtsdaten oder einfache Wörterbuchwörter) und ein einzigartiges Passwort für jeden Dienst. Laut BSI schützt sowohl ein komplexes Merksatz-Passwort ab 12 Zeichen als auch ebenso stark eine lange Passphrase aus 20 bis 25 Zeichen mit schon zwei Zeichenarten. Ergänzend sichern ein aktuelles Virenschutzprogramm, zeitnahe Updates und Vorsicht bei unbekannten Anhängen das Gerät.",
+          "choice_distractors": [
+            {
+              "text": "Ein siebenstelliges Passwort mit allen vier Zeichenarten ist bereits sicher und darf für mehrere Konten gelten.",
+              "reason": "Zu geringe Länge und Mehrfachverwendung machen ein Konto trotz Sonderzeichen leicht angreifbar und gefährden Nachbarkonten."
+            },
+            {
+              "text": "Eine Passphrase ohne Ziffern oder Sonderzeichen bietet selbst bei über zwanzig Zeichen keinerlei Schutz vor Erraten.",
+              "reason": "Gerade große Länge kombiniert mit unzusammenhängenden Wörtern (z. B. 20 bis 25 Zeichen aus Groß-/Kleinbuchstaben) schützt sehr wirksam."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M7VTG6G7388N6TV8HG21H0ZN",
+      "atom_uri": "urn:zam:atom:01M7VTG6G7388N6TV8HG21H0ZN",
+      "namespace": "zam-academy-informatik-mittelschule-6",
+      "slug": "ms6-datensicherung",
+      "title": "Datenverlust vermeiden: Bedeutung von Datensicherung",
+      "domain": "informatik/datensicherung",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/informatik-mittelschule-6/#lesson=ms6-datensicherung",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-mittelschule-6",
+          "topic_code": "stage-1-informationsaustausch",
+          "topic_title": "Digitaler Informationsaustausch"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "informatik",
+          "topic_code": "lb1",
+          "topic_title": "Digitaler Informationsaustausch",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7VTG6GXSJ6TWXFRDM5J8JNF",
+          "slug": "ms6-datensicherung-medium",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Warum genügt eine Kopie in einem zweiten Ordner derselben Festplatte nicht als echte Datensicherung?",
+          "concept": "Bei Defekt der Festplatte fallen beide Kopien zugleich aus",
+          "source_link": "https://academy.zam-os.org/informatik-mittelschule-6/#lesson=ms6-datensicherung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Bei Defekt der Festplatte fallen beide Kopien zugleich aus",
+              "Zwei gleichartige Kopien auf derselben Platte stören das Laden"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Zwei gleichartige Kopien auf derselben Platte stören das Laden",
+              "reason": "Beide Ordner bleiben im Normalbetrieb lesbar; das eigentliche Problem ist die fehlende technische Trennung beim Ausfall."
+            },
+            {
+              "text": "Ein zweiter Ordner belegt einfach unnötig viel Platz auf dem Stick",
+              "reason": "Der Speicherbedarf verdoppelt sich zwar, doch das echte Risiko ist der gemeinsame Verlust beider Kopien bei Hardwaredefekt."
+            }
+          ]
+        },
+        {
+          "id": "01M7VTG6GY3HGZH8G5YWMXY8ZA",
+          "slug": "ms6-datensicherung-abstand",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was legt der Abstand zwischen zwei Datensicherungen (z. B. täglich vs. einmal im Jahr) fest?",
+          "concept": "Wie viel neue Arbeit nach einem Störfall höchstens fehlt",
+          "source_link": "https://academy.zam-os.org/informatik-mittelschule-6/#lesson=ms6-datensicherung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Wie viel neue Arbeit nach einem Störfall höchstens fehlt",
+              "Ob geöffnete Dokumente auf demselben Rechner automatisch mitkopiert werden"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Ob geöffnete Dokumente auf demselben Rechner automatisch mitkopiert werden",
+              "reason": "Ob live gesichert wird oder von Hand, trennt Programme nicht vom Backup-Zeitplan – der Abstand bestimmt den maximalen Datenverlust."
+            },
+            {
+              "text": "Wie viele frühere Dateiversionen auf dem Laptop verbleiben dürfen",
+              "reason": "Der Sicherungsabstand bestimmt den Zeitraum seit dem letzten Backup, also wie viele neue Änderungen im Ernstfall verloren wären."
+            }
+          ]
+        },
+        {
+          "id": "01M7VTG6GZ59PXQMBXKM80991A",
+          "slug": "ms6-datensicherung-konzept",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre Ursachen für Datenverlust und beschreibe die Kriterien einer verlässlichen Datensicherung im Schulalltag.",
+          "concept": "Defekt, Löschfehler, Diebstahl oder Schadsoftware; regelmäßig auf getrenntem Speicher an zweitem Ort sichern.",
+          "source_link": "https://academy.zam-os.org/informatik-mittelschule-6/#lesson=ms6-datensicherung",
+          "sample_solution": "Daten gehen durch Festplattendefekte, versehentliches Löschen, Verlust oder Diebstahl des Geräts sowie durch verschlüsselnde Schadsoftware verloren. Eine verlässliche Datensicherung kopiert wichtige Dateien regelmäßig (z. B. wöchentlich) auf ein getrenntes Speichermedium wie einen USB-Stick und möglichst an einen zweiten Ort wie eine geschützte Schulcloud, inklusive gelegentlicher Wiederherstellungsprobe.",
+          "choice_distractors": [
+            {
+              "text": "Eine Datei einmalig in denselben Ordner umbenennen und den USB-Stick nie mehr abstecken.",
+              "reason": "Dasselbe Gerät fällt komplett aus, und dauerhaft eingesteckte Sticks können von Schadsoftware mit verschlüsselt werden."
+            },
+            {
+              "text": "Nur einmal zum Schuljahresbeginn sichern und alle späteren Änderungen weglassen.",
+              "reason": "Ohne regelmäßige Sicherung gehen wochen- oder monatelange neue Arbeitsergebnisse beim Schaden verloren."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M7VTG6G8R07G8H1Q39V4EC2D",
+      "atom_uri": "urn:zam:atom:01M7VTG6G8R07G8H1Q39V4EC2D",
+      "namespace": "zam-academy-informatik-mittelschule-6",
+      "slug": "ms6-ablaeufe-sequenz",
+      "title": "Abläufe zerlegen: Anweisung, Sequenz und Struktogramm",
+      "domain": "informatik/programmierung",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/informatik-mittelschule-6/#lesson=ms6-ablaeufe-sequenz",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-mittelschule-6",
+          "topic_code": "stage-2-programmieren",
+          "topic_title": "Programmieren"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "informatik",
+          "topic_code": "lb2",
+          "topic_title": "Programmieren",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7VTG6H02BNG9JA6A0Y4P9N8",
+          "slug": "ms6-ablaeufe-sequenz-anweisung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Eigenschaft muss jede einzelne Anweisung für eine Spielfigur oder Maschine besitzen?",
+          "concept": "Sie muss eindeutig und direkt ausführbar sein",
+          "source_link": "https://academy.zam-os.org/informatik-mittelschule-6/#lesson=ms6-ablaeufe-sequenz",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie muss eindeutig und direkt ausführbar sein",
+              "Sie darf im Einzelfall auch grob geschätzt bleiben"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Sie darf im Einzelfall auch grob geschätzt bleiben",
+              "reason": "Computer können unklare Vorgaben wie ‚ein bisschen weiter‘ nicht zuverlässig ausführen."
+            },
+            {
+              "text": "Sie muss immer aus einer ganzen Schleife bestehen",
+              "reason": "Eine einzelne Anweisung ist ein kleinster Einzelschritt wie ‚vor gehen‘, noch keine Kontrollstruktur."
+            }
+          ]
+        },
+        {
+          "id": "01M7VTG6H1NH7XRSBJM2TQXTWG",
+          "slug": "ms6-ablaeufe-sequenz-struktogramm",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "In welcher Richtung wird eine Sequenz im Nassi-Shneiderman-Struktogramm abgearbeitet?",
+          "concept": "Schritt für Schritt von oben nach unten",
+          "source_link": "https://academy.zam-os.org/informatik-mittelschule-6/#lesson=ms6-ablaeufe-sequenz",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Schritt für Schritt von oben nach unten",
+              "Von unten nach oben beginnend beim letzten Kasten"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Von unten nach oben beginnend beim letzten Kasten",
+              "reason": "Im Struktogramm steht die erste auszuführende Anweisung ganz oben, nicht unten."
+            },
+            {
+              "text": "Spaltenweise nebeneinander von links nach rechts",
+              "reason": "Spalten nebeneinander zeigen Alternativen (wahr/falsch); aufeinanderfolgende Sequenzschritte stehen untereinander."
+            }
+          ]
+        },
+        {
+          "id": "01M7VTG6H2CPZF11CZC25EMP4J",
+          "slug": "ms6-ablaeufe-sequenz-reihenfolge",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre anhand einer Figurenbewegung, warum beim Zerlegen in eine Sequenz nicht nur die richtigen Befehle, sondern auch ihre Reihenfolge zählt.",
+          "concept": "Anweisungen laufen streng nacheinander ab; Vertauschen ändert Position oder Blickrichtung völlig.",
+          "source_link": "https://academy.zam-os.org/informatik-mittelschule-6/#lesson=ms6-ablaeufe-sequenz",
+          "sample_solution": "Steht Karo auf A5 mit Blick nach Norden, führt ‚rechts drehen · vor · vor‘ nach Osten auf Feld C5. Vertauscht man die Befehle zu ‚vor · vor · rechts drehen‘, fährt die Figur zuerst nach Norden auf A3 und dreht erst dort – sie landet auf einem ganz anderen Feld (oder prallt gegen ein Hindernis). Deshalb plant ein Struktogramm jeden Teilschritt in der exakten Reihenfolge.",
+          "choice_distractors": [
+            {
+              "text": "Die Umgebung sortiert alle Bausteine vor dem Start automatisch in die zielführende Reihenfolge.",
+              "reason": "Der Rechner verändert die Reihenfolge einer Sequenz niemals eigenmächtig, sondern führt genau Schritt für Schritt aus."
+            },
+            {
+              "text": "Drehungen wirken sich erst ganz am Ende des gesamten Struktogramms auf das Ziel aus.",
+              "reason": "Jede Drehung verändert sofort die Blickrichtung für alle nachfolgenden ‚vor‘-Schritte."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M7VTG6G9XSDW6MNSPF5DD7G6",
+      "atom_uri": "urn:zam:atom:01M7VTG6G9XSDW6MNSPF5DD7G6",
+      "namespace": "zam-academy-informatik-mittelschule-6",
+      "slug": "ms6-bedingungen",
+      "title": "Bedingungen formulieren und prüfen",
+      "domain": "informatik/programmierung",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/informatik-mittelschule-6/#lesson=ms6-bedingungen",
+      "prerequisites": [
+        {
+          "atom_id": "01M7VTG6G8R07G8H1Q39V4EC2D",
+          "type": "soft",
+          "rationale": "Baut fachlich auf „Abläufe zerlegen: Anweisung, Sequenz und Struktogramm“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-mittelschule-6",
+          "topic_code": "stage-2-programmieren",
+          "topic_title": "Programmieren"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "informatik",
+          "topic_code": "lb2",
+          "topic_title": "Programmieren",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7VTG6H3KGKV95T7YQP2EN88",
+          "slug": "ms6-bedingungen-wahrheitswert",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche zwei Ergebnisse kann die Prüfung einer Bedingung in der Informatik nur liefern?",
+          "concept": "Eindeutig entweder wahr oder falsch",
+          "source_link": "https://academy.zam-os.org/informatik-mittelschule-6/#lesson=ms6-bedingungen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eindeutig entweder wahr oder falsch",
+              "Manchmal vielleicht oder teilweise wahr"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Manchmal vielleicht oder teilweise wahr",
+              "reason": "Eine Informatik-Bedingung lässt keine Zwischenstufen zu, sondern entscheidet eindeutig zwischen wahr und falsch."
+            },
+            {
+              "text": "Immer eine beliebige ganze Schrittzahl",
+              "reason": "Zahlen können in einem Vergleich stecken, das Prüfergebnis der Bedingung ist aber stets wahr oder falsch."
+            }
+          ]
+        },
+        {
+          "id": "01M7VTG6H4GZSMBGGC7PWAE9H7",
+          "slug": "ms6-bedingungen-verneinung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welchen Wert hat ‚nicht (punkte < 10)‘, wenn genau 10 Punkte erreicht sind?",
+          "concept": "Wahr, weil 10 < 10 falsch ist und ‚nicht‘ dies umkehrt",
+          "source_link": "https://academy.zam-os.org/informatik-mittelschule-6/#lesson=ms6-bedingungen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Wahr, weil 10 < 10 falsch ist und ‚nicht‘ dies umkehrt",
+              "Falsch, weil 10 genau auf dem Grenzwert liegt"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Falsch, weil 10 genau auf dem Grenzwert liegt",
+              "reason": "10 < 10 ist falsch; die Verneinung ‚nicht‘ dreht falsch gerade in wahr um."
+            },
+            {
+              "text": "Unbestimmt, solange die Punktzahl nicht größer als 10 ist",
+              "reason": "Jeder Vergleich an der Grenze liefert sofort eindeutig ‚wahr‘ oder ‚falsch‘."
+            }
+          ]
+        },
+        {
+          "id": "01M7VTG6H5AWS3PY397GVAPB0A",
+          "slug": "ms6-bedingungen-grenzfall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre den Unterschied zwischen ‚wert > 15‘ und ‚wert ≥ 15‘ sowie die Wirkung der Verneinung ‚nicht‘ anhand konkreter Zahlen.",
+          "concept": "‚>‘ schließt 15 aus, ‚≥‘ schließt 15 ein; ‚nicht‘ kehrt wahr und falsch um.",
+          "source_link": "https://academy.zam-os.org/informatik-mittelschule-6/#lesson=ms6-bedingungen",
+          "sample_solution": "Bei ‚wert > 15‘ muss der Wert echt größer als 15 sein: Für wert = 15 ergibt der Vergleich ‚falsch‘, erst ab 16 wird er ‚wahr‘. Bei ‚wert ≥ 15‘ reicht schon Gleichheit, sodass wert = 15 bereits ‚wahr‘ ergibt. Stellt man ‚nicht (...)‘ davor, wird aus ‚wahr‘ immer ‚falsch‘ und aus ‚falsch‘ immer ‚wahr‘.",
+          "choice_distractors": [
+            {
+              "text": "Beide Vergleichszeichen prüfen dieselben Zahlen und ‚nicht‘ überspringt die ganze Zeile.",
+              "reason": "Gerade beim Grenzwert 15 unterscheiden sich ‚>‘ und ‚≥‘, und ‚nicht‘ kehrt den Wahrheitswert um."
+            },
+            {
+              "text": "‚> 15‘ schließt die 15 ein, während ‚≥ 15‘ erst bei der nächsthöheren Zahl beginnt.",
+              "reason": "Der Querstrich unter ‚≥‘ steht gerade für ‚oder gleich‘, während ‚>‘ Gleichheit ausschließt."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M7VTG6GABMDQ4WV8KA9NM0QM",
+      "atom_uri": "urn:zam:atom:01M7VTG6GABMDQ4WV8KA9NM0QM",
+      "namespace": "zam-academy-informatik-mittelschule-6",
+      "slug": "ms6-alternative",
+      "title": "Verzweigung (Alternative): wenn–dann und wenn–dann–sonst",
+      "domain": "informatik/programmierung",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/informatik-mittelschule-6/#lesson=ms6-alternative",
+      "prerequisites": [
+        {
+          "atom_id": "01M7VTG6G9XSDW6MNSPF5DD7G6",
+          "type": "soft",
+          "rationale": "Baut fachlich auf „Bedingungen formulieren und prüfen“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-mittelschule-6",
+          "topic_code": "stage-2-programmieren",
+          "topic_title": "Programmieren"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "informatik",
+          "topic_code": "lb2",
+          "topic_title": "Programmieren",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7VTG6H68MW59C6JEBF4PVZH",
+          "slug": "ms6-alternative-einseitig",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was geschieht bei einer einseitigen Alternative (wenn–dann), wenn die Bedingung falsch ist?",
+          "concept": "Der ‚dann‘-Zweig wird übersprungen und es geht danach weiter",
+          "source_link": "https://academy.zam-os.org/informatik-mittelschule-6/#lesson=ms6-alternative",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der ‚dann‘-Zweig wird übersprungen und es geht danach weiter",
+              "Das Programm hält an dieser Stelle vollständig an"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Das Programm hält an dieser Stelle vollständig an",
+              "reason": "Ein falsches Ergebnis beendet nicht das Programm, sondern überspringt nur den ‚dann‘-Block."
+            },
+            {
+              "text": "Die Bedingung wird solange wiederholt, bis sie wahr wird",
+              "reason": "Eine Verzweigung prüft einmal; mehrmaliges Prüfen ist erst Aufgabe einer bedingten Wiederholung."
+            }
+          ]
+        },
+        {
+          "id": "01M7VTG6H7QCBNREV23S0A25CH",
+          "slug": "ms6-alternative-zweiseitig",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wann wählst du im Struktogramm eine zweiseitige Alternative statt einer einseitigen?",
+          "concept": "Wenn sowohl bei ‚wahr‘ als auch bei ‚falsch‘ etwas passieren soll",
+          "source_link": "https://academy.zam-os.org/informatik-mittelschule-6/#lesson=ms6-alternative",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Wenn sowohl bei ‚wahr‘ als auch bei ‚falsch‘ etwas passieren soll",
+              "Wenn bei ‚falsch‘ gar nichts Besonderes ausgeführt werden soll"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Wenn bei ‚falsch‘ gar nichts Besonderes ausgeführt werden soll",
+              "reason": "Wenn bei ‚falsch‘ nichts getan werden soll, genügt gerade die einseitige Alternative ohne sonst-Zweig."
+            },
+            {
+              "text": "Wenn beide Zweige in jedem Durchlauf nacheinander laufen müssen",
+              "reason": "Auch bei einer zweiseitigen Alternative wird immer genau einer der beiden Zweige betreten."
+            }
+          ]
+        },
+        {
+          "id": "01M7VTG6H8EVP02197NH0S3M7M",
+          "slug": "ms6-alternative-vergleich",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Beschreibe Aufbau und Ablauf einer zweiseitigen Alternative im Struktogramm anhand ‚wenn vorne Hindernis dann rechts drehen sonst vor gehen‘.",
+          "concept": "Dreiecks-Kopf teilt in links wahr und rechts falsch; pro Prüfung läuft exakt ein Zweig.",
+          "source_link": "https://academy.zam-os.org/informatik-mittelschule-6/#lesson=ms6-alternative",
+          "sample_solution": "Im Struktogramm steht oben ein Kasten mit zwei schrägen Linien zur Bedingung ‚vorne Hindernis?‘. Links unter ‚wahr‘ steht ‚rechts drehen‘, rechts unter ‚falsch‘ steht ‚vor gehen‘. Zu Beginn prüft das Programm die Bedingung: Steht ein Stein vor der Figur, dreht sie nur rechts; ist der Weg frei, geht sie nur vor – danach setzt der Ablauf unter dem Kasten fort.",
+          "choice_distractors": [
+            {
+              "text": "Zuerst wird unten ‚vor gehen‘ ausgeführt und danach erst oben die Bedingung gelesen.",
+              "reason": "Das Programm prüft immer zuerst die Bedingung im Kopf, bevor einer der beiden Zweige ausgeführt wird."
+            },
+            {
+              "text": "Steht kein Stein vor der Figur, führt sie sowohl ‚rechts drehen‘ als auch ‚vor gehen‘ aus.",
+              "reason": "Bei ‚falsch‘ wird der linke ‚wahr‘-Zweig vollständig übersprungen und nur der rechte ‚sonst‘-Zweig ausgeführt."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M7VTG6GBYNG111PYZSQ0XY81",
+      "atom_uri": "urn:zam:atom:01M7VTG6GBYNG111PYZSQ0XY81",
+      "namespace": "zam-academy-informatik-mittelschule-6",
+      "slug": "ms6-bedingte-wiederholung",
+      "title": "Bedingte Wiederholung (solange …) und Endlosschleifen",
+      "domain": "informatik/programmierung",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/informatik-mittelschule-6/#lesson=ms6-bedingte-wiederholung",
+      "prerequisites": [
+        {
+          "atom_id": "01M7VTG6GABMDQ4WV8KA9NM0QM",
+          "type": "soft",
+          "rationale": "Baut fachlich auf „Verzweigung (Alternative): wenn–dann und wenn–dann–sonst“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-mittelschule-6",
+          "topic_code": "stage-2-programmieren",
+          "topic_title": "Programmieren"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "informatik",
+          "topic_code": "lb2",
+          "topic_title": "Programmieren",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7VTG6H99THXVQQ00ZSFV5X8",
+          "slug": "ms6-bedingte-wiederholung-nullmal",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Warum kann der Körper einer bedingten Wiederholung ‚solange …‘ auch 0-mal durchlaufen werden?",
+          "concept": "Die Bedingung wird bereits vor dem ersten Durchlauf geprüft",
+          "source_link": "https://academy.zam-os.org/informatik-mittelschule-6/#lesson=ms6-bedingte-wiederholung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Bedingung wird bereits vor dem ersten Durchlauf geprüft",
+              "Die Bedingung wird erst nach dem ersten Durchlauf geprüft"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die Bedingung wird erst nach dem ersten Durchlauf geprüft",
+              "reason": "Würde sie erst danach geprüft, liefe der Körper immer mindestens einmal; die kopfgesteuerte Schleife prüft vorab."
+            },
+            {
+              "text": "Jede Schleife überspringt am Programmstart ihren ersten Durchlauf",
+              "reason": "Bei wahrer Startbedingung startet sie sofort – 0-mal läuft sie nur, wenn die Bedingung direkt falsch ist."
+            }
+          ]
+        },
+        {
+          "id": "01M7VTG6HAT14PNFTN6Q775VEV",
+          "slug": "ms6-bedingte-wiederholung-endlos",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wodurch entsteht in einer bedingten Wiederholung ‚solange vorne frei‘ eine Endlosschleife?",
+          "concept": "Die Anweisungen im Körper lassen die Bedingung immer wahr",
+          "source_link": "https://academy.zam-os.org/informatik-mittelschule-6/#lesson=ms6-bedingte-wiederholung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Anweisungen im Körper lassen die Bedingung immer wahr",
+              "Auf dem Feld steht ein Stein, der die Figur sofort aufhält"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Auf dem Feld steht ein Stein, der die Figur sofort aufhält",
+              "reason": "Steht sofort ein Stein vor der Figur, wird ‚vorne frei‘ falsch und die Schleife stoppt sofort."
+            },
+            {
+              "text": "Im Schleifenkopf fehlt die genaue Angabe der Schrittzahl",
+              "reason": "‚solange‘ braucht gerade keine feste Schrittzahl, sondern eine Veränderung im Körper Richtung Abbruch."
+            }
+          ]
+        },
+        {
+          "id": "01M7VTG6HBPYGRH6NC4TXC4F24",
+          "slug": "ms6-bedingte-wiederholung-erklaerung",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Grenze ‚wiederhole n-mal‘ gegen ‚solange <Bedingung>‘ ab und erkläre, wie du eine Endlosschleife beim Figuren-Programmieren vermeidest.",
+          "concept": "Feste Anzahl bei bekannter Schrittzahl; ‚solange‘ bei offenem Abstand; Körper muss auf Abbruch hinarbeiten.",
+          "source_link": "https://academy.zam-os.org/informatik-mittelschule-6/#lesson=ms6-bedingte-wiederholung",
+          "sample_solution": "Die feste Wiederholung nutzt man, wenn die exakte Anzahl der Durchläufe vorab bekannt ist (z. B. vier Seiten eines Quadrats). Ist der Abstand unbekannt, prüft ‚solange <Bedingung>‘ vor jedem Lauf erneut. Um eine Endlosschleife zu vermeiden, muss der Schleifenkörper die Situation gezielt verändern (etwa durch ‚vor gehen‘ Richtung Hindernis), bis die Bedingung falsch wird.",
+          "choice_distractors": [
+            {
+              "text": "‚solange‘ eignet sich nur für bekannte Schrittzahlen; Endlosschleifen verhindert man durch Entfernen der Bedingung.",
+              "reason": "Gerade bei unbekannter Schrittzahl wählt man ‚solange‘, und fehlender Fortschritt oder fehlende Abbruchbedingungen verursachen Endlosläufe."
+            },
+            {
+              "text": "Beide Schleifen laufen mindestens einmal durch und prüfen die Bedingung erst am Ende des Blocks.",
+              "reason": "Bedingte Wiederholungen prüfen kopfgesteuert vor jedem Durchlauf und können je nach Lage 0-mal oder beliebig oft laufen."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M7VTG6GC3MCAFZKRZY27Q3SH",
+      "atom_uri": "urn:zam:atom:01M7VTG6GC3MCAFZKRZY27Q3SH",
+      "namespace": "zam-academy-informatik-mittelschule-6",
+      "slug": "ms6-schachtelung",
+      "title": "Grundstrukturen schachteln",
+      "domain": "informatik/programmierung",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/informatik-mittelschule-6/#lesson=ms6-schachtelung",
+      "prerequisites": [
+        {
+          "atom_id": "01M7VTG6GBYNG111PYZSQ0XY81",
+          "type": "soft",
+          "rationale": "Baut fachlich auf „Bedingte Wiederholung (solange …) und Endlosschleifen“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-mittelschule-6",
+          "topic_code": "stage-2-programmieren",
+          "topic_title": "Programmieren"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "informatik",
+          "topic_code": "lb2",
+          "topic_title": "Programmieren",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7VTG6HCHDJEH3CXHD6M8CX3",
+          "slug": "ms6-schachtelung-leserichtung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "In welcher Reihenfolge liest und verfolgst du ein verschachteltes Struktogramm?",
+          "concept": "Von außen nach innen: zuerst äußere Bedingung, dann innen",
+          "source_link": "https://academy.zam-os.org/informatik-mittelschule-6/#lesson=ms6-schachtelung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Von außen nach innen: zuerst äußere Bedingung, dann innen",
+              "Von innen nach außen: erst ‚sonst‘, danach Schleifenkopf"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Von innen nach außen: erst ‚sonst‘, danach Schleifenkopf",
+              "reason": "Die äußere Schleifenbedingung bestimmt bei jedem Durchlauf überhaupt erst, ob der innere Block startet."
+            },
+            {
+              "text": "Alle Zweige gleichzeitig von unten nach oben abarbeiten",
+              "reason": "Auch verschachtelte Struktogramme werden von außen nach innen und von oben nach unten abgearbeitet."
+            }
+          ]
+        },
+        {
+          "id": "01M7VTG6HDFETR85YWBX60MNDF",
+          "slug": "ms6-schachtelung-zweck",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was leistet eine Alternative innerhalb einer bedingten Wiederholung beim Figuren-Parcours?",
+          "concept": "Die Figur fährt vor und biegt an Kurven automatisch ab",
+          "source_link": "https://academy.zam-os.org/informatik-mittelschule-6/#lesson=ms6-schachtelung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Figur fährt vor und biegt an Kurven automatisch ab",
+              "Die Figur bleibt vor der ersten Ecke stehen und stoppt"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Die Figur bleibt vor der ersten Ecke stehen und stoppt",
+              "reason": "Mit ‚wenn vorne frei dann vor sonst rechts‘ bewegt sich die Figur auch um Ecken herum weiter bis zum Ziel."
+            },
+            {
+              "text": "Sie ersetzt das Prüfen der Zielbedingung im äußeren Rahmen",
+              "reason": "Die äußere Schleifenbedingung bleibt nötig, damit die Fahrt auf dem Zielfeld sauber endet."
+            }
+          ]
+        },
+        {
+          "id": "01M7VTG6HEGKJFEDCD507TRBFK",
+          "slug": "ms6-schachtelung-reihenfolge",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre am Beispiel ‚solange nicht auf Stern: wenn vorne frei dann vor sonst rechts drehen‘, warum die Alternative innerhalb der Schleife liegen muss.",
+          "concept": "In jedem Schritt vor dem Stern muss neu zwischen Geradeausfahren und Abbiegen gewählt werden.",
+          "source_link": "https://academy.zam-os.org/informatik-mittelschule-6/#lesson=ms6-schachtelung",
+          "sample_solution": "Liegt die Alternative innerhalb der ‚solange‘-Schleife, prüft die Figur vor jedem einzelnen Schritt, ob sie noch nicht auf dem Stern steht, und entscheidet dann neu zwischen ‚vor‘ (auf Geraden) und ‚rechts drehen‘ (an Ecken). Würde die Alternative außerhalb stehen, entschiede sie nur ein einziges Mal am Start und eine reine ‚vor‘-Schleife dahinter prallte an der ersten Kurve gegen die Wand.",
+          "choice_distractors": [
+            {
+              "text": "Ob die Alternative innen oder außen steht, liefert auf jedem Winkel-Parcours exakt denselben Lauf.",
+              "reason": "Steht die Alternative außen, wird während der Fahrt nicht mehr auf neu auftauchende Wände reagiert."
+            },
+            {
+              "text": "Innerhalb einer Schleife darf aus Platzgründen niemals eine zweiseitige Verzweigung stehen.",
+              "reason": "Gerade das Einsetzen von Verzweigungen in den L-Rahmen einer Schleife bildet die zentrale Schachtelung."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "01M7VTG6GDABHCG3HVF0T7E4R5",
+      "atom_uri": "urn:zam:atom:01M7VTG6GDABHCG3HVF0T7E4R5",
+      "namespace": "zam-academy-informatik-mittelschule-6",
+      "slug": "ms6-testen-optimieren",
+      "title": "Programme in Entwicklungsumgebungen testen und optimieren",
+      "domain": "informatik/programmierung",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/informatik-mittelschule-6/#lesson=ms6-testen-optimieren",
+      "prerequisites": [
+        {
+          "atom_id": "01M7VTG6GC3MCAFZKRZY27Q3SH",
+          "type": "soft",
+          "rationale": "Baut fachlich auf „Grundstrukturen schachteln“ auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "informatik-mittelschule-6",
+          "topic_code": "stage-2-programmieren",
+          "topic_title": "Programmieren"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "informatik",
+          "topic_code": "lb2",
+          "topic_title": "Programmieren",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7VTG6HFS4H48M22JDYQ1JXG",
+          "slug": "ms6-testen-optimieren-randfall",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Warum testen wir Programme nicht nur am Normalfall, sondern gezielt an Randfällen (z. B. Abstand 0)?",
+          "concept": "Randfälle decken versteckte Fehler starrer Abläufe auf",
+          "source_link": "https://academy.zam-os.org/informatik-mittelschule-6/#lesson=ms6-testen-optimieren",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Randfälle decken versteckte Fehler starrer Abläufe auf",
+              "Ein bestandener Standardtest gilt immer auch an Grenzen"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "Ein bestandener Standardtest gilt immer auch an Grenzen",
+              "reason": "Gerade bei Grenzen wie Länge 0 oder Gleichheit (>) vs. (≥) versagen Abläufe, die beim Standardtest richtig wirkten."
+            },
+            {
+              "text": "Bei Abstand 0 bricht jede Entwicklungsumgebung gezielt ab",
+              "reason": "Gut getestete bedingte Schleifen behandeln Abstand 0 sauber mit 0 Durchläufen ohne Absturz."
+            }
+          ]
+        },
+        {
+          "id": "01M7VTG6HGKNWB86QQKEW85SN3",
+          "slug": "ms6-testen-optimieren-vereinfachen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie optimierst du die Befehlsfolge ‚vor · links · rechts · vor · vor‘ ohne anderes Ergebnis?",
+          "concept": "Das wirkungslose Paar ‚links · rechts‘ komplett streichen",
+          "source_link": "https://academy.zam-os.org/informatik-mittelschule-6/#lesson=ms6-testen-optimieren",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Das wirkungslose Paar ‚links · rechts‘ komplett streichen",
+              "‚links · rechts‘ direkt hinter die drei ‚vor‘-Schritte legen"
+            ],
+            "correct_index": 0
+          },
+          "choice_distractors": [
+            {
+              "text": "‚links · rechts‘ direkt hinter die drei ‚vor‘-Schritte legen",
+              "reason": "Verschieben behält die überflüssigen Bausteine bei; Streichen verkürzt das Programm ohne Wirkungsverlust."
+            },
+            {
+              "text": "Alle ‚vor‘-Befehle entfernen und nur die Drehungen behalten",
+              "reason": "Ohne die ‚vor‘-Schritte erreicht die Figur das ursprüngliche Ziel nicht mehr."
+            }
+          ]
+        },
+        {
+          "id": "01M7VTG6HHQVJAFVT4TCPKG10Q",
+          "slug": "ms6-testen-optimieren-vorgehen",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Beschreibe ein systematisches Vorgehen zum Testen und Optimieren eines Programms in einer einfachen Entwicklungsumgebung.",
+          "concept": "Normal- und Randfälle testen, Fehler per Einzelschritt finden, Überflüssiges streichen und allgemein verallgemeinern.",
+          "source_link": "https://academy.zam-os.org/informatik-mittelschule-6/#lesson=ms6-testen-optimieren",
+          "sample_solution": "Zuerst testet man das umgesetzte Programm nicht nur mit einem Standardbeispiel, sondern gezielt mit Randfällen (wie Länge 0, Gleichheit an Grenzen oder langen Wegen). Treten Abweichungen auf, verfolgt man den Ablauf Schritt für Schritt bis zur fehlerhaften Bedingung oder Reihenfolge. Beim Optimieren streicht man wirkungslose Befehle (wie ‚links · rechts‘) und ersetzt starre Kopien durch passende Schleifen.",
+          "choice_distractors": [
+            {
+              "text": "Ein Programm nach genau einem gelungenen Probelauf niemals mehr anfassen und alle anderen Fälle ausblenden.",
+              "reason": "Ungeprüfte Randfälle führen oft zu Zusammenstößen oder Endlosschleifen, sobald sich Eingaben leicht ändern."
+            },
+            {
+              "text": "Schleifen durch mehrfach hintereinander kopierte Sequenzen ersetzen, damit der Ablauf kürzer wirkt.",
+              "reason": "Kopieren verlängert den Code und macht ihn unflexibel für wechselnde Weglängen; Schleifen kürzen und verallgemeinern."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

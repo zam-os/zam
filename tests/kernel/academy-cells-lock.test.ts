@@ -51,21 +51,7 @@ describe("bundled ZAM Academy cells", () => {
       .filter((entry) => entry.preview === true)
       .map((entry) => entry.id)
       .sort();
-    // The Grade 4 cells, Biologie 6 Realschule, Biologie 11 Gymnasium, Deutsch 5 Realschule,
-    // Geographie 5 Realschule, Mathematik 13 Gymnasium and Natur und Technik 6 Mittelschule have no teacher review
-    // yet (Mathematik 13 also lacks its teacher videos). Lifting this is a catalog change in
-    // zam-os/zam-academy, followed by `npm run academy:sync`.
-    expect(recorded).toEqual([
-      "zam-academy:biologie-gymnasium-11",
-      "zam-academy:biologie-realschule-6",
-      "zam-academy:deutsch-grundschule-4",
-      "zam-academy:deutsch-realschule-5",
-      "zam-academy:geographie-realschule-5",
-      "zam-academy:hsu-grundschule-4",
-      "zam-academy:mathematik-grundschule-4",
-      "zam-academy:mathematik-gymnasium-13",
-      "zam-academy:nt-mittelschule-6",
-    ]);
+    expect(recorded).toEqual([]);
     for (const cells of [BUNDLED_CELLS, listBundledCells()]) {
       expect(
         cells

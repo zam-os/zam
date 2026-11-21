@@ -1,0 +1,1554 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "zam-academy:politik-mittelschule-7",
+  "version": "2026.11.0",
+  "title": "Politik und Gesellschaft 7 Mittelschule (ZAM Academy)",
+  "description": "GPG 7 Mittelschule Bayern, Lernbereich 3, für Regelklasse und M-Zug: Soziale Frage, Industriestadt, Ursachen des Ersten Weltkriegs, Kriegsschuldfrage und Versailler Vertrag. 15 Lektionen und 45 Karten; keine Lernstandsübertragung.",
+  "publisher": "ZAM Academy",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/mittelschule/7/gpg/regelklasse",
+      "label": "ISB Bayern · LehrplanPLUS GPG 7 Regelklasse",
+      "checked": "2026-11-20"
+    },
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/mittelschule/7/gpg/mittlere-reife-klasse",
+      "label": "ISB Bayern · LehrplanPLUS GPG 7 Mittlere-Reife-Klasse",
+      "checked": "2026-11-20"
+    },
+    {
+      "uri": "https://www.dhm.de/lemo/kapitel/kaiserreich/innenpolitik/sozialgesetze",
+      "label": "LeMO (Deutsches Historisches Museum) · Sozialgesetzgebung",
+      "checked": "2026-11-20"
+    },
+    {
+      "uri": "https://www.dhm.de/lemo/kapitel/kaiserreich/innenpolitik/arbeiterfrage-und-streikbewegung",
+      "label": "LeMO · Arbeiterfrage und Streikbewegung",
+      "checked": "2026-11-20"
+    },
+    {
+      "uri": "https://www.dhm.de/lemo/kapitel/kaiserreich/innenpolitik/arbeiterbewegung",
+      "label": "LeMO · Arbeiterbewegung",
+      "checked": "2026-11-20"
+    },
+    {
+      "uri": "https://www.dhm.de/lemo/kapitel/kaiserreich/innenpolitik/sozialistengesetz",
+      "label": "LeMO · Sozialistengesetz",
+      "checked": "2026-11-20"
+    },
+    {
+      "uri": "https://library.fes.de/fulltext/bibliothek/chronik/band1/e235e481.html",
+      "label": "Friedrich-Ebert-Stiftung · Chronik: Gewerbeordnungsnovelle vom 8. Mai 1891",
+      "checked": "2026-11-21"
+    },
+    {
+      "uri": "https://www.kolping.de/verband/adolph-kolping/",
+      "label": "Kolping Deutschland · Adolph Kolping",
+      "checked": "2026-11-20"
+    },
+    {
+      "uri": "https://www.dhm.de/lemo/biografie/johann-hinrich-wichern",
+      "label": "LeMO · Biografie Johann Hinrich Wichern",
+      "checked": "2026-11-20"
+    },
+    {
+      "uri": "https://www.dhm.de/lemo/biografie/alfred-krupp",
+      "label": "LeMO · Biografie Alfred Krupp",
+      "checked": "2026-11-20"
+    },
+    {
+      "uri": "https://www.deutsche-rentenversicherung.de/DRV/DE/Ueber-uns-und-Presse/Historie/historie_node.html",
+      "label": "Deutsche Rentenversicherung · Historie",
+      "checked": "2026-11-20"
+    },
+    {
+      "uri": "https://www.bpb.de/kurz-knapp/lexika/das-junge-politik-lexikon/321149/sozialversicherung/",
+      "label": "bpb · Das junge Politik-Lexikon: Sozialversicherung",
+      "checked": "2026-11-20"
+    },
+    {
+      "uri": "https://www.bpb.de/themen/politisches-system/24-deutschland/40478/das-deutsche-sozialversicherungssystem/",
+      "label": "bpb · Das deutsche Sozialversicherungssystem",
+      "checked": "2026-11-20"
+    },
+    {
+      "uri": "https://www.bundesgesundheitsministerium.de/service/begriffe-von-a-z/p/pflegeversicherung",
+      "label": "Bundesgesundheitsministerium · Pflegeversicherung",
+      "checked": "2026-11-20"
+    },
+    {
+      "uri": "https://www.dhm.de/lemo/kapitel/kaiserreich/industrie",
+      "label": "LeMO · Kaiserreich: Industrie und Wirtschaft",
+      "checked": "2026-11-20"
+    },
+    {
+      "uri": "https://www.dhm.de/lemo/kapitel/kaiserreich/industrie-und-wirtschaft/landwirtschaft",
+      "label": "LeMO · Landwirtschaft im Kaiserreich",
+      "checked": "2026-11-20"
+    },
+    {
+      "uri": "https://www.dhm.de/lemo/kapitel/kaiserreich/alltagsleben/urbanisierung-im-deutschen-reich",
+      "label": "LeMO · Urbanisierung im Deutschen Reich",
+      "checked": "2026-11-20"
+    },
+    {
+      "uri": "https://www.dhm.de/lemo/kapitel/kaiserreich/alltagsleben/mietskaserne",
+      "label": "LeMO · Mietskaserne",
+      "checked": "2026-11-20"
+    },
+    {
+      "uri": "https://www.dhm.de/lemo/kapitel/kaiserreich/industrie/neue",
+      "label": "LeMO · Neue Industrien",
+      "checked": "2026-11-20"
+    },
+    {
+      "uri": "https://www.dhm.de/lemo/kapitel/kaiserreich/alltagsleben/warenhaeuser",
+      "label": "LeMO · Warenhäuser",
+      "checked": "2026-11-20"
+    },
+    {
+      "uri": "https://www.dhm.de/lemo/kapitel/erster-weltkrieg/kriegsverlauf/weg-in-den-krieg",
+      "label": "LeMO · Weg in den Krieg",
+      "checked": "2026-11-20"
+    },
+    {
+      "uri": "https://www.dhm.de/lemo/kapitel/kaiserreich/aussenpolitik/flottenbau",
+      "label": "LeMO · Flottenbau",
+      "checked": "2026-11-20"
+    },
+    {
+      "uri": "https://www.dhm.de/lemo/kapitel/kaiserreich/aussenpolitik/kolonialpolitik",
+      "label": "LeMO · Kolonialpolitik",
+      "checked": "2026-11-20"
+    },
+    {
+      "uri": "https://www.dhm.de/lemo/kapitel/kaiserreich/aussenpolitik/bismarcks-buendnissystem",
+      "label": "LeMO · Bismarcks Bündnissystem",
+      "checked": "2026-11-21"
+    },
+    {
+      "uri": "https://www.dhm.de/lemo/kapitel/erster-weltkrieg/kriegsverlauf/juli-krise-1914",
+      "label": "LeMO · Juli-Krise 1914",
+      "checked": "2026-11-20"
+    },
+    {
+      "uri": "https://www.dhm.de/lemo/kapitel/erster-weltkrieg/kriegsverlauf/kriegserklaerungen",
+      "label": "LeMO · Kriegserklärungen",
+      "checked": "2026-11-20"
+    },
+    {
+      "uri": "https://www.bpb.de/shop/zeitschriften/apuz/182558/julikrise-und-kriegsschuld-thesen-und-stand-der-forschung/",
+      "label": "bpb · Annika Mombauer: Julikrise und Kriegsschuld – Thesen und Stand der Forschung",
+      "checked": "2026-11-20"
+    },
+    {
+      "uri": "https://www.dhm.de/lemo/kapitel/weimarer-republik/aussenpolitik/versailles",
+      "label": "LeMO · Versailler Vertrag",
+      "checked": "2026-11-20"
+    },
+    {
+      "uri": "https://www.dhm.de/lemo/kapitel/weimarer-republik/aussenpolitik/reparationen",
+      "label": "LeMO · Reparationen",
+      "checked": "2026-11-21"
+    },
+    {
+      "uri": "https://www.dhm.de/lemo/kapitel/weimarer-republik/innenpolitik/dolchstosslegende",
+      "label": "LeMO · Dolchstoßlegende",
+      "checked": "2026-11-20"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01M7XKAWC5R9C580MQ29F0S9FB",
+      "atom_uri": "urn:zam:atom:01M7XKAWC5R9C580MQ29F0S9FB",
+      "namespace": "zam-academy-politik-mittelschule-7",
+      "slug": "fabrik",
+      "title": "Ein Arbeitstag in der Fabrik",
+      "domain": "gpg/gpg7/stage1",
+      "reduction": "formal",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/politik-mittelschule-7/#lesson=fabrik",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "politik-mittelschule-7",
+          "topic_code": "stage1",
+          "topic_title": "Arbeit und Soziale Frage"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "gpg",
+          "topic_code": "lb3",
+          "topic_title": "Politik und Gesellschaft",
+          "track": "R",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "gpg",
+          "topic_code": "lb3",
+          "topic_title": "Politik und Gesellschaft",
+          "track": "M",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7XKAWC6ZQGNJPWXWCZBSWSQ",
+          "slug": "fabrik-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was fehlte vielen Fabrikarbeitern um 1880?",
+          "concept": "Eine Absicherung bei Krankheit, Unfall und im Alter.",
+          "source_link": "https://academy.zam-os.org/politik-mittelschule-7/#lesson=fabrik",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eine Absicherung bei Krankheit, Unfall und im Alter.",
+              "Eine feste Uhrzeit für den Arbeitsbeginn."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7XKAWC7HFEGT3TG6EC5NSD8",
+          "slug": "fabrik-fakt",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie nennt man die Not der Arbeiterfamilien in der Industrialisierung und die Frage nach ihrer Lösung?",
+          "concept": "die Soziale Frage",
+          "source_link": "https://academy.zam-os.org/politik-mittelschule-7/#lesson=fabrik",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "die Soziale Frage",
+              "die Arbeiterbewegung"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7XKAWC87HX56N74GPDSFGRS",
+          "slug": "fabrik-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Beschreibe die Arbeitsbedingungen in einer Fabrik um 1880.",
+          "concept": "Oft 12 bis 14 Stunden, auch sonntags, eine strenge Fabrikordnung mit Strafen, gefährliche Maschinen und keine Absicherung bei Krankheit, Unfall und Alter.",
+          "source_link": "https://academy.zam-os.org/politik-mittelschule-7/#lesson=fabrik",
+          "sample_solution": "Oft 12 bis 14 Stunden, auch sonntags, eine strenge Fabrikordnung mit Strafen, gefährliche Maschinen und keine Absicherung bei Krankheit, Unfall und Alter."
+        }
+      ]
+    },
+    {
+      "id": "01M7XKAWC9H0EAH6WSKRTXFXYH",
+      "atom_uri": "urn:zam:atom:01M7XKAWC9H0EAH6WSKRTXFXYH",
+      "namespace": "zam-academy-politik-mittelschule-7",
+      "slug": "wohnen",
+      "title": "Eine Familie in der Mietskaserne",
+      "domain": "gpg/gpg7/stage1",
+      "reduction": "formal",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/politik-mittelschule-7/#lesson=wohnen",
+      "prerequisites": [
+        {
+          "atom_id": "01M7XKAWC5R9C580MQ29F0S9FB",
+          "type": "soft",
+          "rationale": "Die Wohnverhältnisse folgen aus Löhnen und Arbeitszeiten der Fabrikarbeit."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "politik-mittelschule-7",
+          "topic_code": "stage1",
+          "topic_title": "Arbeit und Soziale Frage"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "gpg",
+          "topic_code": "lb3",
+          "topic_title": "Politik und Gesellschaft",
+          "track": "R",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "gpg",
+          "topic_code": "lb3",
+          "topic_title": "Politik und Gesellschaft",
+          "track": "M",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7XKAWCAKSM4DAD4SCAK9C0E",
+          "slug": "wohnen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum nahmen viele Arbeiterfamilien Schlafgänger auf?",
+          "concept": "Damit sie die hohe Miete bezahlen konnten.",
+          "source_link": "https://academy.zam-os.org/politik-mittelschule-7/#lesson=wohnen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Damit sie die hohe Miete bezahlen konnten.",
+              "Weil ihre Wohnungen zu groß für sie waren."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7XKAWCB100BD58SVS6GQQGR",
+          "slug": "wohnen-fakt",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie nannte man die dicht gebauten Mietshäuser mit Vorderhaus, engem Hof und Hinterhaus?",
+          "concept": "Mietskaserne",
+          "source_link": "https://academy.zam-os.org/politik-mittelschule-7/#lesson=wohnen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Mietskaserne",
+              "Werkssiedlung"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7XKAWCC25D8WRD80ACPY2Y8",
+          "slug": "wohnen-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie wohnten viele Arbeiterfamilien um 1900 in der Großstadt?",
+          "concept": "Eng, dunkel und feucht in Mietskasernen, oft in ein oder zwei Räumen und mit Schlafgängern. Krankheiten wie Tuberkulose verbreiteten sich leicht.",
+          "source_link": "https://academy.zam-os.org/politik-mittelschule-7/#lesson=wohnen",
+          "sample_solution": "Eng, dunkel und feucht in Mietskasernen, oft in ein oder zwei Räumen und mit Schlafgängern. Krankheiten wie Tuberkulose verbreiteten sich leicht."
+        }
+      ]
+    },
+    {
+      "id": "01M7XKAWCDBF9HYWSP26FYHQJN",
+      "atom_uri": "urn:zam:atom:01M7XKAWCDBF9HYWSP26FYHQJN",
+      "namespace": "zam-academy-politik-mittelschule-7",
+      "slug": "zusammenschluss",
+      "title": "Arbeiter schließen sich zusammen",
+      "domain": "gpg/gpg7/stage1",
+      "reduction": "formal",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/politik-mittelschule-7/#lesson=zusammenschluss",
+      "prerequisites": [
+        {
+          "atom_id": "01M7XKAWC5R9C580MQ29F0S9FB",
+          "type": "soft",
+          "rationale": "Streiks und Vereine antworten auf die Arbeitsbedingungen in den Fabriken."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "politik-mittelschule-7",
+          "topic_code": "stage1",
+          "topic_title": "Arbeit und Soziale Frage"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "gpg",
+          "topic_code": "lb3",
+          "topic_title": "Politik und Gesellschaft",
+          "track": "R",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "gpg",
+          "topic_code": "lb3",
+          "topic_title": "Politik und Gesellschaft",
+          "track": "M",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7XKAWCETANZ5C5K1QTFCMW4",
+          "slug": "zusammenschluss-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was wollte Bismarck mit dem Sozialistengesetz von 1878 erreichen?",
+          "concept": "Er wollte die Sozialdemokratie schwächen.",
+          "source_link": "https://academy.zam-os.org/politik-mittelschule-7/#lesson=zusammenschluss",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Er wollte die Sozialdemokratie schwächen.",
+              "Er wollte Streiks der Arbeiter erlauben."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7XKAWCF41VA8F28NC6AMM8X",
+          "slug": "zusammenschluss-fakt",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "In welchem Jahr gründete sich die verbotene Arbeiterpartei als SPD neu?",
+          "concept": "1890",
+          "source_link": "https://academy.zam-os.org/politik-mittelschule-7/#lesson=zusammenschluss",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "1890",
+              "1878"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7XKAWCG9D7F0GJP22WZ80RF",
+          "slug": "zusammenschluss-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie setzten sich Arbeiter im Kaiserreich selbst für ihre Rechte ein?",
+          "concept": "Sie gründeten Bildungsvereine, Gewerkschaften und Parteien und legten bei Streiks gemeinsam die Arbeit nieder.",
+          "source_link": "https://academy.zam-os.org/politik-mittelschule-7/#lesson=zusammenschluss",
+          "sample_solution": "Sie gründeten Bildungsvereine, Gewerkschaften und Parteien und legten bei Streiks gemeinsam die Arbeit nieder."
+        }
+      ]
+    },
+    {
+      "id": "01M7XKAWCHA8G9AT7GQ81HW03P",
+      "atom_uri": "urn:zam:atom:01M7XKAWCHA8G9AT7GQ81HW03P",
+      "namespace": "zam-academy-politik-mittelschule-7",
+      "slug": "kirche-unternehmer",
+      "title": "Hilfe von Kirchen und Unternehmern",
+      "domain": "gpg/gpg7/stage1",
+      "reduction": "formal",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/politik-mittelschule-7/#lesson=kirche-unternehmer",
+      "prerequisites": [
+        {
+          "atom_id": "01M7XKAWC5R9C580MQ29F0S9FB",
+          "type": "soft",
+          "rationale": "Kirchen und Unternehmer reagierten auf die Not der Fabrikarbeiter."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "politik-mittelschule-7",
+          "topic_code": "stage1",
+          "topic_title": "Arbeit und Soziale Frage"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "gpg",
+          "topic_code": "lb3",
+          "topic_title": "Politik und Gesellschaft",
+          "track": "R",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "gpg",
+          "topic_code": "lb3",
+          "topic_title": "Politik und Gesellschaft",
+          "track": "M",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7XKAWCJE4FTEHCANC41DT7A",
+          "slug": "kirche-unternehmer-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was bot Adolph Kolpings Gesellenverein jungen Handwerkern?",
+          "concept": "Unterkunft, Bildung und Gemeinschaft.",
+          "source_link": "https://academy.zam-os.org/politik-mittelschule-7/#lesson=kirche-unternehmer",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Unterkunft, Bildung und Gemeinschaft.",
+              "Eine staatliche Rente ab 70 Jahren."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7XKAWCKARBZ2JCBEBW341B5",
+          "slug": "kirche-unternehmer-fakt",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was verbot Alfred Krupp seinen Arbeitern trotz Krankenkasse und Werkswohnungen?",
+          "concept": "Sich in Gewerkschaften oder für die Sozialdemokratie zu betätigen.",
+          "source_link": "https://academy.zam-os.org/politik-mittelschule-7/#lesson=kirche-unternehmer",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sich in Gewerkschaften oder für die Sozialdemokratie zu betätigen.",
+              "Im werkseigenen Laden einzukaufen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7XKAWCM0VRDGF13QC7G7Y08",
+          "slug": "kirche-unternehmer-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Nenne einen kirchlichen und einen unternehmerischen Lösungsansatz der Sozialen Frage.",
+          "concept": "Kirchlich: Kolpings Gesellenverein oder Wicherns Innere Mission. Unternehmerisch: Krupps Krankenkasse, Werkswohnungen und Siedlungen.",
+          "source_link": "https://academy.zam-os.org/politik-mittelschule-7/#lesson=kirche-unternehmer",
+          "sample_solution": "Kirchlich: Kolpings Gesellenverein oder Wicherns Innere Mission. Unternehmerisch: Krupps Krankenkasse, Werkswohnungen und Siedlungen."
+        }
+      ]
+    },
+    {
+      "id": "01M7XKAWCNV8QC2R2SC5N5GSDV",
+      "atom_uri": "urn:zam:atom:01M7XKAWCNV8QC2R2SC5N5GSDV",
+      "namespace": "zam-academy-politik-mittelschule-7",
+      "slug": "sozialgesetze",
+      "title": "Bismarcks Sozialgesetze",
+      "domain": "gpg/gpg7/stage1",
+      "reduction": "formal",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/politik-mittelschule-7/#lesson=sozialgesetze",
+      "prerequisites": [
+        {
+          "atom_id": "01M7XKAWCDBF9HYWSP26FYHQJN",
+          "type": "soft",
+          "rationale": "Bismarcks Sozialgesetze waren auch eine Antwort auf die erstarkende Arbeiterbewegung."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "politik-mittelschule-7",
+          "topic_code": "stage1",
+          "topic_title": "Arbeit und Soziale Frage"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "gpg",
+          "topic_code": "lb3",
+          "topic_title": "Politik und Gesellschaft",
+          "track": "R",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "gpg",
+          "topic_code": "lb3",
+          "topic_title": "Politik und Gesellschaft",
+          "track": "M",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7XKAWCPNEZZH7X6SHKG881R",
+          "slug": "sozialgesetze-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wer zahlte die Beiträge zur Unfallversicherung von 1884?",
+          "concept": "Nur die Unternehmer.",
+          "source_link": "https://academy.zam-os.org/politik-mittelschule-7/#lesson=sozialgesetze",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nur die Unternehmer.",
+              "Nur die Arbeiter."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7XKAWCQ1J6N4RCQJ38ARPKJ",
+          "slug": "sozialgesetze-fakt",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "In welchem Jahr beschloss der Reichstag die Krankenversicherung?",
+          "concept": "1883",
+          "source_link": "https://academy.zam-os.org/politik-mittelschule-7/#lesson=sozialgesetze",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "1883",
+              "1889"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7XKAWCRBFSWBJ5Y1ZESW3N1",
+          "slug": "sozialgesetze-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Nenne Bismarcks drei Sozialversicherungen mit Jahreszahl.",
+          "concept": "Krankenversicherung 1883, Unfallversicherung 1884, Invaliditäts- und Altersversicherung 1889.",
+          "source_link": "https://academy.zam-os.org/politik-mittelschule-7/#lesson=sozialgesetze",
+          "sample_solution": "Krankenversicherung 1883, Unfallversicherung 1884, Invaliditäts- und Altersversicherung 1889."
+        }
+      ]
+    },
+    {
+      "id": "01M7XKAWCSS1A6ZQDZ22QXX0PH",
+      "atom_uri": "urn:zam:atom:01M7XKAWCSS1A6ZQDZ22QXX0PH",
+      "namespace": "zam-academy-politik-mittelschule-7",
+      "slug": "sozialstaat",
+      "title": "Damals und heute: soziale Sicherung",
+      "domain": "gpg/gpg7/stage1",
+      "reduction": "formal",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/politik-mittelschule-7/#lesson=sozialstaat",
+      "prerequisites": [
+        {
+          "atom_id": "01M7XKAWCNV8QC2R2SC5N5GSDV",
+          "type": "soft",
+          "rationale": "Der Vergleich mit heute setzt Bismarcks drei Versicherungen voraus."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "politik-mittelschule-7",
+          "topic_code": "stage1",
+          "topic_title": "Arbeit und Soziale Frage"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "gpg",
+          "topic_code": "lb3",
+          "topic_title": "Politik und Gesellschaft",
+          "track": "M",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7XKAWCTYMZFC16N1DS4A8PC",
+          "slug": "sozialstaat-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Versicherung kam als jüngste zur Sozialversicherung hinzu?",
+          "concept": "Die Pflegeversicherung 1995.",
+          "source_link": "https://academy.zam-os.org/politik-mittelschule-7/#lesson=sozialstaat",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Pflegeversicherung 1995.",
+              "Die Unfallversicherung 1884."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7XKAWCV3K1T4S9T053J4MPJ",
+          "slug": "sozialstaat-fakt",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Seit wann gibt es in Deutschland die Arbeitslosenversicherung?",
+          "concept": "seit 1927",
+          "source_link": "https://academy.zam-os.org/politik-mittelschule-7/#lesson=sozialstaat",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "seit 1927",
+              "seit 1883"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7XKAWCWCCQ5N81AQCT9B113",
+          "slug": "sozialstaat-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was bedeutet das Solidarprinzip der Sozialversicherung?",
+          "concept": "Alle zahlen nach ihrem Einkommen ein, und wer krank, arbeitslos oder pflegebedürftig wird, bekommt Hilfe aus dem gemeinsamen Topf.",
+          "source_link": "https://academy.zam-os.org/politik-mittelschule-7/#lesson=sozialstaat",
+          "sample_solution": "Alle zahlen nach ihrem Einkommen ein, und wer krank, arbeitslos oder pflegebedürftig wird, bekommt Hilfe aus dem gemeinsamen Topf."
+        }
+      ]
+    },
+    {
+      "id": "01M7XKAWCX83CQTB7VXB96GJS1",
+      "atom_uri": "urn:zam:atom:01M7XKAWCX83CQTB7VXB96GJS1",
+      "namespace": "zam-academy-politik-mittelschule-7",
+      "slug": "agrar-industrie",
+      "title": "Vom Acker in die Fabrik",
+      "domain": "gpg/gpg7/stage2",
+      "reduction": "formal",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/politik-mittelschule-7/#lesson=agrar-industrie",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "politik-mittelschule-7",
+          "topic_code": "stage2",
+          "topic_title": "Stadt im Wandel"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "gpg",
+          "topic_code": "lb3",
+          "topic_title": "Politik und Gesellschaft",
+          "track": "R",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "gpg",
+          "topic_code": "lb3",
+          "topic_title": "Politik und Gesellschaft",
+          "track": "M",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7XKAWCY3CHQPEG80K3S35JC",
+          "slug": "agrar-industrie-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie veränderte sich der Anteil der Beschäftigten in der Landwirtschaft von 1871 bis 1907?",
+          "concept": "Er sank von rund der Hälfte auf 34 Prozent.",
+          "source_link": "https://academy.zam-os.org/politik-mittelschule-7/#lesson=agrar-industrie",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Er sank von rund der Hälfte auf 34 Prozent.",
+              "Er stieg von 34 Prozent auf rund die Hälfte."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7XKAWCZEBG7XSG59CS0WTN1",
+          "slug": "agrar-industrie-fakt",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie nennt man die Abwanderung vom Land in die Industriestädte?",
+          "concept": "Landflucht",
+          "source_link": "https://academy.zam-os.org/politik-mittelschule-7/#lesson=agrar-industrie",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Landflucht",
+              "Auswanderung"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7XKAWD0GAM7BH080FMEJ7AG",
+          "slug": "agrar-industrie-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum zogen im Kaiserreich Millionen Menschen vom Land in die Industriestädte?",
+          "concept": "Maschinen ersetzten Landarbeiter, die Bevölkerung wuchs, und in Fabriken und Bergwerken verdiente man meist mehr.",
+          "source_link": "https://academy.zam-os.org/politik-mittelschule-7/#lesson=agrar-industrie",
+          "sample_solution": "Maschinen ersetzten Landarbeiter, die Bevölkerung wuchs, und in Fabriken und Bergwerken verdiente man meist mehr."
+        }
+      ]
+    },
+    {
+      "id": "01M7XKAWD1TGWYEXNHCTN6QSQK",
+      "atom_uri": "urn:zam:atom:01M7XKAWD1TGWYEXNHCTN6QSQK",
+      "namespace": "zam-academy-politik-mittelschule-7",
+      "slug": "stadtwachstum",
+      "title": "Eine Stadt wächst",
+      "domain": "gpg/gpg7/stage2",
+      "reduction": "formal",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/politik-mittelschule-7/#lesson=stadtwachstum",
+      "prerequisites": [
+        {
+          "atom_id": "01M7XKAWCX83CQTB7VXB96GJS1",
+          "type": "soft",
+          "rationale": "Das Wachstum der Städte folgt aus der Wanderung vom Land in die Industrie."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "politik-mittelschule-7",
+          "topic_code": "stage2",
+          "topic_title": "Stadt im Wandel"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "gpg",
+          "topic_code": "lb3",
+          "topic_title": "Politik und Gesellschaft",
+          "track": "R",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "gpg",
+          "topic_code": "lb3",
+          "topic_title": "Politik und Gesellschaft",
+          "track": "M",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7XKAWD2VE370CA09QXCCZ89",
+          "slug": "stadtwachstum-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was bedeutet Urbanisierung?",
+          "concept": "Immer mehr Menschen leben in Städten, und die Städte wachsen.",
+          "source_link": "https://academy.zam-os.org/politik-mittelschule-7/#lesson=stadtwachstum",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Immer mehr Menschen leben in Städten, und die Städte wachsen.",
+              "Immer mehr Menschen ziehen aus den Städten aufs Land."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7XKAWD3WKX7GEJ2F2W5HJF1",
+          "slug": "stadtwachstum-fakt",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie viele Städte mit mehr als 100 000 Einwohnern hatte das Deutsche Reich 1910?",
+          "concept": "48",
+          "source_link": "https://academy.zam-os.org/politik-mittelschule-7/#lesson=stadtwachstum",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "48",
+              "8"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7XKAWD4EGWGEG5JJ7M7CAMT",
+          "slug": "stadtwachstum-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie veränderte sich eine typische Industriestadt zwischen 1850 und 1910?",
+          "concept": "Die Bahn kam, Fabriken entstanden, Mietshausviertel wuchsen, und Strom, Straßenbahn und Leitungen veränderten das Stadtleben.",
+          "source_link": "https://academy.zam-os.org/politik-mittelschule-7/#lesson=stadtwachstum",
+          "sample_solution": "Die Bahn kam, Fabriken entstanden, Mietshausviertel wuchsen, und Strom, Straßenbahn und Leitungen veränderten das Stadtleben."
+        }
+      ]
+    },
+    {
+      "id": "01M7XKAWD53MZ95HPMPQHQB3WV",
+      "atom_uri": "urn:zam:atom:01M7XKAWD53MZ95HPMPQHQB3WV",
+      "namespace": "zam-academy-politik-mittelschule-7",
+      "slug": "stadtviertel",
+      "title": "Arm und reich in der Industriestadt",
+      "domain": "gpg/gpg7/stage2",
+      "reduction": "formal",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/politik-mittelschule-7/#lesson=stadtviertel",
+      "prerequisites": [
+        {
+          "atom_id": "01M7XKAWD1TGWYEXNHCTN6QSQK",
+          "type": "soft",
+          "rationale": "Die Viertel entstanden beim raschen Wachstum der Industriestadt."
+        },
+        {
+          "atom_id": "01M7XKAWC9H0EAH6WSKRTXFXYH",
+          "type": "soft",
+          "rationale": "Arbeiterviertel bestanden vor allem aus Mietskasernen."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "politik-mittelschule-7",
+          "topic_code": "stage2",
+          "topic_title": "Stadt im Wandel"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "gpg",
+          "topic_code": "lb3",
+          "topic_title": "Politik und Gesellschaft",
+          "track": "R",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "gpg",
+          "topic_code": "lb3",
+          "topic_title": "Politik und Gesellschaft",
+          "track": "M",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7XKAWD6E6N32M1X9VQ2CBZY",
+          "slug": "stadtviertel-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wo wohnten Arbeiterfamilien in der Industriestadt meist?",
+          "concept": "In dicht bebauten Mietshausvierteln nahe den Fabriken.",
+          "source_link": "https://academy.zam-os.org/politik-mittelschule-7/#lesson=stadtviertel",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "In dicht bebauten Mietshausvierteln nahe den Fabriken.",
+              "In Villen mit großen Gärten am Stadtrand."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7XKAWD7P13JKFMEJD6H1G1D",
+          "slug": "stadtviertel-fakt",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wo wohnten wohlhabende Familien in der Industriestadt oft?",
+          "concept": "In Villenvierteln am Stadtrand.",
+          "source_link": "https://academy.zam-os.org/politik-mittelschule-7/#lesson=stadtviertel",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "In Villenvierteln am Stadtrand.",
+              "Im Hinterhaus nahe der Fabrik."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7XKAWD8K17RB8DR3SB2QW1X",
+          "slug": "stadtviertel-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche Wohnviertel prägten die Industriestadt um 1900?",
+          "concept": "Arbeiterviertel mit Mietshäusern nahe den Fabriken, Villenviertel im Grünen am Stadtrand und Werkssiedlungen von Unternehmen.",
+          "source_link": "https://academy.zam-os.org/politik-mittelschule-7/#lesson=stadtviertel",
+          "sample_solution": "Arbeiterviertel mit Mietshäusern nahe den Fabriken, Villenviertel im Grünen am Stadtrand und Werkssiedlungen von Unternehmen."
+        }
+      ]
+    },
+    {
+      "id": "01M7XKAWD9HCMBWHFPCSYHNQ2G",
+      "atom_uri": "urn:zam:atom:01M7XKAWD9HCMBWHFPCSYHNQ2G",
+      "namespace": "zam-academy-politik-mittelschule-7",
+      "slug": "neue-berufe",
+      "title": "Neue Berufe in der Industriegesellschaft",
+      "domain": "gpg/gpg7/stage2",
+      "reduction": "formal",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/politik-mittelschule-7/#lesson=neue-berufe",
+      "prerequisites": [
+        {
+          "atom_id": "01M7XKAWCX83CQTB7VXB96GJS1",
+          "type": "soft",
+          "rationale": "Neue Berufe sind eine Folge des Übergangs zur Industriegesellschaft."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "politik-mittelschule-7",
+          "topic_code": "stage2",
+          "topic_title": "Stadt im Wandel"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "gpg",
+          "topic_code": "lb3",
+          "topic_title": "Politik und Gesellschaft",
+          "track": "M",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7XKAWDAXYEAQ98JZ450ET51",
+          "slug": "neue-berufe-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welcher Beruf entstand erst mit der Industrialisierung?",
+          "concept": "Elektriker",
+          "source_link": "https://academy.zam-os.org/politik-mittelschule-7/#lesson=neue-berufe",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Elektriker",
+              "Bäcker"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7XKAWDB9EWX5VVQZGAVKXXY",
+          "slug": "neue-berufe-fakt",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie nennt man Beschäftigte, die im Büro oder im Verkauf statt an Maschinen arbeiten?",
+          "concept": "Angestellte",
+          "source_link": "https://academy.zam-os.org/politik-mittelschule-7/#lesson=neue-berufe",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Angestellte",
+              "Tagelöhner"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7XKAWDCBAK6HX5W3T1VN7HX",
+          "slug": "neue-berufe-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Nenne drei Berufe, die durch die Industrialisierung entstanden.",
+          "concept": "Zum Beispiel Lokführer, Elektriker, Ingenieur, Chemiker in der Industrie und Verkäuferin im Warenhaus.",
+          "source_link": "https://academy.zam-os.org/politik-mittelschule-7/#lesson=neue-berufe",
+          "sample_solution": "Zum Beispiel Lokführer, Elektriker, Ingenieur, Chemiker in der Industrie und Verkäuferin im Warenhaus."
+        }
+      ]
+    },
+    {
+      "id": "01M7XKAWDD0NNCY8WG2HK6C511",
+      "atom_uri": "urn:zam:atom:01M7XKAWDD0NNCY8WG2HK6C511",
+      "namespace": "zam-academy-politik-mittelschule-7",
+      "slug": "kriegsursachen",
+      "title": "Warum kam es zum Ersten Weltkrieg?",
+      "domain": "gpg/gpg7/stage3",
+      "reduction": "formal",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/politik-mittelschule-7/#lesson=kriegsursachen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "politik-mittelschule-7",
+          "topic_code": "stage3",
+          "topic_title": "Krieg und Frieden 1914–1919"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "gpg",
+          "topic_code": "lb3",
+          "topic_title": "Politik und Gesellschaft",
+          "track": "R",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "gpg",
+          "topic_code": "lb3",
+          "topic_title": "Politik und Gesellschaft",
+          "track": "M",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7XKAWDEDBWZAN4THNRVVB9P",
+          "slug": "kriegsursachen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was war der Auslöser des Ersten Weltkriegs und nicht eine seiner langfristigen Ursachen?",
+          "concept": "Das Attentat von Sarajevo am 28. Juni 1914.",
+          "source_link": "https://academy.zam-os.org/politik-mittelschule-7/#lesson=kriegsursachen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Das Attentat von Sarajevo am 28. Juni 1914.",
+              "Der Bau einer großen deutschen Kriegsflotte."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7XKAWDFKBAPHNJ5YMPBBRZW",
+          "slug": "kriegsursachen-fakt",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Staaten bildeten 1914 die Mittelmächte?",
+          "concept": "Deutsches Reich und Österreich-Ungarn",
+          "source_link": "https://academy.zam-os.org/politik-mittelschule-7/#lesson=kriegsursachen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Deutsches Reich und Österreich-Ungarn",
+              "Frankreich und Russland"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7XKAWDG2P6YT66JT6K4VB0Y",
+          "slug": "kriegsursachen-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Nenne vier langfristige Ursachen des Ersten Weltkriegs.",
+          "concept": "Nationalismus, Imperialismus mit dem Wettlauf um Kolonien, Wettrüsten und die Bündnisse zweier feindlicher Blöcke.",
+          "source_link": "https://academy.zam-os.org/politik-mittelschule-7/#lesson=kriegsursachen",
+          "sample_solution": "Nationalismus, Imperialismus mit dem Wettlauf um Kolonien, Wettrüsten und die Bündnisse zweier feindlicher Blöcke."
+        }
+      ]
+    },
+    {
+      "id": "01M7XKAWDHB16A4ZQB7ZDCVN4G",
+      "atom_uri": "urn:zam:atom:01M7XKAWDHB16A4ZQB7ZDCVN4G",
+      "namespace": "zam-academy-politik-mittelschule-7",
+      "slug": "julikrise",
+      "title": "Juli 1914: Vom Attentat zum Weltkrieg",
+      "domain": "gpg/gpg7/stage3",
+      "reduction": "formal",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/politik-mittelschule-7/#lesson=julikrise",
+      "prerequisites": [
+        {
+          "atom_id": "01M7XKAWDD0NNCY8WG2HK6C511",
+          "type": "soft",
+          "rationale": "Die Julikrise zeigt, wie Bündnisse und Misstrauen den Auslöser zum Krieg machten."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "politik-mittelschule-7",
+          "topic_code": "stage3",
+          "topic_title": "Krieg und Frieden 1914–1919"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "gpg",
+          "topic_code": "lb3",
+          "topic_title": "Politik und Gesellschaft",
+          "track": "R",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "gpg",
+          "topic_code": "lb3",
+          "topic_title": "Politik und Gesellschaft",
+          "track": "M",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7XKAWDJYPJD8VWH4FV5T9YS",
+          "slug": "julikrise-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Womit begründete Großbritannien am 4. August 1914 seinen Kriegseintritt?",
+          "concept": "Mit dem deutschen Einmarsch in das neutrale Belgien.",
+          "source_link": "https://academy.zam-os.org/politik-mittelschule-7/#lesson=julikrise",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Mit dem deutschen Einmarsch in das neutrale Belgien.",
+              "Mit einem Hilferuf Serbiens an London."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7XKAWDKVX406GPCTTKN82QH",
+          "slug": "julikrise-fakt",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wann erklärte Österreich-Ungarn Serbien den Krieg?",
+          "concept": "am 28. Juli 1914",
+          "source_link": "https://academy.zam-os.org/politik-mittelschule-7/#lesson=julikrise",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "am 28. Juli 1914",
+              "am 28. Juni 1914"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7XKAWDM85NYP7T7V0FZA9Q2",
+          "slug": "julikrise-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie wurde aus dem Attentat von Sarajevo ein großer Krieg?",
+          "concept": "Deutschland sagte Wien Hilfe zu, Österreich-Ungarn stellte Serbien ein Ultimatum und erklärte den Krieg, Russland machte mobil, die Bündnisse zogen weitere Mächte hinein.",
+          "source_link": "https://academy.zam-os.org/politik-mittelschule-7/#lesson=julikrise",
+          "sample_solution": "Deutschland sagte Wien Hilfe zu, Österreich-Ungarn stellte Serbien ein Ultimatum und erklärte den Krieg, Russland machte mobil, die Bündnisse zogen weitere Mächte hinein."
+        }
+      ]
+    },
+    {
+      "id": "01M7XKAWDN6T1K8KGE2PMP5BN9",
+      "atom_uri": "urn:zam:atom:01M7XKAWDN6T1K8KGE2PMP5BN9",
+      "namespace": "zam-academy-politik-mittelschule-7",
+      "slug": "kriegsschuld",
+      "title": "Wer war schuld? Die Kriegsschuldfrage",
+      "domain": "gpg/gpg7/stage3",
+      "reduction": "formal",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/politik-mittelschule-7/#lesson=kriegsschuld",
+      "prerequisites": [
+        {
+          "atom_id": "01M7XKAWDHB16A4ZQB7ZDCVN4G",
+          "type": "soft",
+          "rationale": "Die Schuldfrage beurteilt die Entscheidungen der Regierungen in der Julikrise."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "politik-mittelschule-7",
+          "topic_code": "stage3",
+          "topic_title": "Krieg und Frieden 1914–1919"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "gpg",
+          "topic_code": "lb3",
+          "topic_title": "Politik und Gesellschaft",
+          "track": "R",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "gpg",
+          "topic_code": "lb3",
+          "topic_title": "Politik und Gesellschaft",
+          "track": "M",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7XKAWDP1ZR38CYP59C5X4FD",
+          "slug": "kriegsschuld-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was vertrat Fritz Fischer 1961?",
+          "concept": "Die deutsche Reichsleitung trug die Hauptverantwortung für den Krieg.",
+          "source_link": "https://academy.zam-os.org/politik-mittelschule-7/#lesson=kriegsschuld",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die deutsche Reichsleitung trug die Hauptverantwortung für den Krieg.",
+              "Alle Großmächte waren gleich verantwortlich."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7XKAWDQ89R7SC8YAZ3KDB6Q",
+          "slug": "kriegsschuld-fakt",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welcher Artikel des Versailler Vertrags erklärte Deutschland und seine Verbündeten für verantwortlich?",
+          "concept": "Artikel 231",
+          "source_link": "https://academy.zam-os.org/politik-mittelschule-7/#lesson=kriegsschuld",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Artikel 231",
+              "Artikel 48"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7XKAWDR7RJAJFZB7EKYAR82",
+          "slug": "kriegsschuld-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie unterscheiden sich Fritz Fischer und Christopher Clark in der Kriegsschuldfrage?",
+          "concept": "Fischer sah die Hauptverantwortung bei der deutschen Reichsleitung. Clark betont, dass alle Großmächte zum Kriegsausbruch beitrugen.",
+          "source_link": "https://academy.zam-os.org/politik-mittelschule-7/#lesson=kriegsschuld",
+          "sample_solution": "Fischer sah die Hauptverantwortung bei der deutschen Reichsleitung. Clark betont, dass alle Großmächte zum Kriegsausbruch beitrugen."
+        }
+      ]
+    },
+    {
+      "id": "01M7XKAWDSJYEJANQ0ENBV70BV",
+      "atom_uri": "urn:zam:atom:01M7XKAWDSJYEJANQ0ENBV70BV",
+      "namespace": "zam-academy-politik-mittelschule-7",
+      "slug": "versailles",
+      "title": "Der Versailler Vertrag",
+      "domain": "gpg/gpg7/stage3",
+      "reduction": "formal",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/politik-mittelschule-7/#lesson=versailles",
+      "prerequisites": [
+        {
+          "atom_id": "01M7XKAWDN6T1K8KGE2PMP5BN9",
+          "type": "soft",
+          "rationale": "Artikel 231 und die Reparationen beruhen auf der Schuldzuweisung von 1919."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "politik-mittelschule-7",
+          "topic_code": "stage3",
+          "topic_title": "Krieg und Frieden 1914–1919"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "gpg",
+          "topic_code": "lb3",
+          "topic_title": "Politik und Gesellschaft",
+          "track": "R",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "gpg",
+          "topic_code": "lb3",
+          "topic_title": "Politik und Gesellschaft",
+          "track": "M",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7XKAWDTTM41625R89W707J2",
+          "slug": "versailles-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie viele Soldaten durfte das deutsche Heer nach dem Versailler Vertrag höchstens haben?",
+          "concept": "100 000 Berufssoldaten",
+          "source_link": "https://academy.zam-os.org/politik-mittelschule-7/#lesson=versailles",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "100 000 Berufssoldaten",
+              "800 000 Wehrpflichtige"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7XKAWDV8B3ET6GZ0C82CMA4",
+          "slug": "versailles-fakt",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welches Gebiet kam durch den Versailler Vertrag an Frankreich?",
+          "concept": "Elsass-Lothringen",
+          "source_link": "https://academy.zam-os.org/politik-mittelschule-7/#lesson=versailles",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Elsass-Lothringen",
+              "Westpreußen"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7XKAWDWP554Z7BYH2YGTTJ9",
+          "slug": "versailles-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Nenne je eine militärische, territoriale und wirtschaftliche Bestimmung des Versailler Vertrags.",
+          "concept": "Militärisch: Heer nur 100 000 Berufssoldaten. Territorial: Elsass-Lothringen an Frankreich, alle Kolonien verloren. Wirtschaftlich: Reparationen.",
+          "source_link": "https://academy.zam-os.org/politik-mittelschule-7/#lesson=versailles",
+          "sample_solution": "Militärisch: Heer nur 100 000 Berufssoldaten. Territorial: Elsass-Lothringen an Frankreich, alle Kolonien verloren. Wirtschaftlich: Reparationen."
+        }
+      ]
+    },
+    {
+      "id": "01M7XKAWDXGM91QJ9034QFW548",
+      "atom_uri": "urn:zam:atom:01M7XKAWDXGM91QJ9034QFW548",
+      "namespace": "zam-academy-politik-mittelschule-7",
+      "slug": "unzufriedenheit",
+      "title": "Warum waren so viele unzufrieden?",
+      "domain": "gpg/gpg7/stage3",
+      "reduction": "formal",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/politik-mittelschule-7/#lesson=unzufriedenheit",
+      "prerequisites": [
+        {
+          "atom_id": "01M7XKAWDSJYEJANQ0ENBV70BV",
+          "type": "soft",
+          "rationale": "Die Unzufriedenheit begründet sich aus den Bestimmungen des Vertrags."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "politik-mittelschule-7",
+          "topic_code": "stage3",
+          "topic_title": "Krieg und Frieden 1914–1919"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "gpg",
+          "topic_code": "lb3",
+          "topic_title": "Politik und Gesellschaft",
+          "track": "R",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "gpg",
+          "topic_code": "lb3",
+          "topic_title": "Politik und Gesellschaft",
+          "track": "M",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7XKAWDYEWAQ7Y7TFETT8HVX",
+          "slug": "unzufriedenheit-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was behauptete die Dolchstoßlegende?",
+          "concept": "Das Heer sei im Feld unbesiegt gewesen und von der Heimat verraten worden.",
+          "source_link": "https://academy.zam-os.org/politik-mittelschule-7/#lesson=unzufriedenheit",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Das Heer sei im Feld unbesiegt gewesen und von der Heimat verraten worden.",
+              "Die Alliierten hätten den Krieg 1914 begonnen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7XKAWDZ4WAV1JQFV4EYPG2V",
+          "slug": "unzufriedenheit-fakt",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie nannten viele Deutsche den Versailler Vertrag abwertend?",
+          "concept": "Diktatfrieden",
+          "source_link": "https://academy.zam-os.org/politik-mittelschule-7/#lesson=unzufriedenheit",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Diktatfrieden",
+              "Verständigungsfrieden"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7XKAWE0HAN81CEFNDAXTFZP",
+          "slug": "unzufriedenheit-recall",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum lehnten Menschen aus vielen Schichten den Versailler Vertrag ab?",
+          "concept": "Soldaten verloren ihre Stellung, die Wirtschaft fürchtete die Reparationen, Grenzgebiete gingen verloren, und viele empfanden die Kriegsschuld als Demütigung.",
+          "source_link": "https://academy.zam-os.org/politik-mittelschule-7/#lesson=unzufriedenheit",
+          "sample_solution": "Soldaten verloren ihre Stellung, die Wirtschaft fürchtete die Reparationen, Grenzgebiete gingen verloren, und viele empfanden die Kriegsschuld als Demütigung."
+        }
+      ]
+    }
+  ]
+}

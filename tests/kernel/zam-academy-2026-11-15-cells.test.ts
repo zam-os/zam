@@ -115,7 +115,7 @@ const UNMAPPED_CELLS = [
     grade: 6,
     subject: "nt",
     tracks: [undefined],
-    preview: true,
+    preview: false,
   },
 ] as const;
 

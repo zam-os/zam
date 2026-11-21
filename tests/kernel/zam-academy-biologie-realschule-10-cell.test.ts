@@ -196,18 +196,17 @@ describe("ZAM Academy Biologie 10 Realschule cell", () => {
         }),
       ).toBe(false);
     }
-    // The refreshers do not claim earlier grades. Biologie 5, 6 and 8's Academy
-    // cells replaced their retired school cells; grade 7 still uses its two
-    // school cells. There is no Biologie 9.
+    // The refreshers do not claim earlier grades. Grades 5, 6 and 8 have only
+    // their Academy cells. Grade 7 also offers its two school cells.
     for (const grade of [5, 6, 8]) {
       expect(scopeIds("realschule", grade)).toEqual([
         `zam-academy:biologie-realschule-${grade}`,
       ]);
     }
     const grade7Ids = scopeIds("realschule", 7);
-    expect(grade7Ids).not.toContain(CELL_ID);
-    expect(grade7Ids.every((id) => id.startsWith("de-by:"))).toBe(true);
-    expect(grade7Ids).toHaveLength(2);
+    expect(grade7Ids).toContain("zam-academy:biologie-realschule-7");
+    expect(grade7Ids.filter((id) => id.startsWith("de-by:"))).toHaveLength(2);
+    expect(grade7Ids).toHaveLength(3);
     expect(scopeIds("realschule", 9)).toEqual([]);
     expect(scopeIds("gymnasium", 10)).not.toContain(CELL_ID);
   });

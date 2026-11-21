@@ -1,0 +1,85 @@
+{
+	"status": "approved",
+	"approved": "2026-11-21",
+	"source_repository": "https://github.com/zam-os/zam",
+	"source_commit": "bae34e7dfe7d01838e448a65f15871c3549ae3fc",
+	"source": "Thomas approved the proposed transfers for German 7 Realschule, French 6 Gymnasium and Natur und Technik 7 Gymnasium (Informatics) in the Codex chat for ZAM 0.67.0 on 2026-11-21: “Alle sieben vorgeschlagenen Übernahmen freigeben und die drei Kurse einbinden”.",
+	"sources": [
+		{
+			"file": "tests/fixtures/de-by-realschule-7-deutsch-inhaltsangabe-sachtexte-literatur-kvt.json",
+			"sha256": "be02151740f63b0d603ac3d850266b50a95fd0c722ccccb3e4b7f42a8656019b",
+			"tile_id": "de-by:realschule-7-deutsch-inhaltsangabe-sachtexte-literatur"
+		},
+		{
+			"file": "tests/fixtures/de-by-realschule-7-deutsch-satzstrukturen-adverbialsaetze-kommasetzung-kvt.json",
+			"sha256": "af559ce694ef87ec149d7efa0ef9d1fe50b746ecf2aeef43c22d1c4c99b88af6",
+			"tile_id": "de-by:realschule-7-deutsch-satzstrukturen-adverbialsaetze-kommasetzung"
+		}
+	],
+	"rows": [
+		{
+			"de_by_id": "01K4D7N0000000000000000J01",
+			"category": "A",
+			"action": "replace",
+			"reason": "The same atomic retrieval is preserved: Präsens as the basic tense for an Inhaltsangabe, with Perfekt for anteriority.",
+			"academy_slug": "d7-inhaltsangabe-check"
+		},
+		{
+			"de_by_id": "01K4D7N0000000000000000J02",
+			"category": "C",
+			"action": "keep-active",
+			"reason": "The old prompt combines five summary criteria, the TATTE formula and drafting a Basissatz for Borchert's 'Die Kirschen'. No single new item preserves the complete multi-part retrieval."
+		},
+		{
+			"de_by_id": "01K4D7N0000000000000000J03",
+			"category": "A",
+			"action": "replace",
+			"reason": "The same atomic retrieval is preserved: why the ballad is unique as a synthesis of Epik, Lyrik and Dramatik.",
+			"academy_slug": "d7-gattungen-ballade-check"
+		},
+		{
+			"de_by_id": "01K4D7N0000000000000000J04",
+			"category": "C",
+			"action": "keep-active",
+			"reason": "The old prompt combines analysing epic, lyric and dramatic features in 'Erlkönig' and 'John Maynard' with Volksballade vs. Kunstballade. New items separate these aspects."
+		},
+		{
+			"de_by_id": "01K4D7S0000000000000000J01",
+			"category": "A",
+			"action": "replace",
+			"reason": "The same atomic retrieval is preserved: verb-final position of the finite verb in an introduced subordinate clause.",
+			"academy_slug": "d7-satzreihe-satzgefuege-check"
+		},
+		{
+			"de_by_id": "01K4D7S0000000000000000J02",
+			"category": "C",
+			"action": "keep-active",
+			"reason": "The old prompt combines Parataxe/Hypotaxe definitions, ADUSO punctuation rules and parsing two compound sentences. New lessons separate structure, pronominal adverbs and commas."
+		},
+		{
+			"de_by_id": "01K4D7S0000000000000000J03",
+			"category": "C",
+			"action": "keep-active",
+			"reason": "The old prompt tests Konzessivsatz ('obwohl/obgleich/obschon'), whereas Grade 7 LehrplanPLUS 4.2.4 focuses on Kausal-, Temporal-, Modal-, Lokal- and Attributsatz; no identical new card exists."
+		},
+		{
+			"de_by_id": "01K4D7S0000000000000000J04",
+			"category": "C",
+			"action": "keep-active",
+			"reason": "The old prompt requires systematising six adverbial-clause types and classifying three sentences together; the new curriculum splits causal/temporal and modal/local/attributive clauses."
+		},
+		{
+			"de_by_id": "01K4D7S0000000000000000J05",
+			"category": "A",
+			"action": "replace",
+			"reason": "The same atomic retrieval is preserved: the meaningful dieses, jenes oder welches replacement test for 'das'.",
+			"academy_slug": "d7-das-oder-dass-check"
+		},
+		{
+			"de_by_id": "01K4D7S0000000000000000J06",
+			"category": "C",
+			"action": "keep-active",
+			"reason": "The old prompt combines full grammatical explanations of 'das'/'dass' with solving five blanks across two sentences. New items keep the replacement test and punctuation traps separate."
+		}
+	]
+}

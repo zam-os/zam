@@ -1,0 +1,1041 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "zam-academy:nt-gymnasium-7",
+  "version": "2026.11.2",
+  "title": "Natur und Technik 7: Informatik (ZAM Academy)",
+  "description": "36 Abrufkarten in zwölf Lektionen für NT7, Schwerpunkt Informatik (alle Ausbildungsrichtungen des bayerischen Gymnasiums).",
+  "publisher": "ZAM Academy",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/7/nt_gym",
+      "label": "LehrplanPLUS Bayern: Gymnasium, Natur und Technik 7",
+      "checked": "2026-11-20"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01M7XK9E90VS7SR7HHWYRRJEGS",
+      "atom_uri": "urn:zam:atom:01M7XK9E90VS7SR7HHWYRRJEGS",
+      "namespace": "zam-academy-nt-gymnasium-7",
+      "slug": "inf7-hypertext-graph",
+      "title": "Hypertext als Graph",
+      "domain": "informatik/hypertext",
+      "reduction": "formal",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/nt-gymnasium-7/#lesson=inf7-hypertext-graph",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-gymnasium-7",
+          "topic_code": "hypertext",
+          "topic_title": "Vernetzte Informationsstrukturen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "nt_gym",
+          "topic_code": "lb2.1",
+          "topic_title": "Vernetzte Informationsstrukturen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7XK9E91F88PD6S1GD87YSAX",
+          "slug": "inf7-hypertext-graph-klasse",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie heißt der Bauplan, der die gemeinsamen Attribute von einzelnen Verweisen festlegt?",
+          "concept": "Die Klasse",
+          "source_link": "https://academy.zam-os.org/nt-gymnasium-7/#lesson=inf7-hypertext-graph",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Klasse",
+              "Das Attribut"
+            ],
+            "correct_index": 0
+          },
+          "replaces": [
+            "01K4A7C0000000000000000J01"
+          ]
+        },
+        {
+          "id": "01M7XK9E91S6MZPXDMQFCT0F5R",
+          "slug": "inf7-hypertext-graph-zieladresse",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welches Attribut eines Verweises bestimmt, welche Seite geöffnet wird?",
+          "concept": "Die Zieladresse",
+          "source_link": "https://academy.zam-os.org/nt-gymnasium-7/#lesson=inf7-hypertext-graph",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Zieladresse",
+              "Der Linktext"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7XK9E91EDX6EVZ95GWGZ31K",
+          "slug": "inf7-hypertext-graph-rueckweg",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Im Schulwiki gibt es nur die Kanten Start nach Mensa und Mensa nach Speiseplan. Wie kommst du direkt vom Speiseplan zum Start?",
+          "concept": "Ergänze einen Verweis vom Speiseplan zum Start.",
+          "source_link": "https://academy.zam-os.org/nt-gymnasium-7/#lesson=inf7-hypertext-graph",
+          "materiality": "material",
+          "sample_solution": "Der Verweis steht auf der Seite Speiseplan, deshalb beginnt dort die Kante. Als Zieladresse bekommt er die Startseite. Die bestehenden Verweise zeigen nur in die andere Leserichtung."
+        }
+      ]
+    },
+    {
+      "id": "01M7XK9E900K63TD5BGMY4D377",
+      "atom_uri": "urn:zam:atom:01M7XK9E900K63TD5BGMY4D377",
+      "namespace": "zam-academy-nt-gymnasium-7",
+      "slug": "inf7-wiki-editor",
+      "title": "Ein Wiki bearbeiten",
+      "domain": "informatik/hypertext",
+      "reduction": "formal",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/nt-gymnasium-7/#lesson=inf7-wiki-editor",
+      "prerequisites": [
+        {
+          "atom_id": "01M7XK9E90VS7SR7HHWYRRJEGS",
+          "type": "hard"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-gymnasium-7",
+          "topic_code": "hypertext",
+          "topic_title": "Vernetzte Informationsstrukturen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "nt_gym",
+          "topic_code": "lb2.1",
+          "topic_title": "Vernetzte Informationsstrukturen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7XK9E91VCY80S37NDCAAVSB",
+          "slug": "inf7-wiki-editor-linktext",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was sollte der Linktext einer Wiki-Seite verraten?",
+          "concept": "Was dich auf der Zielseite erwartet",
+          "source_link": "https://academy.zam-os.org/nt-gymnasium-7/#lesson=inf7-wiki-editor",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Was dich auf der Zielseite erwartet",
+              "Wie oft die Seite besucht wurde"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7XK9E91SY0K9BRQ074Q8J4F",
+          "slug": "inf7-wiki-editor-nutzung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was klärst du vor der Übernahme eines fremden Bildes?",
+          "concept": "Die Erlaubnis und ihre Bedingungen",
+          "source_link": "https://academy.zam-os.org/nt-gymnasium-7/#lesson=inf7-wiki-editor",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Erlaubnis und ihre Bedingungen",
+              "Nur die Größe des Bildes"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7XK9E913S7T5FF4V8QTG9TG",
+          "slug": "inf7-wiki-editor-freigabe",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Ein Foto ist mit Namens- und Lizenzangabe freigegeben. Welche Angaben schreibst du zu deiner Veröffentlichung dazu?",
+          "concept": "Name, Titel, Fundstelle, Abrufdatum und die verlangte Lizenzangabe",
+          "source_link": "https://academy.zam-os.org/nt-gymnasium-7/#lesson=inf7-wiki-editor",
+          "materiality": "material",
+          "sample_solution": "Die Quellenangabe macht die Fundstelle nachvollziehbar. Hier verlangt die Freigabe zusätzlich den Namen und die Lizenzangabe. Prüfe, ob die Lizenz weitere Angaben verlangt, etwa Änderungen am Bild."
+        }
+      ]
+    },
+    {
+      "id": "01M7XK9E90DFARTF1PFQWYBCBW",
+      "atom_uri": "urn:zam:atom:01M7XK9E90DFARTF1PFQWYBCBW",
+      "namespace": "zam-academy-nt-gymnasium-7",
+      "slug": "inf7-quellen-pruefen",
+      "title": "Suchen und Quellen prüfen",
+      "domain": "informatik/hypertext",
+      "reduction": "formal",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/nt-gymnasium-7/#lesson=inf7-quellen-pruefen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-gymnasium-7",
+          "topic_code": "hypertext",
+          "topic_title": "Vernetzte Informationsstrukturen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "nt_gym",
+          "topic_code": "lb2.1",
+          "topic_title": "Vernetzte Informationsstrukturen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7XK9E91X60QYD8BDSC8VH8J",
+          "slug": "inf7-quellen-pruefen-praezisieren",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Womit kannst du eine Suche nach einem Busfahrplan sinnvoll eingrenzen?",
+          "concept": "Mit Liniennummer, Ort und Zeitraum",
+          "source_link": "https://academy.zam-os.org/nt-gymnasium-7/#lesson=inf7-quellen-pruefen",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Mit Liniennummer, Ort und Zeitraum",
+              "Nur mit dem Namen des Verkehrsunternehmens"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7XK9E91C0NC28EKMEF99T9Z",
+          "slug": "inf7-quellen-pruefen-belege",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was macht einen zweiten Beleg unabhängig?",
+          "concept": "Er geht auf eine eigenständige Quelle zurück.",
+          "source_link": "https://academy.zam-os.org/nt-gymnasium-7/#lesson=inf7-quellen-pruefen",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Er geht auf eine eigenständige Quelle zurück.",
+              "Er wiederholt die erste Fundstelle wortgleich."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7XK9E916EJ81DZQS92FFFGQ",
+          "slug": "inf7-quellen-pruefen-werbung",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Ein Onlineshop verspricht für seine Lampe doppelte Akkulaufzeit. Wie prüfst du die Behauptung?",
+          "concept": "Vergleiche einen unabhängigen Test unter ähnlichen Bedingungen.",
+          "source_link": "https://academy.zam-os.org/nt-gymnasium-7/#lesson=inf7-quellen-pruefen",
+          "materiality": "material",
+          "sample_solution": "Die Verkaufsseite hat ein Eigeninteresse. Suche nach einem Test, der Messdauer, Helligkeit und Akku erklärt. Ein zweiter Shop mit demselben Werbetext liefert keine zusätzliche Untersuchung."
+        }
+      ]
+    },
+    {
+      "id": "01M7XK9E90CP143DA9Z9NX5VZQ",
+      "atom_uri": "urn:zam:atom:01M7XK9E90CP143DA9Z9NX5VZQ",
+      "namespace": "zam-academy-nt-gymnasium-7",
+      "slug": "inf7-client-server",
+      "title": "Eine Webseite abrufen",
+      "domain": "informatik/hypertext",
+      "reduction": "formal",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/nt-gymnasium-7/#lesson=inf7-client-server",
+      "prerequisites": [
+        {
+          "atom_id": "01M7XK9E90VS7SR7HHWYRRJEGS",
+          "type": "hard"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-gymnasium-7",
+          "topic_code": "hypertext",
+          "topic_title": "Vernetzte Informationsstrukturen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "nt_gym",
+          "topic_code": "lb2.1",
+          "topic_title": "Vernetzte Informationsstrukturen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7XK9E917N60494P3YP50XB7",
+          "slug": "inf7-client-server-client",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Rolle hat der Browser beim Abrufen einer Webseite?",
+          "concept": "Client",
+          "source_link": "https://academy.zam-os.org/nt-gymnasium-7/#lesson=inf7-client-server",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Client",
+              "Server"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7XK9E91PAHXB7XQZAF38CST",
+          "slug": "inf7-client-server-router",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welches Gerät leitet Daten zwischen Netzen weiter?",
+          "concept": "Ein Router",
+          "source_link": "https://academy.zam-os.org/nt-gymnasium-7/#lesson=inf7-client-server",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein Router",
+              "Ein Webserver"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7XK9E91MJ2RN5NB3YHZ4SNM",
+          "slug": "inf7-client-server-antwort",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Eine Webanfrage hat den Server erreicht. Erkläre, wie das Dokument zum Browser zurückgelangt.",
+          "concept": "Der Server sendet das Dokument als Antwort zum Client.",
+          "source_link": "https://academy.zam-os.org/nt-gymnasium-7/#lesson=inf7-client-server",
+          "materiality": "material",
+          "sample_solution": "Der Server sucht das angefragte Dokument und schickt es in der Antwort zurück. Deren Daten können mehrere Router passieren. Beim Client setzt der Browser die empfangenen Daten zur sichtbaren Seite zusammen."
+        }
+      ]
+    },
+    {
+      "id": "01M7XK9E902Q5E1GZPMQ226EYF",
+      "atom_uri": "urn:zam:atom:01M7XK9E902Q5E1GZPMQ226EYF",
+      "namespace": "zam-academy-nt-gymnasium-7",
+      "slug": "inf7-digitale-kommunikation",
+      "title": "Vom Klassenchat bis zur E-Mail",
+      "domain": "informatik/kommunikation",
+      "reduction": "formal",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/nt-gymnasium-7/#lesson=inf7-digitale-kommunikation",
+      "prerequisites": [
+        {
+          "atom_id": "01M7XK9E90DFARTF1PFQWYBCBW",
+          "type": "hard"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-gymnasium-7",
+          "topic_code": "kommunikation",
+          "topic_title": "Chancen und Risiken digitaler Kommunikation"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "nt_gym",
+          "topic_code": "lb2.2",
+          "topic_title": "Chancen und Risiken digitaler Kommunikation",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7XK9E912G4KKXWZ0GB89V1D",
+          "slug": "inf7-digitale-kommunikation-reichweite",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Warum erhöht ein öffentlicher Beitrag die Reichweite gegenüber einer direkten Nachricht?",
+          "concept": "Auch Unbeteiligte können ihn sehen oder weiterleiten.",
+          "source_link": "https://academy.zam-os.org/nt-gymnasium-7/#lesson=inf7-digitale-kommunikation",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Auch Unbeteiligte können ihn sehen oder weiterleiten.",
+              "Er wird automatisch nach einer Minute gelöscht."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7XK9E91PZM6D3B7BPP5B87K",
+          "slug": "inf7-digitale-kommunikation-mobbing",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was ist ein sinnvoller erster Schritt bei wiederholten Beleidigungen im Klassenchat?",
+          "concept": "Unterstützung holen und den Vorfall melden.",
+          "source_link": "https://academy.zam-os.org/nt-gymnasium-7/#lesson=inf7-digitale-kommunikation",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Unterstützung holen und den Vorfall melden.",
+              "Die beleidigenden Nachrichten weiterleiten."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7XK9E91B3WSDRYV3KHS6RS1",
+          "slug": "inf7-digitale-kommunikation-kanal",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Eine feste Gruppe muss kurzfristig etwas intern abstimmen. Welcher freigegebene Kanal passt und warum?",
+          "concept": "Ein geschlossener Gruppenchat ermöglicht schnelle Antworten im vorgesehenen Empfängerkreis.",
+          "source_link": "https://academy.zam-os.org/nt-gymnasium-7/#lesson=inf7-digitale-kommunikation",
+          "materiality": "material",
+          "sample_solution": "Im geschlossenen Gruppenchat erreicht die Nachricht die beteiligten Personen. Sie können sofort aufeinander antworten. Ein öffentlicher Beitrag würde auch Menschen erreichen, die zur Abstimmung nichts beitragen können."
+        }
+      ]
+    },
+    {
+      "id": "01M7XK9E90GCPG0CCDCEYSCHEV",
+      "atom_uri": "urn:zam:atom:01M7XK9E90GCPG0CCDCEYSCHEV",
+      "namespace": "zam-academy-nt-gymnasium-7",
+      "slug": "inf7-datenschutz-sicherheit",
+      "title": "Bilder, Daten und Konten schützen",
+      "domain": "informatik/kommunikation",
+      "reduction": "formal",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/nt-gymnasium-7/#lesson=inf7-datenschutz-sicherheit",
+      "prerequisites": [
+        {
+          "atom_id": "01M7XK9E902Q5E1GZPMQ226EYF",
+          "type": "hard"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-gymnasium-7",
+          "topic_code": "kommunikation",
+          "topic_title": "Chancen und Risiken digitaler Kommunikation"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "nt_gym",
+          "topic_code": "lb2.2",
+          "topic_title": "Chancen und Risiken digitaler Kommunikation",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7XK9E91XJ6SJQPW6YKN912F",
+          "slug": "inf7-datenschutz-sicherheit-personenbezug",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Woran erkennst du personenbezogene Daten?",
+          "concept": "Sie beziehen sich auf eine identifizierbare Person.",
+          "source_link": "https://academy.zam-os.org/nt-gymnasium-7/#lesson=inf7-datenschutz-sicherheit",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie beziehen sich auf eine identifizierbare Person.",
+              "Sie beziehen sich nur auf Gegenstände."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7XK9E91PX3WG6EPGC4F1SGA",
+          "slug": "inf7-datenschutz-sicherheit-firewall",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was macht eine Firewall?",
+          "concept": "Sie filtert Netzwerkverkehr nach Regeln.",
+          "source_link": "https://academy.zam-os.org/nt-gymnasium-7/#lesson=inf7-datenschutz-sicherheit",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie filtert Netzwerkverkehr nach Regeln.",
+              "Sie vergibt für jedes Konto ein neues Passwort."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7XK9E912VC3KC43M8SNGCEC",
+          "slug": "inf7-datenschutz-sicherheit-absender",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Ein neues Profil der Schul-IT fordert dich im Chat zur Eingabe deines Passworts auf. Wie reagierst du?",
+          "concept": "Gib das Passwort nicht ein und prüfe die Aufforderung über einen bekannten Schulkanal.",
+          "source_link": "https://academy.zam-os.org/nt-gymnasium-7/#lesson=inf7-datenschutz-sicherheit",
+          "materiality": "material",
+          "sample_solution": "Ein Profilname beweist die Identität nicht. Öffne den Dienst über den vertrauten Einstieg oder frage über die vertraute Adresse der Schule nach. So prüfst du die Anfrage unabhängig vom verdächtigen Profil."
+        }
+      ]
+    },
+    {
+      "id": "01M7XK9E91EM80JG7Z3PPMHABZ",
+      "atom_uri": "urn:zam:atom:01M7XK9E91EM80JG7Z3PPMHABZ",
+      "namespace": "zam-academy-nt-gymnasium-7",
+      "slug": "inf7-sequenz",
+      "title": "Anweisung und Sequenz",
+      "domain": "informatik/algorithmen",
+      "reduction": "formal",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/nt-gymnasium-7/#lesson=inf7-sequenz",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-gymnasium-7",
+          "topic_code": "algorithmen",
+          "topic_title": "Beschreibung von Abläufen durch Algorithmen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "nt_gym",
+          "topic_code": "lb2.3",
+          "topic_title": "Beschreibung von Abläufen durch Algorithmen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7XK9E91MGERSC1871A6Q75P",
+          "slug": "inf7-sequenz-anweisung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie heißt ein einzelner ausführbarer Schritt in einem Algorithmus?",
+          "concept": "Anweisung",
+          "source_link": "https://academy.zam-os.org/nt-gymnasium-7/#lesson=inf7-sequenz",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Anweisung",
+              "Schleife"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7XK9E91HJN1MNM8GJZHZBT1",
+          "slug": "inf7-sequenz-reihenfolge",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was legt eine Sequenz für mehrere Anweisungen fest?",
+          "concept": "Die Reihenfolge ihrer Ausführung",
+          "source_link": "https://academy.zam-os.org/nt-gymnasium-7/#lesson=inf7-sequenz",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Reihenfolge ihrer Ausführung",
+              "Ihre gleichzeitige Ausführung"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7XK9E91MVB8EZEXRAEJYV8W",
+          "slug": "inf7-sequenz-zustand",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Der Roboter startet an einer Wand direkt oberhalb. Das Ziel liegt ein Feld rechts und eines höher. Wie erreicht er es?",
+          "concept": "Zuerst ein Feld nach rechts, danach ein Feld nach oben.",
+          "source_link": "https://academy.zam-os.org/nt-gymnasium-7/#lesson=inf7-sequenz",
+          "materiality": "material",
+          "sample_solution": "Ein erster Schritt nach oben scheitert an der Wand. Nach der Rechtsbewegung steht der Roboter in der Nachbarspalte. Erst von dort ist die Bewegung nach oben zur Zielkachel möglich."
+        }
+      ]
+    },
+    {
+      "id": "01M7XK9E91MR8661QCXKP0ATRE",
+      "atom_uri": "urn:zam:atom:01M7XK9E91MR8661QCXKP0ATRE",
+      "namespace": "zam-academy-nt-gymnasium-7",
+      "slug": "inf7-verzweigung",
+      "title": "Wenn, dann und sonst",
+      "domain": "informatik/algorithmen",
+      "reduction": "formal",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/nt-gymnasium-7/#lesson=inf7-verzweigung",
+      "prerequisites": [
+        {
+          "atom_id": "01M7XK9E91EM80JG7Z3PPMHABZ",
+          "type": "hard"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-gymnasium-7",
+          "topic_code": "algorithmen",
+          "topic_title": "Beschreibung von Abläufen durch Algorithmen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "nt_gym",
+          "topic_code": "lb2.3",
+          "topic_title": "Beschreibung von Abläufen durch Algorithmen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7XK9E9195CNDJRK203VAVJ7",
+          "slug": "inf7-verzweigung-wahr",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wann läuft der Dann-Zweig einer bedingten Anweisung?",
+          "concept": "Bei wahrer Bedingung",
+          "source_link": "https://academy.zam-os.org/nt-gymnasium-7/#lesson=inf7-verzweigung",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Bei wahrer Bedingung",
+              "Bei falscher Bedingung"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7XK9E91H22C49SPAQF98KDK",
+          "slug": "inf7-verzweigung-sonst",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was geschieht bei falscher Bedingung in einer einseitigen Verzweigung?",
+          "concept": "Der Dann-Zweig wird übersprungen.",
+          "source_link": "https://academy.zam-os.org/nt-gymnasium-7/#lesson=inf7-verzweigung",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Dann-Zweig wird übersprungen.",
+              "Der Dann-Zweig läuft einmal."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7XK9E91PX13HJ75PX76X43X",
+          "slug": "inf7-verzweigung-testfaelle",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Wie testest du beide Zweige eines Programms, das bei freiem Platz grün leuchtet und sonst rot?",
+          "concept": "Teste einen Fall mit freiem Platz und einen Fall ohne freien Platz.",
+          "source_link": "https://academy.zam-os.org/nt-gymnasium-7/#lesson=inf7-verzweigung",
+          "materiality": "material",
+          "sample_solution": "Im ersten Test ist die Bedingung freier Platz wahr, die Anzeige muss grün sein. Im zweiten Test ist sie falsch, also muss der Sonst-Zweig die Anzeige auf rot setzen."
+        }
+      ]
+    },
+    {
+      "id": "01M7XK9E91114REQATNS4ZFDFQ",
+      "atom_uri": "urn:zam:atom:01M7XK9E91114REQATNS4ZFDFQ",
+      "namespace": "zam-academy-nt-gymnasium-7",
+      "slug": "inf7-feste-schleife",
+      "title": "Wiederholen mit fester Anzahl",
+      "domain": "informatik/algorithmen",
+      "reduction": "formal",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/nt-gymnasium-7/#lesson=inf7-feste-schleife",
+      "prerequisites": [
+        {
+          "atom_id": "01M7XK9E91EM80JG7Z3PPMHABZ",
+          "type": "hard"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-gymnasium-7",
+          "topic_code": "algorithmen",
+          "topic_title": "Beschreibung von Abläufen durch Algorithmen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "nt_gym",
+          "topic_code": "lb2.3",
+          "topic_title": "Beschreibung von Abläufen durch Algorithmen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7XK9E91Q194G8CABK49NV93",
+          "slug": "inf7-feste-schleife-anzahl",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wann passt eine Wiederholung mit fester Anzahl?",
+          "concept": "Wenn die Zahl der Durchläufe vorab feststeht.",
+          "source_link": "https://academy.zam-os.org/nt-gymnasium-7/#lesson=inf7-feste-schleife",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Wenn die Zahl der Durchläufe vorab feststeht.",
+              "Wenn erst ein wechselndes Ereignis das Ende festlegt."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7XK9E919R9HQM13092P2SVH",
+          "slug": "inf7-feste-schleife-block",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Anweisungen werden in einer Zählschleife wiederholt?",
+          "concept": "Alle Anweisungen im Schleifenblock",
+          "source_link": "https://academy.zam-os.org/nt-gymnasium-7/#lesson=inf7-feste-schleife",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Alle Anweisungen im Schleifenblock",
+              "Alle Anweisungen nach dem Schleifenblock"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7XK9E91E5BQ0E6YDFS6BHJ2",
+          "slug": "inf7-feste-schleife-ausgabe",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Ein Roboter soll drei Schritte laufen und am Ende einmal blinken. Wo steht der Blinkbefehl?",
+          "concept": "Nach der Schleife, außerhalb des Schleifenblocks",
+          "source_link": "https://academy.zam-os.org/nt-gymnasium-7/#lesson=inf7-feste-schleife",
+          "materiality": "material",
+          "sample_solution": "Wiederhole den Bewegungsblock dreimal. Der Blinkbefehl folgt erst nach diesen drei Durchläufen. Stünde er im Block, würde der Roboter nach jedem einzelnen Schritt blinken."
+        }
+      ]
+    },
+    {
+      "id": "01M7XK9E91760QPXW7EA5Y9PFR",
+      "atom_uri": "urn:zam:atom:01M7XK9E91760QPXW7EA5Y9PFR",
+      "namespace": "zam-academy-nt-gymnasium-7",
+      "slug": "inf7-bedingte-schleife",
+      "title": "Wiederholen mit Bedingung",
+      "domain": "informatik/algorithmen",
+      "reduction": "formal",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/nt-gymnasium-7/#lesson=inf7-bedingte-schleife",
+      "prerequisites": [
+        {
+          "atom_id": "01M7XK9E91MR8661QCXKP0ATRE",
+          "type": "hard"
+        },
+        {
+          "atom_id": "01M7XK9E91114REQATNS4ZFDFQ",
+          "type": "hard"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-gymnasium-7",
+          "topic_code": "algorithmen",
+          "topic_title": "Beschreibung von Abläufen durch Algorithmen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "nt_gym",
+          "topic_code": "lb2.3",
+          "topic_title": "Beschreibung von Abläufen durch Algorithmen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7XK9E911VRNNFXN3B3ZP5DM",
+          "slug": "inf7-bedingte-schleife-pruefung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wann prüft eine SOLANGE-Schleife ihre Bedingung?",
+          "concept": "Vor jedem Durchlauf",
+          "source_link": "https://academy.zam-os.org/nt-gymnasium-7/#lesson=inf7-bedingte-schleife",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Vor jedem Durchlauf",
+              "Nur nach dem letzten Durchlauf"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7XK9E919KSEDC0X93JCXKHM",
+          "slug": "inf7-bedingte-schleife-null",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie oft läuft der Block, wenn die Bedingung schon beim Start falsch ist?",
+          "concept": "Keinmal",
+          "source_link": "https://academy.zam-os.org/nt-gymnasium-7/#lesson=inf7-bedingte-schleife",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Keinmal",
+              "Genau einmal"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7XK9E91EHQAFYHVT3P43RCJ",
+          "slug": "inf7-bedingte-schleife-ende",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Die Bedingung lautet: Solange der Stapel nicht leer ist. Im Block schaust du nur auf die oberste Karte. Was macht die Schleife endbar?",
+          "concept": "Entferne in jedem Durchlauf die betrachtete oberste Karte.",
+          "source_link": "https://academy.zam-os.org/nt-gymnasium-7/#lesson=inf7-bedingte-schleife",
+          "materiality": "material",
+          "sample_solution": "Die Prüfung bleibt wahr, solange Karten auf dem Stapel liegen. Durch das Entfernen sinkt die Anzahl nach jedem Durchlauf. Sobald keine Karte mehr liegt, ist die Bedingung falsch."
+        }
+      ]
+    },
+    {
+      "id": "01M7XK9E91MVQFM7ZHQQYWHW0M",
+      "atom_uri": "urn:zam:atom:01M7XK9E91MVQFM7ZHQQYWHW0M",
+      "namespace": "zam-academy-nt-gymnasium-7",
+      "slug": "inf7-projekt-planen",
+      "title": "Ein Versuchs-Wiki planen",
+      "domain": "informatik/projekt",
+      "reduction": "formal",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/nt-gymnasium-7/#lesson=inf7-projekt-planen",
+      "prerequisites": [
+        {
+          "atom_id": "01M7XK9E900K63TD5BGMY4D377",
+          "type": "hard"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-gymnasium-7",
+          "topic_code": "projekt",
+          "topic_title": "Projekt"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "nt_gym",
+          "topic_code": "lb2.4",
+          "topic_title": "Projekt",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7XK9E91NQYH1ZA6FP6X8YHP",
+          "slug": "inf7-projekt-planen-meilenstein",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was macht einen Meilenstein überprüfbar?",
+          "concept": "Ein konkretes Ergebnis zu einem festen Zeitpunkt",
+          "source_link": "https://academy.zam-os.org/nt-gymnasium-7/#lesson=inf7-projekt-planen",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein konkretes Ergebnis zu einem festen Zeitpunkt",
+              "Ein unverbindlicher Wunsch ohne Termin"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7XK9E91WX17BBXKHGP7NFY3",
+          "slug": "inf7-projekt-planen-uebergabe",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Angaben braucht die Person, die Links im Team-Wiki setzt?",
+          "concept": "Die Ausgangsseiten und die vorgesehenen Zielseiten",
+          "source_link": "https://academy.zam-os.org/nt-gymnasium-7/#lesson=inf7-projekt-planen",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Ausgangsseiten und die vorgesehenen Zielseiten",
+              "Die fertigen Seitentexte ohne geplante Linkziele"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7XK9E912GMKBSBW2WS3MQ54",
+          "slug": "inf7-projekt-planen-zeit",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Warum sollte ein Team bei einem zeitlich begrenzten Wiki-Projekt für Entwurf, Umsetzung und Test eigene Zeitfenster einplanen?",
+          "concept": "Die Zeitfenster machen Übergaben überprüfbar und lassen Zeit, Fehler vor der Abgabe zu korrigieren.",
+          "source_link": "https://academy.zam-os.org/nt-gymnasium-7/#lesson=inf7-projekt-planen",
+          "materiality": "material",
+          "sample_solution": "Der Entwurf legt Seiten und Verweise fest. Die Umsetzung braucht diesen Plan, und die Funktionsprüfung braucht die umgesetzten Seiten. Reservierte Testzeit stellt sicher, dass das Team gefundene Fehler vor der Abgabe beheben kann."
+        }
+      ]
+    },
+    {
+      "id": "01M7XK9E918S94JHWQ9FKAH367",
+      "atom_uri": "urn:zam:atom:01M7XK9E918S94JHWQ9FKAH367",
+      "namespace": "zam-academy-nt-gymnasium-7",
+      "slug": "inf7-projekt-sichern",
+      "title": "Zwischenstände sichern und testen",
+      "domain": "informatik/projekt",
+      "reduction": "formal",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/nt-gymnasium-7/#lesson=inf7-projekt-sichern",
+      "prerequisites": [
+        {
+          "atom_id": "01M7XK9E91MVQFM7ZHQQYWHW0M",
+          "type": "hard"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-gymnasium-7",
+          "topic_code": "projekt",
+          "topic_title": "Projekt"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "nt_gym",
+          "topic_code": "lb2.4",
+          "topic_title": "Projekt",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7XK9E9167TC8TX2W4HD4V41",
+          "slug": "inf7-projekt-sichern-version",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Warum speicherst du einen Zwischenstand mit einer eigenen Versionsnummer?",
+          "concept": "Die Fassung lässt sich eindeutig wiederfinden und öffnen.",
+          "source_link": "https://academy.zam-os.org/nt-gymnasium-7/#lesson=inf7-projekt-sichern",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Fassung lässt sich eindeutig wiederfinden und öffnen.",
+              "Die Datei ändert automatisch alle alten Fassungen mit."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7XK9E91FPQKDTQB1YQSGZT4",
+          "slug": "inf7-projekt-sichern-testen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Angaben zeigen, ob ein Linktest bestanden ist?",
+          "concept": "Das erwartete und das beobachtete Ziel",
+          "source_link": "https://academy.zam-os.org/nt-gymnasium-7/#lesson=inf7-projekt-sichern",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Das erwartete und das beobachtete Ziel",
+              "Die Schriftart und die Farbe des Links"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7XK9E91JN9X8XDNYGF96867",
+          "slug": "inf7-projekt-sichern-vergleich",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "In v2 öffnet der Link zur Erklärung fälschlich den Aufbau. Wie hilft dir v1, wenn dort der Verweis funktionierte?",
+          "concept": "Vergleiche die Zieladresse in v1 und v2 und überprüfe die Korrektur erneut.",
+          "source_link": "https://academy.zam-os.org/nt-gymnasium-7/#lesson=inf7-projekt-sichern",
+          "materiality": "material",
+          "sample_solution": "Öffne beide Zwischenstände und vergleiche denselben Verweis. Korrigiere seine Zieladresse in einer neuen Fassung. Führe den Linktest erneut aus und dokumentiere Ergebnis und Versionsnummer."
+        }
+      ]
+    }
+  ]
+}

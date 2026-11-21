@@ -8,7 +8,7 @@ tags:
   - tokens
   - cards
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/token-card-model.md"
-timestamp: 2026-11-19T06:00:00Z
+timestamp: 2026-11-21T08:43:00Z
 ---
 
 ZAM's published central-learning model separates five objects:
@@ -611,32 +611,27 @@ pointed at the retired item are removed so it cannot block a learner who
 never reviewed it.
 
 Mathematik, Deutsch and Heimat- und Sachunterricht 4 Grundschule are bundled as
-Academy cells while their apps are public previews: primary-teacher review and
-teacher videos are open. Their competences are practised in part or with
-unreviewed depth: Mathematik and HSU map every competence to a lesson or station,
-and Deutsch practises 69 of 116 in the app and leaves 47 to practice outside it,
-and rates no free text. The versions are 2026.11.16 (43 atoms, 159 items),
-2026.11.6 (45 atoms, 135 items) and 2026.11.5 (20 atoms, 61 items). They
-bind their Academy stations and, also under the provider `zam-academy`, their
-school place (`grundschule`, grade 4, plain subject), not `lehrplanplus-bayern`.
-The Schule lens therefore shows them under "4. Klasse". A Grundschule grade
-carries no school-type name and does not count as a second school type. The
-island offers these three cells and each subject its own, without the generic
-import. A binding with neither school type nor grade names no school place, so
-no school place offers it; such an atom stays outside the curriculum, under its
-subject and stage. The school curriculum path for Grundschule 4 does not offer
-the cells and keeps its generic import, so an unfinished preview does not stand
-in for the whole subject.
-ZAM has no earlier Grundschule cell, so they declare neither `replaces` nor
-`retired_items`, and enrolling creates only unlearned cards.
+Academy cells. Mathematik and HSU map every competence to a lesson or station.
+Deutsch practises 69 of 116 competences in the app and leaves 47 to practice
+outside it. The versions are 2026.11.16 (43 atoms, 159 items), 2026.11.6
+(45 atoms, 135 items) and 2026.11.5 (20 atoms, 61 items). They bind their
+Academy stations and their school place (`grundschule`, grade 4, plain subject)
+under the provider `zam-academy`. The Schule lens shows them under "4. Klasse".
+A Grundschule grade carries no school-type name and does not count as a second
+school type. The island offers these three cells and each subject offers its
+own. A binding without a school type or grade places its atom under its Academy
+subject and stage. The LehrplanPLUS curriculum path keeps its generic import
+because the Academy bindings belong to a different provider. ZAM has no earlier
+Grundschule cell, so enrolling creates only unlearned cards.
 
-A preview is marked `preview: true` in the Academy catalog. A cell file does not
-say so and is copied byte for byte, so `npm run academy:sync` records the flag in
-`zam-academy-cells.lock.json`, and bundled cells read it from there. Studio and
-Mobile label such a cell („Vorschau · noch nicht von einer Lehrkraft geprüft“)
-everywhere they list one: the Academy list, the atlas import dialog, the curriculum
-offer and the active learning paths. The Academy list shows the label if the catalog
-or the bundle says preview, so it ends with the next sync after the catalog lifts it.
+The Academy retired its separate preview status in November 2026 and records
+teacher acceptance through the app's package version. Release 0.67.0 no longer
+marks the nine former previews in its bundle. For compatibility with catalogs
+that carry `preview: true`, the sync still copies that flag into
+`zam-academy-cells.lock.json`. Studio and Mobile use the flag when they list a
+preview. The Academy list also honours the flag from the catalog, including a
+previously cached copy until the next successful refresh.
+[Academy package version policy](https://github.com/zam-os/zam-academy/pull/148)
 
 Nine Academy cells joined in November 2026: Mathematik 5, 6, 11, 12 and 13
 Gymnasium, the first Gymnasium cells; Mathematik 5 and 6 and Englisch 5
@@ -737,6 +732,15 @@ Academy successors when learners take the new cells. Existing keep-active
 cards retain their IDs and history. German Grade 6 Gymnasium has no
 matching legacy school cell. The Grade 7 German syntax, English and
 Realschule geography school cells stay available at their grade.
+
+Release 0.67.0 bundles 93 Academy cells. It adds Biologie 7 and Deutsch 7
+Realschule, Französisch 6 and both Natur und Technik 7 focuses in Gymnasium,
+and five Mittelschule courses (Englisch 6, Informatik 6, Politik und
+Gesellschaft 6 and 7, and Natur und Technik 7). The approved mappings move
+eleven practice-item review histories when learners take the new cells. The
+other mapped cards retain their IDs and histories. The Physik 7 Gymnasium
+mapping keeps all eight legacy cards active. All source school cells remain
+bundled.
 
 Different cells may reuse the same atom and some of the same practice items.
 Installation status therefore checks every declared atom and item id, while

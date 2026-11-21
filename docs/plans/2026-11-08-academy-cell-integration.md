@@ -9,11 +9,9 @@ Academy authors follow is `AGENTS.md` in `zam-os/zam-academy`.
 
 ## Where it stands
 
-ZAM 0.66.0 bundles 83 Academy cells and 127 active `de-by:` school cells.
-Fourteen superseded school cells move to the legacy snapshot directory.
-The archive includes Grade 5 German and Grade 6 Biology, English and History
-in Gymnasium, plus Grade 6 German, English, Geography and History and Grade 7
-Physics in Realschule. There are 96 legacy school-cell snapshots.
+ZAM 0.67.0 bundles 93 Academy cells and 127 active `de-by:` school cells.
+There are 96 legacy school-cell snapshots. The Academy catalog dropped the
+preview flag, so the bundle no longer marks the nine former previews.
 
 ## One integration round
 
@@ -72,8 +70,14 @@ cell by itself.
 - [x] Integrate ten Academy cells and move fourteen superseded school cells to
   legacy in 0.66.0. The Grade 7 German syntax, English and Geography school
   cells stay active.
+- [x] Integrate ten Academy cells in 0.67.0. The mappings for Biologie 7
+  Realschule, Deutsch 7 Realschule, Französisch 6 Gymnasium and Natur und
+  Technik 7 Gymnasium (Informatik) transfer eleven approved review histories.
+  Their source cells and the source cells considered for Physik 7 Gymnasium
+  stay active.
 - [ ] Physik 10/11 Gymnasium (`physik-gymnasium-11`, `keine Stilllegung` decided) and Biologie 11 Gymnasium (`biologie-gymnasium-11` is `einfuehrungsklasse` under `isb-bayern-einfuehrungsklasse`): their 5 + 2 `de-by:` cells deliberately stay bundled and active.
-- [ ] Review preview status and next open upstream apps in `zam-os/zam-academy` (including lifting preview on `nt-mittelschule-6`, `biologie-realschule-6`, `geographie-realschule-5`, `deutsch-realschule-5`, `biologie-gymnasium-11`, and the Grundschule 4 / Mathematik 13 cells when teacher-reviewed).
+- [x] Sync the withdrawn preview flags. The Academy now records teacher
+  acceptance through its package versions.
 - [ ] Continue replacing the 127 active `de-by:` school cells (111 Gymnasium,
   15 Realschule, 1 BOS). In Gymnasium grades 5 and 6, the active school cells
   cover English 5 and Geography and Informatics 6. Realschule's remaining

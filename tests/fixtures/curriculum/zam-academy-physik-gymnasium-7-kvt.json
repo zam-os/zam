@@ -1,0 +1,1848 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "zam-academy:physik-gymnasium-7",
+  "version": "2026.11.1",
+  "title": "Physik 7 Gymnasium (ZAM Academy)",
+  "description": "Hält fest, was du in der ZAM Academy zu Physik 7 am Gymnasium Bayern geübt hast (Natur und Technik 7, Schwerpunkt Physik, LehrplanPLUS): Beobachten und Deuten, Magnete und Erdmagnetfeld, Dichte, Licht, Farben, Schatten, Mondphasen und Finsternisse, Ladung, Strom und Schaltungen. Jede Karte verlinkt die Lektion mit Modell und Aufgaben.",
+  "publisher": "ZAM Academy",
+  "published_at": "2026-11-20T12:00:00Z",
+  "sources": [
+    {
+      "uri": "https://academy.zam-os.org/physik-gymnasium-7/",
+      "checked": "2026-11-20",
+      "label": "ZAM Academy · Physik 7 Gymnasium"
+    },
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/7/nt_gym",
+      "checked": "2026-11-20",
+      "label": "LehrplanPLUS · Natur und Technik 7 Gymnasium, Lernbereich 1"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01M7X4M7AN2P6X1AVB5S73EWX2",
+      "atom_uri": "urn:zam:atom:01M7X4M7AN2P6X1AVB5S73EWX2",
+      "namespace": "zam-academy-physik-gymnasium-7",
+      "slug": "ph7g-beobachten",
+      "title": "Beobachten, beschreiben, deuten",
+      "domain": "physik/methoden",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=beobachten",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-gymnasium-7",
+          "topic_code": "lb1.1",
+          "topic_title": "Ein erster Blick auf die physikalischen Spielregeln der Natur"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "nt_gym",
+          "exam_relevant": false,
+          "topic_code": "lb1.1",
+          "topic_title": "Ein erster Blick auf die physikalischen Spielregeln der Natur"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7X4M7AP16PSJKKNK6XNPRNY",
+          "slug": "ph7g-beobachtung-deutung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=beobachten",
+          "question": "Beschreibt eine Beobachtung, was du siehst, oder erklärt sie, warum etwas passiert?",
+          "concept": "Sie beschreibt nur, was du siehst oder misst.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie beschreibt nur, was du siehst oder misst.",
+              "Sie erklärt, warum es passiert."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7X4M7AQ5P20Q2NMK8AKSZ2P",
+          "slug": "ph7g-flacher-lichteinfall",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=beobachten",
+          "question": "Wie verändert sich ein Lichtfleck, wenn dasselbe Lichtbündel flacher auf eine Fläche fällt?",
+          "concept": "Er wird größer und dunkler.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Er wird größer und dunkler.",
+              "Er wird kleiner und heller."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7X4M7AREV4V9HCNFW07FB69",
+          "slug": "ph7g-modellversuch-jahreszeiten",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=beobachten",
+          "question": "Erkläre mit dem Modellversuch Taschenlampe und Papier, warum es in Bayern im Winter kälter ist als im Sommer.",
+          "concept": "Flacher Einfall verteilt dieselbe Strahlung auf mehr Fläche.",
+          "materiality": "material",
+          "sample_solution": "Im Modellversuch wird der Lichtfleck bei flachem Einfall länger und dunkler, weil sich dasselbe Lichtbündel auf eine größere Fläche verteilt. Im Winter steht die Sonne mittags in München nur etwa 18° hoch, im Sommer etwa 65°. Im Winter bekommt deshalb jeder Quadratmeter Boden viel weniger Strahlung."
+        }
+      ]
+    },
+    {
+      "id": "01M7X4M7AST7S1Z6D1EG3BPJM9",
+      "atom_uri": "urn:zam:atom:01M7X4M7AST7S1Z6D1EG3BPJM9",
+      "namespace": "zam-academy-physik-gymnasium-7",
+      "slug": "ph7g-magnete",
+      "title": "Eigenschaften von Dauermagneten",
+      "domain": "physik/magnetismus",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=magnete",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-gymnasium-7",
+          "topic_code": "lb1.1",
+          "topic_title": "Ein erster Blick auf die physikalischen Spielregeln der Natur"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "nt_gym",
+          "exam_relevant": false,
+          "topic_code": "lb1.1",
+          "topic_title": "Ein erster Blick auf die physikalischen Spielregeln der Natur"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7X4M7ATTGFNN3E1X9FXAXE7",
+          "slug": "ph7g-pole-regel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=magnete",
+          "question": "Was passiert, wenn sich zwei gleichnamige Magnetpole gegenüberstehen?",
+          "concept": "Sie stoßen sich ab.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie stoßen sich ab.",
+              "Sie ziehen sich an."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7X4M7AV3WQZ9QD9FGGCT1ZE",
+          "slug": "ph7g-magnetische-stoffe",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=magnete",
+          "question": "Welche drei Metalle werden von einem Magneten angezogen?",
+          "concept": "Eisen, Nickel und Kobalt",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eisen, Nickel und Kobalt",
+              "Eisen, Kupfer und Aluminium"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7X4M7AWY6EV6QGR1Q35TF6B",
+          "slug": "ph7g-cent-muenze",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=magnete",
+          "question": "Eine Zwei-Cent-Münze haftet am Magneten, eine Zwanzig-Cent-Münze nicht. Erkläre das.",
+          "concept": "Nur die Zwei-Cent-Münze enthält Stahl, also Eisen.",
+          "materiality": "material",
+          "sample_solution": "Die Ein-, Zwei- und Fünf-Cent-Münzen bestehen innen aus Stahl, der vor allem Eisen enthält, und sind nur dünn mit Kupfer überzogen. Eisen wird angezogen. Die Zwanzig-Cent-Münze besteht aus einer Kupferlegierung ohne Eisen; sie ist ein Metall, aber nicht magnetisch."
+        }
+      ]
+    },
+    {
+      "id": "01M7X4M7AX75G6MC0M7M5R1VQN",
+      "atom_uri": "urn:zam:atom:01M7X4M7AX75G6MC0M7M5R1VQN",
+      "namespace": "zam-academy-physik-gymnasium-7",
+      "slug": "ph7g-elementarmagnete",
+      "title": "Das Modell der Elementarmagnete",
+      "domain": "physik/magnetismus",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=elementarmagnete",
+      "prerequisites": [
+        {
+          "atom_id": "01M7X4M7AST7S1Z6D1EG3BPJM9"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-gymnasium-7",
+          "topic_code": "lb1.1",
+          "topic_title": "Ein erster Blick auf die physikalischen Spielregeln der Natur"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "nt_gym",
+          "exam_relevant": false,
+          "topic_code": "lb1.1",
+          "topic_title": "Ein erster Blick auf die physikalischen Spielregeln der Natur"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7X4M7AYY9T6828SST8W0956",
+          "slug": "ph7g-magnetisieren",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=elementarmagnete",
+          "question": "Was geschieht im Modell der Elementarmagnete, wenn eine Stahlnadel magnetisiert wird?",
+          "concept": "Die Elementarmagnete richten sich gleich aus.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Elementarmagnete richten sich gleich aus.",
+              "Es entstehen neue Elementarmagnete."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7X4M7AZJGVH8E37ER01CB8V",
+          "slug": "ph7g-entmagnetisieren",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=elementarmagnete",
+          "question": "Wodurch verliert eine magnetisierte Stahlnadel ihre Magnetwirkung?",
+          "concept": "durch starkes Erhitzen oder kräftige Schläge",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "durch starkes Erhitzen oder kräftige Schläge",
+              "durch Abkühlen im Kühlschrank"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7X4M7B0C8F579BGPEAK3EV0",
+          "slug": "ph7g-magnet-teilen",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=elementarmagnete",
+          "question": "Ein Stabmagnet wird in der Mitte geteilt. Was entsteht, und wie erklärt das Modell der Elementarmagnete das?",
+          "concept": "Zwei vollständige Magnete mit je Nord- und Südpol.",
+          "materiality": "material",
+          "sample_solution": "Es entstehen zwei Magnete mit je einem Nord- und einem Südpol. Im Modell bleiben die Elementarmagnete auch an der Schnittstelle geordnet; ihre Enden bilden dort einen neuen Nord- und einen neuen Südpol. Einzelne Pole gibt es nicht."
+        }
+      ]
+    },
+    {
+      "id": "01M7X4M7B1VPKQVH51BGHS6PNG",
+      "atom_uri": "urn:zam:atom:01M7X4M7B1VPKQVH51BGHS6PNG",
+      "namespace": "zam-academy-physik-gymnasium-7",
+      "slug": "ph7g-erdmagnetfeld",
+      "title": "Orientierung mit dem Erdmagnetfeld",
+      "domain": "physik/magnetismus",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=erdmagnetfeld",
+      "prerequisites": [
+        {
+          "atom_id": "01M7X4M7AST7S1Z6D1EG3BPJM9"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-gymnasium-7",
+          "topic_code": "lb1.1",
+          "topic_title": "Ein erster Blick auf die physikalischen Spielregeln der Natur"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "nt_gym",
+          "exam_relevant": false,
+          "topic_code": "lb1.1",
+          "topic_title": "Ein erster Blick auf die physikalischen Spielregeln der Natur"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7X4M7B2QE4J72HC34MM1KK2",
+          "slug": "ph7g-kompassnadel-norden",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=erdmagnetfeld",
+          "question": "Welcher Pol der Kompassnadel zeigt nach Norden?",
+          "concept": "ihr Nordpol",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "ihr Nordpol",
+              "ihr Südpol"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7X4M7B30D3MKFZKVRWNVH5E",
+          "slug": "ph7g-magnetischer-pol-norden",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=erdmagnetfeld",
+          "question": "Welcher Magnetpol der Erde liegt in der Nähe des geographischen Nordpols?",
+          "concept": "ein magnetischer Südpol",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "ein magnetischer Südpol",
+              "ein magnetischer Nordpol"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7X4M7B4FFGG6HCMM95AXQE5",
+          "slug": "ph7g-karte-einnorden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=erdmagnetfeld",
+          "question": "Beschreibe, wie du eine Wanderkarte mit dem Kompass einnordest und warum das beim Orientieren hilft.",
+          "concept": "Kartennorden in Nadelrichtung drehen; dann stimmen Karte und Gelände überein.",
+          "materiality": "material",
+          "sample_solution": "Ich lege den Kompass auf die Karte und drehe die Karte, bis ihr oberer Rand in die Richtung zeigt, in die der Nordpol der Nadel zeigt. Dann ist die Karte eingenordet: Jede Richtung auf der Karte stimmt mit der Richtung im Gelände überein, und ich kann den Weg zum Ziel direkt ablesen."
+        }
+      ]
+    },
+    {
+      "id": "01M7X4M7B5TTBZBQP8ZG9EEN9W",
+      "atom_uri": "urn:zam:atom:01M7X4M7B5TTBZBQP8ZG9EEN9W",
+      "namespace": "zam-academy-physik-gymnasium-7",
+      "slug": "ph7g-dichte",
+      "title": "Dichte: eine Eigenschaft des Stoffes",
+      "domain": "physik/mechanik",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=dichte",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-gymnasium-7",
+          "topic_code": "lb1.1",
+          "topic_title": "Ein erster Blick auf die physikalischen Spielregeln der Natur"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "nt_gym",
+          "exam_relevant": false,
+          "topic_code": "lb1.1",
+          "topic_title": "Ein erster Blick auf die physikalischen Spielregeln der Natur"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7X4M7B6KJWG1AE7PRT0W4FA",
+          "slug": "ph7g-dichte-formel",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=dichte",
+          "question": "Wie berechnest du die Dichte ρ aus Masse m und Volumen V?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "\\rho = \\frac{m}{V}",
+              "speech": "rho gleich m durch V"
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "\\rho = \\frac{m}{V}",
+                  "speech": "rho gleich m durch V"
+                }
+              ],
+              [
+                {
+                  "type": "math",
+                  "tex": "\\rho = m \\cdot V",
+                  "speech": "rho gleich m mal V"
+                }
+              ]
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7X4M7B70DGNFFR5T8WS3ET6",
+          "slug": "ph7g-dichte-wasser",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=dichte",
+          "question": "Welche Dichte hat Wasser?",
+          "concept": "1 g/cm³",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "1 g/cm³",
+              "1 kg/cm³"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7X4M7B8PHETVZQ045CMBEPS",
+          "slug": "ph7g-dichte-stoffeigenschaft",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=dichte",
+          "question": "Warum ist die Dichte eine Eigenschaft des Stoffes und nicht des einzelnen Körpers? Erkläre an einem halbierten Eisenwürfel.",
+          "concept": "Masse und Volumen ändern sich im gleichen Verhältnis, m / V bleibt.",
+          "materiality": "material",
+          "sample_solution": "Halbiert man einen Eisenwürfel, halbieren sich Masse und Volumen. Der Quotient m / V bleibt gleich, also hat jede Hälfte dieselbe Dichte wie der ganze Würfel, etwa 7,8 g/cm³. Die Dichte hängt nur vom Stoff Eisen ab, nicht von der Größe des Stücks."
+        }
+      ]
+    },
+    {
+      "id": "01M7X4M7B9SR779T82NM51CQA7",
+      "atom_uri": "urn:zam:atom:01M7X4M7B9SR779T82NM51CQA7",
+      "namespace": "zam-academy-physik-gymnasium-7",
+      "slug": "ph7g-dichte-messen",
+      "title": "Die Dichte eines unregelmäßigen Körpers bestimmen",
+      "domain": "physik/mechanik",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=dichte-messen",
+      "prerequisites": [
+        {
+          "atom_id": "01M7X4M7B5TTBZBQP8ZG9EEN9W"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-gymnasium-7",
+          "topic_code": "lb1.1",
+          "topic_title": "Ein erster Blick auf die physikalischen Spielregeln der Natur"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "nt_gym",
+          "exam_relevant": false,
+          "topic_code": "lb1.1",
+          "topic_title": "Ein erster Blick auf die physikalischen Spielregeln der Natur"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7X4M7BAX90C65WFDWC4DAZP",
+          "slug": "ph7g-differenzmethode",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=dichte-messen",
+          "question": "Wie bestimmst du das Volumen eines Steins mit dem Messzylinder?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "V = V_2 - V_1",
+              "speech": "V gleich V zwei minus V eins"
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "V = V_2 - V_1",
+                  "speech": "V gleich V zwei minus V eins"
+                }
+              ],
+              [
+                {
+                  "type": "math",
+                  "tex": "V = V_2 + V_1",
+                  "speech": "V gleich V zwei plus V eins"
+                }
+              ]
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7X4M7BB1K55TR02BBJYYYK9",
+          "slug": "ph7g-ablesegenauigkeit",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=dichte-messen",
+          "question": "Wie genau kannst du einen Messzylinder mit 5-ml-Teilung etwa ablesen?",
+          "concept": "auf etwa einen halben Teilstrich, also 2,5 ml",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "auf etwa einen halben Teilstrich, also 2,5 ml",
+              "auf ein Tausendstel Milliliter"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7X4M7BC8BA94DCMBANE1RE3",
+          "slug": "ph7g-dichte-bereich",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 4,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=dichte-messen",
+          "question": "Warum gibst du die Dichte eines kleinen Körpers aus Messzylinder-Werten besser als Bereich an, und was tust du, wenn zwei Stoffe in den Bereich passen?",
+          "concept": "Ablesefehler machen V unsicher; bei zwei Treffern weitere Eigenschaften prüfen.",
+          "materiality": "material",
+          "sample_solution": "Der Wasserstand lässt sich nur auf etwa einen halben Teilstrich genau ablesen. Bei kleinem Volumen ist dieser Fehler im Verhältnis groß, deshalb rechne ich mit dem kleinsten und dem größten möglichen Volumen und erhalte einen Dichtebereich. Passen zwei Stoffe, etwa Aluminium und Granit, prüfe ich weitere Eigenschaften wie Aussehen oder elektrische Leitfähigkeit."
+        }
+      ]
+    },
+    {
+      "id": "01M7X4M7BDZ9P7MPNN2DA4QC25",
+      "atom_uri": "urn:zam:atom:01M7X4M7BDZ9P7MPNN2DA4QC25",
+      "namespace": "zam-academy-physik-gymnasium-7",
+      "slug": "ph7g-dichte-bewerten",
+      "title": "Werkstoffe nach ihrer Dichte bewerten",
+      "domain": "physik/mechanik",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=dichte-bewerten",
+      "prerequisites": [
+        {
+          "atom_id": "01M7X4M7B5TTBZBQP8ZG9EEN9W"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-gymnasium-7",
+          "topic_code": "lb1.1",
+          "topic_title": "Ein erster Blick auf die physikalischen Spielregeln der Natur"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "nt_gym",
+          "exam_relevant": false,
+          "topic_code": "lb1.1",
+          "topic_title": "Ein erster Blick auf die physikalischen Spielregeln der Natur"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7X4M7BE7J76P1FJGKS1VDQZ",
+          "slug": "ph7g-masse-aus-dichte",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=dichte-bewerten",
+          "question": "Mit welcher Gleichung berechnest du die Masse eines Bauteils aus Dichte und Volumen?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "m = \\rho \\cdot V",
+              "speech": "m gleich rho mal V"
+            }
+          ],
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              [
+                {
+                  "type": "math",
+                  "tex": "m = \\rho \\cdot V",
+                  "speech": "m gleich rho mal V"
+                }
+              ],
+              [
+                {
+                  "type": "math",
+                  "tex": "m = \\frac{\\rho}{V}",
+                  "speech": "m gleich rho durch V"
+                }
+              ]
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7X4M7BFT9BV4W9CCF71T9FF",
+          "slug": "ph7g-kriterium-physikalisch",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=dichte-bewerten",
+          "question": "Ist der Preis eines Werkstoffs ein physikalisches oder ein außerfachliches Kriterium?",
+          "concept": "ein außerfachliches Kriterium",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "ein außerfachliches Kriterium",
+              "ein physikalisches Kriterium"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7X4M7BGKPZ8V9VWFTH1HT8B",
+          "slug": "ph7g-werkstoff-bewerten",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=dichte-bewerten",
+          "question": "Ein Rahmen aus Aluminium ist bei gleichem Materialvolumen leichter als einer aus Stahl. Warum entscheidet die Dichte trotzdem nicht allein über den besseren Werkstoff?",
+          "concept": "Festigkeit und außerfachliche Kriterien zählen mit.",
+          "materiality": "material",
+          "sample_solution": "Aluminium hat mit 2,7 g/cm³ etwa ein Drittel der Dichte von Stahl, deshalb ist der Rahmen bei gleichem Volumen leichter. Er muss aber auch fest genug sein; oft werden die Rohre dicker gebaut, und ein Teil des Vorteils geht verloren. Außerdem zählen außerfachliche Kriterien wie Preis, Aussehen und Wiederverwertung."
+        }
+      ]
+    },
+    {
+      "id": "01M7X4M7BHCPB41XSXT7D23B20",
+      "atom_uri": "urn:zam:atom:01M7X4M7BHCPB41XSXT7D23B20",
+      "namespace": "zam-academy-physik-gymnasium-7",
+      "slug": "ph7g-sehen",
+      "title": "Lichtquellen und der Sehvorgang",
+      "domain": "physik/optik",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=sehen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-gymnasium-7",
+          "topic_code": "lb1.2",
+          "topic_title": "Optische Phänomene"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "nt_gym",
+          "exam_relevant": false,
+          "topic_code": "lb1.2",
+          "topic_title": "Optische Phänomene"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7X4M7BJ5D3AVV87W7AW042X",
+          "slug": "ph7g-sehvorgang",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=sehen",
+          "question": "Wann siehst du einen beleuchteten Gegenstand?",
+          "concept": "wenn Licht von ihm in dein Auge gelangt",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "wenn Licht von ihm in dein Auge gelangt",
+              "wenn dein Auge Sehstrahlen zu ihm aussendet"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7X4M7BKZ3QRYHVBPDYPRGHM",
+          "slug": "ph7g-mond-beleuchtet",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=sehen",
+          "question": "Ist der Mond eine Lichtquelle oder ein beleuchteter Körper?",
+          "concept": "ein beleuchteter Körper",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "ein beleuchteter Körper",
+              "eine Lichtquelle"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7X4M7BM6YEH4BQN516KGXFZ",
+          "slug": "ph7g-dunkler-raum",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=sehen",
+          "question": "Erkläre mit dem Sehvorgang, warum du in einem völlig dunklen Raum auch ein weißes Blatt nicht siehst.",
+          "concept": "Ohne Lichtquelle gelangt kein Licht vom Blatt ins Auge.",
+          "materiality": "material",
+          "sample_solution": "Ein weißes Blatt ist ein beleuchteter Körper; es leuchtet nicht selbst. Sehen kann ich es nur, wenn Licht von einer Lichtquelle auf das Blatt fällt und von dort in mein Auge gelangt. Im völlig dunklen Raum gibt es kein Licht, das das Blatt zurückwerfen könnte, also erreicht kein Licht mein Auge."
+        }
+      ]
+    },
+    {
+      "id": "01M7X4M7BNGSADSM9WR1619N46",
+      "atom_uri": "urn:zam:atom:01M7X4M7BNGSADSM9WR1619N46",
+      "namespace": "zam-academy-physik-gymnasium-7",
+      "slug": "ph7g-farben",
+      "title": "Warum Gegenstände farbig sind",
+      "domain": "physik/optik",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=farben",
+      "prerequisites": [
+        {
+          "atom_id": "01M7X4M7BHCPB41XSXT7D23B20"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-gymnasium-7",
+          "topic_code": "lb1.2",
+          "topic_title": "Optische Phänomene"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "nt_gym",
+          "exam_relevant": false,
+          "topic_code": "lb1.2",
+          "topic_title": "Optische Phänomene"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7X4M7BPTYT1NTXDK15PS973",
+          "slug": "ph7g-rote-paprika",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=farben",
+          "question": "Welches Licht reflektiert eine rote Paprika vor allem?",
+          "concept": "rotes Licht",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "rotes Licht",
+              "grünes und blaues Licht"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7X4M7BQNFBQ1ZT7HHCB78FS",
+          "slug": "ph7g-paprika-gruenes-licht",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=farben",
+          "question": "Wie sieht eine rote Paprika unter rein grünem Licht aus?",
+          "concept": "schwarz",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "schwarz",
+              "rot"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7X4M7BR7W2VG5WMTYQTRMFC",
+          "slug": "ph7g-koerperfarbe",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=farben",
+          "question": "Erkläre mit Reflexion und Absorption, warum ein weißes Blatt unter blauem Licht blau aussieht.",
+          "concept": "Weiß reflektiert jede ankommende Farbe; nur Blau kommt an.",
+          "materiality": "material",
+          "sample_solution": "Ein weißes Blatt reflektiert alle Anteile des Lichts. Unter blauem Licht kommt nur blaues Licht an; das Blatt wirft es zurück, und dieses blaue Licht gelangt in mein Auge. Deshalb sieht das Blatt blau aus. Die Farbe, die wir sehen, ist immer die Farbe des reflektierten Lichts."
+        }
+      ]
+    },
+    {
+      "id": "01M7X4M7BSSA36R837N5NTBVD7",
+      "atom_uri": "urn:zam:atom:01M7X4M7BSSA36R837N5NTBVD7",
+      "namespace": "zam-academy-physik-gymnasium-7",
+      "slug": "ph7g-farbige-schatten",
+      "title": "Farben und Schatten erkunden",
+      "domain": "physik/optik",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=farbige-schatten",
+      "prerequisites": [
+        {
+          "atom_id": "01M7X4M7BNGSADSM9WR1619N46"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-gymnasium-7",
+          "topic_code": "lb1.2",
+          "topic_title": "Optische Phänomene"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "nt_gym",
+          "exam_relevant": false,
+          "topic_code": "lb1.2",
+          "topic_title": "Optische Phänomene"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7X4M7BTGHVJN11PN1BA4WS1",
+          "slug": "ph7g-rot-gruen-gelb",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=farbige-schatten",
+          "question": "Welche Farbe entsteht, wenn rotes und grünes Licht auf dieselbe Stelle einer weißen Wand fallen?",
+          "concept": "Gelb",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Gelb",
+              "Braun"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7X4M7BVXM17VCHAXVBCKWX5",
+          "slug": "ph7g-additiv-weiss",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=farbige-schatten",
+          "question": "Welche Farbe ergibt rotes, grünes und blaues Licht zusammen auf einer weißen Wand?",
+          "concept": "Weiß",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Weiß",
+              "Schwarz"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7X4M7BW4W4B54SGQ66YBYSW",
+          "slug": "ph7g-farbiger-schatten",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=farbige-schatten",
+          "question": "Eine rote und eine grüne Lampe beleuchten einen Stab. Erkläre, welche Farbe der Schatten der roten Lampe hat und auf welcher Seite er liegt.",
+          "concept": "Grün; auf der der roten Lampe gegenüberliegenden Seite.",
+          "materiality": "material",
+          "sample_solution": "Der Stab hält nur das Licht der roten Lampe ab. Die Stelle bekommt weiterhin grünes Licht, deshalb ist der Schatten grün. Weil sich Licht geradlinig ausbreitet, liegt der Schatten auf der Seite, die der roten Lampe gegenüberliegt."
+        }
+      ]
+    },
+    {
+      "id": "01M7X4M7BXGRQBYWBP44A5ZZYT",
+      "atom_uri": "urn:zam:atom:01M7X4M7BXGRQBYWBP44A5ZZYT",
+      "namespace": "zam-academy-physik-gymnasium-7",
+      "slug": "ph7g-schatten",
+      "title": "Licht breitet sich geradlinig aus",
+      "domain": "physik/optik",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=schatten",
+      "prerequisites": [
+        {
+          "atom_id": "01M7X4M7BHCPB41XSXT7D23B20"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-gymnasium-7",
+          "topic_code": "lb1.2",
+          "topic_title": "Optische Phänomene"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "nt_gym",
+          "exam_relevant": false,
+          "topic_code": "lb1.2",
+          "topic_title": "Optische Phänomene"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7X4M7BYESJBRHASQVSYE3Y7",
+          "slug": "ph7g-geradlinig",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=schatten",
+          "question": "Welche Eigenschaft der Lichtausbreitung zeigt ein scharf begrenzter Schatten?",
+          "concept": "Licht breitet sich geradlinig aus.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Licht breitet sich geradlinig aus.",
+              "Licht breitet sich in Kurven um Gegenstände herum aus."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7X4M7BZCD0DX0VYB9PBDGPY",
+          "slug": "ph7g-schatten-groesser",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=schatten",
+          "question": "Wie wird der Schatten eines Gegenstands größer?",
+          "concept": "indem der Gegenstand näher an die Lampe rückt",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "indem der Gegenstand näher an die Lampe rückt",
+              "indem der Gegenstand näher an den Schirm rückt"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7X4M7C0AY1XD2T0ZSE9A6WB",
+          "slug": "ph7g-schatten-randstrahlen",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=schatten",
+          "question": "Erkläre mit Randstrahlen, warum der Schatten doppelt so groß ist wie der Gegenstand, wenn dieser genau in der Mitte zwischen Lampe und Schirm steht.",
+          "concept": "Der Weg bis zum Schirm ist doppelt so lang wie bis zum Gegenstand.",
+          "materiality": "material",
+          "sample_solution": "Die Randstrahlen sind gerade Linien von der Lampe über den Rand des Gegenstands zum Schirm. Bis zum Gegenstand legen sie den halben Weg zurück, bis zum Schirm den ganzen. Weil sie gleichmäßig auseinanderlaufen, ist ihr Abstand am Schirm doppelt so groß wie am Gegenstand. Der Schatten ist also doppelt so groß."
+        }
+      ]
+    },
+    {
+      "id": "01M7X4M7C1YEN6CPWA1SN9296N",
+      "atom_uri": "urn:zam:atom:01M7X4M7C1YEN6CPWA1SN9296N",
+      "namespace": "zam-academy-physik-gymnasium-7",
+      "slug": "ph7g-kernschatten",
+      "title": "Kernschatten, Halbschatten und Übergangsschatten",
+      "domain": "physik/optik",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=kernschatten",
+      "prerequisites": [
+        {
+          "atom_id": "01M7X4M7BXGRQBYWBP44A5ZZYT"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-gymnasium-7",
+          "topic_code": "lb1.2",
+          "topic_title": "Optische Phänomene"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "nt_gym",
+          "exam_relevant": false,
+          "topic_code": "lb1.2",
+          "topic_title": "Optische Phänomene"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7X4M7C2VPXPF09TM0F45Y3V",
+          "slug": "ph7g-kernschatten",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=kernschatten",
+          "question": "Wie heißt der Bereich hinter einem Gegenstand, den keine von zwei Lampen beleuchtet?",
+          "concept": "Kernschatten",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Kernschatten",
+              "Halbschatten"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7X4M7C3NYB76VW164NAPV0W",
+          "slug": "ph7g-uebergangsschatten",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=kernschatten",
+          "question": "Welcher Schattenbereich entsteht bei einer ausgedehnten Lichtquelle am Rand des Kernschattens?",
+          "concept": "ein Übergangsschatten, der allmählich heller wird",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "ein Übergangsschatten, der allmählich heller wird",
+              "ein scharf begrenzter Halbschatten"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7X4M7C4KVRG6312B1Q8WYMA",
+          "slug": "ph7g-zwei-lampen",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=kernschatten",
+          "question": "Zwei Lampen beleuchten einen Gegenstand. Erkläre, wie Kern- und Halbschatten entstehen und was passiert, wenn die Lampen weiter auseinanderrücken.",
+          "concept": "Überlappung beider Schatten: Kern; nur ein Schatten: Halb; weiter auseinander: Kern schrumpft.",
+          "materiality": "material",
+          "sample_solution": "Jede Lampe wirft einen eigenen Schatten. Wo sich beide überlappen, kommt kein Licht an: Kernschatten. Wo nur der Schatten einer Lampe liegt, beleuchtet die andere den Schirm noch: Halbschatten. Rücken die Lampen auseinander, verschieben sich die beiden Schatten stärker gegeneinander; der Kernschatten wird schmaler, die Halbschatten breiter, bis sich die Schatten trennen."
+        }
+      ]
+    },
+    {
+      "id": "01M7X4M7C5VFZ956F3RKKYY8V6",
+      "atom_uri": "urn:zam:atom:01M7X4M7C5VFZ956F3RKKYY8V6",
+      "namespace": "zam-academy-physik-gymnasium-7",
+      "slug": "ph7g-mondphasen",
+      "title": "Mondphasen",
+      "domain": "physik/optik",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=mondphasen",
+      "prerequisites": [
+        {
+          "atom_id": "01M7X4M7BHCPB41XSXT7D23B20"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-gymnasium-7",
+          "topic_code": "lb1.2",
+          "topic_title": "Optische Phänomene"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "nt_gym",
+          "exam_relevant": false,
+          "topic_code": "lb1.2",
+          "topic_title": "Optische Phänomene"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7X4M7C6Q80GMQVBJWRE7VB1",
+          "slug": "ph7g-neumond-stellung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=mondphasen",
+          "question": "Wo steht der Mond bei Neumond?",
+          "concept": "zwischen Erde und Sonne",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "zwischen Erde und Sonne",
+              "hinter der Erde, von der Sonne aus gesehen"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7X4M7C7KR72KG255PJDE509",
+          "slug": "ph7g-zunehmend-seite",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=mondphasen",
+          "question": "Welche Seite des Mondes leuchtet bei uns, wenn er zunimmt?",
+          "concept": "die rechte Seite",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "die rechte Seite",
+              "die linke Seite"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7X4M7C8826VKTZQYXDVJD67",
+          "slug": "ph7g-mondphasen-erklaeren",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=mondphasen",
+          "question": "Erkläre, warum der Mond im Laufe eines Monats verschiedene Phasen zeigt, obwohl die Sonne immer eine Hälfte von ihm beleuchtet.",
+          "concept": "Je nach Stellung sehen wir einen anderen Teil der beleuchteten Hälfte.",
+          "materiality": "material",
+          "sample_solution": "Die Sonne beleuchtet stets die ihr zugewandte Hälfte des Mondes. Während der Mond die Erde umläuft, sehen wir von der Erde aus einen wechselnd großen Teil dieser Hälfte: bei Neumond nichts, bei Vollmond die ganze beleuchtete Hälfte, dazwischen Sichel und Halbmond. Von Neumond zu Neumond dauert es etwa 29,5 Tage."
+        }
+      ]
+    },
+    {
+      "id": "01M7X4M7C9328KBBAN2TMXW721",
+      "atom_uri": "urn:zam:atom:01M7X4M7C9328KBBAN2TMXW721",
+      "namespace": "zam-academy-physik-gymnasium-7",
+      "slug": "ph7g-finsternisse",
+      "title": "Sonnen- und Mondfinsternis",
+      "domain": "physik/optik",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=finsternisse",
+      "prerequisites": [
+        {
+          "atom_id": "01M7X4M7C1YEN6CPWA1SN9296N"
+        },
+        {
+          "atom_id": "01M7X4M7C5VFZ956F3RKKYY8V6"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-gymnasium-7",
+          "topic_code": "lb1.2",
+          "topic_title": "Optische Phänomene"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "nt_gym",
+          "exam_relevant": false,
+          "topic_code": "lb1.2",
+          "topic_title": "Optische Phänomene"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7X4M7CASSR0KFDS9ZJTF01E",
+          "slug": "ph7g-sofi-mondphase",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=finsternisse",
+          "question": "Bei welcher Mondphase kann eine Sonnenfinsternis stattfinden?",
+          "concept": "nur bei Neumond",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "nur bei Neumond",
+              "nur bei Vollmond"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7X4M7CBR31BDRHTA2F5P5M5",
+          "slug": "ph7g-mofi-anordnung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=finsternisse",
+          "question": "Wie stehen Sonne, Erde und Mond bei einer Mondfinsternis?",
+          "concept": "Die Erde steht zwischen Sonne und Mond.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Erde steht zwischen Sonne und Mond.",
+              "Der Mond steht zwischen Sonne und Erde."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7X4M7CCFJ5RCFK89S2Q813B",
+          "slug": "ph7g-finsternis-selten",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=finsternisse",
+          "question": "Warum gibt es nicht bei jedem Neumond eine Sonnenfinsternis?",
+          "concept": "Die Mondbahn ist etwa 5° gegen die Erdbahnebene geneigt.",
+          "materiality": "material",
+          "sample_solution": "Die Mondbahn ist um etwa 5° gegen die Bahnebene der Erde geneigt. Meist läuft der Mond bei Neumond ein Stück oberhalb oder unterhalb der Linie Sonne – Erde vorbei, und sein Schatten verfehlt die Erde. Nur wenn der Neumond nahe einem Schnittpunkt von Mondbahn und Erdbahnebene liegt, trifft der Mondschatten die Erde."
+        }
+      ]
+    },
+    {
+      "id": "01M7X4M7CDW6V8XTP23J7KFZCQ",
+      "atom_uri": "urn:zam:atom:01M7X4M7CDW6V8XTP23J7KFZCQ",
+      "namespace": "zam-academy-physik-gymnasium-7",
+      "slug": "ph7g-licht-sicherheit",
+      "title": "Sehen und gesehen werden",
+      "domain": "physik/optik",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=licht-sicherheit",
+      "prerequisites": [
+        {
+          "atom_id": "01M7X4M7BHCPB41XSXT7D23B20"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-gymnasium-7",
+          "topic_code": "lb1.2",
+          "topic_title": "Optische Phänomene"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "nt_gym",
+          "exam_relevant": false,
+          "topic_code": "lb1.2",
+          "topic_title": "Optische Phänomene"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7X4M7CEPJKAX0G7MHHWPY1P",
+          "slug": "ph7g-reflektor",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=licht-sicherheit",
+          "question": "Warum sieht eine Autofahrerin einen Reflektor nachts besonders gut?",
+          "concept": "Er wirft das Scheinwerferlicht gezielt zum Auto zurück.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Er wirft das Scheinwerferlicht gezielt zum Auto zurück.",
+              "Er erzeugt im Dunkeln selbst Licht."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7X4M7CF14V7D3A3BZ5DBJ5Z",
+          "slug": "ph7g-dunkel-erkennbar",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=licht-sicherheit",
+          "question": "Ab welcher Entfernung erkennt man dunkel gekleidete Fußgänger bei Dunkelheit etwa (nach ADAC)?",
+          "concept": "ab etwa 25 m",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "ab etwa 25 m",
+              "ab etwa 140 m"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7X4M7CGEQPR9CRY1GRS3NS9",
+          "slug": "ph7g-laserpointer",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=licht-sicherheit",
+          "question": "Warum ist ein Laserpointer für das Auge gefährlich, und was solltest du tun, wenn ein Strahl dein Auge trifft?",
+          "concept": "Gebündeltes Licht schädigt die Netzhaut; Augen schließen und abwenden.",
+          "materiality": "material",
+          "sample_solution": "Ein Laserpointer bündelt sein Licht sehr stark. Trifft der Strahl ins Auge, wird das Licht auf einen winzigen Fleck der Netzhaut gesammelt und kann sie bleibend schädigen. Das Bundesamt für Strahlenschutz rät, die Augen dann bewusst zu schließen und den Kopf abzuwenden; Laserpointer richtet man nie auf Menschen oder Fahrzeuge."
+        }
+      ]
+    },
+    {
+      "id": "01M7X4M7CHHFB81X04GFJ710ZW",
+      "atom_uri": "urn:zam:atom:01M7X4M7CHHFB81X04GFJ710ZW",
+      "namespace": "zam-academy-physik-gymnasium-7",
+      "slug": "ph7g-ladungen",
+      "title": "Elektrische Ladung und das Kern-Hülle-Modell",
+      "domain": "physik/elektrizitaet",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=ladungen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-gymnasium-7",
+          "topic_code": "lb1.3",
+          "topic_title": "Elektrische Stromkreise"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "nt_gym",
+          "exam_relevant": false,
+          "topic_code": "lb1.3",
+          "topic_title": "Elektrische Stromkreise"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7X4M7CJDXZT7KK2YDYBC2C8",
+          "slug": "ph7g-ladungen-kraft",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=ladungen",
+          "question": "Was gilt für zwei ungleichnamige elektrische Ladungen?",
+          "concept": "Sie ziehen sich an.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie ziehen sich an.",
+              "Sie stoßen sich ab."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7X4M7CKAK4AQ6YMVX7W03KG",
+          "slug": "ph7g-kern-huelle",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=ladungen",
+          "question": "Wo sitzen nach dem Kern-Hülle-Modell die Elektronen?",
+          "concept": "in der Atomhülle um den Kern",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "in der Atomhülle um den Kern",
+              "im Atomkern zusammen mit den Protonen"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7X4M7CMHNT2F90Y08KA9N5B",
+          "slug": "ph7g-ion-ladung",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=ladungen",
+          "question": "Ein Lithiumatom hat drei Protonen. Wie ist es geladen, wenn es ein Elektron abgegeben hat? Begründe mit dem Kern-Hülle-Modell.",
+          "concept": "Einfach positiv: drei Protonen, zwei Elektronen.",
+          "materiality": "material",
+          "sample_solution": "Im Kern sitzen drei positiv geladene Protonen. Neutral hätte das Atom drei Elektronen in der Hülle. Nach der Abgabe eines Elektrons sind es nur noch zwei; eine positive Ladung bleibt unausgeglichen. Das Teilchen ist einfach positiv geladen. Der Kern ändert sich dabei nicht."
+        }
+      ]
+    },
+    {
+      "id": "01M7X4M7CN4H50C6VB3GTN2T00",
+      "atom_uri": "urn:zam:atom:01M7X4M7CN4H50C6VB3GTN2T00",
+      "namespace": "zam-academy-physik-gymnasium-7",
+      "slug": "ph7g-reibungselektrizitaet",
+      "title": "Reibungselektrizität",
+      "domain": "physik/elektrizitaet",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=reibungselektrizitaet",
+      "prerequisites": [
+        {
+          "atom_id": "01M7X4M7CHHFB81X04GFJ710ZW"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-gymnasium-7",
+          "topic_code": "lb1.3",
+          "topic_title": "Elektrische Stromkreise"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "nt_gym",
+          "exam_relevant": false,
+          "topic_code": "lb1.3",
+          "topic_title": "Elektrische Stromkreise"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7X4M7CPQAW51D0KPNRA2WB3",
+          "slug": "ph7g-reiben-elektronen",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=reibungselektrizitaet",
+          "question": "Welche Teilchen gehen beim Reiben von einem Körper auf den anderen über?",
+          "concept": "Elektronen",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Elektronen",
+              "Protonen"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7X4M7CQNB70WHKH5SCX8HCZ",
+          "slug": "ph7g-elektronenueberschuss",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=reibungselektrizitaet",
+          "question": "Wie ist ein Körper mit Elektronenüberschuss geladen?",
+          "concept": "negativ",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "negativ",
+              "positiv"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7X4M7CRZ1M3QSEDPTS685NJ",
+          "slug": "ph7g-ballon-wand",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=reibungselektrizitaet",
+          "question": "Ein an den Haaren geriebener Luftballon haftet an einer ungeladenen Wand. Erkläre das Schritt für Schritt.",
+          "concept": "Ballon negativ; Elektronen der Wand weggedrängt; Oberfläche positiv; Anziehung.",
+          "materiality": "material",
+          "sample_solution": "Beim Reiben gehen Elektronen von den Haaren auf den Ballon über; er ist danach negativ geladen. Hält man ihn an die Wand, werden die Elektronen in der Wandoberfläche ein wenig weggedrängt, weil gleichnamige Ladungen sich abstoßen. Die Stelle der Wand wird dadurch leicht positiv, und ungleichnamige Ladungen ziehen sich an: Der Ballon haftet."
+        }
+      ]
+    },
+    {
+      "id": "01M7X4M7CSC1RZE2S7XYJC538M",
+      "atom_uri": "urn:zam:atom:01M7X4M7CSC1RZE2S7XYJC538M",
+      "namespace": "zam-academy-physik-gymnasium-7",
+      "slug": "ph7g-strom",
+      "title": "Elektrischer Strom: bewegte Ladungen",
+      "domain": "physik/elektrizitaet",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=strom",
+      "prerequisites": [
+        {
+          "atom_id": "01M7X4M7CHHFB81X04GFJ710ZW"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-gymnasium-7",
+          "topic_code": "lb1.3",
+          "topic_title": "Elektrische Stromkreise"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "nt_gym",
+          "exam_relevant": false,
+          "topic_code": "lb1.3",
+          "topic_title": "Elektrische Stromkreise"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7X4M7CTV5D0RY9130TF9H7F",
+          "slug": "ph7g-strom-definition",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=strom",
+          "question": "Was ist elektrischer Strom?",
+          "concept": "die gerichtete Bewegung von Ladungen",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "die gerichtete Bewegung von Ladungen",
+              "ein Vorrat an Elektronen in der Batterie"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7X4M7CVR29T4ZZJSB5H06CS",
+          "slug": "ph7g-leiter-isolator",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=strom",
+          "question": "Ist eine Bleistiftmine aus Graphit ein Leiter oder ein Isolator?",
+          "concept": "ein Leiter",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "ein Leiter",
+              "ein Isolator"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7X4M7CWQQFRK0HW4BHSS660",
+          "slug": "ph7g-fahrradkette",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=strom",
+          "question": "Warum leuchtet eine Lampe sofort, wenn du den Schalter schließt, obwohl sich die Elektronen im Draht nur langsam bewegen?",
+          "concept": "Die Elektronen sind überall im Draht und bewegen sich gleichzeitig.",
+          "materiality": "material",
+          "sample_solution": "Die Elektronen befinden sich schon überall in den Drähten und in der Lampe. Wird der Stromkreis geschlossen, setzt der Antrieb der Batterie sie alle gleichzeitig in Bewegung, wie die Glieder einer Fahrradkette. Deshalb fließt auch in der Lampe sofort Strom, obwohl jedes einzelne Elektron nur sehr langsam vorankommt."
+        }
+      ]
+    },
+    {
+      "id": "01M7X4M7CX2A14N364EVA2FQ9H",
+      "atom_uri": "urn:zam:atom:01M7X4M7CX2A14N364EVA2FQ9H",
+      "namespace": "zam-academy-physik-gymnasium-7",
+      "slug": "ph7g-waerme-licht",
+      "title": "Wärme- und Leuchtwirkung des Stroms",
+      "domain": "physik/elektrizitaet",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=waerme-licht",
+      "prerequisites": [
+        {
+          "atom_id": "01M7X4M7CSC1RZE2S7XYJC538M"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-gymnasium-7",
+          "topic_code": "lb1.3",
+          "topic_title": "Elektrische Stromkreise"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "nt_gym",
+          "exam_relevant": false,
+          "topic_code": "lb1.3",
+          "topic_title": "Elektrische Stromkreise"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7X4M7CY0RTQY8JKGKMP0KVT",
+          "slug": "ph7g-waermewirkung-geraet",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=waerme-licht",
+          "question": "Welche Wirkung des elektrischen Stroms nutzt ein Toaster vor allem?",
+          "concept": "die Wärmewirkung",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "die Wärmewirkung",
+              "die magnetische Wirkung"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7X4M7CZ2W1SH68PTZYA27JM",
+          "slug": "ph7g-gluehlampe",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=waerme-licht",
+          "question": "Was gibt eine Glühlampe vor allem ab: mehr Licht oder mehr Wärme?",
+          "concept": "mehr Wärme als Licht",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "mehr Wärme als Licht",
+              "mehr Licht als Wärme"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7X4M7D0BZC7X24269M5JQRB",
+          "slug": "ph7g-fachsprache-strom",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=waerme-licht",
+          "question": "Verbessere den Satz „Im Wasserkocher wird der Strom verbraucht.“ und begründe die Verbesserung.",
+          "concept": "Strom fließt durch den Heizdraht; die Energie wird in Wärme umgewandelt.",
+          "materiality": "material",
+          "sample_solution": "Besser: „Im Wasserkocher fließt elektrischer Strom durch einen Heizdraht, der sich durch die Wärmewirkung erhitzt und die Wärme an das Wasser abgibt.“ Strom wird nicht verbraucht: Es fließen so viele Elektronen aus dem Gerät heraus wie hinein. Umgewandelt wird Energie, die das Gerät als Wärme abgibt."
+        }
+      ]
+    },
+    {
+      "id": "01M7X4M7D1EB7R0EJTSPVF3KAV",
+      "atom_uri": "urn:zam:atom:01M7X4M7D1EB7R0EJTSPVF3KAV",
+      "namespace": "zam-academy-physik-gymnasium-7",
+      "slug": "ph7g-elektromagnet",
+      "title": "Magnetische Wirkung des Stroms",
+      "domain": "physik/elektrizitaet",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=elektromagnet",
+      "prerequisites": [
+        {
+          "atom_id": "01M7X4M7CSC1RZE2S7XYJC538M"
+        },
+        {
+          "atom_id": "01M7X4M7AST7S1Z6D1EG3BPJM9"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-gymnasium-7",
+          "topic_code": "lb1.3",
+          "topic_title": "Elektrische Stromkreise"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "nt_gym",
+          "exam_relevant": false,
+          "topic_code": "lb1.3",
+          "topic_title": "Elektrische Stromkreise"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7X4M7D2K9X1FKJ1T75N3AAC",
+          "slug": "ph7g-oersted",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=elektromagnet",
+          "question": "Was beobachtete Ørsted, wenn Strom durch einen Draht neben einer Kompassnadel floss?",
+          "concept": "Die Kompassnadel wurde abgelenkt.",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Kompassnadel wurde abgelenkt.",
+              "Der Draht wurde vom Kompass angezogen und blieb daran haften."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7X4M7D3SSSDF11BRC1MXBMT",
+          "slug": "ph7g-elektromagnet-staerker",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=elektromagnet",
+          "question": "Was macht einen Elektromagneten bei gleichem Strom deutlich stärker?",
+          "concept": "ein Eisenkern in der Spule",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "ein Eisenkern in der Spule",
+              "ein Kupferkern in der Spule"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7X4M7D4YRWCRV8MGS55MVC8",
+          "slug": "ph7g-kranmagnet",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=elektromagnet",
+          "question": "Warum verwendet man an einem Schrottkran einen Elektromagneten und keinen Dauermagneten?",
+          "concept": "Ein Elektromagnet lässt sich abschalten.",
+          "materiality": "material",
+          "sample_solution": "Ein Elektromagnet wirkt nur, solange Strom durch die Spule fließt. Der Kran kann damit Eisenschrott anheben und ihn über dem Container durch Abschalten des Stroms wieder loslassen. Ein Dauermagnet würde den Schrott festhalten. Viele Windungen und ein Eisenkern machen den Kranmagneten stark genug."
+        }
+      ]
+    },
+    {
+      "id": "01M7X4M7D5P51P8YC96S5F9NV0",
+      "atom_uri": "urn:zam:atom:01M7X4M7D5P51P8YC96S5F9NV0",
+      "namespace": "zam-academy-physik-gymnasium-7",
+      "slug": "ph7g-schaltungen",
+      "title": "Schaltungen für Alltagsprobleme",
+      "domain": "physik/elektrizitaet",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=schaltungen",
+      "prerequisites": [
+        {
+          "atom_id": "01M7X4M7CSC1RZE2S7XYJC538M"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "physik-gymnasium-7",
+          "topic_code": "lb1.3",
+          "topic_title": "Elektrische Stromkreise"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "nt_gym",
+          "exam_relevant": false,
+          "topic_code": "lb1.3",
+          "topic_title": "Elektrische Stromkreise"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7X4M7D6953MVB9B4NK6HHMC",
+          "slug": "ph7g-und-schaltung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=schaltungen",
+          "question": "Wie sind die Schalter einer UND-Schaltung angeordnet?",
+          "concept": "in Reihe, hintereinander",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "in Reihe, hintereinander",
+              "parallel, nebeneinander"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7X4M7D7Q6YFM0DP7M2JQG0V",
+          "slug": "ph7g-wechselschaltung",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=schaltungen",
+          "question": "Welche Schaltung brauchst du, damit eine Flurlampe an beiden Enden ein- und ausgeschaltet werden kann?",
+          "concept": "eine Wechselschaltung",
+          "materiality": "material",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "eine Wechselschaltung",
+              "eine UND-Schaltung"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7X4M7D8ZYVH7VQRF187P6NK",
+          "slug": "ph7g-schaltung-sicher",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 4,
+          "source_link": "https://academy.zam-os.org/physik-gymnasium-7/#lesson=schaltungen",
+          "question": "Beschreibe, wie du eine Schaltung für ein Alltagsproblem sicher entwickelst und aufbaust.",
+          "concept": "Erst simulieren, dann mit Kleinspannung bei offenem Kreis aufbauen, prüfen, dokumentieren.",
+          "materiality": "material",
+          "sample_solution": "Ich beschreibe das Problem und entwerfe die Schaltung mit einer Simulationssoftware; dort prüfe ich alle Schalterstellungen in einer Tabelle. Erst dann baue ich sie mit Batterie oder Netzgerät mit kleiner Spannung auf, niemals an der Steckdose, und baue nur bei offenem Stromkreis um. Wird ein Bauteil heiß, schalte ich ab. Am Ende dokumentiere ich Schaltplan, Tabelle und Foto."
+        }
+      ]
+    }
+  ]
+}
