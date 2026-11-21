@@ -1,0 +1,3365 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "zam-academy:nt-mittelschule-7",
+  "version": "2026.11.0",
+  "title": "Natur und Technik 7 Mittelschule (ZAM Academy)",
+  "publisher": "ZAM Academy",
+  "description": "Natur und Technik 7 (LehrplanPLUS Bayern) für Regelklasse und M-Zug: Forschen, Luft, Oxidation und Atome, Windkraft, Wirbeltiere, Atmung und Kreislauf sowie Stromkreise und Widerstand.",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/mittelschule/7/nt/regelklasse",
+      "label": "LehrplanPLUS Bayern · Natur und Technik R7",
+      "checked": "2026-11-20"
+    },
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/mittelschule/7/nt/mittlere-reife-klasse",
+      "label": "LehrplanPLUS Bayern · Natur und Technik M7",
+      "checked": "2026-11-20"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01M7VTS9HBWRG4VNRM38Y1CYN3",
+      "atom_uri": "urn:zam:atom:01M7VTS9HBWRG4VNRM38Y1CYN3",
+      "namespace": "zam-academy-nt-mittelschule-7",
+      "slug": "forschen",
+      "title": "Vom Verdacht zur Folgerung",
+      "domain": "nt/nt7/methods",
+      "reduction": "formal",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=forschen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-mittelschule-7",
+          "topic_code": "stage1",
+          "topic_title": "Forschen und sicher arbeiten"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "nt",
+          "topic_code": "lb1",
+          "topic_title": "Naturwissenschaftliches Arbeiten",
+          "track": "R",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "nt",
+          "topic_code": "lb1",
+          "topic_title": "Naturwissenschaftliches Arbeiten",
+          "track": "M",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7VTS9HCR0VAH0CRN4GJEHFG",
+          "slug": "forschen-grundlage",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Bedingung veränderst du bei einem fairen Versuch?",
+          "concept": "Nur die Bedingung, deren Einfluss du untersuchst.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=forschen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nur die Bedingung, deren Einfluss du untersuchst.",
+              "Alle Bedingungen, die das Ergebnis beeinflussen könnten."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7VTS9HC45PR2Z93KH69628K",
+          "slug": "forschen-unterscheiden",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was unterscheidet Beobachtung und Deutung?",
+          "concept": "Eine Beobachtung hält fest, was du wahrnimmst oder misst. Eine Deutung erklärt es.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=forschen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eine Beobachtung hält fest, was du wahrnimmst oder misst. Eine Deutung erklärt es.",
+              "Eine Beobachtung erklärt die Ursache. Eine Deutung nennt nur Messwerte."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7VTS9HC5EHMSEWEZS129AQX",
+          "slug": "forschen-anwenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Zwei Nägel unterscheiden sich in Feuchtigkeit und Temperatur. Warum zeigt der Versuch nicht eindeutig die Wirkung des Wassers?",
+          "concept": "Die beiden Einflüsse sind nicht getrennt.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=forschen",
+          "sample_solution": "Nimm gleiche Nägel und halte Temperatur, Dauer und Luftzutritt gleich. Verändere nur die Feuchtigkeit. So kannst du den Einfluss des Wassers untersuchen."
+        }
+      ]
+    },
+    {
+      "id": "01M7VTS9HB78NX14FQ1YJS7M1S",
+      "atom_uri": "urn:zam:atom:01M7VTS9HB78NX14FQ1YJS7M1S",
+      "namespace": "zam-academy-nt-mittelschule-7",
+      "slug": "quellen",
+      "title": "Tabelle, Bild oder Behauptung?",
+      "domain": "nt/nt7/methods",
+      "reduction": "formal",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=quellen",
+      "prerequisites": [
+        {
+          "atom_id": "01M7VTS9HBWRG4VNRM38Y1CYN3",
+          "type": "soft"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-mittelschule-7",
+          "topic_code": "stage1",
+          "topic_title": "Forschen und sicher arbeiten"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "nt",
+          "topic_code": "lb1",
+          "topic_title": "Naturwissenschaftliches Arbeiten",
+          "track": "R",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "nt",
+          "topic_code": "lb1",
+          "topic_title": "Naturwissenschaftliches Arbeiten",
+          "track": "M",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7VTS9HCYJ5VEB541KSTTQH1",
+          "slug": "quellen-grundlage",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wo liest du den Volumenanteil eines Luftgases genau ab?",
+          "concept": "In einer Tabelle mit Volumenanteilen oder an einer beschrifteten Skala.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=quellen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "In einer Tabelle mit Volumenanteilen oder an einer beschrifteten Skala.",
+              "In einem Teilchenbild ohne Maßstab oder Mengenangaben."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7VTS9HC4F4T7P0H6YW83A2S",
+          "slug": "quellen-unterscheiden",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie unterscheidest du Beschreibung und Bewertung?",
+          "concept": "Eine Beschreibung nennt überprüfbare Merkmale. Eine Bewertung beurteilt sie anhand eines Kriteriums.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=quellen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eine Beschreibung nennt überprüfbare Merkmale. Eine Bewertung beurteilt sie anhand eines Kriteriums.",
+              "Eine Beschreibung beurteilt eine Darstellung. Eine Bewertung wiederholt nur die Daten."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7VTS9HC89X60GAGW5V5XSMX",
+          "slug": "quellen-anwenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Ein Luftbild zeigt N₂, O₂ und Ar als je ein Teilchen. Weshalb kannst du aus dem Bild nicht auf gleiche Anteile schließen?",
+          "concept": "Das Bild zeigt Teilchensorten. Für Mengen brauchst du eine quantitative Darstellung.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=quellen",
+          "sample_solution": "Prüfe den Zweck und die Beschriftung des Bildes. Lies für die Anteile eine Tabelle oder ein Diagramm mit passender Einheit."
+        }
+      ]
+    },
+    {
+      "id": "01M7VTS9HBG3KBPQXDZ9GF97B3",
+      "atom_uri": "urn:zam:atom:01M7VTS9HBG3KBPQXDZ9GF97B3",
+      "namespace": "zam-academy-nt-mittelschule-7",
+      "slug": "sicherheit",
+      "title": "Chemie mit Schutz und Plan",
+      "domain": "nt/nt7/methods",
+      "reduction": "formal",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=sicherheit",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-mittelschule-7",
+          "topic_code": "stage1",
+          "topic_title": "Forschen und sicher arbeiten"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "nt",
+          "topic_code": "lb1",
+          "topic_title": "Naturwissenschaftliches Arbeiten",
+          "track": "R",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "nt",
+          "topic_code": "lb1",
+          "topic_title": "Naturwissenschaftliches Arbeiten",
+          "track": "M",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7VTS9HC0Y3FRH1TGZ7F0ECF",
+          "slug": "sicherheit-grundlage",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wovor warnt das Gefahrensymbol mit einer Flamme?",
+          "concept": "Vor Entzündbarkeit.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=sicherheit",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Vor Entzündbarkeit.",
+              "Vor Ätzwirkung auf Haut und Metall."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7VTS9HCM3QNE1CCFDKT951R",
+          "slug": "sicherheit-unterscheiden",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Woran erkennst du das Piktogramm für Ätzwirkung?",
+          "concept": "An Flüssigkeit, die auf eine Hand und ein Stück Metall tropft.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=sicherheit",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "An Flüssigkeit, die auf eine Hand und ein Stück Metall tropft.",
+              "An der Flamme über einem waagerechten Strich."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7VTS9HC9FHX0TBDEVSFG0H0",
+          "slug": "sicherheit-anwenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Vor einem Versuch findest du ein beschädigtes Gerät und einen Behälter ohne lesbares Etikett. Wie handelst du?",
+          "concept": "Lass beides stehen und melde es der Lehrkraft.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=sicherheit",
+          "sample_solution": "Die Lehrkraft prüft das Gerät und den Stoff. Du verwendest das Material erst, wenn Identität, Zustand und Schutzmaßnahmen geklärt sind."
+        }
+      ]
+    },
+    {
+      "id": "01M7VTS9HBHWBW9SHXP4ABP7AR",
+      "atom_uri": "urn:zam:atom:01M7VTS9HBHWBW9SHXP4ABP7AR",
+      "namespace": "zam-academy-nt-mittelschule-7",
+      "slug": "luft",
+      "title": "Was in der Luft steckt",
+      "domain": "nt/nt7/air",
+      "reduction": "formal",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=luft",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-mittelschule-7",
+          "topic_code": "stage2",
+          "topic_title": "Luft und Oxidation"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "nt",
+          "topic_code": "lb2",
+          "topic_title": "Lebensgrundlage Luft",
+          "track": "R",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "nt",
+          "topic_code": "lb2",
+          "topic_title": "Lebensgrundlage Luft",
+          "track": "M",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7VTS9HCK5R8SJXHG0Y420JG",
+          "slug": "luft-grundlage",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche beiden Gase machen trockene Luft hauptsächlich aus?",
+          "concept": "Etwa 78 % Stickstoff und 21 % Sauerstoff nach Volumen.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=luft",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Etwa 78 % Stickstoff und 21 % Sauerstoff nach Volumen.",
+              "Etwa 78 % Sauerstoff und 21 % Stickstoff nach Volumen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7VTS9HC3KXRZ5HB2EHFRRBZ",
+          "slug": "luft-unterscheiden",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum bezeichnet man Luft als Gasgemisch?",
+          "concept": "Mehrere Gase liegen als verschiedene Teilchen nebeneinander vor.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=luft",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Mehrere Gase liegen als verschiedene Teilchen nebeneinander vor.",
+              "Alle Teilchen bilden zusammen eine einzige chemische Verbindung."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7VTS9HC6G3STJ5Y2B7V7APN",
+          "slug": "luft-anwenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Wie viel Sauerstoff enthalten 200 L trockene Luft ungefähr, bei gleicher Temperatur und gleichem Druck?",
+          "concept": "Etwa 42 L.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=luft",
+          "sample_solution": "Der Sauerstoffanteil beträgt ungefähr 21 %. 0,21 · 200 L ergibt 42 L."
+        }
+      ]
+    },
+    {
+      "id": "01M7VTS9HB6Y88KMMCWV1ATW7P",
+      "atom_uri": "urn:zam:atom:01M7VTS9HB6Y88KMMCWV1ATW7P",
+      "namespace": "zam-academy-nt-mittelschule-7",
+      "slug": "luftdruck",
+      "title": "Luft hat Gewicht",
+      "domain": "nt/nt7/air",
+      "reduction": "formal",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=luftdruck",
+      "prerequisites": [
+        {
+          "atom_id": "01M7VTS9HBHWBW9SHXP4ABP7AR",
+          "type": "soft"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-mittelschule-7",
+          "topic_code": "stage2",
+          "topic_title": "Luft und Oxidation"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "nt",
+          "topic_code": "lb2",
+          "topic_title": "Lebensgrundlage Luft",
+          "track": "R",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "nt",
+          "topic_code": "lb2",
+          "topic_title": "Lebensgrundlage Luft",
+          "track": "M",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7VTS9HC73XJA53Q10QGW2D9",
+          "slug": "luftdruck-grundlage",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie entsteht Gasdruck im Teilchenmodell?",
+          "concept": "Bewegte Gasteilchen stoßen gegen Oberflächen.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=luftdruck",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Bewegte Gasteilchen stoßen gegen Oberflächen.",
+              "Die Teilchen liegen unbeweglich auf dem Boden."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7VTS9HCN3YZ2MKR45MW0T14",
+          "slug": "luftdruck-unterscheiden",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie verändert sich der Luftdruck meist beim Aufstieg?",
+          "concept": "Er fällt, weil weniger Luft über dir lastet.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=luftdruck",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Er fällt, weil weniger Luft über dir lastet.",
+              "Er steigt, weil du näher an der oberen Luft bist."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7VTS9HC8G0VE0EEQCSC6TE4",
+          "slug": "luftdruck-anwenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Warum kann eine am Berg verschlossene dünne Flasche im Tal eingedrückt werden?",
+          "concept": "Der höhere Außendruck im Tal drückt gegen die Flasche.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=luftdruck",
+          "sample_solution": "Die Flasche enthält zunächst die bei niedrigerem Druck eingeschlossene Bergluft. Wenn der Außendruck deutlich höher ist, kann er die Flasche zusammendrücken."
+        }
+      ]
+    },
+    {
+      "id": "01M7VTS9HBPJJG0JZG0SNPT6RA",
+      "atom_uri": "urn:zam:atom:01M7VTS9HBPJJG0JZG0SNPT6RA",
+      "namespace": "zam-academy-nt-mittelschule-7",
+      "slug": "zeichensprache",
+      "title": "Die Sprache der Formeln",
+      "domain": "nt/nt7/air",
+      "reduction": "formal",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=zeichensprache",
+      "prerequisites": [
+        {
+          "atom_id": "01M7VTS9HBHWBW9SHXP4ABP7AR",
+          "type": "soft"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-mittelschule-7",
+          "topic_code": "stage2",
+          "topic_title": "Luft und Oxidation"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "nt",
+          "topic_code": "lb2",
+          "topic_title": "Lebensgrundlage Luft",
+          "track": "R",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "nt",
+          "topic_code": "lb2",
+          "topic_title": "Lebensgrundlage Luft",
+          "track": "M",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7VTS9HCVEDBS5T62SKP7Z7D",
+          "slug": "zeichensprache-grundlage",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was bedeutet die tiefgestellte 2 in CO₂?",
+          "concept": "Zwei Sauerstoffatome je Molekül.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=zeichensprache",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Zwei Sauerstoffatome je Molekül.",
+              "Zwei Kohlenstoffatome je Molekül."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7VTS9HCYS34G55MZ6JWPNX9",
+          "slug": "zeichensprache-unterscheiden",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Sind O₂ und H₂O beides Verbindungen?",
+          "concept": "H₂O ist eine Verbindung. O₂ ist ein Molekül aus nur einer Atomsorte.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=zeichensprache",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "H₂O ist eine Verbindung. O₂ ist ein Molekül aus nur einer Atomsorte.",
+              "Beide sind Verbindungen, weil beide aus mehreren Atomen bestehen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7VTS9HCTKKF8V22NS3821GB",
+          "slug": "zeichensprache-anwenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Vergleiche ein Ar-Teilchen mit einem N₂-Teilchen.",
+          "concept": "Ar ist ein einzelnes Atom. N₂ ist ein Molekül.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=zeichensprache",
+          "sample_solution": "Argon ist ein Edelgas und liegt einzeln vor. Die tiefgestellte 2 in N₂ steht für zwei miteinander verbundene Stickstoffatome."
+        }
+      ]
+    },
+    {
+      "id": "01M7VTS9HB08PPFHBS2BXEF8HW",
+      "atom_uri": "urn:zam:atom:01M7VTS9HB08PPFHBS2BXEF8HW",
+      "namespace": "zam-academy-nt-mittelschule-7",
+      "slug": "verbrennung",
+      "title": "Wann entsteht Feuer?",
+      "domain": "nt/nt7/air",
+      "reduction": "formal",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=verbrennung",
+      "prerequisites": [
+        {
+          "atom_id": "01M7VTS9HBHWBW9SHXP4ABP7AR",
+          "type": "soft"
+        },
+        {
+          "atom_id": "01M7VTS9HBG3KBPQXDZ9GF97B3",
+          "type": "soft"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-mittelschule-7",
+          "topic_code": "stage2",
+          "topic_title": "Luft und Oxidation"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "nt",
+          "topic_code": "lb2",
+          "topic_title": "Lebensgrundlage Luft",
+          "track": "R",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "nt",
+          "topic_code": "lb2",
+          "topic_title": "Lebensgrundlage Luft",
+          "track": "M",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7VTS9HCYXGFJYE2SEV5B8ZT",
+          "slug": "verbrennung-grundlage",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche drei Bedingungen zeigt das Feuerdreieck?",
+          "concept": "Brennstoff, Sauerstoff und ausreichende Wärme.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=verbrennung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Brennstoff, Sauerstoff und ausreichende Wärme.",
+              "Brennstoff, Stickstoff und ausreichende Wärme."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7VTS9HCSNJPNN6S7W4VKFQB",
+          "slug": "verbrennung-unterscheiden",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum können kleine Holzspäne sich leichter entzünden als ein kompaktes Stück Holz?",
+          "concept": "Sie haben bei gleicher Masse insgesamt mehr Oberfläche im Kontakt mit der Luft.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=verbrennung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie haben bei gleicher Masse insgesamt mehr Oberfläche im Kontakt mit der Luft.",
+              "Kleine Stücke verwandeln sich beim Zerteilen in einen neuen Stoff."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7VTS9HC4A4PC2B62CYQ7F1T",
+          "slug": "verbrennung-anwenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Was fehlt im Feuerdreieck, wenn die Gaszufuhr zu einer Flamme fachgerecht unterbrochen wird?",
+          "concept": "Der Nachschub an Brennstoff.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=verbrennung",
+          "sample_solution": "Nach dem Absperren strömt kein Brenngas nach. Die Flamme erlischt, obwohl in der Umgebung noch Sauerstoff vorhanden ist."
+        }
+      ]
+    },
+    {
+      "id": "01M7VTS9HBS92CBDVN9ZMRKH5G",
+      "atom_uri": "urn:zam:atom:01M7VTS9HBS92CBDVN9ZMRKH5G",
+      "namespace": "zam-academy-nt-mittelschule-7",
+      "slug": "brandschutz",
+      "title": "Was Brandschutz bewirkt",
+      "domain": "nt/nt7/air",
+      "reduction": "formal",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=brandschutz",
+      "prerequisites": [
+        {
+          "atom_id": "01M7VTS9HB08PPFHBS2BXEF8HW",
+          "type": "soft"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-mittelschule-7",
+          "topic_code": "stage2",
+          "topic_title": "Luft und Oxidation"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "nt",
+          "topic_code": "lb2",
+          "topic_title": "Lebensgrundlage Luft",
+          "track": "R",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "nt",
+          "topic_code": "lb2",
+          "topic_title": "Lebensgrundlage Luft",
+          "track": "M",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7VTS9HCSFRC3E6MA24EXZWP",
+          "slug": "brandschutz-grundlage",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was bewirkt eine geschlossene Brandschutztür?",
+          "concept": "Sie kann die Ausbreitung von Rauch und Feuer eine Zeit lang bremsen.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=brandschutz",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie kann die Ausbreitung von Rauch und Feuer eine Zeit lang bremsen.",
+              "Sie löscht das Feuer hinter der Tür automatisch."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7VTS9HC44ZG1EYPZWBCSNWT",
+          "slug": "brandschutz-unterscheiden",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Bedingung wird dem Feuer beim Kühlen entzogen?",
+          "concept": "Ausreichende Wärme.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=brandschutz",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ausreichende Wärme.",
+              "Die chemische Formel des Brennstoffs."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7VTS9HCDKGH3J38KQ3BNSAW",
+          "slug": "brandschutz-anwenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Warum ist Wasser für einen Fettbrand gefährlich?",
+          "concept": "Wasser kann schlagartig verdampfen und brennendes Fett mitreißen.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=brandschutz",
+          "sample_solution": "Durch die Hitze dehnt sich der entstehende Wasserdampf rasch aus. Er kann brennendes Fett weit verteilen und den Brand verschlimmern."
+        }
+      ]
+    },
+    {
+      "id": "01M7VTS9HBP8GW41CKX47W13WD",
+      "atom_uri": "urn:zam:atom:01M7VTS9HBP8GW41CKX47W13WD",
+      "namespace": "zam-academy-nt-mittelschule-7",
+      "slug": "oxidation",
+      "title": "Sauerstoff wird Teil des Produkts",
+      "domain": "nt/nt7/air",
+      "reduction": "formal",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=oxidation",
+      "prerequisites": [
+        {
+          "atom_id": "01M7VTS9HBPJJG0JZG0SNPT6RA",
+          "type": "soft"
+        },
+        {
+          "atom_id": "01M7VTS9HB08PPFHBS2BXEF8HW",
+          "type": "soft"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-mittelschule-7",
+          "topic_code": "stage2",
+          "topic_title": "Luft und Oxidation"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "nt",
+          "topic_code": "lb2",
+          "topic_title": "Lebensgrundlage Luft",
+          "track": "R",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "nt",
+          "topic_code": "lb2",
+          "topic_title": "Lebensgrundlage Luft",
+          "track": "M",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7VTS9HCJ9PJSBTAAQMWZZJF",
+          "slug": "oxidation-grundlage",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie lautet die Wortgleichung für die Oxidation von Magnesium?",
+          "concept": "Magnesium reagiert mit Sauerstoff zu Magnesiumoxid.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=oxidation",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Magnesium reagiert mit Sauerstoff zu Magnesiumoxid.",
+              "Magnesiumoxid zerfällt in Magnesium und Sauerstoff."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7VTS9HCB4BY37PPFDP0N6GN",
+          "slug": "oxidation-unterscheiden",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was unterscheidet ein Metalloxid von einem Nichtmetalloxid?",
+          "concept": "Das mit Sauerstoff verbundene Element ist ein Metall beziehungsweise ein Nichtmetall.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=oxidation",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Das mit Sauerstoff verbundene Element ist ein Metall beziehungsweise ein Nichtmetall.",
+              "Metalloxide enthalten keinen Sauerstoff, Nichtmetalloxide enthalten Sauerstoff."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7VTS9HCCWFFB7CD64RS1YQG",
+          "slug": "oxidation-anwenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Jemand zeichnet nach der Oxidation weniger O-Atome als vorher. Was korrigierst du?",
+          "concept": "Die Zahl der O-Atome muss vor und nach der Reaktion gleich sein.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=oxidation",
+          "sample_solution": "O-Atome verschwinden nicht. Im Modell gehören sie nach der Reaktion zur neuen Verbindung. Zähle deshalb die Sauerstoffatome auf beiden Seiten."
+        }
+      ]
+    },
+    {
+      "id": "01M7VTS9HBZ3N7CYQP1ZXCF1WH",
+      "atom_uri": "urn:zam:atom:01M7VTS9HBZ3N7CYQP1ZXCF1WH",
+      "namespace": "zam-academy-nt-mittelschule-7",
+      "slug": "rosten",
+      "title": "Rost und braune Äpfel",
+      "domain": "nt/nt7/air",
+      "reduction": "formal",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=rosten",
+      "prerequisites": [
+        {
+          "atom_id": "01M7VTS9HBP8GW41CKX47W13WD",
+          "type": "soft"
+        },
+        {
+          "atom_id": "01M7VTS9HBWRG4VNRM38Y1CYN3",
+          "type": "soft"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-mittelschule-7",
+          "topic_code": "stage2",
+          "topic_title": "Luft und Oxidation"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "nt",
+          "topic_code": "lb2",
+          "topic_title": "Lebensgrundlage Luft",
+          "track": "R",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "nt",
+          "topic_code": "lb2",
+          "topic_title": "Lebensgrundlage Luft",
+          "track": "M",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7VTS9HC48FX84Q6D6EDZZT5",
+          "slug": "rosten-grundlage",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Stoffe braucht Eisen zum Rosten?",
+          "concept": "Wasser und Sauerstoff.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=rosten",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Wasser und Sauerstoff.",
+              "Wasser und Stickstoff."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7VTS9HCEWFX0K13XBTG7K5G",
+          "slug": "rosten-unterscheiden",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie kann ein Antioxidans einen angeschnittenen Apfel länger hell halten?",
+          "concept": "Es kann die Oxidation bremsen, bei der sich braune Farbstoffe bilden.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=rosten",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Es kann die Oxidation bremsen, bei der sich braune Farbstoffe bilden.",
+              "Es wandelt Luftstickstoff in ein Edelgas um."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7VTS9HCKZRW7S9CDQYKWQVT",
+          "slug": "rosten-anwenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Warum kann ein lackierter Eisenrahmen an einem tiefen Kratzer rosten?",
+          "concept": "Luft und Wasser können das freiliegende Eisen erreichen.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=rosten",
+          "sample_solution": "Intakter Lack bildet eine Barriere. Der Kratzer unterbricht sie, wenn er bis zum Eisen reicht. In feuchter Luft kann an dieser Stelle Rost entstehen."
+        }
+      ]
+    },
+    {
+      "id": "01M7VTS9HB17D8EKQ5FQJR9HW6",
+      "atom_uri": "urn:zam:atom:01M7VTS9HB17D8EKQ5FQJR9HW6",
+      "namespace": "zam-academy-nt-mittelschule-7",
+      "slug": "formelgleichungen",
+      "title": "Reaktionsgleichungen ausgleichen",
+      "domain": "nt/nt7/air",
+      "reduction": "formal",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=formelgleichungen",
+      "prerequisites": [
+        {
+          "atom_id": "01M7VTS9HBP8GW41CKX47W13WD",
+          "type": "soft"
+        },
+        {
+          "atom_id": "01M7VTS9HBPJJG0JZG0SNPT6RA",
+          "type": "soft"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-mittelschule-7",
+          "topic_code": "stage2",
+          "topic_title": "Luft und Oxidation"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "nt",
+          "topic_code": "lb2",
+          "topic_title": "Lebensgrundlage Luft",
+          "track": "M",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7VTS9HC324G2AC7GEC0ZF16",
+          "slug": "formelgleichungen-grundlage",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Zahlen veränderst du beim Ausgleichen einer Reaktionsgleichung?",
+          "concept": "Die Zahlen vor den Formeln.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=formelgleichungen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Zahlen vor den Formeln.",
+              "Die tiefgestellten Zahlen in den Formeln."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7VTS9HC2Y50H5035GDB7581",
+          "slug": "formelgleichungen-unterscheiden",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie viele O-Atome stecken in 2 CO₂?",
+          "concept": "Vier, weil jedes der zwei CO₂-Moleküle zwei O-Atome hat.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=formelgleichungen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Vier, weil jedes der zwei CO₂-Moleküle zwei O-Atome hat.",
+              "Zwei, weil die Zahl vor der Formel nur für C gilt."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7VTS9HC2AF1RDPP4CS1EX8X",
+          "slug": "formelgleichungen-anwenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Welche kleinsten ganzen Zahlen setzt du beim Ausgleichen vor Magnesium, Sauerstoff und Magnesiumoxid?",
+          "concept": "Vor Magnesium steht 2, vor Sauerstoff 1 und vor Magnesiumoxid 2.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=formelgleichungen",
+          "sample_solution": "Ein Sauerstoffmolekül liefert zwei Sauerstoffatome. Zwei Formeleinheiten Magnesiumoxid enthalten zusammen zwei Magnesiumatome und zwei Sauerstoffatome. Links brauchst du deshalb auch zwei Magnesiumatome."
+        }
+      ]
+    },
+    {
+      "id": "01M7VWPP6YPMJN4JQ7HMBA2C50",
+      "atom_uri": "urn:zam:atom:01M7VWPP6YPMJN4JQ7HMBA2C50",
+      "namespace": "zam-academy-nt-mittelschule-7",
+      "slug": "windkraft",
+      "title": "Wie Wind zu elektrischer Energie beiträgt",
+      "domain": "nt/nt7/wind",
+      "reduction": "formal",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=windkraft",
+      "prerequisites": [
+        {
+          "atom_id": "01M7VTS9HBHWBW9SHXP4ABP7AR",
+          "type": "soft"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-mittelschule-7",
+          "topic_code": "stage3",
+          "topic_title": "Windkraft"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "nt",
+          "topic_code": "lb2",
+          "topic_title": "Lebensgrundlage Luft",
+          "track": "R",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "nt",
+          "topic_code": "lb2",
+          "topic_title": "Lebensgrundlage Luft",
+          "track": "M",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7VWPP6YAW483S266FP92K4S",
+          "slug": "windkraft-grundlage",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wozu dient der Rotor einer Windkraftanlage?",
+          "concept": "Der Wind setzt den Rotor in Drehung.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=windkraft",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Wind setzt den Rotor in Drehung.",
+              "Der Rotor leitet den fertigen Strom zum Netz."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7VWPP6Y54GPDCNFWAX2ZJMW",
+          "slug": "windkraft-unterscheiden",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Energie wandelt der Generator um?",
+          "concept": "Er wandelt Bewegungsenergie in elektrische Energie um.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=windkraft",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Er wandelt Bewegungsenergie in elektrische Energie um.",
+              "Er wandelt elektrische Energie in Wind um."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7VWPP6YQNTW5NTK6DB8GT6S",
+          "slug": "windkraft-anwenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Warum kann ein Windrad trotz Netzanschluss keinen Strom einspeisen?",
+          "concept": "Bei Windstille fehlt die Bewegung des Rotors.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=windkraft",
+          "sample_solution": "Der Generator braucht eine Drehbewegung. Wenn die Anlage steht, steht dem Generator keine Bewegungsenergie aus dem Wind zur Stromerzeugung zur Verfügung."
+        }
+      ]
+    },
+    {
+      "id": "01M7VWPP6YT6BAEBQM9JGN9ZMM",
+      "atom_uri": "urn:zam:atom:01M7VWPP6YT6BAEBQM9JGN9ZMM",
+      "namespace": "zam-academy-nt-mittelschule-7",
+      "slug": "windstandort",
+      "title": "Wo könnte ein Windrad stehen?",
+      "domain": "nt/nt7/wind",
+      "reduction": "formal",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=windstandort",
+      "prerequisites": [
+        {
+          "atom_id": "01M7VWPP6YPMJN4JQ7HMBA2C50",
+          "type": "soft"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-mittelschule-7",
+          "topic_code": "stage3",
+          "topic_title": "Windkraft"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "nt",
+          "topic_code": "lb2",
+          "topic_title": "Lebensgrundlage Luft",
+          "track": "M",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7VWPP6YGGCDFAE10TDN1CE6",
+          "slug": "windstandort-grundlage",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum ist das Windangebot nur ein Standortkriterium?",
+          "concept": "Auch Netz, Zufahrt, Naturschutz und Anwohnende beeinflussen die Entscheidung.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=windstandort",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Auch Netz, Zufahrt, Naturschutz und Anwohnende beeinflussen die Entscheidung.",
+              "Das Windangebot sagt gleichzeitig alles über Natur und Kosten."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7VWPP6YSDBVRY3KA5XN3WCW",
+          "slug": "windstandort-unterscheiden",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie kann ein naher Netzanschluss den Standort verbessern?",
+          "concept": "Kürzere Leitungen können Kosten und Eingriffe verringern.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=windstandort",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Kürzere Leitungen können Kosten und Eingriffe verringern.",
+              "Der kurze Weg erhöht automatisch die Windgeschwindigkeit."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7VWPP6YXMZXN6N6W18KG77P",
+          "slug": "windstandort-anwenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Was prüfst du, wenn der windigste Ort eine wichtige Vogelzugroute kreuzt?",
+          "concept": "Auswirkungen auf die Tiere und geeignete Alternativen.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=windstandort",
+          "sample_solution": "Vergleiche den erwarteten Ertrag mit Naturschutz, Zufahrt, Netz und Belangen der Menschen. Prüfe, ob ein anderer Ort weniger Konflikte verursacht."
+        }
+      ]
+    },
+    {
+      "id": "01M7VTS9HBQSRFEAC9CTA6FJPV",
+      "atom_uri": "urn:zam:atom:01M7VTS9HBQSRFEAC9CTA6FJPV",
+      "namespace": "zam-academy-nt-mittelschule-7",
+      "slug": "atommodelle",
+      "title": "Wie Atommodelle sich verändern",
+      "domain": "nt/nt7/atoms",
+      "reduction": "formal",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=atommodelle",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-mittelschule-7",
+          "topic_code": "stage4",
+          "topic_title": "Atome und Periodensystem"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "nt",
+          "topic_code": "lb2",
+          "topic_title": "Lebensgrundlage Luft",
+          "track": "R",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "nt",
+          "topic_code": "lb2",
+          "topic_title": "Lebensgrundlage Luft",
+          "track": "M",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7VTS9HCJC4MEQNEKYEH3CEE",
+          "slug": "atommodelle-grundlage",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was erklärt Daltons Kugelmodell besonders gut?",
+          "concept": "Feste Zahlenverhältnisse der Atome in Verbindungen.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=atommodelle",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Feste Zahlenverhältnisse der Atome in Verbindungen.",
+              "Die Streuung am kleinen positiv geladenen Atomkern."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7VTS9HCVMPCT8ZD5B4S4607",
+          "slug": "atommodelle-unterscheiden",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was beobachtete man beim Rutherford-Streuversuch?",
+          "concept": "Die meisten Teilchen flogen fast gerade durch die Folie. Wenige wurden stark abgelenkt.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=atommodelle",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die meisten Teilchen flogen fast gerade durch die Folie. Wenige wurden stark abgelenkt.",
+              "Alle Teilchen prallten von der Folie zurück."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7VTS9HCMERB5QAZ8ZTX4GFW",
+          "slug": "atommodelle-anwenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Wieso muss Dalton durch ein Kern-Hülle-Modell ergänzt werden?",
+          "concept": "Die starken Ablenkungen einzelner Teilchen sprechen für eine sehr kleine konzentrierte Ladung.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=atommodelle",
+          "sample_solution": "Daltons Kugeln haben keinen inneren Aufbau. Rutherfords Modell mit kleinem positivem Kern erklärt, weshalb nur wenige vorbeifliegende Teilchen stark abgelenkt werden."
+        }
+      ]
+    },
+    {
+      "id": "01M7VTS9HB0GH02XGZQY9Q774P",
+      "atom_uri": "urn:zam:atom:01M7VTS9HB0GH02XGZQY9Q774P",
+      "namespace": "zam-academy-nt-mittelschule-7",
+      "slug": "kern-huelle",
+      "title": "Ein kleiner Kern in einer großen Hülle",
+      "domain": "nt/nt7/atoms",
+      "reduction": "formal",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=kern-huelle",
+      "prerequisites": [
+        {
+          "atom_id": "01M7VTS9HBQSRFEAC9CTA6FJPV",
+          "type": "soft"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-mittelschule-7",
+          "topic_code": "stage4",
+          "topic_title": "Atome und Periodensystem"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "nt",
+          "topic_code": "lb2",
+          "topic_title": "Lebensgrundlage Luft",
+          "track": "R",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "nt",
+          "topic_code": "lb2",
+          "topic_title": "Lebensgrundlage Luft",
+          "track": "M",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7VTS9HCAXKCWYXVCYNG1NKT",
+          "slug": "kern-huelle-grundlage",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Teilchen gehören zur Atomhülle?",
+          "concept": "Elektronen.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=kern-huelle",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Elektronen.",
+              "Protonen und Neutronen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7VTS9HCGG0FX4NB4NTSXE90",
+          "slug": "kern-huelle-unterscheiden",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wo befindet sich fast die gesamte Masse des Atoms?",
+          "concept": "Im sehr kleinen Kern.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=kern-huelle",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Im sehr kleinen Kern.",
+              "Gleichmäßig verteilt in der ganzen Hülle."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7VTS9HCKCE6XCN8R6KCCW20",
+          "slug": "kern-huelle-anwenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Das Atom ist im Modell 100 m breit. Wie breit wäre bei einem Durchmesserverhältnis von 100 000 zu 1 sein Kern?",
+          "concept": "Etwa 1 mm.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=kern-huelle",
+          "sample_solution": "100 m entsprechen 100 000 mm. Teile 100 000 mm durch 100 000, um den Kerndurchmesser zu erhalten."
+        }
+      ]
+    },
+    {
+      "id": "01M7VTS9HBJPBYXMAH9B0R6VW5",
+      "atom_uri": "urn:zam:atom:01M7VTS9HBJPBYXMAH9B0R6VW5",
+      "namespace": "zam-academy-nt-mittelschule-7",
+      "slug": "isotope",
+      "title": "Protonen, Neutronen und Elektronen zählen",
+      "domain": "nt/nt7/atoms",
+      "reduction": "formal",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=isotope",
+      "prerequisites": [
+        {
+          "atom_id": "01M7VTS9HB0GH02XGZQY9Q774P",
+          "type": "soft"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-mittelschule-7",
+          "topic_code": "stage4",
+          "topic_title": "Atome und Periodensystem"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "nt",
+          "topic_code": "lb2",
+          "topic_title": "Lebensgrundlage Luft",
+          "track": "R",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "nt",
+          "topic_code": "lb2",
+          "topic_title": "Lebensgrundlage Luft",
+          "track": "M",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7VTS9HCTFRBEEP5D3CXT688",
+          "slug": "isotope-grundlage",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was gibt die Ordnungszahl Z an?",
+          "concept": "Die Anzahl der Protonen im Kern.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=isotope",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Anzahl der Protonen im Kern.",
+              "Die Anzahl von Protonen und Neutronen zusammen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7VTS9HCCJ7PZQYE1DB77VXR",
+          "slug": "isotope-unterscheiden",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie berechnest du die Neutronenzahl, wenn A und Z gegeben sind?",
+          "concept": "Massenzahl A minus Ordnungszahl Z.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=isotope",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Massenzahl A minus Ordnungszahl Z.",
+              "Massenzahl A plus Ordnungszahl Z."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7VTS9HC0M286AMJV3A59XJN",
+          "slug": "isotope-anwenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Wie viele Protonen, Neutronen und Elektronen hat ein neutrales Kohlenstoff–13-Atom mit der Ordnungszahl 6?",
+          "concept": "Sechs Protonen, sieben Neutronen und sechs Elektronen.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=isotope",
+          "sample_solution": "Z = 6 zählt Protonen. Die Neutronenzahl ist 13 − 6 = 7. Die gleich große Elektronenzahl gleicht im neutralen Atom die positive Ladung aus."
+        }
+      ]
+    },
+    {
+      "id": "01M7VTS9HBKVY80EDWW8RNEYB1",
+      "atom_uri": "urn:zam:atom:01M7VTS9HBKVY80EDWW8RNEYB1",
+      "namespace": "zam-academy-nt-mittelschule-7",
+      "slug": "periodensystem",
+      "title": "Elemente im Periodensystem finden",
+      "domain": "nt/nt7/atoms",
+      "reduction": "formal",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=periodensystem",
+      "prerequisites": [
+        {
+          "atom_id": "01M7VTS9HBJPBYXMAH9B0R6VW5",
+          "type": "soft"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-mittelschule-7",
+          "topic_code": "stage4",
+          "topic_title": "Atome und Periodensystem"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "nt",
+          "topic_code": "lb2",
+          "topic_title": "Lebensgrundlage Luft",
+          "track": "R",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "nt",
+          "topic_code": "lb2",
+          "topic_title": "Lebensgrundlage Luft",
+          "track": "M",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7VTS9HC0Y876MTVMFACMY9Q",
+          "slug": "periodensystem-grundlage",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wo stehen Perioden und Gruppen im Periodensystem?",
+          "concept": "Perioden sind Zeilen, Gruppen Spalten.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=periodensystem",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Perioden sind Zeilen, Gruppen Spalten.",
+              "Perioden sind Spalten, Gruppen Zeilen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7VTS9HC5JK71BZD700F2KQ0",
+          "slug": "periodensystem-unterscheiden",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Elementfamilie steht in Gruppe 18 ganz rechts?",
+          "concept": "Die Edelgase.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=periodensystem",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Edelgase.",
+              "Die Metalle der ersten Hauptgruppe."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7VTS9HCESWC41YK1Y9S3D6C",
+          "slug": "periodensystem-anwenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Fluor und Chlor stehen im Periodensystem untereinander. Wie liest du ihre Position?",
+          "concept": "Gleiche Gruppe, verschiedene Perioden.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=periodensystem",
+          "sample_solution": "Die Elemente teilen eine Spalte. Fluor steht in Periode 2 und Chlor in Periode 3, beide in Gruppe 17."
+        }
+      ]
+    },
+    {
+      "id": "01M7VTS9HBPGYDXB0TQNZTP2Y1",
+      "atom_uri": "urn:zam:atom:01M7VTS9HBPGYDXB0TQNZTP2Y1",
+      "namespace": "zam-academy-nt-mittelschule-7",
+      "slug": "energiestufen",
+      "title": "Elektronen, Schalen und Edelgase",
+      "domain": "nt/nt7/atoms",
+      "reduction": "formal",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=energiestufen",
+      "prerequisites": [
+        {
+          "atom_id": "01M7VTS9HBKVY80EDWW8RNEYB1",
+          "type": "soft"
+        },
+        {
+          "atom_id": "01M7VTS9HB0GH02XGZQY9Q774P",
+          "type": "soft"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-mittelschule-7",
+          "topic_code": "stage4",
+          "topic_title": "Atome und Periodensystem"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "nt",
+          "topic_code": "lb2",
+          "topic_title": "Lebensgrundlage Luft",
+          "track": "M",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7VTS9HCWCWRRTBHX8SGQ7BH",
+          "slug": "energiestufen-grundlage",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was verrät die Periodennummer im Energiestufenmodell der ersten 18 neutralen Atome?",
+          "concept": "Die Anzahl der besetzten Schalen im Grundzustand.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=energiestufen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Anzahl der besetzten Schalen im Grundzustand.",
+              "Die Anzahl der Neutronen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7VTS9HC6Z5P143DTASBNAEY",
+          "slug": "energiestufen-unterscheiden",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum reichen Helium zwei Außenelektronen?",
+          "concept": "Die erste und einzige Schale ist mit zwei Elektronen voll.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=energiestufen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die erste und einzige Schale ist mit zwei Elektronen voll.",
+              "Helium hat noch sechs Elektronen im Kern."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7VTS9HCV0976ECQAPD8M69K",
+          "slug": "energiestufen-anwenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Warum beginnt mit Natrium mit Ordnungszahl 11 eine neue Periode?",
+          "concept": "Sein elftes Elektron besetzt die dritte Schale.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=energiestufen",
+          "sample_solution": "Neon hat die Verteilung 2, 8. Die nächste Ordnungszahl hat ein Elektron mehr. Natrium hat daher im Modell 2, 8, 1 und steht in der dritten Periode."
+        }
+      ]
+    },
+    {
+      "id": "01M7VWPP6YAEESQRP3QC7792WT",
+      "atom_uri": "urn:zam:atom:01M7VWPP6YAEESQRP3QC7792WT",
+      "namespace": "zam-academy-nt-mittelschule-7",
+      "slug": "wirbeltierklassen",
+      "title": "Eine Fledermaus ist kein Vogel",
+      "domain": "nt/nt7/animals",
+      "reduction": "formal",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=wirbeltierklassen",
+      "prerequisites": [
+        {
+          "atom_id": "01M7VTS9HB78NX14FQ1YJS7M1S",
+          "type": "soft"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-mittelschule-7",
+          "topic_code": "stage5",
+          "topic_title": "Wirbeltiere an Land und in der Luft"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "nt",
+          "topic_code": "lb2",
+          "topic_title": "Lebensgrundlage Luft",
+          "track": "R",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "nt",
+          "topic_code": "lb2",
+          "topic_title": "Lebensgrundlage Luft",
+          "track": "M",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7VWPP6YPSRCGJJPQ95N3MXN",
+          "slug": "wirbeltierklassen-grundlage",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was ist das namensgebende gemeinsame Merkmal der Wirbeltiere?",
+          "concept": "Eine Wirbelsäule.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=wirbeltierklassen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eine Wirbelsäule.",
+              "Federn und Flügel."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7VWPP6YCB2ERNH4F8JDDDKE",
+          "slug": "wirbeltierklassen-unterscheiden",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Woraus besteht das Zentralnervensystem der Wirbeltiere?",
+          "concept": "Aus Gehirn und Rückenmark.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=wirbeltierklassen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Aus Gehirn und Rückenmark.",
+              "Aus Herz und Lunge."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7VWPP6YNR08KNNT7G9TD1GY",
+          "slug": "wirbeltierklassen-anwenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Warum sind Mauersegler und Abendsegler trotz Flugfähigkeit verschieden einzuordnen?",
+          "concept": "Der Mauersegler hat Federn. Der Abendsegler hat Fell und Flughaut.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=wirbeltierklassen",
+          "sample_solution": "Fliegen allein legt die Wirbeltierklasse nicht fest. Der Mauersegler ist ein Vogel. Der Abendsegler ist eine Fledermaus und damit ein Säugetier."
+        }
+      ]
+    },
+    {
+      "id": "01M7VWPP6YGHSD6JDG1YKAWQYY",
+      "atom_uri": "urn:zam:atom:01M7VWPP6YGHSD6JDG1YKAWQYY",
+      "namespace": "zam-academy-nt-mittelschule-7",
+      "slug": "fortbewegung",
+      "title": "Füße, Flossen und Flügel",
+      "domain": "nt/nt7/animals",
+      "reduction": "formal",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=fortbewegung",
+      "prerequisites": [
+        {
+          "atom_id": "01M7VWPP6YAEESQRP3QC7792WT",
+          "type": "soft"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-mittelschule-7",
+          "topic_code": "stage5",
+          "topic_title": "Wirbeltiere an Land und in der Luft"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "nt",
+          "topic_code": "lb2",
+          "topic_title": "Lebensgrundlage Luft",
+          "track": "R",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "nt",
+          "topic_code": "lb2",
+          "topic_title": "Lebensgrundlage Luft",
+          "track": "M",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7VWPP6YE5H5YMBKV0JZH1SC",
+          "slug": "fortbewegung-grundlage",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was verringert den Widerstand der Bachforelle im Wasser?",
+          "concept": "Ihre stromlinienförmige Körperform.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=fortbewegung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ihre stromlinienförmige Körperform.",
+              "Feuchte Haut ohne Schuppen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7VWPP6YVAWZ92ES77Z6HKXY",
+          "slug": "fortbewegung-unterscheiden",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was spannt beim Abendsegler die Flughaut?",
+          "concept": "Verlängerte Finger.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=fortbewegung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Verlängerte Finger.",
+              "Federn an den Hinterbeinen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7VWPP6Y0RT71W69SWKPY2EZ",
+          "slug": "fortbewegung-anwenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Vergleiche den Nutzen der Hinterbeine des Grasfroschs an Land und im Wasser.",
+          "concept": "Beim Sprung stößt er sich vom Boden ab. Beim Schwimmen drückt er Wasser nach hinten.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=fortbewegung",
+          "sample_solution": "Die Hinterbeine liefern in beiden Medien Vortrieb. Beim Sprung wirkt die Kraft gegen den festen Untergrund, beim Schwimmen gegen das Wasser."
+        }
+      ]
+    },
+    {
+      "id": "01M7VWPP6ZC73EY0MMEFS0BC4A",
+      "atom_uri": "urn:zam:atom:01M7VWPP6ZC73EY0MMEFS0BC4A",
+      "namespace": "zam-academy-nt-mittelschule-7",
+      "slug": "atemwege",
+      "title": "Der Weg eines Atemzugs",
+      "domain": "nt/nt7/breathing",
+      "reduction": "formal",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=atemwege",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-mittelschule-7",
+          "topic_code": "stage6",
+          "topic_title": "Atmung des Menschen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "nt",
+          "topic_code": "lb3",
+          "topic_title": "Mensch und Gesundheit",
+          "track": "R",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "nt",
+          "topic_code": "lb3",
+          "topic_title": "Mensch und Gesundheit",
+          "track": "M",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7VWPP6Z076YBQ00K6VARQHS",
+          "slug": "atemwege-grundlage",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wohin führt die Luftröhre auf dem Weg beim Einatmen?",
+          "concept": "Zur Verzweigung in die beiden Hauptbronchien.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=atemwege",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Zur Verzweigung in die beiden Hauptbronchien.",
+              "Zuerst in die Speiseröhre."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7VWPP6ZAA2TWVY6D29VWM8E",
+          "slug": "atemwege-unterscheiden",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was hält die Luftröhre offen?",
+          "concept": "Knorpelspangen.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=atemwege",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Knorpelspangen.",
+              "Blutplättchen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7VWPP6ZSPABQZ9ANTQ1PN61",
+          "slug": "atemwege-anwenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Beschreibe den Luftweg nach dem Kehlkopf bis zum Gasaustausch.",
+          "concept": "Luftröhre, Hauptbronchien, feinere Bronchien und Bronchiolen, Lungenbläschen.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=atemwege",
+          "sample_solution": "Die Luft gelangt durch die Luftröhre und immer feinere Atemwege zu den Lungenbläschen. Diese liegen für den Austausch dicht an Blutkapillaren."
+        }
+      ]
+    },
+    {
+      "id": "01M7VWPP6Z94JDEYJ0QX0VGD1X",
+      "atom_uri": "urn:zam:atom:01M7VWPP6Z94JDEYJ0QX0VGD1X",
+      "namespace": "zam-academy-nt-mittelschule-7",
+      "slug": "atembewegung",
+      "title": "Warum die Luft in die Lunge strömt",
+      "domain": "nt/nt7/breathing",
+      "reduction": "formal",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=atembewegung",
+      "prerequisites": [
+        {
+          "atom_id": "01M7VWPP6ZC73EY0MMEFS0BC4A",
+          "type": "soft"
+        },
+        {
+          "atom_id": "01M7VTS9HB6Y88KMMCWV1ATW7P",
+          "type": "soft"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-mittelschule-7",
+          "topic_code": "stage6",
+          "topic_title": "Atmung des Menschen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "nt",
+          "topic_code": "lb3",
+          "topic_title": "Mensch und Gesundheit",
+          "track": "R",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "nt",
+          "topic_code": "lb3",
+          "topic_title": "Mensch und Gesundheit",
+          "track": "M",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7VWPP6ZCE0QVXHMS33XWWCF",
+          "slug": "atembewegung-grundlage",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie bewegt sich das Zwerchfell beim Einatmen?",
+          "concept": "Es zieht sich zusammen, wird flacher und senkt sich.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=atembewegung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Es zieht sich zusammen, wird flacher und senkt sich.",
+              "Es entspannt sich und hebt sich nach oben."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7VWPP6ZFY5JR2K01DD58Y0C",
+          "slug": "atembewegung-unterscheiden",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was geschieht zunächst mit dem Druck in der sich ausdehnenden Lunge?",
+          "concept": "Er sinkt unter den Außendruck.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=atembewegung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Er sinkt unter den Außendruck.",
+              "Er steigt über den Außendruck."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7VWPP6ZR10WB7HZXWZ6FF4N",
+          "slug": "atembewegung-anwenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Warum strömt im Flaschenmodell Luft in die Ballons, wenn die Membran nach unten gezogen wird?",
+          "concept": "Der Raum wird größer und der Druck sinkt zunächst.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=atembewegung",
+          "sample_solution": "Die bewegte Membran vergrößert den Brustraum im Modell. Durch den Druckunterschied strömt Luft hinein. Die starre Flasche bildet die Bewegung der Rippen nur unvollständig ab."
+        }
+      ]
+    },
+    {
+      "id": "01M7VWPP6ZKAYBX5D4E26TFGPY",
+      "atom_uri": "urn:zam:atom:01M7VWPP6ZKAYBX5D4E26TFGPY",
+      "namespace": "zam-academy-nt-mittelschule-7",
+      "slug": "gasaustausch",
+      "title": "Zwei Gase, zwei Richtungen",
+      "domain": "nt/nt7/breathing",
+      "reduction": "formal",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=gasaustausch",
+      "prerequisites": [
+        {
+          "atom_id": "01M7VWPP6ZC73EY0MMEFS0BC4A",
+          "type": "soft"
+        },
+        {
+          "atom_id": "01M7VTS9HBHWBW9SHXP4ABP7AR",
+          "type": "soft"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-mittelschule-7",
+          "topic_code": "stage6",
+          "topic_title": "Atmung des Menschen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "nt",
+          "topic_code": "lb3",
+          "topic_title": "Mensch und Gesundheit",
+          "track": "R",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "nt",
+          "topic_code": "lb3",
+          "topic_title": "Mensch und Gesundheit",
+          "track": "M",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7VWPP6ZX2RKM3F2XPDZ8X4Z",
+          "slug": "gasaustausch-grundlage",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wohin wandert Sauerstoff an einem Lungenbläschen?",
+          "concept": "Aus der Atemluft ins Blut.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=gasaustausch",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Aus der Atemluft ins Blut.",
+              "Aus dem Blut in die Atemluft."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7VWPP6ZV9BZ349VN7NEQAFW",
+          "slug": "gasaustausch-unterscheiden",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wohin wandert Kohlenstoffdioxid an einem Lungenbläschen?",
+          "concept": "Aus dem Blut in die Atemluft.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=gasaustausch",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Aus dem Blut in die Atemluft.",
+              "Aus der Atemluft ins Blut."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7VWPP6Z4WTZQBP9JYDE1T3P",
+          "slug": "gasaustausch-anwenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Warum begünstigen viele Bläschen und dünne Wände den Gasaustausch?",
+          "concept": "Sie sorgen für viel Austauschfläche und einen kurzen Weg zum Blut.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=gasaustausch",
+          "sample_solution": "Viele kleine Bläschen ergeben eine große Fläche. Die dünnen Wände zwischen Luft und Blut verkürzen die Strecke, über die sich Gase bewegen müssen."
+        }
+      ]
+    },
+    {
+      "id": "01M7VTS9HC42C0QGQRJEEHZZZJ",
+      "atom_uri": "urn:zam:atom:01M7VTS9HC42C0QGQRJEEHZZZJ",
+      "namespace": "zam-academy-nt-mittelschule-7",
+      "slug": "zellatmung",
+      "title": "Wie die Zelle Energie verfügbar macht",
+      "domain": "nt/nt7/respiration",
+      "reduction": "formal",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=zellatmung",
+      "prerequisites": [
+        {
+          "atom_id": "01M7VTS9HBP8GW41CKX47W13WD",
+          "type": "soft"
+        },
+        {
+          "atom_id": "01M7VTS9HBHWBW9SHXP4ABP7AR",
+          "type": "soft"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-mittelschule-7",
+          "topic_code": "stage7",
+          "topic_title": "Oxidation in Körperzellen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "nt",
+          "topic_code": "lb3",
+          "topic_title": "Mensch und Gesundheit",
+          "track": "M",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7VTS9HC0R2FDMFMJF4D7RC6",
+          "slug": "zellatmung-grundlage",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Stoffe entstehen bei der Zellatmung aus Traubenzucker und Sauerstoff?",
+          "concept": "Kohlenstoffdioxid und Wasser.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=zellatmung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Kohlenstoffdioxid und Wasser.",
+              "Stickstoff und Sauerstoff."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7VTS9HCJW33T6DX02R6213E",
+          "slug": "zellatmung-unterscheiden",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wo wird bei der Zellatmung Energie aus Traubenzucker verfügbar?",
+          "concept": "In den Körperzellen.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=zellatmung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "In den Körperzellen.",
+              "Ausschließlich in der eingeatmeten Luft."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7VTS9HCWE2BX3K7YX1C3M5E",
+          "slug": "zellatmung-anwenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Wie hängen Atmung in der Lunge und Zellatmung zusammen?",
+          "concept": "Die Lunge tauscht Gase aus. Die Zellen nutzen Sauerstoff zur Stoffumwandlung.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=zellatmung",
+          "sample_solution": "Sauerstoff gelangt über Lunge und Blut zu den Zellen. Diese setzen ihn mit Traubenzucker um. Das gebildete Kohlenstoffdioxid kann über das Blut zur Lunge zurückgelangen."
+        }
+      ]
+    },
+    {
+      "id": "01M7VWPP6ZP28NMNDGXVPRMX90",
+      "atom_uri": "urn:zam:atom:01M7VWPP6ZP28NMNDGXVPRMX90",
+      "namespace": "zam-academy-nt-mittelschule-7",
+      "slug": "blutbestandteile",
+      "title": "Blut kann mehr als Sauerstoff tragen",
+      "domain": "nt/nt7/circulation",
+      "reduction": "formal",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=blutbestandteile",
+      "prerequisites": [
+        {
+          "atom_id": "01M7VWPP6ZKAYBX5D4E26TFGPY",
+          "type": "soft"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-mittelschule-7",
+          "topic_code": "stage8",
+          "topic_title": "Herz und Blutkreislauf"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "nt",
+          "topic_code": "lb3",
+          "topic_title": "Mensch und Gesundheit",
+          "track": "R",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "nt",
+          "topic_code": "lb3",
+          "topic_title": "Mensch und Gesundheit",
+          "track": "M",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7VWPP6Z36ETAGC89RX65JF4",
+          "slug": "blutbestandteile-grundlage",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Blutbestandteile transportieren mit Hämoglobin vor allem Sauerstoff?",
+          "concept": "Rote Blutkörperchen.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=blutbestandteile",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Rote Blutkörperchen.",
+              "Blutplättchen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7VWPP6ZTNVWFR8V6WTB2YY4",
+          "slug": "blutbestandteile-unterscheiden",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Aufgabe haben Blutplättchen?",
+          "concept": "Sie helfen bei Blutgerinnung und Wundverschluss.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=blutbestandteile",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie helfen bei Blutgerinnung und Wundverschluss.",
+              "Sie sind vor allem für die Erregerabwehr zuständig."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7VWPP6ZYT5NBPFKR3XBPG0R",
+          "slug": "blutbestandteile-anwenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Vergleiche die Aufgaben von Blutplasma und weißen Blutkörperchen.",
+          "concept": "Plasma transportiert gelöste Stoffe. Weiße Blutkörperchen gehören zur Abwehr.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=blutbestandteile",
+          "sample_solution": "Plasma ist der flüssige Anteil und führt unter anderem Nährstoffe und Abfallstoffe mit. Weiße Blutkörperchen wirken gegen Erreger."
+        }
+      ]
+    },
+    {
+      "id": "01M7VWPP6ZP1D49Y1GGMHB6V5N",
+      "atom_uri": "urn:zam:atom:01M7VWPP6ZP1D49Y1GGMHB6V5N",
+      "namespace": "zam-academy-nt-mittelschule-7",
+      "slug": "blutkreislauf",
+      "title": "Ein Kreislauf mit zwei Schleifen",
+      "domain": "nt/nt7/circulation",
+      "reduction": "formal",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=blutkreislauf",
+      "prerequisites": [
+        {
+          "atom_id": "01M7VWPP6ZP28NMNDGXVPRMX90",
+          "type": "soft"
+        },
+        {
+          "atom_id": "01M7VWPP6ZKAYBX5D4E26TFGPY",
+          "type": "soft"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-mittelschule-7",
+          "topic_code": "stage8",
+          "topic_title": "Herz und Blutkreislauf"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "nt",
+          "topic_code": "lb3",
+          "topic_title": "Mensch und Gesundheit",
+          "track": "R",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "nt",
+          "topic_code": "lb3",
+          "topic_title": "Mensch und Gesundheit",
+          "track": "M",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7VWPP6ZDWZPWM0V982A0XNE",
+          "slug": "blutkreislauf-grundlage",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Herzhälfte pumpt zur Lunge?",
+          "concept": "Die rechte Herzhälfte.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=blutkreislauf",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die rechte Herzhälfte.",
+              "Die linke Herzhälfte."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7VWPP6ZV2SFQMKWRDV3HRDW",
+          "slug": "blutkreislauf-unterscheiden",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie unterscheiden sich Arterien und Venen in Bezug auf die Flussrichtung?",
+          "concept": "Arterien führen vom Herzen weg, Venen zum Herzen hin.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=blutkreislauf",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Arterien führen vom Herzen weg, Venen zum Herzen hin.",
+              "Arterien führen zum Herzen hin, Venen vom Herzen weg."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7VWPP6ZPJJJ5ZKZ5F7VX4R7",
+          "slug": "blutkreislauf-anwenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Welchen Weg nimmt Blut von der Lunge bis zurück zur Lunge?",
+          "concept": "Von der Lunge zum linken Herzen, in den Körper, zum rechten Herzen und wieder zur Lunge.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=blutkreislauf",
+          "sample_solution": "Die linke Herzhälfte pumpt durch den Körper. Das Blut kehrt rechts zurück und wird von dort in die Lungenschleife gepumpt."
+        }
+      ]
+    },
+    {
+      "id": "01M7VWPP6ZQKCE06706455DGBR",
+      "atom_uri": "urn:zam:atom:01M7VWPP6ZQKCE06706455DGBR",
+      "namespace": "zam-academy-nt-mittelschule-7",
+      "slug": "herzpumpe",
+      "title": "Wie Herzmuskel und Klappen zusammenarbeiten",
+      "domain": "nt/nt7/circulation",
+      "reduction": "formal",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=herzpumpe",
+      "prerequisites": [
+        {
+          "atom_id": "01M7VWPP6ZP1D49Y1GGMHB6V5N",
+          "type": "soft"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-mittelschule-7",
+          "topic_code": "stage8",
+          "topic_title": "Herz und Blutkreislauf"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "nt",
+          "topic_code": "lb3",
+          "topic_title": "Mensch und Gesundheit",
+          "track": "R",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "nt",
+          "topic_code": "lb3",
+          "topic_title": "Mensch und Gesundheit",
+          "track": "M",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7VWPP6ZCKM2DGK8XCYB2JR0",
+          "slug": "herzpumpe-grundlage",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was treibt Blut beim Auswerfen aus einer Herzkammer?",
+          "concept": "Der Druck, den der sich zusammenziehende Herzmuskel erzeugt.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=herzpumpe",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Druck, den der sich zusammenziehende Herzmuskel erzeugt.",
+              "Der Druck der Luft in den Bronchien."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7VWPP6Z8ESXSJBQ5TPS7SD0",
+          "slug": "herzpumpe-unterscheiden",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Klappe ist beim Füllen der Kammer geöffnet?",
+          "concept": "Die Einlassklappe vom Vorhof zur Kammer.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=herzpumpe",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Einlassklappe vom Vorhof zur Kammer.",
+              "Die Auslassklappe von der Kammer zur Arterie."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7VWPP6ZXP8WRS4XKYEKBG1S",
+          "slug": "herzpumpe-anwenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Warum fließt das Blut beim Auswerfen normalerweise in die Arterie statt in den Vorhof?",
+          "concept": "Die Klappe zum Vorhof ist geschlossen, die Auslassklappe öffnet bei ausreichendem Kammerdruck.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=herzpumpe",
+          "sample_solution": "Der ansteigende Kammerdruck schließt die Einlassklappe. Sobald er den Druck in der Arterie übersteigt, öffnet sich die Klappe zur Arterie."
+        }
+      ]
+    },
+    {
+      "id": "01M7VWPP6ZVBE0PN564M4RN65R",
+      "atom_uri": "urn:zam:atom:01M7VWPP6ZVBE0PN564M4RN65R",
+      "namespace": "zam-academy-nt-mittelschule-7",
+      "slug": "kreislaufgesundheit",
+      "title": "Was Herz und Gefäße im Alltag beeinflusst",
+      "domain": "nt/nt7/circulation",
+      "reduction": "formal",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=kreislaufgesundheit",
+      "prerequisites": [
+        {
+          "atom_id": "01M7VWPP6ZP1D49Y1GGMHB6V5N",
+          "type": "soft"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-mittelschule-7",
+          "topic_code": "stage8",
+          "topic_title": "Herz und Blutkreislauf"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "nt",
+          "topic_code": "lb3",
+          "topic_title": "Mensch und Gesundheit",
+          "track": "R",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "nt",
+          "topic_code": "lb3",
+          "topic_title": "Mensch und Gesundheit",
+          "track": "M",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7VWPP6ZJM2TCJ2JNFJY01WR",
+          "slug": "kreislaufgesundheit-grundlage",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie kann regelmäßige Bewegung Herz und Kreislauf unterstützen?",
+          "concept": "Sie trainiert den Kreislauf und kann die Ausdauer verbessern.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=kreislaufgesundheit",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie trainiert den Kreislauf und kann die Ausdauer verbessern.",
+              "Sie ersetzt die Versorgung der Muskeln mit Sauerstoff."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7VWPP6ZF8XR68A4P9RSVQZ2",
+          "slug": "kreislaufgesundheit-unterscheiden",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie beeinflusst Rauchen das Risiko für Herz und Gefäße?",
+          "concept": "Es kann das Erkrankungsrisiko erhöhen.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=kreislaufgesundheit",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Es kann das Erkrankungsrisiko erhöhen.",
+              "Es trainiert die Gefäße wie Ausdauerbewegung."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7VWPP6ZS2AH7FMGDW0RZ143",
+          "slug": "kreislaufgesundheit-anwenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Warum ist ein Risikofaktor keine sichere Aussage über eine einzelne Person?",
+          "concept": "Ein Risiko ist eine Wahrscheinlichkeit. Mehrere Einflüsse wirken zusammen.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=kreislaufgesundheit",
+          "sample_solution": "Gewohnheiten können die Wahrscheinlichkeit einer Erkrankung beeinflussen. Aus einem einzelnen Verhalten lässt sich die Gesundheit einer Person nicht zuverlässig vorhersagen."
+        }
+      ]
+    },
+    {
+      "id": "01M7VWPP6ZXAR4KV8Q1G7PPRGA",
+      "atom_uri": "urn:zam:atom:01M7VWPP6ZXAR4KV8Q1G7PPRGA",
+      "namespace": "zam-academy-nt-mittelschule-7",
+      "slug": "belastung",
+      "title": "Warum Atem und Puls schneller werden",
+      "domain": "nt/nt7/circulation",
+      "reduction": "formal",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=belastung",
+      "prerequisites": [
+        {
+          "atom_id": "01M7VWPP6ZP1D49Y1GGMHB6V5N",
+          "type": "soft"
+        },
+        {
+          "atom_id": "01M7VTS9HC42C0QGQRJEEHZZZJ",
+          "type": "soft"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-mittelschule-7",
+          "topic_code": "stage8",
+          "topic_title": "Herz und Blutkreislauf"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "nt",
+          "topic_code": "lb3",
+          "topic_title": "Mensch und Gesundheit",
+          "track": "M",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7VWPP6ZZ5DQWZW8VQCNCF6Z",
+          "slug": "belastung-grundlage",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum brauchen arbeitende Muskeln bei Belastung mehr Sauerstoff?",
+          "concept": "Sie setzen für ihre Arbeit mehr Energie um.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=belastung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie setzen für ihre Arbeit mehr Energie um.",
+              "Die Lunge gibt bei Belastung keinen Sauerstoff mehr ans Blut ab."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7VWPP6Z4J0QCEDJ8VB6FB16",
+          "slug": "belastung-unterscheiden",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie verändern sich Puls und Atmung meist in der Erholung?",
+          "concept": "Beide gehen in Richtung der Ruhewerte zurück.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=belastung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Beide gehen in Richtung der Ruhewerte zurück.",
+              "Beide bleiben zwangsläufig beim höchsten Messwert."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7VWPP6ZPYF1P5V9PZ5WHCWS",
+          "slug": "belastung-anwenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Warum erhöhen sich Puls- und Atemfrequenz beim Laufen meist gemeinsam?",
+          "concept": "Mehr Stoffwechsel in den Muskeln braucht mehr Sauerstoff und schnelleren Stofftransport.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=belastung",
+          "sample_solution": "Die Lunge tauscht bei stärkerer Atmung mehr Gase aus. Das Herz befördert mehr Blut zu den Muskeln und bringt Kohlenstoffdioxid zur Lunge zurück."
+        }
+      ]
+    },
+    {
+      "id": "01M7VWPP6ZXP22TEHJGG6RX857",
+      "atom_uri": "urn:zam:atom:01M7VWPP6ZXP22TEHJGG6RX857",
+      "namespace": "zam-academy-nt-mittelschule-7",
+      "slug": "stromwirkungen",
+      "title": "Was elektrischer Strom bewirken kann",
+      "domain": "nt/nt7/circuits",
+      "reduction": "formal",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=stromwirkungen",
+      "prerequisites": [
+        {
+          "atom_id": "01M7VTS9HBG3KBPQXDZ9GF97B3",
+          "type": "soft"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-mittelschule-7",
+          "topic_code": "stage9",
+          "topic_title": "Spannung und Stromstärke"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "nt",
+          "topic_code": "lb4",
+          "topic_title": "Materie, Stoffe und Technik",
+          "track": "R",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "nt",
+          "topic_code": "lb4",
+          "topic_title": "Materie, Stoffe und Technik",
+          "track": "M",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7VWPP6ZGMS0Z98S2Q1AV1PQ",
+          "slug": "stromwirkungen-grundlage",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche erwünschte Wirkung hat elektrischer Strom im Heizdraht?",
+          "concept": "Er erwärmt den Draht.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=stromwirkungen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Er erwärmt den Draht.",
+              "Er speichert elektrische Energie als Licht."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7VWPP6ZNNH9GQ7CK7PNXGMR",
+          "slug": "stromwirkungen-unterscheiden",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "In welcher Form speichert ein Akku einen Teil der Energie beim Laden?",
+          "concept": "Als chemische Energie.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=stromwirkungen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Als chemische Energie.",
+              "Als Bewegungsenergie."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7VWPP6ZTXRDGSC3M0X261QY",
+          "slug": "stromwirkungen-anwenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Warum gibt eine Lampe beim Betrieb Licht und Wärme ab?",
+          "concept": "Sie wandelt elektrische Energie in mehrere Energieformen um.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=stromwirkungen",
+          "sample_solution": "Ein Teil der Energie verlässt die Lampe als Strahlung. Ein weiterer Teil erwärmt die Lampe und ihre Umgebung."
+        }
+      ]
+    },
+    {
+      "id": "01M7VWPP6ZZF5N5YYN2XFAA5WJ",
+      "atom_uri": "urn:zam:atom:01M7VWPP6ZZF5N5YYN2XFAA5WJ",
+      "namespace": "zam-academy-nt-mittelschule-7",
+      "slug": "stromkreis",
+      "title": "Damit die Lampe leuchtet",
+      "domain": "nt/nt7/circuits",
+      "reduction": "formal",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=stromkreis",
+      "prerequisites": [
+        {
+          "atom_id": "01M7VWPP6ZXP22TEHJGG6RX857",
+          "type": "soft"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-mittelschule-7",
+          "topic_code": "stage9",
+          "topic_title": "Spannung und Stromstärke"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "nt",
+          "topic_code": "lb4",
+          "topic_title": "Materie, Stoffe und Technik",
+          "track": "R",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "nt",
+          "topic_code": "lb4",
+          "topic_title": "Materie, Stoffe und Technik",
+          "track": "M",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7VWPP6ZH43292HHEHWCR9FR",
+          "slug": "stromkreis-grundlage",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was braucht ein einfacher Stromkreis, damit die Lampe leuchten kann?",
+          "concept": "Einen geschlossenen Weg und eine Spannungsquelle.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=stromkreis",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Einen geschlossenen Weg und eine Spannungsquelle.",
+              "Einen offenen Weg und eine unterbrochene Leitung."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7VWPP6ZQX6NJ1J0TSN29GRG",
+          "slug": "stromkreis-unterscheiden",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was gibt die Stromstärke an?",
+          "concept": "Wie viel elektrische Ladung pro Zeit an einer Stelle vorbeifließt.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=stromkreis",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Wie viel elektrische Ladung pro Zeit an einer Stelle vorbeifließt.",
+              "Wie viel Wärme die Quelle in jeder Leitung speichert."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7VWPP6ZJKQFSD2VZ21EBM3M",
+          "slug": "stromkreis-anwenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Warum bleibt die Lampe bei Leitungsbruch trotz geschlossenem Schalter aus?",
+          "concept": "Der einzige Stromweg ist unterbrochen.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=stromkreis",
+          "sample_solution": "In einem unverzweigten Kreis muss der ganze Weg von der Quelle durch die Lampe zurück zur Quelle vollständig sein."
+        }
+      ]
+    },
+    {
+      "id": "01M7VWPP6ZD81E5F4JPDS5DRYA",
+      "atom_uri": "urn:zam:atom:01M7VWPP6ZD81E5F4JPDS5DRYA",
+      "namespace": "zam-academy-nt-mittelschule-7",
+      "slug": "messgeraete",
+      "title": "Strom und Spannung richtig messen",
+      "domain": "nt/nt7/circuits",
+      "reduction": "formal",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=messgeraete",
+      "prerequisites": [
+        {
+          "atom_id": "01M7VWPP6ZZF5N5YYN2XFAA5WJ",
+          "type": "soft"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-mittelschule-7",
+          "topic_code": "stage9",
+          "topic_title": "Spannung und Stromstärke"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "nt",
+          "topic_code": "lb4",
+          "topic_title": "Materie, Stoffe und Technik",
+          "track": "R",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "nt",
+          "topic_code": "lb4",
+          "topic_title": "Materie, Stoffe und Technik",
+          "track": "M",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7VWPP6ZGXZ3TR8J86PNP73P",
+          "slug": "messgeraete-grundlage",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie schließt du ein Amperemeter für den Strom in einem Zweig an?",
+          "concept": "In Reihe im zu messenden Zweig.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=messgeraete",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "In Reihe im zu messenden Zweig.",
+              "Parallel an die beiden Anschlüsse der Spannungsquelle."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7VWPP6ZGKV5HEB7FN7H2GFV",
+          "slug": "messgeraete-unterscheiden",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie schließt du ein Voltmeter für die Lampenspannung an?",
+          "concept": "Parallel zwischen den Lampenanschlüssen.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=messgeraete",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Parallel zwischen den Lampenanschlüssen.",
+              "In Reihe in den einzigen Strompfad."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7VWPP6ZA4BRF8RAAPHWH2NX",
+          "slug": "messgeraete-anwenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Das Amperemeter zeigt 100 mA. Welche Angabe gehört ins Protokoll, wenn Ampere gefordert sind?",
+          "concept": "0,1 A.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=messgeraete",
+          "sample_solution": "1000 Milliampere sind ein Ampere. Teile deshalb den Zahlenwert in Milliampere durch 1000."
+        }
+      ]
+    },
+    {
+      "id": "01M7VWPP6ZCHFTN69VGMDE49HF",
+      "atom_uri": "urn:zam:atom:01M7VWPP6ZCHFTN69VGMDE49HF",
+      "namespace": "zam-academy-nt-mittelschule-7",
+      "slug": "parallelkreise",
+      "title": "Wie sich der Strom an einem Knoten verteilt",
+      "domain": "nt/nt7/circuits",
+      "reduction": "formal",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=parallelkreise",
+      "prerequisites": [
+        {
+          "atom_id": "01M7VWPP6ZD81E5F4JPDS5DRYA",
+          "type": "soft"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-mittelschule-7",
+          "topic_code": "stage9",
+          "topic_title": "Spannung und Stromstärke"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "nt",
+          "topic_code": "lb4",
+          "topic_title": "Materie, Stoffe und Technik",
+          "track": "M",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7VWPP6ZCYD78JAVRZHFN30A",
+          "slug": "parallelkreise-grundlage",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie hängen Gesamtstrom und Zweigströme an einem Knoten zusammen?",
+          "concept": "Der Gesamtstrom ist die Summe der Zweigströme.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=parallelkreise",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Gesamtstrom ist die Summe der Zweigströme.",
+              "Der Gesamtstrom entspricht immer dem kleineren Zweigstrom."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7VWPP6ZWDV02PV8VRD8CMJT",
+          "slug": "parallelkreise-unterscheiden",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was gilt für die Spannungen zweier Bauteile in parallelen Zweigen zwischen denselben Knoten?",
+          "concept": "Die Spannungen sind gleich.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=parallelkreise",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Spannungen sind gleich.",
+              "Die Spannungen teilen sich immer zur Hälfte."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7VWPP6ZYF616HNZNP5KZP0S",
+          "slug": "parallelkreise-anwenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Zwei Bauteile in Reihe haben Teilspannungen von 2 V und 4 V. Welche Quellspannung folgt im idealen Kreis?",
+          "concept": "6 V.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=parallelkreise",
+          "sample_solution": "In einer Reihenschaltung addieren sich die Teilspannungen der Masche. Zwei plus vier Volt ergeben sechs Volt."
+        }
+      ]
+    },
+    {
+      "id": "01M7VWPP6Z5EMRSAPBRJX8W9QQ",
+      "atom_uri": "urn:zam:atom:01M7VWPP6Z5EMRSAPBRJX8W9QQ",
+      "namespace": "zam-academy-nt-mittelschule-7",
+      "slug": "widerstand",
+      "title": "Wie stark ein Bauteil den Strom begrenzt",
+      "domain": "nt/nt7/resistance",
+      "reduction": "formal",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=widerstand",
+      "prerequisites": [
+        {
+          "atom_id": "01M7VWPP6ZD81E5F4JPDS5DRYA",
+          "type": "soft"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-mittelschule-7",
+          "topic_code": "stage10",
+          "topic_title": "Elektrischer Widerstand"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "nt",
+          "topic_code": "lb4",
+          "topic_title": "Materie, Stoffe und Technik",
+          "track": "R",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "nt",
+          "topic_code": "lb4",
+          "topic_title": "Materie, Stoffe und Technik",
+          "track": "M",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7VWPP6ZAZ2BTBSDV8NPJDCW",
+          "slug": "widerstand-grundlage",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie ermittelst du den Widerstand aus Spannung und Stromstärke?",
+          "concept": "Teile die Spannung durch die Stromstärke.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=widerstand",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Teile die Spannung durch die Stromstärke.",
+              "Teile die Stromstärke durch die Spannung."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7VWPP6ZS2ZEHCABRT89VMAK",
+          "slug": "widerstand-unterscheiden",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Stromstärke gehört bei gleichbleibendem Widerstand zur größeren Spannung?",
+          "concept": "Eine größere Stromstärke.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=widerstand",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eine größere Stromstärke.",
+              "Eine kleinere Stromstärke."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7VWPP6ZGPYR0EJ4XA1X9JY7",
+          "slug": "widerstand-anwenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Bei 9 V fließen 150 mA. Wie groß ist der elektrische Widerstand?",
+          "concept": "60 Ω.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=widerstand",
+          "sample_solution": "150 Milliampere sind 0,15 Ampere. Neun Volt geteilt durch 0,15 Ampere ergeben 60 Ohm."
+        }
+      ]
+    },
+    {
+      "id": "01M7VWPP6Z0FHSTTW5BJTT5ZFQ",
+      "atom_uri": "urn:zam:atom:01M7VWPP6Z0FHSTTW5BJTT5ZFQ",
+      "namespace": "zam-academy-nt-mittelschule-7",
+      "slug": "leiterwahl",
+      "title": "Länge, Dicke und Material eines Leiters",
+      "domain": "nt/nt7/resistance",
+      "reduction": "formal",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=leiterwahl",
+      "prerequisites": [
+        {
+          "atom_id": "01M7VWPP6Z5EMRSAPBRJX8W9QQ",
+          "type": "soft"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-mittelschule-7",
+          "topic_code": "stage10",
+          "topic_title": "Elektrischer Widerstand"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "nt",
+          "topic_code": "lb4",
+          "topic_title": "Materie, Stoffe und Technik",
+          "track": "R",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "nt",
+          "topic_code": "lb4",
+          "topic_title": "Materie, Stoffe und Technik",
+          "track": "M",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7VWPP6ZM10NDJ2XJ8766WTH",
+          "slug": "leiterwahl-grundlage",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie wirkt eine größere Querschnittsfläche bei gleicher Länge, Temperatur und gleichem Material?",
+          "concept": "Der Widerstand sinkt.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=leiterwahl",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Widerstand sinkt.",
+              "Der Widerstand steigt."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7VWPP6ZRC4Z95FZ08QVH8N0",
+          "slug": "leiterwahl-unterscheiden",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie wirkt eine größere Leitungslänge bei unverändertem Querschnitt und gleichem Material?",
+          "concept": "Der Widerstand steigt.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=leiterwahl",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Widerstand steigt.",
+              "Der Widerstand sinkt."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7VWPP6ZDXH4GFH09KZCQR6X",
+          "slug": "leiterwahl-anwenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Warum lässt sich ein kurzes Aluminiumkabel nicht allein anhand seines Materials mit einem langen Kupferkabel vergleichen?",
+          "concept": "Länge und Querschnitt wirken zusammen mit dem Material auf den Widerstand.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=leiterwahl",
+          "sample_solution": "Ein fairer Materialvergleich hält Länge, Querschnitt und Temperatur gleich. Für zwei konkrete Kabel müssen alle relevanten Angaben berücksichtigt werden."
+        }
+      ]
+    },
+    {
+      "id": "01M7VWPP6ZSRRTN251TPG2MKYZ",
+      "atom_uri": "urn:zam:atom:01M7VWPP6ZSRRTN251TPG2MKYZ",
+      "namespace": "zam-academy-nt-mittelschule-7",
+      "slug": "stromsicherheit",
+      "title": "Weshalb Strom im Alltag gefährlich werden kann",
+      "domain": "nt/nt7/resistance",
+      "reduction": "formal",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=stromsicherheit",
+      "prerequisites": [
+        {
+          "atom_id": "01M7VWPP6ZZF5N5YYN2XFAA5WJ",
+          "type": "soft"
+        },
+        {
+          "atom_id": "01M7VWPP6Z5EMRSAPBRJX8W9QQ",
+          "type": "soft"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "nt-mittelschule-7",
+          "topic_code": "stage10",
+          "topic_title": "Elektrischer Widerstand"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "nt",
+          "topic_code": "lb4",
+          "topic_title": "Materie, Stoffe und Technik",
+          "track": "R",
+          "exam_relevant": false
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 7,
+          "subject": "nt",
+          "topic_code": "lb4",
+          "topic_title": "Materie, Stoffe und Technik",
+          "track": "M",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7VWPP6ZSMR6GYW3EZR9TYJF",
+          "slug": "stromsicherheit-grundlage",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Warum hältst du Netzgeräte von Wasser fern?",
+          "concept": "Wasser kann einen unerwünschten leitenden Weg bilden.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=stromsicherheit",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Wasser kann einen unerwünschten leitenden Weg bilden.",
+              "Wasser macht den Körper elektrisch isoliert."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7VWPP6ZYTFTYEH7NG8G8V0E",
+          "slug": "stromsicherheit-unterscheiden",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie hilft eine intakte Isolierung?",
+          "concept": "Sie schützt vor Berührung des leitenden Teils.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=stromsicherheit",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie schützt vor Berührung des leitenden Teils.",
+              "Sie macht hohe Ströme in jedem Kabel unbedenklich."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7VWPP6ZH9JGJ5ANM7VN0BCX",
+          "slug": "stromsicherheit-anwenden",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Warum kann eine überlastete Steckdosenleiste gefährlich werden?",
+          "concept": "Ein zu hoher Strom kann Leitungen stark erwärmen.",
+          "source_link": "https://academy.zam-os.org/nt-mittelschule-7/#lesson=stromsicherheit",
+          "sample_solution": "Die Belastbarkeit begrenzt, wie viel Strom die Leiste sicher führt. Mehrere starke Verbraucher können diese Grenze zusammen überschreiten."
+        }
+      ]
+    }
+  ]
+}

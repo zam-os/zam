@@ -1,0 +1,10 @@
+{
+  "schema": 1,
+  "status": "proposal-only",
+  "approved": null,
+  "note": "The audited bundled and legacy ZAM inventories contain no de-by cell for GPG in Mittelschule. Grade 7 medieval history cells in Realschule and Gymnasium are outside this package. No history transfer is proposed.",
+  "source_repository": "zam-os/zam",
+  "source_commit": "1ff016cfd7a0765c5338eb4248d0c14f3b92261c",
+  "sources": [],
+  "rows": []
+}

@@ -1,0 +1,10 @@
+{
+	"schema": 1,
+	"status": "proposal-only",
+	"approved": null,
+	"source_repository": "https://github.com/zam-os/zam",
+	"source_commit": "1ff016cfd7a0765c5338eb4248d0c14f3b92261c",
+	"source": "Inventory checked on 2026-11-19 in zam-os/zam (tests/fixtures/legacy/ and src/kernel/library/bundled-cells.ts) at commit 1ff016cfd7a0765c5338eb4248d0c14f3b92261c: zero de-by:mittelschule-* cells exist. de-by:realschule-6-englisch-grammatik-grundlagen and de-by:gymnasium-6-englisch-past-tenses-present-perfect-adjectives belong to Realschule 6 and Gymnasium 6 and are already mapped in englisch-realschule-6 (#162) and englisch-gymnasium-6 (#154).",
+	"sources": [],
+	"rows": []
+}

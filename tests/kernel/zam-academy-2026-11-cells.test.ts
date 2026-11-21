@@ -160,7 +160,6 @@ const CELLS = [
     approved: "2026-11-08",
     transfers: 5,
     kept: 7,
-    preview: true,
   },
 ] as const;
 
@@ -387,7 +386,7 @@ describe.each(CELLS)("ZAM Academy $app cell", (cell) => {
 });
 
 describe("the November 2026 Academy cells in the lock", () => {
-  it("record only Mathematik 13 Gymnasium as a preview", () => {
+  it("record no preview for these courses", () => {
     const lock = JSON.parse(
       readFileSync(
         join(fixtures, "curriculum", "zam-academy-cells.lock.json"),
@@ -401,6 +400,6 @@ describe("the November 2026 Academy cells in the lock", () => {
         )
         .filter((entry) => entry.preview)
         .map((entry) => entry.id),
-    ).toEqual(["zam-academy:mathematik-gymnasium-13"]);
+    ).toEqual([]);
   });
 });

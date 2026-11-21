@@ -1,0 +1,43 @@
+{
+	"schema": 1,
+	"status": "approved",
+	"approved": "2026-11-21",
+	"source_repository": "https://github.com/zam-os/zam",
+	"source_commit": "1ff016cfd7a0765c5338eb4248d0c14f3b92261c",
+	"source": "Thomas approved the proposed transfers for German 7 Realschule, French 6 Gymnasium and Natur und Technik 7 Gymnasium (Informatics) in the Codex chat for ZAM 0.67.0 on 2026-11-21: “Alle sieben vorgeschlagenen Übernahmen freigeben und die drei Kurse einbinden”.",
+	"sources": [
+		{
+			"file": "tests/fixtures/de-by-gymnasium-7-franzoesisch-passe-compose-relativsaetze-verneinung-kvt.json",
+			"tile_id": "de-by:gymnasium-7-franzoesisch-passe-compose-relativsaetze-verneinung",
+			"sha256": "2ff6c4b05b4326a06690e4185b3a60abf7936e20701d81306828cc4d7e4c3415"
+		}
+	],
+	"rows": [
+		{
+			"de_by_id": "01K4F7Y0000000000000000J01",
+			"category": "A",
+			"action": "replace",
+			"academy_slug": "f6-1-etre-passe-check",
+			"reason": "Same retrieval: select the feminine plural form arrivées with être. The French 6 first-language curriculum introduces this construction."
+		},
+		{
+			"de_by_id": "01K4F7Y0000000000000000J02",
+			"category": "C",
+			"action": "keep-active",
+			"reason": "The composite prompt includes reflexive forms and a broader account of auxiliary choice. The grade 6 lesson covers a narrower construction and splits the retrieval."
+		},
+		{
+			"de_by_id": "01K4F7Y0000000000000000J03",
+			"category": "A",
+			"action": "replace",
+			"academy_slug": "f6-1-negation-check",
+			"reason": "Same retrieval: recall the two parts of the French negation meaning never."
+		},
+		{
+			"de_by_id": "01K4F7Y0000000000000000J04",
+			"category": "C",
+			"action": "keep-active",
+			"reason": "The composite combines relative clauses and negation with partitive articles. The first-language grade 7 plan adds the partitive; the second-language grade 7 plan also introduces relatives. The earlier scope decision left this card with grade 7."
+		}
+	]
+}

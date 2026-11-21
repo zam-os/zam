@@ -1,0 +1,96 @@
+{
+  "schema": 1,
+  "status": "proposal-only",
+  "approved": null,
+  "source": "Vorschlag, nicht freigegeben. Beide Altzellen „Physik 7 Gymnasium“ folgen dem Lehrplan des achtjährigen Gymnasiums (Kräfte, Druck, Brechung, Linsen). Im LehrplanPLUS stehen diese Themen in Ph8; Natur und Technik 7 behandelt Magnetismus, Dichte, Licht und Schatten sowie Ladung und Stromkreise. Keine Karte wird ersetzt oder stillgelegt; alle bleiben aktiv.",
+  "source_repository": "zam-os/zam",
+  "source_commit": "bae34e7dfe7d01838e448a65f15871c3549ae3fc",
+  "sources": [
+    {
+      "file": "tests/fixtures/de-by-gymnasium-7-physik-mechanik-kraefte-masse-dichte-druck-kvt.json",
+      "tile_id": "de-by:gymnasium-7-physik-mechanik-kraefte-masse-dichte-druck",
+      "version": "2026.08.1",
+      "sha256": "dec15fa655aecf610ca1264a4ec245591583cf1f8da20961a131a6d741d0b424"
+    },
+    {
+      "file": "tests/fixtures/de-by-gymnasium-7-physik-optik-lichtbrechung-totalreflexion-linsen-kvt.json",
+      "tile_id": "de-by:gymnasium-7-physik-optik-lichtbrechung-totalreflexion-linsen",
+      "version": "2026.08.1",
+      "sha256": "c40161ffbd9f4873e8fe8b5f9f6b9d5eb0c06e4b7332b593e8c01c0da34ca47b"
+    }
+  ],
+  "rows": [
+    {
+      "de_by_cell": "de-by:gymnasium-7-physik-mechanik-kraefte-masse-dichte-druck",
+      "de_by_id": "01K4P7M0000000000000000J01",
+      "de_by_question": "Welche Maßeinheit besitzt die physikalische Kraft F im internationalen Einheitensystem (SI)?",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Kraft und ihre SI-Einheit Newton gehören im LehrplanPLUS zu Ph8 3.2 (Kräfte und ihre Wirkungen); NT7 behandelt keine Kräfte. Kein Nachfolger in diesem Paket, die Karte bleibt aktiv."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-7-physik-mechanik-kraefte-masse-dichte-druck",
+      "de_by_id": "01K4P7M0000000000000000J02",
+      "de_by_question": "Erkläre den physikalischen Kraftbegriff und das Hookesche Gesetz: 1. Kraftwirkungen: Eine Kraft erkennt man an ihren Wirkungen: Verformung eines Körpers (elastisch vs. plastisch) oder Änderung des Bewegungszustandes (Beschleunigen, Bremsen,…",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Die Synthese verbindet Kraftwirkungen, Kraftvektor und das Hookesche Gesetz mit einer Rechnung; das liegt im LehrplanPLUS in Ph8 3.2, nicht in NT7. Kein Nachfolger, die Karte bleibt aktiv."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-7-physik-mechanik-kraefte-masse-dichte-druck",
+      "de_by_id": "01K4P7M0000000000000000J03",
+      "de_by_question": "Ein Astronaut hat auf der Erde eine Masse von 80\\text{ kg}. Wie groß ist seine Masse auf dem Mond (wo die Schwerkraft nur ein Sechstel beträgt)?",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Masse und Gewichtskraft auf dem Mond: NT7 nennt die Masse nur zusammen mit der Dichte, die Gewichtskraft kommt erst in Ph8 vor. Keine Academy-Karte übernimmt genau diesen Abruf; die Karte bleibt aktiv."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-7-physik-mechanik-kraefte-masse-dichte-druck",
+      "de_by_id": "01K4P7M0000000000000000J04",
+      "de_by_question": "Differenziere die fundamentalen Größen der Mechanik: 1. Masse m vs. Gewichtskraft F_G: Masse ist eine universelle Körpereigenschaft (Trägheit und Materiemenge, Einheit \\text{kg}); Gewichtskraft F_G = m \\cdot g ist ortsabhängig (Erde: g \\app…",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Die mehrteilige Synthese verbindet Masse, Gewichtskraft, Dichte, Druck und Schweredruck. Nur die Dichte steht in NT7; eine Teilübernahme würde eine Lernhistorie auf mehrere Karten verteilen. Kein Nachfolger, die Karte bleibt aktiv."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-7-physik-optik-lichtbrechung-totalreflexion-linsen",
+      "de_by_id": "01K4P7X0000000000000000J01",
+      "de_by_question": "Wie wird ein Lichtstrahl gebrochen, wenn er schräg von einem optisch dünneren Medium (z. B. Luft) in ein optisch dichteres Medium (z. B. Glas oder Wasser) übertritt?",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Brechung zum Lot gehört im LehrplanPLUS zu Ph8 Lernbereich 2 (Optik); NT7 behandelt nur Ausbreitung, Farben und Schatten. Kein Nachfolger in diesem Paket, die Karte bleibt aktiv."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-7-physik-optik-lichtbrechung-totalreflexion-linsen",
+      "de_by_id": "01K4P7X0000000000000000J02",
+      "de_by_question": "Erkläre das Phänomen der Lichtbrechung physikalisch: 1. Physikalische Ursache: Die unterschiedliche Lichtausbreitungsgeschwindigkeit c in verschiedenen transparenten Medien (im Vakuum/Luft c_0 \\approx 300.000\\text{ km/s}, im Wasser c_{\\text…",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Brechungsursache, Brechungsindex und Fermat-Prinzip gehen über NT7 hinaus und liegen teils in Ph8 Lernbereich 2. Kein Nachfolger, die Karte bleibt aktiv."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-7-physik-optik-lichtbrechung-totalreflexion-linsen",
+      "de_by_id": "01K4P7X0000000000000000J03",
+      "de_by_question": "Welche ZWEI zwingenden Bedingungen müssen erfüllt sein, damit an einer Grenzfläche physikalisch Totalreflexion auftritt?",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Bedingungen der Totalreflexion stehen im LehrplanPLUS in Ph8 Lernbereich 2. Kein Nachfolger in diesem Paket, die Karte bleibt aktiv."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-7-physik-optik-lichtbrechung-totalreflexion-linsen",
+      "de_by_id": "01K4P7X0000000000000000J04",
+      "de_by_question": "Analysiere das Prinzip der Totalreflexion und die Bildkonstruktion an Sammellinsen: 1. Entstehung der Totalreflexion: Beim Übergang optisch dicht \\rightarrow optisch dünn wächst der Brechungswinkel \\beta schneller als \\alpha; beim Grenzwink…",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "Totalreflexion, Lichtleiter und Bildkonstruktion an Sammellinsen gehören zu Ph8 Lernbereich 2. Kein Nachfolger, die Karte bleibt aktiv."
+    }
+  ]
+}

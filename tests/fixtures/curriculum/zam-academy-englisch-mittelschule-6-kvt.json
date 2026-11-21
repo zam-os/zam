@@ -1,0 +1,2954 @@
+{
+	"$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+	"tile_id": "zam-academy:englisch-mittelschule-6",
+	"version": "2026.11.1",
+	"title": "Englisch 6 Mittelschule (ZAM Academy)",
+	"description": "English as a first foreign language in Bavarian Mittelschule Grade 6 (LehrplanPLUS): 36 lessons, 108 workshop goals, 72 production tasks and 109 linked recall cards. Listening comprehension, spontaneous speech and classroom interactions supplement the app.",
+	"publisher": "ZAM Academy",
+	"sources": [
+		{
+			"uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/mittelschule/6/englisch",
+			"label": "ISB · Englisch 6, Mittelschule",
+			"checked": "2026-11-19"
+		},
+		{
+			"uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/mittelschule/5/englisch",
+			"label": "ISB · Englisch 5, Mittelschule (Aufbau)",
+			"checked": "2026-11-19"
+		},
+		{
+			"uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/mittelschule/7/englisch/regelklasse",
+			"label": "ISB · Englisch R7, Mittelschule (Abgrenzung)",
+			"checked": "2026-11-19"
+		},
+		{
+			"uri": "https://www.ons.gov.uk/methodology/geography/ukgeographies",
+			"label": "Office for National Statistics · UK geographies",
+			"checked": "2026-11-19"
+		},
+		{
+			"uri": "https://www.usa.gov/state-governments",
+			"label": "USAGov · State governments",
+			"checked": "2026-11-19"
+		},
+		{
+			"uri": "https://dictionary.cambridge.org/dictionary/learner-english/",
+			"label": "Cambridge Learner's Dictionary",
+			"checked": "2026-11-19"
+		}
+	],
+	"atoms": [
+		{
+			"id": "01M7TEGKYN6W9V97HAB2VABGFT",
+			"atom_uri": "urn:zam:atom:01M7TEGKYN6W9V97HAB2VABGFT",
+			"namespace": "zam-academy-englisch-mittelschule-6",
+			"slug": "e6m-uk-countries-cities",
+			"title": "UK: Countries and major cities",
+			"domain": "englisch/landeskunde",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-uk-countries-cities",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-mittelschule-6",
+					"topic_code": "uk-usa",
+					"topic_title": "UK, USA und Begegnungen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb2",
+					"topic_title": "Geographische Lage und wichtige Städte des UK",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "UK: Länder, wichtige Städte",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7TEGKZS5A5RHETBNB3EPV94",
+					"slug": "e6m-uk-countries-cities-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche beiden Großstädte aus unserem UK-Überblick liegen in Schottland?",
+					"concept": "Edinburgh und Glasgow",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-uk-countries-cities",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Edinburgh und Glasgow",
+							"Manchester und Liverpool"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7TEGKZT0CTXMG8ZN5R2K379",
+					"slug": "e6m-uk-countries-cities-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie heißt die zweitgrößte Stadt des UK in Zentralengland (Midlands)?",
+					"concept": "Birmingham",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-uk-countries-cities",
+					"sample_solution": "Birmingham"
+				},
+				{
+					"id": "01M7TEGKZVCE7T9ZQNF4YQXH91",
+					"slug": "e6m-uk-countries-cities-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche britische Hafenstadt liegt westlich von Manchester nahe der Irischen See?",
+					"concept": "Liverpool",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-uk-countries-cities",
+					"sample_solution": "Liverpool"
+				}
+			]
+		},
+		{
+			"id": "01M7TEGKYPDF168KCGWAR24MDB",
+			"atom_uri": "urn:zam:atom:01M7TEGKYPDF168KCGWAR24MDB",
+			"namespace": "zam-academy-englisch-mittelschule-6",
+			"slug": "e6m-usa-states-capital",
+			"title": "USA: 50 states and Washington, D.C.",
+			"domain": "englisch/landeskunde",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-usa-states-capital",
+			"prerequisites": [
+				{
+					"atom_id": "01M7TEGKYN6W9V97HAB2VABGFT",
+					"type": "soft",
+					"rationale": "Builds on e6m-uk-countries-cities."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-mittelschule-6",
+					"topic_code": "uk-usa",
+					"topic_title": "UK, USA und Begegnungen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb2",
+					"topic_title": "Geographische Lage und politische Gliederung der USA",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "USA: 50 Staaten, Hauptstadt",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7TEGKZWW466QR01QAQQMRAF",
+					"slug": "e6m-usa-states-capital-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie viele Bundesstaaten gehören insgesamt zu den USA?",
+					"concept": "50 Bundesstaaten",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-usa-states-capital",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"50 Bundesstaaten",
+							"48 Bundesstaaten"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7V32KDXJQ0AEQEJ8Z0V5M6C",
+					"slug": "e6m-usa-states-capital-dc-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie heißt die Hauptstadt der USA?",
+					"concept": "Washington, D.C.",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-usa-states-capital",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Washington, D.C.",
+							"New York"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7TEGKZXSMEFTBRX6NA6WF93",
+					"slug": "e6m-usa-states-capital-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche beiden US-Bundesstaaten liegen außerhalb der 48 zusammenhängenden Staaten?",
+					"concept": "Alaska und Hawaii",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-usa-states-capital",
+					"sample_solution": "Alaska (im Nordwesten) und Hawaii (im Pazifik)"
+				},
+				{
+					"id": "01M7TEGKZYVWTMJD9V79Y3P68G",
+					"slug": "e6m-usa-states-capital-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Nenne die beiden Nachbarländer der USA im Norden und im Süden auf Englisch.",
+					"concept": "Canada (Norden) und Mexico (Süden)",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-usa-states-capital",
+					"sample_solution": "Canada (Norden) und Mexico (Süden)"
+				}
+			]
+		},
+		{
+			"id": "01M7TEGKYQF6YTGTEYT3AJ0MMZ",
+			"atom_uri": "urn:zam:atom:01M7TEGKYQF6YTGTEYT3AJ0MMZ",
+			"namespace": "zam-academy-englisch-mittelschule-6",
+			"slug": "e6m-youth-hostel-check-in",
+			"title": "At the youth hostel: check-in & form",
+			"domain": "englisch/kommunikation",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-youth-hostel-check-in",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-mittelschule-6",
+					"topic_code": "uk-usa",
+					"topic_title": "UK, USA und Begegnungen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.1-sprechen",
+					"topic_title": "Alltägliche Begegnungssituationen in der Jugendherberge",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.1-schreiben",
+					"topic_title": "Einfache Fragebögen zur Person ausfüllen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Dienstleistungen: Jugendherberge",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7TEGKZZXRKQM3FQ1P9N4V2M",
+					"slug": "e6m-youth-hostel-check-in-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie bittest du an der Rezeption einer Jugendherberge höflich um Wiederholung, wenn du etwas nicht verstanden hast?",
+					"concept": "Sorry, could you say that again, please?",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-youth-hostel-check-in",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Sorry, could you say that again, please?",
+							"Speak faster, please!"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7TEGM007196ZD4GA74B4EST",
+					"slug": "e6m-youth-hostel-check-in-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was bedeutet das englische Wort 'youth hostel' auf Deutsch?",
+					"concept": "Jugendherberge",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-youth-hostel-check-in",
+					"sample_solution": "Jugendherberge"
+				},
+				{
+					"id": "01M7TEGM01V6G3CRSTCPH82PMJ",
+					"slug": "e6m-youth-hostel-check-in-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche englische Angabe gehört in einem Anmeldeformular hinter 'hometown'?",
+					"concept": "der eigene Heimatort (z. B. Augsburg, Germany)",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-youth-hostel-check-in",
+					"sample_solution": "der eigene Heimatort (z. B. Augsburg, Germany)"
+				}
+			]
+		},
+		{
+			"id": "01M7TEGKYREBJ9P7EQ6T4AM51R",
+			"atom_uri": "urn:zam:atom:01M7TEGKYREBJ9P7EQ6T4AM51R",
+			"namespace": "zam-academy-englisch-mittelschule-6",
+			"slug": "e6m-souvenir-newsagent",
+			"title": "Souvenir shop & newsagent",
+			"domain": "englisch/kommunikation",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-souvenir-newsagent",
+			"prerequisites": [
+				{
+					"atom_id": "01M7TEGKYQF6YTGTEYT3AJ0MMZ",
+					"type": "soft",
+					"rationale": "Builds on e6m-youth-hostel-check-in."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-mittelschule-6",
+					"topic_code": "uk-usa",
+					"topic_title": "UK, USA und Begegnungen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb2",
+					"topic_title": "Höfliche Sprach- und Verhaltensmuster beim Einkaufen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Dienstleistungen: Souvenirladen, (Zeitungs-)Kiosk",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7TEGM02P3Z81BCE526HB266",
+					"slug": "e6m-souvenir-newsagent-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie fragst du im Souvenirladen höflich nach dem Preis von zwei Postkarten?",
+					"concept": "Excuse me, how much are these postcards, please?",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-souvenir-newsagent",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Excuse me, how much are these postcards, please?",
+							"Give me two postcards, goodbye!"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7TEGM03R3EEWD1M7NJ74XNJ",
+					"slug": "e6m-souvenir-newsagent-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was ist im Englischen mit einem 'newsagent' gemeint?",
+					"concept": "Zeitungskiosk (für Zeitungen, Zeitschriften, Comics, Postkarten)",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-souvenir-newsagent",
+					"sample_solution": "Zeitungskiosk"
+				},
+				{
+					"id": "01M7TEGM0486M5YA9AR3G7R1DJ",
+					"slug": "e6m-souvenir-newsagent-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was antwortest du höflich, wenn der Verkäufer dir die Ware mit 'Here you are.' überreicht?",
+					"concept": "Thank you very much!",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-souvenir-newsagent",
+					"sample_solution": "Thank you (very much)!"
+				}
+			]
+		},
+		{
+			"id": "01M7TEGKYS09MJ1PWRSPH842JM",
+			"atom_uri": "urn:zam:atom:01M7TEGKYS09MJ1PWRSPH842JM",
+			"namespace": "zam-academy-englisch-mittelschule-6",
+			"slug": "e6m-directions-listening",
+			"title": "Asking the way & listening carefully",
+			"domain": "englisch/kommunikation",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-directions-listening",
+			"prerequisites": [
+				{
+					"atom_id": "01M7TEGKYQF6YTGTEYT3AJ0MMZ",
+					"type": "soft",
+					"rationale": "Builds on e6m-youth-hostel-check-in."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-mittelschule-6",
+					"topic_code": "uk-usa",
+					"topic_title": "UK, USA und Begegnungen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.1-hoeren",
+					"topic_title": "Wegerklärungen in britischer Standardsprache Einzelheiten entnehmen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb4",
+					"topic_title": "Hörtechniken: Schlüsselwörter beim Zuhören nutzen",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7TEGM05BJ2CPZVDPXPBDR78",
+					"slug": "e6m-directions-listening-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was bedeutet die Richtungsangabe 'Go across the bridge' auf Deutsch?",
+					"concept": "Geh über die Brücke.",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-directions-listening",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Geh über die Brücke.",
+							"Geh entlang der Brücke zurück."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7TEGM06JHSN5TR6VZMRSGXR",
+					"slug": "e6m-directions-listening-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Übersetze die Wegbeschreibung 'opposite the museum' ins Deutsche.",
+					"concept": "gegenüber vom Museum",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-directions-listening",
+					"sample_solution": "gegenüber vom Museum"
+				},
+				{
+					"id": "01M7TEGM07PF3VV7F4AT3JMCZN",
+					"slug": "e6m-directions-listening-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche Präposition nutzt du für das Entlanggehen an einer Straße ('Walk ___ High Street')?",
+					"concept": "along",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-directions-listening",
+					"sample_solution": "along (Walk along High Street.)"
+				}
+			]
+		},
+		{
+			"id": "01M7TEGKYTXT8NCMFV84TXFB06",
+			"atom_uri": "urn:zam:atom:01M7TEGKYTXT8NCMFV84TXFB06",
+			"namespace": "zam-academy-englisch-mittelschule-6",
+			"slug": "e6m-sounds-connected-ipa",
+			"title": "Connected speech & IPA minimal pairs",
+			"domain": "englisch/aussprache",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-sounds-connected-ipa",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-mittelschule-6",
+					"topic_code": "uk-usa",
+					"topic_title": "UK, USA und Begegnungen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.2-aussprache",
+					"topic_title": "Wörter im Satz verbinden und IPA-Symbole bei Minimalpaaren nutzen",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7TEGM08XCXEGNA32E6N1MJR",
+					"slug": "e6m-sounds-connected-ipa-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Woran erkennst du in der IPA-Lautschrift den Unterschied zwischen 'sheep' (/ʃiːp/) und 'ship' (/ʃɪp/)?",
+					"concept": "/iː/ ist ein langer Vokal (sheep), /ɪ/ ist ein kurzer Vokal (ship).",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-sounds-connected-ipa",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"/iː/ ist ein langer Vokal (sheep), /ɪ/ ist ein kurzer Vokal (ship).",
+							"/ʃ/ steht für ch (cheap), /tʃ/ für sch (sheep)."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7TEGM09FBTMHP873SE3FJS3",
+					"slug": "e6m-sounds-connected-ipa-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welches Wort passt zur Lautschrift /tʃiːp/: 'sheep' oder 'cheap'?",
+					"concept": "cheap",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-sounds-connected-ipa",
+					"sample_solution": "cheap (/tʃ/ = Tsch-Laut)"
+				},
+				{
+					"id": "01M7TEGM0A7X3WDB8HN1XXMQDX",
+					"slug": "e6m-sounds-connected-ipa-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie sprichst du Wortgrenzen wie in 'There's ̮an ̮old ̮castle' flüssig aus?",
+					"concept": "Man verbindet Endkonsonant und Anfangsvokal weich ohne Pause.",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-sounds-connected-ipa",
+					"sample_solution": "Man verbindet Endkonsonant und nachfolgenden Vokal flüssig in einem Atemzug."
+				}
+			]
+		},
+		{
+			"id": "01M7TEGKYVER1A2V8PMAVJ3BS6",
+			"atom_uri": "urn:zam:atom:01M7TEGKYVER1A2V8PMAVJ3BS6",
+			"namespace": "zam-academy-englisch-mittelschule-6",
+			"slug": "e6m-routines-problems",
+			"title": "Daily routines & everyday problems",
+			"domain": "englisch/alltag",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-routines-problems",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-mittelschule-6",
+					"topic_code": "everyday",
+					"topic_title": "Alltagsleben, Zimmer und Heimatort"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.1-lesen",
+					"topic_title": "Lineare Texte verstehen und einfache Schlussfolgerungen ziehen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb2",
+					"topic_title": "Alltagsroutinen vergleichen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Aspekte des Alltagslebens: Alltagsroutinen, Alltagsprobleme",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7TEGM0B7HVEHPCZSRMXXRWA",
+					"slug": "e6m-routines-problems-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was bedeutet die englische Wendung 'flat battery' bei einem Handy?",
+					"concept": "leerer Akku",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-routines-problems",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"leerer Akku",
+							"verlorener Hausschlüssel"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7TEGM0C8WHV1ZFQTV5RVAMB",
+					"slug": "e6m-routines-problems-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie heißt 'den Bus verpassen' auf Englisch?",
+					"concept": "miss the bus",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-routines-problems",
+					"sample_solution": "to miss the bus"
+				},
+				{
+					"id": "01M7TEGM0D9A1NGHRYVXRVA54Y",
+					"slug": "e6m-routines-problems-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wann essen viele Familien in Großbritannien ihre warme Hauptmahlzeit ('dinner')?",
+					"concept": "am Abend",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-routines-problems",
+					"sample_solution": "am Abend"
+				}
+			]
+		},
+		{
+			"id": "01M7TEGKYW40GN17JQVXPN3ZN9",
+			"atom_uri": "urn:zam:atom:01M7TEGKYW40GN17JQVXPN3ZN9",
+			"namespace": "zam-academy-englisch-mittelschule-6",
+			"slug": "e6m-room-flat-prepositions",
+			"title": "My room & our flat",
+			"domain": "englisch/alltag",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-room-flat-prepositions",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-mittelschule-6",
+					"topic_code": "everyday",
+					"topic_title": "Alltagsleben, Zimmer und Heimatort"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.1-sprechen",
+					"topic_title": "Einfacher Austausch zu Wohnung und eigenem Zimmer",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Aspekte des Alltagslebens: Wohnung und eigenes Zimmer",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7TEGM0EWSQENS81RVG2A9AE",
+					"slug": "e6m-room-flat-prepositions-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wann verwendest du für 'über' die englische Präposition 'above' statt 'on'?",
+					"concept": "wenn etwas höher darüber hängt oder liegt, ohne es zu berühren",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-room-flat-prepositions",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"wenn etwas höher darüber hängt oder liegt, ohne es zu berühren",
+							"wenn etwas direkt auf der Tischplatte steht"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7TEGM0FMFVZH2ZX6HTGQ7RQ",
+					"slug": "e6m-room-flat-prepositions-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was bedeutet die Ortsangabe 'between the desk and the bed' auf Deutsch?",
+					"concept": "zwischen dem Schreibtisch und dem Bett",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-room-flat-prepositions",
+					"sample_solution": "zwischen dem Schreibtisch und dem Bett"
+				},
+				{
+					"id": "01M7TEGM0GV3437FYMGXYKNST5",
+					"slug": "e6m-room-flat-prepositions-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was bedeutet das englische Möbelwort 'shelf' auf Deutsch?",
+					"concept": "Regal",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-room-flat-prepositions",
+					"sample_solution": "Regal"
+				}
+			]
+		},
+		{
+			"id": "01M7TEGKYXT321615T87HH7H2B",
+			"atom_uri": "urn:zam:atom:01M7TEGKYXT321615T87HH7H2B",
+			"namespace": "zam-academy-englisch-mittelschule-6",
+			"slug": "e6m-clothes-wellbeing",
+			"title": "Clothes & how I feel",
+			"domain": "englisch/alltag",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-clothes-wellbeing",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-mittelschule-6",
+					"topic_code": "everyday",
+					"topic_title": "Alltagsleben, Zimmer und Heimatort"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb2",
+					"topic_title": "Situationsgebundene Höflichkeitsformeln",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Aspekte des Alltagslebens: Kleidung, Befinden",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7TEGM0HD80C3YYBPYZW1XTE",
+					"slug": "e6m-clothes-wellbeing-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was wünschst du einem kranken Freund auf Englisch mit 'Get well soon!'?",
+					"concept": "Gute Besserung!",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-clothes-wellbeing",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Gute Besserung!",
+							"Guten Appetit!"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7TEGM0JV1NMX5B2YJ03EW7G",
+					"slug": "e6m-clothes-wellbeing-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie heißt 'Halsschmerzen haben' auf Englisch?",
+					"concept": "have (got) a sore throat",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-clothes-wellbeing",
+					"sample_solution": "to have (got) a sore throat"
+				},
+				{
+					"id": "01M7TEGM0KAAF6CJXQ6F24158A",
+					"slug": "e6m-clothes-wellbeing-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was sind 'trainers' im britischen Englisch?",
+					"concept": "Turnschuhe / Sportschuhe",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-clothes-wellbeing",
+					"sample_solution": "Turnschuhe / Sportschuhe"
+				}
+			]
+		},
+		{
+			"id": "01M7TEGKYY7EAR1Y8WHCX2MY7S",
+			"atom_uri": "urn:zam:atom:01M7TEGKYY7EAR1Y8WHCX2MY7S",
+			"namespace": "zam-academy-englisch-mittelschule-6",
+			"slug": "e6m-hometown-weather",
+			"title": "My hometown: sights & weather",
+			"domain": "englisch/alltag",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-hometown-weather",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-mittelschule-6",
+					"topic_code": "everyday",
+					"topic_title": "Alltagsleben, Zimmer und Heimatort"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.1-sprechen",
+					"topic_title": "Kurze einfache Präsentation zum Heimatort mit Notizen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Heimatort: Lage/Landschaft, Wetter/Klima, Sehenswertes",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7TEGM0MNQM8TW3QCKMKDD7S",
+					"slug": "e6m-hometown-weather-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "In welche drei klaren Punkte gliederst du eine kurze Präsentation über deinen Heimatort?",
+					"concept": "Lage und Landschaft → Wetter und Klima → Sehenswertes",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-hometown-weather",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Lage und Landschaft → Wetter und Klima → Sehenswertes",
+							"Wetter von gestern → lange Sätze ablesen → kein Ortsname"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7TEGM0NPQ0XFETM0Z80GMFG",
+					"slug": "e6m-hometown-weather-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was bedeutet das englische Wetteradjektiv 'foggy' auf Deutsch?",
+					"concept": "neblig",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-hometown-weather",
+					"sample_solution": "neblig"
+				},
+				{
+					"id": "01M7TEGM0PAM1F5V7CZ8ZENPTN",
+					"slug": "e6m-hometown-weather-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Übersetze das Landschaftswort 'valley' ins Deutsche.",
+					"concept": "Tal",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-hometown-weather",
+					"sample_solution": "Tal"
+				}
+			]
+		},
+		{
+			"id": "01M7TEGKYZBZATC6BFG0182M15",
+			"atom_uri": "urn:zam:atom:01M7TEGKYZBZATC6BFG0182M15",
+			"namespace": "zam-academy-englisch-mittelschule-6",
+			"slug": "e6m-lost-notices-signs",
+			"title": "Lost notices, signs & posters",
+			"domain": "englisch/texte",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-lost-notices-signs",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-mittelschule-6",
+					"topic_code": "everyday",
+					"topic_title": "Alltagsleben, Zimmer und Heimatort"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.1-lesen",
+					"topic_title": "Konkrete Angaben aus Hinweisschildern, Postern und Verlustanzeigen entnehmen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb3",
+					"topic_title": "Sprachliche und bildliche Elemente zur Texterschließung nutzen",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7TEGM0QGHP09ZYDEBSYZB8E",
+					"slug": "e6m-lost-notices-signs-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was ist im Englischen eine 'lost notice'?",
+					"concept": "eine Verlustanzeige (Suchmeldung für etwas Verlorenes)",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-lost-notices-signs",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"eine Verlustanzeige (Suchmeldung für etwas Verlorenes)",
+							"ein Stundenplan für die 6. Klasse"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7TEGM0R75J3YCH957JT64Z5",
+					"slug": "e6m-lost-notices-signs-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was bedeutet das englische Schild 'Visitors must report to Reception'?",
+					"concept": "Besucher müssen sich am Empfang melden.",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-lost-notices-signs",
+					"sample_solution": "Besucher müssen sich am Empfang melden."
+				},
+				{
+					"id": "01M7TEGM0SSK8SRQ7TY8YWGQKM",
+					"slug": "e6m-lost-notices-signs-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Worauf achtest du beim suchenden Lesen einer Verlustanzeige zuerst?",
+					"concept": "auf Überschrift, verlorenen Gegenstand (Farbe/Merkmal), Ort, Zeit und Kontakt",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-lost-notices-signs",
+					"sample_solution": "Überschrift, Merkmal (Farbe/Inhalt), Ort/Zeit und Abgabestelle/Kontakt"
+				}
+			]
+		},
+		{
+			"id": "01M7TEGKZ0393M7ZAAKBWYTRT8",
+			"atom_uri": "urn:zam:atom:01M7TEGKZ0393M7ZAAKBWYTRT8",
+			"namespace": "zam-academy-englisch-mittelschule-6",
+			"slug": "e6m-answering-machine",
+			"title": "Answering machine (US English)",
+			"domain": "englisch/kommunikation",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-answering-machine",
+			"prerequisites": [
+				{
+					"atom_id": "01M7TEGKYS09MJ1PWRSPH842JM",
+					"type": "soft",
+					"rationale": "Builds on e6m-directions-listening."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-mittelschule-6",
+					"topic_code": "everyday",
+					"topic_title": "Alltagsleben, Zimmer und Heimatort"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.1-hoeren",
+					"topic_title": "Kurze Nachrichten auf dem Anrufbeantworter in amerikanischer Standardsprache verstehen",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7TEGM0T18GDN7HE3N6PBM1T",
+					"slug": "e6m-answering-machine-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche vier Kerninformationen hältst du bei einer Nachricht auf dem Anrufbeantworter fest?",
+					"concept": "Wer ruft an, warum, wann/wo und Rückrufnummer",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-answering-machine",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Wer ruft an, warum, wann/wo und Rückrufnummer",
+							"nur die Begrüßung ohne Uhrzeit und Telefonnummer"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7TEGM0VYQ7KHK519F8AP7HG",
+					"slug": "e6m-answering-machine-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was bedeutet im Englischen 'Call me back tonight'?",
+					"concept": "Ruf mich heute Abend zurück.",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-answering-machine",
+					"sample_solution": "Ruf mich heute Abend zurück."
+				},
+				{
+					"id": "01M7TEGM0WFBJJ9YC3DE3G2Z1B",
+					"slug": "e6m-answering-machine-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche Uhrzeit bedeutet im Englischen 'two thirty'?",
+					"concept": "14:30 Uhr (oder 02:30 Uhr, halb drei)",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-answering-machine",
+					"sample_solution": "14:30 Uhr / halb drei"
+				}
+			]
+		},
+		{
+			"id": "01M7TEGKZ10KFT3N38B9BZ1NCN",
+			"atom_uri": "urn:zam:atom:01M7TEGKZ10KFT3N38B9BZ1NCN",
+			"namespace": "zam-academy-englisch-mittelschule-6",
+			"slug": "e6m-school-clubs",
+			"title": "After-school clubs & flyer",
+			"domain": "englisch/schule",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-school-clubs",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-mittelschule-6",
+					"topic_code": "school",
+					"topic_title": "Schulleben, Klassenfahrt und Methoden"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.1-lesen",
+					"topic_title": "Themenbezogene Flyer erfassen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Aspekte des Schullebens: Arbeitsgemeinschaften",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7TEGM0XMCTN3SH8MSAKCKTK",
+					"slug": "e6m-school-clubs-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was ist ein 'after-school club' an einer englischen oder amerikanischen Schule?",
+					"concept": "eine Arbeitsgemeinschaft (AG) nach dem Unterricht",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-school-clubs",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"eine Arbeitsgemeinschaft (AG) nach dem Unterricht",
+							"ein Einkauf am Zeitungskiosk"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7TEGM0YYA6NKKM0ZGMY62CT",
+					"slug": "e6m-school-clubs-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was bedeutet 'school choir' auf Deutsch?",
+					"concept": "Schulchor",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-school-clubs",
+					"sample_solution": "Schulchor"
+				},
+				{
+					"id": "01M7TEGM0ZYAEEQJAWCYS2QBW2",
+					"slug": "e6m-school-clubs-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche Bedeutung hat die Angabe 'for free' auf einem AG-Flyer?",
+					"concept": "kostenlos",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-school-clubs",
+					"sample_solution": "kostenlos"
+				}
+			]
+		},
+		{
+			"id": "01M7TEGKZ2FM35JK3J7RWCD9MS",
+			"atom_uri": "urn:zam:atom:01M7TEGKZ2FM35JK3J7RWCD9MS",
+			"namespace": "zam-academy-englisch-mittelschule-6",
+			"slug": "e6m-class-trip-camp",
+			"title": "Class trip & school camp",
+			"domain": "englisch/schreiben",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-class-trip-camp",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-mittelschule-6",
+					"topic_code": "school",
+					"topic_title": "Schulleben, Klassenfahrt und Methoden"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.1-lesen",
+					"topic_title": "Kurze persönliche Briefe und E-Mails verstehen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.1-schreiben",
+					"topic_title": "Persönliche Schreiben mithilfe von Textbausteinen verfassen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Aspekte des Schullebens: Klassenfahrt, Schullandheimaufenthalt",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7TEGM10ARMAV1ED92RX7Q0M",
+					"slug": "e6m-class-trip-camp-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche Schlussformel passt an das Ende einer englischen E-Mail an Eltern oder Freunde?",
+					"concept": "Love, / Best wishes, / See you soon,",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-class-trip-camp",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Love, / Best wishes, / See you soon,",
+							"Excuse me, how much is it?"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7TEGM11HPJQKBH1BDP7SKZH",
+					"slug": "e6m-class-trip-camp-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was ist auf Englisch ein 'school camp' oder eine 'class trip'?",
+					"concept": "Schullandheimaufenthalt bzw. Klassenfahrt",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-class-trip-camp",
+					"sample_solution": "Schullandheimaufenthalt bzw. Klassenfahrt"
+				},
+				{
+					"id": "01M7TEGM12NCY2R8193D9ERRRN",
+					"slug": "e6m-class-trip-camp-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche Anrede nutzt du für einen englischen Brief an deinen Freund Sam?",
+					"concept": "Dear Sam, / Hi Sam,",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-class-trip-camp",
+					"sample_solution": "Dear Sam, oder Hi Sam,"
+				}
+			]
+		},
+		{
+			"id": "01M7TEGKZ3JKA8ZMZ8PT33ER6G",
+			"atom_uri": "urn:zam:atom:01M7TEGKZ3JKA8ZMZ8PT33ER6G",
+			"namespace": "zam-academy-englisch-mittelschule-6",
+			"slug": "e6m-school-festival-notes",
+			"title": "School festival & note-making",
+			"domain": "englisch/schule",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-school-festival-notes",
+			"prerequisites": [
+				{
+					"atom_id": "01M7TEGKZ2FM35JK3J7RWCD9MS",
+					"type": "soft",
+					"rationale": "Builds on e6m-class-trip-camp."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-mittelschule-6",
+					"topic_code": "school",
+					"topic_title": "Schulleben, Klassenfahrt und Methoden"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.1-schreiben",
+					"topic_title": "Liste mit wesentlichen Punkten notieren (note-making)",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb3",
+					"topic_title": "Gestaltungsmittel von Veranstaltungsplakaten übernehmen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Aspekte des Schullebens: Schulfest",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7TEGM1306WBBMRP9DJD17B0",
+					"slug": "e6m-school-festival-notes-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was versteht man beim Planen eines Festes unter 'note-making'?",
+					"concept": "wesentliche Angaben (Zeitpunkt, Dauer, Ort, Aktivitäten) knapp in Wortgruppen statt in ganzen Sätzen notieren",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-school-festival-notes",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"wesentliche Angaben (Zeitpunkt, Dauer, Ort, Aktivitäten) knapp in Wortgruppen statt in ganzen Sätzen notieren",
+							"einen langen Aufsatz mit vollständigen Sätzen auswendig abschreiben"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7TEGM14TGA0MFAM210NVN84",
+					"slug": "e6m-school-festival-notes-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche drei W-Informationen stehen im Kopf eines Veranstaltungsplakats für ein Schulfest?",
+					"concept": "Anlass (Was), Datum/Uhrzeit (Wann) und Ort (Wo)",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-school-festival-notes",
+					"sample_solution": "Anlass, Zeitpunkt/Dauer und Ort"
+				},
+				{
+					"id": "01M7TEGM15AZ2022YP3JCY28FP",
+					"slug": "e6m-school-festival-notes-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie lautet das englische Wort für 'Dauer' auf einem Ablaufplan?",
+					"concept": "duration",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-school-festival-notes",
+					"sample_solution": "duration"
+				}
+			]
+		},
+		{
+			"id": "01M7TEGKZ43ZB5NM7R9PMY9T05",
+			"atom_uri": "urn:zam:atom:01M7TEGKZ43ZB5NM7R9PMY9T05",
+			"namespace": "zam-academy-englisch-mittelschule-6",
+			"slug": "e6m-dictionary-grammar-help",
+			"title": "Dictionary & grammar terms",
+			"domain": "englisch/methoden",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-dictionary-grammar-help",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-mittelschule-6",
+					"topic_code": "school",
+					"topic_title": "Schulleben, Klassenfahrt und Methoden"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.2-wortschatz",
+					"topic_title": "Grammatikalische Fachbegriffe verstehen: tense, present progressive, will-future",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb4",
+					"topic_title": "Zweisprachige Wörterbücher und einfache Lernhilfen nutzen",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7TEGM16GN5K2ETCP8ZPMNMZ",
+					"slug": "e6m-dictionary-grammar-help-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wofür stehen im zweisprachigen Schulwörterbuch die Abkürzungen 'n.', 'v.' und 'adj.'?",
+					"concept": "noun (Nomen), verb (Verb), adjective (Adjektiv)",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-dictionary-grammar-help",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"noun (Nomen), verb (Verb), adjective (Adjektiv)",
+							"name, voice, address"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7TEGM17E9HKQ1P9KYM2RS7J",
+					"slug": "e6m-dictionary-grammar-help-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was bedeutet der grammatikalische Fachbegriff 'tense' auf Deutsch?",
+					"concept": "Zeitform (eines Verbs)",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-dictionary-grammar-help",
+					"sample_solution": "Zeitform"
+				},
+				{
+					"id": "01M7TEGM18SAM0GDFKNNM56QSN",
+					"slug": "e6m-dictionary-grammar-help-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welcher Fachbegriff bezeichnet eine Zeitform mit am/is/are + Verb-ing?",
+					"concept": "present progressive",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-dictionary-grammar-help",
+					"sample_solution": "present progressive"
+				}
+			]
+		},
+		{
+			"id": "01M7TEGKZ5H9AF5C104DJMQ5RM",
+			"atom_uri": "urn:zam:atom:01M7TEGKZ5H9AF5C104DJMQ5RM",
+			"namespace": "zam-academy-englisch-mittelschule-6",
+			"slug": "e6m-clusters-internationalisms",
+			"title": "Word clusters & internationalisms",
+			"domain": "englisch/methoden",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-clusters-internationalisms",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-mittelschule-6",
+					"topic_code": "school",
+					"topic_title": "Schulleben, Klassenfahrt und Methoden"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb4",
+					"topic_title": "Wortschatz als Cluster und nach Internationalismen strukturieren",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7TEGM1921JEDC6FQ1TZCE1H",
+					"slug": "e6m-clusters-internationalisms-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was ist ein 'cluster' beim Vokabellernen?",
+					"concept": "ein geordnetes Themennetz mit Oberbegriff und Unterzweigen",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-clusters-internationalisms",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"ein geordnetes Themennetz mit Oberbegriff und Unterzweigen",
+							"eine unsortierte Liste ohne Zusammenhang"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7TEGM1AXA5WBG5EWWY984Q2",
+					"slug": "e6m-clusters-internationalisms-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Auf welchen Buchstaben endet das englische Wort für Salat (Salat / insalata / salatka)?",
+					"concept": "auf -d: salad",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-clusters-internationalisms",
+					"sample_solution": "salad (mit -d am Ende)"
+				},
+				{
+					"id": "01M7TEGM1BA9YGJSDVA8BNSF6K",
+					"slug": "e6m-clusters-internationalisms-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Woran erkennst du einen Internationalismus wie 'chocolate' oder 'museum' beim Lesen neuer englischer Texte?",
+					"concept": "Das Wort sieht in mehreren Sprachen sehr ähnlich aus und hat dieselbe Bedeutung.",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-clusters-internationalisms",
+					"sample_solution": "Das Wort sieht in mehreren Sprachen sehr ähnlich aus und hat dieselbe Bedeutung."
+				}
+			]
+		},
+		{
+			"id": "01M7TEGKZ69RC6HDDQXH6SPFWH",
+			"atom_uri": "urn:zam:atom:01M7TEGKZ69RC6HDDQXH6SPFWH",
+			"namespace": "zam-academy-englisch-mittelschule-6",
+			"slug": "e6m-learning-strategies",
+			"title": "Learning strategies & key words",
+			"domain": "englisch/methoden",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-learning-strategies",
+			"prerequisites": [
+				{
+					"atom_id": "01M7TEGKZ5H9AF5C104DJMQ5RM",
+					"type": "soft",
+					"rationale": "Builds on e6m-clusters-internationalisms."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-mittelschule-6",
+					"topic_code": "school",
+					"topic_title": "Schulleben, Klassenfahrt und Methoden"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb4",
+					"topic_title": "Eigenverantwortliche Lernmittel und Lerntechniken (Analogiebildung, Schlüsselwörter)",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7TEGM1CPMNWXBPN82QB5DR6",
+					"slug": "e6m-learning-strategies-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie nutzt du bei der Adjektivsteigerung die Analogiebildung zwischen Deutsch und Englisch?",
+					"concept": "wie Deutsch -er / am -sten bildest du Englisch -er / the ... -est (fast – faster – the fastest)",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-learning-strategies",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"wie Deutsch -er / am -sten bildest du Englisch -er / the ... -est (fast – faster – the fastest)",
+							"indem du im Englischen alle Adjektivendungen weglässt"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7TEGM1DM66E43550G9NJKEW",
+					"slug": "e6m-learning-strategies-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche Lesetechnik hilft beim schnellen Finden von Preisen oder Zeiten in einer Broschüre?",
+					"concept": "gezielt auf Überschriften, Zahlen und Schlüsselwörter (keywords) achten",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-learning-strategies",
+					"sample_solution": "gezielt auf Überschriften, Zahlen und Schlüsselwörter (keywords) achten"
+				},
+				{
+					"id": "01M7TEGM1EAF46YP466E6FH74N",
+					"slug": "e6m-learning-strategies-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Warum hilft farbliches Markieren oder Unterstreichen beim Lernen neuer Strukturen?",
+					"concept": "Signalwörter und Endungen werden beim Wiederholen auf einen Blick sichtbar",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-learning-strategies",
+					"sample_solution": "Es hebt wichtige Muster, Endungen und Signalwörter klar hervor."
+				}
+			]
+		},
+		{
+			"id": "01M7TEGKZ7HPS60R0PE3CGEN1D",
+			"atom_uri": "urn:zam:atom:01M7TEGKZ7HPS60R0PE3CGEN1D",
+			"namespace": "zam-academy-englisch-mittelschule-6",
+			"slug": "e6m-sports-events",
+			"title": "Sports events & schedules",
+			"domain": "englisch/freizeit",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-sports-events",
+			"prerequisites": [
+				{
+					"atom_id": "01M7TEGKZ3JKA8ZMZ8PT33ER6G",
+					"type": "soft",
+					"rationale": "Builds on e6m-school-festival-notes."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-mittelschule-6",
+					"topic_code": "leisure",
+					"topic_title": "Freizeit, Reisen, Medien und Texte"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.1-hoeren",
+					"topic_title": "Sportdurchsagen im amerikanischen Englisch Einzelheiten entnehmen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Aspekte der Freizeitgestaltung: Sportveranstaltungen",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7TEGM1FCQ7X6ZV8MNF124T7",
+					"slug": "e6m-sports-events-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche beiden Disziplinen bedeuten 'relay race' und 'long jump'?",
+					"concept": "Staffellauf (relay race) und Weitsprung (long jump)",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-sports-events",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Staffellauf (relay race) und Weitsprung (long jump)",
+							"Schwimmwettkampf und Hochsprung"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7TEGM1G9GDBW7QZAD12PFWQ",
+					"slug": "e6m-sports-events-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was bedeutet im Sportplan 'awards ceremony' auf Deutsch?",
+					"concept": "Siegerehrung / Preisverleihung",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-sports-events",
+					"sample_solution": "Siegerehrung / Preisverleihung"
+				},
+				{
+					"id": "01M7TEGM1HV68XW4EDCKE454QV",
+					"slug": "e6m-sports-events-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie heißen 'Sporthalle' und 'Sportplatz' in der Schule auf Englisch?",
+					"concept": "gym und sports field / pitch",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-sports-events",
+					"sample_solution": "gym (Sporthalle) und sports field / pitch (Sportplatz)"
+				}
+			]
+		},
+		{
+			"id": "01M7TEGKZ8Y2S36XSCTHE8TV07",
+			"atom_uri": "urn:zam:atom:01M7TEGKZ8Y2S36XSCTHE8TV07",
+			"namespace": "zam-academy-englisch-mittelschule-6",
+			"slug": "e6m-reading-tv-digital",
+			"title": "Reading, TV & digital chats",
+			"domain": "englisch/freizeit",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-reading-tv-digital",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-mittelschule-6",
+					"topic_code": "leisure",
+					"topic_title": "Freizeit, Reisen, Medien und Texte"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Aspekte der Freizeitgestaltung: Lesen, Fernsehen, digitale Kommunikation",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7TEGM1JY82T0EZ7HJWHVE1V",
+					"slug": "e6m-reading-tv-digital-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was bedeutet 'video call' auf Deutsch?",
+					"concept": "Videoanruf",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-reading-tv-digital",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Videoanruf",
+							"Briefumschlag"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7TEGM1KY4X10Y6Z2KJR68Z8",
+					"slug": "e6m-reading-tv-digital-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was bedeutet im Chat die kurze Zusage 'Deal! See you online at 7:30 pm.'?",
+					"concept": "Abgemacht! Wir sehen uns um 19:30 Uhr online.",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-reading-tv-digital",
+					"sample_solution": "Abgemacht! Wir sehen uns um 19:30 Uhr online."
+				},
+				{
+					"id": "01M7TEGM1MDC64PMKPSJQAYG64",
+					"slug": "e6m-reading-tv-digital-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was bedeutet 'nature documentary' auf Deutsch?",
+					"concept": "Naturdokumentation",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-reading-tv-digital",
+					"sample_solution": "Naturdokumentation"
+				}
+			]
+		},
+		{
+			"id": "01M7TEGKZ92QQX02PW91QR7M54",
+			"atom_uri": "urn:zam:atom:01M7TEGKZ92QQX02PW91QR7M54",
+			"namespace": "zam-academy-englisch-mittelschule-6",
+			"slug": "e6m-holidays-travel",
+			"title": "Holidays & travel stories",
+			"domain": "englisch/freizeit",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-holidays-travel",
+			"prerequisites": [
+				{
+					"atom_id": "01M7TEGKZ2FM35JK3J7RWCD9MS",
+					"type": "soft",
+					"rationale": "Builds on e6m-class-trip-camp."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-mittelschule-6",
+					"topic_code": "leisure",
+					"topic_title": "Freizeit, Reisen, Medien und Texte"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.1-schreiben",
+					"topic_title": "Persönliche Briefe über Ferien und Reisen verfassen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Aspekte der Freizeitgestaltung: Ferien und Reisen",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7TEGM1NW7Y0QKFQTE4JQSR9",
+					"slug": "e6m-holidays-travel-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche Präposition steht im Englischen vor Verkehrsmitteln ohne Artikel ('___ train', '___ bus', '___ plane')?",
+					"concept": "by",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-holidays-travel",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"by",
+							"opposite"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7TEGM1PXKWX0NTYZ431RC1A",
+					"slug": "e6m-holidays-travel-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was bedeutet 'a sandy beach' auf Deutsch?",
+					"concept": "ein Sandstrand",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-holidays-travel",
+					"sample_solution": "ein Sandstrand"
+				},
+				{
+					"id": "01M7TEGM1Q80JD3RBXF0DHGY3B",
+					"slug": "e6m-holidays-travel-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie übersetzt man 'Next summer, we will visit a national park'?",
+					"concept": "Nächsten Sommer werden wir einen Nationalpark besuchen.",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-holidays-travel",
+					"sample_solution": "Nächsten Sommer werden wir einen Nationalpark besuchen."
+				}
+			]
+		},
+		{
+			"id": "01M7TEGKZAZ0KB5BDVBADDVCM9",
+			"atom_uri": "urn:zam:atom:01M7TEGKZAZ0KB5BDVBADDVCM9",
+			"namespace": "zam-academy-englisch-mittelschule-6",
+			"slug": "e6m-festivals-uk-usa",
+			"title": "Festivals in UK & USA",
+			"domain": "englisch/landeskunde",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-festivals-uk-usa",
+			"prerequisites": [
+				{
+					"atom_id": "01M7TEGKYPDF168KCGWAR24MDB",
+					"type": "soft",
+					"rationale": "Builds on e6m-usa-states-capital."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-mittelschule-6",
+					"topic_code": "leisure",
+					"topic_title": "Freizeit, Reisen, Medien und Texte"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb2",
+					"topic_title": "Feste und Feiertage in UK und USA vergleichen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Aspekte der Freizeitgestaltung: Feiertage und Feste",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7TEGM1R5EJJWR2Q2AYC80N7",
+					"slug": "e6m-festivals-uk-usa-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welches große US-Familienfest wird am vierten Donnerstag im November gefeiert?",
+					"concept": "Thanksgiving",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-festivals-uk-usa",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Thanksgiving",
+							"Boxing Day"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7TEGM1SKSWN4YJ3KPWXS71N",
+					"slug": "e6m-festivals-uk-usa-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was feiern die USA am 4. Juli (4th July)?",
+					"concept": "Independence Day (Unabhängigkeitstag)",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-festivals-uk-usa",
+					"sample_solution": "Independence Day (Unabhängigkeitstag)"
+				},
+				{
+					"id": "01M7TEGM1TD2EX7573AJE5CCC1",
+					"slug": "e6m-festivals-uk-usa-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie heißt der britische Feiertag am 26. Dezember nach Christmas Day?",
+					"concept": "Boxing Day",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-festivals-uk-usa",
+					"sample_solution": "Boxing Day"
+				}
+			]
+		},
+		{
+			"id": "01M7TEGKZBZEFJXAKBS3AXYVF9",
+			"atom_uri": "urn:zam:atom:01M7TEGKZBZEFJXAKBS3AXYVF9",
+			"namespace": "zam-academy-englisch-mittelschule-6",
+			"slug": "e6m-mediation-leisure",
+			"title": "Mediation: leisure programmes",
+			"domain": "englisch/sprachmittlung",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-mediation-leisure",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-mittelschule-6",
+					"topic_code": "leisure",
+					"topic_title": "Freizeit, Reisen, Medien und Texte"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.1-sprachmittlung",
+					"topic_title": "Freizeitangebote adressatenbezogen und sinngemäß auf Deutsch vermitteln",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7TEGM1VYGNK7HSFDJF3YH2G",
+					"slug": "e6m-mediation-leisure-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was ist das Ziel einer guten Sprachmittlung (mediation)?",
+					"concept": "relevante Informationen sinngemäß und passend zum Empfänger ins Deutsche übertragen",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-mediation-leisure",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"relevante Informationen sinngemäß und passend zum Empfänger ins Deutsche übertragen",
+							"jedes einzelne Wort der Vorlage wörtlich übersetzen ohne Rücksicht auf den Empfänger"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7TEGM1WZ02W7ASZY54NMNQY",
+					"slug": "e6m-mediation-leisure-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was bedeutet 'Sign up by Thursday' in einer deutschen Sprachmittlung für eine Veranstaltung?",
+					"concept": "Melde dich bis Donnerstag an.",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-mediation-leisure",
+					"sample_solution": "Melde dich bis spätestens Donnerstag an."
+				},
+				{
+					"id": "01M7TEGM1XRS932J9JDN1E0P8D",
+					"slug": "e6m-mediation-leisure-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was ist bei einem Ausflug mit dem Hinweis 'Parents must sign a permission slip' gemeint?",
+					"concept": "Die Eltern müssen eine schriftliche Einverständniserklärung (Erlaubniszettel) unterschreiben.",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-mediation-leisure",
+					"sample_solution": "Die Eltern müssen vorher einen Erlaubniszettel unterschreiben."
+				}
+			]
+		},
+		{
+			"id": "01M7TEGKZCR2JPGF1PNJ18ZRVQ",
+			"atom_uri": "urn:zam:atom:01M7TEGKZCR2JPGF1PNJ18ZRVQ",
+			"namespace": "zam-academy-englisch-mittelschule-6",
+			"slug": "e6m-creative-poems-profiles",
+			"title": "Creative poems & character profiles",
+			"domain": "englisch/texte",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-creative-poems-profiles",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-mittelschule-6",
+					"topic_code": "leisure",
+					"topic_title": "Freizeit, Reisen, Medien und Texte"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb3",
+					"topic_title": "Einfache Gedichte und Steckbriefe mithilfe von Bausteinen kreativ verändern",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7TEGM1Y5Z4VP4KRYZ908BC7",
+					"slug": "e6m-creative-poems-profiles-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was behältst du bei, wenn du ein englisches Gedicht oder einen Steckbrief kreativ veränderst?",
+					"concept": "den Grundbauplan (Reimpaar oder Steckbrief-Rubriken) und tauschst gezielt einzelne Bausteine aus",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-creative-poems-profiles",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"den Grundbauplan (Reimpaar oder Steckbrief-Rubriken) und tauschst gezielt einzelne Bausteine aus",
+							"alle Wörter unverändert Wort für Wort ohne eigene Ideen"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7TEGM1Z0VWE5P1ZQ29GGA7Z",
+					"slug": "e6m-creative-poems-profiles-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche Form des Verbs steht in einem Steckbrief nach 'Likes:' (z. B. Likes: drawing and ___)?",
+					"concept": "die -ing-Form (z. B. playing, reading)",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-creative-poems-profiles",
+					"sample_solution": "die -ing-Form (z. B. playing the drums, reading)"
+				},
+				{
+					"id": "01M7TEGM20S1WDTS4HJJZH8VN2",
+					"slug": "e6m-creative-poems-profiles-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Nenne ein englisches Reimwort auf 'tree'.",
+					"concept": "me (oder sea, three, free)",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-creative-poems-profiles",
+					"sample_solution": "me (oder sea, free, three)"
+				}
+			]
+		},
+		{
+			"id": "01M7TEGKZD3YKGBWKAJ9287AZV",
+			"atom_uri": "urn:zam:atom:01M7TEGKZD3YKGBWKAJ9287AZV",
+			"namespace": "zam-academy-englisch-mittelschule-6",
+			"slug": "e6m-numbers-to-1000",
+			"title": "Numbers up to 1000",
+			"domain": "englisch/wortschatz",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-numbers-to-1000",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-mittelschule-6",
+					"topic_code": "words-structures",
+					"topic_title": "Sprachwerkstatt I: Zahlen, Pronomen und Wortschatz"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.2-wortschatz",
+					"topic_title": "Grundzahlen bis 1000",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.1-schreiben",
+					"topic_title": "Orthographisch korrektes Schreiben von Zahlwörtern",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7TEGM21S0Z7SSCBMH4924YA",
+					"slug": "e6m-numbers-to-1000-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie lautet 542 im britischen Englisch korrekt in Worten?",
+					"concept": "five hundred and forty-two",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-numbers-to-1000",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"five hundred and forty-two",
+							"five hundreds and fourty-two"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7TEGM22Q981FQ7A9XXZ8AVX",
+					"slug": "e6m-numbers-to-1000-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Schreibe die Zahl 308 als englisches Zahlwort (britisches Englisch).",
+					"concept": "three hundred and eight",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-numbers-to-1000",
+					"sample_solution": "three hundred and eight"
+				},
+				{
+					"id": "01M7TEGM23093RK9NRPA1TB8RQ",
+					"slug": "e6m-numbers-to-1000-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie heißt 1000 auf Englisch in Worten?",
+					"concept": "one thousand",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-numbers-to-1000",
+					"sample_solution": "one thousand"
+				}
+			]
+		},
+		{
+			"id": "01M7TEGKZE52DDSQR3S3ZFWY3T",
+			"atom_uri": "urn:zam:atom:01M7TEGKZE52DDSQR3S3ZFWY3T",
+			"namespace": "zam-academy-englisch-mittelschule-6",
+			"slug": "e6m-ordinals-dates",
+			"title": "Ordinal numbers (1st–31st) & dates",
+			"domain": "englisch/wortschatz",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-ordinals-dates",
+			"prerequisites": [
+				{
+					"atom_id": "01M7TEGKZD3YKGBWKAJ9287AZV",
+					"type": "soft",
+					"rationale": "Builds on e6m-numbers-to-1000."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-mittelschule-6",
+					"topic_code": "words-structures",
+					"topic_title": "Sprachwerkstatt I: Zahlen, Pronomen und Wortschatz"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.2-wortschatz",
+					"topic_title": "Ordnungszahlen bis 31",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.1-schreiben",
+					"topic_title": "Ordnungszahlen und Daten richtig schreiben",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7TEGM245GMQSEPE8Z318E90",
+					"slug": "e6m-ordinals-dates-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie schreibt man die englische Ordnungszahl '12th' als Wort?",
+					"concept": "twelfth",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-ordinals-dates",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"twelfth",
+							"twelveth"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7TEGM25XWHC7998R3W5YGZF",
+					"slug": "e6m-ordinals-dates-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie lauten die ersten drei unregelmäßigen englischen Ordnungszahlen (1st, 2nd, 3rd) in Worten?",
+					"concept": "first, second, third",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-ordinals-dates",
+					"sample_solution": "first, second, third"
+				},
+				{
+					"id": "01M7TEGM26HDAVZ1F5T49FY80N",
+					"slug": "e6m-ordinals-dates-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie wird das britische Datum '14th May' gesprochen?",
+					"concept": "the fourteenth of May",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-ordinals-dates",
+					"sample_solution": "the fourteenth of May"
+				}
+			]
+		},
+		{
+			"id": "01M7TEGKZFANCCBBYEPG4F18DP",
+			"atom_uri": "urn:zam:atom:01M7TEGKZFANCCBBYEPG4F18DP",
+			"namespace": "zam-academy-englisch-mittelschule-6",
+			"slug": "e6m-plurals-quantities-genitive",
+			"title": "Feet, teeth, clothes & of-genitive",
+			"domain": "englisch/grammatik",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-plurals-quantities-genitive",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-mittelschule-6",
+					"topic_code": "words-structures",
+					"topic_title": "Sprachwerkstatt I: Zahlen, Pronomen und Wortschatz"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.2-wortschatz",
+					"topic_title": "Unregelmäßige Plurale feet, teeth + clothes und Mengenbezeichnungen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.2-grammatik",
+					"topic_title": "of-Genitiv",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7TEGM27E3RNNADVYRNQQSWY",
+					"slug": "e6m-plurals-quantities-genitive-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welches Verb folgt immer auf das englische Pluralwort 'clothes' ('These clothes ___ warm')?",
+					"concept": "are (Pluralverb)",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-plurals-quantities-genitive",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"are (Pluralverb)",
+							"is (Singularverb)"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7TEGM28HR5VB6KP7G913QFY",
+					"slug": "e6m-plurals-quantities-genitive-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie lauten die unregelmäßigen Plurale von 'foot' und 'tooth'?",
+					"concept": "feet und teeth",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-plurals-quantities-genitive",
+					"sample_solution": "feet und teeth"
+				},
+				{
+					"id": "01M7TEGM29PSRENEC59YBGMPJJ",
+					"slug": "e6m-plurals-quantities-genitive-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Ergänze den of-Genitiv für eine Sache: 'the colour ___ my bike'.",
+					"concept": "of",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-plurals-quantities-genitive",
+					"sample_solution": "of (the colour of my bike)"
+				}
+			]
+		},
+		{
+			"id": "01M7TEGKZGKQSC9NM9D27MEPA4",
+			"atom_uri": "urn:zam:atom:01M7TEGKZGKQSC9NM9D27MEPA4",
+			"namespace": "zam-academy-englisch-mittelschule-6",
+			"slug": "e6m-object-indefinite-demo",
+			"title": "Object pronouns, these/those & somebody",
+			"domain": "englisch/grammatik",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-object-indefinite-demo",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-mittelschule-6",
+					"topic_code": "words-structures",
+					"topic_title": "Sprachwerkstatt I: Zahlen, Pronomen und Wortschatz"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.2-wortschatz",
+					"topic_title": "Indefinite Pronomen und Demonstrativpronomen these, those",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.2-grammatik",
+					"topic_title": "Personalpronomen als Objekt",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7TEGM2A0N9W32KR7WJ03YW5",
+					"slug": "e6m-object-indefinite-demo-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie lauten die Objektpronomen zu 'he', 'she', 'we' und 'they'?",
+					"concept": "him, her, us, them",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-object-indefinite-demo",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"him, her, us, them",
+							"his, hers, our, their"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7TEGM2BZQV1RRRDRV6KA4S8",
+					"slug": "e6m-object-indefinite-demo-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welches Demonstrativpronomen steht für Dinge im Plural in der Ferne (Gegenteil von 'these')?",
+					"concept": "those",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-object-indefinite-demo",
+					"sample_solution": "those"
+				},
+				{
+					"id": "01M7TEGM2CQCQFR8M45NKWB2VR",
+					"slug": "e6m-object-indefinite-demo-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welches Indefinitpronomen steht mit bejahtem Verb für 'niemand' ('___ is in the room')?",
+					"concept": "nobody",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-object-indefinite-demo",
+					"sample_solution": "nobody"
+				}
+			]
+		},
+		{
+			"id": "01M7TEGKZH8D594ZCH998WFTCV",
+			"atom_uri": "urn:zam:atom:01M7TEGKZH8D594ZCH998WFTCV",
+			"namespace": "zam-academy-englisch-mittelschule-6",
+			"slug": "e6m-phrasal-collocations-gerund",
+			"title": "Phrasal verbs, collocations & gerund",
+			"domain": "englisch/wortschatz",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-phrasal-collocations-gerund",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-mittelschule-6",
+					"topic_code": "words-structures",
+					"topic_title": "Sprachwerkstatt I: Zahlen, Pronomen und Wortschatz"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.2-wortschatz",
+					"topic_title": "Phrasal verbs, Kollokationen und Gerund nach Ausdrücken",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7TEGM2DHD2QA63AJBG1HXTE",
+					"slug": "e6m-phrasal-collocations-gerund-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welches englische Verb bildet die feste Wortverbindung mit 'a photo'?",
+					"concept": "to take a photo",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-phrasal-collocations-gerund",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"to take a photo",
+							"to make a photo"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7TEGM2E8T05NKMH07X9TMJW",
+					"slug": "e6m-phrasal-collocations-gerund-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was unterscheidet 'look for' von 'look after'?",
+					"concept": "look for = suchen | look after = aufpassen auf / sich kümmern um",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-phrasal-collocations-gerund",
+					"sample_solution": "look for = suchen, look after = aufpassen auf / sich kümmern um"
+				},
+				{
+					"id": "01M7TEGM2F2JGKYQ0DJQ7Y9MA3",
+					"slug": "e6m-phrasal-collocations-gerund-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche Verbform folgt im Gerund nach 'I'm good at ...'?",
+					"concept": "die -ing-Form (z. B. I'm good at swimming.)",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-phrasal-collocations-gerund",
+					"sample_solution": "die -ing-Form (z. B. I'm good at drawing.)"
+				}
+			]
+		},
+		{
+			"id": "01M7TEGKZJMF04SKWB30X9MMJ4",
+			"atom_uri": "urn:zam:atom:01M7TEGKZJMF04SKWB30X9MMJ4",
+			"namespace": "zam-academy-englisch-mittelschule-6",
+			"slug": "e6m-prepositions-conjunctions",
+			"title": "Prepositions & conjunctions (or, then)",
+			"domain": "englisch/wortschatz",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-prepositions-conjunctions",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-mittelschule-6",
+					"topic_code": "words-structures",
+					"topic_title": "Sprachwerkstatt I: Zahlen, Pronomen und Wortschatz"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.2-wortschatz",
+					"topic_title": "Weitere Präpositionen und Konjunktionen or, then",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7TEGM2GGAS9J5SS55EEKH2Q",
+					"slug": "e6m-prepositions-conjunctions-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wofür verwendest du die Konjunktion 'or' im Unterschied zu 'then'?",
+					"concept": "or = oder (Auswahl), then = dann (nächster Schritt)",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-prepositions-conjunctions",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"or = oder (Auswahl), then = dann (nächster Schritt)",
+							"or = weil (Grund), then = als (Vergleich)"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7TEGM2H82FCP0RAYBK8SSDB",
+					"slug": "e6m-prepositions-conjunctions-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche Präposition bedeutet 'über ein Thema' ('a story ___ bears')?",
+					"concept": "about",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-prepositions-conjunctions",
+					"sample_solution": "about"
+				},
+				{
+					"id": "01M7TEGM2JRH009BN9PQZZ6NN7",
+					"slug": "e6m-prepositions-conjunctions-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was bedeutet die Wegangabe 'round the corner' auf Deutsch?",
+					"concept": "um die Ecke",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-prepositions-conjunctions",
+					"sample_solution": "um die Ecke"
+				}
+			]
+		},
+		{
+			"id": "01M7TEGKZKX8TDTQ4YW42BXJGW",
+			"atom_uri": "urn:zam:atom:01M7TEGKZKX8TDTQ4YW42BXJGW",
+			"namespace": "zam-academy-englisch-mittelschule-6",
+			"slug": "e6m-adjectives-comparison",
+			"title": "Comparing adjectives (-er / -est, good, bad)",
+			"domain": "englisch/grammatik",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-adjectives-comparison",
+			"prerequisites": [
+				{
+					"atom_id": "01M7TEGKZ69RC6HDDQXH6SPFWH",
+					"type": "soft",
+					"rationale": "Builds on e6m-learning-strategies."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-mittelschule-6",
+					"topic_code": "tenses-syntax",
+					"topic_title": "Sprachwerkstatt II: Steigerung, Modalverben, Zeiten und Satzbau"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.2-grammatik",
+					"topic_title": "Germanische Steigerung regelmäßiger Adjektive sowie good, bad",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb4",
+					"topic_title": "Analogiebildung zur Erstsprache bei der Adjektivsteigerung",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7TEGM2K9WCZ9FCZYATTGNDV",
+					"slug": "e6m-adjectives-comparison-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie steigerst du die unregelmäßigen Adjektive 'good' und 'bad'?",
+					"concept": "good – better – the best | bad – worse – the worst",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-adjectives-comparison",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"good – better – the best | bad – worse – the worst",
+							"good – gooder – the goodest | bad – badder – the baddest"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7TEGM2MYT692GT5DVQAG99F",
+					"slug": "e6m-adjectives-comparison-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie lautet der englische Vergleich für Gleichheit (z. B. genau so groß wie)?",
+					"concept": "as + Grundform + as (z. B. as tall as)",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-adjectives-comparison",
+					"sample_solution": "as ... as (z. B. Tower A is as tall as Tower B.)"
+				},
+				{
+					"id": "01M7TEGM2N8MRY5HPA7NQHAG2R",
+					"slug": "e6m-adjectives-comparison-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie heißen Komparativ und Superlativ von 'easy' (mit Rechtschreibregel y → i)?",
+					"concept": "easier – the easiest",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-adjectives-comparison",
+					"sample_solution": "easier – the easiest"
+				}
+			]
+		},
+		{
+			"id": "01M7TEGKZM84H207JT47T1VGZ5",
+			"atom_uri": "urn:zam:atom:01M7TEGKZM84H207JT47T1VGZ5",
+			"namespace": "zam-academy-englisch-mittelschule-6",
+			"slug": "e6m-modals-can-must-have-to",
+			"title": "Modals: can/can't, must & have (got) to",
+			"domain": "englisch/grammatik",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-modals-can-must-have-to",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-mittelschule-6",
+					"topic_code": "tenses-syntax",
+					"topic_title": "Sprachwerkstatt II: Steigerung, Modalverben, Zeiten und Satzbau"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.2-wortschatz",
+					"topic_title": "Modalverben: can/can't, must, have (got) to",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7TEGM2P6W85HRS3F4HJGRAY",
+					"slug": "e6m-modals-can-must-have-to-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie lautet die 3. Person Einzahl (he/she/it) von 'have to'?",
+					"concept": "has to",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-modals-can-must-have-to",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"has to",
+							"haves to"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7TEGM2QFZCBWP8QB01G9QNC",
+					"slug": "e6m-modals-can-must-have-to-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Worauf musst du bei der Verbform direkt nach 'can' und 'must' achten?",
+					"concept": "Es folgt die Grundform ohne to und ohne -s (She must go.)",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-modals-can-must-have-to",
+					"sample_solution": "Es steht die Grundform ohne to und ohne -s in der 3. Person."
+				},
+				{
+					"id": "01M7TEGM2RQQC1QH0TQ0K39062",
+					"slug": "e6m-modals-can-must-have-to-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Übersetze den Satz 'On Sunday, we don't have to get up early.' ins Deutsche.",
+					"concept": "Am Sonntag müssen wir nicht früh aufstehen.",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-modals-can-must-have-to",
+					"sample_solution": "Am Sonntag müssen wir nicht früh aufstehen."
+				}
+			]
+		},
+		{
+			"id": "01M7TEGKZNVNN0MQX6P1M72N3H",
+			"atom_uri": "urn:zam:atom:01M7TEGKZNVNN0MQX6P1M72N3H",
+			"namespace": "zam-academy-englisch-mittelschule-6",
+			"slug": "e6m-present-progressive",
+			"title": "Present tense progressive (am/is/are + -ing)",
+			"domain": "englisch/grammatik",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-present-progressive",
+			"prerequisites": [
+				{
+					"atom_id": "01M7TEGKZ43ZB5NM7R9PMY9T05",
+					"type": "soft",
+					"rationale": "Builds on e6m-dictionary-grammar-help."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-mittelschule-6",
+					"topic_code": "tenses-syntax",
+					"topic_title": "Sprachwerkstatt II: Steigerung, Modalverben, Zeiten und Satzbau"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.2-grammatik",
+					"topic_title": "Present tense progressive",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7TEGM2S69QB14AGVZ0APFXW",
+					"slug": "e6m-present-progressive-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie wird das 'present tense progressive' gebildet?",
+					"concept": "am / is / are + Grundform des Verbs mit -ing",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-present-progressive",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"am / is / are + Grundform des Verbs mit -ing",
+							"do / does + Grundform des Verbs mit -s"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7TEGM2TQ5VYS392B9WTABCD",
+					"slug": "e6m-present-progressive-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie schreibst du die -ing-Formen von 'make' und 'sit' richtig?",
+					"concept": "making (stummes e weg) und sitting (Doppel-t)",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-present-progressive",
+					"sample_solution": "making und sitting"
+				},
+				{
+					"id": "01M7TEGM2V41CXM2C2WA1A52CM",
+					"slug": "e6m-present-progressive-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Bilde eine Frage im present progressive aus: 'Ben / read / right now'.",
+					"concept": "Is Ben reading right now?",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-present-progressive",
+					"sample_solution": "Is Ben reading right now?"
+				}
+			]
+		},
+		{
+			"id": "01M7TEGKZPJMPAKJ7MQFSCFT01",
+			"atom_uri": "urn:zam:atom:01M7TEGKZPJMPAKJ7MQFSCFT01",
+			"namespace": "zam-academy-englisch-mittelschule-6",
+			"slug": "e6m-simple-vs-progressive",
+			"title": "Simple present vs. present progressive",
+			"domain": "englisch/grammatik",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-simple-vs-progressive",
+			"prerequisites": [
+				{
+					"atom_id": "01M7TEGKZNVNN0MQX6P1M72N3H",
+					"type": "soft",
+					"rationale": "Builds on e6m-present-progressive."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-mittelschule-6",
+					"topic_code": "tenses-syntax",
+					"topic_title": "Sprachwerkstatt II: Steigerung, Modalverben, Zeiten und Satzbau"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.2-grammatik",
+					"topic_title": "Abgrenzung present tense progressive vs. simple present",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7TEGM2WNPDX67Q4CBNSW7JW",
+					"slug": "e6m-simple-vs-progressive-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche Zeitform wählst du beim Signalwort 'usually' im Vergleich zu 'right now'?",
+					"concept": "usually → simple present (Gewohnheit) | right now → present progressive (genau jetzt)",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-simple-vs-progressive",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"usually → simple present (Gewohnheit) | right now → present progressive (genau jetzt)",
+							"usually → present progressive | right now → simple present"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7TEGM2X9055ZKZWGMVEBHY1",
+					"slug": "e6m-simple-vs-progressive-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Ergänze die richtige Zeitform: 'Look! A red bus ___ (drive) across the bridge.'",
+					"concept": "is driving",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-simple-vs-progressive",
+					"sample_solution": "is driving"
+				},
+				{
+					"id": "01M7TEGM2Y8FZRQV7KDHCB3DGB",
+					"slug": "e6m-simple-vs-progressive-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Ergänze die richtige Zeitform: 'Mia always ___ (do) her homework at four.'",
+					"concept": "does",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-simple-vs-progressive",
+					"sample_solution": "does"
+				}
+			]
+		},
+		{
+			"id": "01M7TEGKZQR8RF0QZ46QVNFN2Y",
+			"atom_uri": "urn:zam:atom:01M7TEGKZQR8RF0QZ46QVNFN2Y",
+			"namespace": "zam-academy-englisch-mittelschule-6",
+			"slug": "e6m-will-future",
+			"title": "Talking about the future: will-future",
+			"domain": "englisch/grammatik",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-will-future",
+			"prerequisites": [
+				{
+					"atom_id": "01M7TEGKZ43ZB5NM7R9PMY9T05",
+					"type": "soft",
+					"rationale": "Builds on e6m-dictionary-grammar-help."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-mittelschule-6",
+					"topic_code": "tenses-syntax",
+					"topic_title": "Sprachwerkstatt II: Steigerung, Modalverben, Zeiten und Satzbau"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.2-grammatik",
+					"topic_title": "will-future für zukünftige Handlungen und Vorhersagen",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7TEGM2ZY9BEKM1R3MYJYMX7",
+					"slug": "e6m-will-future-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie lauten die Verneinung und eine Frage im 'will-future'?",
+					"concept": "won't (will not) + Grundform | Will + Subjekt + Grundform?",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-will-future",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"won't (will not) + Grundform | Will + Subjekt + Grundform?",
+							"doesn't will + Grundform | Does + Subjekt + will?"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7TEGM30CW8K561Z7VRV3YRN",
+					"slug": "e6m-will-future-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie lautet die verneinte Kurzantwort auf 'Will Mia help us tomorrow?'?",
+					"concept": "No, she won't.",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-will-future",
+					"sample_solution": "No, she won't."
+				},
+				{
+					"id": "01M7TEGM31XGTAMXVXZ16QS946",
+					"slug": "e6m-will-future-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Nenne drei typische Signalwörter für das will-future.",
+					"concept": "tomorrow, tonight, next week (oder next summer, I think)",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-will-future",
+					"sample_solution": "tomorrow, tonight, next week / next summer"
+				}
+			]
+		},
+		{
+			"id": "01M7TEGKZRRFAXJ7PWB5V15HCH",
+			"atom_uri": "urn:zam:atom:01M7TEGKZRRFAXJ7PWB5V15HCH",
+			"namespace": "zam-academy-englisch-mittelschule-6",
+			"slug": "e6m-adverbs-svo-place-time",
+			"title": "Adverbs & SVO word order (place before time)",
+			"domain": "englisch/grammatik",
+			"reduction": "formal",
+			"typical_age_min": 11,
+			"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-adverbs-svo-place-time",
+			"prerequisites": [
+				{
+					"atom_id": "01M7TEGKZJMF04SKWB30X9MMJ4",
+					"type": "soft",
+					"rationale": "Builds on e6m-prepositions-conjunctions."
+				},
+				{
+					"atom_id": "01M7TEGKZQR8RF0QZ46QVNFN2Y",
+					"type": "soft",
+					"rationale": "Builds on e6m-will-future."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-mittelschule-6",
+					"topic_code": "tenses-syntax",
+					"topic_title": "Sprachwerkstatt II: Steigerung, Modalverben, Zeiten und Satzbau"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.2-wortschatz",
+					"topic_title": "Adverbien der Zeit, des Ortes und der Häufigkeit",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "mittelschule",
+					"grade": 6,
+					"subject": "englisch",
+					"topic_code": "lb1.2-grammatik",
+					"topic_title": "Wortstellungsregeln (SVO) mit Angaben des Ortes, der Zeit",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7TEGM328K4ZWXH3B82D46YH",
+					"slug": "e6m-adverbs-svo-place-time-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "In welcher Reihenfolge stehen Orts- und Zeitangaben am Ende eines englischen SVO-Satzes?",
+					"concept": "Ort vor Zeit (Place before Time: 'in the park tomorrow')",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-adverbs-svo-place-time",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Ort vor Zeit (Place before Time: 'in the park tomorrow')",
+							"Zeit vor Ort ('tomorrow in the park' immer am Ende)"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7TEGM331AFG9CPXXDQW616Q",
+					"slug": "e6m-adverbs-svo-place-time-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wo stehen Häufigkeitsadverbien (always, usually, seldom, never) im Satz?",
+					"concept": "vor dem Vollverb ('Sam seldom walks'), aber nach einer Form von to be ('Sam is always friendly')",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-adverbs-svo-place-time",
+					"sample_solution": "vor dem Vollverb, aber nach am / is / are (to be)"
+				},
+				{
+					"id": "01M7TEGM34E8NNXJYZFWRK65HJ",
+					"slug": "e6m-adverbs-svo-place-time-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Bringe die Wörter in die richtige SVO-Reihenfolge: (yesterday / Tim / we / met / at the station).",
+					"concept": "We met Tim at the station yesterday.",
+					"source_link": "https://academy.zam-os.org/englisch-mittelschule-6/#lesson=e6m-adverbs-svo-place-time",
+					"sample_solution": "We met Tim at the station yesterday."
+				}
+			]
+		}
+	]
+}

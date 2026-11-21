@@ -55,7 +55,6 @@ const MAPPED_CELLS = [
     retired: 5,
     kept: 3,
     oldCellsRetired: true,
-    preview: true,
   },
   {
     app: "biologie-gymnasium-11",
@@ -72,7 +71,6 @@ const MAPPED_CELLS = [
     retired: 0,
     kept: 7,
     oldCellsRetired: false,
-    preview: true,
   },
   {
     app: "physik-gymnasium-11",

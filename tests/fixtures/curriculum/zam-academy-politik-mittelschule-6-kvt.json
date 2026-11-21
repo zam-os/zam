@@ -1,0 +1,505 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "zam-academy:politik-mittelschule-6",
+  "version": "2026.11.1",
+  "title": "Politik und Gesellschaft 6 Mittelschule (ZAM Academy)",
+  "description": "GPG 6 Mittelschule Bayern, Lernbereich 3: Burg, Kloster, Bildung, weltliche und geistliche Herrschaft, Ständegesellschaft und heutige Freiheiten. Sieben Lektionen und 14 Karten.",
+  "publisher": "ZAM Academy",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/mittelschule/6/gpg/regelklasse",
+      "label": "ISB Bayern · LehrplanPLUS für GPG 6",
+      "checked": "2026-11-19"
+    },
+    {
+      "uri": "https://www.burg-burghausen.de/deutsch/burg/entsteh.htm",
+      "label": "Bayerische Schlösserverwaltung · Burg Burghausen",
+      "checked": "2026-11-19"
+    },
+    {
+      "uri": "https://hdbg.eu/kloster/index.php/detail/geschichte?id=KS0405",
+      "label": "Haus der Bayerischen Geschichte · Kloster Tegernsee",
+      "checked": "2026-11-19"
+    },
+    {
+      "uri": "https://www.historisches-lexikon-bayerns.de/Lexikon/Hofmark",
+      "label": "Historisches Lexikon Bayerns · Hofmark",
+      "checked": "2026-11-19"
+    },
+    {
+      "uri": "https://www.dhm.de/bildung/ida/mittelalter/stand/",
+      "label": "Deutsches Historisches Museum · Die Ständegesellschaft des Mittelalters",
+      "checked": "2026-11-19"
+    },
+    {
+      "uri": "https://www.museum.de/audioguide/411/29/DE",
+      "label": "Schloss Braunfels · Zünfte (Audioguide mit Text)",
+      "checked": "2026-11-19"
+    },
+    {
+      "uri": "https://www.gesetze-im-internet.de/gg/BJNR000010949.html",
+      "label": "Gesetze im Internet · Grundgesetz (Art. 3, 4 und 12)",
+      "checked": "2026-11-19"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01M7TDZFA322C9WT7C10QJQDJE",
+      "atom_uri": "urn:zam:atom:01M7TDZFA322C9WT7C10QJQDJE",
+      "namespace": "zam-academy-politik-mittelschule-6",
+      "slug": "burg",
+      "title": "Wer lebte auf der Burg?",
+      "domain": "gpg/lb3",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/politik-mittelschule-6/#lesson=burg",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "politik-mittelschule-6",
+          "topic_code": "lb3",
+          "topic_title": "Politik und Gesellschaft"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "gpg",
+          "topic_code": "lb3",
+          "topic_title": "Politik und Gesellschaft"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7TDZFA3FEDYSJRV7KPA8VAM",
+          "slug": "burg-check",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welcher Teil einer Burg diente der Kontrolle des Zugangs?",
+          "concept": "das Tor",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/politik-mittelschule-6/#lesson=burg",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "das Tor",
+              "der Wohnsaal"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7TDZFA3TM6Q8PZT8B6J4G6M",
+          "slug": "burg-recall",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Nenne zwei Aufgaben einer Burg und je einen Ort dafür.",
+          "concept": "Zum Beispiel Schutz am bewachten Tor und Versorgung in der Küche. Auch Empfänge im Saal konnten der Herrschaft dienen.",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/politik-mittelschule-6/#lesson=burg",
+          "sample_solution": "Zum Beispiel Schutz am bewachten Tor und Versorgung in der Küche. Auch Empfänge im Saal konnten der Herrschaft dienen."
+        }
+      ]
+    },
+    {
+      "id": "01M7TDZFA3SRCHYQVQXDTQMP3A",
+      "atom_uri": "urn:zam:atom:01M7TDZFA3SRCHYQVQXDTQMP3A",
+      "namespace": "zam-academy-politik-mittelschule-6",
+      "slug": "kloster",
+      "title": "Ein Tag im Kloster",
+      "domain": "gpg/lb3",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/politik-mittelschule-6/#lesson=kloster",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "politik-mittelschule-6",
+          "topic_code": "lb3",
+          "topic_title": "Politik und Gesellschaft"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "gpg",
+          "topic_code": "lb3",
+          "topic_title": "Politik und Gesellschaft"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7TDZFA3Q0C01NS2YHVKD8F3",
+          "slug": "kloster-check",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie heißt die Schreibstube, in der in manchen Klöstern Bücher kopiert wurden?",
+          "concept": "Skriptorium",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/politik-mittelschule-6/#lesson=kloster",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Skriptorium",
+              "Kreuzgang"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7TDZFA3FVJ37SQ9JCN0JJEG",
+          "slug": "kloster-recall",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie konnten mittelalterliche Klöster Wissen bewahren und weitergeben?",
+          "concept": "Sie kopierten Handschriften von Hand und bewahrten sie in Bibliotheken auf. So konnten andere Menschen die Texte lesen und weitergeben.",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/politik-mittelschule-6/#lesson=kloster",
+          "sample_solution": "Sie kopierten Handschriften von Hand und bewahrten sie in Bibliotheken auf. So konnten andere Menschen die Texte lesen und weitergeben."
+        }
+      ]
+    },
+    {
+      "id": "01M7TDZFA3RTFWP4P13BCY1M3Z",
+      "atom_uri": "urn:zam:atom:01M7TDZFA3RTFWP4P13BCY1M3Z",
+      "namespace": "zam-academy-politik-mittelschule-6",
+      "slug": "macht",
+      "title": "Wer durfte bestimmen?",
+      "domain": "gpg/lb3",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/politik-mittelschule-6/#lesson=macht",
+      "prerequisites": [
+        {
+          "atom_id": "01M7TDZFA322C9WT7C10QJQDJE",
+          "type": "soft",
+          "rationale": "Die Aufgaben auf der Burg liefern ein Beispiel für weltliche Herrschaft."
+        },
+        {
+          "atom_id": "01M7TDZFA3SRCHYQVQXDTQMP3A",
+          "type": "soft",
+          "rationale": "Der Klosteralltag zeigt Aufgaben der geistlichen Leitung."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "politik-mittelschule-6",
+          "topic_code": "lb3",
+          "topic_title": "Politik und Gesellschaft"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "gpg",
+          "topic_code": "lb3",
+          "topic_title": "Politik und Gesellschaft"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7TDZFA32AEYEJCEAAYJGAAZ",
+          "slug": "macht-check",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Macht übt ein Abt aus, wenn er das religiöse Leben eines Klosters leitet?",
+          "concept": "geistliche Macht",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/politik-mittelschule-6/#lesson=macht",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "geistliche Macht",
+              "weltliche Herrschaftsrechte"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7TDZFA35K6K35C1BD0A2JQ9",
+          "slug": "macht-recall",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre an einem Beispiel, wie ein geistliches Amt und weltliche Rechte zusammenkommen konnten.",
+          "concept": "Ein Abt leitete als Geistlicher sein Kloster. Hatte das Kloster Land oder besondere Rechte, konnte es zum Beispiel Abgaben verlangen oder ein Dorfgericht haben.",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/politik-mittelschule-6/#lesson=macht",
+          "sample_solution": "Ein Abt leitete als Geistlicher sein Kloster. Hatte das Kloster Land oder besondere Rechte, konnte es zum Beispiel Abgaben verlangen oder ein Dorfgericht haben."
+        }
+      ]
+    },
+    {
+      "id": "01M7TDZFA3JG1JFNKV29AYJT0C",
+      "atom_uri": "urn:zam:atom:01M7TDZFA3JG1JFNKV29AYJT0C",
+      "namespace": "zam-academy-politik-mittelschule-6",
+      "slug": "bildung",
+      "title": "Wer konnte etwas lernen?",
+      "domain": "gpg/lb3",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/politik-mittelschule-6/#lesson=bildung",
+      "prerequisites": [
+        {
+          "atom_id": "01M7TDZFA322C9WT7C10QJQDJE",
+          "type": "soft",
+          "rationale": "Der Adelshof ist ein Beispiel für einen Lernort im Mittelalter."
+        },
+        {
+          "atom_id": "01M7TDZFA3SRCHYQVQXDTQMP3A",
+          "type": "soft",
+          "rationale": "Die Schreibstube zeigt, wie Wissen weitergegeben wurde."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "politik-mittelschule-6",
+          "topic_code": "lb3",
+          "topic_title": "Politik und Gesellschaft"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "gpg",
+          "topic_code": "lb3",
+          "topic_title": "Politik und Gesellschaft"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7TDZFA3C25D68BSHH90CKPB",
+          "slug": "bildung-check",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wo lernte ein Schuhmacherlehrling das Zuschneiden und Nähen von Leder?",
+          "concept": "in einer Handwerkswerkstatt",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/politik-mittelschule-6/#lesson=bildung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "in einer Handwerkswerkstatt",
+              "in einer klösterlichen Schreibstube"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7TDZFA3MC2PYY633NWYDRFQ",
+          "slug": "bildung-recall",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum hatten Kinder im Mittelalter verschiedene Möglichkeiten zu lernen? Nenne zwei Gründe.",
+          "concept": "Zum Beispiel wegen ihres Wohnorts und der Möglichkeiten ihrer Familie: Manche lernten auf dem Hof mitzuarbeiten, andere hatten Zugang zu einer Schule oder Werkstatt.",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/politik-mittelschule-6/#lesson=bildung",
+          "sample_solution": "Zum Beispiel wegen ihres Wohnorts und der Möglichkeiten ihrer Familie: Manche lernten auf dem Hof mitzuarbeiten, andere hatten Zugang zu einer Schule oder Werkstatt."
+        }
+      ]
+    },
+    {
+      "id": "01M7TDZFA3J4QZ90SEHYMAYN3J",
+      "atom_uri": "urn:zam:atom:01M7TDZFA3J4QZ90SEHYMAYN3J",
+      "namespace": "zam-academy-politik-mittelschule-6",
+      "slug": "staende",
+      "title": "Die Ständegesellschaft",
+      "domain": "gpg/lb3",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/politik-mittelschule-6/#lesson=staende",
+      "prerequisites": [
+        {
+          "atom_id": "01M7TDZFA3RTFWP4P13BCY1M3Z",
+          "type": "soft",
+          "rationale": "Der Vergleich von Ämtern hilft, ungleich verteilte Rechte zu erklären."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "politik-mittelschule-6",
+          "topic_code": "lb3",
+          "topic_title": "Politik und Gesellschaft"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "gpg",
+          "topic_code": "lb3",
+          "topic_title": "Politik und Gesellschaft"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7TDZFA3H7S042S7Q18M4021",
+          "slug": "staende-check",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Gruppe heißt im Drei-Stände-Modell Klerus?",
+          "concept": "die Geistlichkeit",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/politik-mittelschule-6/#lesson=staende",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "die Geistlichkeit",
+              "der Adel"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7TDZFA3QZ60DEC9X2QVS6PJ",
+          "slug": "staende-recall",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Beschreibe die drei Gruppen im mittelalterlichen Ständemodell mit je einer Aufgabe.",
+          "concept": "Der Klerus sollte beten, der Adel schützen und herrschen, die arbeitenden Menschen sollten die Gesellschaft mit Nahrung und Waren versorgen.",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/politik-mittelschule-6/#lesson=staende",
+          "sample_solution": "Der Klerus sollte beten, der Adel schützen und herrschen, die arbeitenden Menschen sollten die Gesellschaft mit Nahrung und Waren versorgen."
+        }
+      ]
+    },
+    {
+      "id": "01M7TDZFA3APFFSEXJ669Q8G35",
+      "atom_uri": "urn:zam:atom:01M7TDZFA3APFFSEXJ669Q8G35",
+      "namespace": "zam-academy-politik-mittelschule-6",
+      "slug": "stadt-land",
+      "title": "Bauern, Handwerker und Kaufleute",
+      "domain": "gpg/lb3",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/politik-mittelschule-6/#lesson=stadt-land",
+      "prerequisites": [
+        {
+          "atom_id": "01M7TDZFA3J4QZ90SEHYMAYN3J",
+          "type": "soft",
+          "rationale": "Das Ständemodell ordnet die Arbeit von Bauern, Handwerkern und Kaufleuten ein."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "politik-mittelschule-6",
+          "topic_code": "lb3",
+          "topic_title": "Politik und Gesellschaft"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "gpg",
+          "topic_code": "lb3",
+          "topic_title": "Politik und Gesellschaft"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7TDZFA39076YCWTBD7V0JMV",
+          "slug": "stadt-land-check",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie hieß ein Zusammenschluss von Menschen desselben Handwerks in vielen Städten?",
+          "concept": "Zunft",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/politik-mittelschule-6/#lesson=stadt-land",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Zunft",
+              "Ordensgemeinschaft"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7TDZFA3JMMQ0QZ5M6CJ232F",
+          "slug": "stadt-land-recall",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Nenne je eine typische Tätigkeit einer Bauernfamilie, einer Handwerkerin und eines Kaufmanns im Mittelalter.",
+          "concept": "Eine Bauernfamilie baut etwa Korn an, eine Handwerkerin stellt Schuhe her und ein Kaufmann kauft Waren ein und verkauft sie weiter.",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/politik-mittelschule-6/#lesson=stadt-land",
+          "sample_solution": "Eine Bauernfamilie baut etwa Korn an, eine Handwerkerin stellt Schuhe her und ein Kaufmann kauft Waren ein und verkauft sie weiter."
+        }
+      ]
+    },
+    {
+      "id": "01M7TDZFA358F2RQ09EZ3EM7ST",
+      "atom_uri": "urn:zam:atom:01M7TDZFA358F2RQ09EZ3EM7ST",
+      "namespace": "zam-academy-politik-mittelschule-6",
+      "slug": "freiheit",
+      "title": "Welche Freiheiten hast du heute?",
+      "domain": "gpg/lb3",
+      "reduction": "formal",
+      "typical_age_min": 11,
+      "source_link": "https://academy.zam-os.org/politik-mittelschule-6/#lesson=freiheit",
+      "prerequisites": [
+        {
+          "atom_id": "01M7TDZFA3J4QZ90SEHYMAYN3J",
+          "type": "soft",
+          "rationale": "Ungleich verteilte Rechte sind der Ausgangspunkt für den Vergleich."
+        },
+        {
+          "atom_id": "01M7TDZFA3APFFSEXJ669Q8G35",
+          "type": "soft",
+          "rationale": "Die Bindung an einen Hof verdeutlicht eingeschränkte Handlungsspielräume."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "politik-mittelschule-6",
+          "topic_code": "lb3",
+          "topic_title": "Politik und Gesellschaft"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "mittelschule",
+          "grade": 6,
+          "subject": "gpg",
+          "topic_code": "lb3",
+          "topic_title": "Politik und Gesellschaft"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7TDZFA3FKMFDNBEZMNR1ZC4",
+          "slug": "freiheit-check",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welches Grundrecht schützt die Entscheidung, einer Religion anzugehören?",
+          "concept": "Glaubensfreiheit",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/politik-mittelschule-6/#lesson=freiheit",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Glaubensfreiheit",
+              "Berufsfreiheit"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7TDZFA3SJ3TDEF00R33TCRQ",
+          "slug": "freiheit-recall",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Vergleiche die Berufswahl auf einem abhängigen Hof im Mittelalter mit dem heutigen Recht in Deutschland.",
+          "concept": "Früher konnten Pflichten gegenüber dem Grundherrn die Wahl einschränken. Heute schützt das Grundgesetz für Deutsche die freie Berufswahl. Für manche Berufe ist eine Ausbildung nötig.",
+          "language": "de",
+          "source_link": "https://academy.zam-os.org/politik-mittelschule-6/#lesson=freiheit",
+          "sample_solution": "Früher konnten Pflichten gegenüber dem Grundherrn die Wahl einschränken. Heute schützt das Grundgesetz für Deutsche die freie Berufswahl. Für manche Berufe ist eine Ausbildung nötig."
+        }
+      ]
+    }
+  ]
+}

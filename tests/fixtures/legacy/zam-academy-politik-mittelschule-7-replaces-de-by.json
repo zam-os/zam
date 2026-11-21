@@ -1,0 +1,10 @@
+{
+  "schema": 1,
+  "status": "proposal-only",
+  "approved": null,
+  "note": "Kein Altbestand für Geschichte/Politik/Geographie der Mittelschule, Jahrgangsstufe 7, in zam-os/zam (geprüft auf Commit bae34e7dfe7d01838e448a65f15871c3549ae3fc: keine de-by-mittelschule-Zelle in tests/fixtures/curriculum/ oder tests/fixtures/legacy/). Themen mit Überschneidung gibt es nur in Zellen anderer Schularten: de-by:realschule-8-geschichte-aufklaerung-revolution-kaiserreich (Industrielle Revolution), de-by:realschule-9-geschichte-weimar-ns (Versailler Vertrag und Dolchstoßlegende als Belastung der Weimarer Republik) und de-by:gymnasium-9-geschichte-weimarer-republik-nationalsozialismus-shoah. Sie bleiben aktiv und gehören zu den Paketen ihrer Schulart; ob eine davon zu dieser Zuordnung gehört, ist eine Frage an Thomas. Daher keine Ersetzungen oder Stilllegungen.",
+  "source_repository": "zam-os/zam",
+  "source_commit": "bae34e7dfe7d01838e448a65f15871c3549ae3fc",
+  "sources": [],
+  "rows": []
+}

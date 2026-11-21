@@ -1,0 +1,4234 @@
+{
+	"$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+	"tile_id": "zam-academy:deutsch-realschule-7",
+	"version": "2026.11.2",
+	"title": "Deutsch 7 Realschule (ZAM Academy)",
+	"description": "50 Lektionen und 100 Wiederholungsfragen zu Sprechen, Lesen, Schreiben und Sprache für Deutsch 7 Realschule Bayern.",
+	"publisher": "ZAM Academy",
+	"sources": [
+		{
+			"uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/7/deutsch",
+			"label": "LehrplanPLUS - Realschule - 7 - Deutsch - Fachlehrpläne",
+			"checked": "2026-11-20"
+		},
+		{
+			"uri": "https://de.wikisource.org/wiki/Erlk%C3%B6nig",
+			"label": "Erlkönig – Wikisource",
+			"checked": "2026-11-20"
+		},
+		{
+			"uri": "https://de.wikisource.org/wiki/Es_ist_alles_eitel",
+			"label": "Es ist alles eitel – Wikisource",
+			"checked": "2026-11-20"
+		},
+		{
+			"uri": "https://www.rechtschreibrat.com/regeln-und-woerterverzeichnis/",
+			"label": "Regeln und Wörterverzeichnis",
+			"checked": "2026-11-20"
+		},
+		{
+			"uri": "https://grammis.ids-mannheim.de/sgt/2233",
+			"label": "Konjunktiv",
+			"checked": "2026-11-20"
+		},
+		{
+			"uri": "https://www.klicksafe.de/datenschutz/",
+			"label": "Datenschutz - klicksafe.de",
+			"checked": "2026-11-20"
+		}
+	],
+	"atoms": [
+		{
+			"id": "01M7XFHDASR3CTM4HBEAHYGS3F",
+			"atom_uri": "urn:zam:atom:01M7XFHDASR3CTM4HBEAHYGS3F",
+			"namespace": "zam-academy-deutsch-realschule-7",
+			"slug": "d7-notizen-debatte",
+			"title": "Redebeiträge und Debatten mitschreiben",
+			"domain": "deutsch/sprechen",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-notizen-debatte",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-7",
+					"topic_code": "sprechen",
+					"topic_title": "Sprechen und Zuhören"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "deutsch",
+					"topic_code": "lb1",
+					"topic_title": "Sprechen und Zuhören"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XFHDATTY85Y50R8BJFT80S",
+					"slug": "d7-notizen-debatte-check",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Worauf konzentrierst du dich beim Mitschreiben einer Debatte?",
+					"concept": "Auf Position, Begründung und offene Fragen in Stichworten.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-notizen-debatte",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Auf Position, Begründung und offene Fragen in Stichworten.",
+							"Auf jedes gesprochene Füllwort in vollständigen Sätzen."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Auf jedes gesprochene Wort in genau formulierten Sätzen.",
+							"reason": "Wörtliches Diktatschreiben bremst beim Zuhören und lässt keinen Platz für eigene Anknüpfungen."
+						},
+						{
+							"text": "Allein auf die Lautstärke und das Tempo der Rednerinnen.",
+							"reason": "Vortragsmerkmale allein sichern weder die Argumente noch den Verlauf der Diskussion."
+						}
+					]
+				},
+				{
+					"id": "01M7XFHDAT084J28PJEBJ9R6C2",
+					"slug": "d7-notizen-debatte-recall",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Wie verhilft dir eine zweispaltige Mitschrift in einer laufenden Diskussion zum gezielten Anknüpfen?",
+					"concept": "Links stehen fremde Thesen samt Gründen, rechts deine Fragen oder Gegenargumente für die Wortmeldung.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-notizen-debatte",
+					"sample_solution": "Links notierst du zu jedem Namen knapp Position und Begründung, rechts hältst du Rückfragen oder Gegenbeispiele fest, auf die du dich beim Aufrufen direkt beziehst.",
+					"choice_distractors": [
+						{
+							"text": "Links sammelst du Zwischenrufe, rechts notierst du die Sitzordnung für die Pause.",
+							"reason": "Störungen und Sitzpläne helfen nicht beim inhaltlichen Aufgreifen der Argumente."
+						},
+						{
+							"text": "Du schreibst in beide Spalten denselben Wortlaut, um später die Handschrift zu prüfen.",
+							"reason": "Doppelte Abschriften kosten Zeit und trennen fremde Aussagen nicht von eigenen Gedanken."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M7XFHDASYBMM9TJNQ2FE5AWD",
+			"atom_uri": "urn:zam:atom:01M7XFHDASYBMM9TJNQ2FE5AWD",
+			"namespace": "zam-academy-deutsch-realschule-7",
+			"slug": "d7-hoerbeitrag-gestaltung",
+			"title": "Hörtexte und ihre Gestaltungsmittel erschließen",
+			"domain": "deutsch/sprechen",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-hoerbeitrag-gestaltung",
+			"prerequisites": [
+				{
+					"atom_id": "01M7XFHDASR3CTM4HBEAHYGS3F",
+					"type": "soft"
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-7",
+					"topic_code": "sprechen",
+					"topic_title": "Sprechen und Zuhören"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "deutsch",
+					"topic_code": "lb1",
+					"topic_title": "Sprechen und Zuhören"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XFHDATQFBCZT37G9PKYNXV",
+					"slug": "d7-hoerbeitrag-gestaltung-check",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Wozu setzt ein Hörbericht vor einer wichtigen Angabe eine kurze Sprechpause ein?",
+					"concept": "Sie schafft Aufmerksamkeit und hebt die folgende Aussage hervor.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-hoerbeitrag-gestaltung",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Sie schafft Aufmerksamkeit und hebt die folgende Aussage hervor.",
+							"Sie ersetzt den gesamten Zeitstrahl beim Mitschreiben."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Sie erspart den Zuhörern jede eigene Notiz auf dem Papier.",
+							"reason": "Gestaltungsmittel unterstützen das Verstehen, ersetzen aber keine Sicherung der Fakten."
+						},
+						{
+							"text": "Sie verwandelt Vermutungen automatisch in geprüfte Messwerte.",
+							"reason": "Die stimmliche Betonung ändert nicht den Wahrheitsgehalt einer Aussage."
+						}
+					]
+				},
+				{
+					"id": "01M7XFHDAT4PA5J672N431R54H",
+					"slug": "d7-hoerbeitrag-gestaltung-recall",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Wie sicherst du Informationen und Gestaltungsmittel aus einem Rundfunkbeitrag übersichtlich?",
+					"concept": "Du ordnest gesicherte Fakten in Zeitstrahl oder Mindmap und notierst daneben Pause, Tempo oder Geräuschwirkung.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-hoerbeitrag-gestaltung",
+					"sample_solution": "In einer Mindmap oder einem Zeitstrahl hältst du Wer, Wann, Wo und Ablaufschritte fest und ergänzt darunter knapp, wo Pausen, Musik oder Betonung Spannung oder Ernst erzeugen.",
+					"choice_distractors": [
+						{
+							"text": "Du zählst allein die Sekunden der Musik und verzichtest auf eine Zusammenfassung.",
+							"reason": "Reine Zeitmessungen erfassen weder den Inhalt noch die Funktion der Gestaltung."
+						},
+						{
+							"text": "Du schreibst eine erfundene Vorgeschichte auf, falls der Beitrag schnell endet.",
+							"reason": "Eine sachliche Wiedergabe darf keine fehlenden Fakten frei hinzuerfinden."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M7XFHDAS8N5NB3VCS4MAZK20",
+			"atom_uri": "urn:zam:atom:01M7XFHDAS8N5NB3VCS4MAZK20",
+			"namespace": "zam-academy-deutsch-realschule-7",
+			"slug": "d7-sprechabsichten",
+			"title": "Sprechabsichten erkennen und Gespräche reflektieren",
+			"domain": "deutsch/sprechen",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-sprechabsichten",
+			"prerequisites": [
+				{
+					"atom_id": "01M7XFHDASYBMM9TJNQ2FE5AWD",
+					"type": "soft"
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-7",
+					"topic_code": "sprechen",
+					"topic_title": "Sprechen und Zuhören"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "deutsch",
+					"topic_code": "lb1",
+					"topic_title": "Sprechen und Zuhören"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XFHDATPJ58MZX5WFB85JEK",
+					"slug": "d7-sprechabsichten-check",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Woran erkennst du in einem Gesprächsbeitrag die Absicht zu überzeugen?",
+					"concept": "An einer Forderung, die mit einem Grund gestützt wird.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-sprechabsichten",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"An einer Forderung, die mit einem Grund gestützt wird.",
+							"An möglichst vielen Jahreszahlen ohne eigene Wertung."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "An einer reinen Aufzählung von Terminen ohne Bewertung.",
+							"reason": "Neutrale Terminangaben informieren, begründen aber noch keinen Standpunkt."
+						},
+						{
+							"text": "Daran, dass jede Frage der anderen Gruppe abgelehnt wird.",
+							"reason": "Bloßes Ablehnen ohne Argument überzeugt nicht und stört das Gespräch."
+						}
+					]
+				},
+				{
+					"id": "01M7XFHDAT3CMW5DRKKNBE0Q6K",
+					"slug": "d7-sprechabsichten-recall",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Wie prüfst du nach einer Gruppendiskussion fair, ob das Gespräch gelungen ist?",
+					"concept": "Du nennst beobachtbares Verhalten zu Zuhören, Ausredenlassen und Eingehen auf Argumente.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-sprechabsichten",
+					"sample_solution": "Statt pauschaler Kritik beobachtest du konkrete Stellen: Wurde ausreden gelassen, wurden Rückfragen beantwortet und bezog sich der nächste Beitrag auf den vorherigen?",
+					"choice_distractors": [
+						{
+							"text": "Du vergibst am Ende Punkte danach, wer am längsten und lautesten sprach.",
+							"reason": "Redezeit und Lautstärke sagen nichts darüber aus, ob Argumente aufgegriffen wurden."
+						},
+						{
+							"text": "Du erklärst die eigene Meinung automatisch zum Sieger des Gesprächs.",
+							"reason": "Gesprächsreflexion bewertet das Miteinander im Gespräch, nicht das Rechthaben."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M7XFHDASNW1ZFB5VPPZVYREX",
+			"atom_uri": "urn:zam:atom:01M7XFHDASNW1ZFB5VPPZVYREX",
+			"namespace": "zam-academy-deutsch-realschule-7",
+			"slug": "d7-kurzreferat",
+			"title": "Kurzreferate mit Stichwortzettel und Medien",
+			"domain": "deutsch/sprechen",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-kurzreferat",
+			"prerequisites": [
+				{
+					"atom_id": "01M7XFHDAS8N5NB3VCS4MAZK20",
+					"type": "soft"
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-7",
+					"topic_code": "sprechen",
+					"topic_title": "Sprechen und Zuhören"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "deutsch",
+					"topic_code": "lb1",
+					"topic_title": "Sprechen und Zuhören"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XFHDAT3DZD69FAMTY7SHTW",
+					"slug": "d7-kurzreferat-check",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Was gehört auf den Stichwortzettel für ein frei gehaltenes Kurzreferat?",
+					"concept": "Gliederungspunkte, Schlüsselwörter, Zahlen und Medienhinweise.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-kurzreferat",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Gliederungspunkte, Schlüsselwörter, Zahlen und Medienhinweise.",
+							"Der gesamte ausformulierte Vortrag in kleiner Schriftgröße."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Vollständige Schachtelsätze für jede einzelne Folie zum Vorlesen.",
+							"reason": "Ausgeschriebene Sätze verleiten zum Ablesen und verhindern Blickkontakt mit dem Publikum."
+						},
+						{
+							"text": "Nur das fertige Fazit ohne Einleitung und Unterpunkte.",
+							"reason": "Ohne Stichworte für den Aufbau verliert der Hauptteil leicht seine klare Struktur."
+						}
+					]
+				},
+				{
+					"id": "01M7XFHDATHZE9XQ9PF4XJJPJA",
+					"slug": "d7-kurzreferat-recall",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Wie setzt du ein Schaubild oder eine Folie während eines Kurzreferats wirksam ein?",
+					"concept": "Du blendest es erst beim passenden Unterpunkt ein und führst das Publikum gezielt durch die Teile.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-kurzreferat",
+					"sample_solution": "Zeige das Medium genau dann, wenn du darüber sprichst, benenne zuerst Titel oder Hauptbereich und zeige mit dem Finger oder Zeiger Schritt für Schritt auf den erklärten Teil.",
+					"choice_distractors": [
+						{
+							"text": "Du füllst die Folie mit ganzen Absätzen, damit niemand zuhören muss.",
+							"reason": "Überladene Textfolien lenken vom gesprochenen Wort ab und fördern stummes Mitlesen."
+						},
+						{
+							"text": "Du zeigst alle Bilder erst nach dem Schlussapplaus im Schnelldurchlauf.",
+							"reason": "Ohne Verbindung zum gesprochenen Teil unterstützen Medien das Verstehen nicht."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M7XFHDASHC4DJYF4R5T3X7QX",
+			"atom_uri": "urn:zam:atom:01M7XFHDASHC4DJYF4R5T3X7QX",
+			"namespace": "zam-academy-deutsch-realschule-7",
+			"slug": "d7-muendlich-schildern",
+			"title": "Beobachtungen und Eindrücke anschaulich schildern",
+			"domain": "deutsch/sprechen",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-muendlich-schildern",
+			"prerequisites": [
+				{
+					"atom_id": "01M7XFHDASNW1ZFB5VPPZVYREX",
+					"type": "soft"
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-7",
+					"topic_code": "sprechen",
+					"topic_title": "Sprechen und Zuhören"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "deutsch",
+					"topic_code": "lb1",
+					"topic_title": "Sprechen und Zuhören"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XFHDATVNGXRS6ZJ0JTFTXZ",
+					"slug": "d7-muendlich-schildern-check",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Woran erkennst du in einer Schilderung eine Personifikation?",
+					"concept": "Ein Tier, Gegenstand oder Naturvorgang handelt wie ein Mensch.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-muendlich-schildern",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Ein Tier, Gegenstand oder Naturvorgang handelt wie ein Mensch.",
+							"Zwei Dinge werden mit dem Wort „wie“ direkt nebeneinandergestellt."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Zwei Erscheinungen werden über das Wort „wie“ miteinander verknüpft.",
+							"reason": "Eine Verbindung mit „wie“ ist ein Vergleich, keine Personifikation."
+						},
+						{
+							"text": "Alle Sätze bestehen ausschließlich aus nüchternen Messwerten.",
+							"reason": "Reine Messdaten kennzeichnen Sachtexte, nicht bildhaftes Schildern."
+						}
+					]
+				},
+				{
+					"id": "01M7XFHDATYMDJ56NTJPFPG2CM",
+					"slug": "d7-muendlich-schildern-recall",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Warum reicht beim Schildern die bloße Nennung von Gegenständen noch nicht aus?",
+					"concept": "Erst Sinneseindrücke, genaue Verben und Sprachbilder vermitteln den Zuhörenden Stimmung und Empfinden.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-muendlich-schildern",
+					"sample_solution": "Eine Liste wie „Nebel, Blätter, Hund“ meldet nur Dinge. Erst Licht, Geräusche, genaue Verben, Vergleiche und Personifikationen machen für Zuhörende die Atmosphäre erlebbar.",
+					"choice_distractors": [
+						{
+							"text": "Weil jede Schilderung am Ende alle sieben W-Fragen eines Unfalls beantworten muss.",
+							"reason": "Die W-Fragen gehören zum sachlichen Bericht, nicht zur stimmungsvollen Schilderung."
+						},
+						{
+							"text": "Weil Gegenstände nur im Konjunktiv und niemals im Präsens genannt werden dürfen.",
+							"reason": "Konjunktiv markiert indirekte Rede oder Möglichkeit, keine Schilderung."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M7XFHDASWHE31TZ6ZBMMS0VD",
+			"atom_uri": "urn:zam:atom:01M7XFHDASWHE31TZ6ZBMMS0VD",
+			"namespace": "zam-academy-deutsch-realschule-7",
+			"slug": "d7-folgerichtig-berichten",
+			"title": "Folgerichtig berichten und Ursachen verknüpfen",
+			"domain": "deutsch/sprechen",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-folgerichtig-berichten",
+			"prerequisites": [
+				{
+					"atom_id": "01M7XFHDASHC4DJYF4R5T3X7QX",
+					"type": "soft"
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-7",
+					"topic_code": "sprechen",
+					"topic_title": "Sprechen und Zuhören"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "deutsch",
+					"topic_code": "lb1",
+					"topic_title": "Sprechen und Zuhören"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XFHDATJ86XN7SJ7R1362J3",
+					"slug": "d7-folgerichtig-berichten-check",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche Angabe streichst du vor einem sachlichen Bericht über eine Verspätung beim Wandertag?",
+					"concept": "Die Farbe der Brotdose eines einzelnen Klassenmitglieds.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-folgerichtig-berichten",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Die Farbe der Brotdose eines einzelnen Klassenmitglieds.",
+							"Die ausgefallene Zugverbindung wegen Bauarbeiten."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Den Grund für den Zugausfall auf der gebuchten Bahnstrecke.",
+							"reason": "Der Zugausfall ist die eigentliche Ursache des gesamten weiteren Zeitplans."
+						},
+						{
+							"text": "Die verkürzte Mittagspause vor dem pünktlichen Museumsbeginn.",
+							"reason": "Diese Verkürzung zeigt unmittelbar die praktische Folge der Verspätung."
+						}
+					]
+				},
+				{
+					"id": "01M7XFHDATB1F2MSKR28SQ2G7X",
+					"slug": "d7-folgerichtig-berichten-recall",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Wie unterscheidest du beim Vorbereiten eines Berichts wichtige Fakten von unwichtigen Nebensachen?",
+					"concept": "Du prüfst, ob eine Angabe Auslöser, Haupthandlung oder Folge des Ereignisses klärt.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-folgerichtig-berichten",
+					"sample_solution": "Streiche alles, was den Verlauf oder das Ergebnis nicht beeinflusst, und ordne die verbleibenden Fakten entlang ihrer Ursache-Wirkung-Kette.",
+					"choice_distractors": [
+						{
+							"text": "Du behältst vor allem Sätze mit schmückenden Adjektiven und Vergleichen bei.",
+							"reason": "Schmückende Ausdrücke gehören zum Schildern, nicht zur Auswahl sachlicher Fakten."
+						},
+						{
+							"text": "Du ordnest die einzelnen Angaben streng alphabetisch nach Anfangsbuchstaben.",
+							"reason": "Alphabetische Ordnung zerstört den zeitlichen und ursächlichen Zusammenhang."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M7XFHDASB0E8X9KX9T328RVY",
+			"atom_uri": "urn:zam:atom:01M7XFHDASB0E8X9KX9T328RVY",
+			"namespace": "zam-academy-deutsch-realschule-7",
+			"slug": "d7-vortragsgestaltung",
+			"title": "Lyrik, Pointen und Mundart betont vortragen",
+			"domain": "deutsch/sprechen",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-vortragsgestaltung",
+			"prerequisites": [
+				{
+					"atom_id": "01M7XFHDASWHE31TZ6ZBMMS0VD",
+					"type": "soft"
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-7",
+					"topic_code": "sprechen",
+					"topic_title": "Sprechen und Zuhören"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "deutsch",
+					"topic_code": "lb1",
+					"topic_title": "Sprechen und Zuhören"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XFHDATVN9PEGZ3GRB16SBW",
+					"slug": "d7-vortragsgestaltung-check",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Wozu dient ein doppelter Schrägstrich // vor dem letzten Halbsatz eines Sketches?",
+					"concept": "Er markiert eine deutliche Pause zur Vorbereitung der Pointe.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-vortragsgestaltung",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Er markiert eine deutliche Pause zur Vorbereitung der Pointe.",
+							"Er weist an, diesen Teil möglichst leise zu verschlucken."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Er fordert dazu auf, das Tempo bis zur Unverständlichkeit zu steigern.",
+							"reason": "Überhöhtes Tempo verwischt die Überraschung, statt sie klar hervorzuheben."
+						},
+						{
+							"text": "Er zeigt an, dass der Sprecher den Text abbrechen soll.",
+							"reason": "Vortragszeichen regeln Betonung und Pausen, keinen Abbruch."
+						}
+					]
+				},
+				{
+					"id": "01M7XFHDAT6K979YKD1XATDN4N",
+					"slug": "d7-vortragsgestaltung-recall",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Wie bereitest du einen Text mit Mundart oder lyrischem Rhythmus auf einen freien Vortrag vor?",
+					"concept": "Du setzt Pausen- und Betonungszeichen, klärst Klang und Aussprache und passt beides nach Rückmeldung an.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-vortragsgestaltung",
+					"sample_solution": "Markiere Zäsuren, Hebungen und Stimmwechsel auf dem Blatt, übe das Tempo besonders bei Pointen und Mundartwörtern laut und überarbeite unverständliche Stellen nach Partnerfeedback.",
+					"choice_distractors": [
+						{
+							"text": "Du liest den Text im Kopf einmal stumm und veränderst im Vortrag jede Betonung zufällig.",
+							"reason": "Ohne lautes Üben und klare Zeichen bleiben Rhythmus und Pointen unsicher."
+						},
+						{
+							"text": "Du ersetzt alle Gedichtzeilen durch eine trockene Tabelle ohne Pausen.",
+							"reason": "Tabellarische Kurzformen zerstören Klang, Reim und Vortragsrhythmik."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M7XFHDAS9M88H58B8PYJD6W5",
+			"atom_uri": "urn:zam:atom:01M7XFHDAS9M88H58B8PYJD6W5",
+			"namespace": "zam-academy-deutsch-realschule-7",
+			"slug": "d7-entschuldigung-anliegen",
+			"title": "Entschuldigung und Anliegen im Gespräch",
+			"domain": "deutsch/sprechen",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-entschuldigung-anliegen",
+			"prerequisites": [
+				{
+					"atom_id": "01M7XFHDASB0E8X9KX9T328RVY",
+					"type": "soft"
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-7",
+					"topic_code": "sprechen",
+					"topic_title": "Sprechen und Zuhören"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "deutsch",
+					"topic_code": "lb1",
+					"topic_title": "Sprechen und Zuhören"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XFHDATNFMTZHKPW9X1T6QD",
+					"slug": "d7-entschuldigung-anliegen-check",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Was gehört zu einer aufrichtigen Entschuldigung nach einem Missgeschick?",
+					"concept": "Den eigenen Fehler ohne Ausreden zugeben und Ersatz anbieten.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-entschuldigung-anliegen",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Den eigenen Fehler ohne Ausreden zugeben und Ersatz anbieten.",
+							"Dem Geschädigten vorwerfen, er habe selbst nicht gut aufgepasst."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Das Ereignis herunterspielen und überempfindliche Reaktionen rügen.",
+							"reason": "Abwertende Bemerkungen vergrößern die Kränkung statt sie zu heilen."
+						},
+						{
+							"text": "Warten, bis jemand anderes die Verantwortung für den Schaden trägt.",
+							"reason": "Sich herauszureden widerspricht einer aufrichtigen Entschuldigung."
+						}
+					]
+				},
+				{
+					"id": "01M7XFHDAT4QDN5NG3WH6J20FA",
+					"slug": "d7-entschuldigung-anliegen-recall",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Wie trägst du ein schulisches Anliegen im Gespräch freundlich und überzeugend vor?",
+					"concept": "Mit höflichem Gruß, klarer Schilderung des Wunschs und sachlicher Begründung.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-entschuldigung-anliegen",
+					"sample_solution": "Beginne mit einer Anrede, prüfe kurz, ob dein Gesprächspartner Zeit hat, erkläre dein Anliegen mit einem Nutzen für die Gruppe und frage respektvoll nach dem nächsten möglichen Schritt.",
+					"choice_distractors": [
+						{
+							"text": "Mit lauten Forderungen ohne Gruß und ohne jede Erklärung des Zwecks.",
+							"reason": "Forderungen ohne Begründung und Höflichkeit blockieren die Gesprächsbereitschaft."
+						},
+						{
+							"text": "Indem du ohne Pause redest und jede mögliche Nachfrage sofort unterbrichst.",
+							"reason": "Zuhören und Ausredenlassen sind Grundregeln jeder gelingenden Kommunikation."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M7XFHDASW1QFFPBN1S9CT76F",
+			"atom_uri": "urn:zam:atom:01M7XFHDASW1QFFPBN1S9CT76F",
+			"namespace": "zam-academy-deutsch-realschule-7",
+			"slug": "d7-rollendiskussion",
+			"title": "Rollen in der Diskussion und Umfragen veranschaulichen",
+			"domain": "deutsch/sprechen",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-rollendiskussion",
+			"prerequisites": [
+				{
+					"atom_id": "01M7XFHDAS9M88H58B8PYJD6W5",
+					"type": "soft"
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-7",
+					"topic_code": "sprechen",
+					"topic_title": "Sprechen und Zuhören"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "deutsch",
+					"topic_code": "lb1",
+					"topic_title": "Sprechen und Zuhören"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XFHDAT041P16MJKTNBP74H",
+					"slug": "d7-rollendiskussion-check",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche Aufgabe gehört in einer geordneten Diskussion zur Schriftführung?",
+					"concept": "Die wichtigsten Argumente und Ergebnisse sachlich mitzuschreiben.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-rollendiskussion",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Die wichtigsten Argumente und Ergebnisse sachlich mitzuschreiben.",
+							"Die Lautstärke einzelner Sprecherinnen nach eigenem Geschmack zu bewerten."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Unliebsame Gegenargumente aus der Mitschrift stillschweigend zu streichen.",
+							"reason": "Eine einseitige Auswahl verfälscht das Diskussionsergebnis."
+						},
+						{
+							"text": "Die Diskussion abzubrechen, sobald die eigene Meinung genannt wurde.",
+							"reason": "Aufgabe der Schriftführung ist Dokumentation, nicht Wortentzug."
+						}
+					]
+				},
+				{
+					"id": "01M7XFHDATF12D7126RH59EF15",
+					"slug": "d7-rollendiskussion-recall",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Warum verstärken aufbereitete Umfrageergebnisse in Tabellen oder Diagrammen deinen Diskussionsbeitrag?",
+					"concept": "Sie machen genaue Zahlen sichtbar und ersetzen vage Behauptungen wie „alle wollen das“.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-rollendiskussion",
+					"sample_solution": "Statt bloßer Vermutungen zeigst du überprüfbare Anteile (z. B. 22 von 30 Stimmen in einer Tabelle), worauf Gegenargumente gezielt reagieren müssen.",
+					"choice_distractors": [
+						{
+							"text": "Sie verbieten es allen anderen Teilnehmern, eine Gegenposition zu nennen.",
+							"reason": "Daten machen Argumente nachprüfbar, schließen aber keine andere Sichtweise aus."
+						},
+						{
+							"text": "Sie ersetzen sämtliche Gesprächsregeln und eine sachliche Begründung.",
+							"reason": "Auch starke Zahlen müssen verständlich eingeordnet und im fairen Gespräch vorgetragen werden."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M7XFHDAS98AJMP7VHVZTBC82",
+			"atom_uri": "urn:zam:atom:01M7XFHDAS98AJMP7VHVZTBC82",
+			"namespace": "zam-academy-deutsch-realschule-7",
+			"slug": "d7-szenischer-dialog",
+			"title": "Balladen und Kurzgeschichten szenisch gestalten",
+			"domain": "deutsch/sprechen",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-szenischer-dialog",
+			"prerequisites": [
+				{
+					"atom_id": "01M7XFHDASW1QFFPBN1S9CT76F",
+					"type": "soft"
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-7",
+					"topic_code": "sprechen",
+					"topic_title": "Sprechen und Zuhören"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "deutsch",
+					"topic_code": "lb1",
+					"topic_title": "Sprechen und Zuhören"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XFHDAT2G5PGC38PGRFJ41P",
+					"slug": "d7-szenischer-dialog-check",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Woran erkennt ein Publikum beim Standbild ohne Worte, wie eine Figur sich fühlt?",
+					"concept": "An Körperhaltung, Blickrichtung, Mimik und räumlichem Abstand.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-szenischer-dialog",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"An Körperhaltung, Blickrichtung, Mimik und räumlichem Abstand.",
+							"Daran, dass ein Erzähler hinter der Bühne das ganze Buch vorliest."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "An einer langen schriftlichen Inhaltsangabe auf einer Tafel.",
+							"reason": "Geschriebene Erklärungen ersetzen im szenischen Spiel nicht die körperliche Darstellung."
+						},
+						{
+							"text": "Daran, dass alle Darstellenden genau in dieselbe Ecke starren.",
+							"reason": "Eine starre Einheitsrichtung zeigt keine Beziehung zwischen den Figuren."
+						}
+					]
+				},
+				{
+					"id": "01M7XFHDATEDM67ST48Y8EVR0Q",
+					"slug": "d7-szenischer-dialog-recall",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Wie gibst du einer Gruppe nach einer kurzen Theaterszene wertschätzendes, hilfreiches Feedback?",
+					"concept": "Beschreibe konkrete Spielbeobachtungen zu Körper, Stimme oder Abstand und mache einen klaren Vorschlag.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-szenischer-dialog",
+					"sample_solution": "Nenne zuerst, was deutlich gewirkt hat (z. B. „Dein langsamer Schritt nach hinten zeigte Angst“), und gib dann höchstens ein bis zwei konkrete Hinweise zur Haltung oder Stimmführung.",
+					"choice_distractors": [
+						{
+							"text": "Urteile pauschal mit „Das war langweilig“, ohne eine einzige Spielbewegung zu nennen.",
+							"reason": "Pauschale Abwertungen verletzen und zeigen nicht, was verändert werden könnte."
+						},
+						{
+							"text": "Korrigiere nur Rechtschreibfehler auf dem Handout, ohne auf das Spiel einzugehen.",
+							"reason": "Die szenische Arbeit bewertet Darstellungsmittel wie Gestik, Mimik und Sprache."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M7XFHDASV1N59CY3AV40KN1N",
+			"atom_uri": "urn:zam:atom:01M7XFHDASV1N59CY3AV40KN1N",
+			"namespace": "zam-academy-deutsch-realschule-7",
+			"slug": "d7-lesestrategien-layout",
+			"title": "Überfliegend und selektiv lesen · Layout nutzen",
+			"domain": "deutsch/lesen",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-lesestrategien-layout",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-7",
+					"topic_code": "lesen",
+					"topic_title": "Lesen und Medien"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "deutsch",
+					"topic_code": "lb2",
+					"topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XFHDATMRX9STKKVJB5XF68",
+					"slug": "d7-lesestrategien-layout-check",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche Lesetechnik passt, wenn du in einem dreiseitigen Bericht nur eine bestimmte Uhrzeit suchst?",
+					"concept": "Selektives Lesen entlang von Teilüberschriften und Zahlen.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-lesestrategien-layout",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Selektives Lesen entlang von Teilüberschriften und Zahlen.",
+							"Langsames Auswendiglernen jedes einzelnen Satzes ab dem ersten Wort."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Mehrfaches lautes Vorlesen des gesamten Texts ab der Überschrift.",
+							"reason": "Lautes Durchlesen aller Absätze kostet unnötig Zeit für eine einzelne Suchangabe."
+						},
+						{
+							"text": "Freies Raten der Uhrzeit allein anhand der verwendeten Schriftart.",
+							"reason": "Schriftarten zeigen Gestaltung, nennen aber keine konkreten Uhrzeiten."
+						}
+					]
+				},
+				{
+					"id": "01M7XFHDAT9TC7A9RQACMX7FB5",
+					"slug": "d7-lesestrategien-layout-recall",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Wie helfen Layoutmerkmale wie Vorspann, Spalten oder Fettdruck vor dem eigentlichen Lesen?",
+					"concept": "Sie zeigen Textaufbau und Schwerpunkte vorab und lassen dich gezielte Leseerwartungen bilden.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-lesestrategien-layout",
+					"sample_solution": "Vorspann, Teilüberschriften, Spalten und Fett- oder Kursivdruck machen das Thema, die Gliederung und wichtige Schlüsselbegriffe sofort sichtbar, sodass du gezielt weiterliest.",
+					"choice_distractors": [
+						{
+							"text": "Sie ersetzen jede eigene Inhaltsangabe und machen Prüfungsfragen überflüssig.",
+							"reason": "Layout orientiert beim Lesen, ersetzt aber kein genaues Textverständnis."
+						},
+						{
+							"text": "Sie verbieten es, während der Lesephase Notizen zum Inhalt anzufertigen.",
+							"reason": "Im Gegenteil erleichtern klare Strukturmerkmale das schnelle Notieren."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M7XFHDASTTRPGY86N9F739R4",
+			"atom_uri": "urn:zam:atom:01M7XFHDASTTRPGY86N9F739R4",
+			"namespace": "zam-academy-deutsch-realschule-7",
+			"slug": "d7-strukturierungshilfen",
+			"title": "Handlung und Figurenkonstellation skizzieren",
+			"domain": "deutsch/lesen",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-strukturierungshilfen",
+			"prerequisites": [
+				{
+					"atom_id": "01M7XFHDASV1N59CY3AV40KN1N",
+					"type": "soft"
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-7",
+					"topic_code": "lesen",
+					"topic_title": "Lesen und Medien"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "deutsch",
+					"topic_code": "lb2",
+					"topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XFHDATFH58CZS9S60ZN35M",
+					"slug": "d7-strukturierungshilfen-check",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Wozu zeichnest du beim Lesen eines längeren Textes eine Figurenkonstellation?",
+					"concept": "Um Beziehungen, Konflikte und Rollen der Figuren auf einen Blick zu klären.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-strukturierungshilfen",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Um Beziehungen, Konflikte und Rollen der Figuren auf einen Blick zu klären.",
+							"Um alle Rechtschreibregeln im Text alphabetisch zu sortieren."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Um alle Nebensätze und Kommaregeln farblich auszuzählen.",
+							"reason": "Satzbauanalysen zeigen Grammatik, aber keine Beziehungen zwischen handelnden Figuren."
+						},
+						{
+							"text": "Um das Buch ohne das letzte Kapitel zu beurteilen.",
+							"reason": "Eine Skizze ordnet gelesene Inhalte, ersetzt aber nicht das Weiterlesen."
+						}
+					]
+				},
+				{
+					"id": "01M7XFHDATRYNM7GF75Q8SMW3W",
+					"slug": "d7-strukturierungshilfen-recall",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Wie helfen knappe Symbole am Textrand beim Erschließen eines Handlungsverlaufs?",
+					"concept": "Symbole markieren Schlüsselstellen wie Konflikt, Begründung oder Wendepunkt für das schnelle Wiederfinden.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-strukturierungshilfen",
+					"sample_solution": "Ein vereinbartes Zeichensystem (etwa Blitz für Konflikt, Pfeil für Folge, Stern für Wendepunkt) macht Struktur und Kernaussagen beim erneuten Nachschlagen sofort auffindbar.",
+					"choice_distractors": [
+						{
+							"text": "Sie ersetzen sämtliche Überschriften durch zufällige Zeichnungen ohne Bedeutung.",
+							"reason": "Nur ein konsequent verwendetes Zeichensystem hilft beim Verstehen."
+						},
+						{
+							"text": "Sie dienen allein dazu, leere Ränder im Heft hübsch auszumalen.",
+							"reason": "Strukturierungshilfen sind Denkwerkzeuge zur Texterschließung, keine Dekoration."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M7XFHDASBNWGHEC9AGWS4WJK",
+			"atom_uri": "urn:zam:atom:01M7XFHDASBNWGHEC9AGWS4WJK",
+			"namespace": "zam-academy-deutsch-realschule-7",
+			"slug": "d7-gattungen-ballade",
+			"title": "Epik, Lyrik, Dramatik und die Ballade",
+			"domain": "deutsch/lesen",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-gattungen-ballade",
+			"prerequisites": [
+				{
+					"atom_id": "01M7XFHDASTTRPGY86N9F739R4",
+					"type": "soft"
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-7",
+					"topic_code": "lesen",
+					"topic_title": "Lesen und Medien"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "deutsch",
+					"topic_code": "lb2",
+					"topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XFHDATD3TXKPDAJHDRRPSY",
+					"slug": "d7-gattungen-ballade-check",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Warum gilt die Ballade nach Goethe als besondere Mischgattung unter den literarischen Texten?",
+					"concept": "Sie vereint Elemente aus Epik, Lyrik und Dramatik.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-gattungen-ballade",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Sie vereint Elemente aus Epik, Lyrik und Dramatik.",
+							"Sie besteht ausschließlich aus sachlichen Tabellen und Zahlen."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Sie enthält nur reine Regieanweisungen ohne jede Erzählung.",
+							"reason": "Regieanweisungen ohne Erzählinstanz und Verse gehören zum reinen Drama."
+						},
+						{
+							"text": "Sie verzichtet ganz auf Konflikte, Strophen und Figurenrede.",
+							"reason": "Gerade Spannung, Strophenform und Figurenrede zeichnen die Ballade aus."
+						}
+					],
+					"replaces": [
+						"01K4D7N0000000000000000J03"
+					]
+				},
+				{
+					"id": "01M7XFHDATG7N79M07DM8AW9AP",
+					"slug": "d7-gattungen-ballade-recall",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Woran unterscheidest du im Unterricht pragmatische Texte von literarischen Texten und die drei literarischen Grundgattungen?",
+					"concept": "Pragmatische Texte informieren sachlich; Epik erzählt, Lyrik formt Verse, Dramatik zeigt Dialog.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-gattungen-ballade",
+					"sample_solution": "Pragmatische Texte wie Berichte oder Gebrauchsanweisungen zielen auf reale Information. Literarische Texte gestalten Fiktion: Epik erzählt fortlaufend, Lyrik verdichtet in Versen, Dramatik zeigt Handeln im Rollendialog.",
+					"choice_distractors": [
+						{
+							"text": "Pragmatische Texte stehen immer in Reimen, literarische enthalten nur Zahlenkolonnen.",
+							"reason": "Diese Zuordnung kehrt typische Merkmale beider Textwelten genau um."
+						},
+						{
+							"text": "Alle Texte mit wörtlicher Rede gehören zur Zeitung und nie zur Dramatik oder Epik.",
+							"reason": "Gerade Dramatik und viele Erzählungen leben von wörtlicher Rede."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M7XFHDASCFG8YHYJGAMHR0FB",
+			"atom_uri": "urn:zam:atom:01M7XFHDASCFG8YHYJGAMHR0FB",
+			"namespace": "zam-academy-deutsch-realschule-7",
+			"slug": "d7-kurzgeschichte",
+			"title": "Kurzgeschichten: unmittelbarer Beginn und offenes Ende",
+			"domain": "deutsch/lesen",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-kurzgeschichte",
+			"prerequisites": [
+				{
+					"atom_id": "01M7XFHDASBNWGHEC9AGWS4WJK",
+					"type": "soft"
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-7",
+					"topic_code": "lesen",
+					"topic_title": "Lesen und Medien"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "deutsch",
+					"topic_code": "lb2",
+					"topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XFHDATSH3BTH4Q379A5H1A",
+					"slug": "d7-kurzgeschichte-check",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Woran erkennst du einen unmittelbaren Beginn in einer Kurzgeschichte?",
+					"concept": "Der Text startet ohne Vorgeschichte direkt in Situation oder Gespräch.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-kurzgeschichte",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Der Text startet ohne Vorgeschichte direkt in Situation oder Gespräch.",
+							"Die ersten drei Seiten erklären Stammbaum und Kindheit aller Figuren."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Eine ausführliche Vorrede erklärt vorab das fertige Urteil über alle Figuren.",
+							"reason": "Vorreden und feste Urteile widersprechen der knappen, offenen Erzählweise."
+						},
+						{
+							"text": "Eine sachliche Tabelle listet eingangs Ort, Datum und Aktenzeichen auf.",
+							"reason": "Tabellarische Köpfe gehören zu Berichten oder Protokollen, nicht zur Kurzgeschichte."
+						}
+					]
+				},
+				{
+					"id": "01M7XFHDATBXWJ0TTZBBWDJH9Y",
+					"slug": "d7-kurzgeschichte-recall",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Worauf achtest du, wenn du das offene Ende einer Kurzgeschichte sinnvoll weiterführst?",
+					"concept": "Deine Fortsetzung knüpft stimmig an die bisherigen Figurenmotive, Andeutungen und die Atmosphäre des Texts an.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-kurzgeschichte",
+					"sample_solution": "Prüfe vor dem Schreiben die Textbelege zu Eigenschaften, Vorgeschichte und Konflikt. Eine überzeugende Auflösung oder Vorgeschichte bricht nicht plötzlich den Charakter der Figuren.",
+					"choice_distractors": [
+						{
+							"text": "Du erfindest im letzten Absatz Raumschiffe oder Drachen, um die Geschichte lustig zu beenden.",
+							"reason": "Fremde Fantasiewelten passen nicht zur realitätsnahen Alltagssituation der Vorlage."
+						},
+						{
+							"text": "Du schreibst dieselben fünf Eingangssätze wörtlich ein zweites Mal darunter.",
+							"reason": "Bloßes Wiederholen deutet weder die Handlung noch die offenen Motive."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M7XFHDAS6M6BF7YS8CHMT9R7",
+			"atom_uri": "urn:zam:atom:01M7XFHDAS6M6BF7YS8CHMT9R7",
+			"namespace": "zam-academy-deutsch-realschule-7",
+			"slug": "d7-text-entstehungszeit",
+			"title": "Text, Entstehungszeit und Autorleben verknüpfen",
+			"domain": "deutsch/lesen",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-text-entstehungszeit",
+			"prerequisites": [
+				{
+					"atom_id": "01M7XFHDASCFG8YHYJGAMHR0FB",
+					"type": "soft"
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-7",
+					"topic_code": "lesen",
+					"topic_title": "Lesen und Medien"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "deutsch",
+					"topic_code": "lb2",
+					"topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XFHDAT2ZX9R8B222NDEHC8",
+					"slug": "d7-text-entstehungszeit-check",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welchen Vorteil bietet der Blick auf die Entstehungszeit bei älteren Balladen?",
+					"concept": "Er macht damalige Lebensumstände, Vorstellungen und Ängste im Text verständlicher.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-text-entstehungszeit",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Er macht damalige Lebensumstände, Vorstellungen und Ängste im Text verständlicher.",
+							"Er beweist, dass jede Balladenfigur genau eine reale Person war."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Er verwandelt jedes Gedicht in eine amtliche Geburtsurkunde des Autors.",
+							"reason": "Literarische Texte erfinden Figuren und Szenen, auch wenn sie historische Erfahrungen aufgreifen."
+						},
+						{
+							"text": "Er erlaubt es, veraltete Wörter ohne Blick in den Zusammenhang zu streichen.",
+							"reason": "Im Gegenteil hilft der historische Kontext gerade beim Verstehen älterer Ausdrücke."
+						}
+					]
+				},
+				{
+					"id": "01M7XFHDATB429JWCGZ3HZQD5G",
+					"slug": "d7-text-entstehungszeit-recall",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Worauf musst du achten, wenn du das Leben eines Autors mit seinem literarischen Text verknüpfst?",
+					"concept": "Nutze Zeit und Biografie als Einordnung, ohne Figur oder Sprecher mit dem Autor gleichzusetzen.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-text-entstehungszeit",
+					"sample_solution": "Prüfe, welche Anregungen aus Zeit, Vorlagen oder Lebensort im Text sichtbar werden, trenne dabei aber die erfundene Sprecher- oder Erzählinstanz sauber vom Autor.",
+					"choice_distractors": [
+						{
+							"text": "Setze einfach jedes Ich im Gedicht und jeden Vorfall gleich mit dem Lebenslauf.",
+							"reason": "Ein lyrisches Ich oder eine Balladenfigur ist gestaltet und nicht automatisch der Autor."
+						},
+						{
+							"text": "Erkläre nur das Entstehungsjahr und verzichte auf jeden Verweis auf den Textinhalt.",
+							"reason": "Eine Jahreszahl ohne Textbezug deutet weder Motiv noch Aussage des Werks."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M7XFHDAS7DE31CNSVV1YZZ4M",
+			"atom_uri": "urn:zam:atom:01M7XFHDAS7DE31CNSVV1YZZ4M",
+			"namespace": "zam-academy-deutsch-realschule-7",
+			"slug": "d7-lyrik-sprachliche-mittel",
+			"title": "Lyrisches Ich und sprachliche Mittel (Symbol, Ellipse)",
+			"domain": "deutsch/lesen",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-lyrik-sprachliche-mittel",
+			"prerequisites": [
+				{
+					"atom_id": "01M7XFHDAS6M6BF7YS8CHMT9R7",
+					"type": "soft"
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-7",
+					"topic_code": "lesen",
+					"topic_title": "Lesen und Medien"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "deutsch",
+					"topic_code": "lb2",
+					"topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XFHDATBHKQAWT3Q9SJJVP3",
+					"slug": "d7-lyrik-sprachliche-mittel-check",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welches sprachliche Mittel liegt vor, wenn in einem Vers alle gebeugten Verben weggelassen werden („Kein Licht. Nur Nebel.“)?",
+					"concept": "Eine Ellipse als bewusste Auslassung von Satzteilen.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-lyrik-sprachliche-mittel",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Eine Ellipse als bewusste Auslassung von Satzteilen.",
+							"Eine reine Zeitleiste mit Datum und Uhrzeitangabe."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Ein ausführlicher Sachtext ohne bildhafte Verknüpfung.",
+							"reason": "Sachtexte sparen keine Prädikate zur Stimmungsverdichtung aus."
+						},
+						{
+							"text": "Ein vollständiges Satzgefüge mit vorangestelltem Kausalsatz.",
+							"reason": "Im Satzgefüge stehen Hauptsatz und Nebensatz mit vollständigen finiten Verben."
+						}
+					]
+				},
+				{
+					"id": "01M7XFHDATF9JVNKYV4FZKQSQT",
+					"slug": "d7-lyrik-sprachliche-mittel-recall",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Wie unterscheidest du im Gedicht ein Symbol von einem Vergleich?",
+					"concept": "Ein Vergleich verknüpft mit „wie“; ein Symbol steht als Ding für tieferen Sinn.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-lyrik-sprachliche-mittel",
+					"sample_solution": "Beim Vergleich stehen Bild und Sache explizit nebeneinander („schnell wie ein Pfeil“). Ein Symbol (etwa Kerze, Brücke oder Taube) ist ein greifbarer Gegenstand im Text, der über sich hinaus auf Freiheit, Hoffnung oder Vergänglichkeit verweist.",
+					"choice_distractors": [
+						{
+							"text": "Ein Symbol steht in Anführungszeichen, ein Vergleich niemals in Versen.",
+							"reason": "Die Unterscheidung beruht auf der Bedeutungsweise, nicht auf Satzzeichen."
+						},
+						{
+							"text": "Ein Vergleich nutzt nur Adjektive, ein Symbol ausschließlich Zahlen.",
+							"reason": "Symbole sind meist konkrete Nomen und niemals bloße Ziffern."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M7XFHDASDA2CZZW8QW4624CJ",
+			"atom_uri": "urn:zam:atom:01M7XFHDASDA2CZZW8QW4624CJ",
+			"namespace": "zam-academy-deutsch-realschule-7",
+			"slug": "d7-mittelalter-barock-gegenwart",
+			"title": "Literarische Tradition: Mittelalter, Barock und Gegenwart",
+			"domain": "deutsch/lesen",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-mittelalter-barock-gegenwart",
+			"prerequisites": [
+				{
+					"atom_id": "01M7XFHDAS7DE31CNSVV1YZZ4M",
+					"type": "soft"
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-7",
+					"topic_code": "lesen",
+					"topic_title": "Lesen und Medien"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "deutsch",
+					"topic_code": "lb2",
+					"topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XFHDATZVP5K71ZZ5R111RH",
+					"slug": "d7-mittelalter-barock-gegenwart-check",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Was meint das Wort „Eitelkeit“ (Vanitas) im Barocksonett von Andreas Gryphius?",
+					"concept": "Die Vergänglichkeit und Zerbrechlichkeit aller irdischen Dinge.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-mittelalter-barock-gegenwart",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Die Vergänglichkeit und Zerbrechlichkeit aller irdischen Dinge.",
+							"Das stundenlange Kämmen der eigenen Haare vor einem Spiegel."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Die übertriebene Vorliebe eines Menschen für schöne Kleidung.",
+							"reason": "Diese Bedeutung von „eitel“ passt zum heutigen Alltag, verfehlt aber die Barock-Bedeutung."
+						},
+						{
+							"text": "Den festen Glauben daran, dass jede Stadt für immer stehen bleibt.",
+							"reason": "Gryphius beschreibt im Gedicht genau das Gegenteil: dass Städte wieder zu Wiesen werden."
+						}
+					]
+				},
+				{
+					"id": "01M7XFHDATBW18VEF3GBYKZN88",
+					"slug": "d7-mittelalter-barock-gegenwart-recall",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Was zeigt der Vergleich eines mittelalterlichen oder barocken Textes mit einem Gegenwartstext?",
+					"concept": "Sprache und Weltbild wandeln sich, während Grundfragen wie Angst oder Mut bleiben.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-mittelalter-barock-gegenwart",
+					"sample_solution": "An Schreibung, Wortschatz und Weltbild erkennst du die historische Epoche; in den Gefühlen der Figuren – etwa Sorge über Zerstörung oder Zusammenhalt – begegnen ähnliche menschliche Fragen bis heute.",
+					"choice_distractors": [
+						{
+							"text": "Alte Texte enthalten falsche Gefühle, die heute niemand mehr kennen kann.",
+							"reason": "Gerade überzeitliche Grunderfahrungen machen ältere Literatur auch heute nachvollziehbar."
+						},
+						{
+							"text": "Gegenwartstexte müssen jedes Wort nach der alten Barockschreibung von 1637 drucken.",
+							"reason": "Historische Schreibungen zeigen ihre Entstehungszeit, gelten aber nicht für heutige Texte."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M7XFHDASHJPP7B8MR3TRF00G",
+			"atom_uri": "urn:zam:atom:01M7XFHDASHJPP7B8MR3TRF00G",
+			"namespace": "zam-academy-deutsch-realschule-7",
+			"slug": "d7-buchrezension-leseportfolio",
+			"title": "Buchrezensionen und Leseportfolio (Kinder- und Jugendbuch)",
+			"domain": "deutsch/lesen",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-buchrezension-leseportfolio",
+			"prerequisites": [
+				{
+					"atom_id": "01M7XFHDASDA2CZZW8QW4624CJ",
+					"type": "soft"
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-7",
+					"topic_code": "lesen",
+					"topic_title": "Lesen und Medien"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "deutsch",
+					"topic_code": "lb2",
+					"topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XFHDAT0X0DBAD0Y79BZ7Z4",
+					"slug": "d7-buchrezension-leseportfolio-check",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Was macht eine Rezension für die Schülerzeitung überzeugender als bloßes „Das Buch ist super“?",
+					"concept": "Begründete Urteile zu Figuren, Sprache oder Spannung ohne das Ende zu verraten.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-buchrezension-leseportfolio",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Begründete Urteile zu Figuren, Sprache oder Spannung ohne das Ende zu verraten.",
+							"Die vollständige Nacherzählung jeder einzelnen Seite bis zur Schlussauflösung."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Die genaue Preisliste aller Schreibwarengeschäfte der ganzen Region.",
+							"reason": "Buchpreise ersetzen keine Beurteilung von Inhalt, Figuren und Stil."
+						},
+						{
+							"text": "Eine bloße Liste der Seitenzahlen ohne Angabe von Figuren oder Thema.",
+							"reason": "Seitenzahlen allein lassen offen, worum es im Buch geht und warum es lesenswert ist."
+						}
+					]
+				},
+				{
+					"id": "01M7XFHDATX4K78P7W53977EA2",
+					"slug": "d7-buchrezension-leseportfolio-recall",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Welchen Wert hat das Führen eines Leseportfolios zu mindestens einem Kinder- oder Jugendbuch?",
+					"concept": "Es sichert persönliche Deutungen, macht Figurenentwicklung sichtbar und regt den Austausch über Werte an.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-buchrezension-leseportfolio",
+					"sample_solution": "In Stichworten, Figuren-Alben oder Collagen prüfst du, welche Entscheidungen der Figuren du teilst oder ablehnst, und vergleichst deine Leseerfahrung mit den Urteilen anderer.",
+					"choice_distractors": [
+						{
+							"text": "Es dient ausschließlich dazu, nach dem Lesen nie wieder mit anderen über Bücher zu sprechen.",
+							"reason": "Das Portfolio bereitet gerade den Vergleich individueller Leseerfahrungen mit anderen vor."
+						},
+						{
+							"text": "Es verpflichtet dazu, jedes Sachbuch und jeden Roman nach zwanzig Seiten abzubrechen.",
+							"reason": "Im siebten Jahrgang soll mindestens ein vollständiges Kinder- oder Jugendbuch dokumentiert werden."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M7XFHDASTR4QWWPAC6SDG68J",
+			"atom_uri": "urn:zam:atom:01M7XFHDASTR4QWWPAC6SDG68J",
+			"namespace": "zam-academy-deutsch-realschule-7",
+			"slug": "d7-diskontinuierliche-texte",
+			"title": "Tabellen, Zeitleisten und Diagramme auswerten",
+			"domain": "deutsch/lesen",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-diskontinuierliche-texte",
+			"prerequisites": [
+				{
+					"atom_id": "01M7XFHDASHJPP7B8MR3TRF00G",
+					"type": "soft"
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-7",
+					"topic_code": "lesen",
+					"topic_title": "Lesen und Medien"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "deutsch",
+					"topic_code": "lb2",
+					"topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XFHDATKF4R9CWE8003N1VA",
+					"slug": "d7-diskontinuierliche-texte-check",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Was prüfst du bei einem Balkendiagramm zuerst, bevor du die Längen der Balken vergleichst?",
+					"concept": "Titel, Achsenbeschriftung und Maßstab der Skala.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-diskontinuierliche-texte",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Titel, Achsenbeschriftung und Maßstab der Skala.",
+							"Allein die Frage, welche Balkenfarbe am freundlichsten wirkt."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Ausschließlich die Dicke des Rahmens um die Zeichenfläche.",
+							"reason": "Rahmenstärke hat nichts mit der Bedeutung der dargestellten Messdaten zu tun."
+						},
+						{
+							"text": "Die Zahl der Ausrufezeichen in den Kommentaren auf einer fremden Seite.",
+							"reason": "Die Aussagekraft eines Diagramms prüfst du über Titel, Achsen und Grundgesamtheit."
+						}
+					]
+				},
+				{
+					"id": "01M7XFHDATDVGQXF21Z2911W9P",
+					"slug": "d7-diskontinuierliche-texte-recall",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Wann wandelst du einen Fließtext für ein Referat gezielt in eine Tabelle oder Zeitleiste um?",
+					"concept": "Wenn Zahlenvergleiche oder zeitliche Abläufe auf einen Blick sichtbar werden sollen.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-diskontinuierliche-texte",
+					"sample_solution": "Viele Zahlenpaare oder Kategorien gehören in eine Tabelle oder ein Diagramm; geordnete Ereignisse über Tage oder Jahre lassen sich auf einer Zeitleiste deutlich rascher erfassen.",
+					"choice_distractors": [
+						{
+							"text": "Immer dann, wenn du ein Gedicht Wort für Wort auswendig aufsagen möchtest.",
+							"reason": "Gedichte leben von Versen und Klang, nicht von tabellarischer Zerlegung."
+						},
+						{
+							"text": "Wenn du unliebsame Fakten aus einem Bericht unbemerkt streichen möchtest.",
+							"reason": "Umwandlung macht wesentliche Inhalte übersichtlicher, verfälscht sie aber nicht."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M7XFHDAS3PB5Z9GFD8M92T61",
+			"atom_uri": "urn:zam:atom:01M7XFHDAS3PB5Z9GFD8M92T61",
+			"namespace": "zam-academy-deutsch-realschule-7",
+			"slug": "d7-textfunktionen",
+			"title": "Pragmatische Textsorten und Textfunktionen",
+			"domain": "deutsch/lesen",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-textfunktionen",
+			"prerequisites": [
+				{
+					"atom_id": "01M7XFHDASTR4QWWPAC6SDG68J",
+					"type": "soft"
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-7",
+					"topic_code": "lesen",
+					"topic_title": "Lesen und Medien"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "deutsch",
+					"topic_code": "lb2",
+					"topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XFHDATHP27W4KV7DTBYM6M",
+					"slug": "d7-textfunktionen-check",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welches sprachliche Merkmal weist am klarsten auf eine appellierende Textfunktion hin?",
+					"concept": "Direkte Leseransprache mit Aufforderung und Ausrufesatz.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-textfunktionen",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Direkte Leseransprache mit Aufforderung und Ausrufesatz.",
+							"Reine Zeit- und Ortsangaben ohne jedes wertende oder auffordernde Wort."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Eine strenge Nummerierung aller einzelnen Bauteile einer Werkbank.",
+							"reason": "Nummerierte Bauanleitungen verfolgen eine instruierende, keine appellierende Funktion."
+						},
+						{
+							"text": "Sachliche Quellenangaben am Ende einer historischen Tabelle.",
+							"reason": "Quellenbelege dienen der Information und Nachprüfbarkeit."
+						}
+					]
+				},
+				{
+					"id": "01M7XFHDAT4FJKXK68XMGSNDES",
+					"slug": "d7-textfunktionen-recall",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Wie unterscheidest du informierende von instruierenden Texten anhand von Aufbau und Sprache?",
+					"concept": "Informierende Texte berichten sachlich Fakten; instruierende leiten schrittweise an.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-textfunktionen",
+					"sample_solution": "Informierende Texte bündeln Daten (Wer, Was, Wann, Wo) in ruhigen Aussagesätzen. Instruierende Texte ordnen Abläufe oft nummeriert und nutzen Aufforderungsformen oder Infinitive („Helm aufsetzen“).",
+					"choice_distractors": [
+						{
+							"text": "Informierende Texte verwenden nur Ausrufezeichen, instruierende nur Reime.",
+							"reason": "Weder Ausrufezeichen noch Reime kennzeichnen sachliche Information oder Anleitung."
+						},
+						{
+							"text": "Beide Textsorten verbieten Zahlen, Namen und nachvollziehbare Zwischenschritte.",
+							"reason": "Gerade präzise Angaben und nachvollziehbare Schritte sichern ihre Nützlichkeit."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M7XFHDASQR0CSJYWGWK8ZC16",
+			"atom_uri": "urn:zam:atom:01M7XFHDASQR0CSJYWGWK8ZC16",
+			"namespace": "zam-academy-deutsch-realschule-7",
+			"slug": "d7-bericht-reportage-feature",
+			"title": "Nachricht, Hintergrundbericht, Reportage und Feature",
+			"domain": "deutsch/lesen",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-bericht-reportage-feature",
+			"prerequisites": [
+				{
+					"atom_id": "01M7XFHDAS3PB5Z9GFD8M92T61",
+					"type": "soft"
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-7",
+					"topic_code": "lesen",
+					"topic_title": "Lesen und Medien"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "deutsch",
+					"topic_code": "lb2",
+					"topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XFHDAT8ESWMZWR11RQP81R",
+					"slug": "d7-bericht-reportage-feature-check",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Woran erkennst du im Vergleich zur Nachricht eine kurze Reportage?",
+					"concept": "Sie schildert Eindrücke vor Ort aus nächster Nähe im Präsens.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-bericht-reportage-feature",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Sie schildert Eindrücke vor Ort aus nächster Nähe im Präsens.",
+							"Sie verzichtet vollständig auf handelnde Personen und Schauplätze."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Sie beschränkt sich auf ein einziges Datum ohne Beschreibung der Umgebung.",
+							"reason": "Eine nackte Datumsangabe gehört zur Kurznachricht, nicht zur lebendigen Reportage."
+						},
+						{
+							"text": "Sie verbietet jede direkte Beobachtung von Geräuschen oder Gesten.",
+							"reason": "Gerade konkrete Sinneseindrücke machen den Schauplatz in der Reportage greifbar."
+						}
+					]
+				},
+				{
+					"id": "01M7XFHDAT8KXYB8XWY8A255J0",
+					"slug": "d7-bericht-reportage-feature-recall",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Warum hilft die Unterscheidung zwischen Nachricht/Hintergrundbericht und Reportage/Feature beim Bewerten von Texten?",
+					"concept": "Du erkennst sofort, wo harte Fakten und Ursachen stehen und wo subjektive Beobachtungen die Stimmung zeichnen.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-bericht-reportage-feature",
+					"sample_solution": "Bei Nachricht und Hintergrundbericht konzentrierst du dich auf gesicherte Daten und Ursachen; bei Reportage und Feature trennst du szenische Schilderungen sauber von den überprüfbaren Sachangaben.",
+					"choice_distractors": [
+						{
+							"text": "Reportagen enthalten niemals wahre Angaben und dürfen im Unterricht nie zitiert werden.",
+							"reason": "Seriöse Reportagen beruhen ebenfalls auf sorgfältiger Recherche und echten Fakten."
+						},
+						{
+							"text": "Nachrichten sind reine Fantasiegeschichten ohne wirkliche Personen.",
+							"reason": "Nachrichten berichten über reale Ereignisse in sachlicher Knappheit."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M7XFHDAS8W7A4ZWF343S4W5K",
+			"atom_uri": "urn:zam:atom:01M7XFHDAS8W7A4ZWF343S4W5K",
+			"namespace": "zam-academy-deutsch-realschule-7",
+			"slug": "d7-werbung-print-internet",
+			"title": "Print- und Internetwerbung vergleichen",
+			"domain": "deutsch/lesen",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-werbung-print-internet",
+			"prerequisites": [
+				{
+					"atom_id": "01M7XFHDASQR0CSJYWGWK8ZC16",
+					"type": "soft"
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-7",
+					"topic_code": "lesen",
+					"topic_title": "Lesen und Medien"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "deutsch",
+					"topic_code": "lb2",
+					"topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XFHDAT67B3W39PFHH3739H",
+					"slug": "d7-werbung-print-internet-check",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welches typische Mittel setzt Online-Werbung häufig ein, das gedruckten Plakaten technisch fehlt?",
+					"concept": "Laufende Countdowns und direkt anklickbare Bestell-Schaltflächen.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-werbung-print-internet",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Laufende Countdowns und direkt anklickbare Bestell-Schaltflächen.",
+							"Schwarze Druckerschwärze auf rauem Recyclingpapier im Heft."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Das Fehlen jedes Links und jeder unmittelbaren Kaufmöglichkeit.",
+							"reason": "Gerade der sofortige Klick zum Shop ist das zentrale Merkmal von Online-Bannern."
+						},
+						{
+							"text": "Eine lange Fußnote über die Geschichte des Rucksacknähens.",
+							"reason": "Banner arbeiten mit knappen Reizen und nicht mit historischen Fußnoten."
+						}
+					]
+				},
+				{
+					"id": "01M7XFHDATB7GEC827R3SBX51E",
+					"slug": "d7-werbung-print-internet-recall",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Warum hilft der Vergleich verschiedener Anzeigen gegen unüberlegte Kaufentscheidungen?",
+					"concept": "Du durchschaust Gefühlsversprechen, Gruppendruck und künstliche Dringlichkeit und prüfst harte Produktdaten.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-werbung-print-internet",
+					"sample_solution": "Wer die Tricks erkennt – etwa leere Freiheitsversprechen im Foto, Gruppendruck („deine Freunde“) oder laufende Uhren – trennt eigene Bedürfnisse von der Werbestrategie.",
+					"choice_distractors": [
+						{
+							"text": "Wer Werbung analysiert, muss ab sofort jedes beworbene Produkt sofort kaufen.",
+							"reason": "Werbeanalyse stärkt die eigene Kritikfähigkeit und macht unabhängiger."
+						},
+						{
+							"text": "Alle Printanzeigen enthalten automatisch immer die besseren und billigeren Preise.",
+							"reason": "Auch gedruckte Anzeigen werben verkaufsfördernd und müssen mit anderen Angeboten verglichen werden."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M7XFHDASMQK3YH85XQ02PE1X",
+			"atom_uri": "urn:zam:atom:01M7XFHDASMQK3YH85XQ02PE1X",
+			"namespace": "zam-academy-deutsch-realschule-7",
+			"slug": "d7-recherche-wirklichkeit",
+			"title": "Suchstrategien und Wirklichkeitsprägung in Bildmedien",
+			"domain": "deutsch/lesen",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-recherche-wirklichkeit",
+			"prerequisites": [
+				{
+					"atom_id": "01M7XFHDAS8W7A4ZWF343S4W5K",
+					"type": "soft"
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-7",
+					"topic_code": "lesen",
+					"topic_title": "Lesen und Medien"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "deutsch",
+					"topic_code": "lb2",
+					"topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XFHDATEK6JCZYP0VD9KSTT",
+					"slug": "d7-recherche-wirklichkeit-check",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Warum reicht das einzelne Suchwort „Wald“ bei einer Suchmaschine für ein Sachthema nicht aus?",
+					"concept": "Es liefert zu viele unspezifische und werbliche Treffer.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-recherche-wirklichkeit",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Es liefert zu viele unspezifische und werbliche Treffer.",
+							"Weil Suchmaschinen Wörter mit weniger als fünf Buchstaben löschen."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Weil jedes Internetlexikon immer nur genau einen Satz speichern darf.",
+							"reason": "Onlinelexika bieten ausführliche Artikel, brauchen aber passende Suchbegriffe."
+						},
+						{
+							"text": "Weil alle Suchmaschinen ausschließlich Ergebnisse aus dem eigenen Stadtteil zeigen.",
+							"reason": "Ohne Eingrenzung liefert die Suche allgemeine Treffer aus unterschiedlichsten Quellen."
+						}
+					]
+				},
+				{
+					"id": "01M7XFHDATN3W6878JP57RM5SK",
+					"slug": "d7-recherche-wirklichkeit-recall",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Woran merkst du, dass ein Video oder eine Doku-Soap Wirklichkeit nur scheinbar echt abbildet?",
+					"concept": "Zugespitzte Bildausschnitte, passende Musik, schnelle Schnitte und fehlende Gegenstimmen verraten Inszenierung.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-recherche-wirklichkeit",
+					"sample_solution": "Achte auf dramatische Musik, nachgedrehte Reaktionen, einseitige Behauptungen ohne Gegenprüfung und fehlende Hinweise darauf, wer den Clip finanziert hat.",
+					"choice_distractors": [
+						{
+							"text": "Jedes bewegte Video zeigt die Wirklichkeit grundsätzlich unverändert und vollständig.",
+							"reason": "Kameraausschnitt und Schnitt treffen immer eine Auswahl und können stark verzerren."
+						},
+						{
+							"text": "Nur Bücher auf Papier können Menschen in ihren Vorstellungen beeinflussen.",
+							"reason": "Gerade Bildmedien prägen Alltagsvorstellungen oft unbemerkt und sehr nachhaltig."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M7XFHDASEJFR5SGPRYHNW2KZ",
+			"atom_uri": "urn:zam:atom:01M7XFHDASEJFR5SGPRYHNW2KZ",
+			"namespace": "zam-academy-deutsch-realschule-7",
+			"slug": "d7-jugendmedien-netiquette",
+			"title": "Jugendmedien bewerten · Netiquette und Datenschutz",
+			"domain": "deutsch/lesen",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-jugendmedien-netiquette",
+			"prerequisites": [
+				{
+					"atom_id": "01M7XFHDASMQK3YH85XQ02PE1X",
+					"type": "soft"
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-7",
+					"topic_code": "lesen",
+					"topic_title": "Lesen und Medien"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "deutsch",
+					"topic_code": "lb2",
+					"topic_title": "Lesen – mit Texten und weiteren Medien umgehen"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XFHDATDCN2R1T25PY9W6M7",
+					"slug": "d7-jugendmedien-netiquette-check",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche Angabe darfst du in einem öffentlichen Internetforum niemals posten?",
+					"concept": "Deinen vollen Namen zusammen mit Schule, Treffpunkt und Handynummer.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-jugendmedien-netiquette",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Deinen vollen Namen zusammen mit Schule, Treffpunkt und Handynummer.",
+							"Einen erfundenen Spitznamen ohne jeden Rückschluss auf dich."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Eine höfliche Bewertung der Spielmusik ohne persönliche Angaben.",
+							"reason": "Sachliche Spielkommentare ohne Orts- oder Kontaktdaten gefährden deine Privatsphäre nicht."
+						},
+						{
+							"text": "Den Titel eines bekannten Buchs, das du gerade weiterempfiehlst.",
+							"reason": "Buchtitel verraten keine schützenswerten privaten Identitätsdaten."
+						}
+					]
+				},
+				{
+					"id": "01M7XFHDATMFHW2XB45C29EARY",
+					"slug": "d7-jugendmedien-netiquette-recall",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Welche zwei Kriterien helfen dir beim Bewerten eines neuen Spiels oder Jugendformats vor der Nutzung?",
+					"concept": "Kosten- oder Zeitdruckmittel für die Zielgruppe sowie Datenschutz und Umgangsregeln.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-jugendmedien-netiquette",
+					"sample_solution": "Prüfe erstens, welche Bindungs- und Bezahlmechanismen eingebaut sind (tägliche Pflichten, Kaufknöpfe, Cliffhanger), und zweitens, welche Daten geteilt oder welche Umgangsregeln durchgesetzt werden.",
+					"choice_distractors": [
+						{
+							"text": "Allein die Frage, ob das Symbol auf dem Bildschirm besonders bunt blinkt.",
+							"reason": "Greifbare Farben sind oft bloße Lockmittel und sagen nichts über Qualität oder Sicherheit."
+						},
+						{
+							"text": "Dass eine neue App wirklich alle privaten Fotos und Kontakte sofort hochlädt.",
+							"reason": "Unnötige Zugriffe auf Kontakte und Fotos sind gerade ein Warnsignal gegen das Angebot."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M7XFHDASZYW15CDAD867DTWV",
+			"atom_uri": "urn:zam:atom:01M7XFHDASZYW15CDAD867DTWV",
+			"namespace": "zam-academy-deutsch-realschule-7",
+			"slug": "d7-layout-formulare",
+			"title": "Schreibformen, Textlayout und standardisierte Formulare",
+			"domain": "deutsch/schreiben",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-layout-formulare",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-7",
+					"topic_code": "schreiben",
+					"topic_title": "Schreiben"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "deutsch",
+					"topic_code": "lb3",
+					"topic_title": "Schreiben"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XFHDATEVZCE8NBGR1MTCNS",
+					"slug": "d7-layout-formulare-check",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Wie gestaltest du ein Arbeitsblatt oder Info-Blatt in einem Textverarbeitungsprogramm übersichtlich?",
+					"concept": "Mit klarer Überschrift, höchstens zwei ruhigen Schriften und sparsamen Hervorhebungen.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-layout-formulare",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Mit klarer Überschrift, höchstens zwei ruhigen Schriften und sparsamen Hervorhebungen.",
+							"Mit möglichst jeder verfügbaren Zierschrift in hellgelber Farbe."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Mit zehn wechselnden Schreibschriften pro Absatz und bunten Rahmen.",
+							"reason": "Zu viele verschiedene Schriften zerstören die Übersichtlichkeit und erschweren das Lesen."
+						},
+						{
+							"text": "Indem alle Teilüberschriften kleiner gedruckt werden als die Fußzeile.",
+							"reason": "Überschriften müssen optisch übergeordnet sein, um Abschnitte klar zu gliedern."
+						}
+					]
+				},
+				{
+					"id": "01M7XFHDAT94DP1GVCY8SQFPRB",
+					"slug": "d7-layout-formulare-recall",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Worauf achtest du beim Ausfüllen eines standardisierten Anmeldeformulars und bei gemischten Schreibanlässen?",
+					"concept": "Du hältst die jeweils verlangte Grundform im passenden Feld ein und beachtest jede formale Feldvorgabe exakt.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-layout-formulare",
+					"sample_solution": "Prüfe zuerst jedes Eingabefeld auf Reihenfolge und geforderte Angaben, trenne sachliche Stammdaten sauber von kurzen Begründungen und nutze passende Schriftgrößen beim digitalen Ausfüllen.",
+					"choice_distractors": [
+						{
+							"text": "Du schreibst eine spannende Fantasiegeschichte quer über alle Namen- und Datumszeilen.",
+							"reason": "Standardisierte Formulare verlangen genaue, knappe Angaben am vorgesehenen Ort."
+						},
+						{
+							"text": "Du lässt alle Pflichtfelder leer, weil die Lehrkraft deinen Namen bestimmt errät.",
+							"reason": "Unvollständige Formulare können nicht zugeordnet oder bearbeitet werden."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M7XFHDAS7S794MG4X73FJ3CW",
+			"atom_uri": "urn:zam:atom:01M7XFHDAS7S794MG4X73FJ3CW",
+			"namespace": "zam-academy-deutsch-realschule-7",
+			"slug": "d7-zitieren-paraphrasieren",
+			"title": "Zitieren, Paraphrasieren und indirekt wiedergeben",
+			"domain": "deutsch/schreiben",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-zitieren-paraphrasieren",
+			"prerequisites": [
+				{
+					"atom_id": "01M7XFHDASZYW15CDAD867DTWV",
+					"type": "soft"
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-7",
+					"topic_code": "schreiben",
+					"topic_title": "Schreiben"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "deutsch",
+					"topic_code": "lb3",
+					"topic_title": "Schreiben"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XFHDAT2B7TTBZERMW3T2BX",
+					"slug": "d7-zitieren-paraphrasieren-check",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Wann liegt eine gelungene Paraphrase statt einer bloßen Abschreib-Kopie vor?",
+					"concept": "Wenn der Gedanke in eigener Satzstruktur und eigenen Worten wiedergegeben wird.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-zitieren-paraphrasieren",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Wenn der Gedanke in eigener Satzstruktur und eigenen Worten wiedergegeben wird.",
+							"Wenn zwei Adjektive ausgetauscht werden und der restliche Satz wörtlich bleibt."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Wenn man den Originalsatz mit anderen Schrifttypen genau abschreibt.",
+							"reason": "Eine andere Schriftart verändert weder Wortlaut noch Satzstruktur."
+						},
+						{
+							"text": "Wenn man den ursprünglichen Inhalt weglässt und etwas ganz anderes erfindet.",
+							"reason": "Eine Paraphrase muss den Sinn der Vorlage inhaltlich genau bewahren."
+						}
+					]
+				},
+				{
+					"id": "01M7XFHDAT2H2SY2XM5EH6752Q",
+					"slug": "d7-zitieren-paraphrasieren-recall",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Welche drei Regeln beachtest du beim Einbauen eines kurzen wörtlichen Zitats in einen eigenen Satz?",
+					"concept": "Wortgetreue Übernahme in Anführungszeichen, grammatisch passender Satzanschluss und Angabe der Fundstelle.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-zitieren-paraphrasieren",
+					"sample_solution": "Schreibe den zitierten Wortlaut exakt ab, markiere ihn mit Anführungszeichen („…“), passe den eigenen Begleitsatz grammatisch an und nenne dahinter in Klammern Zeile oder Seite.",
+					"choice_distractors": [
+						{
+							"text": "Ändere innerhalb der Anführungszeichen stillschweigend Wörter nach deinem Geschmack.",
+							"reason": "Änderungen im zitierten Wortlaut sind nur als kenntlich gemachte Auslassungen […] oder Einschübe erlaubt."
+						},
+						{
+							"text": "Verzichte auf Belege und Anführungszeichen, damit der Satz kürzer aussieht.",
+							"reason": "Ohne Markierung und Beleg wird fremder Text fälschlich als eigene Aussage ausgegeben."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M7XFHDAS6F2VJZRTS0W71ZK5",
+			"atom_uri": "urn:zam:atom:01M7XFHDAS6F2VJZRTS0W71ZK5",
+			"namespace": "zam-academy-deutsch-realschule-7",
+			"slug": "d7-schreibplan-mindmap",
+			"title": "Material auswerten · Mindmap und Schreibplan",
+			"domain": "deutsch/schreiben",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-schreibplan-mindmap",
+			"prerequisites": [
+				{
+					"atom_id": "01M7XFHDAS7S794MG4X73FJ3CW",
+					"type": "soft"
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-7",
+					"topic_code": "schreiben",
+					"topic_title": "Schreiben"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "deutsch",
+					"topic_code": "lb3",
+					"topic_title": "Schreiben"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XFHDATH8DPMP7WJ748FABQ",
+					"slug": "d7-schreibplan-mindmap-check",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welcher Schritt folgt beim Planen direkt nach dem Sammeln von Ideen in einer Mindmap?",
+					"concept": "Das Prüfen und Ordnen der brauchbaren Punkte in einem Schreibplan.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-schreibplan-mindmap",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Das Prüfen und Ordnen der brauchbaren Punkte in einem Schreibplan.",
+							"Das sofortige Abgeben der unsortierten Stichwörter als fertiger Brief."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Das alphabetische Sortieren aller einzelnen Hauptwörter nach Endbuchstaben.",
+							"reason": "Eine Buchstabensortierung zerreißt inhaltliche Zusammenhänge zwischen Problem und Lösung."
+						},
+						{
+							"text": "Das unbesehene Abschreiben sämtlicher Randnotizen ohne jede Streichung.",
+							"reason": "Zum Planen gehört zwingend das Aussortieren unpassender Nebeninfos."
+						}
+					]
+				},
+				{
+					"id": "01M7XFHDATR344Q80PQR3VJGDF",
+					"slug": "d7-schreibplan-mindmap-recall",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Warum spart ein vorab erstellter Schreibplan beim späteren Schreiben viel Zeit?",
+					"concept": "Du legst Aufbau, Absatzübergänge und Belege vorher fest und musst beim Formulieren nicht nach der Richtung suchen.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-schreibplan-mindmap",
+					"sample_solution": "Im Schreibplan siehst du auf einen Blick, was in Einleitung, Hauptteil und Schluss gehört und was gestrichen bleibt; dadurch vermeidest du Sprünge und Wiederholungen.",
+					"choice_distractors": [
+						{
+							"text": "Weil ein Schreibplan sämtliche Groß- und Kleinschreibungsregeln automatisch prüft.",
+							"reason": "Der Schreibplan ordnet Inhalt und Struktur, ersetzt aber keine Rechtschreibkontrolle."
+						},
+						{
+							"text": "Weil du mit einem Schreibplan keinen einzigen vollständigen Satz mehr schreiben musst.",
+							"reason": "Der Plan ist die Vorstufe zum ausformulierten Text, nicht der fertige Text."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M7XFHDAS0CZYP71WSC8XA44Y",
+			"atom_uri": "urn:zam:atom:01M7XFHDAS0CZYP71WSC8XA44Y",
+			"namespace": "zam-academy-deutsch-realschule-7",
+			"slug": "d7-schriftlich-schildern",
+			"title": "Situationen und Eindrücke schriftlich schildern",
+			"domain": "deutsch/schreiben",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-schriftlich-schildern",
+			"prerequisites": [
+				{
+					"atom_id": "01M7XFHDAS6F2VJZRTS0W71ZK5",
+					"type": "soft"
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-7",
+					"topic_code": "schreiben",
+					"topic_title": "Schreiben"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "deutsch",
+					"topic_code": "lb3",
+					"topic_title": "Schreiben"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XFHDATA1N8RE3Z0A00BZ5P",
+					"slug": "d7-schriftlich-schildern-check",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Worauf liegt der Schwerpunkt beim schriftlichen Schildern einer Situation?",
+					"concept": "Auf genauen Sinneseindrücken, Stimmung und subjektivem Erleben.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-schriftlich-schildern",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Auf genauen Sinneseindrücken, Stimmung und subjektivem Erleben.",
+							"Auf strenger Unpersönlichkeit ohne eigene Gedanken oder Bilder."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Auf einer reinen Stunden- und Materialtabelle ohne Verben.",
+							"reason": "Tabellen informieren knapp über Zahlen, vermitteln aber keine sinnliche Stimmung."
+						},
+						{
+							"text": "Auf der Vermeidung jeglicher Adjektive und Vergleiche.",
+							"reason": "Treffende Adjektive, Verben und Sprachbilder tragen wesentlich zur Anschaulichkeit bei."
+						}
+					]
+				},
+				{
+					"id": "01M7XFHDATCK5ZCHW4XZ9YJD11",
+					"slug": "d7-schriftlich-schildern-recall",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Wie vermeidest du beim Schildern eintönige „Dann … Dann …“-Reihungen?",
+					"concept": "Durch wechselnde Satzanfänge mit Zeit, Ort, Eindrücken und Nebensätzen.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-schriftlich-schildern",
+					"sample_solution": "Beginne Sätze mal mit dem Geräusch („Plötzlich trommelten Tropfen…“), mal mit dem Ort („Über dem Waldrand…“), mal mit einem Nebensatz („Als die kühle Böe…“) und wähle treffende Verben.",
+					"choice_distractors": [
+						{
+							"text": "Indem du jeden einzelnen Satz mit „Ich habe gesehen“ beginnst.",
+							"reason": "Immer dieselbe Eingangsformel wirkt genauso eintönig wie ständiges „Dann“."
+						},
+						{
+							"text": "Indem du alle Sätze komplett streichst und nur fünf Stichworte abgibst.",
+							"reason": "Eine Schilderung braucht ausformulierte, sprachlich abwechslungsreiche Sätze."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M7XFHDASJABX00401DPK1R76",
+			"atom_uri": "urn:zam:atom:01M7XFHDASJABX00401DPK1R76",
+			"namespace": "zam-academy-deutsch-realschule-7",
+			"slug": "d7-textsortenwechsel-vorlagen",
+			"title": "Texte umschreiben und nach Vorlagen gestalten",
+			"domain": "deutsch/schreiben",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-textsortenwechsel-vorlagen",
+			"prerequisites": [
+				{
+					"atom_id": "01M7XFHDAS0CZYP71WSC8XA44Y",
+					"type": "soft"
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-7",
+					"topic_code": "schreiben",
+					"topic_title": "Schreiben"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "deutsch",
+					"topic_code": "lb3",
+					"topic_title": "Schreiben"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XFHDATR741SB0D70BMS47Y",
+					"slug": "d7-textsortenwechsel-vorlagen-check",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Was verändert sich zwingend, wenn du eine Erzählung in einen Tagebucheintrag derselben Figur umschreibst?",
+					"concept": "Ich-Perspektive, Datum sowie Einblicke in Gedanken und Gefühle.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-textsortenwechsel-vorlagen",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Ich-Perspektive, Datum sowie Einblicke in Gedanken und Gefühle.",
+							"Alle Ereignisse müssen frei erfunden und komplett umgedreht werden."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Alle Namen und Handlungsorte müssen gegen völlig fremde Begriffe ersetzt werden.",
+							"reason": "Beim Umschreiben bleibt das Grundgeschehen erhalten; sonst entsteht eine ganz andere Geschichte."
+						},
+						{
+							"text": "Anführungszeichen und Absätze sind im Tagebuch grundsätzlich verboten.",
+							"reason": "Ein Tagebucheintrag gliedert sich mit Datum, Anrede und Absätzen frei und darf Gedanken oder Worte zitieren."
+						}
+					]
+				},
+				{
+					"id": "01M7XFHDATTJFYNK4ZADPA8005",
+					"slug": "d7-textsortenwechsel-vorlagen-recall",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Wie prüfst du beim Schreiben nach einem Bild oder einer Filmsequenz, ob dein Text alle Vorgaben erfüllt?",
+					"concept": "Prüfe inhaltliche Anknüpfung an die Figuren getrennt von den formalen Textsortenregeln.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-textsortenwechsel-vorlagen",
+					"sample_solution": "Vergleiche nach dem Entwurf zweifach: Stimmen Figurenkonstellation und sichtbares Motiv der Vorlage, und hält der Text durchgängig die Merkmale der gewählten Textsorte ein?",
+					"choice_distractors": [
+						{
+							"text": "Zähle allein die verwendeten Wörter, ohne jemals wieder auf Vorlage oder Textsorte zu schauen.",
+							"reason": "Wortanzahl allein sichert weder Inhaltstreue noch passende Textsortenform."
+						},
+						{
+							"text": "Schreibe die Bildbeschreibung nur als Stichwortliste ohne Zusammenhang ab.",
+							"reason": "Schreiben nach Vorlagen verlangt eine zusammenhängende, passende Textgestaltung."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M7XFHDASEGFZJ3R03E42B633",
+			"atom_uri": "urn:zam:atom:01M7XFHDASEGFZJ3R03E42B633",
+			"namespace": "zam-academy-deutsch-realschule-7",
+			"slug": "d7-inhaltsangabe",
+			"title": "Über Textinhalte knapp informieren (Inhaltsangabe)",
+			"domain": "deutsch/schreiben",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-inhaltsangabe",
+			"prerequisites": [
+				{
+					"atom_id": "01M7XFHDASJABX00401DPK1R76",
+					"type": "soft"
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-7",
+					"topic_code": "schreiben",
+					"topic_title": "Schreiben"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "deutsch",
+					"topic_code": "lb3",
+					"topic_title": "Schreiben"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XFHDATRXQNBTQA58YY66PW",
+					"slug": "d7-inhaltsangabe-check",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "In welcher Zeitform wird eine Inhaltsangabe grundsätzlich verfasst?",
+					"concept": "Im Präsens; Vorzeitigkeit steht im Perfekt.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-inhaltsangabe",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Im Präsens; Vorzeitigkeit steht im Perfekt.",
+							"Durchgehend im Präteritum und Plusquamperfekt."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Immer im Präteritum genau wie ein spannendes Märchen.",
+							"reason": "Präteritum ist das Erzähltempus literarischer Texte, nicht die Zeitform der Inhaltsangabe."
+						},
+						{
+							"text": "Grundsätzlich im Imperativ mit direkten Ausrufen.",
+							"reason": "Der Imperativ gehört zu Anleitungen oder Appellen, nicht zu sachlichen Inhaltsangaben."
+						}
+					],
+					"replaces": [
+						"01K4D7N0000000000000000J01"
+					]
+				},
+				{
+					"id": "01M7XFHDAT6AAAQQN2K5828EKT",
+					"slug": "d7-inhaltsangabe-recall",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Welche fünf Regeln gelten beim Verfassen einer knappen, sachlichen Inhaltsangabe?",
+					"concept": "Basissatz, Sinnabschnitte, Präsens mit Perfekt bei Vorzeitigkeit, sachlich ohne wörtliche Rede.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-inhaltsangabe",
+					"sample_solution": "1. Basissatz (Textart, Autor, Titel, Thema), 2. geordnete Sinnabschnitte ohne Nebendetails, 3. Präsens (Vorzeitigkeit Perfekt), 4. indirekte oder geraffte Wiedergabe statt wörtlicher Rede, 5. objektiver Ton ohne eigene Wertung.",
+					"choice_distractors": [
+						{
+							"text": "Spannungsbogen, wörtliche Dialoge, viele Adjektive, Präteritum und persönliche Note.",
+							"reason": "Diese Merkmale gehören zu einer Erzählung oder Schilderung, nicht zu einer Inhaltsangabe."
+						},
+						{
+							"text": "Nur Auszüge abschreiben, alle Namen weglassen und möglichst drei Seiten füllen.",
+							"reason": "Eine Inhaltsangabe rafft knapp mit eigenen Worten und nennt handelnde Figuren klar."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M7XFHDATCNB74AC6J9X9QY7N",
+			"atom_uri": "urn:zam:atom:01M7XFHDATCNB74AC6J9X9QY7N",
+			"namespace": "zam-academy-deutsch-realschule-7",
+			"slug": "d7-textbezogene-stellungnahme",
+			"title": "Textkriterien untersuchen und begründet Stellung nehmen",
+			"domain": "deutsch/schreiben",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-textbezogene-stellungnahme",
+			"prerequisites": [
+				{
+					"atom_id": "01M7XFHDASEGFZJ3R03E42B633",
+					"type": "soft"
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-7",
+					"topic_code": "schreiben",
+					"topic_title": "Schreiben"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "deutsch",
+					"topic_code": "lb3",
+					"topic_title": "Schreiben"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XFHDATEE0RNCB9ZFQ10CJM",
+					"slug": "d7-textbezogene-stellungnahme-check",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Worauf stützt du eine textbezogene schriftliche Stellungnahme?",
+					"concept": "Auf untersuchte Textmerkmale wie Absicht, Bildwahl oder Figurenverhalten.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-textbezogene-stellungnahme",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Auf untersuchte Textmerkmale wie Absicht, Bildwahl oder Figurenverhalten.",
+							"Auf ein spontanes Bauchgefühl ohne einen einzigen Verweis auf den Text."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Auf reine Vermutungen über das Privatleben der Kameraleute.",
+							"reason": "Spekulationen über Privatpersonen belegen nichts am Aufbau oder der Wirkung des Beitrags."
+						},
+						{
+							"text": "Auf das bloße Abschreiben des gesamten Texts ohne eigene Meinung.",
+							"reason": "Abschreiben untersucht weder Gestaltungskriterien noch formuliert es eine eigene Position."
+						}
+					]
+				},
+				{
+					"id": "01M7XFHDATK9746FJFD1SRTG4A",
+					"slug": "d7-textbezogene-stellungnahme-recall",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Wie verknüpfst du Textuntersuchung und eigene Stellungnahme in einem schriftlichen Aufsatz?",
+					"concept": "Benenne zuerst das untersuchte Kriterium samt Textbeleg, erkläre seine Wirkung und leite daraus dein Urteil ab.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-textbezogene-stellungnahme",
+					"sample_solution": "Beantworte zuerst sachlich die Untersuchungsfragen zu Absicht, Konflikt oder Gestaltungsmitteln mit Textbelegen und beziehe im Anschluss anhand dieser Befunde klar und begründet Stellung.",
+					"choice_distractors": [
+						{
+							"text": "Schreibe die Stellungnahme zuerst als Bauchurteil und erfinde danach beliebige Zitate.",
+							"reason": "Belege müssen immer echt sein und dürfen das Urteil nicht nachträglich verbiegen."
+						},
+						{
+							"text": "Lasse die untersuchte Vorlage einfach weg und schreibe über ein ganz anderes Buch.",
+							"reason": "Eine textbezogene Stellungnahme muss ausdrücklich auf den geprüften Text und seine Thematik eingehen."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M7XFHDAT85AA07A9FVKPQ9CK",
+			"atom_uri": "urn:zam:atom:01M7XFHDAT85AA07A9FVKPQ9CK",
+			"namespace": "zam-academy-deutsch-realschule-7",
+			"slug": "d7-vorgangsbeschreibung",
+			"title": "Vorgänge sachlich und präzise beschreiben",
+			"domain": "deutsch/schreiben",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-vorgangsbeschreibung",
+			"prerequisites": [
+				{
+					"atom_id": "01M7XFHDATCNB74AC6J9X9QY7N",
+					"type": "soft"
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-7",
+					"topic_code": "schreiben",
+					"topic_title": "Schreiben"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "deutsch",
+					"topic_code": "lb3",
+					"topic_title": "Schreiben"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XFHDAT59H9QZC27TB9FJPG",
+					"slug": "d7-vorgangsbeschreibung-check",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welches Tempus und welche Erzählhaltung passen für eine Vorgangsbeschreibung?",
+					"concept": "Das Präsens in sachlicher, chronologischer Schrittfolge.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-vorgangsbeschreibung",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Das Präsens in sachlicher, chronologischer Schrittfolge.",
+							"Das Präteritum mit spannenden Gefühlsschilderungen und Rätseln."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Das Präteritum mit lustigen Übertreibungen und vielen Ausrufen.",
+							"reason": "Vergangenheit und Übertreibung gehören in Erzählungen, nicht in genaue Arbeitsanleitungen."
+						},
+						{
+							"text": "Der Konjunktiv I wie in einem langen indirekten Zeitungsbericht.",
+							"reason": "Konjunktiv I gibt fremde Rede wieder und passt nicht zu praktischen Anleitungen."
+						}
+					]
+				},
+				{
+					"id": "01M7XFHDATN5Y08XXDD5KV5ZSR",
+					"slug": "d7-vorgangsbeschreibung-recall",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Warum scheitern unpräzise Anleitungen mit Sätzen wie „Mach das Ding irgendwie dran“?",
+					"concept": "Fehlende Bauteilnamen, unklare Verben und übersprungene Handgriffe verhindern sicheres Nachmachen.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-vorgangsbeschreibung",
+					"sample_solution": "Ohne genaue Begriffe, einheitliche Anredeform und lückenlose Reihenfolge wissen Ausführende nicht, welches Teil gemeint ist oder worauf sie beim Einsetzen achten müssen.",
+					"choice_distractors": [
+						{
+							"text": "Weil eine gute Anleitung eigentlich immer mit einem überraschenden offenen Ende schließt.",
+							"reason": "Eine Vorgangsbeschreibung darf niemals offen lassen, wie das Ergebnis geprüft oder abgeschlossen wird."
+						},
+						{
+							"text": "Weil der Leser alle fehlenden Zwischenschritte lieber wie ein Rätsel selbst raten möchte.",
+							"reason": "Instruktionen sollen Missverständnisse ausschließen und sofort sicher umsetzbar sein."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M7XFHDATJ9RPA86CPVDBVK8Q",
+			"atom_uri": "urn:zam:atom:01M7XFHDATJ9RPA86CPVDBVK8Q",
+			"namespace": "zam-academy-deutsch-realschule-7",
+			"slug": "d7-argumentativer-brief",
+			"title": "Für ein Anliegen argumentieren (Brief an SMV oder Schulleitung)",
+			"domain": "deutsch/schreiben",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-argumentativer-brief",
+			"prerequisites": [
+				{
+					"atom_id": "01M7XFHDAT85AA07A9FVKPQ9CK",
+					"type": "soft"
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-7",
+					"topic_code": "schreiben",
+					"topic_title": "Schreiben"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "deutsch",
+					"topic_code": "lb3",
+					"topic_title": "Schreiben"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XFHDATMCK07N53DT6GEQ63",
+					"slug": "d7-argumentativer-brief-check",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Was macht ein Argument in einem Brief an die Schulleitung besonders überzeugend?",
+					"concept": "Eine schlüssige Begründung mit Alltagsbeispiel und das Aufgreifen möglicher Bedenken.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-argumentativer-brief",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Eine schlüssige Begründung mit Alltagsbeispiel und das Aufgreifen möglicher Bedenken.",
+							"Möglichst laute Forderungen mit Ausrufezeichen am Ende jeder Zeile."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Der gezielte Verzicht auf Anrede, Datum und jede Begründung des Wunschs.",
+							"reason": "Ohne Form und Begründung wirkt ein Anliegen unhöflich und beliebig."
+						},
+						{
+							"text": "Die Drohung, bei Ablehnung einfach die nächste Pause ausfallen zu lassen.",
+							"reason": "Drohungen verhärten Fronten und schaden einer konstruktiven Lösung."
+						}
+					]
+				},
+				{
+					"id": "01M7XFHDATRV6A5DTSJR1ZHQKE",
+					"slug": "d7-argumentativer-brief-recall",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Wie berücksichtigst du beim Verfassen eines Anliegen-Briefs den Adressaten?",
+					"concept": "Mit passender Anrede, höflichem Ton und Gründen aus Sicht der Empfänger.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-argumentativer-brief",
+					"sample_solution": "An die Schulleitung schreibst du per „Sie“ höflich-förmlich und denkst Kosten, Sicherheit und Hausordnung mit; an die SMV darf der Ton etwas persönlicher sein, sollte aber genauso sachlich begründen und Vorschläge machen.",
+					"choice_distractors": [
+						{
+							"text": "Du verwendest unabhängig vom Empfänger immer genau dieselbe Jugendsprache.",
+							"reason": "Adressatenbezug verlangt gerade, Ton und Wortwahl auf das Gegenüber abzustimmen."
+						},
+						{
+							"text": "Du verschweigst den eigentlichen Wunsch bis zur letzten Zeile und schreibst Witze.",
+							"reason": "Ein klares Anliegen gehört direkt an den Anfang des Briefs."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M7XFHDATMMBS7TZJEG5FJVBB",
+			"atom_uri": "urn:zam:atom:01M7XFHDATMMBS7TZJEG5FJVBB",
+			"namespace": "zam-academy-deutsch-realschule-7",
+			"slug": "d7-schreibkonferenz-ueberarbeiten",
+			"title": "Texte in der Schreibkonferenz prüfen und überarbeiten",
+			"domain": "deutsch/schreiben",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-schreibkonferenz-ueberarbeiten",
+			"prerequisites": [
+				{
+					"atom_id": "01M7XFHDATJ9RPA86CPVDBVK8Q",
+					"type": "soft"
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-7",
+					"topic_code": "schreiben",
+					"topic_title": "Schreiben"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "deutsch",
+					"topic_code": "lb3",
+					"topic_title": "Schreiben"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XFHDATJZZ3DCQJ2X11RDZ2",
+					"slug": "d7-schreibkonferenz-ueberarbeiten-check",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Warum darf man sich beim Überarbeiten nicht blind auf die rote Wellenlinie der Computer-Rechtschreibprüfung verlassen?",
+					"concept": "Sie übersieht oft grammatische Verwechslungen wie „das/dass“ oder „wieder/wider“.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-schreibkonferenz-ueberarbeiten",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Sie übersieht oft grammatische Verwechslungen wie „das/dass“ oder „wieder/wider“.",
+							"Sie löscht automatisch alle richtig geschriebenen Nomen."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Sie wandelt jeden Aussagesatz eigenmächtig in ein Gedicht um.",
+							"reason": "Rechtschreibprogramme verändern keinen Texttyp, sondern markieren nur vermeintliche Wortfehler."
+						},
+						{
+							"text": "Sie zwingt dazu, jedes Komma am Zeilenende durch einen Punkt zu ersetzen.",
+							"reason": "Zeichensetzung verlangt grammatisches Mitdenken von Satzgrenzen und Nebensätzen."
+						}
+					]
+				},
+				{
+					"id": "01M7XFHDAT52JMWKYZ6HKA7DJR",
+					"slug": "d7-schreibkonferenz-ueberarbeiten-recall",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "In welcher sinnvollen Reihenfolge gehst du beim Überarbeiten nach einer Schreibkonferenz vor?",
+					"concept": "Zuerst Inhalt und Aufbau prüfen, dann Stil und Satzbau, zuletzt Rechtschreibung.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-schreibkonferenz-ueberarbeiten",
+					"sample_solution": "Erst klärst du inhaltliche Lücken und Übergänge nach dem Feedback; danach feilst du an Wortwahl und Satzverknüpfung; am Ende korrigierst du mit Proben, Nachschlagewerk und eigener Fehlerliste die Rechtschreibung.",
+					"choice_distractors": [
+						{
+							"text": "Suche zuerst nur drei Kommas und werfe anschließend ganze Absätze ohne Kontrolle um.",
+							"reason": "Wer später den Inhalt umbaut, muss Zeichensetzung und Rechtschreibung ohnehin noch einmal prüfen."
+						},
+						{
+							"text": "Ignoriere alle Hinweise der anderen Gruppe, weil erste Entwürfe immer perfekt bleiben.",
+							"reason": "Gerade konstruktive Kritik zeigt blinde Flecken, die man allein leicht überliest."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M7XFHDAT5QZ3ZZHNQ3PEE7FF",
+			"atom_uri": "urn:zam:atom:01M7XFHDAT5QZ3ZZHNQ3PEE7FF",
+			"namespace": "zam-academy-deutsch-realschule-7",
+			"slug": "d7-fremdwoerter-funktion",
+			"title": "Fremdwörter präzise verwenden und am Wortbau schreiben",
+			"domain": "deutsch/sprache",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-fremdwoerter-funktion",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-7",
+					"topic_code": "sprache",
+					"topic_title": "Sprache und Rechtschreibung"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "deutsch",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XFHDATS6THPT8NSR7YHN6N",
+					"slug": "d7-fremdwoerter-funktion-check",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Wie hilft dir der Wortbau beim sicheren Schreiben von Fremdwörtern wie „Reparatur“ oder „Diskussion“?",
+					"concept": "Du zerlegst das Wort in Präfix, Wortstamm und typische Nachsilbe.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-fremdwoerter-funktion",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Du zerlegst das Wort in Präfix, Wortstamm und typische Nachsilbe.",
+							"Du verdoppelst bei jedem Fremdwort vorsichtshalber alle Konsonanten."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Du verlässt dich ausschließlich auf langsames Flüstern ohne Wortfamilie.",
+							"reason": "Die Aussprache allein verrät oft weder „th“, „ph“ noch doppelte Konsonanten."
+						},
+						{
+							"text": "Du schreibst fremde Wörter grundsätzlich klein, auch wenn sie Nomen sind.",
+							"reason": "Substantivische Fremdwörter wie „die Diskussion“ werden immer großgeschrieben."
+						}
+					]
+				},
+				{
+					"id": "01M7XFHDATNGNYCT76VV0N9545",
+					"slug": "d7-fremdwoerter-funktion-recall",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Wann ist der Einsatz eines Fremdworts in einem eigenen Text sinnvoll und wann nicht?",
+					"concept": "Es lohnt sich bei fachlicher Genauigkeit, schadet aber, wenn einfache Ausdrücke klarer für das Publikum sind.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-fremdwoerter-funktion",
+					"sample_solution": "Nutze ein Fremdwort, wenn es genau das Gemeinte trifft – etwa „Argument“ statt vagem „Punkt“ im Sachtext. Verzichte darauf, wenn es nur angeberisch wirkt oder dein Publikum das Wort nicht versteht.",
+					"choice_distractors": [
+						{
+							"text": "In jedem Satz müssen mindestens vier Fremdwörter stehen, sonst gilt der Text als falsch.",
+							"reason": "Unnötige Häufungen erschweren das Verstehen, ohne echten Inhalt zu liefern."
+						},
+						{
+							"text": "Fremdwörter dürfen in der deutschen Standardsprache überhaupt nicht mehr verwendet werden.",
+							"reason": "Viele gebräuchliche Fremdwörter gehören längst fest zum präzisen Wortschatz."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M7XFHDATE8WGVX898SBY59Y2",
+			"atom_uri": "urn:zam:atom:01M7XFHDATE8WGVX898SBY59Y2",
+			"namespace": "zam-academy-deutsch-realschule-7",
+			"slug": "d7-wortgeschichte-bedeutungswandel",
+			"title": "Wortgeschichte: Historismen, Bedeutungswandel und Entlehnung",
+			"domain": "deutsch/sprache",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-wortgeschichte-bedeutungswandel",
+			"prerequisites": [
+				{
+					"atom_id": "01M7XFHDAT5QZ3ZZHNQ3PEE7FF",
+					"type": "soft"
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-7",
+					"topic_code": "sprache",
+					"topic_title": "Sprache und Rechtschreibung"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "deutsch",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XFHDAT5KBSS63CN1W5HPPC",
+					"slug": "d7-wortgeschichte-bedeutungswandel-check",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Was versteht man in der Sprachgeschichte unter einem Historismus wie „der Gulden“ oder „der Knappe“?",
+					"concept": "Ein Wort für eine Sache oder Rolle, die aus dem heutigen Alltag verschwunden ist.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-wortgeschichte-bedeutungswandel",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Ein Wort für eine Sache oder Rolle, die aus dem heutigen Alltag verschwunden ist.",
+							"Ein neu erfundenes Kunstwort aus einem aktuellen Computerspiel."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Eine beliebige moderne Abkürzung aus Chatgruppen im Netz.",
+							"reason": "Chat-Abkürzungen sind neue Alltagstrends, keine Bezeichnungen für vergangene Kulturen."
+						},
+						{
+							"text": "Ein anderes Wort für ein völlig falsch ausgesprochenes Fremdwort.",
+							"reason": "Historismen sind echte historische Wörter wie „Minnesang“ oder „Droschke“."
+						}
+					]
+				},
+				{
+					"id": "01M7XFHDATX3G4QMEJ56R2ACSH",
+					"slug": "d7-wortgeschichte-bedeutungswandel-recall",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Wie gehst du beim Lesen eines älteren Texts mit Wörtern wie „billig“ oder alten Schreibungen wie „Thür“ um?",
+					"concept": "Du prüfst historische Bedeutungen im Zusammenhang und nutzt ein Wörterbuch statt moderner Schnellschlüsse.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-wortgeschichte-bedeutungswandel",
+					"sample_solution": "Erkenne geänderte Schreibweisen wie „Thür“ oder „seyn“ lautlich wieder, deute Wörter wie „billig“ oder „elend“ nicht blind nach heutigem Alltagssinn und schlage bei Bedarf im etymologischen Wörterbuch nach.",
+					"choice_distractors": [
+						{
+							"text": "Du setzt immer voraus, dass jedes deutsche Wort vor dreihundert Jahren genau dasselbe bedeutete.",
+							"reason": "Gerade bei Bedeutungswandel führt die blinde heutige Bedeutung oft zu Fehlinterpretationen."
+						},
+						{
+							"text": "Du streichst jedes historisch geschriebene Wort einfach aus der Gedichtinterpretation.",
+							"reason": "Alte Schreibungen und Wörter erschließen gerade die historische Entstehungszeit des Texts."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M7XFHDATMEFHT3ZJZVQ4ZHP4",
+			"atom_uri": "urn:zam:atom:01M7XFHDATMEFHT3ZJZVQ4ZHP4",
+			"namespace": "zam-academy-deutsch-realschule-7",
+			"slug": "d7-jugendsprache-sprachwandel",
+			"title": "Jugendsprache, Werbesprache und Gegenwartstendenzen",
+			"domain": "deutsch/sprache",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-jugendsprache-sprachwandel",
+			"prerequisites": [
+				{
+					"atom_id": "01M7XFHDATE8WGVX898SBY59Y2",
+					"type": "soft"
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-7",
+					"topic_code": "sprache",
+					"topic_title": "Sprache und Rechtschreibung"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "deutsch",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XFHDATG4CGQPB2BMFFEGSV",
+					"slug": "d7-jugendsprache-sprachwandel-check",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welches mögliche Risiko entsteht durch starke Jugendsprache in einem Text für die gesamte Schulgemeinschaft?",
+					"concept": "Außenstehende können Begriffe falsch oder gar nicht verstehen.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-jugendsprache-sprachwandel",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Außenstehende können Begriffe falsch oder gar nicht verstehen.",
+							"Alle Wörter werden dadurch doppelt so lang wie in alten Gesetzestexten."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Jedes fremde Wort verwandelt sich sofort in einen mittelalterlichen Historismus.",
+							"reason": "Jugendsprache nutzt gerade neue Modewörter, keine verschwundenen Begriffe früherer Jahrhunderte."
+						},
+						{
+							"text": "Die Sätze bekommen plötzlich zu viele alte Genitivformen und Schachtelungen.",
+							"reason": "Aktuelle Trends zeigen gerade das Gegenteil: kürzere Sätze und weniger Genitive."
+						}
+					]
+				},
+				{
+					"id": "01M7XFHDATSVC3XHJF99XMZ83D",
+					"slug": "d7-jugendsprache-sprachwandel-recall",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Welche drei aktuellen Veränderungen im deutschen Sprachgebrauch begegnen dir in Chats, Werbung und Alltag?",
+					"concept": "Kürzere Sätze, das Weglassen von Artikeln oder Präpositionen sowie der Rückgang des Genitivs zugunsten des Dativs.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-jugendsprache-sprachwandel",
+					"sample_solution": "Beobachtbar sind erstens immer kürzere Sätze (auch verblose Ellipsen in Werbung und Chat), zweitens das Weglassen von Artikeln („gehe Bahnhof“) und drittens der häufige Dativ nach Präpositionen wie „wegen“ statt des Genitivs.",
+					"choice_distractors": [
+						{
+							"text": "Immer längere Schachtelsätze mit fünfzehn Nebensätzen sowie vermehrte Th-Schreibungen.",
+							"reason": "Längere Verschachtelungen und alte Schreibweisen nehmen nicht zu, sondern gehen zurück."
+						},
+						{
+							"text": "Der vollständige Wegfall aller Verben im Präsens aus sämtlichen Lehrbüchern.",
+							"reason": "Die schriftsprachliche Standardsprache hält an vollständigen Sätzen fest."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M7XFHDATDXPD1KDWSCTK5547",
+			"atom_uri": "urn:zam:atom:01M7XFHDATDXPD1KDWSCTK5547",
+			"namespace": "zam-academy-deutsch-realschule-7",
+			"slug": "d7-ober-unterbegriffe-d6",
+			"title": "Ober- und Unterbegriffe · Strukturen aus Klasse 6 sichern",
+			"domain": "deutsch/sprache",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-ober-unterbegriffe-d6",
+			"prerequisites": [
+				{
+					"atom_id": "01M7XFHDATMEFHT3ZJZVQ4ZHP4",
+					"type": "soft"
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-7",
+					"topic_code": "sprache",
+					"topic_title": "Sprache und Rechtschreibung"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "deutsch",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XFHDAT97K4HWG9AGW0ARSN",
+					"slug": "d7-ober-unterbegriffe-d6-check",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welcher Oberbegriff fasst die Wörter „Vergleich“, „Personifikation“ und „Ellipse“ fachlich treffend zusammen?",
+					"concept": "Sprachliche Mittel.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-ober-unterbegriffe-d6",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Sprachliche Mittel.",
+							"Pragmatische Gebrauchstexte."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Historische Münzbezeichnungen.",
+							"reason": "Münznamen wie Kreuzer sind Historismen, keine sprachlichen Gestaltungsmittel."
+						},
+						{
+							"text": "Unterordnende Bindewörter.",
+							"reason": "Konjunktionen verknüpfen Sätze; hier geht es um bildhafte oder verkürzte Stilmittel."
+						}
+					]
+				},
+				{
+					"id": "01M7XFHDATNTCS8MG0T7F8629Q",
+					"slug": "d7-ober-unterbegriffe-d6-recall",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Wann wählst du in einer Beschreibung eher das Passiv statt des Aktivs aus Klasse 6?",
+					"concept": "Wenn der Vorgang oder das Ergebnis im Vordergrund steht und die handelnde Person nebensächlich ist.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-ober-unterbegriffe-d6",
+					"sample_solution": "Im Aktiv betonst du den Handelnden („Die Klasse sortiert die Bücher“); im Vorgangspassiv rückst du das Geschehen oder Werkstück nach vorn („Die Bücher werden sortiert“).",
+					"choice_distractors": [
+						{
+							"text": "Immer dann, wenn du gar kein Verb in den gesamten Absatz einbauen möchtest.",
+							"reason": "Auch das Passiv besteht zwingend aus einer gebeugten Form von „werden“ oder „sein“ plus Partizip II."
+						},
+						{
+							"text": "Ausschließlich in direkten Befehlen auf dem Sportplatz.",
+							"reason": "Auf dem Sportplatz herrscht gerade der aktive Imperativ vor."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M7XFHDATDH1TJQ52MRHGHN67",
+			"atom_uri": "urn:zam:atom:01M7XFHDATDH1TJQ52MRHGHN67",
+			"namespace": "zam-academy-deutsch-realschule-7",
+			"slug": "d7-indikativ-konjunktiv-rede",
+			"title": "Indikativ und Konjunktiv in der indirekten Rede",
+			"domain": "deutsch/sprache",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-indikativ-konjunktiv-rede",
+			"prerequisites": [
+				{
+					"atom_id": "01M7XFHDATDXPD1KDWSCTK5547",
+					"type": "soft"
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-7",
+					"topic_code": "sprache",
+					"topic_title": "Sprache und Rechtschreibung"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "deutsch",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XFHDAT8J44SARJ1Q6Q72DQ",
+					"slug": "d7-indikativ-konjunktiv-rede-check",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Wann weichst du in der indirekten Rede vom Konjunktiv I auf den Konjunktiv II aus?",
+					"concept": "Wenn die Form des Konjunktivs I genauso lautet wie der Indikativ.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-indikativ-konjunktiv-rede",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Wenn die Form des Konjunktivs I genauso lautet wie der Indikativ.",
+							"Immer dann, wenn du beweisen willst, dass die Sprecherin garantiert lügt."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Wenn ein Satz länger als sieben Wörter wird und zwei Nomen enthält.",
+							"reason": "Satzlänge spielt bei der Wahl zwischen Konjunktiv I und II keine Rolle."
+						},
+						{
+							"text": "Sobald die direkte Rede ein Fragezeichen am Satzende trägt.",
+							"reason": "Auch indirekte Fragen folgen derselben Konjunktiv-Regel nach Eindeutigkeit der Form."
+						}
+					]
+				},
+				{
+					"id": "01M7XFHDATXH9D23S0380F23C6",
+					"slug": "d7-indikativ-konjunktiv-rede-recall",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Worin unterscheiden sich Indikativ und Konjunktiv in ihrer Aussagehaltung bei der Wiedergabe fremder Worte?",
+					"concept": "Indikativ stellt Aussagen als gegeben hin; Konjunktiv I zeigt neutrale Wiedergabe.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-indikativ-konjunktiv-rede",
+					"sample_solution": "Schreibst du im Indikativ „Das Regal steht im Flur“, übernimmst du die Aussage als Fakt. Im Konjunktiv „Herr Klein erklärt, das Regal stehe im Flur“ machst du deutlich, dass es sich um seine wiedergegebene Aussage handelt.",
+					"choice_distractors": [
+						{
+							"text": "Der Konjunktiv steht nur für Zukunftspläne, der Indikativ nur für Märchen.",
+							"reason": "Beide Modi unterscheiden Realität und Wiedergabe bzw. Möglichkeit, nicht Zukunft und Märchen."
+						},
+						{
+							"text": "Beide Formen bedeuten genau dasselbe und dürfen nie gemischt geprüft werden.",
+							"reason": "Gerade in Inhaltsangaben und Berichten trennt der Konjunktiv I Wiedergabe von Behauptung."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M7XFHDATNCRMX0TMAAM551JV",
+			"atom_uri": "urn:zam:atom:01M7XFHDATNCRMX0TMAAM551JV",
+			"namespace": "zam-academy-deutsch-realschule-7",
+			"slug": "d7-attribute-vor-nachgestellt",
+			"title": "Satzglieder und vor- oder nachgestellte Attribute",
+			"domain": "deutsch/sprache",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-attribute-vor-nachgestellt",
+			"prerequisites": [
+				{
+					"atom_id": "01M7XFHDATDH1TJQ52MRHGHN67",
+					"type": "soft"
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-7",
+					"topic_code": "sprache",
+					"topic_title": "Sprache und Rechtschreibung"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "deutsch",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XFHDATHZ9TZJ095TEMWKT2",
+					"slug": "d7-attribute-vor-nachgestellt-check",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Woran beweist die Umstellprobe, dass „der Schulmannschaft“ in „Der Trainer der Schulmannschaft lacht“ ein Attribut und kein eigenes Satzglied ist?",
+					"concept": "Es lässt sich nicht allein vor das Prädikat stellen, sondern wandert nur gemeinsam mit „Der Trainer“.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-attribute-vor-nachgestellt",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Es lässt sich nicht allein vor das Prädikat stellen, sondern wandert nur gemeinsam mit „Der Trainer“.",
+							"Es trägt am Wortende zwei völlig verschiedene Großbuchstaben."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Es steht grundsätzlich immer an letzter Stelle ganz am Ende jedes deutschen Satzes.",
+							"reason": "Vorangestellte und nachgestellte Attribute können in jedem Satzglied vorn, mittig oder hinten stehen."
+						},
+						{
+							"text": "Es antwortet auf die Frage „Wann?“ nach dem gesamten zeitlichen Ablauf.",
+							"reason": "„Wann?“ fragt nach einem eigenständigen Temporaladverbiale, nicht nach einem Genitivattribut."
+						}
+					]
+				},
+				{
+					"id": "01M7XFHDATVCYQAY0BF2XHWHZD",
+					"slug": "d7-attribute-vor-nachgestellt-recall",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Welche vorangestellten und nachgestellten Attributarten kennst du, und wozu nutzt du sie beim Schreiben?",
+					"concept": "Vorangestellte Adjektiv- und nachgestellte Genitiv- oder Präpositionalattribute präzisieren Nomen.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-attribute-vor-nachgestellt",
+					"sample_solution": "Vorangestellte Attribute stehen meist als Adjektiv oder Partizip zwischen Artikel und Nomen („das verregnete Spiel“). Nachgestellte Attribute folgen als Genitiv-, Präpositional- oder Appositionszusatz („der Pokal der Klasse“, „die Bank am Zaun“) und ersparen oft umständliche Zusatzsätze.",
+					"choice_distractors": [
+						{
+							"text": "Attribute stehen immer als eigenständige Hauptsätze mit Punkt hinter jedem Wort.",
+							"reason": "Ein Attribut ist ein unselbständiger Teil innerhalb eines Satzglieds, kein ganzer Satz."
+						},
+						{
+							"text": "Vorangestellte Attribute bestehen ausschließlich aus gebeugten Verben im Futur II.",
+							"reason": "Vorangestellt werden bei Nomen vor allem Adjektive, Partizipien oder Genitive, keine Futur-II-Verben."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M7XFHDATCBPFE3JPMHR4S239",
+			"atom_uri": "urn:zam:atom:01M7XFHDATCBPFE3JPMHR4S239",
+			"namespace": "zam-academy-deutsch-realschule-7",
+			"slug": "d7-adverbiale-bestimmungen",
+			"title": "Adverbiale sicher erkennen und stilistisch nutzen",
+			"domain": "deutsch/sprache",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-adverbiale-bestimmungen",
+			"prerequisites": [
+				{
+					"atom_id": "01M7XFHDATNCRMX0TMAAM551JV",
+					"type": "soft"
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-7",
+					"topic_code": "sprache",
+					"topic_title": "Sprache und Rechtschreibung"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "deutsch",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XFHDATK9WJW8D7VRNC06GR",
+					"slug": "d7-adverbiale-bestimmungen-check",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Woran erkennst du in „Wegen eines Stromausfalls fiel die Probe aus“ ein Kausaladverbiale?",
+					"concept": "Es ist ein eigenes Satzglied und antwortet auf die Frage „Warum?“.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-adverbiale-bestimmungen",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Es ist ein eigenes Satzglied und antwortet auf die Frage „Warum?“.",
+							"Es begleitet das Nomen „Probe“ als unverzichtbare gebeugte Verbform."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Es steht immer ohne Präposition direkt hinter dem letzten Wort.",
+							"reason": "Kausaladverbiale werden sehr oft durch Präpositionen wie „wegen“, „aufgrund“ oder „trotz“ eingeleitet."
+						},
+						{
+							"text": "Es bestimmt lediglich ein vorausgehendes Adjektiv als reine Steigerung.",
+							"reason": "Die Angabe bezieht sich auf die gesamte Satzaussage und begründet den Ausfall."
+						}
+					]
+				},
+				{
+					"id": "01M7XFHDAT9QRGNB6B7FA3JG0C",
+					"slug": "d7-adverbiale-bestimmungen-recall",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Wie unterscheidest du „auf dem Schulhof“ von „auf den Beginn“ nach dem Verb „warten“?",
+					"concept": "„auf dem Schulhof“ lässt sich als Lokaladverbiale durch „dort“ ersetzen; „auf den Beginn“ verlangt fest das Verb „warten auf“.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-adverbiale-bestimmungen",
+					"sample_solution": "Nach „warten“ steuert das Verb die feste Präposition „auf“ + Akkusativ als Präpositionalobjekt („Worauf? Auf den Beginn“). Beim Lokaladverbiale „auf dem Schulhof“ wählst du frei den Ort und kannst die Wortgruppe durch „dort“ ersetzen.",
+					"choice_distractors": [
+						{
+							"text": "Beide sind identisch, weil einfach jedes Wort nach „auf“ automatisch ein Kausaladverbiale ist.",
+							"reason": "Die gleiche Präposition kann je nach Verb und Frage ganz unterschiedliche Satzglieder bilden."
+						},
+						{
+							"text": "Nur der erste Ausdruck ist ein Nomen; der zweite ist grundsätzlich ein gebeugtes Verb.",
+							"reason": "Beide Ausdrücke enthalten Nomen („Beginn“, „Schulhof“), erfüllen aber unterschiedliche Satzgliedfunktionen."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M7XFHDAT271EW2KRC45NSQEQ",
+			"atom_uri": "urn:zam:atom:01M7XFHDAT271EW2KRC45NSQEQ",
+			"namespace": "zam-academy-deutsch-realschule-7",
+			"slug": "d7-kausal-temporalsaetze",
+			"title": "Kausal- und Temporalsätze im Satzgefüge",
+			"domain": "deutsch/sprache",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-kausal-temporalsaetze",
+			"prerequisites": [
+				{
+					"atom_id": "01M7XFHDATCBPFE3JPMHR4S239",
+					"type": "soft"
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-7",
+					"topic_code": "sprache",
+					"topic_title": "Sprache und Rechtschreibung"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "deutsch",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XFHDAT0ZRW20G902GRZKR2",
+					"slug": "d7-kausal-temporalsaetze-check",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche Zeitform gehört in einen vorzeitigen „nachdem“-Satz, wenn der Hauptsatz im Präteritum steht?",
+					"concept": "Das Plusquamperfekt.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-kausal-temporalsaetze",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Das Plusquamperfekt.",
+							"Das Futur I."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Immer nur das Präsens.",
+							"reason": "Präsens im „nachdem“-Satz passt nicht zu einer bereits abgeschlossenen Handlung vor der Vergangenheit."
+						},
+						{
+							"text": "Ausschließlich das Futur II.",
+							"reason": "Futur II drückt vermutete oder zukünftige Abgeschlossenheit aus, nicht Vorzeitigkeit in einer vergangenen Erzählung."
+						}
+					]
+				},
+				{
+					"id": "01M7XFHDAT6X44RERQKAJGF3RB",
+					"slug": "d7-kausal-temporalsaetze-recall",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Wie prüfst du bei einem Satzgefüge mit vorangestelltem Nebensatz, ob die Wortstellung stimmt?",
+					"concept": "Im Nebensatz steht das gebeugte Verb hinten; direkt nach dem Komma folgt das Hauptsatzverb.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-kausal-temporalsaetze",
+					"sample_solution": "Der ganze Nebensatz zählt als erstes Satzglied vor dem Hauptsatz. Deshalb steht das finite Verb im Nebensatz am Schluss und im unmittelbar anschließenden Hauptsatz direkt an Position eins nach dem Komma („Da es regnet, bleiben wir hier“).",
+					"choice_distractors": [
+						{
+							"text": "Du setzt in beide Teilsätze das gebeugte Verb immer an den allerletzten Platz.",
+							"reason": "Nur im eingeleiteten Nebensatz steht das Verb am Ende; der Hauptsatz behält Zweitstellung (direkt nach dem Vorfeld-Nebensatz)."
+						},
+						{
+							"text": "Du trennst beide Teilsätze ohne Komma einfach durch einen Gedankenstrich.",
+							"reason": "Ein Nebensatz wird im Satzgefüge immer durch ein Komma vom Hauptsatz getrennt."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M7XFHDATNCHRPPA5QSSYHFD8",
+			"atom_uri": "urn:zam:atom:01M7XFHDATNCHRPPA5QSSYHFD8",
+			"namespace": "zam-academy-deutsch-realschule-7",
+			"slug": "d7-modal-lokal-attributsaetze",
+			"title": "Modal-, Lokal- und Attributsätze gezielt einsetzen",
+			"domain": "deutsch/sprache",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-modal-lokal-attributsaetze",
+			"prerequisites": [
+				{
+					"atom_id": "01M7XFHDAT271EW2KRC45NSQEQ",
+					"type": "soft"
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-7",
+					"topic_code": "sprache",
+					"topic_title": "Sprache und Rechtschreibung"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "deutsch",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XFHDATEEYKP9PXKZ1MSZ0Z",
+					"slug": "d7-modal-lokal-attributsaetze-check",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche Frage beantwortet der Nebensatz „indem sie alle Karten farbig ordnet“?",
+					"concept": "Wie oder auf welche Weise? (Modalsatz)",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-modal-lokal-attributsaetze",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Wie oder auf welche Weise? (Modalsatz)",
+							"Zu welchem Zeitpunkt? (Temporalsatz)"
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Aus welchem historischen Grund? (Kausalsatz)",
+							"reason": "Ursachen erfragt man mit „Warum?“ und „weil/da“, nicht mit „indem“."
+						},
+						{
+							"text": "Welches Bezugsnomen hat einen Genitiv? (Attributsatz)",
+							"reason": "Der „indem“-Satz hängt vom Verb des Hauptsatzes ab, nicht von einem Nomen."
+						}
+					]
+				},
+				{
+					"id": "01M7XFHDATZX8CB1A79K86HKDZ",
+					"slug": "d7-modal-lokal-attributsaetze-recall",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Worin unterscheidest du einen Attributsatz grundsätzlich von einem Lokal- oder Modalsatz?",
+					"concept": "Ein Attributsatz bestimmt ein Nomen näher; Adverbialsätze klären Umstände des Verbs.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-modal-lokal-attributsaetze",
+					"sample_solution": "Ein Attributsatz (meist Relativsatz oder „dass“-Attribut zu „die Hoffnung“) steht direkt bei seinem Bezugsnomen („die Bank, die…“) und ist Teil dieses Satzglieds. Modal- und Lokalsätze ersetzen eigenständige Adverbiale zum gesamten Satz.",
+					"choice_distractors": [
+						{
+							"text": "Attributsätze stehen immer im Konjunktiv I und dürfen kein Komma besitzen.",
+							"reason": "Attributsätze stehen in der Regel im Indikativ und werden mit Kommas abgetrennt."
+						},
+						{
+							"text": "Modal- und Lokalsätze stehen immer ohne eigenes gebeugtes Verb am Ende.",
+							"reason": "Jeder deutsche Nebensatz enthält ein eigenes finites Verb am Ende."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M7XFHDATBPFZG8VGCZ234H0Y",
+			"atom_uri": "urn:zam:atom:01M7XFHDATBPFZG8VGCZ234H0Y",
+			"namespace": "zam-academy-deutsch-realschule-7",
+			"slug": "d7-satzreihe-satzgefuege",
+			"title": "Sätze erweitern, verkürzen und mit Pronominaladverbien verknüpfen",
+			"domain": "deutsch/sprache",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-satzreihe-satzgefuege",
+			"prerequisites": [
+				{
+					"atom_id": "01M7XFHDATNCHRPPA5QSSYHFD8",
+					"type": "soft"
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-7",
+					"topic_code": "sprache",
+					"topic_title": "Sprache und Rechtschreibung"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "deutsch",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XFHDATV3B580M4HE8YHD73",
+					"slug": "d7-satzreihe-satzgefuege-check",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "An welcher Position steht das gebeugte (finite) Verb im eingeleiteten deutschen Nebensatz?",
+					"concept": "Ganz am Ende des eingeleiteten Nebensatzes.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-satzreihe-satzgefuege",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Ganz am Ende des eingeleiteten Nebensatzes.",
+							"Genau an zweiter Satzposition wie im Hauptsatz."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Immer unmittelbar an der ersten Position vor dem Subjekt.",
+							"reason": "Verberststellung kennzeichnet Entscheidungsfragen oder Befehle, keinen eingeleiteten Nebensatz."
+						},
+						{
+							"text": "Genau in der Satzmitte zwischen Subjekt und Präposition.",
+							"reason": "Im Nebensatz bildet das Verb eine Satzklammer von der Subjunktion bis zum Schluss."
+						}
+					],
+					"replaces": [
+						"01K4D7S0000000000000000J01"
+					]
+				},
+				{
+					"id": "01M7XFHDATFCHAZ1X24N8FY574",
+					"slug": "d7-satzreihe-satzgefuege-recall",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Worin unterscheiden sich Satzreihe mit Pronominaladverb und Satzgefüge grammatisch am deutlichsten?",
+					"concept": "Satzreihen verknüpfen Hauptsätze mit Zweitstellung; Satzgefüge unterordnen Nebensätze mit Verbendstellung.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-satzreihe-satzgefuege",
+					"sample_solution": "In einer Satzreihe („Der Bus war spät, deshalb fehlten wir“) stehen beide gebeugten Verben an Position zwei. Im Satzgefüge („Weil der Bus spät war, fehlten wir“) steht das Verb im Nebensatz ganz hinten.",
+					"choice_distractors": [
+						{
+							"text": "In einer Satzreihe stehen gar keine gebeugten Verben, im Satzgefüge niemals ein Komma.",
+							"reason": "Jeder Teilsatz hat ein finites Verb, und Nebensätze wie die meisten Satzreihen brauchen Kommas."
+						},
+						{
+							"text": "Satzreihen drücken ausschließlich Widerspruch aus, Satzgefüge nur eine Uhrzeit.",
+							"reason": "Sowohl Satzreihe als auch Satzgefüge können Gründe, Zeiten, Gegensätze oder Folgen ausdrücken."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M7XFHDATZMBHBVZWRASECHNY",
+			"atom_uri": "urn:zam:atom:01M7XFHDATZMBHBVZWRASECHNY",
+			"namespace": "zam-academy-deutsch-realschule-7",
+			"slug": "d7-das-oder-dass",
+			"title": "„das“ oder „dass“ sicher unterscheiden",
+			"domain": "deutsch/sprache",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-das-oder-dass",
+			"prerequisites": [
+				{
+					"atom_id": "01M7XFHDATBPFZG8VGCZ234H0Y",
+					"type": "soft"
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-7",
+					"topic_code": "sprache",
+					"topic_title": "Sprache und Rechtschreibung"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "deutsch",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XFHDATJBA2AANH37W1YJQD",
+					"slug": "d7-das-oder-dass-check",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Mit welchen drei Ersatzwörtern prüfst du zuverlässig, ob ‚das‘ mit einfachem s geschrieben wird?",
+					"concept": "Dieses, jenes oder welches.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-das-oder-dass",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Dieses, jenes oder welches.",
+							"Weil, obwohl oder nachdem."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Weil, obwohl oder nachdem.",
+							"reason": "Das sind unterordnende Konjunktionen wie ‚dass‘, keine Ersatzwörter für Artikel oder Pronomen."
+						},
+						{
+							"text": "Indem, damit oder sodass.",
+							"reason": "Diese Bindewörter leiten Nebensätze ein, ersetzen aber niemals ‚das‘."
+						}
+					],
+					"replaces": [
+						"01K4D7S0000000000000000J05"
+					]
+				},
+				{
+					"id": "01M7XFHDAT6YX51MXMQ7NW5P9E",
+					"slug": "d7-das-oder-dass-recall",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Warum reicht beim Diktat oder Aufsatz die Faustregel „Nach einem Komma steht immer ‚dass‘“ nicht aus?",
+					"concept": "Auch ein Relativsatz beginnt direkt nach einem Komma mit „das“, wenn sich das Wort auf ein sächliches Nomen bezieht.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-das-oder-dass",
+					"sample_solution": "Sowohl der Relativsatz („das Heft, das dort liegt“) als auch ein vorgezogenes Demonstrativpronomen („Sie sagte, das sei wahr“) stehen nach einem Komma und heißen dennoch „das“ – einzig die Ersatzprobe und Wortart entscheiden.",
+					"choice_distractors": [
+						{
+							"text": "Weil vor der Konjunktion ‚dass‘ im Deutschen grundsätzlich niemals ein Komma steht.",
+							"reason": "Vor der Konjunktion ‚dass‘ steht fast immer ein Komma, außer am Satzanfang."
+						},
+						{
+							"text": "Weil Relativsätze auf ein sächliches Nomen immer mit doppeltem s geschrieben werden.",
+							"reason": "Relativpronomen heißen ausnahmslos „das“ mit einfachem s."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M7XFHDATQV9DZZJWFBD6TFRB",
+			"atom_uri": "urn:zam:atom:01M7XFHDATQV9DZZJWFBD6TFRB",
+			"namespace": "zam-academy-deutsch-realschule-7",
+			"slug": "d7-komma-satzreihe-satzgefuege",
+			"title": "Zeichensetzung in Satzreihe und Satzgefüge",
+			"domain": "deutsch/sprache",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-komma-satzreihe-satzgefuege",
+			"prerequisites": [
+				{
+					"atom_id": "01M7XFHDATZMBHBVZWRASECHNY",
+					"type": "soft"
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-7",
+					"topic_code": "sprache",
+					"topic_title": "Sprache und Rechtschreibung"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "deutsch",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XFHDATWCHDAX90SXBEH5SF",
+					"slug": "d7-komma-satzreihe-satzgefuege-check",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Wann brauchst du bei einem Relativsatz zwei Kommas (vorher und nachher)?",
+					"concept": "Wenn der Relativsatz mitten in den übergeordneten Satz eingeschoben wird.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-komma-satzreihe-satzgefuege",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Wenn der Relativsatz mitten in den übergeordneten Satz eingeschoben wird.",
+							"Immer dann, wenn der Relativsatz ganz am Schluss des Satzes steht."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Sobald das Bezugsnomen im Plural und mit männlichem Artikel steht.",
+							"reason": "Genus und Zahl des Bezugsnomens bestimmen niemals die Kommasetzung."
+						},
+						{
+							"text": "Wenn das letzte Satzzeichen am Schluss ein Ausrufezeichen ist.",
+							"reason": "Satzendzeichen ersetzen kein schließendes Komma nach einem Einschub."
+						}
+					]
+				},
+				{
+					"id": "01M7XFHDAT5J1KFKHZPA0JA72C",
+					"slug": "d7-komma-satzreihe-satzgefuege-recall",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Wie unterscheidest du bei „und“ zwischen Hauptsätzen und einfachen Aufzählungen hinsichtlich des Kommas?",
+					"concept": "Bei selbständigen Hauptsätzen mit „und“ ist ein Komma möglich; bei Wortreihungen steht keines.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-komma-satzreihe-satzgefuege",
+					"sample_solution": "Verbindet „und“ zwei vollständige Hauptsätze („Wir packen ein, und wir gehen“), ist ein Komma freiwillig möglich. Verbindet es nur zwei Prädikate zu demselben Subjekt („Wir packen ein und verlassen das Zimmer“) oder zwei Nomen, bleibt „und“ kommalos.",
+					"choice_distractors": [
+						{
+							"text": "Vor jedem „und“ in einer normalen Aufzählung ist im Deutschen immer ein Komma Pflicht.",
+							"reason": "Bei einfachen Reihungen wie „Äpfel und Birnen“ steht vor „und“ kein Komma."
+						},
+						{
+							"text": "Nach „denn“ oder „aber“ lässt man das Komma genauso weg wie zwischen zwei Nomen.",
+							"reason": "Vor „aber“, „denn“ und „sondern“ zwischen Hauptsätzen ist das Komma zwingend."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M7XFHDATS1VY10NNGXVBSBE2",
+			"atom_uri": "urn:zam:atom:01M7XFHDATS1VY10NNGXVBSBE2",
+			"namespace": "zam-academy-deutsch-realschule-7",
+			"slug": "d7-zitieren-apostroph",
+			"title": "Zeichensetzung beim Zitieren und Gebrauch des Apostrophs",
+			"domain": "deutsch/sprache",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-zitieren-apostroph",
+			"prerequisites": [
+				{
+					"atom_id": "01M7XFHDATQV9DZZJWFBD6TFRB",
+					"type": "soft"
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-7",
+					"topic_code": "sprache",
+					"topic_title": "Sprache und Rechtschreibung"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "deutsch",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XFHDAT1467FQ2DW1BM6DBM",
+					"slug": "d7-zitieren-apostroph-check",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Wie schreibst du den Genitiv des Vornamens „Lukas“ richtig vor „Tasche“?",
+					"concept": "Lukas’ Tasche (mit Apostroph nach s, ohne weiteres s).",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-zitieren-apostroph",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Lukas’ Tasche (mit Apostroph nach s, ohne weiteres s).",
+							"Lukas’s Tasche (mit Apostroph und zusätzlichem s)."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Lukass Tasche (mit verdoppeltem s ohne jedes Zeichen).",
+							"reason": "Deutsche Personennamen verdoppeln im Genitiv kein s; sie tragen bei s/ß/x/z den Apostroph."
+						},
+						{
+							"text": "Luka’ss Tasche (mit Apostroph vor doppeltem s).",
+							"reason": "Der Stamm des Namens lautet „Lukas“ und wird niemals zwischen a und s getrennt."
+						}
+					]
+				},
+				{
+					"id": "01M7XFHDATHDEZDPS7E6J666A8",
+					"slug": "d7-zitieren-apostroph-recall",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Wann behält ein Zitat vor nachgestelltem Begleitsatz sein Endzeichen, und wann fällt es weg?",
+					"concept": "Frage- und Ausrufezeichen bleiben in der Anführung vor dem Komma; ein Schlusspunkt entfällt.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-zitieren-apostroph",
+					"sample_solution": "Bei einer Frage oder einem Ausruf bleiben „?“ und „!“ in der wörtlichen Rede („Kommst du?“, fragt sie). Bei einem einfachen Aussagesatz entfällt der Punkt vor dem schließenden Anführungszeichen, und das Komma trennt den Begleitsatz („Das stimmt“, sagt sie).",
+					"choice_distractors": [
+						{
+							"text": "Man setzt einfach grundsätzlich Punkt, Komma und Fragezeichen gemeinsam hintereinander.",
+							"reason": "Ein Punkt entfällt vor dem schließenden Anführungszeichen, wenn ein Begleitsatz folgt."
+						},
+						{
+							"text": "Man lässt jedes Anführungszeichen weg, sobald der Satz ein Fragezeichen enthält.",
+							"reason": "Wörtliche Rede und Zitate behalten stets ihre Anführungszeichen."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M7XFHDATVXXT241660GXR0A6",
+			"atom_uri": "urn:zam:atom:01M7XFHDATVXXT241660GXR0A6",
+			"namespace": "zam-academy-deutsch-realschule-7",
+			"slug": "d7-gross-kleinschreibung",
+			"title": "Groß- und Kleinschreibung: Nominalisierung, Farben, Zahlen und Zeiten",
+			"domain": "deutsch/sprache",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-gross-kleinschreibung",
+			"prerequisites": [
+				{
+					"atom_id": "01M7XFHDATS1VY10NNGXVBSBE2",
+					"type": "soft"
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-7",
+					"topic_code": "sprache",
+					"topic_title": "Sprache und Rechtschreibung"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "deutsch",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XFHDAT5ANNVM059BGZ0CNA",
+					"slug": "d7-gross-kleinschreibung-check",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Welche Tageszeitangabe schreibt man richtig groß und welche klein?",
+					"concept": "„Heute Morgen“ groß als Nomen, „morgens“ klein als Adverb.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-gross-kleinschreibung",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"„Heute Morgen“ groß als Nomen, „morgens“ klein als Adverb.",
+							"„Heute morgen“ klein, „Morgens“ groß."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "„Heute morgen“ klein am Ende und „morgens“ immer groß.",
+							"reason": "Nach „heute“, „gestern“ und „morgen“ gelten Morgen, Mittag, Abend als Nomen und werden großgeschrieben."
+						},
+						{
+							"text": "„Am morgen“ immer klein und „täglich“ grundsätzlich groß.",
+							"reason": "„Am Morgen“ enthält die Artikelverschmelzung „an dem“ und steht groß; „täglich“ ist ein Adjektiv."
+						}
+					]
+				},
+				{
+					"id": "01M7XFHDAT3NFJKXY4BDQ2RK23",
+					"slug": "d7-gross-kleinschreibung-recall",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Wie prüfst du mit der Erkennungsfrage „Was?“ oder „Wie?“ bei Ausdrücken wie „etwas Gutes“ oder „auf Rot“?",
+					"concept": "„Was?“ fragt nach einem Nomen für Großschreibung; „Wie?“ fragt nach einem Adjektiv.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-gross-kleinschreibung",
+					"sample_solution": "Fragt man „Was gab es? – etwas Gutes“ oder „Bei was? – bei Rot“, steht kein anderes Nomen dabei: Großschreibung. Fragt man „Wie ist das Licht? – rot“, beschreibt es ein Nomen: Kleinschreibung.",
+					"choice_distractors": [
+						{
+							"text": "Jedes Wort hinter dem Hilfswort „ist“ schreibt man immer groß.",
+							"reason": "Prädikative Adjektive nach „ist“ („Die Ampel ist rot“) antworten auf „Wie?“ und bleiben klein."
+						},
+						{
+							"text": "Wörter nach „etwas“ oder „nichts“ stehen immer klein ohne Artikel.",
+							"reason": "Gerade unbestimmte Pronomen wie „etwas“, „nichts“, „viel“ oder „alles“ lösen beim Adjektiv Großschreibung aus."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M7XFHDATX3PBJ0D1RADMWBGQ",
+			"atom_uri": "urn:zam:atom:01M7XFHDATX3PBJ0D1RADMWBGQ",
+			"namespace": "zam-academy-deutsch-realschule-7",
+			"slug": "d7-getrennt-zusammen",
+			"title": "Getrennt- und Zusammenschreibung mit Proben klären",
+			"domain": "deutsch/sprache",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-getrennt-zusammen",
+			"prerequisites": [
+				{
+					"atom_id": "01M7XFHDATVXXT241660GXR0A6",
+					"type": "soft"
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-7",
+					"topic_code": "sprache",
+					"topic_title": "Sprache und Rechtschreibung"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "deutsch",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XFHDAT9SKH0RJFWQ71NEAY",
+					"slug": "d7-getrennt-zusammen-check",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Wie schreibst du die Verbindung aus Nomen und Verb in „Mia muss im Winter früh …“ richtig?",
+					"concept": "Rad fahren steht getrennt und Rad großgeschrieben.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-getrennt-zusammen",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Rad fahren steht getrennt und Rad großgeschrieben.",
+							"radfahren (zusammen und komplett klein)."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "rad fahren wird getrennt und vollständig kleingeschrieben.",
+							"reason": "„Rad“ ist hier ein eigenständiges Nomen („das Rad“) und wird immer großgeschrieben."
+						},
+						{
+							"text": "Rad-fahren schreibt man mit Bindestrich zwischen beiden Teilen.",
+							"reason": "Verbindungen aus Nomen und Verb erhalten keinen Bindestrich."
+						}
+					]
+				},
+				{
+					"id": "01M7XFHDAT81C4PWZPG43Y7MJF",
+					"slug": "d7-getrennt-zusammen-recall",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Woran entscheidest du mit einer Probe bei Adjektivverbindungen wie „leicht verständlich“ oder „hellblau“, ob getrennt oder zusammengeschrieben wird?",
+					"concept": "Lässt sich das erste Wort steigern wie bei „sehr leicht“, steht es getrennt; feste Begriffe verbinden sich.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-getrennt-zusammen",
+					"sample_solution": "Prüfe erst die Erweiterungs- und Steigerungsprobe: „noch leichter verständlich“ und „besonders leuchtend blau“ bleiben getrennt. Ein fester Farbton wie „hellblau“ oder ein neuer Gesamtbegriff („bitterkalt“) verbindet sich zu einem Wort.",
+					"choice_distractors": [
+						{
+							"text": "Man zählt alle Buchstaben beider Wörter zusammen und trennt ab zehn Buchstaben immer.",
+							"reason": "Wortlänge entscheidet niemals über Getrennt- oder Zusammenschreibung."
+						},
+						{
+							"text": "Alle Farbadjektive schreibt man grundsätzlich mit einem Bindestrich zwischen zwei Wörtern.",
+							"reason": "Einfache Farbadjektive wie „dunkelgrün“ stehen zusammen ohne Bindestrich."
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "01M7XFHDAT8BKY0D92M3X0JE7G",
+			"atom_uri": "urn:zam:atom:01M7XFHDAT8BKY0D92M3X0JE7G",
+			"namespace": "zam-academy-deutsch-realschule-7",
+			"slug": "d7-fehleranalyse-strategien",
+			"title": "Fehlerschwerpunkte mit Fehlertabellen analysieren",
+			"domain": "deutsch/sprache",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-fehleranalyse-strategien",
+			"prerequisites": [
+				{
+					"atom_id": "01M7XFHDATX3PBJ0D1RADMWBGQ",
+					"type": "soft"
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "deutsch-realschule-7",
+					"topic_code": "sprache",
+					"topic_title": "Sprache und Rechtschreibung"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "deutsch",
+					"topic_code": "lb4",
+					"topic_title": "Sprachgebrauch und Sprache untersuchen und reflektieren"
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XFHDATKS4F42W8CXEMWA8Q",
+					"slug": "d7-fehleranalyse-strategien-check",
+					"tier": "tier1_fast",
+					"bloom_level": 2,
+					"question": "Wozu dient eine Fehlertabelle bei der Auswertung eines eigenen Entwurfs?",
+					"concept": "Sie bündelt Fehler nach Arten und macht deinen wichtigsten Übungsschwerpunkt sichtbar.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-fehleranalyse-strategien",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Sie bündelt Fehler nach Arten und macht deinen wichtigsten Übungsschwerpunkt sichtbar.",
+							"Sie ersetzt jede eigene Schreibaufgabe durch reines Abmalen bunter Zahlen."
+						],
+						"correct_index": 0
+					},
+					"choice_distractors": [
+						{
+							"text": "Sie verbietet den Blick ins gedruckte oder digitale Wörterbuch.",
+							"reason": "Im Gegenteil vermerkt man in der Tabelle gezielt Wörter für das Nachschlagewerk."
+						},
+						{
+							"text": "Sie löscht alte Entwürfe automatisch noch vor der Rückgabe an die Klasse.",
+							"reason": "Eine Fehleranalyse dient der langfristigen Verbesserung über mehrere Texte hinweg."
+						}
+					]
+				},
+				{
+					"id": "01M7XFHDATP55G5WDW31E2RHP8",
+					"slug": "d7-fehleranalyse-strategien-recall",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Wie gehst du beim nächsten Aufsatz vor, wenn deine Fehlertabelle „Komma im Satzgefüge“ als Hauptschwerpunkt anzeigt?",
+					"concept": "Plane vor der Abgabe eine eigene Kontrollrunde nur für gebeugte Verben, Bindewörter und Satzgrenzen ein.",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/deutsch-realschule-7/#lesson=d7-fehleranalyse-strategien",
+					"sample_solution": "Lies den fertigen Entwurf einmal gezielt rückwärts oder Satz für Satz nur auf finite Verben und Konjunktionen wie „weil, als, dass, obwohl“ hin durch und prüfe jedes Komma separat.",
+					"choice_distractors": [
+						{
+							"text": "Schreibe einfach alle Sätze ohne jedes Bindewort aus höchstens drei Wörtern.",
+							"reason": "Statt Ausdruck einzuschränken, trainierst du gezielt die Kontrollstrategie für Nebensätze."
+						},
+						{
+							"text": "Setze ab sofort nach jedem zweiten Nomen pauschal ein beliebiges Komma.",
+							"reason": "Blinde Kommas zerstören Satzglieder und lösen neue Zeichensetzungsfehler aus."
+						}
+					]
+				}
+			]
+		}
+	]
+}

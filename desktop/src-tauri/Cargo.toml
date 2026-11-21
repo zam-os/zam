@@ -1,6 +1,6 @@
 [package]
 name = "zam-app"
-version = "0.66.0"
+version = "0.67.0"
 description = "ZAM Active-Recall Studio"
 authors = ["ZAM Contributors"]
 edition = "2021"

@@ -1,0 +1,45 @@
+{
+  "schema": 1,
+  "status": "approved",
+  "approved": "2026-11-21",
+  "source_repository": "https://github.com/zam-os/zam",
+  "source_commit": "1ff016cfd7a0765c5338eb4248d0c14f3b92261c",
+  "sources": [
+    {
+      "tile_id": "de-by:gymnasium-7-informatik-objektorientierung-hypertext-datenstrukturen",
+      "file": "tests/fixtures/de-by-gymnasium-7-informatik-objektorientierung-hypertext-datenstrukturen-kvt.json",
+      "sha256": "47fcc538cb38eae6f4b1c0eaad50a1820e5d6918163ee710e6289050deafe92d"
+    }
+  ],
+  "rows": [
+    {
+      "de_by_id": "01K4A7C0000000000000000J01",
+      "category": "A",
+      "action": "replace",
+      "academy_slug": "inf7-hypertext-graph-klasse",
+      "reason": "The title of the construct for common attributes is the same atomic retrieval. The new prompt uses VERWEIS as an example of the existing Grade 7 modelling task."
+    },
+    {
+      "de_by_id": "01K4A7C0000000000000000J02",
+      "category": "C",
+      "action": "keep-active",
+      "academy_slug": null,
+      "reason": "A long Grade 6 review prompt bundles instances, state, methods and UML. The new lesson applies only the object/class distinction and the link attributes. There is no full equivalent."
+    },
+    {
+      "de_by_id": "01K4A7C0000000000000000J03",
+      "category": "C",
+      "action": "keep-active",
+      "academy_slug": null,
+      "reason": "The old prompt asks about nesting within an HTML document and the DOM tree. The new lesson models linked documents as a directed graph and sets links in a visual editor."
+    },
+    {
+      "de_by_id": "01K4A7C0000000000000000J04",
+      "category": "C",
+      "action": "keep-active",
+      "academy_slug": null,
+      "reason": "The old prompt bundles hypertext navigation, HTML nesting rules, the DOM and file paths. The new lessons practise navigation and URL components, so the full prior retrieval has no equivalent."
+    }
+  ],
+  "source": "Thomas approved the proposed transfers for German 7 Realschule, French 6 Gymnasium and Natur und Technik 7 Gymnasium (Informatics) in the Codex chat for ZAM 0.67.0 on 2026-11-21: “Alle sieben vorgeschlagenen Übernahmen freigeben und die drei Kurse einbinden”."
+}

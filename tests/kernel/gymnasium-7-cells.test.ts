@@ -28,7 +28,11 @@ const GYM7_CELL_IDS = [
   "de-by:gymnasium-7-geographie-europa-naturraeume-klima-plattentektonik",
   "de-by:gymnasium-7-geschichte-mittelalter-frankenreich-staedte-kreuzzuege-reformation",
 ];
-const ACADEMY_GYM7_IDS = ["zam-academy:mathematik-gymnasium-7"];
+const ACADEMY_GYM7_IDS = [
+  "zam-academy:mathematik-gymnasium-7",
+  "zam-academy:nt-gymnasium-7",
+  "zam-academy:physik-gymnasium-7",
+];
 
 describe("Gymnasium Bayern 7 Curriculum Cells (G9 LehrplanPLUS)", () => {
   let tempDir: string;
@@ -46,7 +50,7 @@ describe("Gymnasium Bayern 7 Curriculum Cells (G9 LehrplanPLUS)", () => {
     rmSync(tempDir, { recursive: true, force: true });
   });
 
-  it("lists all remaining Gymnasium 7 school cells and their Academy successor", () => {
+  it("lists all remaining Gymnasium 7 school cells and the Academy cells", () => {
     const cells = listBundledCells();
     expect(cells.length).toBeGreaterThanOrEqual(122);
 

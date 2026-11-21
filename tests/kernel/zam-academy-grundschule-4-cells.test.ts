@@ -25,13 +25,9 @@ import {
   parseMaterialProposalSet,
 } from "../../src/kernel/index.js";
 
-// Mathematik, Deutsch and HSU 4 (zam-os/zam-academy#81) are public previews:
-// primary-teacher review and videos are open, and their competences are covered
-// in part or with unreviewed depth. ZAM has no earlier
-// Grundschule cell, so they replace and retire nothing. They bind their Academy
-// stations and name their school place under `zam-academy`, not
-// `lehrplanplus-bayern`, so the school curriculum path keeps its generic import
-// instead of offering a preview as the whole subject.
+// Mathematik, Deutsch and HSU 4 (zam-os/zam-academy#81) bind their Academy
+// stations and school place under `zam-academy`. The LehrplanPLUS path
+// therefore still offers the generic import. There is no legacy cell to migrate.
 const CELLS = [
   {
     id: "zam-academy:mathematik-grundschule-4",
@@ -59,7 +55,7 @@ const CELLS = [
   },
 ];
 
-describe.each(CELLS)("ZAM Academy $app preview cell", (cell) => {
+describe.each(CELLS)("ZAM Academy $app cell", (cell) => {
   const tile = getBundledCellTile(cell.id)!;
   const items = tile.atoms.flatMap((atom) => atom.practice_items);
   const scope = {
@@ -69,12 +65,13 @@ describe.each(CELLS)("ZAM Academy $app preview cell", (cell) => {
     subject: cell.subject,
   };
 
-  it("bundles the published preview as a new cell", () => {
+  it("bundles the published cell", () => {
     expect(tile.version).toBe(cell.version);
     expect(getBundledCell(cell.id)).toMatchObject({
       publisher: "ZAM Academy",
       gradeLabel: "ZAM Academy",
       atomCount: cell.atoms,
+      preview: false,
     });
     expect(items).toHaveLength(cell.items);
     expect(tile.description).toContain("Vorschau");
@@ -166,7 +163,7 @@ describe.each(CELLS)("ZAM Academy $app preview cell", (cell) => {
   });
 });
 
-describe("Grundschule 4 preview cells in the atlas", () => {
+describe("Grundschule 4 cells in the atlas", () => {
   it("places every HSU station in one of the six HSU areas", () => {
     const { aliases } = weltwissenSeedRows();
     const tile = getBundledCellTile("zam-academy:hsu-grundschule-4")!;
@@ -250,8 +247,7 @@ describe("Grundschule 4 preview cells in the atlas", () => {
           cell.id,
         ).toEqual([cell.id]);
         expect(place.wizard, cell.id).toBe(false);
-        // The atlas dialog labels it: no teacher has reviewed it yet.
-        expect(place.cells[0].preview, cell.id).toBe(true);
+        expect(place.cells[0].preview, cell.id).toBe(false);
       }
     });
 

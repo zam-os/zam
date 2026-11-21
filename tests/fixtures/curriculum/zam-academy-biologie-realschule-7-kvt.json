@@ -1,0 +1,1939 @@
+{
+	"$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+	"tile_id": "zam-academy:biologie-realschule-7",
+	"version": "2026.11.2",
+	"title": "Biologie 7 Realschule (ZAM Academy)",
+	"description": "27 Lektionen und 54 Karten zu biologischem Arbeiten, Zellen, Pflanzenstoffwechsel und menschlichen Organsystemen.",
+	"publisher": "ZAM Academy",
+	"sources": [
+		{
+			"uri": "https://academy.zam-os.org/biologie-realschule-7/",
+			"label": "ZAM Academy · Biologie 7 Realschule"
+		},
+		{
+			"uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/7/biologie",
+			"label": "ISB · LehrplanPLUS Biologie 7 Realschule",
+			"checked": "2026-11-20"
+		}
+	],
+	"atoms": [
+		{
+			"id": "01M7XEV3Q3PHWE11CZ5BHFHT9K",
+			"atom_uri": "urn:zam:atom:01M7XEV3Q3PHWE11CZ5BHFHT9K",
+			"namespace": "zam-academy-biologie-realschule-7",
+			"slug": "b7-untersuchen",
+			"title": "Ein fairer Pflanzenversuch",
+			"domain": "biologie/lb1",
+			"reduction": "classical",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-untersuchen",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "biologie-realschule-7",
+					"topic_code": "lb1",
+					"topic_title": "Prozessbezogene Kompetenzen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "biologie",
+					"topic_code": "lb1",
+					"topic_title": "Prozessbezogene Kompetenzen",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XEV3Q4W8NSZM5YKQ22QRXG",
+					"slug": "b7-untersuchen-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-untersuchen",
+					"materiality": "material",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was bleibt in einem fairen Versuch bis auf die Prüfvariable möglichst gleich?",
+					"concept": "Die übrigen Bedingungen, die das Ergebnis beeinflussen können.",
+					"edge_representative": true,
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Die übrigen Bedingungen, die das Ergebnis beeinflussen können.",
+							"Nur die Überschrift im Protokoll."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7XEV3Q48Y912PBPFCE6AX6Z",
+					"slug": "b7-untersuchen-erklaeren",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-untersuchen",
+					"materiality": "material",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Warum helfen mehrere Pflanzen pro Gruppe?",
+					"concept": "Sie zeigen, ob ein Unterschied auch bei mehreren Pflanzen auftritt und weniger von Einzelfällen abhängt.",
+					"sample_solution": "Sie zeigen, ob ein Unterschied auch bei mehreren Pflanzen auftritt und weniger von Einzelfällen abhängt."
+				}
+			]
+		},
+		{
+			"id": "01M7XEV3Q34CGFZJQWP534X5RW",
+			"atom_uri": "urn:zam:atom:01M7XEV3Q34CGFZJQWP534X5RW",
+			"namespace": "zam-academy-biologie-realschule-7",
+			"slug": "b7-mikroskopieren",
+			"title": "Mikroskopbild, Zeichnung und Modell",
+			"domain": "biologie/lb1",
+			"reduction": "classical",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-mikroskopieren",
+			"prerequisites": [
+				{
+					"atom_id": "01M7XEV3Q3PHWE11CZ5BHFHT9K",
+					"type": "soft",
+					"rationale": "Helpful prior knowledge; all lessons remain open."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "biologie-realschule-7",
+					"topic_code": "lb1",
+					"topic_title": "Prozessbezogene Kompetenzen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "biologie",
+					"topic_code": "lb1",
+					"topic_title": "Prozessbezogene Kompetenzen",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XEV3Q45ZT0XQNGYNNGJDWT",
+					"slug": "b7-mikroskopieren-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-mikroskopieren",
+					"materiality": "material",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Warum beginnt man beim Mikroskopieren mit kleiner Vergrößerung?",
+					"concept": "Sie bietet ein größeres Sichtfeld zum Suchen und Zentrieren.",
+					"edge_representative": true,
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Sie bietet ein größeres Sichtfeld zum Suchen und Zentrieren.",
+							"Sie zeigt automatisch die feinsten Details."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7XEV3Q4BCQ7V0BAFYK3V7VM",
+					"slug": "b7-mikroskopieren-erklaeren",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-mikroskopieren",
+					"materiality": "material",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Was gehört zu einer nachvollziehbaren Mikroskopzeichnung?",
+					"concept": "Sichtbare Strukturen, klare Linien und Beschriftungen sowie das Präparat und die verwendete Vergrößerung.",
+					"sample_solution": "Sichtbare Strukturen, klare Linien und Beschriftungen sowie das Präparat und die verwendete Vergrößerung."
+				}
+			]
+		},
+		{
+			"id": "01M7XEV3Q3KMEGT8KFPDQCWNJ9",
+			"atom_uri": "urn:zam:atom:01M7XEV3Q3KMEGT8KFPDQCWNJ9",
+			"namespace": "zam-academy-biologie-realschule-7",
+			"slug": "b7-quellen",
+			"title": "Quellen unter der Lupe",
+			"domain": "biologie/lb1",
+			"reduction": "classical",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-quellen",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "biologie-realschule-7",
+					"topic_code": "lb1",
+					"topic_title": "Prozessbezogene Kompetenzen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "biologie",
+					"topic_code": "lb1",
+					"topic_title": "Prozessbezogene Kompetenzen",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XEV3Q4KM567V9SYMDP336N",
+					"slug": "b7-quellen-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-quellen",
+					"materiality": "material",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was prüfst du bei der Güte einer Informationsquelle?",
+					"concept": "Herkunft, Absicht, nachvollziehbare Belege und Aussagen unabhängiger Fachquellen.",
+					"edge_representative": true,
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Herkunft, Absicht, nachvollziehbare Belege und Aussagen unabhängiger Fachquellen.",
+							"Bildgröße, Seitenlänge und Zahl der Emojis."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7XEV3Q4FMYA6P0AC569BPZP",
+					"slug": "b7-quellen-erklaeren",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-quellen",
+					"materiality": "material",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Warum sind zwei Artikel zur selben Studie keine zwei unabhängigen Belege?",
+					"concept": "Beide Artikel stützen sich auf dieselben Daten. Erst eine unabhängige Untersuchung kann sie ergänzend bestätigen oder infrage stellen.",
+					"sample_solution": "Beide Artikel stützen sich auf dieselben Daten. Erst eine unabhängige Untersuchung kann sie ergänzend bestätigen oder infrage stellen."
+				}
+			]
+		},
+		{
+			"id": "01M7XEV3Q34ADYXEMMX5RW7PKN",
+			"atom_uri": "urn:zam:atom:01M7XEV3Q34ADYXEMMX5RW7PKN",
+			"namespace": "zam-academy-biologie-realschule-7",
+			"slug": "b7-darstellen",
+			"title": "Beobachtungen darstellen und erklären",
+			"domain": "biologie/lb1",
+			"reduction": "classical",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-darstellen",
+			"prerequisites": [
+				{
+					"atom_id": "01M7XEV3Q3PHWE11CZ5BHFHT9K",
+					"type": "soft",
+					"rationale": "Helpful prior knowledge; all lessons remain open."
+				},
+				{
+					"atom_id": "01M7XEV3Q3KMEGT8KFPDQCWNJ9",
+					"type": "soft",
+					"rationale": "Helpful prior knowledge; all lessons remain open."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "biologie-realschule-7",
+					"topic_code": "lb1",
+					"topic_title": "Prozessbezogene Kompetenzen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "biologie",
+					"topic_code": "lb1",
+					"topic_title": "Prozessbezogene Kompetenzen",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XEV3Q4ES7T5JVZ3BH5JE8N",
+					"slug": "b7-darstellen-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-darstellen",
+					"materiality": "material",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "In welcher Darstellungsform findest du einzelne Messwerte besonders genau wieder?",
+					"concept": "In einer Tabelle mit beschrifteten Spalten und Einheiten.",
+					"edge_representative": true,
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"In einer Tabelle mit beschrifteten Spalten und Einheiten.",
+							"In einem unbeschrifteten Bild."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7XEV3Q48HAGBVHRH3SV1RX9",
+					"slug": "b7-darstellen-erklaeren",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-darstellen",
+					"materiality": "material",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Warum bleibt ein Messergebnis von seiner Erklärung getrennt?",
+					"concept": "Das Ergebnis beschreibt, was beobachtet wurde. Eine Erklärung hängt zusätzlich von der Versuchsanordnung und möglichen Störgrößen ab.",
+					"sample_solution": "Das Ergebnis beschreibt, was beobachtet wurde. Eine Erklärung hängt zusätzlich von der Versuchsanordnung und möglichen Störgrößen ab."
+				}
+			]
+		},
+		{
+			"id": "01M7XEV3Q3G7HMAH8JDW8NQVV1",
+			"atom_uri": "urn:zam:atom:01M7XEV3Q3G7HMAH8JDW8NQVV1",
+			"namespace": "zam-academy-biologie-realschule-7",
+			"slug": "b7-entscheiden",
+			"title": "Begründet entscheiden",
+			"domain": "biologie/lb1",
+			"reduction": "classical",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-entscheiden",
+			"prerequisites": [
+				{
+					"atom_id": "01M7XEV3Q3KMEGT8KFPDQCWNJ9",
+					"type": "soft",
+					"rationale": "Helpful prior knowledge; all lessons remain open."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "biologie-realschule-7",
+					"topic_code": "lb1",
+					"topic_title": "Prozessbezogene Kompetenzen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "biologie",
+					"topic_code": "lb1",
+					"topic_title": "Prozessbezogene Kompetenzen",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XEV3Q4CV4B8Y4SMTJK914C",
+					"slug": "b7-entscheiden-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-entscheiden",
+					"materiality": "material",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche zwei Merkmale beeinflussen das Risiko für lärmbedingte Hörschäden?",
+					"concept": "Die Stärke des Schalls und die Dauer der Belastung.",
+					"edge_representative": true,
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Die Stärke des Schalls und die Dauer der Belastung.",
+							"Nur die Musikrichtung."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7XEV3Q4MZWGR8PK123B3J9D",
+					"slug": "b7-entscheiden-erklaeren",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-entscheiden",
+					"materiality": "material",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Was ist der Unterschied zwischen Kriterium und Folge?",
+					"concept": "Das Kriterium ist der Maßstab, etwa Gehörschutz. Eine Folge ist eine zu erwartende Wirkung, etwa geringere Schallbelastung.",
+					"sample_solution": "Das Kriterium ist der Maßstab, etwa Gehörschutz. Eine Folge ist eine zu erwartende Wirkung, etwa geringere Schallbelastung."
+				}
+			]
+		},
+		{
+			"id": "01M7XEV3Q3G004X56KFBT8NC9J",
+			"atom_uri": "urn:zam:atom:01M7XEV3Q3G004X56KFBT8NC9J",
+			"namespace": "zam-academy-biologie-realschule-7",
+			"slug": "b7-organspende",
+			"title": "Organspende als ethische Frage",
+			"domain": "biologie/lb1",
+			"reduction": "classical",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-organspende",
+			"prerequisites": [
+				{
+					"atom_id": "01M7XEV3Q3G7HMAH8JDW8NQVV1",
+					"type": "soft",
+					"rationale": "Helpful prior knowledge; all lessons remain open."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "biologie-realschule-7",
+					"topic_code": "lb1",
+					"topic_title": "Prozessbezogene Kompetenzen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "biologie",
+					"topic_code": "lb1",
+					"topic_title": "Prozessbezogene Kompetenzen",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XEV3Q4Z8F7S8G4JV700Z4R",
+					"slug": "b7-organspende-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-organspende",
+					"materiality": "material",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was ist ein Wert, der in einer Entscheidung zur Organspende eine Rolle spielen kann?",
+					"concept": "Zum Beispiel Solidarität oder Selbstbestimmung.",
+					"edge_representative": true,
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Zum Beispiel Solidarität oder Selbstbestimmung.",
+							"Der Name einer Herzkammer."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7XEV3Q4P5SKFFYZZVGWT3SX",
+					"slug": "b7-organspende-erklaeren",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-organspende",
+					"materiality": "material",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Warum können Menschen mit denselben medizinischen Informationen zu unterschiedlichen Entscheidungen kommen?",
+					"concept": "Sie gewichten Werte wie Solidarität und Selbstbestimmung unterschiedlich und können offene Fragen verschieden beurteilen.",
+					"sample_solution": "Sie gewichten Werte wie Solidarität und Selbstbestimmung unterschiedlich und können offene Fragen verschieden beurteilen."
+				}
+			]
+		},
+		{
+			"id": "01M7XEV3Q30KJFQ1XZHMAP1AVY",
+			"atom_uri": "urn:zam:atom:01M7XEV3Q30KJFQ1XZHMAP1AVY",
+			"namespace": "zam-academy-biologie-realschule-7",
+			"slug": "b7-zellvergleich",
+			"title": "Tier- und Pflanzenzellen vergleichen",
+			"domain": "biologie/lb2",
+			"reduction": "classical",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-zellvergleich",
+			"prerequisites": [
+				{
+					"atom_id": "01M7XEV3Q34CGFZJQWP534X5RW",
+					"type": "soft",
+					"rationale": "Helpful prior knowledge; all lessons remain open."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "biologie-realschule-7",
+					"topic_code": "lb2",
+					"topic_title": "Die Zelle – Grundbaustein aller Lebewesen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "biologie",
+					"topic_code": "lb2",
+					"topic_title": "Die Zelle – Grundbaustein aller Lebewesen",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XEV3Q4WRE5ABYBT4BKECBS",
+					"slug": "b7-zellvergleich-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-zellvergleich",
+					"materiality": "material",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche äußere Struktur besitzt eine Pflanzenzelle zusätzlich zur Membran?",
+					"concept": "Eine Zellwand.",
+					"edge_representative": true,
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Eine Zellwand.",
+							"Einen zweiten Zellkern."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7XEV3Q4WXX4MYCQ5C9ZAXV6",
+					"slug": "b7-zellvergleich-erklaeren",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-zellvergleich",
+					"materiality": "material",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Warum beweist das Fehlen von Chloroplasten nicht, dass eine Zelle tierisch ist?",
+					"concept": "Auch Pflanzenzellen aus wenig belichteten Teilen, etwa der inneren Zwiebelhaut, können ohne Chloroplasten auskommen.",
+					"sample_solution": "Auch Pflanzenzellen aus wenig belichteten Teilen, etwa der inneren Zwiebelhaut, können ohne Chloroplasten auskommen."
+				}
+			]
+		},
+		{
+			"id": "01M7XEV3Q33RQXBBTM98QMMVSZ",
+			"atom_uri": "urn:zam:atom:01M7XEV3Q33RQXBBTM98QMMVSZ",
+			"namespace": "zam-academy-biologie-realschule-7",
+			"slug": "b7-zellorganellen",
+			"title": "Aufgaben der Zellbestandteile",
+			"domain": "biologie/lb2",
+			"reduction": "classical",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-zellorganellen",
+			"prerequisites": [
+				{
+					"atom_id": "01M7XEV3Q30KJFQ1XZHMAP1AVY",
+					"type": "soft",
+					"rationale": "Helpful prior knowledge; all lessons remain open."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "biologie-realschule-7",
+					"topic_code": "lb2",
+					"topic_title": "Die Zelle – Grundbaustein aller Lebewesen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "biologie",
+					"topic_code": "lb2",
+					"topic_title": "Die Zelle – Grundbaustein aller Lebewesen",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XEV3Q4H6X3ZG74ZDHPN7W1",
+					"slug": "b7-zellorganellen-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-zellorganellen",
+					"materiality": "material",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche Zellbestandteile bauen Eiweiße?",
+					"concept": "Ribosomen.",
+					"edge_representative": true,
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Ribosomen.",
+							"Mitochondrien."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7XEV3Q4WG8YQF1DANZ88D4R",
+					"slug": "b7-zellorganellen-erklaeren",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-zellorganellen",
+					"materiality": "material",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Warum können Blattzellen bei Wassermangel schlaff werden?",
+					"concept": "Die Vakuole verliert Wasser. Dadurch sinkt der Druck des Zellinhalts gegen die Zellwand.",
+					"sample_solution": "Die Vakuole verliert Wasser. Dadurch sinkt der Druck des Zellinhalts gegen die Zellwand."
+				}
+			]
+		},
+		{
+			"id": "01M7XEV3Q3E96J7XK7TXQCPSRN",
+			"atom_uri": "urn:zam:atom:01M7XEV3Q3E96J7XK7TXQCPSRN",
+			"namespace": "zam-academy-biologie-realschule-7",
+			"slug": "b7-einzeller",
+			"title": "Einzeller unter der Lupe",
+			"domain": "biologie/lb2",
+			"reduction": "classical",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-einzeller",
+			"prerequisites": [
+				{
+					"atom_id": "01M7XEV3Q33RQXBBTM98QMMVSZ",
+					"type": "soft",
+					"rationale": "Helpful prior knowledge; all lessons remain open."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "biologie-realschule-7",
+					"topic_code": "lb2",
+					"topic_title": "Die Zelle – Grundbaustein aller Lebewesen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "biologie",
+					"topic_code": "lb2",
+					"topic_title": "Die Zelle – Grundbaustein aller Lebewesen",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XEV3Q4BH47J4866NXSGH4C",
+					"slug": "b7-einzeller-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-einzeller",
+					"materiality": "material",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie entstehen bei der Querteilung eines Pantoffeltierchens neue Individuen?",
+					"concept": "Eine Zelle teilt sich in zwei selbstständige Zellen.",
+					"edge_representative": true,
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Eine Zelle teilt sich in zwei selbstständige Zellen.",
+							"Viele verschiedene Gewebe wachsen zu einem Tier zusammen."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7XEV3Q4Q7D96BJCYBDXPG7T",
+					"slug": "b7-einzeller-erklaeren",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-einzeller",
+					"materiality": "material",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Wozu dienen Wimpern beim Pantoffeltierchen?",
+					"concept": "Sie bewegen es im Wasser fort und strudeln Nahrung zur Aufnahme heran.",
+					"sample_solution": "Sie bewegen es im Wasser fort und strudeln Nahrung zur Aufnahme heran."
+				}
+			]
+		},
+		{
+			"id": "01M7XEV3Q3JM4EZMPPDSZF9MVZ",
+			"atom_uri": "urn:zam:atom:01M7XEV3Q3JM4EZMPPDSZF9MVZ",
+			"namespace": "zam-academy-biologie-realschule-7",
+			"slug": "b7-vielzeller",
+			"title": "Von der Zelle zum Organismus",
+			"domain": "biologie/lb2",
+			"reduction": "classical",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-vielzeller",
+			"prerequisites": [
+				{
+					"atom_id": "01M7XEV3Q30KJFQ1XZHMAP1AVY",
+					"type": "soft",
+					"rationale": "Helpful prior knowledge; all lessons remain open."
+				},
+				{
+					"atom_id": "01M7XEV3Q3E96J7XK7TXQCPSRN",
+					"type": "soft",
+					"rationale": "Helpful prior knowledge; all lessons remain open."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "biologie-realschule-7",
+					"topic_code": "lb2",
+					"topic_title": "Die Zelle – Grundbaustein aller Lebewesen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "biologie",
+					"topic_code": "lb2",
+					"topic_title": "Die Zelle – Grundbaustein aller Lebewesen",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XEV3Q4WEN4JKFGFQTE3TWZ",
+					"slug": "b7-vielzeller-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-vielzeller",
+					"materiality": "material",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie heißt die Organisationsebene zwischen Gewebe und Organsystem?",
+					"concept": "Organ.",
+					"edge_representative": true,
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Organ.",
+							"Zelle."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7XEV3Q4J1E9CA9VNPF1F0ZW",
+					"slug": "b7-vielzeller-erklaeren",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-vielzeller",
+					"materiality": "material",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Welche Folge hat die Arbeitsteilung für spezialisierte Zellen eines Vielzellers?",
+					"concept": "Sie erfüllen bestimmte Aufgaben besonders gut und sind für andere Aufgaben auf weitere Zellen angewiesen.",
+					"sample_solution": "Sie erfüllen bestimmte Aufgaben besonders gut und sind für andere Aufgaben auf weitere Zellen angewiesen."
+				}
+			]
+		},
+		{
+			"id": "01M7XEV3Q34K0WFFSQZV2FTGHB",
+			"atom_uri": "urn:zam:atom:01M7XEV3Q34K0WFFSQZV2FTGHB",
+			"namespace": "zam-academy-biologie-realschule-7",
+			"slug": "b7-wurzel",
+			"title": "Wurzeln nehmen Wasser und Mineralstoffe auf",
+			"domain": "biologie/lb3",
+			"reduction": "classical",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-wurzel",
+			"prerequisites": [
+				{
+					"atom_id": "01M7XEV3Q30KJFQ1XZHMAP1AVY",
+					"type": "soft",
+					"rationale": "Helpful prior knowledge; all lessons remain open."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "biologie-realschule-7",
+					"topic_code": "lb3",
+					"topic_title": "Stoffwechselvorgänge bei Pflanzen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "biologie",
+					"topic_code": "lb3",
+					"topic_title": "Stoffwechselvorgänge bei Pflanzen",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XEV3Q480HAPD33WDT8B4VC",
+					"slug": "b7-wurzel-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-wurzel",
+					"materiality": "material",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie erleichtern Wurzelhaare die Aufnahme aus dem Boden?",
+					"concept": "Sie vergrößern die Kontaktfläche zum Bodenwasser.",
+					"edge_representative": true,
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Sie vergrößern die Kontaktfläche zum Bodenwasser.",
+							"Sie verschließen die Wege zum Leitgewebe."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7XEV3Q4WHHN3M415W08D7PM",
+					"slug": "b7-wurzel-erklaeren",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-wurzel",
+					"materiality": "material",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Warum kann eine frisch umgesetzte Pflanze trotz feuchter Erde welken?",
+					"concept": "Feine Wurzeln können beschädigt sein. Dann nimmt die Pflanze vorübergehend weniger Wasser auf.",
+					"sample_solution": "Feine Wurzeln können beschädigt sein. Dann nimmt die Pflanze vorübergehend weniger Wasser auf."
+				}
+			]
+		},
+		{
+			"id": "01M7XEV3Q3PTBRVDBJP37GY8P8",
+			"atom_uri": "urn:zam:atom:01M7XEV3Q3PTBRVDBJP37GY8P8",
+			"namespace": "zam-academy-biologie-realschule-7",
+			"slug": "b7-sprossachse",
+			"title": "Zwei Transportwege in der Sprossachse",
+			"domain": "biologie/lb3",
+			"reduction": "classical",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-sprossachse",
+			"prerequisites": [
+				{
+					"atom_id": "01M7XEV3Q34K0WFFSQZV2FTGHB",
+					"type": "soft",
+					"rationale": "Helpful prior knowledge; all lessons remain open."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "biologie-realschule-7",
+					"topic_code": "lb3",
+					"topic_title": "Stoffwechselvorgänge bei Pflanzen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "biologie",
+					"topic_code": "lb3",
+					"topic_title": "Stoffwechselvorgänge bei Pflanzen",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XEV3Q4S83XE63DSD1WB095",
+					"slug": "b7-sprossachse-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-sprossachse",
+					"materiality": "material",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welches pflanzliche Leitgewebe transportiert Wasser und gelöste Mineralsalze von der Wurzel aufwärts in die Blätter?",
+					"concept": "Das Xylem, der Holzteil des Leitbündels.",
+					"edge_representative": true,
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Das Xylem, der Holzteil des Leitbündels.",
+							"Das Phloem, der Siebteil des Leitbündels."
+						],
+						"correct_index": 0
+					},
+					"replaces": [
+						"01K4B7F0000000000000000J01"
+					]
+				},
+				{
+					"id": "01M7XEV3Q4HFAN6HR0P29QKXY4",
+					"slug": "b7-sprossachse-erklaeren",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-sprossachse",
+					"materiality": "material",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Warum kann der Zuckertransport je nach Jahreszeit seine Richtung ändern?",
+					"concept": "Der Siebteil verbindet die jeweilige Zuckerquelle mit dem Verbrauchs- oder Speicherort. Quelle und Ziel können ihre Rollen wechseln.",
+					"sample_solution": "Der Siebteil verbindet die jeweilige Zuckerquelle mit dem Verbrauchs- oder Speicherort. Quelle und Ziel können ihre Rollen wechseln."
+				}
+			]
+		},
+		{
+			"id": "01M7XEV3Q32N581WZ27EG07HJY",
+			"atom_uri": "urn:zam:atom:01M7XEV3Q32N581WZ27EG07HJY",
+			"namespace": "zam-academy-biologie-realschule-7",
+			"slug": "b7-laubblatt",
+			"title": "Ein Laubblatt im Querschnitt",
+			"domain": "biologie/lb3",
+			"reduction": "classical",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-laubblatt",
+			"prerequisites": [
+				{
+					"atom_id": "01M7XEV3Q3PTBRVDBJP37GY8P8",
+					"type": "soft",
+					"rationale": "Helpful prior knowledge; all lessons remain open."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "biologie-realschule-7",
+					"topic_code": "lb3",
+					"topic_title": "Stoffwechselvorgänge bei Pflanzen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "biologie",
+					"topic_code": "lb3",
+					"topic_title": "Stoffwechselvorgänge bei Pflanzen",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XEV3Q4WXMPVG339VK3WHQD",
+					"slug": "b7-laubblatt-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-laubblatt",
+					"materiality": "material",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "In welchem Gewebe eines typischen Laubblatts liegen meist besonders viele Chloroplasten?",
+					"concept": "Im Palisadengewebe unter der oberen Epidermis.",
+					"edge_representative": true,
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Im Palisadengewebe unter der oberen Epidermis.",
+							"In der wachsartigen Cuticula."
+						],
+						"correct_index": 0
+					},
+					"replaces": [
+						"01K4B7F0000000000000000J03"
+					]
+				},
+				{
+					"id": "01M7XEV3Q4VAYV2YCX7J53E9YA",
+					"slug": "b7-laubblatt-erklaeren",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-laubblatt",
+					"materiality": "material",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Warum besitzt das Schwammgewebe viele luftgefüllte Zwischenräume?",
+					"concept": "Die Zwischenräume erleichtern den Gastransport zwischen Spaltöffnungen und Blattzellen.",
+					"sample_solution": "Die Zwischenräume erleichtern den Gastransport zwischen Spaltöffnungen und Blattzellen."
+				}
+			]
+		},
+		{
+			"id": "01M7XEV3Q3SG29WXE5D6KEPND2",
+			"atom_uri": "urn:zam:atom:01M7XEV3Q3SG29WXE5D6KEPND2",
+			"namespace": "zam-academy-biologie-realschule-7",
+			"slug": "b7-spaltoeffnungen",
+			"title": "Spaltöffnungen steuern den Gasaustausch",
+			"domain": "biologie/lb3",
+			"reduction": "classical",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-spaltoeffnungen",
+			"prerequisites": [
+				{
+					"atom_id": "01M7XEV3Q32N581WZ27EG07HJY",
+					"type": "soft",
+					"rationale": "Helpful prior knowledge; all lessons remain open."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "biologie-realschule-7",
+					"topic_code": "lb3",
+					"topic_title": "Stoffwechselvorgänge bei Pflanzen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "biologie",
+					"topic_code": "lb3",
+					"topic_title": "Stoffwechselvorgänge bei Pflanzen",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XEV3Q4FVJJRCQVR8DKGYA1",
+					"slug": "b7-spaltoeffnungen-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-spaltoeffnungen",
+					"materiality": "material",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche Strukturen regeln die Breite einer Spaltöffnung?",
+					"concept": "Zwei Schließzellen.",
+					"edge_representative": true,
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Zwei Schließzellen.",
+							"Ribosomen im Zellkern."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7XEV3Q4M6MZ8QXXF6RMXHVP",
+					"slug": "b7-spaltoeffnungen-erklaeren",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-spaltoeffnungen",
+					"materiality": "material",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Warum kann die Fotosynthese trotz viel Licht bei Trockenheit abnehmen?",
+					"concept": "Die Pflanze kann Spaltöffnungen schließen. Dadurch gelangt weniger Kohlenstoffdioxid in das Blatt.",
+					"sample_solution": "Die Pflanze kann Spaltöffnungen schließen. Dadurch gelangt weniger Kohlenstoffdioxid in das Blatt."
+				}
+			]
+		},
+		{
+			"id": "01M7XEV3Q3RPHV5QRHQK3EX0WK",
+			"atom_uri": "urn:zam:atom:01M7XEV3Q3RPHV5QRHQK3EX0WK",
+			"namespace": "zam-academy-biologie-realschule-7",
+			"slug": "b7-fotosynthese",
+			"title": "Fotosynthese baut Zucker auf",
+			"domain": "biologie/lb3",
+			"reduction": "classical",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-fotosynthese",
+			"prerequisites": [
+				{
+					"atom_id": "01M7XEV3Q3SG29WXE5D6KEPND2",
+					"type": "soft",
+					"rationale": "Helpful prior knowledge; all lessons remain open."
+				},
+				{
+					"atom_id": "01M7XEV3Q33RQXBBTM98QMMVSZ",
+					"type": "soft",
+					"rationale": "Helpful prior knowledge; all lessons remain open."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "biologie-realschule-7",
+					"topic_code": "lb3",
+					"topic_title": "Stoffwechselvorgänge bei Pflanzen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "biologie",
+					"topic_code": "lb3",
+					"topic_title": "Stoffwechselvorgänge bei Pflanzen",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XEV3Q44A8X8EE147707MNH",
+					"slug": "b7-fotosynthese-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-fotosynthese",
+					"materiality": "material",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche beiden Stoffe sind die Ausgangsstoffe der Fotosynthese grüner Pflanzen?",
+					"concept": "Wasser und Kohlenstoffdioxid.",
+					"edge_representative": true,
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Wasser und Kohlenstoffdioxid.",
+							"Glukose und Sauerstoff."
+						],
+						"correct_index": 0
+					},
+					"replaces": [
+						"01K4B7F0000000000000000J05"
+					]
+				},
+				{
+					"id": "01M7XEV3Q4ZEWZBP5TJPY2BJ6X",
+					"slug": "b7-fotosynthese-erklaeren",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-fotosynthese",
+					"materiality": "material",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Welche Bedeutung hat die Fotosynthese für andere Lebewesen?",
+					"concept": "Sie liefert energiereiche organische Stoffe für Nahrungsnetze und setzt Sauerstoff frei, den viele Lebewesen für die Zellatmung nutzen.",
+					"sample_solution": "Sie liefert energiereiche organische Stoffe für Nahrungsnetze und setzt Sauerstoff frei, den viele Lebewesen für die Zellatmung nutzen."
+				}
+			]
+		},
+		{
+			"id": "01M7XEV3Q3QAMEQETY5E5KZC9N",
+			"atom_uri": "urn:zam:atom:01M7XEV3Q3QAMEQETY5E5KZC9N",
+			"namespace": "zam-academy-biologie-realschule-7",
+			"slug": "b7-zellatmung",
+			"title": "Pflanzen betreiben auch Zellatmung",
+			"domain": "biologie/lb3",
+			"reduction": "classical",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-zellatmung",
+			"prerequisites": [
+				{
+					"atom_id": "01M7XEV3Q3RPHV5QRHQK3EX0WK",
+					"type": "soft",
+					"rationale": "Helpful prior knowledge; all lessons remain open."
+				},
+				{
+					"atom_id": "01M7XEV3Q33RQXBBTM98QMMVSZ",
+					"type": "soft",
+					"rationale": "Helpful prior knowledge; all lessons remain open."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "biologie-realschule-7",
+					"topic_code": "lb3",
+					"topic_title": "Stoffwechselvorgänge bei Pflanzen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "biologie",
+					"topic_code": "lb3",
+					"topic_title": "Stoffwechselvorgänge bei Pflanzen",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XEV3Q4XGAXK5B3WGHASG4G",
+					"slug": "b7-zellatmung-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-zellatmung",
+					"materiality": "material",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welcher Gaswechsel findet bei einem grünen Blatt in völliger Dunkelheit statt?",
+					"concept": "Bei der Zellatmung nimmt es Sauerstoff auf und gibt Kohlenstoffdioxid ab.",
+					"edge_representative": true,
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Bei der Zellatmung nimmt es Sauerstoff auf und gibt Kohlenstoffdioxid ab.",
+							"Bei der Fotosynthese nimmt es Kohlenstoffdioxid auf und gibt Sauerstoff ab."
+						],
+						"correct_index": 0
+					},
+					"replaces": [
+						"01K4B7F0000000000000000J07"
+					]
+				},
+				{
+					"id": "01M7XEV3Q4FH1EZ665TA6J3FM3",
+					"slug": "b7-zellatmung-erklaeren",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-zellatmung",
+					"materiality": "material",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Warum kann ein Blatt im Licht Sauerstoff abgeben und gleichzeitig Sauerstoff für die Zellatmung verbrauchen?",
+					"concept": "Wenn die Fotosynthese mehr Sauerstoff erzeugt als die Zellatmung verbraucht, wird der Überschuss an die Umgebung abgegeben.",
+					"sample_solution": "Wenn die Fotosynthese mehr Sauerstoff erzeugt als die Zellatmung verbraucht, wird der Überschuss an die Umgebung abgegeben."
+				}
+			]
+		},
+		{
+			"id": "01M7XEV3Q38Y6R4XDHNR8RFXF9",
+			"atom_uri": "urn:zam:atom:01M7XEV3Q38Y6R4XDHNR8RFXF9",
+			"namespace": "zam-academy-biologie-realschule-7",
+			"slug": "b7-ernaehrung",
+			"title": "Was in einer Mahlzeit steckt",
+			"domain": "biologie/lb4",
+			"reduction": "classical",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-ernaehrung",
+			"prerequisites": [
+				{
+					"atom_id": "01M7XEV3Q3QAMEQETY5E5KZC9N",
+					"type": "soft",
+					"rationale": "Helpful prior knowledge; all lessons remain open."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "biologie-realschule-7",
+					"topic_code": "lb4",
+					"topic_title": "Organsysteme des Menschen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "biologie",
+					"topic_code": "lb4",
+					"topic_title": "Organsysteme des Menschen",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XEV3Q4XC2YG2EMHKEZ20YQ",
+					"slug": "b7-ernaehrung-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-ernaehrung",
+					"materiality": "material",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche Nährstoffgruppe liefert Aminosäuren für den Aufbau körpereigener Eiweiße?",
+					"concept": "Eiweiße aus der Nahrung.",
+					"edge_representative": true,
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Eiweiße aus der Nahrung.",
+							"Ballaststoffe."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7XEV3Q41E02BZQWN65R71FZ",
+					"slug": "b7-ernaehrung-erklaeren",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-ernaehrung",
+					"materiality": "material",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Warum liefern zwei Mahlzeiten mit gleichem Energiegehalt nicht automatisch die gleichen Nährstoffe?",
+					"concept": "Sie können sich zum Beispiel bei Eiweißen, Mineralstoffen, Vitaminen oder Ballaststoffen unterscheiden.",
+					"sample_solution": "Sie können sich zum Beispiel bei Eiweißen, Mineralstoffen, Vitaminen oder Ballaststoffen unterscheiden."
+				}
+			]
+		},
+		{
+			"id": "01M7XEV3Q36EZEJH0RA4SCPDSJ",
+			"atom_uri": "urn:zam:atom:01M7XEV3Q36EZEJH0RA4SCPDSJ",
+			"namespace": "zam-academy-biologie-realschule-7",
+			"slug": "b7-verdauung",
+			"title": "Der Weg durch die Verdauung",
+			"domain": "biologie/lb4",
+			"reduction": "classical",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-verdauung",
+			"prerequisites": [
+				{
+					"atom_id": "01M7XEV3Q38Y6R4XDHNR8RFXF9",
+					"type": "soft",
+					"rationale": "Helpful prior knowledge; all lessons remain open."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "biologie-realschule-7",
+					"topic_code": "lb4",
+					"topic_title": "Organsysteme des Menschen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "biologie",
+					"topic_code": "lb4",
+					"topic_title": "Organsysteme des Menschen",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XEV3Q45BVAEC40G3TRW725",
+					"slug": "b7-verdauung-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-verdauung",
+					"materiality": "material",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche Hauptaufgabe erfüllt der Dickdarm im menschlichen Verdauungssystem?",
+					"concept": "Er gewinnt Wasser und gelöste Salze zurück und dickt den Darminhalt ein.",
+					"edge_representative": true,
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Er gewinnt Wasser und gelöste Salze zurück und dickt den Darminhalt ein.",
+							"Er gibt die meisten Nährstoffbausteine an das Blut ab."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7XEV3Q45YE1REY43T6QHZJY",
+					"slug": "b7-verdauung-erklaeren",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-verdauung",
+					"materiality": "material",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Warum erleichtern Darmzotten die Aufnahme von Nährstoffbausteinen?",
+					"concept": "Die Zotten vergrößern die Oberfläche der Darmwand, über die kleine Bausteine in Blut oder Lymphe gelangen.",
+					"sample_solution": "Die Zotten vergrößern die Oberfläche der Darmwand, über die kleine Bausteine in Blut oder Lymphe gelangen."
+				}
+			]
+		},
+		{
+			"id": "01M7XEV3Q3ZSA70JJV6GD0AM1D",
+			"atom_uri": "urn:zam:atom:01M7XEV3Q3ZSA70JJV6GD0AM1D",
+			"namespace": "zam-academy-biologie-realschule-7",
+			"slug": "b7-atmung",
+			"title": "Von der Atemluft zum Blut",
+			"domain": "biologie/lb4",
+			"reduction": "classical",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-atmung",
+			"prerequisites": [
+				{
+					"atom_id": "01M7XEV3Q3JM4EZMPPDSZF9MVZ",
+					"type": "soft",
+					"rationale": "Helpful prior knowledge; all lessons remain open."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "biologie-realschule-7",
+					"topic_code": "lb4",
+					"topic_title": "Organsysteme des Menschen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "biologie",
+					"topic_code": "lb4",
+					"topic_title": "Organsysteme des Menschen",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XEV3Q4MYTS7K0ZPKXW85XX",
+					"slug": "b7-atmung-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-atmung",
+					"materiality": "material",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "An welchen Strukturen der Lunge findet der Gasaustausch mit dem Blut statt?",
+					"concept": "An den Lungenbläschen.",
+					"edge_representative": true,
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"An den Lungenbläschen.",
+							"An der Luftröhre."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7XEV3Q4HTM5572MSS5CTWCJ",
+					"slug": "b7-atmung-erklaeren",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-atmung",
+					"materiality": "material",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Wie erleichtern Lungenbläschen den Gasaustausch?",
+					"concept": "Viele Bläschen ergeben eine große Oberfläche, und die dünnen Wände zu den Kapillaren bieten einen kurzen Austauschweg.",
+					"sample_solution": "Viele Bläschen ergeben eine große Oberfläche, und die dünnen Wände zu den Kapillaren bieten einen kurzen Austauschweg."
+				}
+			]
+		},
+		{
+			"id": "01M7XEV3Q3WJ47CF58S9ZEWCHF",
+			"atom_uri": "urn:zam:atom:01M7XEV3Q3WJ47CF58S9ZEWCHF",
+			"namespace": "zam-academy-biologie-realschule-7",
+			"slug": "b7-kreislauf",
+			"title": "Herz und doppelter Blutkreislauf",
+			"domain": "biologie/lb4",
+			"reduction": "classical",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-kreislauf",
+			"prerequisites": [
+				{
+					"atom_id": "01M7XEV3Q3ZSA70JJV6GD0AM1D",
+					"type": "soft",
+					"rationale": "Helpful prior knowledge; all lessons remain open."
+				},
+				{
+					"atom_id": "01M7XEV3Q3JM4EZMPPDSZF9MVZ",
+					"type": "soft",
+					"rationale": "Helpful prior knowledge; all lessons remain open."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "biologie-realschule-7",
+					"topic_code": "lb4",
+					"topic_title": "Organsysteme des Menschen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "biologie",
+					"topic_code": "lb4",
+					"topic_title": "Organsysteme des Menschen",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XEV3Q4BMP1DXH9RCP478SQ",
+					"slug": "b7-kreislauf-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-kreislauf",
+					"materiality": "material",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Aus welcher Herzkammer wird sauerstoffreiches Blut über die Hauptschlagader in den Körperkreislauf gepumpt?",
+					"concept": "Aus der linken Herzkammer.",
+					"edge_representative": true,
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Aus der linken Herzkammer.",
+							"Aus der rechten Herzkammer."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7XEV3Q42K12X413K3ZDGKDW",
+					"slug": "b7-kreislauf-erklaeren",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-kreislauf",
+					"materiality": "material",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Woran erkennst du, ob ein Blutgefäß eine Arterie oder eine Vene ist?",
+					"concept": "Eine Arterie führt Blut vom Herzen weg, eine Vene führt Blut zum Herzen hin. Der Sauerstoffgehalt entscheidet darüber nicht.",
+					"sample_solution": "Eine Arterie führt Blut vom Herzen weg, eine Vene führt Blut zum Herzen hin. Der Sauerstoffgehalt entscheidet darüber nicht."
+				}
+			]
+		},
+		{
+			"id": "01M7XEV3Q37YEAZFEE5X65AKHX",
+			"atom_uri": "urn:zam:atom:01M7XEV3Q37YEAZFEE5X65AKHX",
+			"namespace": "zam-academy-biologie-realschule-7",
+			"slug": "b7-stoffwechsel",
+			"title": "Drei Organsysteme versorgen eine Zelle",
+			"domain": "biologie/lb4",
+			"reduction": "classical",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-stoffwechsel",
+			"prerequisites": [
+				{
+					"atom_id": "01M7XEV3Q36EZEJH0RA4SCPDSJ",
+					"type": "soft",
+					"rationale": "Helpful prior knowledge; all lessons remain open."
+				},
+				{
+					"atom_id": "01M7XEV3Q3WJ47CF58S9ZEWCHF",
+					"type": "soft",
+					"rationale": "Helpful prior knowledge; all lessons remain open."
+				},
+				{
+					"atom_id": "01M7XEV3Q3QAMEQETY5E5KZC9N",
+					"type": "soft",
+					"rationale": "Helpful prior knowledge; all lessons remain open."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "biologie-realschule-7",
+					"topic_code": "lb4",
+					"topic_title": "Organsysteme des Menschen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "biologie",
+					"topic_code": "lb4",
+					"topic_title": "Organsysteme des Menschen",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XEV3Q4CFXMPHD3AAXREEC2",
+					"slug": "b7-stoffwechsel-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-stoffwechsel",
+					"materiality": "material",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche zwei Ausgangsstoffe braucht die Zellatmung in einer gut versorgten Muskelzelle?",
+					"concept": "Glukose und Sauerstoff.",
+					"edge_representative": true,
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Glukose und Sauerstoff.",
+							"Kohlenstoffdioxid und Wasser."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7XEV3Q49GDNB7Z1Q4P36JW9",
+					"slug": "b7-stoffwechsel-erklaeren",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-stoffwechsel",
+					"materiality": "material",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Welche Aufgabe hat der Kreislauf beim Zusammenspiel von Verdauung, Atmung und Zellatmung?",
+					"concept": "Er bringt aufgenommene Nährstoffbausteine und Sauerstoff zu den Zellen und bringt Kohlenstoffdioxid zur Lunge zurück.",
+					"sample_solution": "Er bringt aufgenommene Nährstoffbausteine und Sauerstoff zu den Zellen und bringt Kohlenstoffdioxid zur Lunge zurück."
+				}
+			]
+		},
+		{
+			"id": "01M7XEV3Q4BBSZECFXSFJ3YM9M",
+			"atom_uri": "urn:zam:atom:01M7XEV3Q4BBSZECFXSFJ3YM9M",
+			"namespace": "zam-academy-biologie-realschule-7",
+			"slug": "b7-sinne",
+			"title": "Unsere Sinne nehmen verschiedene Reize auf",
+			"domain": "biologie/lb4",
+			"reduction": "classical",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-sinne",
+			"prerequisites": [
+				{
+					"atom_id": "01M7XEV3Q3JM4EZMPPDSZF9MVZ",
+					"type": "soft",
+					"rationale": "Helpful prior knowledge; all lessons remain open."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "biologie-realschule-7",
+					"topic_code": "lb4",
+					"topic_title": "Organsysteme des Menschen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "biologie",
+					"topic_code": "lb4",
+					"topic_title": "Organsysteme des Menschen",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XEV3Q4E2KP56PRSWX8EDX5",
+					"slug": "b7-sinne-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-sinne",
+					"materiality": "material",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was machen Sinneszellen mit einem geeigneten Reiz?",
+					"concept": "Sie lösen ein weiterleitbares Signal aus.",
+					"edge_representative": true,
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Sie lösen ein weiterleitbares Signal aus.",
+							"Sie transportieren den Reiz als Luft bis ins Gehirn."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7XEV3Q4GTXEPVM8AY67AMJW",
+					"slug": "b7-sinne-erklaeren",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-sinne",
+					"materiality": "material",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Warum kann sich Wahrnehmung bei zwei Personen trotz desselben Reizes unterscheiden?",
+					"concept": "Die Verarbeitung im Nervensystem berücksichtigt weitere Sinnesinformationen, Aufmerksamkeit und Erfahrungen.",
+					"sample_solution": "Die Verarbeitung im Nervensystem berücksichtigt weitere Sinnesinformationen, Aufmerksamkeit und Erfahrungen."
+				}
+			]
+		},
+		{
+			"id": "01M7XEV3Q430B703YXG9MQZ7CW",
+			"atom_uri": "urn:zam:atom:01M7XEV3Q430B703YXG9MQZ7CW",
+			"namespace": "zam-academy-biologie-realschule-7",
+			"slug": "b7-ohr",
+			"title": "Wie aus Schall ein Hörsignal wird",
+			"domain": "biologie/lb4",
+			"reduction": "classical",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-ohr",
+			"prerequisites": [
+				{
+					"atom_id": "01M7XEV3Q4BBSZECFXSFJ3YM9M",
+					"type": "soft",
+					"rationale": "Helpful prior knowledge; all lessons remain open."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "biologie-realschule-7",
+					"topic_code": "lb4",
+					"topic_title": "Organsysteme des Menschen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "biologie",
+					"topic_code": "lb4",
+					"topic_title": "Organsysteme des Menschen",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XEV3Q46AAV1M5HGKJPE9V0",
+					"slug": "b7-ohr-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-ohr",
+					"materiality": "material",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wo liegen die Haarzellen, die für das Hören Schwingungen in Signale umwandeln?",
+					"concept": "In der Hörschnecke im Innenohr.",
+					"edge_representative": true,
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"In der Hörschnecke im Innenohr.",
+							"Im Gehörgang im Außenohr."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7XEV3Q4TFFP1J7R3P7HBHGB",
+					"slug": "b7-ohr-erklaeren",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-ohr",
+					"materiality": "material",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Welche Aufgabe erfüllen Trommelfell und Gehörknöchelchen auf dem Weg zum Innenohr?",
+					"concept": "Das Trommelfell wird durch Schall in Schwingung versetzt, und die Gehörknöchelchen übertragen die Schwingungen zum Innenohr.",
+					"sample_solution": "Das Trommelfell wird durch Schall in Schwingung versetzt, und die Gehörknöchelchen übertragen die Schwingungen zum Innenohr."
+				}
+			]
+		},
+		{
+			"id": "01M7XEV3Q4A8SM7Q2TREZ0D4RT",
+			"atom_uri": "urn:zam:atom:01M7XEV3Q4A8SM7Q2TREZ0D4RT",
+			"namespace": "zam-academy-biologie-realschule-7",
+			"slug": "b7-nervensystem",
+			"title": "Vom Reiz zur Reaktion",
+			"domain": "biologie/lb4",
+			"reduction": "classical",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-nervensystem",
+			"prerequisites": [
+				{
+					"atom_id": "01M7XEV3Q4BBSZECFXSFJ3YM9M",
+					"type": "soft",
+					"rationale": "Helpful prior knowledge; all lessons remain open."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "biologie-realschule-7",
+					"topic_code": "lb4",
+					"topic_title": "Organsysteme des Menschen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "biologie",
+					"topic_code": "lb4",
+					"topic_title": "Organsysteme des Menschen",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XEV3Q41NWJ8BCY2PPWK0SZ",
+					"slug": "b7-nervensystem-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-nervensystem",
+					"materiality": "material",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welcher Teil des vegetativen Nervensystems unterstützt den Körper bei erhöhter körperlicher Leistung?",
+					"concept": "Der Sympathikus.",
+					"edge_representative": true,
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Der Sympathikus.",
+							"Die Hörschnecke."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7XEV3Q4ZAH14W2ZTAZNZDBC",
+					"slug": "b7-nervensystem-erklaeren",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-nervensystem",
+					"materiality": "material",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Wie verläuft die Reiz-Reaktions-Kette beim Fangen eines Balls?",
+					"concept": "Sinneszellen nehmen Lichtreize auf, Nerven leiten Signale zum ZNS, dort werden sie verarbeitet und andere Nerven aktivieren die Armmuskeln.",
+					"sample_solution": "Sinneszellen nehmen Lichtreize auf, Nerven leiten Signale zum ZNS, dort werden sie verarbeitet und andere Nerven aktivieren die Armmuskeln."
+				}
+			]
+		},
+		{
+			"id": "01M7XEV3Q441ZA1ZQ0Z80X6NFM",
+			"atom_uri": "urn:zam:atom:01M7XEV3Q441ZA1ZQ0Z80X6NFM",
+			"namespace": "zam-academy-biologie-realschule-7",
+			"slug": "b7-nervenzelle",
+			"title": "Nervenzelle und Synapse",
+			"domain": "biologie/lb4",
+			"reduction": "classical",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-nervenzelle",
+			"prerequisites": [
+				{
+					"atom_id": "01M7XEV3Q4A8SM7Q2TREZ0D4RT",
+					"type": "soft",
+					"rationale": "Helpful prior knowledge; all lessons remain open."
+				},
+				{
+					"atom_id": "01M7XEV3Q33RQXBBTM98QMMVSZ",
+					"type": "soft",
+					"rationale": "Helpful prior knowledge; all lessons remain open."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "biologie-realschule-7",
+					"topic_code": "lb4",
+					"topic_title": "Organsysteme des Menschen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "biologie",
+					"topic_code": "lb4",
+					"topic_title": "Organsysteme des Menschen",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XEV3Q4BE1TK6QA1WPJQWZB",
+					"slug": "b7-nervenzelle-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-nervenzelle",
+					"materiality": "material",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche Fortsätze nehmen typischerweise Signale anderer Nervenzellen auf und leiten sie zum Zellkörper?",
+					"concept": "Dendriten.",
+					"edge_representative": true,
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Dendriten.",
+							"Axonendigungen der empfangenden Nervenzelle."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7XEV3Q4Z6JW24Q4XDQ59RHX",
+					"slug": "b7-nervenzelle-erklaeren",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-nervenzelle",
+					"materiality": "material",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Wie gelangt die Information über den Spalt einer chemischen Synapse?",
+					"concept": "Die Endigung setzt Botenstoffe frei. Sie erreichen passende Rezeptoren der Folgezelle und beeinflussen deren Erregung.",
+					"sample_solution": "Die Endigung setzt Botenstoffe frei. Sie erreichen passende Rezeptoren der Folgezelle und beeinflussen deren Erregung."
+				}
+			]
+		},
+		{
+			"id": "01M7XEV3Q4WRQW0SNY4DZDVAQD",
+			"atom_uri": "urn:zam:atom:01M7XEV3Q4WRQW0SNY4DZDVAQD",
+			"namespace": "zam-academy-biologie-realschule-7",
+			"slug": "b7-hormone",
+			"title": "Hormone und Blutzucker",
+			"domain": "biologie/lb4",
+			"reduction": "classical",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-hormone",
+			"prerequisites": [
+				{
+					"atom_id": "01M7XEV3Q4A8SM7Q2TREZ0D4RT",
+					"type": "soft",
+					"rationale": "Helpful prior knowledge; all lessons remain open."
+				},
+				{
+					"atom_id": "01M7XEV3Q36EZEJH0RA4SCPDSJ",
+					"type": "soft",
+					"rationale": "Helpful prior knowledge; all lessons remain open."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "biologie-realschule-7",
+					"topic_code": "lb4",
+					"topic_title": "Organsysteme des Menschen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "biologie",
+					"topic_code": "lb4",
+					"topic_title": "Organsysteme des Menschen",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XEV3Q43B4RX8YP9WZ8N7FB",
+					"slug": "b7-hormone-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-hormone",
+					"materiality": "material",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welches Hormon fördert bei sinkendem Blutzucker die Glukoseabgabe aus der Leber?",
+					"concept": "Glukagon.",
+					"edge_representative": true,
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Glukagon.",
+							"Insulin."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7XEV3Q4BS6GHP4RW8Z5SW7E",
+					"slug": "b7-hormone-erklaeren",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-hormone",
+					"materiality": "material",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Warum reagieren nicht alle Körperzellen auf jedes Hormon, obwohl das Blut es verteilt?",
+					"concept": "Nur Zielzellen mit einem passenden Rezeptor können dieses Hormon erkennen und darauf reagieren.",
+					"sample_solution": "Nur Zielzellen mit einem passenden Rezeptor können dieses Hormon erkennen und darauf reagieren."
+				}
+			]
+		},
+		{
+			"id": "01M7XEV3Q4ZQE4S569MB91HYPW",
+			"atom_uri": "urn:zam:atom:01M7XEV3Q4ZQE4S569MB91HYPW",
+			"namespace": "zam-academy-biologie-realschule-7",
+			"slug": "b7-gesundheit",
+			"title": "Organe im Alltag schützen",
+			"domain": "biologie/lb4",
+			"reduction": "classical",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-gesundheit",
+			"prerequisites": [
+				{
+					"atom_id": "01M7XEV3Q3G7HMAH8JDW8NQVV1",
+					"type": "soft",
+					"rationale": "Helpful prior knowledge; all lessons remain open."
+				},
+				{
+					"atom_id": "01M7XEV3Q430B703YXG9MQZ7CW",
+					"type": "soft",
+					"rationale": "Helpful prior knowledge; all lessons remain open."
+				},
+				{
+					"atom_id": "01M7XEV3Q37YEAZFEE5X65AKHX",
+					"type": "soft",
+					"rationale": "Helpful prior knowledge; all lessons remain open."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "biologie-realschule-7",
+					"topic_code": "lb4",
+					"topic_title": "Organsysteme des Menschen"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "biologie",
+					"topic_code": "lb4",
+					"topic_title": "Organsysteme des Menschen",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7XEV3Q4C28PHER65WSQWC2E",
+					"slug": "b7-gesundheit-check",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-gesundheit",
+					"materiality": "material",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Warum sind Gehörschutz oder mehr Abstand am Lautsprecher Beispiele für Vorbeugung?",
+					"concept": "Die Maßnahmen senken die Schallbelastung vor einer möglichen Schädigung.",
+					"edge_representative": true,
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Die Maßnahmen senken die Schallbelastung vor einer möglichen Schädigung.",
+							"Sie stellen geschädigte Haarzellen wieder her."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7XEV3Q4AMBGA6EMSCKDXQJB",
+					"slug": "b7-gesundheit-erklaeren",
+					"language": "de",
+					"source_link": "https://academy.zam-os.org/biologie-realschule-7/#lesson=b7-gesundheit",
+					"materiality": "material",
+					"tier": "tier2_synthesis",
+					"bloom_level": 3,
+					"question": "Warum lässt sich aus einem anhaltenden Hörproblem allein keine bestimmte Behandlung ableiten?",
+					"concept": "Mehrere Ursachen kommen infrage. Eine fachliche Untersuchung hilft zu bestimmen, welche Unterstützung geeignet ist.",
+					"sample_solution": "Mehrere Ursachen kommen infrage. Eine fachliche Untersuchung hilft zu bestimmen, welche Unterstützung geeignet ist."
+				}
+			]
+		}
+	]
+}

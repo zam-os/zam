@@ -71,7 +71,6 @@ const MAPPED_CELLS = [
     transfers: 3,
     retired: 0,
     kept: 37,
-    preview: true,
   },
   {
     app: "geographie-gymnasium-5",
@@ -100,7 +99,6 @@ const MAPPED_CELLS = [
     transfers: 6,
     retired: 0,
     kept: 10,
-    preview: true,
   },
   {
     app: "mathematik-gymnasium-7",

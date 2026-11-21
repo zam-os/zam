@@ -1,0 +1,10 @@
+{
+  "schema": 1,
+  "status": "proposal-only",
+  "approved": null,
+  "source_repository": "zam-os/zam",
+  "source_commit": "1ff016cfd7a0765c5338eb4248d0c14f3b92261c",
+  "note": "No de-by Mittelschule Informatik cell exists in bundled-cells.ts or tests/fixtures/curriculum at the recorded commit. Existing Gymnasium and Realschule Informatik cells belong to their own school types and remain active; no Academy successor is asserted for them. No old histories are claimed, replaced or retired by this package.",
+  "sources": [],
+  "rows": []
+}
