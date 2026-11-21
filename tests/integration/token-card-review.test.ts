@@ -25,7 +25,6 @@ import {
   getTokenBySlug,
   listPersonalCards,
   openDatabase,
-  unblockReady,
   wouldCreateCycle,
 } from "../../src/kernel/index.js";
 
@@ -457,21 +456,25 @@ describe("integration: token → card → review flow", () => {
       const blockedToken = await getTokenBySlug(db, target.slug);
       expect(blockedToken).toBeDefined();
 
-      // Learn the prerequisite
+      expect((await getCard(db, target.id, "thomas"))?.blocked).toBe(1);
+
+      // Learn the prerequisite. The rating alone releases the target, as it
+      // must on Studio, Mobile and the MCP panel, which never call
+      // unblockReady themselves (ADR 2026-11-21 Decision 7).
       const prereqCard = await ensureCard(db, prereq.id, "thomas");
-      await executeReviewAction(db, {
+      const learned = await executeReviewAction(db, {
         action: "rate",
         cardId: prereqCard.id,
         userId: "thomas",
         rating: 3,
       });
 
-      // Now unblock — the target should become ready
-      const unblocked = await unblockReady(db, "thomas");
-      expect(unblocked.unblocked.length).toBeGreaterThanOrEqual(1);
-      expect(unblocked.unblocked.some((u) => u.slug === target.slug)).toBe(
-        true,
-      );
+      expect(learned.unblocked).toEqual([
+        { slug: target.slug, concept: target.concept },
+      ]);
+      expect((await getCard(db, target.id, "thomas"))?.blocked).toBe(0);
+      const queue = await buildReviewQueue(db, { userId: "thomas" });
+      expect(queue.items.map((item) => item.slug)).toContain(target.slug);
     });
 
     it("rolls back rating, review log, and cascade blocking together", async () => {
@@ -568,15 +571,14 @@ describe("integration: token → card → review flow", () => {
       expect(dueSlugs).toContain(prerequisite.slug);
       expect(dueSlugs).not.toContain(target.slug);
 
-      await executeReviewAction(db, {
+      const learned = await executeReviewAction(db, {
         action: "rate",
         cardId: prerequisiteCard!.id,
         userId: "thomas",
         rating: 3,
       });
 
-      const unblocked = await unblockReady(db, "thomas");
-      expect(unblocked.unblocked).toContainEqual({
+      expect(learned.unblocked).toContainEqual({
         slug: target.slug,
         concept: target.concept,
       });

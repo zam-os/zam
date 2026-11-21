@@ -7,7 +7,7 @@ tags:
   - fsrs
   - scheduling
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/fsrs-scheduling.md"
-timestamp: 2026-11-06T12:00:00.000Z
+timestamp: 2026-11-21T13:00:00.000Z
 ---
 
 ZAM's spaced repetition uses **FSRS-6** (Free Spaced Repetition Scheduler,
@@ -84,10 +84,12 @@ cards (see [prerequisite-blocking.md](prerequisite-blocking.md)).
 Interactive surfaces normally call `executeReviewAction()` in
 `src/kernel/recall/actions.ts`. Its `rate` action owns one database
 transaction around FSRS evaluation, sibling burial, an optional rating-1
-prerequisite cascade, choice bookkeeping, and optional session auditing. When a
+prerequisite cascade, the release of blocked cards after a rating of `2`–`4`,
+choice bookkeeping, and optional session auditing. When a
 `sessionId` is supplied, the review-log row references that session and a
 matching user `session_steps` row is written with the rating. A failure in any
-write rolls back the card update, review log, burial, blocking changes, choice
+write rolls back the card update, review log, burial, blocking and release
+changes, choice
 counters, and session step. The session must exist and belong to the learner;
 it may already be completed, because confirmed synthesis candidates arrive
 after `zam_session_end`. Only published, non-deprecated tokens take a rating.

@@ -153,9 +153,22 @@ cardCommand
         }
       }
 
+      // A success may complete a blocked card's foundations, as on every
+      // other rating surface (ADR 2026-11-21 Decision 7).
+      const released =
+        rating >= 2 ? await unblockReady(db, userId) : { unblocked: [] };
+
       if (opts.quiet) return;
       if (opts.json) {
-        console.log(JSON.stringify(result, null, 2));
+        console.log(
+          JSON.stringify(
+            released.unblocked.length > 0
+              ? { ...result, unblocked: released.unblocked }
+              : result,
+            null,
+            2,
+          ),
+        );
       } else {
         const ratingLabels: Record<number, string> = {
           1: "Again",
@@ -170,6 +183,9 @@ cardCommand
         console.log(`  Stability:  ${result.stability.toFixed(2)}`);
         console.log(`  State:      ${result.state}`);
         console.log(`  Reps:       ${result.reps}`);
+        for (const card of released.unblocked) {
+          console.log(`  Unblocked:  ${card.slug}`);
+        }
       }
     });
   });

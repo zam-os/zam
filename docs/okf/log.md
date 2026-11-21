@@ -2,6 +2,8 @@
 
 ## 2026-11-21
 
+- **Update** — [FSRS-6 Scheduling](fsrs-scheduling.md)
+- **Update** — [Prerequisite Graph and Blocking](prerequisite-blocking.md)
 - **Update** — [Token and Card Model](token-card-model.md)
 
 ## 2026-11-19

@@ -26,8 +26,11 @@ import {
   type ReviewAttempt,
   recordAttempt,
 } from "../observation/attempts.js";
-import type { CascadeBlockResult } from "../scheduler/blocker.js";
-import { cascadeBlock } from "../scheduler/blocker.js";
+import type {
+  CascadeBlockResult,
+  UnblockResult,
+} from "../scheduler/blocker.js";
+import { cascadeBlock, unblockReady } from "../scheduler/blocker.js";
 import type { AnswerFormat } from "../scheduler/choice-ceiling.js";
 import type { Rating } from "../scheduler/fsrs.js";
 import { findPresentationByAttemptId } from "../scheduler/presentation.js";
@@ -79,6 +82,11 @@ export interface ReviewActionResult {
   token: Token;
   evaluation?: EvaluateResult;
   blocked?: CascadeBlockResult;
+  /**
+   * Blocked cards this successful rating released, because their foundations
+   * are now all met (ADR 2026-11-21 Decision 7). Absent when none were.
+   */
+  unblocked?: UnblockResult["unblocked"];
   sessionStep?: SessionStep;
   updatedToken?: Token;
   deletedToken?: DeleteTokenResult;
@@ -415,6 +423,17 @@ export async function executeReviewAction(
         });
       }
 
+      // A successful review may complete the foundations of a blocked card.
+      // Releasing here, in the kernel, is what brings it back on every
+      // surface (ADR 2026-11-21 Decision 7).
+      let unblocked: UnblockResult["unblocked"] | undefined;
+      if (rating >= 2) {
+        const released = await unblockReady(tx, input.userId, {
+          now: input.now,
+        });
+        if (released.unblocked.length > 0) unblocked = released.unblocked;
+      }
+
       const sessionStep = input.sessionId
         ? await logStep(tx, {
             session_id: input.sessionId,
@@ -452,6 +471,7 @@ export async function executeReviewAction(
         token: target.token,
         evaluation,
         blocked,
+        unblocked,
         sessionStep,
         attemptId,
         applied: true,

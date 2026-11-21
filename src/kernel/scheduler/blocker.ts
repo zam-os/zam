@@ -119,13 +119,20 @@ export async function cascadeBlock(
  * Unblocking cascades: when unblocking a card satisfies the last unmet
  * prerequisite of another blocked card, that card unblocks in the same call.
  *
+ * Every successful rating (2–4) runs this inside its own transaction
+ * (`executeReviewAction`, `applySessionSynthesis`), so a blocked card comes
+ * back on every surface once its foundations are in place (ADR 2026-11-21
+ * Decision 7). `zam card unblock` stays as a manual trigger.
+ *
  * @param db - Database connection
  * @param userId - The user whose blocked cards to check
+ * @param options.now - When the released cards fall due (default: now)
  * @returns List of cards that were unblocked
  */
 export async function unblockReady(
   db: Database,
   userId: string,
+  options: { now?: Date } = {},
 ): Promise<UnblockResult> {
   const unblocked: Array<{ slug: string; concept: string }> = [];
 
@@ -163,7 +170,7 @@ export async function unblockReady(
 
     if (readyCards.length === 0) break;
 
-    const now = new Date().toISOString();
+    const now = (options.now ?? new Date()).toISOString();
     const placeholders = readyCards.map(() => "?").join(",");
     await db
       .prepare(
