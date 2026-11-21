@@ -4,6 +4,7 @@
 **Date:** 2026-11-21\
 **Decider:** Thomas (project owner)\
 **Issue:** zam-os/zam#437\
+**Review:** Codex (GPT-6.2 Sol) on 2026-11-21 (zam-os/zam#494); see *Review record*\
 **Related:**
 [2026-09-08](2026-09-08-answer-points-and-score-based-rating.md) (answer points and score-based rating) ·
 [2026-08-14](2026-08-14-central-learning-atoms-and-identity.md) (atoms, precondition assessment, pull-forward) ·
@@ -119,10 +120,20 @@ misconception stays in the feedback text, and the new reply holds one number.
   `RecallEvaluation`. A reply from a host that ignores the key parses as
   before.
 - **Prose (Studio).** The prompt asks for one last line `FOUNDATION: <number>`
-  or `FOUNDATION: none`. The keyword stays English, as JSON keys do. `zam
-  bridge evaluate-answer` takes that line off before the text is shown and
-  adds `foundationGap` to its JSON output. A reply without the line means no
-  foundation.
+  or `FOUNDATION: none`. The keyword stays English, as JSON keys do.
+  `evaluateAnswerViaLLM` takes that line off the **raw** reply and validates
+  it against the list. It does so before `cleanRecallEvaluation` runs, on
+  every path that calls the cleaner: agent transport, the first HTTP attempt
+  and the retry without reasoning control. The cleaner keeps only the
+  explanation and the completeness verdict, so a line after the verdict
+  would be lost and never reach the bridge. The result returns the
+  diagnosis next to the text (`foundationIndex` on the evaluation result),
+  and `zam bridge evaluate-answer` adds `foundationGap` to its JSON output.
+  A reply without the line means no foundation.
+
+  Rejected for now: switching Studio to the JSON contract. That would also
+  avoid the cleaner, but it changes how Studio renders, retries and cleans
+  every evaluation. This decision needs one extra field, not a new contract.
 - **The list comes from the library, not the caller.** `evaluate-answer`
   already receives `--slug`. It looks up the foundations itself, so a caller
   cannot put a foundation into the prompt that is not in the graph.
@@ -141,9 +152,20 @@ trust the caller's pair.
   card is created when the learner takes the offer. A card that is already due
   is still offered, because due does not mean next.
 - `pullForwardFoundation(db, userId, tokenId, requiresId)` runs `ensureCard`,
-  then `pullForwardCards`, and returns the card id. The surface then asks for
-  the next review with `tokenIds: [requiresId]`, so the foundation is the very
-  next card. After that the session continues as before.
+  then `pullForwardCards`, and returns the foundation's review: the same
+  payload `getReview` returns, built for that one card. That makes the
+  foundation the very next card. After that the session continues as before.
+
+  The review is built inside the command and is not left to a later
+  `getReview` call with `tokenIds`. That path forces `maxNew: 0`
+  (`src/cli/bridge-handlers.ts`), so Atlas region practice never admits a new
+  card, and Mobile's scoped review starts with the same rule. A new
+  foundation would be pulled and then not found. The command instead builds
+  the queue for `tokenIds: [requiresId]` with a one-card admission budget
+  (`maxNew: 1`, `maxReviews: 1`). That budget exists only for this explicit
+  click, and the Atlas semantics stay unchanged. The atom-day rule still
+  applies, as in the offer check above. A foundation the queue will not
+  admit is therefore never offered.
 
 They are exposed as two bridge commands, `foundation-gap-offer` (read only)
 and `foundation-gap-pull` (learning state only). Each has an entry in
@@ -195,7 +217,8 @@ once the foundation is in place. Today it never comes back outside the CLI
   stricter is a separate question.
 
 This is a bug fix with its own value, and it goes into its own PR before the
-feature, with a test that rates through `executeReviewAction` alone.
+feature, with a test that rates through `executeReviewAction` alone. That PR
+is zam-os/zam#495.
 
 ## Consequences
 
@@ -227,14 +250,33 @@ feature, with a test that rates through `executeReviewAction` alone.
 ## Implementation outline
 
 1. Fix PR: `unblockReady` after successful ratings in `executeReviewAction`,
-   with a test (Decision 7).
+   with a test (Decision 7). This is zam-os/zam#495.
 2. Kernel: `foundation-gap.ts` with `foundationGapOffer` and
-   `pullForwardFoundation`, plus tests for the edge re-check, a blocked or
-   detached card, the atom-day rule and a new foundation card.
+   `pullForwardFoundation`. Tests cover the edge re-check, a blocked or
+   detached card, the atom-day rule, and a **new** foundation card that is
+   returned as the next review despite the scoped `maxNew: 0` rule.
 3. Prompts: the foundation list and reply field in both prompt builders.
-   Parse and strip in `parseRecallEvaluation` and in `evaluate-answer`.
-   Tests for out-of-range, `correct`-verdict and missing-field replies.
+   Parse in `parseRecallEvaluation`. Extract the line in
+   `evaluateAnswerViaLLM` before `cleanRecallEvaluation`, on all three
+   paths. Tests cover out-of-range, `correct`-verdict and missing-field
+   replies, and a well-formed Studio reply whose line survives cleaning.
 4. Bridge commands, `STUDIO_BRIDGE_COMMANDS` entries and MCP tools.
 5. Surfaces: Studio reveal, Mobile reveal and MCP panel reveal, with i18n
    strings (en/de reference pair).
 6. OKF articles and the knowledge map.
+
+## Review record
+
+**Codex (GPT-6.2 Sol), 2026-11-21.** Two findings, both checked against the
+code and both accepted:
+
+- *A new foundation would not be found after the pull.* `getReview` forces
+  `maxNew: 0` when `tokenIds` is set, and Mobile's scoped review does the
+  same. Decision 4 now has `foundation-gap-pull` return the foundation's
+  review itself, with a one-card admission budget that only this click grants.
+- *Studio's `FOUNDATION:` line would not survive cleaning.*
+  `cleanRecallEvaluation` keeps the explanation and the completeness verdict
+  and drops what follows. Decision 3 now extracts the line from the raw reply
+  inside `evaluateAnswerViaLLM`, before the cleaner, on all three of its
+  paths. The suggested alternative, moving Studio to the JSON contract, is
+  noted and rejected for now.
