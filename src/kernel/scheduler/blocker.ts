@@ -120,10 +120,10 @@ export async function cascadeBlock(
  * prerequisite of another blocked card, that card unblocks in the same call.
  *
  * Every successful rating (2–4) runs this inside its own transaction
- * (`executeReviewAction`, `applySessionSynthesis`, `applyDirectRating`) and
- * once more after the commit (`recheckReleaseAfterCommit`), so a blocked card
- * comes back on every surface once its foundations are in place (ADR
- * 2026-11-21 Decision 7). `zam card unblock` stays as a manual trigger.
+ * (`executeReviewAction`, `applySessionSynthesis`, `applyDirectRating`), after
+ * `lockLearnerRatings`, so a blocked card comes back on every surface once its
+ * foundations are in place (ADR 2026-11-21 Decision 7). `zam card unblock`
+ * stays as a manual trigger.
  *
  * @param db - Database connection
  * @param userId - The user whose blocked cards to check
@@ -189,44 +189,24 @@ export async function unblockReady(
 }
 
 /**
- * Run `unblockReady` once more after a successful rating has committed, and
- * merge what it releases into what the rating's own transaction released.
+ * Serialize one learner's ratings on PostgreSQL until the outermost commit.
  *
- * Why after the commit: on PostgreSQL two ratings of different foundations of
- * the same blocked card can run concurrently. Each transaction's own scan sees
- * its own success but not the other's uncommitted one, so both commit and the
- * dependent stays blocked. A fresh scan after the commit sees every rating
- * committed before it, so the later of the two releases the card. The kernel
- * has no per-learner lock to serialize ratings instead.
+ * Every rating transaction calls this first. Without it, two concurrent
+ * ratings of different foundations of the same blocked card each see only
+ * their own success in `unblockReady`, both commit, and the dependent stays
+ * blocked. A transaction-scoped advisory lock is held until the real commit,
+ * also when the rating runs inside a caller's transaction (PostgreSQL runs a
+ * nested `transaction()` inline), so the later rating scans after the earlier
+ * one committed (READ COMMITTED takes a fresh snapshot per statement).
  *
- * Callers pass the handle they ran the rating on. When that handle is already
- * inside a caller's transaction, `transaction()` runs inline (PostgreSQL) and
- * this recheck joins it without committing early.
- *
- * The rating is already committed, so a failure here must not fail it: it is
- * logged and the rating's own release stands.
+ * SQLite needs nothing: `BEGIN IMMEDIATE` already admits one writer at a time.
  */
-export async function recheckReleaseAfterCommit(
-  db: Database,
+export async function lockLearnerRatings(
+  tx: Database,
   userId: string,
-  released: UnblockResult["unblocked"] | undefined,
-  options: { now?: Date } = {},
-): Promise<UnblockResult["unblocked"] | undefined> {
-  try {
-    const again = await db.transaction((tx) =>
-      unblockReady(tx, userId, options),
-    );
-    const merged = [...(released ?? [])];
-    for (const card of again.unblocked) {
-      if (!merged.some((entry) => entry.slug === card.slug)) merged.push(card);
-    }
-    return merged.length > 0 ? merged : undefined;
-  } catch (error) {
-    console.warn(
-      `Could not recheck blocked cards after the rating committed: ${
-        error instanceof Error ? error.message : String(error)
-      }`,
-    );
-    return released;
-  }
+): Promise<void> {
+  if (tx.dialect !== "postgres") return;
+  await tx
+    .prepare("SELECT pg_advisory_xact_lock(hashtextextended(?, 0))")
+    .get(`zam:ratings:${userId}`);
 }

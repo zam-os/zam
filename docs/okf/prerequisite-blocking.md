@@ -64,17 +64,16 @@ applied review. A confirmed observation rating (`applySessionSynthesis()` in
 `src/kernel/observation/session-synthesis.ts`) follows the same policy in its
 own transaction, and so does `zam card update` through `applyDirectRating()`.
 
-**Release after the commit.** After a successful rating has committed, each of
-these paths runs `unblockReady()` once more in a short transaction of its own
-(`recheckReleaseAfterCommit()`) and merges what it frees into `unblocked`. On
-PostgreSQL two ratings of different foundations of the same blocked card can
-run at once; each transaction sees only its own success, so neither frees the
-card. The fresh scan after the commit sees both, so the later rating releases
-it. The kernel has no per-learner lock to serialize ratings instead. When the
-rating runs inside a caller's transaction, the recheck joins that transaction
-and commits nothing early. The rating is already committed when the recheck
-runs, so a failed recheck is logged and does not fail the rating; the next
-successful review releases the card.
+**Concurrent ratings.** Each of these paths first takes a per-learner
+transaction lock on PostgreSQL (`lockLearnerRatings()`, a
+`pg_advisory_xact_lock`). Without it, two ratings of different foundations of
+the same blocked card could run at once, each transaction would see only its
+own success, and both would commit with the card still blocked. The lock is
+held until the outermost commit, also when the rating runs inside a caller's
+transaction, so the later rating scans after the earlier one has committed.
+SQLite needs no lock, because `BEGIN IMMEDIATE` admits one writer at a time.
+The release therefore always commits with its rating, and no later step can
+miss it.
 
 Blocked cards are excluded when `src/kernel/scheduler/queue.ts` builds the
 review queue; unblocking re-admits them.
@@ -131,5 +130,5 @@ used by bonus offers.
 - [ADR 2026-07-18 — Knowledge-to-Learning Import](../adr/2026-07-18-okf-learning-import.md)
 - [ADR 2026-07-21 — Android Companion Tauri Shell](../adr/2026-07-21-android-companion-tauri-shell.md)
 - ADR 2026-11-21 — Diagnosed Foundation Gaps, Decision 7 (zam-os/zam#494)
-- Tests: `tests/kernel/blocker.test.ts`, `tests/integration/token-card-review.test.ts`, `tests/kernel/session-synthesis.test.ts`
+- Tests: `tests/kernel/blocker.test.ts`, `tests/kernel/blocker-concurrency.test.ts`, `tests/integration/token-card-review.test.ts`, `tests/kernel/session-synthesis.test.ts`
 - Code: `src/kernel/models/prerequisite.ts`, `src/kernel/scheduler/blocker.ts`, `src/kernel/scheduler/queue.ts`, `src/kernel/recall/actions.ts`, `src/kernel/observation/session-synthesis.ts`

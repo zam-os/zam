@@ -32,7 +32,7 @@ import type {
 } from "../scheduler/blocker.js";
 import {
   cascadeBlock,
-  recheckReleaseAfterCommit,
+  lockLearnerRatings,
   unblockReady,
 } from "../scheduler/blocker.js";
 import type { AnswerFormat } from "../scheduler/choice-ceiling.js";
@@ -323,47 +323,34 @@ export async function applyDirectRating(
   db: Database,
   input: ApplyDirectRatingInput,
 ): Promise<ApplyDirectRatingResult> {
-  const result = await db.transaction(
-    async (tx): Promise<ApplyDirectRatingResult> => {
-      const token = await getTokenById(tx, input.tokenId);
-      if (!token) throw new Error(`Token not found: ${input.tokenId}`);
-      const card = await ensureCard(tx, token.id, input.userId);
-      const evaluation = await evaluateRatingWithinTransaction(tx, {
-        cardId: card.id,
-        tokenId: token.id,
-        userId: input.userId,
-        rating: input.rating,
-        now: input.now,
-      });
+  return db.transaction(async (tx): Promise<ApplyDirectRatingResult> => {
+    await lockLearnerRatings(tx, input.userId);
+    const token = await getTokenById(tx, input.tokenId);
+    if (!token) throw new Error(`Token not found: ${input.tokenId}`);
+    const card = await ensureCard(tx, token.id, input.userId);
+    const evaluation = await evaluateRatingWithinTransaction(tx, {
+      cardId: card.id,
+      tokenId: token.id,
+      userId: input.userId,
+      rating: input.rating,
+      now: input.now,
+    });
 
-      if (input.rating === 1) {
-        // Same set cascadeBlock uses, so the guard and the block agree.
-        const prereqs = await getBlockingPrerequisites(tx, token.id);
-        if (prereqs.length === 0) return { evaluation };
-        const blocked = await cascadeBlock(tx, input.userId, token.slug);
-        return { evaluation, blocked };
-      }
+    if (input.rating === 1) {
+      // Same set cascadeBlock uses, so the guard and the block agree.
+      const prereqs = await getBlockingPrerequisites(tx, token.id);
+      if (prereqs.length === 0) return { evaluation };
+      const blocked = await cascadeBlock(tx, input.userId, token.slug);
+      return { evaluation, blocked };
+    }
 
-      const released = await unblockReady(tx, input.userId, {
-        now: input.now,
-      });
-      return released.unblocked.length > 0
-        ? { evaluation, unblocked: released.unblocked }
-        : { evaluation };
-    },
-  );
-
-  // Post-commit for the same reason as in executeReviewAction.
-  if (input.rating >= 2) {
-    result.unblocked = await recheckReleaseAfterCommit(
-      db,
-      input.userId,
-      result.unblocked,
-      { now: input.now },
-    );
-    if (!result.unblocked) delete result.unblocked;
-  }
-  return result;
+    const released = await unblockReady(tx, input.userId, {
+      now: input.now,
+    });
+    return released.unblocked.length > 0
+      ? { evaluation, unblocked: released.unblocked }
+      : { evaluation };
+  });
 }
 
 export async function executeReviewAction(
@@ -389,7 +376,8 @@ export async function executeReviewAction(
       }
     }
 
-    const rated: ReviewActionResult = await db.transaction(async (tx) => {
+    return db.transaction(async (tx) => {
+      await lockLearnerRatings(tx, input.userId);
       const target = await getReviewTarget(tx, input.cardId, input.userId);
       assertReviewableToken(target.token, target.cardId);
       if (input.sessionId) {
@@ -496,7 +484,8 @@ export async function executeReviewAction(
 
       // A successful review may complete the foundations of a blocked card.
       // Releasing here, in the kernel, is what brings it back on every
-      // surface (ADR 2026-11-21 Decision 7).
+      // surface (ADR 2026-11-21 Decision 7). It commits with the rating, and
+      // lockLearnerRatings keeps a concurrent rating from hiding its success.
       let unblocked: UnblockResult["unblocked"] | undefined;
       if (rating >= 2) {
         const released = await unblockReady(tx, input.userId, {
@@ -548,19 +537,6 @@ export async function executeReviewAction(
         applied: true,
       };
     });
-
-    // Post-commit, not in the transaction above: a concurrent rating of
-    // another foundation of the same blocked card is only visible once both
-    // have committed (see recheckReleaseAfterCommit).
-    if (rated.applied && rating >= 2) {
-      rated.unblocked = await recheckReleaseAfterCommit(
-        db,
-        input.userId,
-        rated.unblocked,
-        { now: input.now },
-      );
-    }
-    return rated;
   }
 
   const target = await getReviewTarget(db, input.cardId, input.userId);

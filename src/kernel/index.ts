@@ -1244,7 +1244,7 @@ export {
 export type { CascadeBlockResult, UnblockResult } from "./scheduler/blocker.js";
 export {
   cascadeBlock,
-  recheckReleaseAfterCommit,
+  lockLearnerRatings,
   unblockReady,
 } from "./scheduler/blocker.js";
 export type {

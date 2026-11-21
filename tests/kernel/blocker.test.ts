@@ -1,7 +1,7 @@
 import { mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
   addPrerequisite,
   applyDirectRating,
@@ -16,68 +16,6 @@ import {
   type Token,
   unblockReady,
 } from "../../src/kernel/index.js";
-
-/**
- * Wrap a Database so the first transaction's release scan finds nothing, as if
- * another foundation's success were still uncommitted while this rating ran
- * (two concurrent ratings on PostgreSQL). Later transactions see the truth.
- * `failLater` makes every later transaction throw instead.
- */
-function staleFirstReleaseScan(
-  db: Database,
-  options: { failLater?: boolean } = {},
-): Database {
-  let transactions = 0;
-  const blind = (tx: Database): Database => ({
-    ...tx,
-    prepare(sql: string) {
-      if (!sql.includes("pc.reps >= 1")) return tx.prepare(sql);
-      const statement = tx.prepare(sql);
-      return { ...statement, all: async () => [] };
-    },
-  });
-  const wrapper: Database = {
-    prepare: (sql: string) => db.prepare(sql),
-    exec: (sql: string) => db.exec(sql),
-    pragma: (source: string) => db.pragma(source),
-    transaction<T>(fn: (tx: Database) => Promise<T>): Promise<T> {
-      transactions++;
-      if (transactions === 1) return db.transaction((tx) => fn(blind(tx)));
-      if (options.failLater) {
-        return Promise.reject(new Error("recheck connection lost"));
-      }
-      return db.transaction(fn);
-    },
-    close: () => db.close(),
-  };
-  return wrapper;
-}
-
-/**
- * Wrap a Database with PostgreSQL's nesting rule: a transaction() inside an
- * open one runs inline instead of committing on its own.
- */
-function inlineNestedTransactions(db: Database): Database {
-  let open = false;
-  const wrapper: Database = {
-    prepare: (sql: string) => db.prepare(sql),
-    exec: (sql: string) => db.exec(sql),
-    pragma: (source: string) => db.pragma(source),
-    async transaction<T>(fn: (tx: Database) => Promise<T>): Promise<T> {
-      if (open) return fn(wrapper);
-      return db.transaction(async () => {
-        open = true;
-        try {
-          return await fn(wrapper);
-        } finally {
-          open = false;
-        }
-      });
-    },
-    close: () => db.close(),
-  };
-  return wrapper;
-}
 
 /** Wrap a Database so every prepare() call is counted. */
 function countPrepares(db: Database, counter: { count: number }): Database {
@@ -537,7 +475,6 @@ describe("release commits with its rating (ADR 2026-11-21 Decision 7)", () => {
   });
 
   afterEach(async () => {
-    vi.restoreAllMocks();
     await db.close();
     rmSync(tempDir, { recursive: true, force: true });
   });
@@ -624,79 +561,5 @@ describe("release commits with its rating (ADR 2026-11-21 Decision 7)", () => {
       rating: 3,
     });
     expect(await reviewLogCount(second.id)).toBe(1);
-  });
-
-  it("releases on the post-commit recheck when the rating's own scan was stale", async () => {
-    const { second, dependent } = await blockedBehindTwo();
-    const card = await ensureCard(db, second.id, "thomas");
-
-    const result = await executeReviewAction(staleFirstReleaseScan(db), {
-      action: "rate",
-      cardId: card.id,
-      userId: "thomas",
-      rating: 3,
-    });
-
-    expect(result.unblocked).toEqual([
-      { slug: "dependent", concept: dependent.concept },
-    ]);
-    expect((await getCard(db, dependent.id, "thomas"))?.blocked).toBe(0);
-  });
-
-  it("rechecks after commit for applyDirectRating too", async () => {
-    const { second } = await blockedBehindTwo();
-
-    const result = await applyDirectRating(staleFirstReleaseScan(db), {
-      userId: "thomas",
-      tokenId: second.id,
-      rating: 3,
-    });
-
-    expect(result.unblocked?.map((entry) => entry.slug)).toEqual([
-      "dependent",
-    ]);
-  });
-
-  it("keeps the committed rating when the recheck fails", async () => {
-    const { second, dependent } = await blockedBehindTwo();
-    const card = await ensureCard(db, second.id, "thomas");
-    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
-
-    const result = await executeReviewAction(
-      staleFirstReleaseScan(db, { failLater: true }),
-      { action: "rate", cardId: card.id, userId: "thomas", rating: 3 },
-    );
-
-    expect(result.applied).toBe(true);
-    expect(result.unblocked).toBeUndefined();
-    expect(await reviewLogCount(second.id)).toBe(1);
-    expect((await getCard(db, dependent.id, "thomas"))?.blocked).toBe(1);
-    expect(warn).toHaveBeenCalledWith(
-      expect.stringContaining("recheck connection lost"),
-    );
-  });
-
-  it("does not commit early inside a caller's transaction", async () => {
-    const { second, dependent } = await blockedBehindTwo();
-    const card = await ensureCard(db, second.id, "thomas");
-    const nested = inlineNestedTransactions(db);
-
-    await expect(
-      nested.transaction(async (tx) => {
-        const result = await executeReviewAction(tx, {
-          action: "rate",
-          cardId: card.id,
-          userId: "thomas",
-          rating: 3,
-        });
-        expect(result.unblocked?.map((entry) => entry.slug)).toEqual([
-          "dependent",
-        ]);
-        throw new Error("caller rolls back");
-      }),
-    ).rejects.toThrow(/caller rolls back/);
-
-    expect(await reviewLogCount(second.id)).toBe(0);
-    expect((await getCard(db, dependent.id, "thomas"))?.blocked).toBe(1);
   });
 });
