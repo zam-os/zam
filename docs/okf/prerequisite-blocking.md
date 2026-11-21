@@ -7,7 +7,7 @@ tags:
   - scheduling
   - prerequisites
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/prerequisite-blocking.md"
-timestamp: 2026-09-07T08:00:00.000Z
+timestamp: 2026-11-21T13:00:00.000Z
 ---
 
 Tokens are connected by a **directed prerequisite graph** (table
@@ -24,11 +24,21 @@ that a blocked prerequisite card with no prerequisites of its own is
 unblocked and made due now. Only direct prerequisites are materialized,
 never the transitive hull, and the failed token's dependents are not
 touched. Calling `cascadeBlock()` for a token without prerequisites
-throws. `unblockReady()` releases a blocked card (unblocked, due now) once
-every direct prerequisite has a card with `reps ≥ 1` that is itself not
+throws.
+
+**Release.** `unblockReady()` releases a blocked card (unblocked, due now)
+once every direct prerequisite has a card with `reps ≥ 1` that is itself not
 blocked; a blocked card with no prerequisites is released immediately.
-Releases cascade within the same call, so a freed prerequisite can free
-the card that waited on it.
+Releases cascade within the same call, so a freed prerequisite can free the
+card that waited on it. Every successful rating (`2`–`4`) runs it for that
+learner, so the review that completes the foundations brings the blocked card
+back on every surface (Studio, Mobile, the MCP panel, the CLI). A rating of
+`1` releases nothing and resets the rated card's `reps` to `0`: a foundation
+that was itself failed counts again only after its next successful review, so
+a chain blocked through reviews is released one level per successful review.
+Because "met" is only `reps ≥ 1`, a card blocked while its foundations were
+already practised is released by the learner's next successful review of any
+card. `zam card unblock` runs the same release by hand.
 
 **Only foundations the queue can show block.** Blocking counts the direct
 prerequisites whose token is `published` and not deprecated —
@@ -46,9 +56,24 @@ reconciliation.
 `evaluateRating()` (see [fsrs-scheduling.md](fsrs-scheduling.md)). The
 kernel's higher-level `executeReviewAction()` coordinates the interactive
 policy: for a rating of `1`, it checks whether the token has prerequisites
-and then invokes `cascadeBlock()`. The card update, immutable review log,
-blocking changes, and an optional session step share one transaction, so a
-failure cannot leave a partially applied review.
+and then invokes `cascadeBlock()`; for a rating of `2`–`4`, it invokes
+`unblockReady()` and reports the released cards as `unblocked`. The card
+update, immutable review log, blocking and release changes, and an optional
+session step share one transaction, so a failure cannot leave a partially
+applied review. A confirmed observation rating (`applySessionSynthesis()` in
+`src/kernel/observation/session-synthesis.ts`) follows the same policy in its
+own transaction, and so does `zam card update` through `applyDirectRating()`.
+
+**Concurrent ratings.** Each of these paths first takes a per-learner
+transaction lock on PostgreSQL (`lockLearnerRatings()`, a
+`pg_advisory_xact_lock`). Without it, two ratings of different foundations of
+the same blocked card could run at once, each transaction would see only its
+own success, and both would commit with the card still blocked. The lock is
+held until the outermost commit, also when the rating runs inside a caller's
+transaction, so the later rating scans after the earlier one has committed.
+SQLite needs no lock, because `BEGIN IMMEDIATE` admits one writer at a time.
+The release therefore always commits with its rating, and no later step can
+miss it.
 
 Blocked cards are excluded when `src/kernel/scheduler/queue.ts` builds the
 review queue; unblocking re-admits them.
@@ -104,5 +129,6 @@ used by bonus offers.
 - [ADR 2026-07-03 — RAG Semantic Token Search](../adr/2026-07-03-rag-semantic-token-search.md)
 - [ADR 2026-07-18 — Knowledge-to-Learning Import](../adr/2026-07-18-okf-learning-import.md)
 - [ADR 2026-07-21 — Android Companion Tauri Shell](../adr/2026-07-21-android-companion-tauri-shell.md)
-- Tests: `tests/kernel/blocker.test.ts`
-- Code: `src/kernel/models/prerequisite.ts`, `src/kernel/scheduler/blocker.ts`, `src/kernel/scheduler/queue.ts`, `src/kernel/recall/actions.ts`
+- ADR 2026-11-21 — Diagnosed Foundation Gaps, Decision 7 (zam-os/zam#494)
+- Tests: `tests/kernel/blocker.test.ts`, `tests/kernel/blocker-concurrency.test.ts`, `tests/integration/token-card-review.test.ts`, `tests/kernel/session-synthesis.test.ts`
+- Code: `src/kernel/models/prerequisite.ts`, `src/kernel/scheduler/blocker.ts`, `src/kernel/scheduler/queue.ts`, `src/kernel/recall/actions.ts`, `src/kernel/observation/session-synthesis.ts`

@@ -119,13 +119,21 @@ export async function cascadeBlock(
  * Unblocking cascades: when unblocking a card satisfies the last unmet
  * prerequisite of another blocked card, that card unblocks in the same call.
  *
+ * Every successful rating (2–4) runs this inside its own transaction
+ * (`executeReviewAction`, `applySessionSynthesis`, `applyDirectRating`), after
+ * `lockLearnerRatings`, so a blocked card comes back on every surface once its
+ * foundations are in place (ADR 2026-11-21 Decision 7). `zam card unblock`
+ * stays as a manual trigger.
+ *
  * @param db - Database connection
  * @param userId - The user whose blocked cards to check
+ * @param options.now - When the released cards fall due (default: now)
  * @returns List of cards that were unblocked
  */
 export async function unblockReady(
   db: Database,
   userId: string,
+  options: { now?: Date } = {},
 ): Promise<UnblockResult> {
   const unblocked: Array<{ slug: string; concept: string }> = [];
 
@@ -163,7 +171,7 @@ export async function unblockReady(
 
     if (readyCards.length === 0) break;
 
-    const now = new Date().toISOString();
+    const now = (options.now ?? new Date()).toISOString();
     const placeholders = readyCards.map(() => "?").join(",");
     await db
       .prepare(
@@ -178,4 +186,27 @@ export async function unblockReady(
   }
 
   return { unblocked };
+}
+
+/**
+ * Serialize one learner's ratings on PostgreSQL until the outermost commit.
+ *
+ * Every rating transaction calls this first. Without it, two concurrent
+ * ratings of different foundations of the same blocked card each see only
+ * their own success in `unblockReady`, both commit, and the dependent stays
+ * blocked. A transaction-scoped advisory lock is held until the real commit,
+ * also when the rating runs inside a caller's transaction (PostgreSQL runs a
+ * nested `transaction()` inline), so the later rating scans after the earlier
+ * one committed (READ COMMITTED takes a fresh snapshot per statement).
+ *
+ * SQLite needs nothing: `BEGIN IMMEDIATE` already admits one writer at a time.
+ */
+export async function lockLearnerRatings(
+  tx: Database,
+  userId: string,
+): Promise<void> {
+  if (tx.dialect !== "postgres") return;
+  await tx
+    .prepare("SELECT pg_advisory_xact_lock(hashtextextended(?, 0))")
+    .get(`zam:ratings:${userId}`);
 }

@@ -1121,6 +1121,8 @@ export {
   uiObservationTimeSpan,
 } from "./observation/ui-observer-synthesis.js";
 export type {
+  ApplyDirectRatingInput,
+  ApplyDirectRatingResult,
   ExecuteReviewActionInput,
   RecordAssistedStepInput,
   RecordAssistedStepResult,
@@ -1128,6 +1130,7 @@ export type {
   ReviewActionType,
 } from "./recall/actions.js";
 export {
+  applyDirectRating,
   executeReviewAction,
   recordAssistedStep,
 } from "./recall/actions.js";
@@ -1239,7 +1242,11 @@ export {
   VOICE_ENGINE_PREFERENCES,
 } from "./recall/voice-review.js";
 export type { CascadeBlockResult, UnblockResult } from "./scheduler/blocker.js";
-export { cascadeBlock, unblockReady } from "./scheduler/blocker.js";
+export {
+  cascadeBlock,
+  lockLearnerRatings,
+  unblockReady,
+} from "./scheduler/blocker.js";
 export type {
   AnswerFormat,
   TapCeilingResult,

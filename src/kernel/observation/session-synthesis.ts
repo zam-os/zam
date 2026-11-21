@@ -17,7 +17,12 @@ import { logStep } from "../models/session.js";
 import type { Token } from "../models/token.js";
 import { getTokenBySlug, getTokensBySlugs } from "../models/token.js";
 import { evaluateRatingWithinTransaction } from "../recall/evaluator.js";
-import { cascadeBlock } from "../scheduler/blocker.js";
+import type { UnblockResult } from "../scheduler/blocker.js";
+import {
+  cascadeBlock,
+  lockLearnerRatings,
+  unblockReady,
+} from "../scheduler/blocker.js";
 import type { Rating } from "../scheduler/fsrs.js";
 import { isScreenObservationEnabled } from "../system/install-config.js";
 import type {
@@ -132,6 +137,8 @@ export interface ApplySessionSynthesisResult {
   applied: boolean;
   record: SessionSynthesisRecord;
   blocked?: Awaited<ReturnType<typeof cascadeBlock>>;
+  /** Blocked cards this confirmed rating released (ADR 2026-11-21 D7). */
+  unblocked?: UnblockResult["unblocked"];
 }
 
 function parseSynthesisRow(row: SessionSynthesisRow): SessionSynthesisRecord {
@@ -411,6 +418,7 @@ export async function applySessionSynthesis(
   };
   return db.transaction(async (tx) => {
     const session = await getSession(tx, input.sessionId);
+    await lockLearnerRatings(tx, session.user_id);
     const token = await getTokenBySlug(tx, input.tokenSlug);
     if (!token || token.deprecated_at) {
       throw new Error(`Active token not found: ${input.tokenSlug}`);
@@ -574,6 +582,14 @@ export async function applySessionSynthesis(
       });
     }
 
+    // A confirmed observed rating is review evidence like any other: a
+    // success may complete a blocked card's foundations (ADR 2026-11-21 D7).
+    let unblocked: UnblockResult["unblocked"] | undefined;
+    if (input.confirmedRating >= 2) {
+      const released = await unblockReady(tx, session.user_id);
+      if (released.unblocked.length > 0) unblocked = released.unblocked;
+    }
+
     const notes = `Observation synthesis (${input.confidence}, inferred ${input.inferredRating}): ${input.matchedCommandTexts.slice(0, 3).join(" | ")}`;
     const step = await logStep(tx, {
       session_id: session.id,
@@ -644,6 +660,7 @@ export async function applySessionSynthesis(
       applied: true,
       record: parseSynthesisRow(record),
       blocked,
+      unblocked,
     };
   });
 }

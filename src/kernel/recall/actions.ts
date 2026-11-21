@@ -2,7 +2,7 @@ import { ulid } from "ulid";
 import type { Database } from "../db/types.js";
 import { cancelMatchingPreconditionDeferrals } from "../library/precondition-assessment.js";
 import type { DeleteCardResult } from "../models/card.js";
-import { deleteCardForUser, getCardById } from "../models/card.js";
+import { deleteCardForUser, ensureCard, getCardById } from "../models/card.js";
 import { getBlockingPrerequisites } from "../models/prerequisite.js";
 import type { SessionStep } from "../models/session.js";
 import { logStep } from "../models/session.js";
@@ -26,8 +26,15 @@ import {
   type ReviewAttempt,
   recordAttempt,
 } from "../observation/attempts.js";
-import type { CascadeBlockResult } from "../scheduler/blocker.js";
-import { cascadeBlock } from "../scheduler/blocker.js";
+import type {
+  CascadeBlockResult,
+  UnblockResult,
+} from "../scheduler/blocker.js";
+import {
+  cascadeBlock,
+  lockLearnerRatings,
+  unblockReady,
+} from "../scheduler/blocker.js";
 import type { AnswerFormat } from "../scheduler/choice-ceiling.js";
 import type { Rating } from "../scheduler/fsrs.js";
 import { findPresentationByAttemptId } from "../scheduler/presentation.js";
@@ -79,6 +86,11 @@ export interface ReviewActionResult {
   token: Token;
   evaluation?: EvaluateResult;
   blocked?: CascadeBlockResult;
+  /**
+   * Blocked cards this successful rating released, because their foundations
+   * are now all met (ADR 2026-11-21 Decision 7). Absent when none were.
+   */
+  unblocked?: UnblockResult["unblocked"];
   sessionStep?: SessionStep;
   updatedToken?: Token;
   deletedToken?: DeleteTokenResult;
@@ -287,6 +299,60 @@ export async function recordAssistedStep(
   });
 }
 
+export interface ApplyDirectRatingInput {
+  userId: string;
+  tokenId: string;
+  rating: Rating;
+  now?: Date;
+}
+
+export interface ApplyDirectRatingResult {
+  evaluation: EvaluateResult;
+  blocked?: CascadeBlockResult;
+  /** Blocked cards this successful rating released (ADR 2026-11-21 D7). */
+  unblocked?: UnblockResult["unblocked"];
+}
+
+/**
+ * Rate a token's card directly, without a session or an attempt: the
+ * `zam card update` path. The rating, a rating-1 block and a 2–4 release share
+ * one transaction, so a failed block or release leaves no review behind and a
+ * retry cannot write a second review log.
+ */
+export async function applyDirectRating(
+  db: Database,
+  input: ApplyDirectRatingInput,
+): Promise<ApplyDirectRatingResult> {
+  return db.transaction(async (tx): Promise<ApplyDirectRatingResult> => {
+    await lockLearnerRatings(tx, input.userId);
+    const token = await getTokenById(tx, input.tokenId);
+    if (!token) throw new Error(`Token not found: ${input.tokenId}`);
+    const card = await ensureCard(tx, token.id, input.userId);
+    const evaluation = await evaluateRatingWithinTransaction(tx, {
+      cardId: card.id,
+      tokenId: token.id,
+      userId: input.userId,
+      rating: input.rating,
+      now: input.now,
+    });
+
+    if (input.rating === 1) {
+      // Same set cascadeBlock uses, so the guard and the block agree.
+      const prereqs = await getBlockingPrerequisites(tx, token.id);
+      if (prereqs.length === 0) return { evaluation };
+      const blocked = await cascadeBlock(tx, input.userId, token.slug);
+      return { evaluation, blocked };
+    }
+
+    const released = await unblockReady(tx, input.userId, {
+      now: input.now,
+    });
+    return released.unblocked.length > 0
+      ? { evaluation, unblocked: released.unblocked }
+      : { evaluation };
+  });
+}
+
 export async function executeReviewAction(
   db: Database,
   input: ExecuteReviewActionInput,
@@ -311,6 +377,7 @@ export async function executeReviewAction(
     }
 
     return db.transaction(async (tx) => {
+      await lockLearnerRatings(tx, input.userId);
       const target = await getReviewTarget(tx, input.cardId, input.userId);
       assertReviewableToken(target.token, target.cardId);
       if (input.sessionId) {
@@ -415,6 +482,18 @@ export async function executeReviewAction(
         });
       }
 
+      // A successful review may complete the foundations of a blocked card.
+      // Releasing here, in the kernel, is what brings it back on every
+      // surface (ADR 2026-11-21 Decision 7). It commits with the rating, and
+      // lockLearnerRatings keeps a concurrent rating from hiding its success.
+      let unblocked: UnblockResult["unblocked"] | undefined;
+      if (rating >= 2) {
+        const released = await unblockReady(tx, input.userId, {
+          now: input.now,
+        });
+        if (released.unblocked.length > 0) unblocked = released.unblocked;
+      }
+
       const sessionStep = input.sessionId
         ? await logStep(tx, {
             session_id: input.sessionId,
@@ -452,6 +531,7 @@ export async function executeReviewAction(
         token: target.token,
         evaluation,
         blocked,
+        unblocked,
         sessionStep,
         attemptId,
         applied: true,

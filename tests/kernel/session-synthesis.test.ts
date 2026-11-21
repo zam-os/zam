@@ -487,6 +487,51 @@ describe("automatic session synthesis", () => {
     expect(await getCard(db, prerequisite.id, "tester")).toBeDefined();
   });
 
+  it("releases a blocked card once an observed success meets its foundation", async () => {
+    const prerequisite = await createToken(db, {
+      slug: "git-working-tree",
+      concept: "The working tree contains checked-out files and local changes",
+      domain: "git",
+      bloom_level: 1,
+    });
+    const target = await createToken(db, {
+      slug: "git-inspect-worktree",
+      concept: "git status and git diff inspect pending worktree changes",
+      domain: "git",
+      bloom_level: 3,
+    });
+    await addPrerequisite(db, target.id, prerequisite.id);
+    const session = await startSession(db, {
+      user_id: "tester",
+      task: "Inspect a repository",
+    });
+    await applySessionSynthesis(db, {
+      sessionId: session.id,
+      tokenSlug: target.slug,
+      inferredRating: 2,
+      confirmedRating: 1,
+      confidence: "medium",
+      evidence: { ...cleanEvidence, errorCount: 3 },
+      matchedCommandTexts: ["git status --short", "git diff --check"],
+    });
+    expect((await getCard(db, target.id, "tester"))?.blocked).toBe(1);
+
+    const success = await applySessionSynthesis(db, {
+      sessionId: session.id,
+      tokenSlug: prerequisite.slug,
+      inferredRating: 3,
+      confirmedRating: 3,
+      confidence: "medium",
+      evidence: cleanEvidence,
+      matchedCommandTexts: ["ls", "git checkout -- README.md"],
+    });
+
+    expect(success.unblocked).toEqual([
+      { slug: target.slug, concept: target.concept },
+    ]);
+    expect((await getCard(db, target.id, "tester"))?.blocked).toBe(0);
+  });
+
   it("rolls back card, review, and step writes when the audit insert fails", async () => {
     const token = await createToken(db, {
       slug: "git-inspect-worktree",

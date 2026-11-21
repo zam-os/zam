@@ -4,6 +4,8 @@ import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
   addPrerequisite,
+  applyDirectRating,
+  buildReviewQueue,
   cascadeBlock,
   createToken,
   type Database,
@@ -338,5 +340,226 @@ describe("blocking behind content the queue cannot show", () => {
     await expect(cascadeBlock(db, "thomas", "target-of-draft")).rejects.toThrow(
       /no prerequisites/,
     );
+  });
+});
+
+describe("release after a successful review (ADR 2026-11-21 Decision 7)", () => {
+  let db: Database;
+  let tempDir: string;
+
+  beforeEach(async () => {
+    tempDir = mkdtempSync(join(tmpdir(), "zam-blocker-release-"));
+    db = await openDatabase({
+      dbPath: join(tempDir, "zam-test.db"),
+      initialize: true,
+      useConfiguredCloud: false,
+    });
+  });
+
+  afterEach(async () => {
+    await db.close();
+    rmSync(tempDir, { recursive: true, force: true });
+  });
+
+  async function item(slug: string): Promise<Token> {
+    return createToken(db, {
+      slug,
+      concept: `Concept for ${slug}`,
+      domain: "testing",
+      question: `What is ${slug}?`,
+    });
+  }
+
+  async function rate(
+    token: Token,
+    rating: 1 | 2 | 3 | 4,
+  ): Promise<Awaited<ReturnType<typeof executeReviewAction>>> {
+    const card = await ensureCard(db, token.id, "thomas");
+    return executeReviewAction(db, {
+      action: "rate",
+      cardId: card.id,
+      userId: "thomas",
+      rating,
+    });
+  }
+
+  async function queueSlugs(): Promise<string[]> {
+    const queue = await buildReviewQueue(db, { userId: "thomas" });
+    return queue.items.map((entry) => entry.slug);
+  }
+
+  // Studio, Mobile and the MCP panel rate only through executeReviewAction;
+  // none of them calls unblockReady. This is their whole path.
+  it("brings the dependent back into the queue through the rating alone", async () => {
+    const foundation = await item("foundation");
+    const dependent = await item("dependent");
+    await addPrerequisite(db, dependent.id, foundation.id);
+
+    await rate(dependent, 1);
+    expect(await queueSlugs()).not.toContain("dependent");
+    expect(await queueSlugs()).toContain("foundation");
+
+    const result = await rate(foundation, 3);
+
+    expect(result.unblocked).toEqual([
+      { slug: "dependent", concept: dependent.concept },
+    ]);
+    expect((await getCard(db, dependent.id, "thomas"))?.blocked).toBe(0);
+    expect(await queueSlugs()).toContain("dependent");
+  });
+
+  it("releases a chain one successful review at a time", async () => {
+    const base = await item("chain-base");
+    const middle = await item("chain-middle");
+    const top = await item("chain-top");
+    await addPrerequisite(db, middle.id, base.id);
+    await addPrerequisite(db, top.id, middle.id);
+
+    // A rating of 1 resets reps to 0, so the middle card is unmet for the top
+    // one until the learner recalls it again.
+    await rate(middle, 1);
+    await rate(top, 1);
+
+    const afterBase = await rate(base, 3);
+    expect(afterBase.unblocked?.map((entry) => entry.slug)).toEqual([
+      "chain-middle",
+    ]);
+    expect((await getCard(db, top.id, "thomas"))?.blocked).toBe(1);
+
+    const afterMiddle = await rate(middle, 3);
+    expect(afterMiddle.unblocked?.map((entry) => entry.slug)).toEqual([
+      "chain-top",
+    ]);
+    expect(await queueSlugs()).toContain("chain-top");
+  });
+
+  it("keeps the card blocked while a foundation is still unmet", async () => {
+    const first = await item("first-foundation");
+    const second = await item("second-foundation");
+    const dependent = await item("two-foundation-dependent");
+    await addPrerequisite(db, dependent.id, first.id);
+    await addPrerequisite(db, dependent.id, second.id);
+
+    await rate(dependent, 1);
+    const result = await rate(first, 3);
+
+    expect(result.unblocked).toBeUndefined();
+    expect((await getCard(db, dependent.id, "thomas"))?.blocked).toBe(1);
+    expect(await queueSlugs()).not.toContain("two-foundation-dependent");
+  });
+
+  it("releases nothing on a failed review", async () => {
+    const foundation = await item("failed-foundation");
+    const dependent = await item("failed-dependent");
+    await addPrerequisite(db, dependent.id, foundation.id);
+
+    await rate(dependent, 1);
+    const result = await rate(foundation, 1);
+
+    expect(result.unblocked).toBeUndefined();
+    expect((await getCard(db, dependent.id, "thomas"))?.blocked).toBe(1);
+  });
+});
+
+describe("release commits with its rating (ADR 2026-11-21 Decision 7)", () => {
+  let db: Database;
+  let tempDir: string;
+
+  beforeEach(async () => {
+    tempDir = mkdtempSync(join(tmpdir(), "zam-blocker-atomic-"));
+    db = await openDatabase({
+      dbPath: join(tempDir, "zam-test.db"),
+      initialize: true,
+      useConfiguredCloud: false,
+    });
+  });
+
+  afterEach(async () => {
+    await db.close();
+    rmSync(tempDir, { recursive: true, force: true });
+  });
+
+  async function item(slug: string): Promise<Token> {
+    return createToken(db, {
+      slug,
+      concept: `Concept for ${slug}`,
+      domain: "testing",
+      question: `What is ${slug}?`,
+    });
+  }
+
+  /** A dependent blocked behind two foundations, the first already recalled. */
+  async function blockedBehindTwo() {
+    const first = await item("first");
+    const second = await item("second");
+    const dependent = await item("dependent");
+    await addPrerequisite(db, dependent.id, first.id);
+    await addPrerequisite(db, dependent.id, second.id);
+    await applyDirectRating(db, {
+      userId: "thomas",
+      tokenId: dependent.id,
+      rating: 1,
+    });
+    await applyDirectRating(db, {
+      userId: "thomas",
+      tokenId: first.id,
+      rating: 3,
+    });
+    expect((await getCard(db, dependent.id, "thomas"))?.blocked).toBe(1);
+    return { first, second, dependent };
+  }
+
+  async function reviewLogCount(tokenId: string): Promise<number> {
+    const row = (await db
+      .prepare("SELECT COUNT(*) AS n FROM review_logs WHERE token_id = ?")
+      .get(tokenId)) as { n: number };
+    return row.n;
+  }
+
+  it("blocks and releases through applyDirectRating (zam card update)", async () => {
+    const { second, dependent } = await blockedBehindTwo();
+
+    const result = await applyDirectRating(db, {
+      userId: "thomas",
+      tokenId: second.id,
+      rating: 3,
+    });
+
+    expect(result.unblocked).toEqual([
+      { slug: "dependent", concept: dependent.concept },
+    ]);
+    expect((await getCard(db, dependent.id, "thomas"))?.blocked).toBe(0);
+  });
+
+  it("leaves no review behind when the release write fails", async () => {
+    const { second, dependent } = await blockedBehindTwo();
+    await db.exec(`
+      CREATE TRIGGER refuse_release BEFORE UPDATE OF blocked ON cards
+      WHEN OLD.blocked = 1 AND NEW.blocked = 0
+      BEGIN SELECT RAISE(ABORT, 'release refused'); END;
+    `);
+
+    await expect(
+      applyDirectRating(db, {
+        userId: "thomas",
+        tokenId: second.id,
+        rating: 3,
+      }),
+    ).rejects.toThrow(/release refused/);
+
+    expect(await reviewLogCount(second.id)).toBe(0);
+    const card = await getCard(db, second.id, "thomas");
+    expect(card?.reps).toBe(0);
+    expect(card?.last_review_at).toBeNull();
+    expect((await getCard(db, dependent.id, "thomas"))?.blocked).toBe(1);
+
+    // A retry after the fault is gone writes exactly one review.
+    await db.exec("DROP TRIGGER refuse_release");
+    await applyDirectRating(db, {
+      userId: "thomas",
+      tokenId: second.id,
+      rating: 3,
+    });
+    expect(await reviewLogCount(second.id)).toBe(1);
   });
 });

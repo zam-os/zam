@@ -118,6 +118,13 @@ export async function runInteractiveReviewAction(
         }
       }
 
+      if (result.unblocked) {
+        console.log("  Back in your queue, foundations in place:");
+        for (const card of result.unblocked) {
+          console.log(`    - ${card.slug}: ${card.concept}`);
+        }
+      }
+
       console.log();
       return { action: "rate", result, rating: choice };
     }

@@ -575,9 +575,10 @@
       "parent": "blocking",
       "label": "Unblocking",
       "link": "ends through",
-      "text": "A blocked card returns once every direct prerequisite has been reviewed and is itself unblocked.",
+      "text": "A blocked card returns with the successful review after which every direct prerequisite has been recalled and is itself unblocked.",
       "sources": [
-        "docs/okf/prerequisite-blocking.md"
+        "docs/okf/prerequisite-blocking.md",
+        "src/kernel/recall/actions.ts"
       ]
     },
     {
