@@ -1,9 +1,10 @@
 import { mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
   addPrerequisite,
+  applyDirectRating,
   buildReviewQueue,
   cascadeBlock,
   createToken,
@@ -15,6 +16,68 @@ import {
   type Token,
   unblockReady,
 } from "../../src/kernel/index.js";
+
+/**
+ * Wrap a Database so the first transaction's release scan finds nothing, as if
+ * another foundation's success were still uncommitted while this rating ran
+ * (two concurrent ratings on PostgreSQL). Later transactions see the truth.
+ * `failLater` makes every later transaction throw instead.
+ */
+function staleFirstReleaseScan(
+  db: Database,
+  options: { failLater?: boolean } = {},
+): Database {
+  let transactions = 0;
+  const blind = (tx: Database): Database => ({
+    ...tx,
+    prepare(sql: string) {
+      if (!sql.includes("pc.reps >= 1")) return tx.prepare(sql);
+      const statement = tx.prepare(sql);
+      return { ...statement, all: async () => [] };
+    },
+  });
+  const wrapper: Database = {
+    prepare: (sql: string) => db.prepare(sql),
+    exec: (sql: string) => db.exec(sql),
+    pragma: (source: string) => db.pragma(source),
+    transaction<T>(fn: (tx: Database) => Promise<T>): Promise<T> {
+      transactions++;
+      if (transactions === 1) return db.transaction((tx) => fn(blind(tx)));
+      if (options.failLater) {
+        return Promise.reject(new Error("recheck connection lost"));
+      }
+      return db.transaction(fn);
+    },
+    close: () => db.close(),
+  };
+  return wrapper;
+}
+
+/**
+ * Wrap a Database with PostgreSQL's nesting rule: a transaction() inside an
+ * open one runs inline instead of committing on its own.
+ */
+function inlineNestedTransactions(db: Database): Database {
+  let open = false;
+  const wrapper: Database = {
+    prepare: (sql: string) => db.prepare(sql),
+    exec: (sql: string) => db.exec(sql),
+    pragma: (source: string) => db.pragma(source),
+    async transaction<T>(fn: (tx: Database) => Promise<T>): Promise<T> {
+      if (open) return fn(wrapper);
+      return db.transaction(async () => {
+        open = true;
+        try {
+          return await fn(wrapper);
+        } finally {
+          open = false;
+        }
+      });
+    },
+    close: () => db.close(),
+  };
+  return wrapper;
+}
 
 /** Wrap a Database so every prepare() call is counted. */
 function countPrepares(db: Database, counter: { count: number }): Database {
@@ -456,6 +519,184 @@ describe("release after a successful review (ADR 2026-11-21 Decision 7)", () => 
     const result = await rate(foundation, 1);
 
     expect(result.unblocked).toBeUndefined();
+    expect((await getCard(db, dependent.id, "thomas"))?.blocked).toBe(1);
+  });
+});
+
+describe("release commits with its rating (ADR 2026-11-21 Decision 7)", () => {
+  let db: Database;
+  let tempDir: string;
+
+  beforeEach(async () => {
+    tempDir = mkdtempSync(join(tmpdir(), "zam-blocker-atomic-"));
+    db = await openDatabase({
+      dbPath: join(tempDir, "zam-test.db"),
+      initialize: true,
+      useConfiguredCloud: false,
+    });
+  });
+
+  afterEach(async () => {
+    vi.restoreAllMocks();
+    await db.close();
+    rmSync(tempDir, { recursive: true, force: true });
+  });
+
+  async function item(slug: string): Promise<Token> {
+    return createToken(db, {
+      slug,
+      concept: `Concept for ${slug}`,
+      domain: "testing",
+      question: `What is ${slug}?`,
+    });
+  }
+
+  /** A dependent blocked behind two foundations, the first already recalled. */
+  async function blockedBehindTwo() {
+    const first = await item("first");
+    const second = await item("second");
+    const dependent = await item("dependent");
+    await addPrerequisite(db, dependent.id, first.id);
+    await addPrerequisite(db, dependent.id, second.id);
+    await applyDirectRating(db, {
+      userId: "thomas",
+      tokenId: dependent.id,
+      rating: 1,
+    });
+    await applyDirectRating(db, {
+      userId: "thomas",
+      tokenId: first.id,
+      rating: 3,
+    });
+    expect((await getCard(db, dependent.id, "thomas"))?.blocked).toBe(1);
+    return { first, second, dependent };
+  }
+
+  async function reviewLogCount(tokenId: string): Promise<number> {
+    const row = (await db
+      .prepare("SELECT COUNT(*) AS n FROM review_logs WHERE token_id = ?")
+      .get(tokenId)) as { n: number };
+    return row.n;
+  }
+
+  it("blocks and releases through applyDirectRating (zam card update)", async () => {
+    const { second, dependent } = await blockedBehindTwo();
+
+    const result = await applyDirectRating(db, {
+      userId: "thomas",
+      tokenId: second.id,
+      rating: 3,
+    });
+
+    expect(result.unblocked).toEqual([
+      { slug: "dependent", concept: dependent.concept },
+    ]);
+    expect((await getCard(db, dependent.id, "thomas"))?.blocked).toBe(0);
+  });
+
+  it("leaves no review behind when the release write fails", async () => {
+    const { second, dependent } = await blockedBehindTwo();
+    await db.exec(`
+      CREATE TRIGGER refuse_release BEFORE UPDATE OF blocked ON cards
+      WHEN OLD.blocked = 1 AND NEW.blocked = 0
+      BEGIN SELECT RAISE(ABORT, 'release refused'); END;
+    `);
+
+    await expect(
+      applyDirectRating(db, {
+        userId: "thomas",
+        tokenId: second.id,
+        rating: 3,
+      }),
+    ).rejects.toThrow(/release refused/);
+
+    expect(await reviewLogCount(second.id)).toBe(0);
+    const card = await getCard(db, second.id, "thomas");
+    expect(card?.reps).toBe(0);
+    expect(card?.last_review_at).toBeNull();
+    expect((await getCard(db, dependent.id, "thomas"))?.blocked).toBe(1);
+
+    // A retry after the fault is gone writes exactly one review.
+    await db.exec("DROP TRIGGER refuse_release");
+    await applyDirectRating(db, {
+      userId: "thomas",
+      tokenId: second.id,
+      rating: 3,
+    });
+    expect(await reviewLogCount(second.id)).toBe(1);
+  });
+
+  it("releases on the post-commit recheck when the rating's own scan was stale", async () => {
+    const { second, dependent } = await blockedBehindTwo();
+    const card = await ensureCard(db, second.id, "thomas");
+
+    const result = await executeReviewAction(staleFirstReleaseScan(db), {
+      action: "rate",
+      cardId: card.id,
+      userId: "thomas",
+      rating: 3,
+    });
+
+    expect(result.unblocked).toEqual([
+      { slug: "dependent", concept: dependent.concept },
+    ]);
+    expect((await getCard(db, dependent.id, "thomas"))?.blocked).toBe(0);
+  });
+
+  it("rechecks after commit for applyDirectRating too", async () => {
+    const { second } = await blockedBehindTwo();
+
+    const result = await applyDirectRating(staleFirstReleaseScan(db), {
+      userId: "thomas",
+      tokenId: second.id,
+      rating: 3,
+    });
+
+    expect(result.unblocked?.map((entry) => entry.slug)).toEqual([
+      "dependent",
+    ]);
+  });
+
+  it("keeps the committed rating when the recheck fails", async () => {
+    const { second, dependent } = await blockedBehindTwo();
+    const card = await ensureCard(db, second.id, "thomas");
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+
+    const result = await executeReviewAction(
+      staleFirstReleaseScan(db, { failLater: true }),
+      { action: "rate", cardId: card.id, userId: "thomas", rating: 3 },
+    );
+
+    expect(result.applied).toBe(true);
+    expect(result.unblocked).toBeUndefined();
+    expect(await reviewLogCount(second.id)).toBe(1);
+    expect((await getCard(db, dependent.id, "thomas"))?.blocked).toBe(1);
+    expect(warn).toHaveBeenCalledWith(
+      expect.stringContaining("recheck connection lost"),
+    );
+  });
+
+  it("does not commit early inside a caller's transaction", async () => {
+    const { second, dependent } = await blockedBehindTwo();
+    const card = await ensureCard(db, second.id, "thomas");
+    const nested = inlineNestedTransactions(db);
+
+    await expect(
+      nested.transaction(async (tx) => {
+        const result = await executeReviewAction(tx, {
+          action: "rate",
+          cardId: card.id,
+          userId: "thomas",
+          rating: 3,
+        });
+        expect(result.unblocked?.map((entry) => entry.slug)).toEqual([
+          "dependent",
+        ]);
+        throw new Error("caller rolls back");
+      }),
+    ).rejects.toThrow(/caller rolls back/);
+
+    expect(await reviewLogCount(second.id)).toBe(0);
     expect((await getCard(db, dependent.id, "thomas"))?.blocked).toBe(1);
   });
 });

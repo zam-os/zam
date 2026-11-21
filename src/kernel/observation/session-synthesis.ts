@@ -18,7 +18,11 @@ import type { Token } from "../models/token.js";
 import { getTokenBySlug, getTokensBySlugs } from "../models/token.js";
 import { evaluateRatingWithinTransaction } from "../recall/evaluator.js";
 import type { UnblockResult } from "../scheduler/blocker.js";
-import { cascadeBlock, unblockReady } from "../scheduler/blocker.js";
+import {
+  cascadeBlock,
+  recheckReleaseAfterCommit,
+  unblockReady,
+} from "../scheduler/blocker.js";
 import type { Rating } from "../scheduler/fsrs.js";
 import { isScreenObservationEnabled } from "../system/install-config.js";
 import type {
@@ -412,8 +416,10 @@ export async function applySessionSynthesis(
     ...rawInput,
     matchedCommandTexts: rawInput.matchedCommandTexts.map(redactCommand),
   };
-  return db.transaction(async (tx) => {
+  let learnerId: string | undefined;
+  const result = await db.transaction(async (tx) => {
     const session = await getSession(tx, input.sessionId);
+    learnerId = session.user_id;
     const token = await getTokenBySlug(tx, input.tokenSlug);
     if (!token || token.deprecated_at) {
       throw new Error(`Active token not found: ${input.tokenSlug}`);
@@ -658,4 +664,16 @@ export async function applySessionSynthesis(
       unblocked,
     };
   });
+
+  // Post-commit, not in the transaction above: a concurrent rating of another
+  // foundation of the same blocked card is only visible once both have
+  // committed (see recheckReleaseAfterCommit).
+  if (result.applied && learnerId && input.confirmedRating >= 2) {
+    result.unblocked = await recheckReleaseAfterCommit(
+      db,
+      learnerId,
+      result.unblocked,
+    );
+  }
+  return result;
 }

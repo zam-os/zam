@@ -120,9 +120,10 @@ export async function cascadeBlock(
  * prerequisite of another blocked card, that card unblocks in the same call.
  *
  * Every successful rating (2–4) runs this inside its own transaction
- * (`executeReviewAction`, `applySessionSynthesis`), so a blocked card comes
- * back on every surface once its foundations are in place (ADR 2026-11-21
- * Decision 7). `zam card unblock` stays as a manual trigger.
+ * (`executeReviewAction`, `applySessionSynthesis`, `applyDirectRating`) and
+ * once more after the commit (`recheckReleaseAfterCommit`), so a blocked card
+ * comes back on every surface once its foundations are in place (ADR
+ * 2026-11-21 Decision 7). `zam card unblock` stays as a manual trigger.
  *
  * @param db - Database connection
  * @param userId - The user whose blocked cards to check
@@ -185,4 +186,47 @@ export async function unblockReady(
   }
 
   return { unblocked };
+}
+
+/**
+ * Run `unblockReady` once more after a successful rating has committed, and
+ * merge what it releases into what the rating's own transaction released.
+ *
+ * Why after the commit: on PostgreSQL two ratings of different foundations of
+ * the same blocked card can run concurrently. Each transaction's own scan sees
+ * its own success but not the other's uncommitted one, so both commit and the
+ * dependent stays blocked. A fresh scan after the commit sees every rating
+ * committed before it, so the later of the two releases the card. The kernel
+ * has no per-learner lock to serialize ratings instead.
+ *
+ * Callers pass the handle they ran the rating on. When that handle is already
+ * inside a caller's transaction, `transaction()` runs inline (PostgreSQL) and
+ * this recheck joins it without committing early.
+ *
+ * The rating is already committed, so a failure here must not fail it: it is
+ * logged and the rating's own release stands.
+ */
+export async function recheckReleaseAfterCommit(
+  db: Database,
+  userId: string,
+  released: UnblockResult["unblocked"] | undefined,
+  options: { now?: Date } = {},
+): Promise<UnblockResult["unblocked"] | undefined> {
+  try {
+    const again = await db.transaction((tx) =>
+      unblockReady(tx, userId, options),
+    );
+    const merged = [...(released ?? [])];
+    for (const card of again.unblocked) {
+      if (!merged.some((entry) => entry.slug === card.slug)) merged.push(card);
+    }
+    return merged.length > 0 ? merged : undefined;
+  } catch (error) {
+    console.warn(
+      `Could not recheck blocked cards after the rating committed: ${
+        error instanceof Error ? error.message : String(error)
+      }`,
+    );
+    return released;
+  }
 }

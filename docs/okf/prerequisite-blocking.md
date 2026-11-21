@@ -62,7 +62,19 @@ update, immutable review log, blocking and release changes, and an optional
 session step share one transaction, so a failure cannot leave a partially
 applied review. A confirmed observation rating (`applySessionSynthesis()` in
 `src/kernel/observation/session-synthesis.ts`) follows the same policy in its
-own transaction, and so does `zam card rate`.
+own transaction, and so does `zam card update` through `applyDirectRating()`.
+
+**Release after the commit.** After a successful rating has committed, each of
+these paths runs `unblockReady()` once more in a short transaction of its own
+(`recheckReleaseAfterCommit()`) and merges what it frees into `unblocked`. On
+PostgreSQL two ratings of different foundations of the same blocked card can
+run at once; each transaction sees only its own success, so neither frees the
+card. The fresh scan after the commit sees both, so the later rating releases
+it. The kernel has no per-learner lock to serialize ratings instead. When the
+rating runs inside a caller's transaction, the recheck joins that transaction
+and commits nothing early. The rating is already committed when the recheck
+runs, so a failed recheck is logged and does not fail the rating; the next
+successful review releases the card.
 
 Blocked cards are excluded when `src/kernel/scheduler/queue.ts` builds the
 review queue; unblocking re-admits them.

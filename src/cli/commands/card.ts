@@ -5,14 +5,12 @@
 import { Command } from "commander";
 import type { Rating } from "../../kernel/index.js";
 import {
+  applyDirectRating,
   cascadeBlock,
   deleteCardForUser,
-  ensureCard,
-  evaluateRating,
   getBlockingPrerequisites,
   getCardDeletionImpact,
   getDueCards,
-  getPrerequisites,
   getTokenBySlug,
   unblockReady,
 } from "../../kernel/index.js";
@@ -109,7 +107,6 @@ cardCommand
         process.exit(1);
       }
 
-      const card = await ensureCard(db, token.id, userId);
       const rating = Number(opts.rating) as Rating;
 
       if (rating < 1 || rating > 4) {
@@ -117,54 +114,47 @@ cardCommand
         process.exit(1);
       }
 
-      const result = await evaluateRating(db, {
-        cardId: card.id,
-        tokenId: token.id,
+      // Rating, rating-1 block and 2–4 release commit together (ADR
+      // 2026-11-21 Decision 7), so a failure cannot leave a half review.
+      const {
+        evaluation: result,
+        blocked: blockResult,
+        unblocked = [],
+      } = await applyDirectRating(db, {
         userId,
+        tokenId: token.id,
         rating,
       });
 
-      // If rating is 1 (forgot) and token has prerequisites, cascade block
-      if (rating === 1) {
-        const prereqs = await getPrerequisites(db, token.id);
-        if (prereqs.length > 0) {
-          const blockResult = await cascadeBlock(db, userId, token.slug);
-          if (opts.quiet) return;
-          if (opts.json) {
-            console.log(
-              JSON.stringify(
-                { evaluation: result, blocked: blockResult },
-                null,
-                2,
-              ),
-            );
-          } else {
-            console.log(
-              `Rated ${token.slug} as Again (1) — next due: ${result.nextDueAt}`,
-            );
-            console.log(
-              `Blocked ${blockResult.blockedSlug}. Prerequisites surfaced:`,
-            );
-            for (const p of blockResult.prerequisites) {
-              console.log(`  - ${p.slug}: ${p.concept}`);
-            }
+      if (blockResult) {
+        if (opts.quiet) return;
+        if (opts.json) {
+          console.log(
+            JSON.stringify(
+              { evaluation: result, blocked: blockResult },
+              null,
+              2,
+            ),
+          );
+        } else {
+          console.log(
+            `Rated ${token.slug} as Again (1) — next due: ${result.nextDueAt}`,
+          );
+          console.log(
+            `Blocked ${blockResult.blockedSlug}. Prerequisites surfaced:`,
+          );
+          for (const p of blockResult.prerequisites) {
+            console.log(`  - ${p.slug}: ${p.concept}`);
           }
-          return;
         }
+        return;
       }
-
-      // A success may complete a blocked card's foundations, as on every
-      // other rating surface (ADR 2026-11-21 Decision 7).
-      const released =
-        rating >= 2 ? await unblockReady(db, userId) : { unblocked: [] };
 
       if (opts.quiet) return;
       if (opts.json) {
         console.log(
           JSON.stringify(
-            released.unblocked.length > 0
-              ? { ...result, unblocked: released.unblocked }
-              : result,
+            unblocked.length > 0 ? { ...result, unblocked } : result,
             null,
             2,
           ),
@@ -183,7 +173,7 @@ cardCommand
         console.log(`  Stability:  ${result.stability.toFixed(2)}`);
         console.log(`  State:      ${result.state}`);
         console.log(`  Reps:       ${result.reps}`);
-        for (const card of released.unblocked) {
+        for (const card of unblocked) {
           console.log(`  Unblocked:  ${card.slug}`);
         }
       }

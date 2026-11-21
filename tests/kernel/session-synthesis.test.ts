@@ -532,6 +532,75 @@ describe("automatic session synthesis", () => {
     expect((await getCard(db, target.id, "tester"))?.blocked).toBe(0);
   });
 
+  it("releases on the post-commit recheck when the observed rating's own scan was stale", async () => {
+    const make = (slug: string) =>
+      createToken(db, {
+        slug,
+        concept: `Concept for ${slug}`,
+        domain: "git",
+        bloom_level: 2,
+      });
+    const first = await make("git-index");
+    const second = await make("git-working-tree");
+    const dependent = await make("git-inspect-worktree");
+    await addPrerequisite(db, dependent.id, first.id);
+    await addPrerequisite(db, dependent.id, second.id);
+    const session = await startSession(db, {
+      user_id: "tester",
+      task: "Inspect a repository",
+    });
+    const observe = (
+      target: Database,
+      tokenSlug: string,
+      confirmedRating: 1 | 3,
+      commands: string[],
+    ) =>
+      applySessionSynthesis(target, {
+        sessionId: session.id,
+        tokenSlug,
+        inferredRating: confirmedRating,
+        confirmedRating,
+        confidence: "medium",
+        evidence: cleanEvidence,
+        matchedCommandTexts: commands,
+      });
+    await observe(db, dependent.slug, 1, ["git status --short"]);
+    await observe(db, first.slug, 3, ["git add -p"]);
+    expect((await getCard(db, dependent.id, "tester"))?.blocked).toBe(1);
+
+    // As if the first foundation's success were still uncommitted while
+    // this rating's own release scan ran (two concurrent ratings).
+    let transactions = 0;
+    const stale: Database = {
+      prepare: (sql: string) => db.prepare(sql),
+      exec: (sql: string) => db.exec(sql),
+      pragma: (source: string) => db.pragma(source),
+      transaction<T>(fn: (tx: Database) => Promise<T>): Promise<T> {
+        transactions++;
+        if (transactions > 1) return db.transaction(fn);
+        return db.transaction((tx) =>
+          fn({
+            ...tx,
+            prepare(sql: string) {
+              const statement = tx.prepare(sql);
+              return sql.includes("pc.reps >= 1")
+                ? { ...statement, all: async () => [] }
+                : statement;
+            },
+          }),
+        );
+      },
+      close: () => db.close(),
+    };
+
+    const result = await observe(stale, second.slug, 3, ["ls", "git diff"]);
+
+    expect(result.unblocked).toEqual([
+      { slug: dependent.slug, concept: dependent.concept },
+    ]);
+    expect((await getCard(db, dependent.id, "tester"))?.blocked).toBe(0);
+  });
+
   it("rolls back card, review, and step writes when the audit insert fails", async () => {
     const token = await createToken(db, {
       slug: "git-inspect-worktree",
