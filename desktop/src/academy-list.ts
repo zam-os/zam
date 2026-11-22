@@ -87,9 +87,44 @@ export function createAcademyBrowserState(): AcademyBrowserState {
 }
 
 /**
- * Updates the school filter while keeping the current stage valid: if the
- * active grade/area/subject has no packages in the newly selected school,
- * steps back up cleanly instead of stranding the learner on an empty stage.
+ * Clears stale grade/subject selections in list mode when narrowing school or
+ * grade leaves zero matching packages, so dropdowns never display „Alle“ while
+ * silently filtering on a vanished selection.
+ */
+export function reconcileAcademyListFilters(
+  state: AcademyBrowserState,
+  cells: readonly AcademyCellRow[],
+  taxonomy: AcademyTaxonomy,
+): AcademyBrowserState {
+  const next: AcademyBrowserState = { ...state };
+  if (
+    next.grade !== null &&
+    filterAcademyCells(
+      cells,
+      { school: next.school, grade: next.grade },
+      taxonomy,
+    ).length === 0
+  ) {
+    next.grade = null;
+  }
+  if (
+    next.subject !== null &&
+    filterAcademyCells(
+      cells,
+      { school: next.school, grade: next.grade, subject: next.subject },
+      taxonomy,
+    ).length === 0
+  ) {
+    next.subject = null;
+  }
+  return next;
+}
+
+/**
+ * Updates the school filter while keeping the current stage or list filters
+ * valid: if the active grade/area/subject has no packages in the newly
+ * selected school, steps back up cleanly instead of stranding the learner on
+ * an empty stage or empty filtered list.
  */
 export function applyAcademySchoolFilter(
   state: AcademyBrowserState,
@@ -98,7 +133,9 @@ export function applyAcademySchoolFilter(
   taxonomy: AcademyTaxonomy,
 ): AcademyBrowserState {
   const next: AcademyBrowserState = { ...state, school };
-  if (next.mode !== "stages") return next;
+  if (next.mode !== "stages") {
+    return reconcileAcademyListFilters(next, cells, taxonomy);
+  }
   if (next.lens === "schule" && next.grade !== null) {
     const inGrade = filterAcademyCells(
       cells,
@@ -442,7 +479,11 @@ function ensureDialog(): DialogParts {
   viewListBtn.dataset.view = "list";
   viewListBtn.addEventListener("click", () => {
     if (browserState.mode === "list") return;
-    browserState.mode = "list";
+    browserState = reconcileAcademyListFilters(
+      { ...browserState, mode: "list" },
+      currentCells,
+      currentTaxonomy,
+    );
     renderBrowser();
   });
   viewGroup.append(viewStagesBtn, viewListBtn);
@@ -960,7 +1001,11 @@ function renderListFilterDropdowns(parts: DialogParts): void {
       ],
       browserState.school ?? "",
       (val) => {
-        browserState.school = val || null;
+        browserState = reconcileAcademyListFilters(
+          { ...browserState, school: val || null },
+          currentCells,
+          currentTaxonomy,
+        );
         renderBrowser();
       },
     ),
@@ -986,12 +1031,17 @@ function renderListFilterDropdowns(parts: DialogParts): void {
       ],
       currentGradeVal,
       (val) => {
-        browserState.grade =
+        const grade =
           val === ""
             ? null
             : val === ACADEMY_GRADE_CROSS
               ? ACADEMY_GRADE_CROSS
               : Number(val);
+        browserState = reconcileAcademyListFilters(
+          { ...browserState, grade },
+          currentCells,
+          currentTaxonomy,
+        );
         renderBrowser();
       },
     ),

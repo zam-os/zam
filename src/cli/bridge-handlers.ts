@@ -1,10 +1,12 @@
 import { mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import type {
+  AcademyCatalogEntry,
   AnswerFormat,
   AnswerPresentation,
   BloomLevel,
   BundledCellStatus,
+  BundledTile,
   CardText,
   ChoiceEvidence,
   Database,
@@ -49,6 +51,7 @@ import {
   executeReviewAction,
   exportSnapshot,
   findBundledCellsForScope,
+  formatAcademyGrades,
   generateConceptFreeCue,
   generatePrompt,
   getBundledCell,
@@ -121,8 +124,8 @@ import {
   writeCardText,
 } from "../kernel/index.js";
 import {
-  cachedCatalogTiles,
   readCachedCatalog,
+  readCachedCell,
   readCachedIndex,
   readCachedTileVersion,
   resolveCachedTile,
@@ -2289,37 +2292,46 @@ export async function listBundledCellsHandler(
   if (!params.provider) {
     // Academy cells from the learner's last catalog check are listed too
     // (ADR 2026-10-19 D4, amended by ADR 2026-11-22). Nothing here reaches
-    // the network.
+    // the network. Use the exact same local tile version resolution as
+    // `enrolBundledCellHandler` so an installed, cached v1 stays enrollable
+    // offline for another learner even after v2 appears in catalog.json.
     const cachedCatalog = readCachedCatalog();
     const cachedIndex = readCachedIndex();
-    const cachedTiles = cachedCatalogTiles().filter(
-      (tile) => !BUNDLED_TILES[tile.tile_id],
-    );
-    const cachedTileIds = new Set(cachedTiles.map((tile) => tile.tile_id));
+    const localTilesById = new Map<string, BundledTile>();
+    const uncachedEntries: AcademyCatalogEntry[] = [];
     const previews = new Set(
       cachedCatalog?.cells
         .filter((entry) => entry.preview)
         .map((entry) => entry.id),
     );
+    for (const entry of cachedCatalog?.cells ?? []) {
+      if (BUNDLED_TILES[entry.id]) continue;
+      const installed = await installedTileVersion(db, entry.id);
+      const localTile = installed
+        ? readCachedTileVersion(entry.id, installed)
+        : readCachedCell(entry);
+      if (localTile) {
+        localTilesById.set(entry.id, localTile);
+      } else {
+        uncachedEntries.push(entry);
+      }
+    }
     const cells: BundledCellStatus[] = await getBundledCellsWithStatus(
       db,
       userId,
       [
         ...BUNDLED_CELLS,
-        ...cachedTiles.map((tile) => ({
+        ...[...localTilesById.values()].map((tile) => ({
           ...bundledCellInfoForTile(tile),
           preview: previews.has(tile.tile_id),
         })),
       ],
-      (cellId) => BUNDLED_TILES[cellId] ?? resolveCachedTile(cellId),
+      (cellId) => BUNDLED_TILES[cellId] ?? localTilesById.get(cellId),
     );
 
-    // Catalog-only cells whose `cell.json` has not been downloaded locally yet:
+    // Catalog-only cells whose usable `cell.json` is not cached locally yet:
     // list them from cached `catalog.json`/`academy.json` metadata so agents
     // can discover them and point the learner to „Aufnehmen“ in ZAM Academy.
-    const uncachedEntries = (cachedCatalog?.cells ?? []).filter(
-      (entry) => !BUNDLED_TILES[entry.id] && !cachedTileIds.has(entry.id),
-    );
     if (uncachedEntries.length > 0) {
       const enriched = enrichAcademyCells(
         uncachedEntries.map((entry) => ({
@@ -2337,9 +2349,11 @@ export async function listBundledCellsHandler(
         if (facet?.schoolName) gradeParts.push(facet.schoolName);
         if (facet && facet.grades.length > 0) {
           gradeParts.push(
-            facet.grades.length === 1
-              ? `Klasse ${facet.grades[0]}`
-              : `Klassen ${facet.grades[0]}–${facet.grades[facet.grades.length - 1]}`,
+            formatAcademyGrades(facet.grades, {
+              gradeSingle: (n) => `Klasse ${n}`,
+              gradeRange: (range) => `Klassen ${range}`,
+              crossGrade: "Jahrgangsübergreifend",
+            }),
           );
         }
         const gradeLabel =

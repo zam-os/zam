@@ -19,7 +19,7 @@ import type {
   AtlasLensKindWire,
   AtlasPlaceResponse,
 } from "../../../src/bridge/protocol.js";
-import { academyPreviewLabel } from "../academy-list.js";
+import { academyPreviewLabel, isAcademyCellId } from "../academy-list.js";
 import { runBridge } from "../bridge-transport.js";
 import { t, tf } from "../i18n.js";
 
@@ -220,8 +220,13 @@ function renderCells(
   deps: AtlasImportDeps,
   stamp: number,
 ): void {
+  // ADR 2026-11-22 Decision 4: never offer first-time enrolment of legacy
+  // non-Academy school cells in learner UI; keep them only when enrolled.
+  const visibleCells = result.cells.filter(
+    (cell) => cell.enrolled || isAcademyCellId(cell.id),
+  );
   const list = el("ul", "atlas-import-list");
-  for (const cell of result.cells) {
+  for (const cell of visibleCells) {
     const li = el("li", "atlas-import-cell");
     const text = el("span", "atlas-import-cell-name", cell.title);
     const grade = el("span", "atlas-import-cell-meta", cell.gradeLabel);
@@ -243,9 +248,11 @@ function renderCells(
     list.append(li);
   }
   const children: HTMLElement[] = [];
-  if (result.cells.length > 0) children.push(list);
+  if (visibleCells.length > 0) children.push(list);
   else children.push(el("p", "atlas-import-help", t("atlas_import_no_cells")));
-  if (result.wizard && deps.openAcademy) {
+  const offerAcademy =
+    result.wizard || (result.cells.length > 0 && visibleCells.length === 0);
+  if (offerAcademy && deps.openAcademy) {
     const academy = button(
       "btn secondary-btn btn-sm",
       t("atlas_import_wizard"),

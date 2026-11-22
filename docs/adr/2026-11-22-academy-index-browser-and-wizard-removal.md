@@ -52,13 +52,16 @@ Amends [ADR 2026-10-19](2026-10-19-zam-academy-cells.md) Decisions 4 and 5:
   and SHA-256 verified only when the learner explicitly clicks „Aufnehmen“
   (`academy-enrol`) or „Aktualisieren“ (`academy-update`), and skipped when
   the current build already bundles that version or newer.
-- **Multi-stage browsing, filtering, and live search.** Both Desktop Studio
-  and Mobile present the catalog using the `academy.json` taxonomy:
-  - *Schulsicht* (School view): School chips → Grade → Subject → Packages.
-  - *Weltwissen* (Knowledge view): Knowledge area → Subject → Grade filter →
-    Packages.
-  - Direct list filters (school, grade, subject) and live text search across
-    title, description, subject, area, school, and topics.
+- **Multi-stage browsing, filtering, and live search.** Both surfaces read
+  the `academy.json` taxonomy and tailor the navigation to their form factor:
+  - **Desktop Studio:** *Schulsicht* (School chips → Grade → Subject →
+    Packages), *Weltwissen* (Knowledge area → Subject → Grade filter →
+    Packages), a flat list view with direct school/grade/subject dropdown
+    filters, and live text search across title, description, subject, area,
+    school, and topics.
+  - **Mobile:** a compact touch-first drilldown with School chips → Grade
+    (including *Jahrgangsübergreifend*) → Subject → Packages, plus live text
+    search across title, description, subject, area, school, and topics.
 - **Per-learner enrolment check without a local tile.** When an Academy tile
   is recorded in `installed_tiles` (e.g. after a restart or sync) without its
   `cell.json` loaded locally, both Desktop and Mobile check active

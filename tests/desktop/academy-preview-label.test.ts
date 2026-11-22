@@ -48,6 +48,7 @@ describe("the atlas import dialog", () => {
 
   afterEach(() => {
     closeAtlasImport();
+    body.replaceChildren();
     setCurrentLocale("en");
     vi.unstubAllGlobals();
     setBridgeTransport(async () => {
@@ -69,6 +70,51 @@ describe("the atlas import dialog", () => {
       "Vorschau · noch nicht von einer Lehrkraft geprüft",
     );
     expect(rows[1].join(" ")).not.toContain("Vorschau");
+  });
+
+  it("hides unenrolled legacy de-by: school cells and offers ZAM Academy instead (ADR 2026-11-22 D4)", async () => {
+    const openAcademy = vi.fn();
+    setBridgeTransport(async () => ({
+      success: true,
+      cells: [
+        atlasCell("de-by:bos-10-optik", false),
+        { ...atlasCell("de-by:realschule-optik", false), enrolled: true },
+      ],
+      wizard: false,
+    }));
+    await openAtlasImport(PLACE, {
+      importMaterial: () => {},
+      openAcademy,
+      onChanged: () => {},
+    });
+    const rows = body.all("li");
+    expect(rows).toHaveLength(1);
+    expect(rows[0].all("span")[1].textContent).toBe("de-by:realschule-optik");
+    expect(
+      body
+        .all("button")
+        .filter((btn) => btn.textContent === t("atlas_import_enrol")),
+    ).toHaveLength(0);
+
+    // When only hidden unenrolled de-by: cells matched, offer ZAM Academy.
+    closeAtlasImport();
+    setBridgeTransport(async () => ({
+      success: true,
+      cells: [atlasCell("de-by:bos-10-optik", false)],
+      wizard: false,
+    }));
+    await openAtlasImport(PLACE, {
+      importMaterial: () => {},
+      openAcademy,
+      onChanged: () => {},
+    });
+    expect(body.all("li")).toHaveLength(0);
+    const academyBtn = body
+      .all("button")
+      .find((btn) => btn.textContent === t("atlas_import_wizard"));
+    expect(academyBtn).toBeDefined();
+    academyBtn!.click();
+    expect(openAcademy).toHaveBeenCalledOnce();
   });
 });
 

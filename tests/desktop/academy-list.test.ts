@@ -14,6 +14,7 @@ import {
   fetchAcademyCells,
   isAcademyCellId,
   openAcademyList,
+  reconcileAcademyListFilters,
   setAcademyProgressSource,
   updateAcademyCell,
 } from "../../desktop/src/academy-list.js";
@@ -481,5 +482,65 @@ describe("academy browser state", () => {
         DEFAULT_ACADEMY_TAXONOMY,
       ),
     ).toMatchObject({ school: "gymnasium", grade: null, subject: null });
+  });
+
+  it("clears incompatible grade and subject filters in list view when switching school or grade", () => {
+    const cells = enrichAcademyCells(
+      [
+        cell({
+          id: "zam-academy:deutsch-grundschule-4",
+          title: "Deutsch 4 Grundschule",
+          appUrl: "https://academy.zam-os.org/deutsch-grundschule-4/",
+        }),
+        cell({
+          id: "zam-academy:biologie-realschule-5",
+          title: "Biologie 5 Realschule",
+          appUrl: "https://academy.zam-os.org/biologie-realschule-5/",
+        }),
+        cell({
+          id: "zam-academy:physik-realschule-10",
+          title: "Physik 10 Realschule",
+          appUrl: "https://academy.zam-os.org/physik-realschule-10/",
+        }),
+      ],
+      null,
+    ).cells;
+
+    // Starting at Realschule / Klasse 10 / Physik, switching school to Grundschule
+    // drops stale grade 10 and subject physik so Grundschule packages stay visible.
+    const listGrade10Physik = {
+      ...createAcademyBrowserState(),
+      mode: "list" as const,
+      school: "realschule",
+      grade: 10 as const,
+      subject: "physik",
+    };
+    expect(
+      reconcileAcademyListFilters(
+        { ...listGrade10Physik, school: "grundschule" },
+        cells,
+        DEFAULT_ACADEMY_TAXONOMY,
+      ),
+    ).toMatchObject({
+      mode: "list",
+      school: "grundschule",
+      grade: null,
+      subject: null,
+    });
+
+    // Switching grade from 10 to 5 in Realschule drops stale subject physik
+    // (grade 5 only has Biologie), preventing an empty list under „Alle Fächer“.
+    expect(
+      reconcileAcademyListFilters(
+        { ...listGrade10Physik, grade: 5 },
+        cells,
+        DEFAULT_ACADEMY_TAXONOMY,
+      ),
+    ).toMatchObject({
+      mode: "list",
+      school: "realschule",
+      grade: 5,
+      subject: null,
+    });
   });
 });

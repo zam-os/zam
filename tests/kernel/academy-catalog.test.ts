@@ -524,7 +524,7 @@ describe("academy enrichment, multi-stage tiles and search", () => {
 
 describe("userHoldsAcademyAppCards (per-learner held check without tile)", () => {
   it("clears held status once the learner detaches or deletes all cards for an app", async () => {
-    const db = await openDatabase({ path: ":memory:" });
+    const db = await openDatabase({ dbPath: ":memory:" });
     try {
       await enrolBundledCell(db, "learner", "zam-academy:uml");
       const appUrl = `${ACADEMY_ORIGIN}/uml/`;

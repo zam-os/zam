@@ -979,6 +979,47 @@ describe("the learner's academy actions (ADR 2026-10-19 D4, D5)", () => {
     expect(enrolledRow?.requiresLearnerEnrol).toBeUndefined();
   });
 
+  it("keeps requiresLearnerEnrol false for a second learner when installed v1 is cached and v2 is in catalog", async () => {
+    // Learner 1 takes catalog-only cell at v1 (caches v1 cell.json and installs v1).
+    const v1 = fakeAcademy([catalogOnly("2026.10.1")]);
+    await academyEnrolHandler(db, {
+      cellId: "zam-academy:nur-katalog",
+      user: "learner-one",
+      fetch: v1.fetch,
+    });
+    expect(await installedTileVersion(db, "zam-academy:nur-katalog")).toBe(
+      "2026.10.1",
+    );
+
+    // Upstream publishes v2; learner refreshes catalog (v2 cell.json NOT downloaded).
+    const v2 = fakeAcademy([catalogOnly("2026.11.1")]);
+    await academyListHandler(db, { user: "learner-one", fetch: v2.fetch });
+
+    // Second learner lists cells: installed v1 IS cached locally, so agent
+    // enrolment can succeed offline without requiring another learner click.
+    const listed = await listBundledCellsHandler(db, { user: "learner-two" });
+    const row = listed.cells.find(
+      (cell) => cell.id === "zam-academy:nur-katalog",
+    );
+    expect(row).toMatchObject({
+      id: "zam-academy:nur-katalog",
+      installed: true,
+      enrolled: false,
+    });
+    expect(row?.requiresLearnerEnrol).toBeUndefined();
+
+    // Agent enrols learner-two offline using installed cached v1.
+    const enrolled = await enrolBundledCellHandler(db, {
+      cellId: "zam-academy:nur-katalog",
+      user: "learner-two",
+    });
+    expect(enrolled.success).toBe(true);
+    expect(enrolled.cardsCreated).toBe(26);
+    expect(await installedTileVersion(db, "zam-academy:nur-katalog")).toBe(
+      "2026.10.1",
+    );
+  });
+
   it("refuses a catalog-only cell in a team library", async () => {
     const team = Object.create(db, {
       dialect: { value: "postgres" },
