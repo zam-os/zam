@@ -9,7 +9,7 @@ Academy authors follow is `AGENTS.md` in `zam-os/zam-academy`.
 
 ## Where it stands
 
-ZAM 0.67.0 bundles 93 Academy cells and 127 active `de-by:` school cells.
+ZAM 0.68.0 bundles 99 Academy cells and 127 active `de-by:` school cells.
 There are 96 legacy school-cell snapshots. The Academy catalog dropped the
 preview flag, so the bundle no longer marks the nine former previews.
 
@@ -75,6 +75,12 @@ cell by itself.
   Technik 7 Gymnasium (Informatik) transfer eleven approved review histories.
   Their source cells and the source cells considered for Physik 7 Gymnasium
   stay active.
+- [x] Integrate six Grade 7 Academy cells in 0.68.0 (`bwr-realschule-7`,
+  `deutsch-gymnasium-7`, `englisch-realschule-7`, `franzoesisch-realschule-7`,
+  `geographie-gymnasium-7`, `geschichte-realschule-7`), bringing the bundle to
+  99 Academy cells. All six mappings are approved and transfer 17 matching
+  practice-item histories via `replaces` while all source `de-by:` school cells
+  stay bundled for existing learners.
 - [ ] Physik 10/11 Gymnasium (`physik-gymnasium-11`, `keine Stilllegung` decided) and Biologie 11 Gymnasium (`biologie-gymnasium-11` is `einfuehrungsklasse` under `isb-bayern-einfuehrungsklasse`): their 5 + 2 `de-by:` cells deliberately stay bundled and active.
 - [x] Sync the withdrawn preview flags. The Academy now records teacher
   acceptance through its package versions.

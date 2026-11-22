@@ -1,0 +1,92 @@
+{
+  "schema": 1,
+  "status": "approved",
+  "approved": "2026-11-22",
+  "note": "Approved 4 A / 0 B / 4 C for de-by:realschule-7-geschichte-mittelalter-fruehe-neuzeit. Four tier-1 atomic checks transfer histories from J01, J03, J05 and J07 via replaces; four multipart tier-2 items (J02, J04, J06, J08) stay active (no retired_items).",
+  "source_repository": "zam-os/zam",
+  "source_commit": "bae34e7dfe7d01838e448a65f15871c3549ae3fc",
+  "sources": [
+    {
+      "file": "tests/fixtures/de-by-realschule-7-geschichte-mittelalter-fruehe-neuzeit-kvt.json",
+      "source_path": "tests/fixtures/curriculum/de-by-realschule-7-geschichte-mittelalter-fruehe-neuzeit-kvt.json",
+      "sha256": "83bd564c4efea040d9a48d21d348b84e8e4f2e5c626968f853f125850ffece67",
+      "tile_id": "de-by:realschule-7-geschichte-mittelalter-fruehe-neuzeit",
+      "version": "2026.08.1"
+    }
+  ],
+  "rows": [
+    {
+      "de_by_cell": "de-by:realschule-7-geschichte-mittelalter-fruehe-neuzeit",
+      "de_by_id": "01K4G7M0000000000000000J01",
+      "de_by_question": "Welcher Stand umfasste im mittelalterlichen Ständemodell über 90 % der Gesamtbevölkerung und trug durch Frondienste und Abgaben die materielle Last der Gesellschaft?",
+      "category": "A",
+      "academy_slug": "g7-grundherrschaft-und-staende-check",
+      "action": "replace",
+      "reason": "Same atomic retrieval: both the old item and g7-grundherrschaft-und-staende-check ask which estate encompassed over 90 % of the population in the medieval three-estates model and bore the material burden through labour services and dues, expecting the third estate (Nährstand)."
+    },
+    {
+      "de_by_cell": "de-by:realschule-7-geschichte-mittelalter-fruehe-neuzeit",
+      "de_by_id": "01K4G7M0000000000000000J02",
+      "de_by_question": "Analysiere das Lehnswesen (Lehnsherr und Vasall: Lehnseid, Treuepflicht, Schutz vs. Heeresfolge und Rat), unterscheide das politische Lehnswesen von der wirtschaftlichen Grundherrschaft (Grundherr, unfreie Hörige/Leibeigene, Frondienste und Naturalabgaben wie der Zehnte) und skizziere die von Gott gewollte Drei-Stände-Ordnung (Klerus = Lehrstand; Adel = Wehrstand; Bauern = Nährstand).",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "The legacy tier-2 prompt combines political feudalism (Lehnswesen), economic manorialism (Grundherrschaft) and the three estates in one long synthesis. The new package separates Grundherrschaft/Stände and Lehnswesen into distinct lessons and concise reasoning cards; no single successor retains the whole prompt and answer."
+    },
+    {
+      "de_by_cell": "de-by:realschule-7-geschichte-mittelalter-fruehe-neuzeit",
+      "de_by_id": "01K4G7M0000000000000000J03",
+      "de_by_question": "Was bedeutete der berühmte mittelalterliche Rechtsgrundsatz 'Stadtluft macht frei (nach Jahr und Tag)' für geflohene leibeigene Bauern?",
+      "category": "A",
+      "academy_slug": "g7-stadt-und-buerger-check",
+      "action": "replace",
+      "reason": "Same atomic retrieval: both the old item and g7-stadt-und-buerger-check ask for the meaning of the medieval legal principle 'Stadtluft macht frei (nach Jahr und Tag)' for runaway serfs and expect freedom from manorial dependence after living in the town undisturbed for a year and a day."
+    },
+    {
+      "de_by_cell": "de-by:realschule-7-geschichte-mittelalter-fruehe-neuzeit",
+      "de_by_id": "01K4G7M0000000000000000J04",
+      "de_by_question": "Erkläre die Entstehung und Privilegien der mittelalterlichen Städte (Stadtrechte: Marktrecht, Münzrecht, Gerichtsbarkeit, Stadtmauer), analysiere die ständische Sozialstruktur der Stadtbevölkerung (Patrizier, Zunfthandwerker, Gesellen/Mägde, Unehrliche Berufe/Juden) und beschreibe die Rolle der Handwerkerzünfte (Zunftzwang, Qualitätskontrolle, Preisregulierung, soziale Fürsorge und Wehrpflicht).",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "The legacy tier-2 prompt joins town privileges, urban social strata including excluded minorities, and craft guilds in one broad multipart synthesis. The new package covers town rights/guilds in g7-stadt-und-buerger and Jewish urban life in g7-juedisches-leben-mittelalter; no single card replaces the entire multipart prompt."
+    },
+    {
+      "de_by_cell": "de-by:realschule-7-geschichte-mittelalter-fruehe-neuzeit",
+      "de_by_id": "01K4G7M0000000000000000J05",
+      "de_by_question": "Wie viele Kurfürsten (geistliche und weltliche Reichsfürsten) hatten nach der Goldenen Bulle von 1356 das exklusive Recht, den römisch-deutschen König zu wählen?",
+      "category": "A",
+      "academy_slug": "g7-koenig-reich-kurfuersten-check",
+      "action": "replace",
+      "reason": "Same atomic retrieval: both the old item and g7-koenig-reich-kurfuersten-check ask how many prince-electors (Kurfürsten) held the right to elect the Romano-German king under the Golden Bull of 1356 and expect seven (three ecclesiastical and four secular electors)."
+    },
+    {
+      "de_by_cell": "de-by:realschule-7-geschichte-mittelalter-fruehe-neuzeit",
+      "de_by_id": "01K4G7M0000000000000000J06",
+      "de_by_question": "Erkläre den Charakter des Heiligen Römischen Reiches Deutscher Nation als Wahlmonarchie (keine Erbmonarchie), benenne die 7 Kurfürsten nach der Goldenen Bulle von 1356 (Erzbischöfe von Mainz, Köln, Trier; König von Böhmen, Pfalzgraf bei Rhein, Herzog von Sachsen, Markgraf von Brandenburg) und erläutere, wie die Goldene Bulle Doppelwahlen und den päpstlichen Einfluss auf die Königswahl endgültig ausschaltete.",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "The legacy tier-2 prompt requires the full electoral monarchy concept, all seven named electors and both institutional effects of the 1356 Golden Bull in one extended synthesis. The new package splits Golden Bull election rules and territorialisation across concise cards; no single successor preserves the entire legacy answer."
+    },
+    {
+      "de_by_cell": "de-by:realschule-7-geschichte-mittelalter-fruehe-neuzeit",
+      "de_by_id": "01K4G7M0000000000000000J07",
+      "de_by_question": "Womit leitete der Mönch Martin Luther im Jahr 1517 in Wittenberg die Reformation der Kirche ein?",
+      "category": "A",
+      "academy_slug": "g7-luther-und-1517-check",
+      "action": "replace",
+      "reason": "Same atomic retrieval: both the old item and g7-luther-und-1517-check ask how Martin Luther initiated the Reformation in Wittenberg in 1517 and expect his 95 Theses against the trade in indulgences."
+    },
+    {
+      "de_by_cell": "de-by:realschule-7-geschichte-mittelalter-fruehe-neuzeit",
+      "de_by_id": "01K4G7M0000000000000000J08",
+      "de_by_question": "Analysiere die Faktoren des Epochenumbruchs um 1500: 1. Neues Menschen- und Weltbild (Renaissance & Humanismus: der Mensch im Mittelpunkt, heliozentrisches Weltbild), 2. Die Medienrevolution des Buchdrucks mit beweglichen Metall-Lettern (Johannes Gutenberg ca. 1450: Massenvervielfältigung von Wissen), 3. Martin Luthers reformatorische Grunderkenntnisse ('Sola fide', 'Sola scriptura', 'Sola gratia') und die gesellschaftlich-politischen Folgen der Glaubensspaltung (Reichstag zu Worms 1521, Bauernkriege 1525, Augsburger Religionsfrieden 1555).",
+      "category": "C",
+      "academy_slug": null,
+      "action": "keep-active",
+      "reason": "The legacy tier-2 synthesis spans Renaissance/Humanism, Gutenberg's printing press, Luther's four Soli, Worms 1521, the Peasants' War 1525 and the 1555 Peace of Augsburg, which the new package teaches across six separate lessons in LB 3 and LB 4. Never split one history across multiple successors; keep the legacy item active."
+    }
+  ],
+  "source": "Thomas approved all 4 proposed A transfers in Antigravity chat on 2026-11-22 before ZAM 0.68.0 release: „Die 4+4 A-Zeilen für bwr-realschule-7 und geschichte-realschule-7 hiermit freigeben, zuerst in zam-os/zam-academy veröffentlichen und dann alle 6 Pakete in ZAM 0.68.0 aufnehmen“."
+}

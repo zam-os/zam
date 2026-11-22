@@ -1,0 +1,56 @@
+{
+	"schema": 1,
+	"status": "approved",
+	"approved": "2026-11-22",
+	"note": "Two A rows transfer their histories to the named successors; the two C rows stay active. The cell declares no retired_items.",
+	"source_repository": "https://github.com/zam-os/zam",
+	"source_commit": "d83ea3b2f93609b7ed25432c1cb37774dc59c537",
+	"source": "Thomas approved both proposed A transfers in the Claude Code Desktop chat of this package on 2026-11-22, answering the question about the two A rows of PR zam-os/zam-academy#184: „Beide A freigeben“.",
+	"sources": [
+		{
+			"file": "tests/fixtures/de-by-realschule-7-franzoesisch-starter-grammatik-verben-kvt.json",
+			"source_path": "tests/fixtures/curriculum/de-by-realschule-7-franzoesisch-starter-grammatik-verben-kvt.json",
+			"tile_id": "de-by:realschule-7-franzoesisch-starter-grammatik-verben",
+			"version": "2026.08.1",
+			"sha256": "dd7550c20d5a8a317a08bae6317eec2136872126886fdad9bc0830e6e7c66bdf"
+		}
+	],
+	"rows": [
+		{
+			"de_by_cell": "de-by:realschule-7-franzoesisch-starter-grammatik-verben",
+			"de_by_id": "01K4F7G0000000000000000J01",
+			"de_by_question": "Wie lautet die 3. Person Plural von 'avoir' (haben) im Présent ('sie haben')?",
+			"category": "A",
+			"action": "replace",
+			"academy_slug": "f7-etre-avoir-check",
+			"reason": "Same atomic retrieval: choose ils / elles ont against ils / elles sont. The successor card asks exactly this binary choice."
+		},
+		{
+			"de_by_cell": "de-by:realschule-7-franzoesisch-starter-grammatik-verben",
+			"de_by_id": "01K4F7G0000000000000000J02",
+			"de_by_question": "Konjugiere die beiden fundamentalen unregelmäßigen französischen Hilfsverben être (sein) und avoir (haben) vollständig …",
+			"category": "C",
+			"action": "keep-active",
+			"academy_slug": null,
+			"reason": "Multi-part prompt (two full paradigms, liaison and three translations). The package splits these into separate recall cards; one history must not be spread over several cards, and no successor keeps the whole prompt."
+		},
+		{
+			"de_by_cell": "de-by:realschule-7-franzoesisch-starter-grammatik-verben",
+			"de_by_id": "01K4F7G0000000000000000J03",
+			"de_by_question": "Wie wird im Französischen die Verneinungsklammer 'ne ... pas' um das konjugierte Verb gesetzt (z. B. 'Ich spreche kein Französisch')?",
+			"category": "A",
+			"action": "replace",
+			"academy_slug": "f7-negation-recall",
+			"reason": "Same atomic retrieval: ne before and pas after the conjugated verb. The successor asks for the position of ne … pas with a parler example."
+		},
+		{
+			"de_by_cell": "de-by:realschule-7-franzoesisch-starter-grammatik-verben",
+			"de_by_id": "01K4F7G0000000000000000J04",
+			"de_by_question": "Erkläre das System der 1. regelmäßigen Verbgruppe auf -er …, die Verneinungsklammer ne ... pas, drei Arten der Fragebildung … und konjugiere und verneine das Verb habiter.",
+			"category": "C",
+			"action": "keep-active",
+			"academy_slug": null,
+			"reason": "Multi-part prompt across endings, negation and three question types. Its sample solution also teaches inversion (Où habites-tu ?), which the grade 7 curriculum does not list, and an unsourced share of -er verbs. The package covers the parts on separate cards."
+		}
+	]
+}

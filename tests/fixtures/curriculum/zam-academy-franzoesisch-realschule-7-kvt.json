@@ -1,0 +1,5074 @@
+{
+	"$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+	"tile_id": "zam-academy:franzoesisch-realschule-7",
+	"version": "2026.11.1",
+	"title": "Französisch 7 Realschule (ZAM Academy)",
+	"description": "Erstes Lernjahr Französisch an der bayerischen Realschule (Wahlpflichtfächergruppe IIIa): Begrüßen, Fragen, Präsens und futur composé, Familie, Schule, Freizeit, Wohnen, Paris und die Bretagne. Jede Karte führt zu ihrer Lektion.",
+	"publisher": "ZAM Academy",
+	"sources": [
+		{
+			"uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/7/franzoesisch",
+			"label": "ISB · LehrplanPLUS Realschule · Französisch 7",
+			"checked": "2026-11-21"
+		},
+		{
+			"uri": "https://european-union.europa.eu/principles-countries-history/eu-countries/france_en",
+			"label": "European Union · France – EU country",
+			"checked": "2026-11-21"
+		},
+		{
+			"uri": "https://www.france.fr/fr/destination/paris/",
+			"label": "Atout France · Visiter Paris",
+			"checked": "2026-11-21"
+		},
+		{
+			"uri": "https://www.france.fr/fr/destination/bretagne/",
+			"label": "Atout France · Visiter la Bretagne",
+			"checked": "2026-11-21"
+		},
+		{
+			"uri": "https://fr-de.dict.cc/",
+			"label": "dict.cc · Wörterbuch Französisch-Deutsch",
+			"checked": "2026-11-21"
+		}
+	],
+	"atoms": [
+		{
+			"id": "01M803K5VXECJDDJE7AM51B6DY",
+			"atom_uri": "urn:zam:atom:01M803K5VXECJDDJE7AM51B6DY",
+			"namespace": "zam-academy-franzoesisch-realschule-7",
+			"slug": "f7-bonjour",
+			"title": "Bonjour, Madame !",
+			"domain": "franzoesisch/klasse-7/bonjour",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-bonjour",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-realschule-7",
+					"topic_code": "f7-bonjour",
+					"topic_title": "Bonjour, la classe !"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-sprechen",
+					"topic_title": "Sprechen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-wortschatz",
+					"topic_title": "Wortschatz",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb2",
+					"topic_title": "Interkulturelle Kompetenzen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M803K5XK8MKX8G9CE7510XFV",
+					"slug": "f7-bonjour-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie begrüßt du eine erwachsene Frau höflich auf Französisch?",
+					"concept": "Bonjour, Madame !",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-bonjour",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Bonjour, Madame !",
+							"Salut, Madame !"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M803K5XMCYVP33RD1DCSQM5G",
+					"slug": "f7-bonjour-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was sagst du beim höflichen Verabschieden im Laden?",
+					"concept": "Au revoir !",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-bonjour",
+					"sample_solution": "Au revoir !"
+				},
+				{
+					"id": "01M803K5XN0KHP85RE51QJ4BWV",
+					"slug": "f7-bonjour-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie heißt „bitte“, wenn du eine Freundin duzt?",
+					"concept": "S’il te plaît.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-bonjour",
+					"sample_solution": "S’il te plaît."
+				}
+			]
+		},
+		{
+			"id": "01M803K5VYZ6TBEK9ZWX1N35WW",
+			"atom_uri": "urn:zam:atom:01M803K5VYZ6TBEK9ZWX1N35WW",
+			"namespace": "zam-academy-franzoesisch-realschule-7",
+			"slug": "f7-moi",
+			"title": "Je m’appelle Léa",
+			"domain": "franzoesisch/klasse-7/bonjour",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-moi",
+			"prerequisites": [
+				{
+					"atom_id": "01M803K5VXECJDDJE7AM51B6DY",
+					"type": "soft",
+					"rationale": "Baut auf der Lektion „Bonjour, Madame !“ auf."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-realschule-7",
+					"topic_code": "f7-bonjour",
+					"topic_title": "Bonjour, la classe !"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-sprechen",
+					"topic_title": "Sprechen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-schreiben",
+					"topic_title": "Schreiben",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-wortschatz",
+					"topic_title": "Wortschatz",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M803K5XPAHWDT8MY7DB6NKWE",
+					"slug": "f7-moi-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie sagst du „Ich bin zwölf Jahre alt“?",
+					"concept": "J’ai douze ans.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-moi",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"J’ai douze ans.",
+							"Je suis douze ans."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M803K5XQE29G118WDXTKZAE2",
+					"slug": "f7-moi-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie fragst du jemanden locker nach seinem Namen?",
+					"concept": "Tu t’appelles comment ?",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-moi",
+					"sample_solution": "Tu t’appelles comment ?"
+				},
+				{
+					"id": "01M803K5XR1DQ9JVX1QKFJWVCY",
+					"slug": "f7-moi-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie stellst du deine Freundin Inès vor („Das ist …“)?",
+					"concept": "Voici mon amie Inès.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-moi",
+					"sample_solution": "Voici mon amie Inès."
+				}
+			]
+		},
+		{
+			"id": "01M803K5VZ6ANKXGNNBGAB4XD2",
+			"atom_uri": "urn:zam:atom:01M803K5VZ6ANKXGNNBGAB4XD2",
+			"namespace": "zam-academy-franzoesisch-realschule-7",
+			"slug": "f7-sons",
+			"title": "Écoute les sons",
+			"domain": "franzoesisch/klasse-7/bonjour",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-sons",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-realschule-7",
+					"topic_code": "f7-bonjour",
+					"topic_title": "Bonjour, la classe !"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-hoeren",
+					"topic_title": "Hör- und Hörsehverstehen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-aussprache",
+					"topic_title": "Aussprache und Intonation",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb4",
+					"topic_title": "Methodische Kompetenzen",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M803K5XS3GZVSDWC8W01A05X",
+					"slug": "f7-sons-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welches Wort enthält ein stimmhaftes [z]?",
+					"concept": "poison",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-sons",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"poison",
+							"poisson"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M803K5XTY9HJJ3NRKB6RVCFJ",
+					"slug": "f7-sons-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was zeigt das Trema in Noël?",
+					"concept": "Die Vokale o und e werden getrennt gesprochen.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-sons",
+					"sample_solution": "Die Vokale o und e werden getrennt gesprochen."
+				},
+				{
+					"id": "01M803K5XVPV24JS7YXY57TCQX",
+					"slug": "f7-sons-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie sprichst du les amis mit Bindung aus?",
+					"concept": "[lezami]",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-sons",
+					"sample_solution": "[lezami]"
+				}
+			]
+		},
+		{
+			"id": "01M803K5W0W0E32QD2J5R3YH5P",
+			"atom_uri": "urn:zam:atom:01M803K5W0W0E32QD2J5R3YH5P",
+			"namespace": "zam-academy-franzoesisch-realschule-7",
+			"slug": "f7-classe",
+			"title": "Ouvrez vos livres !",
+			"domain": "franzoesisch/klasse-7/bonjour",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-classe",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-realschule-7",
+					"topic_code": "f7-bonjour",
+					"topic_title": "Bonjour, la classe !"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-sprechen",
+					"topic_title": "Sprechen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-wortschatz",
+					"topic_title": "Wortschatz",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M803K5XWE4B4RNHPKHB4XHZ1",
+					"slug": "f7-classe-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was sagst du, wenn du etwas nicht verstanden hast?",
+					"concept": "Je ne comprends pas.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-classe",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Je ne comprends pas.",
+							"Je ne parle pas."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M803K5XXXGGKX4BPSEAZAS3V",
+					"slug": "f7-classe-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie heißt das Mäppchen auf Französisch (mit Artikel)?",
+					"concept": "la trousse",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-classe",
+					"sample_solution": "la trousse"
+				},
+				{
+					"id": "01M803K5XY0E30K2TC4V2D6AJE",
+					"slug": "f7-classe-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie fragst du nach dem französischen Wort für „Heft“?",
+					"concept": "Comment dit-on „Heft“ en français ?",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-classe",
+					"sample_solution": "Comment dit-on „Heft“ en français ?"
+				}
+			]
+		},
+		{
+			"id": "01M803K5W1KRW9DN83PWMGJGAD",
+			"atom_uri": "urn:zam:atom:01M803K5W1KRW9DN83PWMGJGAD",
+			"namespace": "zam-academy-franzoesisch-realschule-7",
+			"slug": "f7-consignes",
+			"title": "Complétez, cochez !",
+			"domain": "franzoesisch/klasse-7/bonjour",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-consignes",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-realschule-7",
+					"topic_code": "f7-bonjour",
+					"topic_title": "Bonjour, la classe !"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-wortschatz",
+					"topic_title": "Wortschatz",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb4",
+					"topic_title": "Methodische Kompetenzen",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M803K5XZ9GCKYXGGR217A2HT",
+					"slug": "f7-consignes-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was bedeutet die Arbeitsanweisung „Cochez“?",
+					"concept": "Kreuzt an.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-consignes",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Kreuzt an.",
+							"Unterstreicht."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M803K5Y000J9MR2RRHMPNWE4",
+					"slug": "f7-consignes-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was bedeutet „Complétez les phrases“?",
+					"concept": "Ergänzt die Sätze.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-consignes",
+					"sample_solution": "Ergänzt die Sätze."
+				},
+				{
+					"id": "01M803K5Y1AYNKJNTRQ73WDQH1",
+					"slug": "f7-consignes-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie heißt „das Verb“ als Grammatikbegriff auf Französisch?",
+					"concept": "le verbe",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-consignes",
+					"sample_solution": "le verbe"
+				}
+			]
+		},
+		{
+			"id": "01M803K5W2DQ08KZFB7BBTYGEM",
+			"atom_uri": "urn:zam:atom:01M803K5W2DQ08KZFB7BBTYGEM",
+			"namespace": "zam-academy-franzoesisch-realschule-7",
+			"slug": "f7-nombres",
+			"title": "De zéro à cent",
+			"domain": "franzoesisch/klasse-7/bonjour",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-nombres",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-realschule-7",
+					"topic_code": "f7-bonjour",
+					"topic_title": "Bonjour, la classe !"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-hoeren",
+					"topic_title": "Hör- und Hörsehverstehen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-wortschatz",
+					"topic_title": "Wortschatz",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M803K5Y29PMMK3ED3VM2FJ6X",
+					"slug": "f7-nombres-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie heißt 71 auf Französisch?",
+					"concept": "soixante et onze",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-nombres",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"soixante et onze",
+							"septante et un"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M803K5Y3APGP80CWNW5FCNXW",
+					"slug": "f7-nombres-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie heißt 80 auf Französisch?",
+					"concept": "quatre-vingts",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-nombres",
+					"sample_solution": "quatre-vingts"
+				},
+				{
+					"id": "01M803K5Y48A7949SAE6DM1ZEX",
+					"slug": "f7-nombres-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie heißt 92 auf Französisch?",
+					"concept": "quatre-vingt-douze",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-nombres",
+					"sample_solution": "quatre-vingt-douze"
+				}
+			]
+		},
+		{
+			"id": "01M803K5W3J4PJDS4Y1CFAQ71V",
+			"atom_uri": "urn:zam:atom:01M803K5W3J4PJDS4Y1CFAQ71V",
+			"namespace": "zam-academy-franzoesisch-realschule-7",
+			"slug": "f7-articles",
+			"title": "Un chat, le chat",
+			"domain": "franzoesisch/klasse-7/famille",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-articles",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-realschule-7",
+					"topic_code": "f7-famille",
+					"topic_title": "Ma famille, mes amis"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-grammatik",
+					"topic_title": "Grammatik",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-wortschatz",
+					"topic_title": "Wortschatz",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M803K5Y59FAF5RHFBBYGPBCV",
+					"slug": "f7-articles-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welcher Artikel steht vor école?",
+					"concept": "l’école",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-articles",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"l’école",
+							"la école"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M803K5Y6D9RXNNN97ERYJR5P",
+					"slug": "f7-articles-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie heißt der unbestimmte Artikel im Plural?",
+					"concept": "des",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-articles",
+					"sample_solution": "des"
+				},
+				{
+					"id": "01M803K5Y73TSSCVQV1E79NTNC",
+					"slug": "f7-articles-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie heißen die bestimmten Artikel für maskulin, feminin und Plural?",
+					"concept": "le, la, les",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-articles",
+					"sample_solution": "le, la, les"
+				}
+			]
+		},
+		{
+			"id": "01M803K5W4YQT68KR7NTYV90N0",
+			"atom_uri": "urn:zam:atom:01M803K5W4YQT68KR7NTYV90N0",
+			"namespace": "zam-academy-franzoesisch-realschule-7",
+			"slug": "f7-pluriel",
+			"title": "Un cadeau, des cadeaux",
+			"domain": "franzoesisch/klasse-7/famille",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-pluriel",
+			"prerequisites": [
+				{
+					"atom_id": "01M803K5W3J4PJDS4Y1CFAQ71V",
+					"type": "soft",
+					"rationale": "Baut auf der Lektion „Un chat, le chat“ auf."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-realschule-7",
+					"topic_code": "f7-famille",
+					"topic_title": "Ma famille, mes amis"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-grammatik",
+					"topic_title": "Grammatik",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-wortschatz",
+					"topic_title": "Wortschatz",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M803K5Y8B87W7GZ279CZTNQ8",
+					"slug": "f7-pluriel-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie heißt der Plural von un animal?",
+					"concept": "des animaux",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-pluriel",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"des animaux",
+							"des animals"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M803K5Y9VAEY3WYHRRF7RQT3",
+					"slug": "f7-pluriel-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie heißt der Plural von un cadeau?",
+					"concept": "des cadeaux",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-pluriel",
+					"sample_solution": "des cadeaux"
+				},
+				{
+					"id": "01M803K5YAD8DK7XDEWMTXTYY0",
+					"slug": "f7-pluriel-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie heißt der Plural von un bus?",
+					"concept": "des bus",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-pluriel",
+					"sample_solution": "des bus"
+				}
+			]
+		},
+		{
+			"id": "01M803K5W5KQSWY7SG8SQ83RW8",
+			"atom_uri": "urn:zam:atom:01M803K5W5KQSWY7SG8SQ83RW8",
+			"namespace": "zam-academy-franzoesisch-realschule-7",
+			"slug": "f7-etre-avoir",
+			"title": "Je suis, j’ai",
+			"domain": "franzoesisch/klasse-7/famille",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-etre-avoir",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-realschule-7",
+					"topic_code": "f7-famille",
+					"topic_title": "Ma famille, mes amis"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-grammatik",
+					"topic_title": "Grammatik",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M803K5YBS3AF9JCVXBNX2QS3",
+					"slug": "f7-etre-avoir-check",
+					"replaces": [
+						"01K4F7G0000000000000000J01"
+					],
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "„Sie haben“ (ils / elles) heißt …",
+					"concept": "ils / elles ont",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-etre-avoir",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"ils / elles ont",
+							"ils / elles sont"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M803K5YCD0C8KZVS9AC2YMCC",
+					"slug": "f7-etre-avoir-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie heißt „wir sind“ auf Französisch?",
+					"concept": "nous sommes",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-etre-avoir",
+					"sample_solution": "nous sommes"
+				},
+				{
+					"id": "01M803K5YDFWWA2FQPSX3433PZ",
+					"slug": "f7-etre-avoir-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie heißt „ihr habt / Sie haben“ auf Französisch?",
+					"concept": "vous avez",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-etre-avoir",
+					"sample_solution": "vous avez"
+				}
+			]
+		},
+		{
+			"id": "01M803K5W64RYKZR9NASX63AZ1",
+			"atom_uri": "urn:zam:atom:01M803K5W64RYKZR9NASX63AZ1",
+			"namespace": "zam-academy-franzoesisch-realschule-7",
+			"slug": "f7-famille",
+			"title": "Voici ma famille",
+			"domain": "franzoesisch/klasse-7/famille",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-famille",
+			"prerequisites": [
+				{
+					"atom_id": "01M803K5W3J4PJDS4Y1CFAQ71V",
+					"type": "soft",
+					"rationale": "Baut auf der Lektion „Un chat, le chat“ auf."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-realschule-7",
+					"topic_code": "f7-famille",
+					"topic_title": "Ma famille, mes amis"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-sprechen",
+					"topic_title": "Sprechen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-grammatik",
+					"topic_title": "Grammatik",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-wortschatz",
+					"topic_title": "Wortschatz",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M803K5YEW0EPVAM59EBCKRK6",
+					"slug": "f7-famille-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "„meine Mutter“ heißt …",
+					"concept": "ma mère",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-famille",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"ma mère",
+							"mon mère"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M803K5YF963G5N2Z144PE2FT",
+					"slug": "f7-famille-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "„meine Eltern“ heißt …",
+					"concept": "mes parents",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-famille",
+					"sample_solution": "mes parents"
+				},
+				{
+					"id": "01M803K5YGPYTARRQVSFY1JMP0",
+					"slug": "f7-famille-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Warum heißt es mon amie, obwohl amie feminin ist?",
+					"concept": "Vor Vokal steht mon statt ma.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-famille",
+					"sample_solution": "Vor Vokal steht mon statt ma."
+				}
+			]
+		},
+		{
+			"id": "01M803K5W7S6J8AF9Y7E14Z6R5",
+			"atom_uri": "urn:zam:atom:01M803K5W7S6J8AF9Y7E14Z6R5",
+			"namespace": "zam-academy-franzoesisch-realschule-7",
+			"slug": "f7-animaux",
+			"title": "Il y a un chat",
+			"domain": "franzoesisch/klasse-7/famille",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-animaux",
+			"prerequisites": [
+				{
+					"atom_id": "01M803K5W3J4PJDS4Y1CFAQ71V",
+					"type": "soft",
+					"rationale": "Baut auf der Lektion „Un chat, le chat“ auf."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-realschule-7",
+					"topic_code": "f7-famille",
+					"topic_title": "Ma famille, mes amis"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-wortschatz",
+					"topic_title": "Wortschatz",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb4",
+					"topic_title": "Methodische Kompetenzen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M803K5YHRYQ6PW8X030P1THJ",
+					"slug": "f7-animaux-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "„Es gibt zwei Katzen“ heißt …",
+					"concept": "Il y a deux chats.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-animaux",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Il y a deux chats.",
+							"Ils sont deux chats."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M803K5YJ8TJ3YPXQBZ3K5AAF",
+					"slug": "f7-animaux-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie verneinst du „Il y a un chien“?",
+					"concept": "Il n’y a pas de chien.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-animaux",
+					"sample_solution": "Il n’y a pas de chien."
+				},
+				{
+					"id": "01M803K5YKSBERSDKD796CT98B",
+					"slug": "f7-animaux-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was ist im Französischen bei „Es gibt …“ einfacher als im Englischen?",
+					"concept": "Il y a bleibt im Singular und Plural gleich (englisch: there is / there are).",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-animaux",
+					"sample_solution": "Il y a bleibt im Singular und Plural gleich (englisch: there is / there are)."
+				}
+			]
+		},
+		{
+			"id": "01M803K5W80BME2WR5TD95Z7V9",
+			"atom_uri": "urn:zam:atom:01M803K5W80BME2WR5TD95Z7V9",
+			"namespace": "zam-academy-franzoesisch-realschule-7",
+			"slug": "f7-pronoms",
+			"title": "Il, elle, on",
+			"domain": "franzoesisch/klasse-7/famille",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-pronoms",
+			"prerequisites": [
+				{
+					"atom_id": "01M803K5VYZ6TBEK9ZWX1N35WW",
+					"type": "soft",
+					"rationale": "Baut auf der Lektion „Je m’appelle Léa“ auf."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-realschule-7",
+					"topic_code": "f7-famille",
+					"topic_title": "Ma famille, mes amis"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-grammatik",
+					"topic_title": "Grammatik",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-sprechen",
+					"topic_title": "Sprechen",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M803K5YMY3SD6V1RTQ83S0Q1",
+					"slug": "f7-pronoms-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welches Pronomen ersetzt „Léa et Hugo“?",
+					"concept": "ils",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-pronoms",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"ils",
+							"elles"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M803K5YNKP1QF6PDNPY90C8R",
+					"slug": "f7-pronoms-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welches Pronomen ersetzt „Léa et Inès“?",
+					"concept": "elles",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-pronoms",
+					"sample_solution": "elles"
+				},
+				{
+					"id": "01M803K5YP9N21SK0M0W9AWXQV",
+					"slug": "f7-pronoms-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "In welcher Person steht das Verb nach on (wir)?",
+					"concept": "In der 3. Person Singular: on va.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-pronoms",
+					"sample_solution": "In der 3. Person Singular: on va."
+				}
+			]
+		},
+		{
+			"id": "01M803K5W96ZKW1DRGC3JJ25KY",
+			"atom_uri": "urn:zam:atom:01M803K5W96ZKW1DRGC3JJ25KY",
+			"namespace": "zam-academy-franzoesisch-realschule-7",
+			"slug": "f7-verbes-er",
+			"title": "Je parle, nous parlons",
+			"domain": "franzoesisch/klasse-7/verbes",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-verbes-er",
+			"prerequisites": [
+				{
+					"atom_id": "01M803K5W80BME2WR5TD95Z7V9",
+					"type": "soft",
+					"rationale": "Baut auf der Lektion „Il, elle, on“ auf."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-realschule-7",
+					"topic_code": "f7-verbes",
+					"topic_title": "Les verbes en action"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-grammatik",
+					"topic_title": "Grammatik",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-sprechen",
+					"topic_title": "Sprechen",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M803K5YQYRJWHZJA8TZZ4B66",
+					"slug": "f7-verbes-er-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie heißt „sie spielen“ (ils / elles) von jouer?",
+					"concept": "ils jouent",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-verbes-er",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"ils jouent",
+							"ils jouons"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M803K5YRJDDRNYSYM11P6GJA",
+					"slug": "f7-verbes-er-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche Endung hat die nous-Form der ‑er-Verben?",
+					"concept": "‑ons",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-verbes-er",
+					"sample_solution": "‑ons"
+				},
+				{
+					"id": "01M803K5YSG2CE5HP39YKE1JE5",
+					"slug": "f7-verbes-er-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche vier Formen von parler klingen gleich?",
+					"concept": "parle, parles, parle, parlent",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-verbes-er",
+					"sample_solution": "parle, parles, parle, parlent"
+				}
+			]
+		},
+		{
+			"id": "01M803K5WAAQF348ZB544GJFCR",
+			"atom_uri": "urn:zam:atom:01M803K5WAAQF348ZB544GJFCR",
+			"namespace": "zam-academy-franzoesisch-realschule-7",
+			"slug": "f7-cer-ger",
+			"title": "Nous mangeons, nous commençons",
+			"domain": "franzoesisch/klasse-7/verbes",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-cer-ger",
+			"prerequisites": [
+				{
+					"atom_id": "01M803K5W96ZKW1DRGC3JJ25KY",
+					"type": "soft",
+					"rationale": "Baut auf der Lektion „Je parle, nous parlons“ auf."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-realschule-7",
+					"topic_code": "f7-verbes",
+					"topic_title": "Les verbes en action"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-grammatik",
+					"topic_title": "Grammatik",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M803K5YTAQCNKS07J36XVXR8",
+					"slug": "f7-cer-ger-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "„wir essen“ (manger) heißt …",
+					"concept": "nous mangeons",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-cer-ger",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"nous mangeons",
+							"nous mangons"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M803K5YVH8GT3VCM6ECPV38B",
+					"slug": "f7-cer-ger-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "„wir beginnen“ (commencer) heißt …",
+					"concept": "nous commençons",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-cer-ger",
+					"sample_solution": "nous commençons"
+				},
+				{
+					"id": "01M803K5YW9YAA98W9QC86MA65",
+					"slug": "f7-cer-ger-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Warum schreibt man nous mangeons mit e?",
+					"concept": "Damit g vor o weich bleibt.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-cer-ger",
+					"sample_solution": "Damit g vor o weich bleibt."
+				}
+			]
+		},
+		{
+			"id": "01M803K5WBVZ94P5Z0EN6PHZP3",
+			"atom_uri": "urn:zam:atom:01M803K5WBVZ94P5Z0EN6PHZP3",
+			"namespace": "zam-academy-franzoesisch-realschule-7",
+			"slug": "f7-aller-faire",
+			"title": "Je vais, je fais",
+			"domain": "franzoesisch/klasse-7/verbes",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-aller-faire",
+			"prerequisites": [
+				{
+					"atom_id": "01M803K5W96ZKW1DRGC3JJ25KY",
+					"type": "soft",
+					"rationale": "Baut auf der Lektion „Je parle, nous parlons“ auf."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-realschule-7",
+					"topic_code": "f7-verbes",
+					"topic_title": "Les verbes en action"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-grammatik",
+					"topic_title": "Grammatik",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-sprechen",
+					"topic_title": "Sprechen",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M803K5YXZES012AEKH7B4C7X",
+					"slug": "f7-aller-faire-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "„ihr macht / Sie machen“ heißt …",
+					"concept": "vous faites",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-aller-faire",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"vous faites",
+							"vous faisez"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M803K5YYV5AVJKERN6TMGZAC",
+					"slug": "f7-aller-faire-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "„sie gehen“ (ils, aller) heißt …",
+					"concept": "ils vont",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-aller-faire",
+					"sample_solution": "ils vont"
+				},
+				{
+					"id": "01M803K5YZGGN2RNRARHDAH8ES",
+					"slug": "f7-aller-faire-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "„ich gehe ins Schwimmbad“ heißt …",
+					"concept": "Je vais à la piscine.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-aller-faire",
+					"sample_solution": "Je vais à la piscine."
+				}
+			]
+		},
+		{
+			"id": "01M803K5WCDHD97H8W39AAR8G1",
+			"atom_uri": "urn:zam:atom:01M803K5WCDHD97H8W39AAR8G1",
+			"namespace": "zam-academy-franzoesisch-realschule-7",
+			"slug": "f7-prendre",
+			"title": "Je prends le bus",
+			"domain": "franzoesisch/klasse-7/verbes",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-prendre",
+			"prerequisites": [
+				{
+					"atom_id": "01M803K5W96ZKW1DRGC3JJ25KY",
+					"type": "soft",
+					"rationale": "Baut auf der Lektion „Je parle, nous parlons“ auf."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-realschule-7",
+					"topic_code": "f7-verbes",
+					"topic_title": "Les verbes en action"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-grammatik",
+					"topic_title": "Grammatik",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M803K5Z0AVEG3CQGFY1K1GGE",
+					"slug": "f7-prendre-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "„sie nehmen“ (ils, prendre) heißt …",
+					"concept": "ils prennent",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-prendre",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"ils prennent",
+							"ils prenent"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M803K5Z1876X094C1QMJC4KQ",
+					"slug": "f7-prendre-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "„wir nehmen den Bus“ heißt …",
+					"concept": "Nous prenons le bus.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-prendre",
+					"sample_solution": "Nous prenons le bus."
+				},
+				{
+					"id": "01M803K5Z260J57X8DFAVY4QEY",
+					"slug": "f7-prendre-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie fragt die Bedienung im Café: „Was nehmen Sie?“",
+					"concept": "Qu’est-ce que vous prenez ?",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-prendre",
+					"sample_solution": "Qu’est-ce que vous prenez ?"
+				}
+			]
+		},
+		{
+			"id": "01M803K5WD9YNX4G0SF3KK9ZSH",
+			"atom_uri": "urn:zam:atom:01M803K5WD9YNX4G0SF3KK9ZSH",
+			"namespace": "zam-academy-franzoesisch-realschule-7",
+			"slug": "f7-vouloir-pouvoir",
+			"title": "Je voudrais… On peut…",
+			"domain": "franzoesisch/klasse-7/verbes",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-vouloir-pouvoir",
+			"prerequisites": [
+				{
+					"atom_id": "01M803K5W96ZKW1DRGC3JJ25KY",
+					"type": "soft",
+					"rationale": "Baut auf der Lektion „Je parle, nous parlons“ auf."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-realschule-7",
+					"topic_code": "f7-verbes",
+					"topic_title": "Les verbes en action"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-grammatik",
+					"topic_title": "Grammatik",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-wortschatz",
+					"topic_title": "Wortschatz",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-sprechen",
+					"topic_title": "Sprechen",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M803K5Z3RHJG5YM3K65CRWG9",
+					"slug": "f7-vouloir-pouvoir-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie äußerst du einen Wunsch höflich?",
+					"concept": "Je voudrais …",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-vouloir-pouvoir",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Je voudrais …",
+							"Je veux …"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M803K5Z4N233T8V27HQD8YD5",
+					"slug": "f7-vouloir-pouvoir-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie schlägst du vor: „Wir können in den Park gehen?“",
+					"concept": "On peut aller au parc ?",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-vouloir-pouvoir",
+					"sample_solution": "On peut aller au parc ?"
+				},
+				{
+					"id": "01M803K5Z5GF095H94M4WS00C1",
+					"slug": "f7-vouloir-pouvoir-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "„Ich kann nicht“ heißt …",
+					"concept": "Je ne peux pas.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-vouloir-pouvoir",
+					"sample_solution": "Je ne peux pas."
+				}
+			]
+		},
+		{
+			"id": "01M803K5WE5EXBH46G3YTGVV5M",
+			"atom_uri": "urn:zam:atom:01M803K5WE5EXBH46G3YTGVV5M",
+			"namespace": "zam-academy-franzoesisch-realschule-7",
+			"slug": "f7-negation",
+			"title": "Je ne joue pas",
+			"domain": "franzoesisch/klasse-7/verbes",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-negation",
+			"prerequisites": [
+				{
+					"atom_id": "01M803K5W96ZKW1DRGC3JJ25KY",
+					"type": "soft",
+					"rationale": "Baut auf der Lektion „Je parle, nous parlons“ auf."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-realschule-7",
+					"topic_code": "f7-verbes",
+					"topic_title": "Les verbes en action"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-grammatik",
+					"topic_title": "Grammatik",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-sprechen",
+					"topic_title": "Sprechen",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M803K5Z6DGE7WCMG36NCTX8D",
+					"slug": "f7-negation-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Verneine: J’ai un chien.",
+					"concept": "Je n’ai pas de chien.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-negation",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Je n’ai pas de chien.",
+							"Je n’ai pas un chien."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M803K5Z7478JC6CSGJCW1YWB",
+					"slug": "f7-negation-recall",
+					"replaces": [
+						"01K4F7G0000000000000000J03"
+					],
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wo stehen ne und pas im Satz „Je parle français“?",
+					"concept": "Ne vor und pas nach dem konjugierten Verb: Je ne parle pas français.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-negation",
+					"sample_solution": "Ne vor und pas nach dem konjugierten Verb: Je ne parle pas français."
+				},
+				{
+					"id": "01M803K5Z8YD8XXHAC7NJN82DZ",
+					"slug": "f7-negation-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was wird aus ne vor einem Vokal?",
+					"concept": "n’",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-negation",
+					"sample_solution": "n’"
+				}
+			]
+		},
+		{
+			"id": "01M803K5WFF81DCNRS7QAEPRK2",
+			"atom_uri": "urn:zam:atom:01M803K5WFF81DCNRS7QAEPRK2",
+			"namespace": "zam-academy-franzoesisch-realschule-7",
+			"slug": "f7-cod",
+			"title": "Je regarde un film",
+			"domain": "franzoesisch/klasse-7/verbes",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-cod",
+			"prerequisites": [
+				{
+					"atom_id": "01M803K5W96ZKW1DRGC3JJ25KY",
+					"type": "soft",
+					"rationale": "Baut auf der Lektion „Je parle, nous parlons“ auf."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-realschule-7",
+					"topic_code": "f7-verbes",
+					"topic_title": "Les verbes en action"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-grammatik",
+					"topic_title": "Grammatik",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb4",
+					"topic_title": "Methodische Kompetenzen",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M803K5Z90YVTXPXZWM0FB77Q",
+					"slug": "f7-cod-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "„Heute sehe ich einen Film“ heißt …",
+					"concept": "Aujourd’hui, je regarde un film.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-cod",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Aujourd’hui, je regarde un film.",
+							"Aujourd’hui regarde je un film."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M803K5ZANH8ZWFA15RAABVPH",
+					"slug": "f7-cod-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "In welcher Reihenfolge stehen die Satzglieder im französischen Aussagesatz?",
+					"concept": "Subjekt – Verb – Objekt",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-cod",
+					"sample_solution": "Subjekt – Verb – Objekt"
+				},
+				{
+					"id": "01M803K5ZB61T5J3MK4NVND2K1",
+					"slug": "f7-cod-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie heißt das direkte Objekt in „Hugo cherche son sac“?",
+					"concept": "son sac",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-cod",
+					"sample_solution": "son sac"
+				}
+			]
+		},
+		{
+			"id": "01M803K5WGA8PXC81W3Z47RHNX",
+			"atom_uri": "urn:zam:atom:01M803K5WGA8PXC81W3Z47RHNX",
+			"namespace": "zam-academy-franzoesisch-realschule-7",
+			"slug": "f7-intonation",
+			"title": "Tu as quel âge ?",
+			"domain": "franzoesisch/klasse-7/echanges",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-intonation",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-realschule-7",
+					"topic_code": "f7-echanges",
+					"topic_title": "On parle ensemble"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-grammatik",
+					"topic_title": "Grammatik",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-aussprache",
+					"topic_title": "Aussprache und Intonation",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-sprechen",
+					"topic_title": "Sprechen",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M803K5ZC25YYGFZA8M7ZTQM3",
+					"slug": "f7-intonation-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie fragst du locker nach dem Alter?",
+					"concept": "Tu as quel âge ?",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-intonation",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Tu as quel âge ?",
+							"Tu es quel âge ?"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M803K5ZDV2TRQFTQ8MBGK5DS",
+					"slug": "f7-intonation-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was macht die Stimme bei einer Ja-Nein-Frage ohne Fragewort?",
+					"concept": "Sie steigt am Ende.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-intonation",
+					"sample_solution": "Sie steigt am Ende."
+				},
+				{
+					"id": "01M803K5ZESM0VF1M34RF14F5D",
+					"slug": "f7-intonation-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie fragst du locker nach dem Wohnort (Fragewort am Ende)?",
+					"concept": "Tu habites où ?",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-intonation",
+					"sample_solution": "Tu habites où ?"
+				}
+			]
+		},
+		{
+			"id": "01M803K5WHDD74Z33AKVPHSTG4",
+			"atom_uri": "urn:zam:atom:01M803K5WHDD74Z33AKVPHSTG4",
+			"namespace": "zam-academy-franzoesisch-realschule-7",
+			"slug": "f7-est-ce-que",
+			"title": "Est-ce que tu viens ?",
+			"domain": "franzoesisch/klasse-7/echanges",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-est-ce-que",
+			"prerequisites": [
+				{
+					"atom_id": "01M803K5WGA8PXC81W3Z47RHNX",
+					"type": "soft",
+					"rationale": "Baut auf der Lektion „Tu as quel âge ?“ auf."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-realschule-7",
+					"topic_code": "f7-echanges",
+					"topic_title": "On parle ensemble"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-grammatik",
+					"topic_title": "Grammatik",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-aussprache",
+					"topic_title": "Aussprache und Intonation",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-sprechen",
+					"topic_title": "Sprechen",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M803K5ZF6341J3KG3K7ZDPWB",
+					"slug": "f7-est-ce-que-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Mache eine Frage aus „Il y a un bus“.",
+					"concept": "Est-ce qu’il y a un bus ?",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-est-ce-que",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Est-ce qu’il y a un bus ?",
+							"Est-ce que il y a un bus ?"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M803K5ZGXS6585BA2TRENRPZ",
+					"slug": "f7-est-ce-que-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie fragst du „Was machst du am Samstag?“ mit qu’est-ce que?",
+					"concept": "Qu’est-ce que tu fais samedi ?",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-est-ce-que",
+					"sample_solution": "Qu’est-ce que tu fais samedi ?"
+				},
+				{
+					"id": "01M803K5ZHT74A7VG6B3ZNB5V5",
+					"slug": "f7-est-ce-que-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was ändert sich nach est-ce que an der Wortstellung?",
+					"concept": "Nichts, der Aussagesatz bleibt gleich.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-est-ce-que",
+					"sample_solution": "Nichts, der Aussagesatz bleibt gleich."
+				}
+			]
+		},
+		{
+			"id": "01M803K5WJSZQA8SRC0V9X39QZ",
+			"atom_uri": "urn:zam:atom:01M803K5WJSZQA8SRC0V9X39QZ",
+			"namespace": "zam-academy-franzoesisch-realschule-7",
+			"slug": "f7-questions",
+			"title": "Où est-ce que tu habites ?",
+			"domain": "franzoesisch/klasse-7/echanges",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-questions",
+			"prerequisites": [
+				{
+					"atom_id": "01M803K5WHDD74Z33AKVPHSTG4",
+					"type": "soft",
+					"rationale": "Baut auf der Lektion „Est-ce que tu viens ?“ auf."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-realschule-7",
+					"topic_code": "f7-echanges",
+					"topic_title": "On parle ensemble"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-grammatik",
+					"topic_title": "Grammatik",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-sprechen",
+					"topic_title": "Sprechen",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M803K5ZJPXZPW49A2G5TNKM4",
+					"slug": "f7-questions-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welches Fragewort fragt nach dem Grund?",
+					"concept": "pourquoi",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-questions",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"pourquoi",
+							"comment"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M803K5ZK3Q5Q136MPG8X10YV",
+					"slug": "f7-questions-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Womit antwortest du auf pourquoi?",
+					"concept": "parce que …",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-questions",
+					"sample_solution": "parce que …"
+				},
+				{
+					"id": "01M803K5ZM1J5GZK4Q1C9YR4C8",
+					"slug": "f7-questions-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie fragst du „Um wie viel Uhr kommst du an?“ mit est-ce que?",
+					"concept": "À quelle heure est-ce que tu arrives ?",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-questions",
+					"sample_solution": "À quelle heure est-ce que tu arrives ?"
+				}
+			]
+		},
+		{
+			"id": "01M803K5WKTQFK0PR9MPNA9CYQ",
+			"atom_uri": "urn:zam:atom:01M803K5WKTQFK0PR9MPNA9CYQ",
+			"namespace": "zam-academy-franzoesisch-realschule-7",
+			"slug": "f7-avec-qui",
+			"title": "Avec qui ? De quoi ?",
+			"domain": "franzoesisch/klasse-7/echanges",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-avec-qui",
+			"prerequisites": [
+				{
+					"atom_id": "01M803K5WJSZQA8SRC0V9X39QZ",
+					"type": "soft",
+					"rationale": "Baut auf der Lektion „Où est-ce que tu habites ?“ auf."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-realschule-7",
+					"topic_code": "f7-echanges",
+					"topic_title": "On parle ensemble"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-grammatik",
+					"topic_title": "Grammatik",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-sprechen",
+					"topic_title": "Sprechen",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M803K5ZNYNMR12Y2FCNFJG6P",
+					"slug": "f7-avec-qui-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "„Wem gehört das?“ heißt …",
+					"concept": "C’est à qui ?",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-avec-qui",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"C’est à qui ?",
+							"C’est qui ?"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M803K5ZP8D6S29MEAX8Y1YV1",
+					"slug": "f7-avec-qui-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "„Mit wem gehst du ins Kino?“ (Frage am Ende)",
+					"concept": "Tu vas au cinéma avec qui ?",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-avec-qui",
+					"sample_solution": "Tu vas au cinéma avec qui ?"
+				},
+				{
+					"id": "01M803K5ZQ4WYCFH9HN9B0NXVV",
+					"slug": "f7-avec-qui-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wann steht qui, wann quoi nach einer Präposition?",
+					"concept": "qui bei Personen, quoi bei Sachen",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-avec-qui",
+					"sample_solution": "qui bei Personen, quoi bei Sachen"
+				}
+			]
+		},
+		{
+			"id": "01M803K5WMZW3CFWRSDN393F8K",
+			"atom_uri": "urn:zam:atom:01M803K5WMZW3CFWRSDN393F8K",
+			"namespace": "zam-academy-franzoesisch-realschule-7",
+			"slug": "f7-imperatif",
+			"title": "Regarde ! Ne parle pas !",
+			"domain": "franzoesisch/klasse-7/echanges",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-imperatif",
+			"prerequisites": [
+				{
+					"atom_id": "01M803K5W96ZKW1DRGC3JJ25KY",
+					"type": "soft",
+					"rationale": "Baut auf der Lektion „Je parle, nous parlons“ auf."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-realschule-7",
+					"topic_code": "f7-echanges",
+					"topic_title": "On parle ensemble"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-grammatik",
+					"topic_title": "Grammatik",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-sprechen",
+					"topic_title": "Sprechen",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M803K5ZRQ1DH47FTX2FYXDFV",
+					"slug": "f7-imperatif-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "„Hör zu!“ zu einem Freund heißt …",
+					"concept": "Écoute !",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-imperatif",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Écoute !",
+							"Écoutes !"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M803K5ZS31SSHVVPP92NAN9T",
+					"slug": "f7-imperatif-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "„Sprecht nicht!“ heißt …",
+					"concept": "Ne parlez pas !",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-imperatif",
+					"sample_solution": "Ne parlez pas !"
+				},
+				{
+					"id": "01M803K5ZTHMSKB3VR35KGBN9N",
+					"slug": "f7-imperatif-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "„Lasst uns arbeiten!“ heißt …",
+					"concept": "Travaillons !",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-imperatif",
+					"sample_solution": "Travaillons !"
+				}
+			]
+		},
+		{
+			"id": "01M803K5WNGAA07NZZAGZTVMPC",
+			"atom_uri": "urn:zam:atom:01M803K5WNGAA07NZZAGZTVMPC",
+			"namespace": "zam-academy-franzoesisch-realschule-7",
+			"slug": "f7-me-te",
+			"title": "Tu m’aides ?",
+			"domain": "franzoesisch/klasse-7/echanges",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-me-te",
+			"prerequisites": [
+				{
+					"atom_id": "01M803K5W80BME2WR5TD95Z7V9",
+					"type": "soft",
+					"rationale": "Baut auf der Lektion „Il, elle, on“ auf."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-realschule-7",
+					"topic_code": "f7-echanges",
+					"topic_title": "On parle ensemble"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-grammatik",
+					"topic_title": "Grammatik",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-sprechen",
+					"topic_title": "Sprechen",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M803K5ZVSPMXNK37TSB497DT",
+					"slug": "f7-me-te-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "„Er hört mir nicht zu“ heißt …",
+					"concept": "Il ne m’écoute pas.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-me-te",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Il ne m’écoute pas.",
+							"Il ne écoute pas me."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M803K5ZW0BYJFR1M4VK3901D",
+					"slug": "f7-me-te-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "„Ich lade dich ein“ heißt …",
+					"concept": "Je t’invite.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-me-te",
+					"sample_solution": "Je t’invite."
+				},
+				{
+					"id": "01M803K5ZXF7HN3WJA2FF76KYT",
+					"slug": "f7-me-te-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "„Hilfst du mir?“ heißt …",
+					"concept": "Tu m’aides ?",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-me-te",
+					"sample_solution": "Tu m’aides ?"
+				}
+			]
+		},
+		{
+			"id": "01M803K5WP2GRZY1TT06G744FW",
+			"atom_uri": "urn:zam:atom:01M803K5WP2GRZY1TT06G744FW",
+			"namespace": "zam-academy-franzoesisch-realschule-7",
+			"slug": "f7-toniques",
+			"title": "Avec moi, chez toi",
+			"domain": "franzoesisch/klasse-7/echanges",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-toniques",
+			"prerequisites": [
+				{
+					"atom_id": "01M803K5W80BME2WR5TD95Z7V9",
+					"type": "soft",
+					"rationale": "Baut auf der Lektion „Il, elle, on“ auf."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-realschule-7",
+					"topic_code": "f7-echanges",
+					"topic_title": "On parle ensemble"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-wortschatz",
+					"topic_title": "Wortschatz",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-grammatik",
+					"topic_title": "Grammatik",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-sprechen",
+					"topic_title": "Sprechen",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M803K5ZYJH6KS546BFKPW9H4",
+					"slug": "f7-toniques-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "„Kommst du mit uns?“ heißt …",
+					"concept": "Tu viens avec nous ?",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-toniques",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Tu viens avec nous ?",
+							"Tu viens avec on ?"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M803K5ZZG92A4AKZMHW51MYB",
+					"slug": "f7-toniques-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "„Ich bleibe zu Hause“ (mit chez) heißt …",
+					"concept": "Je reste chez moi.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-toniques",
+					"sample_solution": "Je reste chez moi."
+				},
+				{
+					"id": "01M803K6006EW6W9XMT83XEFR6",
+					"slug": "f7-toniques-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie heißt das betonte Pronomen für „sie“ (mehrere Jungen)?",
+					"concept": "eux",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-toniques",
+					"sample_solution": "eux"
+				}
+			]
+		},
+		{
+			"id": "01M803K5WQ18PMBJE2P79Q7JT9",
+			"atom_uri": "urn:zam:atom:01M803K5WQ18PMBJE2P79Q7JT9",
+			"namespace": "zam-academy-franzoesisch-realschule-7",
+			"slug": "f7-heure",
+			"title": "Il est quelle heure ?",
+			"domain": "franzoesisch/klasse-7/journee",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-heure",
+			"prerequisites": [
+				{
+					"atom_id": "01M803K5W2DQ08KZFB7BBTYGEM",
+					"type": "soft",
+					"rationale": "Baut auf der Lektion „De zéro à cent“ auf."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-realschule-7",
+					"topic_code": "f7-journee",
+					"topic_title": "Ma journée, mon collège"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-wortschatz",
+					"topic_title": "Wortschatz",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-hoeren",
+					"topic_title": "Hör- und Hörsehverstehen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-sprechen",
+					"topic_title": "Sprechen",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M803K601D042V8D9ZD3M9NKV",
+					"slug": "f7-heure-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "15:30 im Alltag heißt …",
+					"concept": "trois heures et demie",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-heure",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"trois heures et demie",
+							"quatre heures et demie"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M803K6020JDZJ6FKM07NHGP8",
+					"slug": "f7-heure-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "8:45 im Alltag heißt …",
+					"concept": "neuf heures moins le quart",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-heure",
+					"sample_solution": "neuf heures moins le quart"
+				},
+				{
+					"id": "01M803K603EMTTR9VKSBMDKXK5",
+					"slug": "f7-heure-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie heißt 12 Uhr mittags?",
+					"concept": "midi",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-heure",
+					"sample_solution": "midi"
+				}
+			]
+		},
+		{
+			"id": "01M803K5WRPQGM9WCYSQDFQ9D8",
+			"atom_uri": "urn:zam:atom:01M803K5WRPQGM9WCYSQDFQ9D8",
+			"namespace": "zam-academy-franzoesisch-realschule-7",
+			"slug": "f7-date",
+			"title": "Le premier juin",
+			"domain": "franzoesisch/klasse-7/journee",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-date",
+			"prerequisites": [
+				{
+					"atom_id": "01M803K5W2DQ08KZFB7BBTYGEM",
+					"type": "soft",
+					"rationale": "Baut auf der Lektion „De zéro à cent“ auf."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-realschule-7",
+					"topic_code": "f7-journee",
+					"topic_title": "Ma journée, mon collège"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-wortschatz",
+					"topic_title": "Wortschatz",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-sprechen",
+					"topic_title": "Sprechen",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M803K604R1M6PGC9VTE0MGYQ",
+					"slug": "f7-date-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "„am 1. Mai“ heißt …",
+					"concept": "le premier mai",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-date",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"le premier mai",
+							"le un mai"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M803K605732BKKKMCNMR9CYM",
+					"slug": "f7-date-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was bedeutet „le samedi“ im Unterschied zu „samedi“?",
+					"concept": "samstags, jeden Samstag",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-date",
+					"sample_solution": "samstags, jeden Samstag"
+				},
+				{
+					"id": "01M803K606703DDM6VNS2VXQC4",
+					"slug": "f7-date-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie heißt die Ordnungszahl zu neuf?",
+					"concept": "neuvième",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-date",
+					"sample_solution": "neuvième"
+				}
+			]
+		},
+		{
+			"id": "01M803K5WSAR9B1BHZQRFG3FT0",
+			"atom_uri": "urn:zam:atom:01M803K5WSAR9B1BHZQRFG3FT0",
+			"namespace": "zam-academy-franzoesisch-realschule-7",
+			"slug": "f7-college",
+			"title": "Au collège",
+			"domain": "franzoesisch/klasse-7/journee",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-college",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-realschule-7",
+					"topic_code": "f7-journee",
+					"topic_title": "Ma journée, mon collège"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-wortschatz",
+					"topic_title": "Wortschatz",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-sprechen",
+					"topic_title": "Sprechen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb2",
+					"topic_title": "Interkulturelle Kompetenzen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M803K607FZYPN6W4FCC05MMR",
+					"slug": "f7-college-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "In welcher Klasse des collège ist man meist mit zwölf Jahren?",
+					"concept": "en cinquième",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-college",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"en cinquième",
+							"en septième"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M803K608TA6GQFEZXQCM33WS",
+					"slug": "f7-college-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie heißt die Schulbibliothek im collège?",
+					"concept": "le CDI",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-college",
+					"sample_solution": "le CDI"
+				},
+				{
+					"id": "01M803K609DBFN53EA1Y4KSRCF",
+					"slug": "f7-college-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wo essen viele französische Schüler mittags?",
+					"concept": "à la cantine",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-college",
+					"sample_solution": "à la cantine"
+				}
+			]
+		},
+		{
+			"id": "01M803K5WTT36DC1X9PDXQT92A",
+			"atom_uri": "urn:zam:atom:01M803K5WTT36DC1X9PDXQT92A",
+			"namespace": "zam-academy-franzoesisch-realschule-7",
+			"slug": "f7-journee",
+			"title": "D’abord, ensuite, après",
+			"domain": "franzoesisch/klasse-7/journee",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-journee",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-realschule-7",
+					"topic_code": "f7-journee",
+					"topic_title": "Ma journée, mon collège"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-wortschatz",
+					"topic_title": "Wortschatz",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-sprechen",
+					"topic_title": "Sprechen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-schreiben",
+					"topic_title": "Schreiben",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M803K60A9XQ2V7HY5D5WF693",
+					"slug": "f7-journee-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welches Wort drückt eine Folge aus: „Il est fatigué, ___ il dort.“",
+					"concept": "alors",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-journee",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"alors",
+							"mais"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M803K60B64EBSRHS2DESN7Y3",
+					"slug": "f7-journee-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie heißt „zuerst“ beim Erzählen?",
+					"concept": "d’abord",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-journee",
+					"sample_solution": "d’abord"
+				},
+				{
+					"id": "01M803K60CRX61370BJ8A2ZZZR",
+					"slug": "f7-journee-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was folgt auf parce que?",
+					"concept": "ein ganzer Satz mit Subjekt und Verb",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-journee",
+					"sample_solution": "ein ganzer Satz mit Subjekt und Verb"
+				}
+			]
+		},
+		{
+			"id": "01M803K5WV99FB6RX2EKFRGYJQ",
+			"atom_uri": "urn:zam:atom:01M803K5WV99FB6RX2EKFRGYJQ",
+			"namespace": "zam-academy-franzoesisch-realschule-7",
+			"slug": "f7-j-aime",
+			"title": "J’adore le foot !",
+			"domain": "franzoesisch/klasse-7/journee",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-j-aime",
+			"prerequisites": [
+				{
+					"atom_id": "01M803K5W3J4PJDS4Y1CFAQ71V",
+					"type": "soft",
+					"rationale": "Baut auf der Lektion „Un chat, le chat“ auf."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-realschule-7",
+					"topic_code": "f7-journee",
+					"topic_title": "Ma journée, mon collège"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-wortschatz",
+					"topic_title": "Wortschatz",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-sprechen",
+					"topic_title": "Sprechen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-schreiben",
+					"topic_title": "Schreiben",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M803K60DRCRM58KJP08FTH1G",
+					"slug": "f7-j-aime-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "„Ich liebe Schokolade“ heißt …",
+					"concept": "J’adore le chocolat.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-j-aime",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"J’adore le chocolat.",
+							"J’adore chocolat."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M803K60EGKSGNHP35KRVKZXK",
+					"slug": "f7-j-aime-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "„Ich tanze nicht gern“ heißt …",
+					"concept": "Je n’aime pas danser.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-j-aime",
+					"sample_solution": "Je n’aime pas danser."
+				},
+				{
+					"id": "01M803K60FD3T7XM2RTSADQDTA",
+					"slug": "f7-j-aime-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was folgt auf aimer, adorer, détester außer einem Infinitiv?",
+					"concept": "ein Nomen mit bestimmtem Artikel",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-j-aime",
+					"sample_solution": "ein Nomen mit bestimmtem Artikel"
+				}
+			]
+		},
+		{
+			"id": "01M803K5WW455W0HCTFPFZQQ5Q",
+			"atom_uri": "urn:zam:atom:01M803K5WW455W0HCTFPFZQQ5Q",
+			"namespace": "zam-academy-franzoesisch-realschule-7",
+			"slug": "f7-loisirs",
+			"title": "Je joue au foot",
+			"domain": "franzoesisch/klasse-7/journee",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-loisirs",
+			"prerequisites": [
+				{
+					"atom_id": "01M803K5WZCMY9G78GJ9AG94HM",
+					"type": "soft",
+					"rationale": "Baut auf der Lektion „Je vais au parc“ auf."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-realschule-7",
+					"topic_code": "f7-journee",
+					"topic_title": "Ma journée, mon collège"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-wortschatz",
+					"topic_title": "Wortschatz",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-grammatik",
+					"topic_title": "Grammatik",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-sprechen",
+					"topic_title": "Sprechen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb2",
+					"topic_title": "Interkulturelle Kompetenzen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M803K60G4VVPCMW08V8QVGWB",
+					"slug": "f7-loisirs-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "„Ich spiele Basketball“ heißt …",
+					"concept": "Je joue au basket.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-loisirs",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Je joue au basket.",
+							"Je joue le basket."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M803K60HA4P1Z8DSQ8YQ3DRA",
+					"slug": "f7-loisirs-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "„Sie spielt Gitarre“ heißt …",
+					"concept": "Elle joue de la guitare.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-loisirs",
+					"sample_solution": "Elle joue de la guitare."
+				},
+				{
+					"id": "01M803K60J30HZT83EPX4AQAWF",
+					"slug": "f7-loisirs-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "„Ich fahre Rad“ (mit faire) heißt …",
+					"concept": "Je fais du vélo.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-loisirs",
+					"sample_solution": "Je fais du vélo."
+				}
+			]
+		},
+		{
+			"id": "01M803K5WX9624WNS1463VYMJ2",
+			"atom_uri": "urn:zam:atom:01M803K5WX9624WNS1463VYMJ2",
+			"namespace": "zam-academy-franzoesisch-realschule-7",
+			"slug": "f7-futur",
+			"title": "Demain, je vais jouer",
+			"domain": "franzoesisch/klasse-7/journee",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-futur",
+			"prerequisites": [
+				{
+					"atom_id": "01M803K5WBVZ94P5Z0EN6PHZP3",
+					"type": "soft",
+					"rationale": "Baut auf der Lektion „Je vais, je fais“ auf."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-realschule-7",
+					"topic_code": "f7-journee",
+					"topic_title": "Ma journée, mon collège"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-grammatik",
+					"topic_title": "Grammatik",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-sprechen",
+					"topic_title": "Sprechen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-schreiben",
+					"topic_title": "Schreiben",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M803K60KH1H45BSXJT7CH4G2",
+					"slug": "f7-futur-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "„Wir werden morgen schwimmen“ (futur composé) heißt …",
+					"concept": "Demain, nous allons nager.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-futur",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Demain, nous allons nager.",
+							"Demain, nous allons nageons."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M803K60MHN1WTF4MJEF4Y414",
+					"slug": "f7-futur-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie bildest du das futur composé?",
+					"concept": "aller im Präsens + Infinitiv",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-futur",
+					"sample_solution": "aller im Präsens + Infinitiv"
+				},
+				{
+					"id": "01M803K60NKG8VPJYMNPEVXGM6",
+					"slug": "f7-futur-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Verneine: Je vais jouer.",
+					"concept": "Je ne vais pas jouer.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-futur",
+					"sample_solution": "Je ne vais pas jouer."
+				}
+			]
+		},
+		{
+			"id": "01M803K5WYFF5AXJ3QZMVDF7BB",
+			"atom_uri": "urn:zam:atom:01M803K5WYFF5AXJ3QZMVDF7BB",
+			"namespace": "zam-academy-franzoesisch-realschule-7",
+			"slug": "f7-maison",
+			"title": "Le chat est sous la table",
+			"domain": "franzoesisch/klasse-7/ville",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-maison",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-realschule-7",
+					"topic_code": "f7-ville",
+					"topic_title": "Chez moi, en ville"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-wortschatz",
+					"topic_title": "Wortschatz",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-sprechen",
+					"topic_title": "Sprechen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M803K60PBNHBJ8NNQJ6RTCF8",
+					"slug": "f7-maison-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "„Die Katze ist unter dem Tisch“ heißt …",
+					"concept": "Le chat est sous la table.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-maison",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Le chat est sous la table.",
+							"Le chat est sur la table."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M803K60QHGB9CHJSR2WA5E5H",
+					"slug": "f7-maison-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie heißt „hinter“ auf Französisch?",
+					"concept": "derrière",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-maison",
+					"sample_solution": "derrière"
+				},
+				{
+					"id": "01M803K60RGBH2JHWFZ1YQJPWK",
+					"slug": "f7-maison-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "„bei Léa (zu Hause)“ heißt …",
+					"concept": "chez Léa",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-maison",
+					"sample_solution": "chez Léa"
+				}
+			]
+		},
+		{
+			"id": "01M803K5WZCMY9G78GJ9AG94HM",
+			"atom_uri": "urn:zam:atom:01M803K5WZCMY9G78GJ9AG94HM",
+			"namespace": "zam-academy-franzoesisch-realschule-7",
+			"slug": "f7-au-du",
+			"title": "Je vais au parc",
+			"domain": "franzoesisch/klasse-7/ville",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-au-du",
+			"prerequisites": [
+				{
+					"atom_id": "01M803K5W3J4PJDS4Y1CFAQ71V",
+					"type": "soft",
+					"rationale": "Baut auf der Lektion „Un chat, le chat“ auf."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-realschule-7",
+					"topic_code": "f7-ville",
+					"topic_title": "Chez moi, en ville"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-grammatik",
+					"topic_title": "Grammatik",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-wortschatz",
+					"topic_title": "Wortschatz",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M803K60S3NS3KK0PDMAQCS31",
+					"slug": "f7-au-du-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "„Ich gehe ins Kino“ heißt …",
+					"concept": "Je vais au cinéma.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-au-du",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Je vais au cinéma.",
+							"Je vais à le cinéma."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M803K60TT1GRDDEN2Q5X4RS8",
+					"slug": "f7-au-du-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was ergibt à + les?",
+					"concept": "aux",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-au-du",
+					"sample_solution": "aux"
+				},
+				{
+					"id": "01M803K60VD1DRTSPDJVEAYBFD",
+					"slug": "f7-au-du-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was ergibt de + le?",
+					"concept": "du",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-au-du",
+					"sample_solution": "du"
+				}
+			]
+		},
+		{
+			"id": "01M803K5X0J86V2ME1YCZ7G1ZN",
+			"atom_uri": "urn:zam:atom:01M803K5X0J86V2ME1YCZ7G1ZN",
+			"namespace": "zam-academy-franzoesisch-realschule-7",
+			"slug": "f7-transports",
+			"title": "En bus ou à vélo ?",
+			"domain": "franzoesisch/klasse-7/ville",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-transports",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-realschule-7",
+					"topic_code": "f7-ville",
+					"topic_title": "Chez moi, en ville"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-wortschatz",
+					"topic_title": "Wortschatz",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-sprechen",
+					"topic_title": "Sprechen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M803K60W8T1G802WB3GFS210",
+					"slug": "f7-transports-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "„Ich fahre mit dem Fahrrad zur Schule“ heißt …",
+					"concept": "Je vais à l’école à vélo.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-transports",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Je vais à l’école à vélo.",
+							"Je vais à l’école avec vélo."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M803K60XZX39KBHGE3K7D70X",
+					"slug": "f7-transports-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "„mit dem Zug“ heißt …",
+					"concept": "en train",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-transports",
+					"sample_solution": "en train"
+				},
+				{
+					"id": "01M803K60YD2K7S1F7FAS0Z5KP",
+					"slug": "f7-transports-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "„zu Fuß“ heißt …",
+					"concept": "à pied",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-transports",
+					"sample_solution": "à pied"
+				}
+			]
+		},
+		{
+			"id": "01M803K5X11XB1P0KEYDFBRW9B",
+			"atom_uri": "urn:zam:atom:01M803K5X11XB1P0KEYDFBRW9B",
+			"namespace": "zam-academy-franzoesisch-realschule-7",
+			"slug": "f7-quantites",
+			"title": "Un kilo de pommes",
+			"domain": "franzoesisch/klasse-7/ville",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-quantites",
+			"prerequisites": [
+				{
+					"atom_id": "01M803K5W3J4PJDS4Y1CFAQ71V",
+					"type": "soft",
+					"rationale": "Baut auf der Lektion „Un chat, le chat“ auf."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-realschule-7",
+					"topic_code": "f7-ville",
+					"topic_title": "Chez moi, en ville"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-grammatik",
+					"topic_title": "Grammatik",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-wortschatz",
+					"topic_title": "Wortschatz",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M803K60ZN7VKRKJ91MYH5TEA",
+					"slug": "f7-quantites-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "„eine Flasche Wasser“ heißt …",
+					"concept": "une bouteille d’eau",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-quantites",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"une bouteille d’eau",
+							"une bouteille de l’eau"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M803K6104N6A0CXMP30HXV8X",
+					"slug": "f7-quantites-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "„ein Kilo Äpfel“ heißt …",
+					"concept": "un kilo de pommes",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-quantites",
+					"sample_solution": "un kilo de pommes"
+				},
+				{
+					"id": "01M803K611VT9SKSH9MZP3Q171",
+					"slug": "f7-quantites-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "„viele Freunde“ heißt …",
+					"concept": "beaucoup d’amis",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-quantites",
+					"sample_solution": "beaucoup d’amis"
+				}
+			]
+		},
+		{
+			"id": "01M803K5X20N49A1GW9S4V12CR",
+			"atom_uri": "urn:zam:atom:01M803K5X20N49A1GW9S4V12CR",
+			"namespace": "zam-academy-franzoesisch-realschule-7",
+			"slug": "f7-courses",
+			"title": "Ça fait combien ?",
+			"domain": "franzoesisch/klasse-7/ville",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-courses",
+			"prerequisites": [
+				{
+					"atom_id": "01M803K5W2DQ08KZFB7BBTYGEM",
+					"type": "soft",
+					"rationale": "Baut auf der Lektion „De zéro à cent“ auf."
+				},
+				{
+					"atom_id": "01M803K5X11XB1P0KEYDFBRW9B",
+					"type": "soft",
+					"rationale": "Baut auf der Lektion „Un kilo de pommes“ auf."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-realschule-7",
+					"topic_code": "f7-ville",
+					"topic_title": "Chez moi, en ville"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-hoeren",
+					"topic_title": "Hör- und Hörsehverstehen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-sprachmittlung",
+					"topic_title": "Sprachmittlung",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-sprechen",
+					"topic_title": "Sprechen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-wortschatz",
+					"topic_title": "Wortschatz",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb2",
+					"topic_title": "Interkulturelle Kompetenzen",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M803K612BQ3YAFR2SMWJDFWC",
+					"slug": "f7-courses-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie fragst du beim Bezahlen nach dem Preis?",
+					"concept": "Ça fait combien ?",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-courses",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Ça fait combien ?",
+							"Ça fait comment ?"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M803K613J69ZARRRVBSYGE8Y",
+					"slug": "f7-courses-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie heißt 2,50 € auf Französisch?",
+					"concept": "deux euros cinquante",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-courses",
+					"sample_solution": "deux euros cinquante"
+				},
+				{
+					"id": "01M803K614WQ9K301KQ02QJR4X",
+					"slug": "f7-courses-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was fragt die Verkäuferin mit „Vous désirez ?“",
+					"concept": "Was wünschen Sie?",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-courses",
+					"sample_solution": "Was wünschen Sie?"
+				}
+			]
+		},
+		{
+			"id": "01M803K5X34W5M1M4EHC41P9RA",
+			"atom_uri": "urn:zam:atom:01M803K5X34W5M1M4EHC41P9RA",
+			"namespace": "zam-academy-franzoesisch-realschule-7",
+			"slug": "f7-chemin",
+			"title": "Pardon, la gare ?",
+			"domain": "franzoesisch/klasse-7/ville",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-chemin",
+			"prerequisites": [
+				{
+					"atom_id": "01M803K5WYFF5AXJ3QZMVDF7BB",
+					"type": "soft",
+					"rationale": "Baut auf der Lektion „Le chat est sous la table“ auf."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-realschule-7",
+					"topic_code": "f7-ville",
+					"topic_title": "Chez moi, en ville"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-sprachmittlung",
+					"topic_title": "Sprachmittlung",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-sprechen",
+					"topic_title": "Sprechen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-wortschatz",
+					"topic_title": "Wortschatz",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M803K61578ENP2N6853E23FX",
+					"slug": "f7-chemin-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "„tout droit“ bedeutet …",
+					"concept": "geradeaus",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-chemin",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"geradeaus",
+							"rechts"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M803K616XH6Z4DM42F6W03CA",
+					"slug": "f7-chemin-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie heißt „links“ auf Französisch?",
+					"concept": "à gauche",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-chemin",
+					"sample_solution": "à gauche"
+				},
+				{
+					"id": "01M803K617086YKXEJ5HJ1SJZF",
+					"slug": "f7-chemin-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie bittest du darum, langsamer zu wiederholen?",
+					"concept": "Vous pouvez répéter plus lentement, s’il vous plaît ?",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-chemin",
+					"sample_solution": "Vous pouvez répéter plus lentement, s’il vous plaît ?"
+				}
+			]
+		},
+		{
+			"id": "01M803K5X4GS3FQ5D4PRBHEVG1",
+			"atom_uri": "urn:zam:atom:01M803K5X4GS3FQ5D4PRBHEVG1",
+			"namespace": "zam-academy-franzoesisch-realschule-7",
+			"slug": "f7-carte",
+			"title": "La France sur la carte",
+			"domain": "franzoesisch/klasse-7/france",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-carte",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-realschule-7",
+					"topic_code": "f7-france",
+					"topic_title": "Bienvenue en France"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb2",
+					"topic_title": "Interkulturelle Kompetenzen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M803K618Y13FB23Q41303BQ9",
+					"slug": "f7-carte-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "An welchem Fluss liegt Paris?",
+					"concept": "an der Seine",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-carte",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"an der Seine",
+							"an der Loire"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M803K619F6C7WP5B7RTFCJ77",
+					"slug": "f7-carte-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welches Gebirge liegt an der Grenze zu Spanien?",
+					"concept": "die Pyrenäen (les Pyrénées)",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-carte",
+					"sample_solution": "die Pyrenäen (les Pyrénées)"
+				},
+				{
+					"id": "01M803K61AVBCYKYAYGVY55E2D",
+					"slug": "f7-carte-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "An welchem Meer liegt Marseille?",
+					"concept": "am Mittelmeer (la Méditerranée)",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-carte",
+					"sample_solution": "am Mittelmeer (la Méditerranée)"
+				}
+			]
+		},
+		{
+			"id": "01M803K5X5SGR39SDC8KF47NTS",
+			"atom_uri": "urn:zam:atom:01M803K5X5SGR39SDC8KF47NTS",
+			"namespace": "zam-academy-franzoesisch-realschule-7",
+			"slug": "f7-paris",
+			"title": "Une journée à Paris",
+			"domain": "franzoesisch/klasse-7/france",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-paris",
+			"prerequisites": [
+				{
+					"atom_id": "01M803K5X4GS3FQ5D4PRBHEVG1",
+					"type": "soft",
+					"rationale": "Baut auf der Lektion „La France sur la carte“ auf."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-realschule-7",
+					"topic_code": "f7-france",
+					"topic_title": "Bienvenue en France"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb2",
+					"topic_title": "Interkulturelle Kompetenzen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-lesen",
+					"topic_title": "Leseverstehen",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M803K61BQKE1TFERSGGPZTCJ",
+					"slug": "f7-paris-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welcher Pariser Ort ist ein Kunstmuseum mit Glaspyramide?",
+					"concept": "le Louvre",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-paris",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"le Louvre",
+							"la tour Eiffel"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M803K61CHVFK8SQW8604XDPE",
+					"slug": "f7-paris-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Auf welcher Insel steht Notre-Dame?",
+					"concept": "auf der Île de la Cité",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-paris",
+					"sample_solution": "auf der Île de la Cité"
+				},
+				{
+					"id": "01M803K61DP8KY2QQGS1SJ9KBM",
+					"slug": "f7-paris-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie heißt die Pariser U-Bahn?",
+					"concept": "le métro",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-paris",
+					"sample_solution": "le métro"
+				}
+			]
+		},
+		{
+			"id": "01M803K5X69S68GE828188G5MW",
+			"atom_uri": "urn:zam:atom:01M803K5X69S68GE828188G5MW",
+			"namespace": "zam-academy-franzoesisch-realschule-7",
+			"slug": "f7-bretagne",
+			"title": "Bienvenue en Bretagne",
+			"domain": "franzoesisch/klasse-7/france",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-bretagne",
+			"prerequisites": [
+				{
+					"atom_id": "01M803K5X4GS3FQ5D4PRBHEVG1",
+					"type": "soft",
+					"rationale": "Baut auf der Lektion „La France sur la carte“ auf."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-realschule-7",
+					"topic_code": "f7-france",
+					"topic_title": "Bienvenue en France"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb2",
+					"topic_title": "Interkulturelle Kompetenzen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-lesen",
+					"topic_title": "Leseverstehen",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M803K61ES11VWHX1DK4221GD",
+					"slug": "f7-bretagne-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wo liegt die Bretagne?",
+					"concept": "im Westen Frankreichs",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-bretagne",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"im Westen Frankreichs",
+							"im Osten Frankreichs"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M803K61FDZFZ4BXX3PMYV61T",
+					"slug": "f7-bretagne-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was ist eine galette in der Bretagne?",
+					"concept": "ein herzhafter Pfannkuchen (meist aus Buchweizen)",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-bretagne",
+					"sample_solution": "ein herzhafter Pfannkuchen (meist aus Buchweizen)"
+				},
+				{
+					"id": "01M803K61GMDANH619HV395K0T",
+					"slug": "f7-bretagne-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie heißt die eigene Sprache der Bretagne?",
+					"concept": "le breton",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-bretagne",
+					"sample_solution": "le breton"
+				}
+			]
+		},
+		{
+			"id": "01M803K5X7BKNEGPBWMVRZXNZK",
+			"atom_uri": "urn:zam:atom:01M803K5X7BKNEGPBWMVRZXNZK",
+			"namespace": "zam-academy-franzoesisch-realschule-7",
+			"slug": "f7-anniversaire",
+			"title": "Joyeux anniversaire !",
+			"domain": "franzoesisch/klasse-7/france",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-anniversaire",
+			"prerequisites": [
+				{
+					"atom_id": "01M803K5WRPQGM9WCYSQDFQ9D8",
+					"type": "soft",
+					"rationale": "Baut auf der Lektion „Le premier juin“ auf."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-realschule-7",
+					"topic_code": "f7-france",
+					"topic_title": "Bienvenue en France"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-schreiben",
+					"topic_title": "Schreiben",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-sprachmittlung",
+					"topic_title": "Sprachmittlung",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb2",
+					"topic_title": "Interkulturelle Kompetenzen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb3",
+					"topic_title": "Text- und Medienkompetenzen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M803K61HGMP4XJ1YC94B87XT",
+					"slug": "f7-anniversaire-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche Anrede passt für deinen Freund Hugo?",
+					"concept": "Cher Hugo,",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-anniversaire",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Cher Hugo,",
+							"Chère Hugo,"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M803K61JH2F92F6AMPT42X3D",
+					"slug": "f7-anniversaire-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie gratulierst du zum Geburtstag?",
+					"concept": "Joyeux anniversaire !",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-anniversaire",
+					"sample_solution": "Joyeux anniversaire !"
+				},
+				{
+					"id": "01M803K61KF73B16RKSX8582EK",
+					"slug": "f7-anniversaire-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche drei Angaben braucht eine Einladung?",
+					"concept": "was, wann und wo",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-anniversaire",
+					"sample_solution": "was, wann und wo"
+				}
+			]
+		},
+		{
+			"id": "01M803K5X873YDH3B3W8RF1VSH",
+			"atom_uri": "urn:zam:atom:01M803K5X873YDH3B3W8RF1VSH",
+			"namespace": "zam-academy-franzoesisch-realschule-7",
+			"slug": "f7-fetes",
+			"title": "Noël et le 14 juillet",
+			"domain": "franzoesisch/klasse-7/france",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-fetes",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-realschule-7",
+					"topic_code": "f7-france",
+					"topic_title": "Bienvenue en France"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb2",
+					"topic_title": "Interkulturelle Kompetenzen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-wortschatz",
+					"topic_title": "Wortschatz",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M803K61MRAE2Q3E8H36JYBKD",
+					"slug": "f7-fetes-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wann ist der französische Nationalfeiertag?",
+					"concept": "le 14 juillet",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-fetes",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"le 14 juillet",
+							"le 1er mai"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M803K61NMEX5M7W85EVCP1GA",
+					"slug": "f7-fetes-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was passiert, wenn du die fève in der galette des rois findest?",
+					"concept": "Du bist König oder Königin.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-fetes",
+					"sample_solution": "Du bist König oder Königin."
+				},
+				{
+					"id": "01M803K61PR4ZXBCAMKE8NA15G",
+					"slug": "f7-fetes-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie wünschst du frohe Weihnachten?",
+					"concept": "Joyeux Noël !",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-fetes",
+					"sample_solution": "Joyeux Noël !"
+				}
+			]
+		},
+		{
+			"id": "01M803K5X9HE31E65N3XT6JHXB",
+			"atom_uri": "urn:zam:atom:01M803K5X9HE31E65N3XT6JHXB",
+			"namespace": "zam-academy-franzoesisch-realschule-7",
+			"slug": "f7-ecouter",
+			"title": "Allô, c’est Inès !",
+			"domain": "franzoesisch/klasse-7/outils",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-ecouter",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-realschule-7",
+					"topic_code": "f7-outils",
+					"topic_title": "Lire, écouter, écrire"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-hoeren",
+					"topic_title": "Hör- und Hörsehverstehen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb4",
+					"topic_title": "Methodische Kompetenzen",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M803K61QAW8Y30KDWPNM4VFR",
+					"slug": "f7-ecouter-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Worauf achtest du beim zweiten Hören?",
+					"concept": "auf Schlüsselwörter wie Namen, Zahlen, Tage und Orte",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-ecouter",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"auf Schlüsselwörter wie Namen, Zahlen, Tage und Orte",
+							"auf jedes einzelne Wort"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M803K61R1VE2SY94VPP9ME33",
+					"slug": "f7-ecouter-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was tust du vor dem Hören?",
+					"concept": "die Aufgabe lesen und klären, was ich suche",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-ecouter",
+					"sample_solution": "die Aufgabe lesen und klären, was ich suche"
+				},
+				{
+					"id": "01M803K61S6HCHYWJGMCNC54PQ",
+					"slug": "f7-ecouter-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie notierst du beim Hören?",
+					"concept": "in kurzen Stichworten",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-ecouter",
+					"sample_solution": "in kurzen Stichworten"
+				}
+			]
+		},
+		{
+			"id": "01M803K5XAGFFQTYM4E3VXAZQ5",
+			"atom_uri": "urn:zam:atom:01M803K5XAGFFQTYM4E3VXAZQ5",
+			"namespace": "zam-academy-franzoesisch-realschule-7",
+			"slug": "f7-histoire",
+			"title": "Une histoire en photos",
+			"domain": "franzoesisch/klasse-7/outils",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-histoire",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-realschule-7",
+					"topic_code": "f7-outils",
+					"topic_title": "Lire, écouter, écrire"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-lesen",
+					"topic_title": "Leseverstehen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb3",
+					"topic_title": "Text- und Medienkompetenzen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb4",
+					"topic_title": "Methodische Kompetenzen",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M803K61TQ6F9PWXPHC3RCA6M",
+					"slug": "f7-histoire-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was tust du bei einer Bildergeschichte zuerst?",
+					"concept": "die Bilder ansehen und vermuten",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-histoire",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"die Bilder ansehen und vermuten",
+							"jedes Wort nachschlagen"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M803K61VK66P1JBCYNPRMCNR",
+					"slug": "f7-histoire-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Mit welchem Fragewort fragst du nach dem Ort?",
+					"concept": "Où ?",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-histoire",
+					"sample_solution": "Où ?"
+				},
+				{
+					"id": "01M803K61WB4B5SXZ1MF2Z7ZSA",
+					"slug": "f7-histoire-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Mit welcher Frage fragst du, was passiert?",
+					"concept": "Qu’est-ce qui se passe ?",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-histoire",
+					"sample_solution": "Qu’est-ce qui se passe ?"
+				}
+			]
+		},
+		{
+			"id": "01M803K5XB31H4VZYH3YVEFZDZ",
+			"atom_uri": "urn:zam:atom:01M803K5XB31H4VZYH3YVEFZDZ",
+			"namespace": "zam-academy-franzoesisch-realschule-7",
+			"slug": "f7-affiche",
+			"title": "Une affiche en français",
+			"domain": "franzoesisch/klasse-7/outils",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-affiche",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-realschule-7",
+					"topic_code": "f7-outils",
+					"topic_title": "Lire, écouter, écrire"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-sprachmittlung",
+					"topic_title": "Sprachmittlung",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-lesen",
+					"topic_title": "Leseverstehen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb3",
+					"topic_title": "Text- und Medienkompetenzen",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M803K61XQKC4RKWRFHVP3ZG6",
+					"slug": "f7-affiche-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was bedeutet „entrée gratuite“?",
+					"concept": "Eintritt frei",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-affiche",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Eintritt frei",
+							"Eintritt 1 Euro"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M803K61YSE7RV3N8ZR75XYEM",
+					"slug": "f7-affiche-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was bedeutet „fermé le lundi“?",
+					"concept": "montags geschlossen",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-affiche",
+					"sample_solution": "montags geschlossen"
+				},
+				{
+					"id": "01M803K61ZAKB3BQKZN0XGXTV2",
+					"slug": "f7-affiche-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie gibst du ein Plakat auf Deutsch weiter?",
+					"concept": "sinngemäß, nur das Wichtige, nicht Wort für Wort",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-affiche",
+					"sample_solution": "sinngemäß, nur das Wichtige, nicht Wort für Wort"
+				}
+			]
+		},
+		{
+			"id": "01M803K5XCS2MS5W7ZM0D8GR0H",
+			"atom_uri": "urn:zam:atom:01M803K5XCS2MS5W7ZM0D8GR0H",
+			"namespace": "zam-academy-franzoesisch-realschule-7",
+			"slug": "f7-traduire",
+			"title": "Mot à mot ?",
+			"domain": "franzoesisch/klasse-7/outils",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-traduire",
+			"prerequisites": [
+				{
+					"atom_id": "01M803K5VYZ6TBEK9ZWX1N35WW",
+					"type": "soft",
+					"rationale": "Baut auf der Lektion „Je m’appelle Léa“ auf."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-realschule-7",
+					"topic_code": "f7-outils",
+					"topic_title": "Lire, écouter, écrire"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-sprachmittlung",
+					"topic_title": "Sprachmittlung",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-wortschatz",
+					"topic_title": "Wortschatz",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-grammatik",
+					"topic_title": "Grammatik",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M803K620RWYX8A4H2DWKEVVP",
+					"slug": "f7-traduire-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie übersetzt du „J’ai douze ans“?",
+					"concept": "Ich bin zwölf Jahre alt.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-traduire",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Ich bin zwölf Jahre alt.",
+							"Ich habe zwölf Jahre."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M803K6217Y24Q68FXMTF43TJ",
+					"slug": "f7-traduire-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was ist le collège in Frankreich?",
+					"concept": "die Schule für Elf- bis Fünfzehnjährige (kein College)",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-traduire",
+					"sample_solution": "die Schule für Elf- bis Fünfzehnjährige (kein College)"
+				},
+				{
+					"id": "01M803K622JTAD5D0HZHMMJ6Z6",
+					"slug": "f7-traduire-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie übersetzt du „J’aime le chocolat“?",
+					"concept": "Ich mag Schokolade.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-traduire",
+					"sample_solution": "Ich mag Schokolade."
+				}
+			]
+		},
+		{
+			"id": "01M803K5XDHKJR3BPVG23Y45A9",
+			"atom_uri": "urn:zam:atom:01M803K5XDHKJR3BPVG23Y45A9",
+			"namespace": "zam-academy-franzoesisch-realschule-7",
+			"slug": "f7-deviner",
+			"title": "Je devine les mots",
+			"domain": "franzoesisch/klasse-7/outils",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-deviner",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-realschule-7",
+					"topic_code": "f7-outils",
+					"topic_title": "Lire, écouter, écrire"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-wortschatz",
+					"topic_title": "Wortschatz",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb3",
+					"topic_title": "Text- und Medienkompetenzen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb4",
+					"topic_title": "Methodische Kompetenzen",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M803K623EQGM3NDXRRZ2P6P5",
+					"slug": "f7-deviner-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was bedeutet la cave?",
+					"concept": "der Keller",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-deviner",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"der Keller",
+							"die Höhle"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M803K624FC9T8753KP0ZX1FH",
+					"slug": "f7-deviner-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche Sprache hilft bei „intéressant“?",
+					"concept": "Englisch (interesting)",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-deviner",
+					"sample_solution": "Englisch (interesting)"
+				},
+				{
+					"id": "01M803K625NN4R9X3MFWTK2EWV",
+					"slug": "f7-deviner-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was tust du, wenn deine Vermutung unsicher ist?",
+					"concept": "im Zusammenhang oder im Wörterbuch prüfen",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-deviner",
+					"sample_solution": "im Zusammenhang oder im Wörterbuch prüfen"
+				}
+			]
+		},
+		{
+			"id": "01M803K5XE6HBA0HEWGPYBRER6",
+			"atom_uri": "urn:zam:atom:01M803K5XE6HBA0HEWGPYBRER6",
+			"namespace": "zam-academy-franzoesisch-realschule-7",
+			"slug": "f7-carte-postale",
+			"title": "Une carte postale",
+			"domain": "franzoesisch/klasse-7/outils",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-carte-postale",
+			"prerequisites": [
+				{
+					"atom_id": "01M803K5X7BKNEGPBWMVRZXNZK",
+					"type": "soft",
+					"rationale": "Baut auf der Lektion „Joyeux anniversaire !“ auf."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-realschule-7",
+					"topic_code": "f7-outils",
+					"topic_title": "Lire, écouter, écrire"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-schreiben",
+					"topic_title": "Schreiben",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb3",
+					"topic_title": "Text- und Medienkompetenzen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb4",
+					"topic_title": "Methodische Kompetenzen",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M803K626QE9AA07NKTZJ6K50",
+					"slug": "f7-carte-postale-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welcher Schluss passt zu einer Karte an eine Freundin?",
+					"concept": "À bientôt ! Bisous",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-carte-postale",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"À bientôt ! Bisous",
+							"Bonjour, Madame"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M803K627PC63CWH0ZK8S5808",
+					"slug": "f7-carte-postale-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche Anrede passt für deine Freundin Inès?",
+					"concept": "Chère Inès,",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-carte-postale",
+					"sample_solution": "Chère Inès,"
+				},
+				{
+					"id": "01M803K628SXRG17EAFWVG7QXE",
+					"slug": "f7-carte-postale-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welches Wort verbindet einen Gegensatz?",
+					"concept": "mais",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-carte-postale",
+					"sample_solution": "mais"
+				}
+			]
+		},
+		{
+			"id": "01M803K5XFPGXTRNZNPCYH7V88",
+			"atom_uri": "urn:zam:atom:01M803K5XFPGXTRNZNPCYH7V88",
+			"namespace": "zam-academy-franzoesisch-realschule-7",
+			"slug": "f7-formulaire",
+			"title": "Une fiche d’inscription",
+			"domain": "franzoesisch/klasse-7/outils",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-formulaire",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-realschule-7",
+					"topic_code": "f7-outils",
+					"topic_title": "Lire, écouter, écrire"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-schreiben",
+					"topic_title": "Schreiben",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-wortschatz",
+					"topic_title": "Wortschatz",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M803K6296QXWXRWRCEAVM7V5",
+					"slug": "f7-formulaire-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was trägst du bei „Prénom“ ein?",
+					"concept": "den Vornamen",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-formulaire",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"den Vornamen",
+							"den Familiennamen"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M803K62A8MHES1WV70493GBR",
+					"slug": "f7-formulaire-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie heißt „Postleitzahl“ im Formular?",
+					"concept": "le code postal",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-formulaire",
+					"sample_solution": "le code postal"
+				},
+				{
+					"id": "01M803K62B8C5RJ2WHG6FRYPWG",
+					"slug": "f7-formulaire-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "In welcher Reihenfolge schreibst du das Geburtsdatum?",
+					"concept": "Tag/Monat/Jahr",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-formulaire",
+					"sample_solution": "Tag/Monat/Jahr"
+				}
+			]
+		},
+		{
+			"id": "01M803K5XG43PABHRD94N5GMSD",
+			"atom_uri": "urn:zam:atom:01M803K5XG43PABHRD94N5GMSD",
+			"namespace": "zam-academy-franzoesisch-realschule-7",
+			"slug": "f7-vocabulaire",
+			"title": "Mon fichier de vocabulaire",
+			"domain": "franzoesisch/klasse-7/outils",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-vocabulaire",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-realschule-7",
+					"topic_code": "f7-outils",
+					"topic_title": "Lire, écouter, écrire"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-wortschatz",
+					"topic_title": "Wortschatz",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb4",
+					"topic_title": "Methodische Kompetenzen",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M803K62CY0Q51JHZMHYM4D4P",
+					"slug": "f7-vocabulaire-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was gehört zu einem Nomen auf die Vokabelkarte?",
+					"concept": "der Artikel und ein Beispielsatz",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-vocabulaire",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"der Artikel und ein Beispielsatz",
+							"nur das Wort"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M803K62DRE2CGSZ7HER7YR1G",
+					"slug": "f7-vocabulaire-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was bedeutet „f“ hinter einem Nomen im Wörterbuch?",
+					"concept": "feminin",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-vocabulaire",
+					"sample_solution": "feminin"
+				},
+				{
+					"id": "01M803K62EE2ZZAMM1PBTZBYZ1",
+					"slug": "f7-vocabulaire-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was passiert im Karteikasten mit einer gewussten Karte?",
+					"concept": "Sie wandert ins nächste Fach.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-vocabulaire",
+					"sample_solution": "Sie wandert ins nächste Fach."
+				}
+			]
+		},
+		{
+			"id": "01M803K5XH9M6R53S20272F2WG",
+			"atom_uri": "urn:zam:atom:01M803K5XH9M6R53S20272F2WG",
+			"namespace": "zam-academy-franzoesisch-realschule-7",
+			"slug": "f7-accents",
+			"title": "Écrire avec les accents",
+			"domain": "franzoesisch/klasse-7/outils",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-accents",
+			"prerequisites": [
+				{
+					"atom_id": "01M803K5VZ6ANKXGNNBGAB4XD2",
+					"type": "soft",
+					"rationale": "Baut auf der Lektion „Écoute les sons“ auf."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-realschule-7",
+					"topic_code": "f7-outils",
+					"topic_title": "Lire, écouter, écrire"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-schreiben",
+					"topic_title": "Schreiben",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb4",
+					"topic_title": "Methodische Kompetenzen",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M803K62F1VYNG92NDZC4QQBP",
+					"slug": "f7-accents-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welcher Satz ist richtig: „Il est ___ l’école“?",
+					"concept": "Il est à l’école.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-accents",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Il est à l’école.",
+							"Il est a l’école."
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M803K62GZHTRTWA18H5HZ9FY",
+					"slug": "f7-accents-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was ist der Unterschied zwischen ou und où?",
+					"concept": "ou = oder, où = wo",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-accents",
+					"sample_solution": "ou = oder, où = wo"
+				},
+				{
+					"id": "01M803K62H6KGHCAYS5V8PE2P0",
+					"slug": "f7-accents-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie tippst du ç auf einem Mac mit deutscher Tastatur?",
+					"concept": "Alt (Option) + c",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-accents",
+					"sample_solution": "Alt (Option) + c"
+				}
+			]
+		},
+		{
+			"id": "01M803K5XJRDAJFB39AC17VBN2",
+			"atom_uri": "urn:zam:atom:01M803K5XJRDAJFB39AC17VBN2",
+			"namespace": "zam-academy-franzoesisch-realschule-7",
+			"slug": "f7-sketch",
+			"title": "On joue une scène",
+			"domain": "franzoesisch/klasse-7/outils",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-sketch",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "franzoesisch-realschule-7",
+					"topic_code": "f7-outils",
+					"topic_title": "Lire, écouter, écrire"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.2-aussprache",
+					"topic_title": "Aussprache und Intonation",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb1.1-sprechen",
+					"topic_title": "Sprechen",
+					"exam_relevant": true
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"track": "IIIa",
+					"subject": "franzoesisch",
+					"topic_code": "lb3",
+					"topic_title": "Text- und Medienkompetenzen",
+					"exam_relevant": true
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M803K62J39611BZHPA6EFNVT",
+					"slug": "f7-sketch-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wo sprichst du eine Bindung?",
+					"concept": "vous‿êtes",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-sketch",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"vous‿êtes",
+							"Hugo arrive"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M803K62KJWZ2KHV40P9K8KJD",
+					"slug": "f7-sketch-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie klingt die Endung ‑ent in „ils parlent“?",
+					"concept": "Sie ist stumm.",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-sketch",
+					"sample_solution": "Sie ist stumm."
+				},
+				{
+					"id": "01M803K62MRFSA9NR3ESG34VW3",
+					"slug": "f7-sketch-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was markierst du vor dem Vorlesen im Text?",
+					"concept": "Bindungen und Pausen",
+					"source_link": "https://academy.zam-os.org/franzoesisch-realschule-7/#lesson=f7-sketch",
+					"sample_solution": "Bindungen und Pausen"
+				}
+			]
+		}
+	]
+}

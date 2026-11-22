@@ -29,6 +29,8 @@ const GYM7_CELL_IDS = [
   "de-by:gymnasium-7-geschichte-mittelalter-frankenreich-staedte-kreuzzuege-reformation",
 ];
 const ACADEMY_GYM7_IDS = [
+  "zam-academy:deutsch-gymnasium-7",
+  "zam-academy:geographie-gymnasium-7",
   "zam-academy:mathematik-gymnasium-7",
   "zam-academy:nt-gymnasium-7",
   "zam-academy:physik-gymnasium-7",

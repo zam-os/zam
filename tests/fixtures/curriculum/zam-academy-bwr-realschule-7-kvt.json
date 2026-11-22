@@ -1,0 +1,2888 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "zam-academy:bwr-realschule-7",
+  "version": "2026.11.2",
+  "title": "BwR 7 Realschule (ZAM Academy)",
+  "description": "Alle Lernbereiche von BwR 7 an der Realschule Bayern (Zweig II: LB 1–5, 36 Lektionen; Zweig IIIa: LB 1–4, 25 Lektionen): privater Haushalt, Unternehmen, Buchführung mit Bilanz und Bestandskonten, Umsatzsteuer, Produktionsprozess und Kontenabschluss.",
+  "publisher": "ZAM Academy",
+  "published_at": "2026-11-21T15:00:00Z",
+  "sources": [
+    {
+      "uri": "https://academy.zam-os.org/bwr-realschule-7/",
+      "checked": "2026-11-21",
+      "label": "ZAM Academy · BwR 7"
+    },
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/7/bwl-rechnungswesen/wpfg2",
+      "checked": "2026-11-21",
+      "label": "LehrplanPLUS · BwR 7 · II"
+    },
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/7/bwl-rechnungswesen/wpfg3a",
+      "checked": "2026-11-21",
+      "label": "LehrplanPLUS · BwR 7 · IIIa"
+    },
+    {
+      "uri": "https://www.isb.bayern.de/fileadmin/user_upload/Realschule/BwR/Kontenplaene/Kontenplan_LehrplanPLUS.pdf",
+      "checked": "2026-11-21",
+      "label": "ISB · Kontenplan LehrplanPLUS"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01M7Z7D72NQFPYJTF2KNV15M64",
+      "atom_uri": "urn:zam:atom:01M7Z7D72NQFPYJTF2KNV15M64",
+      "namespace": "zam-academy-bwr-realschule-7",
+      "slug": "bwr7-hh-einkommen-budget",
+      "title": "Einnahmen, Ausgaben und Überschuldungsgefahr",
+      "domain": "bwr/haushalt",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=hh-einkommen-budget",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-7",
+          "topic_code": "lb1",
+          "topic_title": "Wirtschaftliches Handeln im privaten Haushalt"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb1",
+          "topic_title": "Wirtschaftliches Handeln im privaten Haushalt",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "IIIa",
+          "subject": "bwr",
+          "topic_code": "lb1",
+          "topic_title": "Wirtschaftliches Handeln im privaten Haushalt",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7Z7D73SESTB4X1QR2MEDD72",
+          "slug": "bwr7-hh-einkommen-budget-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Ausgabe eines Familienhaushalts zählt zu den festen, regelmäßig anfallenden Ausgaben?",
+          "concept": "Wohnungsmiete mit vertraglich vereinbartem Nebenkostenabschlag.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=hh-einkommen-budget",
+          "materiality": "material",
+          "sample_solution": "Vertraglich festgelegte Zahlungen wie Miete, Versicherungen oder Stromabschlag fallen regelmäßig in gleicher Höhe an.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Wohnungsmiete mit vertraglich vereinbartem Nebenkostenabschlag.",
+              "Spontane Kino- oder Restaurantbesuche am Wochenende."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7Z7D73T4VG866YHQ03G6GW6",
+          "slug": "bwr7-hh-einkommen-budget-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie überprüft ein Haushalt anhand des Monatsplans die Gefahr einer Überschuldung?",
+          "concept": "Er stellt dem Nettoeinkommen alle festen und veränderlichen Ausgaben gegenüber; dauerhafte Fehlbeträge zeigen Überschuldungsgefahr.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=hh-einkommen-budget",
+          "materiality": "material",
+          "sample_solution": "Zuerst addiert man feste Ausgaben (Miete, Strom, Abos) und veränderliche Ausgaben samt Wünschen. Übersteigen die Gesamtausgaben das Einkommen dauerhaft und werden über Kredite oder Raten gedeckt, droht Überschuldung."
+        }
+      ]
+    },
+    {
+      "id": "01M7Z7D72PN9VAK4E11WYBTCF9",
+      "atom_uri": "urn:zam:atom:01M7Z7D72PN9VAK4E11WYBTCF9",
+      "namespace": "zam-academy-bwr-realschule-7",
+      "slug": "bwr7-hh-konsum",
+      "title": "Konsumgewohnheiten hinterfragen und klug entscheiden",
+      "domain": "bwr/haushalt",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=hh-konsum",
+      "prerequisites": [
+        {
+          "atom_id": "01M7Z7D72NQFPYJTF2KNV15M64",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Buchungsschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-7",
+          "topic_code": "lb1",
+          "topic_title": "Wirtschaftliches Handeln im privaten Haushalt"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb1",
+          "topic_title": "Wirtschaftliches Handeln im privaten Haushalt",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "IIIa",
+          "subject": "bwr",
+          "topic_code": "lb1",
+          "topic_title": "Wirtschaftliches Handeln im privaten Haushalt",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7Z7D73VSYJF4K4TBKMW0N4E",
+          "slug": "bwr7-hh-konsum-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welches Kriterium beschreibt beim Einkauf die Haltbarkeit, Umweltwirkung und faire Herstellung eines Produkts?",
+          "concept": "Qualität und Nachhaltigkeit.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=hh-konsum",
+          "materiality": "material",
+          "sample_solution": "Nachhaltige Konsumentscheidungen achten auf Lebensdauer, Reparierbarkeit sowie Umwelt- und Sozialverträglichkeit statt auf Statussymbole.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Qualität und Nachhaltigkeit.",
+              "Ausschließlich Prestige und kurzfristiger Trend."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7Z7D73WS7FQ3J91C8ENX0B1",
+          "slug": "bwr7-hh-konsum-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche fünf Kriterien helfen beim kritischen Hinterfragen von Konsumwünschen, und welche Regel verhindert Spontankäufe?",
+          "concept": "Notwendigkeit, Kosten samt Folgekosten, Qualität, Prestige/Trends und Nachhaltigkeit prüfen; mindestens 24 Stunden Bedenkzeit einhalten.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=hh-konsum",
+          "materiality": "material",
+          "sample_solution": "Vor dem Kauf fragt man nach echtem Bedarf, Gesamt- und Folgekosten, Haltbarkeit, möglichem Gruppendruck sowie Umweltfolgen. Eine feste Einkaufsliste und 24 Stunden Wartezeit stoppen teure Impulskäufe."
+        }
+      ]
+    },
+    {
+      "id": "01M7Z7D72QXNQGQQ7BSCBMVNW3",
+      "atom_uri": "urn:zam:atom:01M7Z7D72QXNQGQQ7BSCBMVNW3",
+      "namespace": "zam-academy-bwr-realschule-7",
+      "slug": "bwr7-hh-belege",
+      "title": "Belege im Familienhaushalt lesen und prüfen",
+      "domain": "bwr/haushalt",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=hh-belege",
+      "prerequisites": [
+        {
+          "atom_id": "01M7Z7D72NQFPYJTF2KNV15M64",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Buchungsschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-7",
+          "topic_code": "lb1",
+          "topic_title": "Wirtschaftliches Handeln im privaten Haushalt"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb1",
+          "topic_title": "Wirtschaftliches Handeln im privaten Haushalt",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "IIIa",
+          "subject": "bwr",
+          "topic_code": "lb1",
+          "topic_title": "Wirtschaftliches Handeln im privaten Haushalt",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7Z7D73XNB731FYXJY2A8YPW",
+          "slug": "bwr7-hh-belege-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welcher Beleg beweist auf dem Girokonto einer Familie, dass ein Betrag tatsächlich abgebucht oder gutgeschrieben wurde?",
+          "concept": "Der Kontoauszug der Bank.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=hh-belege",
+          "materiality": "material",
+          "sample_solution": "Nur der Kontoauszug dokumentiert alle verbuchten Bankeingänge (Haben) und Bankausgänge (Soll) mit Buchungstag und Kontostand.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Kontoauszug der Bank.",
+              "Ein unverbindlicher Kostenvoranschlag."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7Z7D73YH6EN047AR2BQ3EJM",
+          "slug": "bwr7-hh-belege-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Worin unterscheiden sich Kassenbon, Quittung und Rechnung bei den Belegen eines Familienhaushalts?",
+          "concept": "Kassenbon listet Bar-/Kartenkäufe im Laden auf; Quittung bestätigt den Empfang von Bargeld; Rechnung fordert zur späteren Zahlung auf.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=hh-belege",
+          "materiality": "material",
+          "sample_solution": "Der Kassenbon nennt Artikel, Einzelpreise, Steuer und Rückgeld beim Einkauf. Die Quittung belegt mit Unterschrift eine Barzahlung. Die Rechnung nennt Rechnungsnummer, Netto, Steuer, Brutto, IBAN und Zahlungsziel."
+        }
+      ]
+    },
+    {
+      "id": "01M7Z7D72R9DSVN122WAX0HMX4",
+      "atom_uri": "urn:zam:atom:01M7Z7D72R9DSVN122WAX0HMX4",
+      "namespace": "zam-academy-bwr-realschule-7",
+      "slug": "bwr7-hh-zahlungsverkehr",
+      "title": "Zahlungsarten sicher auswählen und bewerten",
+      "domain": "bwr/haushalt",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=hh-zahlungsverkehr",
+      "prerequisites": [
+        {
+          "atom_id": "01M7Z7D72QXNQGQQ7BSCBMVNW3",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Buchungsschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-7",
+          "topic_code": "lb1",
+          "topic_title": "Wirtschaftliches Handeln im privaten Haushalt"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb1",
+          "topic_title": "Wirtschaftliches Handeln im privaten Haushalt",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "IIIa",
+          "subject": "bwr",
+          "topic_code": "lb1",
+          "topic_title": "Wirtschaftliches Handeln im privaten Haushalt",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7Z7D73ZJPZSNMHTH9NTR2S6",
+          "slug": "bwr7-hh-zahlungsverkehr-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wofür eignet sich ein Dauerauftrag im privaten Zahlungsverkehr am besten?",
+          "concept": "Für regelmäßig wiederkehrende Zahlungen in stets gleicher Höhe (z. B. Miete).",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=hh-zahlungsverkehr",
+          "materiality": "material",
+          "sample_solution": "Beim Dauerauftrag überweist die Bank automatisch einen fest eingestellten Betrag zu festen Terminen; schwankende Beträge laufen meist per Lastschrift.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Für regelmäßig wiederkehrende Zahlungen in stets gleicher Höhe (z. B. Miete).",
+              "Für jeden Monat stark schwankende Strom- oder Handyrechnungen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7Z7D740D5WYEXJDDC4Y9X0R",
+          "slug": "bwr7-hh-zahlungsverkehr-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie unterscheiden sich Debitkarte, Kreditkarte und SEPA-Lastschrift bei Ausgabenkontrolle, Haftung und Gebühren?",
+          "concept": "Debitkarte bucht sofort ab; Kreditkarte sammelt bis zur Monatsabrechnung (Verschuldungsrisiko); Lastschrift erlaubt dem Empfänger den Einzug mit Widerrufsrecht.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=hh-zahlungsverkehr",
+          "materiality": "material",
+          "sample_solution": "Die Debitkarte belastet das Girokonto zeitnah, was die Kontrolle erleichtert. Die Kreditkarte gewährt Zahlungsaufschub bis zur Monatsrechnung (Vorsicht bei Teilzahlung). Bei der SEPA-Lastschrift lassen sich unberechtigte Abbuchungen innerhalb von acht Wochen zurückholen."
+        }
+      ]
+    },
+    {
+      "id": "01M7Z7D72SDWZZSKR2AH86TMRA",
+      "atom_uri": "urn:zam:atom:01M7Z7D72SDWZZSKR2AH86TMRA",
+      "namespace": "zam-academy-bwr-realschule-7",
+      "slug": "bwr7-hh-prozent-grundlagen",
+      "title": "Prozentwert, Prozentsatz und Grundwert im Alltag berechnen",
+      "domain": "bwr/haushalt",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=hh-prozent-grundlagen",
+      "prerequisites": [
+        {
+          "atom_id": "01M7Z7D72NQFPYJTF2KNV15M64",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Buchungsschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-7",
+          "topic_code": "lb1",
+          "topic_title": "Wirtschaftliches Handeln im privaten Haushalt"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb1",
+          "topic_title": "Wirtschaftliches Handeln im privaten Haushalt",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "IIIa",
+          "subject": "bwr",
+          "topic_code": "lb1",
+          "topic_title": "Wirtschaftliches Handeln im privaten Haushalt",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7Z7D741D13T33D3DKGGM6NH",
+          "slug": "bwr7-hh-prozent-grundlagen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie berechnest du den Prozentwert P aus Grundwert G und Prozentsatz p?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "P = \\frac{G \\cdot p}{100}",
+              "speech": "P gleich Grundwert mal Prozentsatz geteilt durch hundert"
+            }
+          ],
+          "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=hh-prozent-grundlagen",
+          "materiality": "material",
+          "sample_solution": "Ein Prozent ist ein Hundertstel des Grundwerts (100 %). Deshalb rechnet man Grundwert · Prozentsatz : 100.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "G · p : 100",
+              "G : p · 100"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7Z7D742FFJPRAZ4XEKS1DKN",
+          "slug": "bwr7-hh-prozent-grundlagen-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie stellst du die Prozentformel nach Grundwert G und Prozentsatz p um, und wie kontrollierst du das Ergebnis?",
+          "concept": "G = P · 100 : p und p = P · 100 : G; Ergebnis immer durch schnellen Überschlag (z. B. 10 %, 25 % oder 50 %) prüfen.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=hh-prozent-grundlagen",
+          "materiality": "material",
+          "sample_solution": "Stehen Teilbetrag P und Prozentsatz p fest, ergibt P · 100 : p den Grundwert G (100 %). Durch Schätzen mit einfachen Brüchen (10 % = ein Zehntel, 25 % = ein Viertel) fallen Kommafehler um Faktor zehn sofort auf."
+        }
+      ]
+    },
+    {
+      "id": "01M7Z7D72TEN05E0B8NVTPYDRX",
+      "atom_uri": "urn:zam:atom:01M7Z7D72TEN05E0B8NVTPYDRX",
+      "namespace": "zam-academy-bwr-realschule-7",
+      "slug": "bwr7-hh-prozent-aenderung",
+      "title": "Vermehrter und verminderter Grundwert",
+      "domain": "bwr/haushalt",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=hh-prozent-aenderung",
+      "prerequisites": [
+        {
+          "atom_id": "01M7Z7D72SDWZZSKR2AH86TMRA",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Buchungsschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-7",
+          "topic_code": "lb1",
+          "topic_title": "Wirtschaftliches Handeln im privaten Haushalt"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb1",
+          "topic_title": "Wirtschaftliches Handeln im privaten Haushalt",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7Z7D743609V5YD1ATD8ZMJQ",
+          "slug": "bwr7-hh-prozent-aenderung-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Ein Fahrradhelm kostet nach 20 % Rabatt noch 64,00 Euro. Welchem Prozentsatz des alten Preises entsprechen die 64,00 Euro?",
+          "concept": "80 % des ursprünglichen Preises.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=hh-prozent-aenderung",
+          "materiality": "material",
+          "sample_solution": "Vom Ausgangspreis (100 %) wurden 20 % abgezogen. Die verbleibenden 64,00 Euro entsprechen daher 80 % (G = 64,00 · 100 : 80 = 80,00 Euro).",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "80 % des ursprünglichen Preises.",
+              "120 % des ursprünglichen Preises."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7Z7D7446TNXSDTSQSJZN7GC",
+          "slug": "bwr7-hh-prozent-aenderung-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie rechnet man beim vermehrten und verminderten Grundwert direkt zum neuen Wert und wieder zurück zum Ausgangswert?",
+          "concept": "Vorwärts: G · (100 + p) : 100 bzw. G · (100 − p) : 100; rückwärts teilt man den neuen Wert durch (100 + p) bzw. (100 − p) und multipliziert mit 100.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=hh-prozent-aenderung",
+          "materiality": "material",
+          "sample_solution": "Nach einer Preiserhöhung um p % entspricht der neue Wert (100 + p) %, nach einem Rabatt von p % entspricht er (100 − p) %. Beim Rückrechnen auf 100 % ist genau dieser veränderte Prozentsatz der Teiler."
+        }
+      ]
+    },
+    {
+      "id": "01M7Z7D72VV7K8Q9RY6FAY1RHX",
+      "atom_uri": "urn:zam:atom:01M7Z7D72VV7K8Q9RY6FAY1RHX",
+      "namespace": "zam-academy-bwr-realschule-7",
+      "slug": "bwr7-hh-infografiken",
+      "title": "Infografiken untersuchen und kritisch bewerten",
+      "domain": "bwr/haushalt",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=hh-infografiken",
+      "prerequisites": [
+        {
+          "atom_id": "01M7Z7D72SDWZZSKR2AH86TMRA",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Buchungsschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-7",
+          "topic_code": "lb1",
+          "topic_title": "Wirtschaftliches Handeln im privaten Haushalt"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb1",
+          "topic_title": "Wirtschaftliches Handeln im privaten Haushalt",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7Z7D745S41QXREPXT6HYYQE",
+          "slug": "bwr7-hh-infografiken-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welcher Trick in einem Säulendiagramm lässt kleine Zuwächse übertrieben groß erscheinen?",
+          "concept": "Eine abgeschnittene senkrechte y-Achse, die nicht bei null beginnt.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=hh-infografiken",
+          "materiality": "material",
+          "sample_solution": "Beginnt die y-Achse statt bei 0 erst kurz unterhalb der Werte (z. B. bei 36 statt 0), wirken Unterschiede optisch um ein Vielfaches größer.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eine abgeschnittene senkrechte y-Achse, die nicht bei null beginnt.",
+              "Die deutliche Nennung von Quelle, Jahr und Einheit auf beiden Achsen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7Z7D7466V8RGWRZ9VHTZ6VC",
+          "slug": "bwr7-hh-infografiken-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche Diagrammarten unterscheidet man bei Infografiken und welche Qualitätsmerkmale prüfst du zuerst?",
+          "concept": "Säulen-/Balkendiagramme für Vergleiche, Liniendiagramme für Verläufe, Kreisdiagramme für Anteile an 100 %; prüfe Titel, Quelle, Jahr, Einheiten und Nullpunkt.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=hh-infografiken",
+          "materiality": "material",
+          "sample_solution": "Zu jeder Aussage gehört die passende Grafikform: Anteile am Ganzen (100 %) gehören ins Kreisdiagramm, zeitliche Entwicklungen ins Liniendiagramm. Vor einer Bewertung prüft man Datenquelle, Erhebungsjahr, Achsenbeschriftung samt Einheiten und ob die Achse bei null startet."
+        }
+      ]
+    },
+    {
+      "id": "01M7Z7D72WHYPD8DEN2WYZM4Z2",
+      "atom_uri": "urn:zam:atom:01M7Z7D72WHYPD8DEN2WYZM4Z2",
+      "namespace": "zam-academy-bwr-realschule-7",
+      "slug": "bwr7-un-wirtschaftsstruktur",
+      "title": "Wirtschaftsbereiche, Branchen und Unternehmensgrößen",
+      "domain": "bwr/unternehmen",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=un-wirtschaftsstruktur",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-7",
+          "topic_code": "lb2",
+          "topic_title": "Wirtschaftliches Handeln im Unternehmen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb2",
+          "topic_title": "Wirtschaftliches Handeln im Unternehmen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "IIIa",
+          "subject": "bwr",
+          "topic_code": "lb2",
+          "topic_title": "Wirtschaftliches Handeln im Unternehmen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7Z7D747MVGPKCPS2889T3GA",
+          "slug": "bwr7-un-wirtschaftsstruktur-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Worin unterscheidet sich ein Fertigungsunternehmen von einem Dienstleistungsunternehmen?",
+          "concept": "Ein Fertigungsbetrieb stellt aus Werkstoffen körperliche Sachgüter her; ein Dienstleister erbringt immaterielle Leistungen.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=un-wirtschaftsstruktur",
+          "materiality": "material",
+          "sample_solution": "Fertigungsbetriebe (sekundärer Sektor) verarbeiten Rohstoffe und Bauteile zu fertigen Waren wie Fahrrädern; Dienstleistungsbetriebe (tertiärer Sektor) beraten, reparieren oder transportieren.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein Fertigungsbetrieb stellt aus Werkstoffen körperliche Sachgüter her; ein Dienstleister erbringt immaterielle Leistungen.",
+              "Ein Fertigungsbetrieb darf keine Maschinen einsetzen, ein Dienstleister dagegen schon."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7Z7D748ZXGQZR0JJXJRZ8Z6",
+          "slug": "bwr7-un-wirtschaftsstruktur-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Nach welchen Kategorien gliedert man die Unternehmen einer Wirtschaftsregion?",
+          "concept": "Nach Wirtschaftsbereich (Urproduktion, Fertigung, Dienstleistung/Handel), Branche und Unternehmensgröße (Beschäftigte und Umsatz).",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=un-wirtschaftsstruktur",
+          "materiality": "material",
+          "sample_solution": "Regional unterscheidet man den primären Sektor (Land-/Forstwirtschaft), sekundären Sektor (Industrie/Handwerk) und tertiären Sektor (Handel/Dienstleistung) sowie nach Mitarbeiterzahl Kleinst-, kleine, mittlere und große Unternehmen."
+        }
+      ]
+    },
+    {
+      "id": "01M7Z7D72XJ0JJRPZNCW71ZD2S",
+      "atom_uri": "urn:zam:atom:01M7Z7D72XJ0JJRPZNCW71ZD2S",
+      "namespace": "zam-academy-bwr-realschule-7",
+      "slug": "bwr7-un-ziele-nachhaltigkeit",
+      "title": "Unternehmensziele und nachhaltiges Wirtschaften",
+      "domain": "bwr/unternehmen",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=un-ziele-nachhaltigkeit",
+      "prerequisites": [
+        {
+          "atom_id": "01M7Z7D72WHYPD8DEN2WYZM4Z2",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Buchungsschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-7",
+          "topic_code": "lb2",
+          "topic_title": "Wirtschaftliches Handeln im Unternehmen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb2",
+          "topic_title": "Wirtschaftliches Handeln im Unternehmen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "IIIa",
+          "subject": "bwr",
+          "topic_code": "lb2",
+          "topic_title": "Wirtschaftliches Handeln im Unternehmen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7Z7D749XXWXTBDXFYPTTQY1",
+          "slug": "bwr7-un-ziele-nachhaltigkeit-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche beiden grundlegenden Ziele gehören zu den ökonomischen (wirtschaftlichen) Unternehmenszielen?",
+          "concept": "Existenzsicherung und Erzielung von Gewinn.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=un-ziele-nachhaltigkeit",
+          "materiality": "material",
+          "sample_solution": "Ökonomisch muss ein Betrieb langfristig zahlungsfähig bleiben (Existenzsicherung) und Gewinn erwirtschaften, um Löhne und Investitionen bezahlen zu können.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Existenzsicherung und Erzielung von Gewinn.",
+              "Möglichst hoher Stromverbrauch und unbezahlte Überstunden."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7Z7D74AEH2FPTWM0P9665EQ",
+          "slug": "bwr7-un-ziele-nachhaltigkeit-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie verhalten sich ökonomische, soziale und ökologische Ziele beim nachhaltigen Wirtschaften zueinander?",
+          "concept": "Die drei Ziele können sich gegenseitig fördern (Zielharmonie) oder kurzfristig widersprechen (Zielkonflikt); Zertifikate wie EMAS oder ISO belegen Umweltziele.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=un-ziele-nachhaltigkeit",
+          "materiality": "material",
+          "sample_solution": "Während faire Arbeitsbedingungen (sozial) und Energiesparen (ökologisch) zunächst Geld kosten können (Zielkonflikt), sichern weniger Energieverbrauch, motivierte Teams und Umweltzertifikate (EMAS, ISO 14001) langfristig Kunden und Gewinn (Zielharmonie)."
+        }
+      ]
+    },
+    {
+      "id": "01M7Z7D72YQ1WG1MJA5V50ZD0N",
+      "atom_uri": "urn:zam:atom:01M7Z7D72YQ1WG1MJA5V50ZD0N",
+      "namespace": "zam-academy-bwr-realschule-7",
+      "slug": "bwr7-un-produktionsfaktoren",
+      "title": "Betriebliche Produktionsfaktoren im Zusammenspiel",
+      "domain": "bwr/unternehmen",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=un-produktionsfaktoren",
+      "prerequisites": [
+        {
+          "atom_id": "01M7Z7D72WHYPD8DEN2WYZM4Z2",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Buchungsschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-7",
+          "topic_code": "lb2",
+          "topic_title": "Wirtschaftliches Handeln im Unternehmen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb2",
+          "topic_title": "Wirtschaftliches Handeln im Unternehmen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "IIIa",
+          "subject": "bwr",
+          "topic_code": "lb2",
+          "topic_title": "Wirtschaftliches Handeln im Unternehmen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7Z7D74BXJ06EEVBMGCE8HJC",
+          "slug": "bwr7-un-produktionsfaktoren-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welcher Produktionsfaktor umfasst Maschinen, Werkzeuge, Gebäude und Fahrzeuge, die dauerhaft genutzt werden?",
+          "concept": "Die Betriebsmittel.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=un-produktionsfaktoren",
+          "materiality": "material",
+          "sample_solution": "Betriebsmittel bilden die langfristige Ausstattung zur Herstellung; Werkstoffe werden verarbeitet oder bei der Produktion verbraucht.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Betriebsmittel.",
+              "Die Werkstoffe (z. B. Rohstoffe und Betriebsstoffe)."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7Z7D74CRX0WB2KGQZKV7NX9",
+          "slug": "bwr7-un-produktionsfaktoren-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche betrieblichen Produktionsfaktoren wirken in einem Fertigungsunternehmen zusammen?",
+          "concept": "Werkstoffe, Betriebsmittel, ausführende Arbeit und dispositive Arbeit (Planung und Leitung), ergänzt durch Wissen und Informationen.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=un-produktionsfaktoren",
+          "materiality": "material",
+          "sample_solution": "Im Fertigungsprozess bearbeiten Menschen (ausführende Arbeit) mit Maschinen und Gebäuden (Betriebsmittel) die Materialien (Werkstoffe) nach den Plänen der Geschäftsleitung (dispositiver Faktor) und unter Nutzung von Fachwissen."
+        }
+      ]
+    },
+    {
+      "id": "01M7Z7D72ZQXEGVRJSR6M9M20N",
+      "atom_uri": "urn:zam:atom:01M7Z7D72ZQXEGVRJSR6M9M20N",
+      "namespace": "zam-academy-bwr-realschule-7",
+      "slug": "bwr7-un-standort",
+      "title": "Standortfaktoren gewichten und Standorte wählen",
+      "domain": "bwr/unternehmen",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=un-standort",
+      "prerequisites": [
+        {
+          "atom_id": "01M7Z7D72YQ1WG1MJA5V50ZD0N",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Buchungsschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-7",
+          "topic_code": "lb2",
+          "topic_title": "Wirtschaftliches Handeln im Unternehmen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb2",
+          "topic_title": "Wirtschaftliches Handeln im Unternehmen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "IIIa",
+          "subject": "bwr",
+          "topic_code": "lb2",
+          "topic_title": "Wirtschaftliches Handeln im Unternehmen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7Z7D74DRGNMAVF7ENX9ETYW",
+          "slug": "bwr7-un-standort-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welches Beispiel beschreibt einen weichen Standortfaktor?",
+          "concept": "Schulen, Freizeitangebote und Wohnqualität für die Beschäftigten vor Ort.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=un-standort",
+          "materiality": "material",
+          "sample_solution": "Harte Standortfaktoren wie Steuern, Miete oder Verkehrsanbindung lassen sich direkt in Geld oder Kilometern messen; weiche Faktoren betreffen Lebensumfeld und Image.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Schulen, Freizeitangebote und Wohnqualität für die Beschäftigten vor Ort.",
+              "Der Gewerbesteuerhebesatz und die Grundstückskosten je Quadratmeter."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7Z7D74ESH2FD48P788G6VPF",
+          "slug": "bwr7-un-standort-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie wählt ein Unternehmen mithilfe harter und weicher Standortfaktoren einen geeigneten Standort aus?",
+          "concept": "Es gewichtet alle zur Branche passenden Standortfaktoren (Summe 100 %), vergibt Punktwerte und wählt den Standort mit der höchsten Gesamtnote.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=un-standort",
+          "materiality": "material",
+          "sample_solution": "Ein Fertigungsbetrieb gewichtet meist Verkehrsanbindung, Hallenmiete und Fachkräfte hoch, ein Ladengeschäft dagegen Laufkundschaft. Aus Gewicht (%) · Punktzahl : 100 ergibt sich eine nachvollziehbare Gesamtbewertung."
+        }
+      ]
+    },
+    {
+      "id": "01M7Z7D730Q5CT7TJ2DN66TT50",
+      "atom_uri": "urn:zam:atom:01M7Z7D730Q5CT7TJ2DN66TT50",
+      "namespace": "zam-academy-bwr-realschule-7",
+      "slug": "bwr7-un-rechtsformen",
+      "title": "Einzelunternehmung und GmbH im Vergleich",
+      "domain": "bwr/unternehmen",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=un-rechtsformen",
+      "prerequisites": [
+        {
+          "atom_id": "01M7Z7D72XJ0JJRPZNCW71ZD2S",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Buchungsschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-7",
+          "topic_code": "lb2",
+          "topic_title": "Wirtschaftliches Handeln im Unternehmen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb2",
+          "topic_title": "Wirtschaftliches Handeln im Unternehmen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "IIIa",
+          "subject": "bwr",
+          "topic_code": "lb2",
+          "topic_title": "Wirtschaftliches Handeln im Unternehmen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7Z7D74FW9XN7PQGT4M9RYPK",
+          "slug": "bwr7-un-rechtsformen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wer haftet bei Schulden einer Einzelunternehmung gegenüber den Gläubigern?",
+          "concept": "Die Inhaberin oder der Inhaber unbeschränkt mit dem gesamten Geschäfts- und Privatvermögen.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=un-rechtsformen",
+          "materiality": "material",
+          "sample_solution": "In der Einzelunternehmung gibt es keine Trennung zwischen Betriebs- und Privatvermögen — für offene Schulden haftet der Inhaber persönlich.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Inhaberin oder der Inhaber unbeschränkt mit dem gesamten Geschäfts- und Privatvermögen.",
+              "Nur ein separates Stammkapital von höchstens 25.000,00 Euro ohne Privatvermögen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7Z7D74G9RM4B6THNGVGNZMP",
+          "slug": "bwr7-un-rechtsformen-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Vergleiche Einzelunternehmung und GmbH nach Kapitalbedarf, Gründung, Leitung und Haftung.",
+          "concept": "Einzelunternehmung: kein Mindestkapital, Alleinleitung, Privathaftung; GmbH: mind. 25.000,00 € Stammkapital, Handelsregister, beschränkte Haftung.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=un-rechtsformen",
+          "materiality": "material",
+          "sample_solution": "Eine Einzelunternehmung entsteht schnell und ohne Mindestkapital, birgt aber persönliches Vermögensrisiko. Eine GmbH verlangt notariellen Vertrag, Handelsregistereintrag und mindestens 25.000,00 Euro Stammkapital (§ 5 GmbHG), schützt dafür aber das Privatvermögen der Gesellschafter."
+        }
+      ]
+    },
+    {
+      "id": "01M7Z7D7319J4Y1F72CRYNHG3M",
+      "atom_uri": "urn:zam:atom:01M7Z7D7319J4Y1F72CRYNHG3M",
+      "namespace": "zam-academy-bwr-realschule-7",
+      "slug": "bwr7-un-gruendung-firma",
+      "title": "Geschäftsidee, Gründung, Firma und Handelsregister",
+      "domain": "bwr/unternehmen",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=un-gruendung-firma",
+      "prerequisites": [
+        {
+          "atom_id": "01M7Z7D730Q5CT7TJ2DN66TT50",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Buchungsschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-7",
+          "topic_code": "lb2",
+          "topic_title": "Wirtschaftliches Handeln im Unternehmen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb2",
+          "topic_title": "Wirtschaftliches Handeln im Unternehmen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7Z7D74H8T42DMC7H6JZ7YYY",
+          "slug": "bwr7-un-gruendung-firma-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was ist die „Firma“ im Sinne des Handelsgesetzbuches (§ 17 HGB)?",
+          "concept": "Der im Handelsregister eingetragene Name mit Rechtsformzusatz, unter dem ein Kaufmann Geschäfte betreibt.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=un-gruendung-firma",
+          "materiality": "material",
+          "sample_solution": "Im Alltag meint man oft das Gebäude oder den Betrieb, rechtlich bezeichnet die Firma ausschließlich den offiziellen Handelsnamen samt Zusatz wie e. K. oder GmbH.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der im Handelsregister eingetragene Name mit Rechtsformzusatz, unter dem ein Kaufmann Geschäfte betreibt.",
+              "Das Fabrikgebäude und der Maschinenpark eines Unternehmens."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7Z7D74J0N25ZBJF7HH5D8A7",
+          "slug": "bwr7-un-gruendung-firma-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche Gründungsvoraussetzungen prüft ein einfacher Businessplan und welche Regeln gelten für die Firma?",
+          "concept": "Businessplan prüft persönliche, sachliche und rechtliche Voraussetzungen plus Chancen/Risiken; Firma verlangt Unterscheidungskraft, Irreführungsverbot und Rechtsformzusatz.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=un-gruendung-firma",
+          "materiality": "material",
+          "sample_solution": "Vor dem Start klärt der Businessplan Fachwissen, Räume/Kapital sowie Gewerbeanmeldung und Rechtsform. Der im Handelsregister eingetragene Name (Personen-, Sach-, Fantasie- oder Mischfirma) darf Kunden nicht täuschen (§ 18 HGB) und muss die Rechtsform (z. B. GmbH, e. K.) nennen."
+        }
+      ]
+    },
+    {
+      "id": "01M7Z7D732XEBKQBSHTX9XXZYF",
+      "atom_uri": "urn:zam:atom:01M7Z7D732XEBKQBSHTX9XXZYF",
+      "namespace": "zam-academy-bwr-realschule-7",
+      "slug": "bwr7-un-funktionsbereiche",
+      "title": "Funktionsbereiche im Fertigungsunternehmen",
+      "domain": "bwr/unternehmen",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=un-funktionsbereiche",
+      "prerequisites": [
+        {
+          "atom_id": "01M7Z7D72YQ1WG1MJA5V50ZD0N",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Buchungsschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-7",
+          "topic_code": "lb2",
+          "topic_title": "Wirtschaftliches Handeln im Unternehmen"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb2",
+          "topic_title": "Wirtschaftliches Handeln im Unternehmen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "IIIa",
+          "subject": "bwr",
+          "topic_code": "lb2",
+          "topic_title": "Wirtschaftliches Handeln im Unternehmen",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7Z7D74K3MTCAM2SC0HYRERA",
+          "slug": "bwr7-un-funktionsbereiche-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welcher Funktionsbereich im Fertigungsunternehmen kauft Werkstoffe ein und prüft Lagerbestände?",
+          "concept": "Die Materialwirtschaft (Beschaffung).",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=un-funktionsbereiche",
+          "materiality": "material",
+          "sample_solution": "Die Materialwirtschaft stellt Roh-, Hilfs-, Betriebsstoffe und Fremdbauteile rechtzeitig bereit; der Absatz verkauft die fertigen Produkte.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Materialwirtschaft (Beschaffung).",
+              "Der Absatz (Vertrieb)."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7Z7D74M1YQCAW6KG88K3A29",
+          "slug": "bwr7-un-funktionsbereiche-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie hängen die Kern- und Unterstützungsbereiche im Modell eines Fertigungsunternehmens zusammen?",
+          "concept": "Materialwirtschaft (Beschaffung), Produktion (Fertigung) und Absatz bilden den Güterfluss; Leitung, Personal, Finanzierung und Rechnungswesen steuern und stützen ihn.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=un-funktionsbereiche",
+          "materiality": "material",
+          "sample_solution": "Werkstoffe gelangen von der Beschaffung in die Produktion und als fertige Erzeugnisse über den Absatz zu den Kunden. Unternehmensführung, Personalwirtschaft, Finanzwirtschaft und Rechnungswesen koordinieren Geldmittel, Personal und Kontrolle über alle Bereiche hinweg."
+        }
+      ]
+    },
+    {
+      "id": "01M7Z7D7338JHDNFW2S42P66EG",
+      "atom_uri": "urn:zam:atom:01M7Z7D7338JHDNFW2S42P66EG",
+      "namespace": "zam-academy-bwr-realschule-7",
+      "slug": "bwr7-gb-inventur-inventar",
+      "title": "Von der Inventur zum Inventar",
+      "domain": "bwr/buchfuehrung",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=gb-inventur-inventar",
+      "prerequisites": [
+        {
+          "atom_id": "01M7Z7D732XEBKQBSHTX9XXZYF",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Buchungsschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-7",
+          "topic_code": "lb3",
+          "topic_title": "Einführung in die Geschäftsbuchführung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb3",
+          "topic_title": "Einführung in die Geschäftsbuchführung",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "IIIa",
+          "subject": "bwr",
+          "topic_code": "lb3",
+          "topic_title": "Einführung in die Geschäftsbuchführung",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7Z7D74NK7CHH7FTQ1XY5N0R",
+          "slug": "bwr7-gb-inventur-inventar-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Worin besteht der Unterschied zwischen Inventur und Inventar?",
+          "concept": "Die Inventur ist die Tätigkeit des Zählens, Messens, Wiegens und Prüfens; das Inventar ist das ausführliche schriftliche Verzeichnis dieser Ergebnisse.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=gb-inventur-inventar",
+          "materiality": "material",
+          "sample_solution": "Inventur bezeichnet die Bestandsaufnahme am Stichtag (§ 240 HGB); das Inventar hält alle festgestellten Vermögenswerte und Schulden in Staffelform fest.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Inventur ist die Tätigkeit des Zählens, Messens, Wiegens und Prüfens; das Inventar ist das ausführliche schriftliche Verzeichnis dieser Ergebnisse.",
+              "Die Inventur macht nur das Finanzamt, das Inventar ist eine Werbebroschüre."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7Z7D74PSN1VYZQRTX1VWSQG",
+          "slug": "bwr7-gb-inventur-inventar-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie ist ein Inventar aufgebaut und wie ermittelt man darin das Reinvermögen (Eigenkapital)?",
+          "concept_segments": [
+            {
+              "type": "text",
+              "text": "A. Vermögen (AV + UV) und B. Schulden in Staffelform; C. Reinvermögen: "
+            },
+            {
+              "type": "math",
+              "tex": "\\text{Eigenkapital} = \\text{Summe Vermögen} - \\text{Summe Schulden}",
+              "speech": "Eigenkapital gleich Summe Vermögen minus Summe Schulden"
+            }
+          ],
+          "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=gb-inventur-inventar",
+          "materiality": "material",
+          "sample_solution": "Körperliche Güter erfasst man durch Zählen, Messen, Wiegen, unkörperliche Werte per Buchinventur. Im Inventar stehen A. Vermögen (Anlage- und Umlaufvermögen nach Flüssigkeit), B. Schulden (langfristig und kurzfristig) und C. Reinvermögen als Differenz beider Summen."
+        }
+      ]
+    },
+    {
+      "id": "01M7Z7D7344VQJ44ADGR7RR7QG",
+      "atom_uri": "urn:zam:atom:01M7Z7D7344VQJ44ADGR7RR7QG",
+      "namespace": "zam-academy-bwr-realschule-7",
+      "slug": "bwr7-gb-bilanz",
+      "title": "Aufbau der Bilanz und die Bilanzgleichung",
+      "domain": "bwr/buchfuehrung",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=gb-bilanz",
+      "prerequisites": [
+        {
+          "atom_id": "01M7Z7D7338JHDNFW2S42P66EG",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Buchungsschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-7",
+          "topic_code": "lb3",
+          "topic_title": "Einführung in die Geschäftsbuchführung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb3",
+          "topic_title": "Einführung in die Geschäftsbuchführung",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "IIIa",
+          "subject": "bwr",
+          "topic_code": "lb3",
+          "topic_title": "Einführung in die Geschäftsbuchführung",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7Z7D74Q0BTRJ7HAHZMYZXGM",
+          "slug": "bwr7-gb-bilanz-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie lautet die fundamentale Bilanzgleichung zur Ermittlung des Eigenkapitals (Reinvermögens) eines Unternehmens?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "\\text{Eigenkapital} = \\text{Vermögen} - \\text{Schulden}",
+              "speech": "Eigenkapital gleich Vermögen minus Schulden"
+            }
+          ],
+          "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=gb-bilanz",
+          "materiality": "material",
+          "sample_solution": "In der Bilanz gilt stets Summe Aktiva (Vermögen) = Summe Passiva (Eigen- plus Fremdkapital). Damit bleibt als Eigenkapital das Vermögen abzüglich aller Schulden.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eigenkapital = Vermögen − Schulden",
+              "Eigenkapital = Schulden − Vermögen"
+            ],
+            "correct_index": 0
+          },
+          "replaces": [
+            "01K4W7B0000000000000000J03"
+          ]
+        },
+        {
+          "id": "01M7Z7D74RXG6G7NP7DWVT18ET",
+          "slug": "bwr7-gb-bilanz-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie gliedert sich eine Bilanz (§ 242 HGB) und warum sind Aktiva und Passiva immer gleich groß?",
+          "concept": "Links Aktiva (Mittelverwendung: AV + UV), rechts Passiva (Mittelherkunft: EK + FK); beide Summen sind gleich, weil jeder Vermögenswert aus eigenen oder fremden Mitteln stammt.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=gb-bilanz",
+          "materiality": "material",
+          "sample_solution": "Die Bilanz verdichtet das Inventar ohne Mengenangaben in Kontenform. Weil das Eigenkapital genau den Überschuss des Vermögens über die Schulden abbildet, stimmen Mittelverwendung (Aktiva) und Mittelherkunft (Passiva) immer auf den Cent überein."
+        }
+      ]
+    },
+    {
+      "id": "01M7Z7D735HR928NKPPST33C31",
+      "atom_uri": "urn:zam:atom:01M7Z7D735HR928NKPPST33C31",
+      "namespace": "zam-academy-bwr-realschule-7",
+      "slug": "bwr7-gb-bilanzveraenderungen",
+      "title": "Die vier Bilanzveränderungen",
+      "domain": "bwr/buchfuehrung",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=gb-bilanzveraenderungen",
+      "prerequisites": [
+        {
+          "atom_id": "01M7Z7D7344VQJ44ADGR7RR7QG",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Buchungsschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-7",
+          "topic_code": "lb3",
+          "topic_title": "Einführung in die Geschäftsbuchführung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb3",
+          "topic_title": "Einführung in die Geschäftsbuchführung",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "IIIa",
+          "subject": "bwr",
+          "topic_code": "lb3",
+          "topic_title": "Einführung in die Geschäftsbuchführung",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7Z7D74SVZFB5YT7VCA2JJ2C",
+          "slug": "bwr7-gb-bilanzveraenderungen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche der vier Bilanzveränderungen liegt vor, wenn ein Betrieb einen neuen Lieferwagen (FP) für 35.000,00 Euro per Banküberweisung kauft?",
+          "concept": "Aktivtausch (Fuhrpark nimmt zu, Bank nimmt ab; die Bilanzsumme bleibt unverändert).",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=gb-bilanzveraenderungen",
+          "materiality": "material",
+          "sample_solution": "Beide berührten Posten stehen auf der Aktivseite: FP wächst um 35.000,00 Euro, BK sinkt um 35.000,00 Euro. Die Bilanzsumme ändert sich nicht.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Aktivtausch (Bilanzsumme bleibt gleich)",
+              "Aktiv-Passiv-Mehrung (Bilanzsumme steigt)"
+            ],
+            "correct_index": 0
+          },
+          "replaces": [
+            "01K4W7B0000000000000000J05"
+          ]
+        },
+        {
+          "id": "01M7Z7D74TB13TBJ6B8SKMMEQ6",
+          "slug": "bwr7-gb-bilanzveraenderungen-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie wirken sich die vier Arten von Bilanzveränderungen auf die Bilanzposten und auf die Bilanzsumme aus?",
+          "concept": "Aktivtausch und Passivtausch schichten nur eine Seite um (Summe bleibt gleich); Aktiv-Passiv-Mehrung erhöht, Aktiv-Passiv-Minderung senkt beide Bilanzseiten.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=gb-bilanzveraenderungen",
+          "materiality": "material",
+          "sample_solution": "Beim Aktivtausch ändert sich nur Aktiva (+/−), beim Passivtausch nur Passiva (+/−) — die Bilanzsumme bleibt konstant. Bei der Aktiv-Passiv-Mehrung wachsen beide Seiten gleichmäßig (z. B. Zielkauf einer Maschine), bei der Minderung schrumpfen beide Seiten (z. B. Begleichung einer VE per Bank)."
+        }
+      ]
+    },
+    {
+      "id": "01M7Z7D736WMFYJX9MSC90PQJS",
+      "atom_uri": "urn:zam:atom:01M7Z7D736WMFYJX9MSC90PQJS",
+      "namespace": "zam-academy-bwr-realschule-7",
+      "slug": "bwr7-gb-bestand-vs-erfolg",
+      "title": "Bestandsverändernde vs. erfolgswirksame Vorgänge",
+      "domain": "bwr/buchfuehrung",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=gb-bestand-vs-erfolg",
+      "prerequisites": [
+        {
+          "atom_id": "01M7Z7D735HR928NKPPST33C31",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Buchungsschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-7",
+          "topic_code": "lb3",
+          "topic_title": "Einführung in die Geschäftsbuchführung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb3",
+          "topic_title": "Einführung in die Geschäftsbuchführung",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "IIIa",
+          "subject": "bwr",
+          "topic_code": "lb3",
+          "topic_title": "Einführung in die Geschäftsbuchführung",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7Z7D74VKREGCKSMSX9NZDFM",
+          "slug": "bwr7-gb-bestand-vs-erfolg-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wann verändert ein Geschäftsfall das Eigenkapital des Unternehmens?",
+          "concept": "Nur bei erfolgswirksamen Vorgängen (Aufwendungen oder Erträgen), nicht bei reinen Bestandsumschichtungen.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=gb-bestand-vs-erfolg",
+          "materiality": "material",
+          "sample_solution": "Kauft man eine Maschine per Bank, sinkt Geld und steigt Sachvermögen gleich stark (bestandsverändernd). Nur Werteverzehr (Aufwand) oder Wertezufluss (Ertrag) verändert das Eigenkapital.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nur bei erfolgswirksamen Vorgängen (Aufwendungen oder Erträgen), nicht bei reinen Bestandsumschichtungen.",
+              "Bei jedem Kauf einer Maschine per Banküberweisung."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7Z7D74WKWJFMSB5BMD77TYF",
+          "slug": "bwr7-gb-bestand-vs-erfolg-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie grenzt du bestandsverändernde Geschäftsfälle von erfolgswirksamen Vorgängen ab?",
+          "concept": "Bestandsvorgänge betreffen nur Vermögens- und Schuldenkonten (EK konstant); Erfolgsvorgänge buchen Werteverzehr (Aufwand, EK sinkt) oder Wertezuwachs (Ertrag, EK steigt).",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=gb-bestand-vs-erfolg",
+          "materiality": "material",
+          "sample_solution": "Beim Kreditrückzahlen oder Maschinenkauf tauschen sich Vermögens- und Schuldenwerte ohne Gewinn oder Verlust. Erst wenn Güter verbraucht werden (Aufwand wie Werkstoffe) oder Produkte verkauft werden (Ertrag wie Umsatzerlöse), verändert sich der Erfolg."
+        }
+      ]
+    },
+    {
+      "id": "01M7Z7D737Y261BEC5MZZ4D409",
+      "atom_uri": "urn:zam:atom:01M7Z7D737Y261BEC5MZZ4D409",
+      "namespace": "zam-academy-bwr-realschule-7",
+      "slug": "bwr7-gb-bestandskonten",
+      "title": "Aktive und passive Bestandskonten führen",
+      "domain": "bwr/buchfuehrung",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=gb-bestandskonten",
+      "prerequisites": [
+        {
+          "atom_id": "01M7Z7D7344VQJ44ADGR7RR7QG",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Buchungsschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-7",
+          "topic_code": "lb3",
+          "topic_title": "Einführung in die Geschäftsbuchführung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb3",
+          "topic_title": "Einführung in die Geschäftsbuchführung",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "IIIa",
+          "subject": "bwr",
+          "topic_code": "lb3",
+          "topic_title": "Einführung in die Geschäftsbuchführung",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7Z7D74X4YQYGWYF1WJN9703",
+          "slug": "bwr7-gb-bestandskonten-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Auf welcher Kontoseite (Soll oder Haben) stehen bei einem aktiven Bestandskonto (z. B. FP, BK, KA) der Anfangsbestand und die Zugänge?",
+          "concept": "Auf der Soll-Seite (links).",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=gb-bestandskonten",
+          "materiality": "material",
+          "sample_solution": "Aktivkonten entstehen aus den links stehenden Aktiva der Bilanz; deshalb stehen Anfangsbestand und Zugänge immer links im Soll, Abgänge und Schlussbestand rechts im Haben.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Auf der Soll-Seite (links)",
+              "Auf der Haben-Seite (rechts)"
+            ],
+            "correct_index": 0
+          },
+          "replaces": [
+            "01K4W7K0000000000000000J01"
+          ]
+        },
+        {
+          "id": "01M7Z7D74YEGR7DS41WSV076YE",
+          "slug": "bwr7-gb-bestandskonten-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie arbeiten aktive und passive Bestandskonten im T-Konto-System spiegelbildlich zueinander?",
+          "concept": "Aktivkonten: AB und Zugänge im Soll, Abgänge und SB im Haben. Passivkonten: AB und Zugänge im Haben, Abgänge und SB im Soll.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=gb-bestandskonten",
+          "materiality": "material",
+          "sample_solution": "Jeder Bilanzposten (AV, UV auf Aktiva; EK, KBKV, LBKV, VE auf Passiva) erhält ein eigenes T-Konto. Die Zuwachsseite entspricht immer der Seite in der Bilanz; der Schlussbestand gleicht als Ausgleichsbetrag jeweils die Abgangsseite aus."
+        }
+      ]
+    },
+    {
+      "id": "01M7Z7D738TVEC732JJX9BB1FD",
+      "atom_uri": "urn:zam:atom:01M7Z7D738TVEC732JJX9BB1FD",
+      "namespace": "zam-academy-bwr-realschule-7",
+      "slug": "bwr7-gb-buchungssatz",
+      "title": "Buchungssatz bilden und GoB einhalten",
+      "domain": "bwr/buchfuehrung",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=gb-buchungssatz",
+      "prerequisites": [
+        {
+          "atom_id": "01M7Z7D737Y261BEC5MZZ4D409",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Buchungsschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-7",
+          "topic_code": "lb3",
+          "topic_title": "Einführung in die Geschäftsbuchführung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb3",
+          "topic_title": "Einführung in die Geschäftsbuchführung",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "IIIa",
+          "subject": "bwr",
+          "topic_code": "lb3",
+          "topic_title": "Einführung in die Geschäftsbuchführung",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7Z7D74ZTNMGGWZATRVGRYVQ",
+          "slug": "bwr7-gb-buchungssatz-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie lautet die Grundregel zur Formulierung jedes Buchungssatzes?",
+          "concept": "Soll an Haben (erst das Sollkonto mit Betrag, danach „an“ und das Habenkonto).",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=gb-buchungssatz",
+          "materiality": "material",
+          "sample_solution": "In der doppelten Buchführung wird stets zuerst auf der Soll-Seite und nach „an“ auf der Haben-Seite gebucht, wobei die Eurosummen auf beiden Seiten übereinstimmen.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Soll an Haben",
+              "Haben an Soll"
+            ],
+            "correct_index": 0
+          },
+          "replaces": [
+            "01K4W7K0000000000000000J03"
+          ]
+        },
+        {
+          "id": "01M7Z7D750BSZA8JTYFPDE38BT",
+          "slug": "bwr7-gb-buchungssatz-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche vier Denkschritte führen zum richtigen Buchungssatz und welche GoB-Grundsätze (§§ 238, 239 HGB) müssen beachtet werden?",
+          "concept": "Schritte: Konten → Aktiv/Passiv → Zugang/Abgang → Soll/Haben („Soll an Haben“). GoB: Keine Buchung ohne Beleg, zeitgerecht, klar, vollständig, nicht unleserlich ändern.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=gb-buchungssatz",
+          "materiality": "material",
+          "sample_solution": "Die vier Denkschritte bestimmen zuerst die betroffenen Konten, ihre Kontoart, Zu- oder Abnahme und daraus Soll oder Haben. Nach den GoB muss jede Buchung durch einen Beleg gedeckt sein, nachvollziehbar bleiben und darf bei Korrekturen niemals überklebt werden."
+        }
+      ]
+    },
+    {
+      "id": "01M7Z7D739QY3JD5BNF5HH996H",
+      "atom_uri": "urn:zam:atom:01M7Z7D739QY3JD5BNF5HH996H",
+      "namespace": "zam-academy-bwr-realschule-7",
+      "slug": "bwr7-gb-geschaeftsvorfaelle",
+      "title": "Geschäftsvorfälle aus Buchungen formulieren und Belege prüfen",
+      "domain": "bwr/buchfuehrung",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=gb-geschaeftsvorfaelle",
+      "prerequisites": [
+        {
+          "atom_id": "01M7Z7D738TVEC732JJX9BB1FD",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Buchungsschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-7",
+          "topic_code": "lb3",
+          "topic_title": "Einführung in die Geschäftsbuchführung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb3",
+          "topic_title": "Einführung in die Geschäftsbuchführung",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "IIIa",
+          "subject": "bwr",
+          "topic_code": "lb3",
+          "topic_title": "Einführung in die Geschäftsbuchführung",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7Z7D751M47TAPGF4GAXQBYG",
+          "slug": "bwr7-gb-geschaeftsvorfaelle-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welcher Geschäftsfall steckt hinter dem Buchungssatz „VE 2.500,00 € an BK 2.500,00 €“?",
+          "concept": "Begleichung einer offenen Lieferantenrechnung über 2.500,00 Euro per Banküberweisung.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=gb-geschaeftsvorfaelle",
+          "materiality": "material",
+          "sample_solution": "VE (Passivkonto) nimmt im Soll ab, und BK (Aktivkonto) nimmt im Haben ab — eine Lieferantenschuld wird also per Bank bezahlt.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Begleichung einer offenen Lieferantenrechnung über 2.500,00 Euro per Banküberweisung.",
+              "Aufnahme eines neuen Bankdarlehens über 2.500,00 Euro."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7Z7D75276KTGBMEFCPBPPB6",
+          "slug": "bwr7-gb-geschaeftsvorfaelle-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie überprüfst du anhand von Belegen, ob ein fertiger Buchungssatz oder Konteneintrag fehlerfrei ist?",
+          "concept": "Du übersetzt die Konten in den Vorgang zurück und vergleichst Belegart (Bank vs. Kasse), Soll/Haben-Richtung und den genauen Betrag mit dem Originalbeleg.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=gb-geschaeftsvorfaelle",
+          "materiality": "material",
+          "sample_solution": "Aus den Konten liest man ab, welches Vermögen oder welche Schuld zu- bzw. abnimmt. Beim Belegabgleich erkennt man typische Fehler wie Soll-Haben-Vertauschungen, Verwechslung von Kasse und Bank oder Zahlendreher."
+        }
+      ]
+    },
+    {
+      "id": "01M7Z7D73AQYVS4W9VK1XVXTVT",
+      "atom_uri": "urn:zam:atom:01M7Z7D73AQYVS4W9VK1XVXTVT",
+      "namespace": "zam-academy-bwr-realschule-7",
+      "slug": "bwr7-gb-umsatzsteuer-rechnen",
+      "title": "Warenwert, Umsatzsteuer und Rechnungsbetrag berechnen",
+      "domain": "bwr/buchfuehrung",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=gb-umsatzsteuer-rechnen",
+      "prerequisites": [
+        {
+          "atom_id": "01M7Z7D72SDWZZSKR2AH86TMRA",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Buchungsschritt auf."
+        },
+        {
+          "atom_id": "01M7Z7D739QY3JD5BNF5HH996H",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Buchungsschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-7",
+          "topic_code": "lb3",
+          "topic_title": "Einführung in die Geschäftsbuchführung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb3",
+          "topic_title": "Einführung in die Geschäftsbuchführung",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "IIIa",
+          "subject": "bwr",
+          "topic_code": "lb3",
+          "topic_title": "Einführung in die Geschäftsbuchführung",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7Z7D753YBFECV71VHEWP7DE",
+          "slug": "bwr7-gb-umsatzsteuer-rechnen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Mit welcher Rechnung bestimmst du den Nettobetrag aus einem Bruttobetrag von 238,00 Euro inklusive 19 % Umsatzsteuer?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "\\text{Netto} = \\frac{\\text{Brutto} \\cdot 100}{119}",
+              "speech": "Netto gleich Brutto mal hundert geteilt durch hundertneunzehn"
+            }
+          ],
+          "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=gb-umsatzsteuer-rechnen",
+          "materiality": "material",
+          "sample_solution": "Der Bruttobetrag entspricht 119 % (100 % Warenwert plus 19 % Steuer). Durch Teilen durch 119 und Malnehmen mit 100 erhält man 200,00 Euro netto.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Brutto · 100 : 119 (= 200,00 Euro)",
+              "Brutto − 19 % von 238,00 Euro (= 192,78 Euro)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7Z7D754A06TSFSVFQSGYTZX",
+          "slug": "bwr7-gb-umsatzsteuer-rechnen-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie hängen Warenwert (netto), Umsatzsteuer (19 % oder 7 %) und Rechnungsbetrag (brutto) rechnerisch zusammen?",
+          "concept": "Warenwert = 100 %; Steuer = Netto · 19 : 100 (bzw. 7 : 100); Brutto = 119 % (bzw. 107 %); rückwärts immer durch 119 bzw. 107 teilen.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=gb-umsatzsteuer-rechnen",
+          "materiality": "material",
+          "sample_solution": "Auf Eingangs- und Ausgangsrechnungen bildet der Warenwert netto die 100-%-Basis. Bei 19 % Regelsteuersatz beträgt der Bruttobetrag 119 % des Nettowerts, beim ermäßigten Satz von 7 % (z. B. Bücher, Grundnahrungsmittel) 107 %."
+        }
+      ]
+    },
+    {
+      "id": "01M7Z7D73B2XKAT7AXXXT96BPG",
+      "atom_uri": "urn:zam:atom:01M7Z7D73B2XKAT7AXXXT96BPG",
+      "namespace": "zam-academy-bwr-realschule-7",
+      "slug": "bwr7-gb-umsatzsteuer-buchen",
+      "title": "Vorsteuer beim Einkauf und Umsatzsteuer beim Verkauf buchen",
+      "domain": "bwr/buchfuehrung",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=gb-umsatzsteuer-buchen",
+      "prerequisites": [
+        {
+          "atom_id": "01M7Z7D73AQYVS4W9VK1XVXTVT",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Buchungsschritt auf."
+        },
+        {
+          "atom_id": "01M7Z7D738TVEC732JJX9BB1FD",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Buchungsschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-7",
+          "topic_code": "lb3",
+          "topic_title": "Einführung in die Geschäftsbuchführung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb3",
+          "topic_title": "Einführung in die Geschäftsbuchführung",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "IIIa",
+          "subject": "bwr",
+          "topic_code": "lb3",
+          "topic_title": "Einführung in die Geschäftsbuchführung",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7Z7D75534T1ZTJ1K4TVGN3Y",
+          "slug": "bwr7-gb-umsatzsteuer-buchen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welche Konten verwendest du für die Umsatzsteuer beim Einkauf einer Maschine und beim Verkauf eigener Erzeugnisse?",
+          "concept": "Beim Einkauf VORST im Soll; beim Verkauf UST im Haben.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=gb-umsatzsteuer-buchen",
+          "materiality": "material",
+          "sample_solution": "VORST ist eine Forderung an das Finanzamt (Einkauf, Soll); UST ist eine Verbindlichkeit gegenüber dem Finanzamt (Verkauf, Haben).",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Beim Einkauf VORST im Soll; beim Verkauf UST im Haben.",
+              "Beim Einkauf UST im Haben; beim Verkauf VORST im Soll."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7Z7D75606YJQZX4ZWCCYRZY",
+          "slug": "bwr7-gb-umsatzsteuer-buchen-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum stehen Anlagegut oder Werkstoff netto im Soll und Zahlungs- bzw. Schuldenkonten immer brutto?",
+          "concept": "Der Betrieb schuldet oder erhält den vollen Bruttobetrag, aktiviert oder verbucht aber nur den Nettowert, weil VORST und UST direkt mit dem Finanzamt abgerechnet werden.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=gb-umsatzsteuer-buchen",
+          "materiality": "material",
+          "sample_solution": "Gegenüber Lieferanten (VE) und Kunden (FO) oder auf der Bank (BK) fließen stets Bruttobeträge. Da die Vorsteuer zurückgefordert und die Umsatzsteuer abgeführt wird, zeigen Vermögens- und Erfolgskonten nur reine Nettobeträge."
+        }
+      ]
+    },
+    {
+      "id": "01M7Z7D73C8PRGGFMZYYQTYX7N",
+      "atom_uri": "urn:zam:atom:01M7Z7D73C8PRGGFMZYYQTYX7N",
+      "namespace": "zam-academy-bwr-realschule-7",
+      "slug": "bwr7-pp-produktionsprozess",
+      "title": "Der Produktionsprozess, Aufwand, Ertrag und Periodenerfolg",
+      "domain": "bwr/produktion",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=pp-produktionsprozess",
+      "prerequisites": [
+        {
+          "atom_id": "01M7Z7D736WMFYJX9MSC90PQJS",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Buchungsschritt auf."
+        },
+        {
+          "atom_id": "01M7Z7D732XEBKQBSHTX9XXZYF",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Buchungsschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-7",
+          "topic_code": "lb4",
+          "topic_title": "Buchhalterische Erfassung des betrieblichen Produktionsprozesses"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb4",
+          "topic_title": "Buchhalterische Erfassung des betrieblichen Produktionsprozesses",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "IIIa",
+          "subject": "bwr",
+          "topic_code": "lb4",
+          "topic_title": "Buchhalterische Erfassung des betrieblichen Produktionsprozesses",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7Z7D7571VCPQ7ZERAZ240K9",
+          "slug": "bwr7-pp-produktionsprozess-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Auf welcher Seite bucht man laufende Aufwendungen und Erträge auf den Erfolgskonten?",
+          "concept": "Aufwendungen im Soll (sie mindern das Eigenkapital), Erträge im Haben (sie mehren das Eigenkapital).",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=pp-produktionsprozess",
+          "materiality": "material",
+          "sample_solution": "Erfolgskonten sind Unterkonten des Passivkontos EK. Deshalb stehen Eigenkapitalminderungen (Aufwendungen) im Soll und Eigenkapitalmehrungen (Erträge) im Haben.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Aufwendungen im Soll (sie mindern das Eigenkapital), Erträge im Haben (sie mehren das Eigenkapital).",
+              "Aufwendungen im Haben und Erträge im Soll."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7Z7D7582GT0JXVE50BC9HB5",
+          "slug": "bwr7-pp-produktionsprozess-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie ermittelt man im Modell des betrieblichen Produktionsprozesses aus Aufwendungen und Erträgen den Periodenerfolg?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "\\text{Periodenerfolg} = \\text{Summe Erträge} - \\text{Summe Aufwendungen}",
+              "speech": "Periodenerfolg gleich Summe Erträge minus Summe Aufwendungen"
+            }
+          ],
+          "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=pp-produktionsprozess",
+          "materiality": "material",
+          "sample_solution": "Beschaffung von Werkstoffen erzeugt Aufwendungen (AWR–AWB), Fertigung schafft Fertigerzeugnisse, deren Verkauf Erträge auf UEFE bringt. Erträge > Aufwendungen bedeutet Gewinn; Aufwendungen > Erträge bedeutet Verlust. Reine Bestandsumschichtungen zählen nicht."
+        }
+      ]
+    },
+    {
+      "id": "01M7Z7D73DW4V5HK8EZEQQHKY2",
+      "atom_uri": "urn:zam:atom:01M7Z7D73DW4V5HK8EZEQQHKY2",
+      "namespace": "zam-academy-bwr-realschule-7",
+      "slug": "bwr7-pp-werkstoffe",
+      "title": "Die vier Werkstoffarten sicher unterscheiden",
+      "domain": "bwr/produktion",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=pp-werkstoffe",
+      "prerequisites": [
+        {
+          "atom_id": "01M7Z7D73C8PRGGFMZYYQTYX7N",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Buchungsschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-7",
+          "topic_code": "lb4",
+          "topic_title": "Buchhalterische Erfassung des betrieblichen Produktionsprozesses"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb4",
+          "topic_title": "Buchhalterische Erfassung des betrieblichen Produktionsprozesses",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "IIIa",
+          "subject": "bwr",
+          "topic_code": "lb4",
+          "topic_title": "Buchhalterische Erfassung des betrieblichen Produktionsprozesses",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7Z7D759G6F8ANF8VNNKV9NA",
+          "slug": "bwr7-pp-werkstoffe-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Worin unterscheiden sich Hilfsstoffe (AWH) und Betriebsstoffe (AWB)?",
+          "concept": "Hilfsstoffe gehen als Nebenbestandteile ins Produkt ein (z. B. Lack, Schrauben); Betriebsstoffe werden beim Herstellen verbraucht (z. B. Strom, Schmieröl).",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=pp-werkstoffe",
+          "materiality": "material",
+          "sample_solution": "Prüfe, ob der Stoff am fertigen Produkt zu finden ist: Schrauben oder Lack bleiben am Fahrrad (Hilfsstoffe), Schmieröl und Maschinenstrom gehen nicht ins Produkt ein (Betriebsstoffe).",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Hilfsstoffe gehen als Nebenbestandteile ins Produkt ein (z. B. Lack, Schrauben); Betriebsstoffe werden beim Herstellen verbraucht (z. B. Strom, Schmieröl).",
+              "Hilfsstoffe sind ausschließlich teure Maschinen; Betriebsstoffe gehören zum Hauptmaterial."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7Z7D75AKZWKBG41810MQ0YF",
+          "slug": "bwr7-pp-werkstoffe-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Systematisiere alle vier Werkstoffarten im Fertigungsbetrieb mit je einem Beispiel und ISB-Kürzel.",
+          "concept": "AWR Rohstoffe (Hauptmaterial), AWF Fremdbauteile (fertige Teile), AWH Hilfsstoffe (Nebenbestandteil), AWB Betriebsstoffe (Maschinenverbrauch).",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=pp-werkstoffe",
+          "materiality": "material",
+          "sample_solution": "Rohstoffe prägen das Erzeugnis durch eigene Bearbeitung. Fremdbauteile werden fertig zugekauft und eingebaut. Hilfsstoffe bleiben nebensächlich im Produkt, während Betriebsstoffe Maschinen und Hallen betreiben."
+        }
+      ]
+    },
+    {
+      "id": "01M7Z7D73E3SNT9NA4FQ6QG2CX",
+      "atom_uri": "urn:zam:atom:01M7Z7D73E3SNT9NA4FQ6QG2CX",
+      "namespace": "zam-academy-bwr-realschule-7",
+      "slug": "bwr7-pp-angebotsvergleich",
+      "title": "Werkstoffangebote vergleichen: Preis, Sofortrabatt und Qualität",
+      "domain": "bwr/produktion",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=pp-angebotsvergleich",
+      "prerequisites": [
+        {
+          "atom_id": "01M7Z7D73DW4V5HK8EZEQQHKY2",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Buchungsschritt auf."
+        },
+        {
+          "atom_id": "01M7Z7D73AQYVS4W9VK1XVXTVT",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Buchungsschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-7",
+          "topic_code": "lb4",
+          "topic_title": "Buchhalterische Erfassung des betrieblichen Produktionsprozesses"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb4",
+          "topic_title": "Buchhalterische Erfassung des betrieblichen Produktionsprozesses",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "IIIa",
+          "subject": "bwr",
+          "topic_code": "lb4",
+          "topic_title": "Buchhalterische Erfassung des betrieblichen Produktionsprozesses",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7Z7D75B6WJ5WF5M8TVF90Z8",
+          "slug": "bwr7-pp-angebotsvergleich-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie berücksichtigt die Buchführung einen sofort beim Werkstoffeinkauf gewährten Liefererrabatt?",
+          "concept": "Er wird sofort vom Listenpreis abgezogen; eingebucht wird nur der verminderte Nettobetrag ohne eigenes Rabattkonto.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=pp-angebotsvergleich",
+          "materiality": "material",
+          "sample_solution": "Sofortrabatte senken direkt auf dem Angebots- und Rechnungsbeleg den Nettopreis. Erst auf diesen gekürzten Nettobetrag berechnet sich die 19 % Vorsteuer.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Er wird sofort vom Listenpreis abgezogen; eingebucht wird nur der verminderte Nettobetrag ohne eigenes Rabattkonto.",
+              "Der volle Listenpreis wird gebucht und der Rabatt auf einem extra Rabattkonto gesammelt."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7Z7D75CF57MHZB3X99017DA",
+          "slug": "bwr7-pp-angebotsvergleich-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche Schritte und Faktoren gehören zu einer fundierten Beschaffungsentscheidung zwischen zwei Werkstoffangeboten?",
+          "concept": "Sofortrabatt vom Listenpreis abziehen für den Netto-Bezugspreis; zusätzlich nichtmonetäre Faktoren wie Qualität, Lieferzeit und Zuverlässigkeit abwägen.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=pp-angebotsvergleich",
+          "materiality": "material",
+          "sample_solution": "Rechnerisch entscheidet nicht der Listenpreis, sondern der Nettobetrag nach Sofortrabatt. Trotzdem darf der Einkauf ein knapp billigeres Angebot ablehnen, wenn lange Lieferzeiten, höhere Fehlerquoten oder unzuverlässiger Service die Fertigung gefährden."
+        }
+      ]
+    },
+    {
+      "id": "01M7Z7D73FRX5XXJW0QZMH7Z10",
+      "atom_uri": "urn:zam:atom:01M7Z7D73FRX5XXJW0QZMH7Z10",
+      "namespace": "zam-academy-bwr-realschule-7",
+      "slug": "bwr7-pp-einkauf-werkstoffe",
+      "title": "Einkaufsvorgänge für Werkstoffe buchen",
+      "domain": "bwr/produktion",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=pp-einkauf-werkstoffe",
+      "prerequisites": [
+        {
+          "atom_id": "01M7Z7D73E3SNT9NA4FQ6QG2CX",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Buchungsschritt auf."
+        },
+        {
+          "atom_id": "01M7Z7D73B2XKAT7AXXXT96BPG",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Buchungsschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-7",
+          "topic_code": "lb4",
+          "topic_title": "Buchhalterische Erfassung des betrieblichen Produktionsprozesses"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb4",
+          "topic_title": "Buchhalterische Erfassung des betrieblichen Produktionsprozesses",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "IIIa",
+          "subject": "bwr",
+          "topic_code": "lb4",
+          "topic_title": "Buchhalterische Erfassung des betrieblichen Produktionsprozesses",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7Z7D75D7ZP5GCCR2WD1963Y",
+          "slug": "bwr7-pp-einkauf-werkstoffe-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie buchst du den Kauf von Aluminiumrohren (Rohstoffe) für 3.000,00 Euro netto plus 570,00 Euro Vorsteuer auf Ziel?",
+          "concept": "AWR 3.000,00 € und VORST 570,00 € an VE 3.570,00 €",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=pp-einkauf-werkstoffe",
+          "materiality": "material",
+          "sample_solution": "In BwR 7 werden Werkstoffeinkäufe aufwandsorientiert gebucht: AWR (netto) und VORST stehen im Soll, VE (brutto) steht im Haben.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "AWR 3.000,00 € und VORST 570,00 € an VE 3.570,00 €",
+              "Vorräte 3.570,00 € an VE 3.570,00 €"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7Z7D75EW2CDV7YA8R68EWZ4",
+          "slug": "bwr7-pp-einkauf-werkstoffe-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Worauf achtest du beim Buchen einer Eingangsrechnung mit zwei verschiedenen Werkstoffarten und einem Sofortrabatt?",
+          "concept": "Sofortrabatt von beiden Listenpreisen einzeln abziehen, beide gekürzten Nettowerte auf AWR–AWB plus 19 % VORST im Soll an VE bzw. BK im Haben buchen.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=pp-einkauf-werkstoffe",
+          "materiality": "material",
+          "sample_solution": "Jeder Werkstoffanteil landet netto nach Rabatt auf seinem passenden Aufwandskonto (AWR, AWF, AWH oder AWB). Auf die gemeinsame Nettosumme berechnet man 19 % Vorsteuer (VORST) und gleicht die Bruttosumme über VE oder BK im Haben aus."
+        }
+      ]
+    },
+    {
+      "id": "01M7Z7D73GWZTFFWCJJN9NAW9E",
+      "atom_uri": "urn:zam:atom:01M7Z7D73GWZTFFWCJJN9NAW9E",
+      "namespace": "zam-academy-bwr-realschule-7",
+      "slug": "bwr7-pp-verkauf-fe",
+      "title": "Verkauf eigener Fertigerzeugnisse buchen",
+      "domain": "bwr/produktion",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=pp-verkauf-fe",
+      "prerequisites": [
+        {
+          "atom_id": "01M7Z7D73C8PRGGFMZYYQTYX7N",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Buchungsschritt auf."
+        },
+        {
+          "atom_id": "01M7Z7D73B2XKAT7AXXXT96BPG",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Buchungsschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-7",
+          "topic_code": "lb4",
+          "topic_title": "Buchhalterische Erfassung des betrieblichen Produktionsprozesses"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb4",
+          "topic_title": "Buchhalterische Erfassung des betrieblichen Produktionsprozesses",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "IIIa",
+          "subject": "bwr",
+          "topic_code": "lb4",
+          "topic_title": "Buchhalterische Erfassung des betrieblichen Produktionsprozesses",
+          "exam_relevant": false
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7Z7D75FX6FQ3GZ6AYHPB7H7",
+          "slug": "bwr7-pp-verkauf-fe-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie lautet der Buchungssatz beim Verkauf von Fertigerzeugnissen für 2.000,00 Euro netto plus 380,00 Euro USt auf Ziel?",
+          "concept": "FO 2.380,00 € an UEFE 2.000,00 € und UST 380,00 €",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=pp-verkauf-fe",
+          "materiality": "material",
+          "sample_solution": "Die Kundenforderung (FO) wächst brutto im Soll; auf der Habenseite stehen der Nettoerlös auf UEFE und die Umsatzsteuer auf UST.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "FO 2.380,00 € an UEFE 2.000,00 € und UST 380,00 €",
+              "UEFE 2.000,00 € und UST 380,00 € an FO 2.380,00 €"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7Z7D75GJ5SC4XHA9B4CAFNP",
+          "slug": "bwr7-pp-verkauf-fe-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie gehst du vor, wenn du aus Menge, Stückpreis und ggf. Kundenrabatt einen Verkauf von Fertigerzeugnissen buchst?",
+          "concept": "Menge · Einzelpreis minus Sofortrabatt ergibt Nettoerlös (UEFE); plus 19 % UST bucht man brutto im Soll auf FO bzw. BK.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=pp-verkauf-fe",
+          "materiality": "material",
+          "sample_solution": "Entscheidend auf der Verkaufsrechnung ist die Trennung in Zahlungs-/Forderungskonto (brutto im Soll), echtes Ertragskonto UEFE (netto nach Rabatt im Haben) und Steuerschuld UST (19 % im Haben)."
+        }
+      ]
+    },
+    {
+      "id": "01M7Z7D73H2676PE0QAX9AMR56",
+      "atom_uri": "urn:zam:atom:01M7Z7D73H2676PE0QAX9AMR56",
+      "namespace": "zam-academy-bwr-realschule-7",
+      "slug": "bwr7-pp-verkaufsbeleg",
+      "title": "Verkaufsbelege vervollständigen und buchen",
+      "domain": "bwr/produktion",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=pp-verkaufsbeleg",
+      "prerequisites": [
+        {
+          "atom_id": "01M7Z7D73GWZTFFWCJJN9NAW9E",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Buchungsschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-7",
+          "topic_code": "lb4",
+          "topic_title": "Buchhalterische Erfassung des betrieblichen Produktionsprozesses"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb4",
+          "topic_title": "Buchhalterische Erfassung des betrieblichen Produktionsprozesses",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7Z7D75HQ3B1TK2M08ZJFXPM",
+          "slug": "bwr7-pp-verkaufsbeleg-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "In welcher Reihenfolge berechnest du auf einem Verkaufsbeleg-Vordruck mehrere Positionen, Sofortrabatt und Umsatzsteuer?",
+          "concept": "Positionswerte (Menge · Einzelpreis) addieren, dann Sofortrabatt abziehen, zuletzt 19 % Umsatzsteuer auf den Nettobetrag aufschlagen.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=pp-verkaufsbeleg",
+          "materiality": "material",
+          "sample_solution": "Die Umsatzsteuer wird stets nur auf das tatsächlich vereinbarte Nettoentgelt erhoben; deshalb muss der Sofortrabatt vor der Steuerberechnung abgezogen werden.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Positionswerte (Menge · Einzelpreis) addieren, dann Sofortrabatt abziehen, zuletzt 19 % Umsatzsteuer auf den Nettobetrag aufschlagen.",
+              "Erst 19 % Umsatzsteuer je Position aufschlagen und am Ende einen geschätzten Rabatt abziehen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7Z7D75JE6Z4R17Z9SZECRAR",
+          "slug": "bwr7-pp-verkaufsbeleg-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche Angaben braucht ein vollständig ausgefüllter Verkaufsbeleg (§ 14 UStG) vor der Verbuchung?",
+          "concept": "Kopfdaten (§ 14 UStG: Namen, Rechnungsnummer, Lieferdatum), Positionen (Menge · Preis), Netto nach Rabatt, 19 % USt, Bruttobetrag und Zahlungsziel.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=pp-verkaufsbeleg",
+          "materiality": "material",
+          "sample_solution": "Nur eine formell und rechnerisch vollständige Ausgangsrechnung erlaubt dem Kunden den Vorsteuerabzug und liefert für unsere Buchhaltung die exakten Zahlen für FO, UEFE und UST."
+        }
+      ]
+    },
+    {
+      "id": "01M7Z7D73JP8XFEJGXQEPK1YRS",
+      "atom_uri": "urn:zam:atom:01M7Z7D73JP8XFEJGXQEPK1YRS",
+      "namespace": "zam-academy-bwr-realschule-7",
+      "slug": "bwr7-sg-eroeffnung",
+      "title": "Geschäftsbuchführung eröffnen: Anfangsbestände übernehmen",
+      "domain": "bwr/abschluss",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=sg-eroeffnung",
+      "prerequisites": [
+        {
+          "atom_id": "01M7Z7D737Y261BEC5MZZ4D409",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Buchungsschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-7",
+          "topic_code": "lb5",
+          "topic_title": "Strukturierung der Geschäftsbuchführung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb5",
+          "topic_title": "Strukturierung der Geschäftsbuchführung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7Z7D75KTN00YEAZ82840CGE",
+          "slug": "bwr7-sg-eroeffnung-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Aus welchem Dokument und auf welche Kontoseite werden die Anfangsbestände der Bestandskonten am 1. Januar übernommen?",
+          "concept": "Aus der Eröffnungsbilanz: Aktivkonten ins Soll, Passivkonten ins Haben; Erfolgskonten erhalten keinen Anfangsbestand.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=sg-eroeffnung",
+          "materiality": "material",
+          "sample_solution": "Aktive Bestandskonten stehen links in der Eröffnungsbilanz und starten links im Soll; passive stehen rechts und starten im Haben. Erfolgskonten beginnen bei 0,00 Euro.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Aus der Eröffnungsbilanz: Aktivkonten ins Soll, Passivkonten ins Haben; Erfolgskonten erhalten keinen Anfangsbestand.",
+              "Aus den Umsatzerlösen des Vorjahres; auch Aufwandskonten starten mit einem Anfangsbestand."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7Z7D75M6BAK3TKVVSHZ2RZG",
+          "slug": "bwr7-sg-eroeffnung-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum starten Erfolgskonten (AWR–AWB, UEFE) bei null, während Bestandskonten Anfangsbestände tragen?",
+          "concept": "Bestandskonten zeigen dauerhafte Stichtagsbestände (Vermögen/Schulden), Erfolgskonten messen dagegen nur Aufwendungen und Erträge genau eines Geschäftsjahres.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=sg-eroeffnung",
+          "materiality": "material",
+          "sample_solution": "Der Gewinn des Vorjahres steckt zu Jahresbeginn bereits im Eigenkapital und den Vermögensposten der Eröffnungsbilanz. Würden Erfolgskonten Vorjahreswerte vortragen, würde alter Erfolg doppelt gezählt."
+        }
+      ]
+    },
+    {
+      "id": "01M7Z7D73K5NS4SJTKMX8E1GKK",
+      "atom_uri": "urn:zam:atom:01M7Z7D73K5NS4SJTKMX8E1GKK",
+      "namespace": "zam-academy-bwr-realschule-7",
+      "slug": "bwr7-sg-grund-hauptbuch",
+      "title": "Laufende Buchungen im Grund- und Hauptbuch",
+      "domain": "bwr/abschluss",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=sg-grund-hauptbuch",
+      "prerequisites": [
+        {
+          "atom_id": "01M7Z7D73JP8XFEJGXQEPK1YRS",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Buchungsschritt auf."
+        },
+        {
+          "atom_id": "01M7Z7D738TVEC732JJX9BB1FD",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Buchungsschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-7",
+          "topic_code": "lb5",
+          "topic_title": "Strukturierung der Geschäftsbuchführung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb5",
+          "topic_title": "Strukturierung der Geschäftsbuchführung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7Z7D75NWGTP743FP4KRBM6P",
+          "slug": "bwr7-sg-grund-hauptbuch-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Nach welchem Ordnungsprinzip sortiert das Grundbuch und nach welchem das Hauptbuch?",
+          "concept": "Das Grundbuch ordnet alle Buchungssätze zeitlich (chronologisch); das Hauptbuch ordnet sie sachlich nach T-Konten.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=sg-grund-hauptbuch",
+          "materiality": "material",
+          "sample_solution": "Im Grundbuch stehen alle Geschäftsfälle fortlaufend nach Datum und Beleg; im Hauptbuch werden dieselben Beträge mit ihrem Gegenkonto auf die betroffenen Konten übertragen.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Das Grundbuch ordnet alle Buchungssätze zeitlich (chronologisch); das Hauptbuch ordnet sie sachlich nach T-Konten.",
+              "Das Grundbuch sammelt nur Steuerbelege, das Hauptbuch nur Kassenquittungen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7Z7D75PBHJZ3NPS87K2B5E0",
+          "slug": "bwr7-sg-grund-hauptbuch-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie greifen Beleg, Grundbuch und Hauptbuch bei laufenden Geschäftsvorfällen ineinander?",
+          "concept": "Jeder geprüfte Beleg erzeugt einen Buchungssatz im zeitlichen Grundbuch; jeder Buchungssatz wird mit Datum und Gegenkonto ins sachliche Hauptbuch (T-Konten) übertragen.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=sg-grund-hauptbuch",
+          "materiality": "material",
+          "sample_solution": "Die zeitliche Ordnung im Grundbuch verhindert Lücken im Buchungsablauf, während die T-Konten im Hauptbuch für jeden Vermögens-, Schulden-, Aufwands- und Ertragsposten jederzeit den aktuellen Saldo ablesbar machen."
+        }
+      ]
+    },
+    {
+      "id": "01M7Z7D73M5JAKRRTCSKCVWASD",
+      "atom_uri": "urn:zam:atom:01M7Z7D73M5JAKRRTCSKCVWASD",
+      "namespace": "zam-academy-bwr-realschule-7",
+      "slug": "bwr7-sg-guv-abschluss",
+      "title": "Aufwands- und Ertragskonten auf GUV abschließen",
+      "domain": "bwr/abschluss",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=sg-guv-abschluss",
+      "prerequisites": [
+        {
+          "atom_id": "01M7Z7D73K5NS4SJTKMX8E1GKK",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Buchungsschritt auf."
+        },
+        {
+          "atom_id": "01M7Z7D73C8PRGGFMZYYQTYX7N",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Buchungsschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-7",
+          "topic_code": "lb5",
+          "topic_title": "Strukturierung der Geschäftsbuchführung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb5",
+          "topic_title": "Strukturierung der Geschäftsbuchführung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7Z7D75Q2AECS5535EPG1KA6",
+          "slug": "bwr7-sg-guv-abschluss-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Auf welcher Seite des Kontos GUV stehen beim Jahresabschluss alle Aufwendungen und auf welcher alle Erträge?",
+          "concept": "Aufwendungen stehen im Soll von GUV, Erträge stehen im Haben.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=sg-guv-abschluss",
+          "materiality": "material",
+          "sample_solution": "Aufwandskonten schließen über „GUV an Aufwandskonto“ ab (Soll des GUV), Ertragskonten über „Ertragskonto an GUV“ (Haben des GUV).",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Aufwendungen stehen im Soll von GUV, Erträge stehen im Haben.",
+              "Erträge stehen im Soll von GUV, Aufwendungen im Haben."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7Z7D75R28G19B3MTMV347Z5",
+          "slug": "bwr7-sg-guv-abschluss-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie liest du am Konto GUV formal und inhaltlich ab, ob ein Reingewinn oder Reinverlust entstanden ist?",
+          "concept": "Haben > Soll (Erträge > Aufwendungen): Reingewinn, Ausgleichssaldo steht im Soll des GUV; Soll > Haben (Aufwendungen > Erträge): Reinverlust, Saldo steht im Haben des GUV.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=sg-guv-abschluss",
+          "materiality": "material",
+          "sample_solution": "Weil der Ausgleichssaldo beim T-Konto immer auf der wertmäßig kleineren Seite steht, zeigt ein Saldo im Soll des GUV einen Ertragsüberschuss (Reingewinn) und ein Saldo im Haben einen Aufwandsüberschuss (Reinverlust) an."
+        }
+      ]
+    },
+    {
+      "id": "01M7Z7D73N188HN46DY339B9X4",
+      "atom_uri": "urn:zam:atom:01M7Z7D73N188HN46DY339B9X4",
+      "namespace": "zam-academy-bwr-realschule-7",
+      "slug": "bwr7-sg-eigenkapital-nahtstelle",
+      "title": "EK als Nahtstelle: GUV auf Eigenkapital abschließen",
+      "domain": "bwr/abschluss",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=sg-eigenkapital-nahtstelle",
+      "prerequisites": [
+        {
+          "atom_id": "01M7Z7D73M5JAKRRTCSKCVWASD",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Buchungsschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-7",
+          "topic_code": "lb5",
+          "topic_title": "Strukturierung der Geschäftsbuchführung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb5",
+          "topic_title": "Strukturierung der Geschäftsbuchführung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7Z7D75SJ5M3QS3AJCTG1K3X",
+          "slug": "bwr7-sg-eigenkapital-nahtstelle-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Wie lautet der Abschlussbuchungssatz von GUV auf EK, wenn ein Unternehmen einen Reingewinn erzielt hat?",
+          "concept": "GUV an EK (das Eigenkapital steigt im Haben).",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=sg-eigenkapital-nahtstelle",
+          "materiality": "material",
+          "sample_solution": "Ein Gewinn mehrt das Eigenkapital. Da EK ein Passivkonto ist, steht die Mehrung im Haben — der Buchungssatz lautet GUV an EK (bei Verlust umgekehrt).",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "GUV an EK (das Eigenkapital steigt im Haben).",
+              "EK an GUV (das Eigenkapital sinkt im Soll)."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7Z7D75T24EEP01J1HM94T63",
+          "slug": "bwr7-sg-eigenkapital-nahtstelle-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum bildet das Konto EK die „Nahtstelle“ zwischen Bestands- und Erfolgskonten?",
+          "concept": "Es nimmt den im GUV gesammelten Periodenerfolg auf (Gewinn +, Verlust −) und überträgt den neuen Endbestand des Eigenkapitals über SBK in die Schlussbilanz.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=sg-eigenkapital-nahtstelle",
+          "materiality": "material",
+          "sample_solution": "Ohne den Abschluss von GUV über EK blieben die Veränderungen aus Aufwendungen und Erträgen unberücksichtigt, sodass die Passivseite der Schlussbilanz nicht mit dem neuen Vermögen auf der Aktivseite übereinstimmen würde."
+        }
+      ]
+    },
+    {
+      "id": "01M7Z7D73PY1CA85KTTT01SVS3",
+      "atom_uri": "urn:zam:atom:01M7Z7D73PY1CA85KTTT01SVS3",
+      "namespace": "zam-academy-bwr-realschule-7",
+      "slug": "bwr7-sg-sbk-schlussbilanz",
+      "title": "Bestandskonten auf SBK abschließen und Schlussbilanz erstellen",
+      "domain": "bwr/abschluss",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=sg-sbk-schlussbilanz",
+      "prerequisites": [
+        {
+          "atom_id": "01M7Z7D73N188HN46DY339B9X4",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Buchungsschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-7",
+          "topic_code": "lb5",
+          "topic_title": "Strukturierung der Geschäftsbuchführung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb5",
+          "topic_title": "Strukturierung der Geschäftsbuchführung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7Z7D75V405526NDC2W4WJNW",
+          "slug": "bwr7-sg-sbk-schlussbilanz-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Mit welchem Buchungssatz schließt du die aktiven und die passiven Bestandskonten auf das Konto SBK ab?",
+          "concept": "Aktivkonten: SBK an Aktivkonto; Passivkonten: Passivkonto an SBK.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=sg-sbk-schlussbilanz",
+          "materiality": "material",
+          "sample_solution": "Im Schlussbilanzkonto stehen wie in der Schlussbilanz alle Aktivbestände links im Soll („SBK an Aktivkonto“) und alle Passivbestände rechts im Haben („Passivkonto an SBK“).",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Aktivkonten: SBK an Aktivkonto; Passivkonten: Passivkonto an SBK.",
+              "Aktivkonten: Aktivkonto an SBK; Passivkonten: SBK an Passivkonto."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7Z7D75W643W64GDD9B5JJCS",
+          "slug": "bwr7-sg-sbk-schlussbilanz-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Worin unterscheiden sich das Schlussbilanzkonto (SBK) und die Schlussbilanz nach § 242 HGB?",
+          "concept": "SBK ist ein Buchungskonto mit Soll/Haben, Kontokürzeln und Gegenkonten; die Schlussbilanz gliedert nach Aktiva/Passiva mit Ort, Datum und Unterschrift.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=sg-sbk-schlussbilanz",
+          "materiality": "material",
+          "sample_solution": "Beide zeigen exakt dieselben Schlusswerte des Betriebsvermögens und Kapitals. Während SBK den technischen Abschluss des Hauptbuchs bildet, ist die Schlussbilanz das geordnete externe Dokument des Jahresabschlusses."
+        }
+      ]
+    },
+    {
+      "id": "01M7Z7D73QRATW7PAVJADYDV86",
+      "atom_uri": "urn:zam:atom:01M7Z7D73QRATW7PAVJADYDV86",
+      "namespace": "zam-academy-bwr-realschule-7",
+      "slug": "bwr7-sg-bilanzvergleich",
+      "title": "Eröffnungs- und Schlussbilanz vergleichen",
+      "domain": "bwr/abschluss",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=sg-bilanzvergleich",
+      "prerequisites": [
+        {
+          "atom_id": "01M7Z7D73PY1CA85KTTT01SVS3",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Buchungsschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-7",
+          "topic_code": "lb5",
+          "topic_title": "Strukturierung der Geschäftsbuchführung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb5",
+          "topic_title": "Strukturierung der Geschäftsbuchführung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7Z7D75XHM1R7F3XZYFE4KJE",
+          "slug": "bwr7-sg-bilanzvergleich-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Was zeigt ein gestiegenes Eigenkapital zwischen Eröffnungs- und Schlussbilanz an (ohne private Einlagen oder Entnahmen)?",
+          "concept": "Einen erwirtschafteten Reingewinn in Höhe der Eigenkapitalzunahme.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=sg-bilanzvergleich",
+          "materiality": "material",
+          "sample_solution": "Ohne Einlagen und Entnahmen wächst das Eigenkapital ausschließlich durch Gewinne aus dem laufenden Geschäftsjahr; Kredite verändern nur das Fremdkapital.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Einen erwirtschafteten Reingewinn in Höhe der Eigenkapitalzunahme.",
+              "Dass das Unternehmen neue Kredite aufgenommen hat."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7Z7D75Y5A731YRC3R5DX5SP",
+          "slug": "bwr7-sg-bilanzvergleich-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche Kennziffern und Veränderungen beurteilst du beim Vergleich von Eröffnungs- und Schlussbilanz?",
+          "concept": "Veränderung des Eigenkapitals (Erfolg), Eigenkapitalquote (Stabilität), Entwicklung des Fremdkapitals (Verschuldung), Anlagevermögen (Investitionen) und Bankguthaben (Liquidität).",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=sg-bilanzvergleich",
+          "materiality": "material",
+          "sample_solution": "Ein einzelner Blick auf eine wachsende Bilanzsumme reicht nicht: Erst wenn sich zeigt, dass Gewinne das Eigenkapital stärken, Schulden beherrschbar bleiben und flüssige Mittel ausreichen, ist die Entwicklung gesund."
+        }
+      ]
+    },
+    {
+      "id": "01M7Z7D73RGHYJ56HZ50YK7KH6",
+      "atom_uri": "urn:zam:atom:01M7Z7D73RGHYJ56HZ50YK7KH6",
+      "namespace": "zam-academy-bwr-realschule-7",
+      "slug": "bwr7-sg-inventurdifferenzen",
+      "title": "Inventurdifferenzen aus Ist- und Sollrechnung ermitteln",
+      "domain": "bwr/abschluss",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=sg-inventurdifferenzen",
+      "prerequisites": [
+        {
+          "atom_id": "01M7Z7D7338JHDNFW2S42P66EG",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Buchungsschritt auf."
+        },
+        {
+          "atom_id": "01M7Z7D73PY1CA85KTTT01SVS3",
+          "type": "hard",
+          "rationale": "Die Lektion baut auf diesem Begriff oder Buchungsschritt auf."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "bwr-realschule-7",
+          "topic_code": "lb5",
+          "topic_title": "Strukturierung der Geschäftsbuchführung"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb5",
+          "topic_title": "Strukturierung der Geschäftsbuchführung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M7Z7D75Z0RT20FQDDA5F6KPB",
+          "slug": "bwr7-sg-inventurdifferenzen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 2,
+          "question": "Welcher Bestand wird in die Schlussbilanz übernommen, wenn bei der Inventur Istbestand und Sollbestand voneinander abweichen?",
+          "concept": "Immer der tatsächlich gezählte Istbestand.",
+          "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=sg-inventurdifferenzen",
+          "materiality": "material",
+          "sample_solution": "In Inventar und Bilanz dürfen nur real vorhandene Vermögensgegenstände stehen (§ 240 HGB). Deshalb gilt zwingend der festgestellte Istbestand.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Immer der tatsächlich gezählte Istbestand.",
+              "Immer der höhere Wert zwischen Buchbestand und Zählung."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M7Z7D760XZH4EFPRB31V2C94",
+          "slug": "bwr7-sg-inventurdifferenzen-kern",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie ermittelt man Inventurdifferenzen zwischen Ist- und Sollrechnung und welche Ursachen kommen infrage?",
+          "concept_segments": [
+            {
+              "type": "math",
+              "tex": "\\text{Inventurdifferenz} = \\text{Istbestand} - \\text{Sollbestand}",
+              "speech": "Inventurdifferenz gleich Istbestand minus Sollbestand"
+            }
+          ],
+          "source_link": "https://academy.zam-os.org/bwr-realschule-7/#lesson=sg-inventurdifferenzen",
+          "materiality": "material",
+          "sample_solution": "Fehlbestände (Ist < Soll) entstehen durch Diebstahl, Bruch, Verderb, Schwund oder ungebuchte Werkstattentnahmen; Mehrbestände (Ist > Soll) etwa durch Verwechslung von Artikeln, Zählfehler oder vergessene Warenzugänge."
+        }
+      ]
+    }
+  ]
+}

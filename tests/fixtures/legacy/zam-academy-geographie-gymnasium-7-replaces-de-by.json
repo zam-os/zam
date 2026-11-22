@@ -1,0 +1,123 @@
+{
+  "schema": 1,
+  "status": "approved",
+  "approved": "2026-11-22",
+  "source_repository": "https://github.com/zam-os/zam",
+  "source_commit": "d83ea3b2f93609b7ed25432c1cb37774dc59c537",
+  "source": "Thomas explicitly approved the two proposed A transfers in the Codex chat for Academy PR #183 on 2026-11-22: “Freigabe für Kartenübernahmen erteilt”",
+  "neighbouring_grade_review": "The legacy Grade 6 Europe cell overlaps Geo7, and the approval includes its Ural Mountains retrieval. The legacy Grade 8 tropics and deserts cell is outside the Grade 7 scope.",
+  "sources": [
+    {
+      "file": "tests/fixtures/de-by-gymnasium-7-geographie-europa-naturraeume-klima-plattentektonik-kvt.json",
+      "tile_id": "de-by:gymnasium-7-geographie-europa-naturraeume-klima-plattentektonik",
+      "version": "2026.08.1",
+      "sha256": "954632f2b883cb3eecf7adc166b479caa005600734c0557aa1aa35656aae38d6",
+      "source_path": "tests/fixtures/curriculum/de-by-gymnasium-7-geographie-europa-naturraeume-klima-plattentektonik-kvt.json"
+    },
+    {
+      "file": "tests/fixtures/de-by-gymnasium-6-geographie-europa-raeume-wirtschaft-eu-kvt.json",
+      "tile_id": "de-by:gymnasium-6-geographie-europa-raeume-wirtschaft-eu",
+      "version": "2026.08.1",
+      "sha256": "2b525844f71bed4a38d541d64ca3f8c3eba503822d9c3832415f853c50155d9f",
+      "source_path": "tests/fixtures/curriculum/de-by-gymnasium-6-geographie-europa-raeume-wirtschaft-eu-kvt.json"
+    }
+  ],
+  "rows": [
+    {
+      "de_by_cell": "de-by:gymnasium-7-geographie-europa-naturraeume-klima-plattentektonik",
+      "de_by_id": "01K4G7P0000000000000000J01",
+      "category": "C",
+      "action": "keep-active",
+      "academy_slug": null,
+      "reason": "The old answer says the downgoing plate melts; the new explanation models mantle melting and the complex Mediterranean setting."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-7-geographie-europa-naturraeume-klima-plattentektonik",
+      "de_by_id": "01K4G7P0000000000000000J02",
+      "category": "C",
+      "action": "keep-active",
+      "academy_slug": null,
+      "reason": "The new course divides tectonic setting, volcanoes, hazards and monitoring between different tasks. The old synthesis also implies an overly uniform Mediterranean mechanism."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-7-geographie-europa-naturraeume-klima-plattentektonik",
+      "de_by_id": "01K4G7P0000000000000000J03",
+      "category": "A",
+      "action": "replace",
+      "academy_slug": "geo7-klima-vergleichen-check",
+      "reason": "Both cards retrieve the North Atlantic Current as the continuation of the Gulf Stream system towards northwestern Europe. The new wording drops the absolute claim about ice-free ports."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-7-geographie-europa-naturraeume-klima-plattentektonik",
+      "de_by_id": "01K4G7P0000000000000000J04",
+      "category": "C",
+      "action": "keep-active",
+      "academy_slug": null,
+      "reason": "The old prompt combines climate controls and the EU. The Academy practices them independently."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-6-geographie-europa-raeume-wirtschaft-eu",
+      "de_by_id": "01K4YG6E000000000000000J01",
+      "category": "A",
+      "action": "replace",
+      "academy_slug": "geo7-europa-naturraume-check",
+      "reason": "Both questions ask for the mountain range at the conventional eastern boundary. The old answer mentions the Ural River as additional context."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-6-geographie-europa-raeume-wirtschaft-eu",
+      "de_by_id": "01K4YG6E000000000000000J02",
+      "category": "C",
+      "action": "keep-active",
+      "academy_slug": null,
+      "reason": "The old card requires a single long topographic synthesis including mountains, peninsulas, straits and six capitals. The course distributes orientation over several lessons."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-6-geographie-europa-raeume-wirtschaft-eu",
+      "de_by_id": "01K4YG6E000000000000000J03",
+      "category": "C",
+      "action": "keep-active",
+      "academy_slug": null,
+      "reason": "The recall overlaps, but the old answer expressly requires rising sea level following glacial retreat. The new card retrieves glacial carving and later flooding without committing to that local mechanism."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-6-geographie-europa-raeume-wirtschaft-eu",
+      "de_by_id": "01K4YG6E000000000000000J04",
+      "category": "C",
+      "action": "keep-active",
+      "academy_slug": null,
+      "reason": "The new course treats topography, climate and agriculture in separate tasks instead of reproducing the four-region synthesis."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-6-geographie-europa-raeume-wirtschaft-eu",
+      "de_by_id": "01K4YG6E000000000000000J05",
+      "category": "C",
+      "action": "keep-active",
+      "academy_slug": null,
+      "reason": "The old answer requires three specific consequences of tourism-related groundwater use. The new package distributes these mechanisms across water use and coastal tourism."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-6-geographie-europa-raeume-wirtschaft-eu",
+      "de_by_id": "01K4YG6E000000000000000J06",
+      "category": "C",
+      "action": "keep-active",
+      "academy_slug": null,
+      "reason": "The tourism prompt spans regional examples and several types of effects. No new card retains the whole retrieval."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-6-geographie-europa-raeume-wirtschaft-eu",
+      "de_by_id": "01K4YG6E000000000000000J07",
+      "category": "C",
+      "action": "keep-active",
+      "academy_slug": null,
+      "reason": "The old prompt equates Schengen and EU membership and implies no checks in all cases. The new package distinguishes the two and does not repeat that retrieval."
+    },
+    {
+      "de_by_cell": "de-by:gymnasium-6-geographie-europa-raeume-wirtschaft-eu",
+      "de_by_id": "01K4YG6E000000000000000J08",
+      "category": "C",
+      "action": "keep-active",
+      "academy_slug": null,
+      "reason": "The new card covers the four Single Market freedoms. It does not also retrieve the full history, currency and EU symbols."
+    }
+  ]
+}

@@ -1,0 +1,175 @@
+{
+	"schema": 1,
+	"status": "approved",
+	"approved": "2026-11-21",
+	"source": "Thomas explicitly approved both proposed history transfers in the Claude Code chat for Academy PR #180 on 2026-11-21: „Approve both“ (answer to the question „Approve the two A history transfers in the card mapping?“, which also asked him to decide which package takes the two cards that the approved Englisch 6 mapping lists as keep-active). Thus J01 of de-by:realschule-7-englisch-grammatik-tenses moves to e7-past-vs-perfect-check and J05 of de-by:realschule-6-englisch-grammatik-grundlagen moves to e7-must-have-to-check. Englisch 6 transfers neither card (keep-active there), so each history moves to exactly one package. All other old cards stay active; five of them were already replaced by englisch-realschule-6 (neighbour_successor). No retired_items.",
+	"source_repository": "https://github.com/zam-os/zam",
+	"source_commit": "7897672c2caa8435c89bf39eac41e1efc75521c2",
+	"sources": [
+		{
+			"file": "tests/fixtures/de-by-realschule-7-englisch-grammatik-tenses-kvt.json",
+			"tile_id": "de-by:realschule-7-englisch-grammatik-tenses",
+			"version": "2026.08.1",
+			"sha256": "c1378fe282934048ac31a9eacafe318cc338aa9acfb428a7aa6f2c7a190deefd",
+			"path_in_source": "tests/fixtures/curriculum/de-by-realschule-7-englisch-grammatik-tenses-kvt.json"
+		},
+		{
+			"file": "tests/fixtures/de-by-realschule-6-englisch-grammatik-grundlagen-kvt.json",
+			"tile_id": "de-by:realschule-6-englisch-grammatik-grundlagen",
+			"version": "2026.08.1",
+			"sha256": "071ddb8c8873995521289549608d07ed6cea671c87c7757ce2358db7b7fc94fa",
+			"path_in_source": "tests/fixtures/legacy/de-by-realschule-6-englisch-grammatik-grundlagen-kvt.json"
+		}
+	],
+	"rows": [
+		{
+			"de_by_cell": "de-by:realschule-7-englisch-grammatik-tenses",
+			"de_by_id": "01K4E7T0000000000000000J01",
+			"de_by_question": "Welche Zeitform muss im Englischen zwingend gewählt werden, wenn ein Signalwort einen genau abgeschlossenen Zeitpunkt in der Vergangenheit benennt (z. B. 'yesterday', 'in 2018', 'two days ago')?",
+			"category": "A",
+			"academy_slug": "e7-past-vs-perfect-check",
+			"action": "replace",
+			"reason": "Derselbe Einzelabruf: Bei einem Signalwort für einen abgeschlossenen Zeitpunkt (yesterday, in 2018, two days ago) steht das Simple Past. Wörtlich gleiche Frage; inhaltsgleiche Antwort (alt: „Das Past Simple (einfache Vergangenheit …)“, neu: „das Simple Past (Past Simple)“) und inhaltsgleiche binäre Auswahl gegen das Present Perfect Simple. Der Kontrast Simple Past / Present Perfect steht im LehrplanPLUS in Jahrgangsstufe 7 (E7 1.2 Grammatik). Freigegeben von Thomas am 2026-11-21 („Approve both“); Englisch 6 überträgt diese Karte nicht (dort keep-active)."
+		},
+		{
+			"de_by_cell": "de-by:realschule-7-englisch-grammatik-tenses",
+			"de_by_id": "01K4E7T0000000000000000J02",
+			"de_by_question": "Vergleiche Present Perfect Simple (have/has + past participle; Bezug/Auswirkung auf Gegenwart oder noch andauernde Zeitspanne; Signalwörter: just, already, yet, ever, never, since, for) und Past Simple (Vergangenheit 2. Form; abgeschlossene Handlung zu bestimmtem Zeitpunkt; Signalwörter: yesterday, last week, in 2020, ago, when...) und setze die Verben in die richtige Zeitform: a) 'I (lose) my keys and I cannot open the door now.' b) 'She (visit) London three years ago.'",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"reason": "Mehrteiliger Sammelabruf (Bildung, Gebrauch, Signalwörter beider Zeiten und zwei Lückensätze) mit langer Musterlösung. Das Paket teilt den Inhalt auf drei Karten von e7-past-vs-perfect auf; kein Nachfolger enthält den ganzen Abruf, daher keine Übertragung. Die Karte bleibt aktiv."
+		},
+		{
+			"de_by_cell": "de-by:realschule-7-englisch-grammatik-tenses",
+			"de_by_id": "01K4E7T0000000000000000J03",
+			"de_by_question": "Wie wird das Past Continuous (Past Progressive) im Englischen gebildet?",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"neighbour_successor": "zam-academy:englisch-realschule-6/e6-past-progressive-check",
+			"reason": "Bereits durch den freigegebenen Bestandsabgleich von englisch-realschule-6 (approved 2026-11-19) geregelt: e6-past-progressive-check ersetzt diese Karte dort. Dieses Paket übernimmt nichts und deklariert nichts; die Zeile steht nur, damit jede Alt-Id genau eine Zeile hat."
+		},
+		{
+			"de_by_cell": "de-by:realschule-7-englisch-grammatik-tenses",
+			"de_by_id": "01K4E7T0000000000000000J04",
+			"de_by_question": "Erkläre die Verwendung des Past Continuous (was/were + verb-ing) zur Beschreibung von Handlungen, die zu einem bestimmten Zeitpunkt in der Vergangenheit gerade im Ablauf waren, analysiere das Zusammenspiel mit dem Past Simple bei unterbrochenen Handlungen (Signalwörter: while + Past Progressive vs. when + Past Simple) und übersetze: 'Während Tom schlief, klingelte plötzlich das Telefon.'",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"reason": "Mehrteiliger Abruf zum Past Progressive mit Übersetzung; Stoff der Jahrgangsstufe 6, im Paket englisch-realschule-6 als keep-active abgeglichen. Kein Nachfolger in Klasse 7; die Karte bleibt aktiv."
+		},
+		{
+			"de_by_cell": "de-by:realschule-7-englisch-grammatik-tenses",
+			"de_by_id": "01K4E7T0000000000000000J05",
+			"de_by_question": "Welche Zukunftsform verwendet man im Englischen für bereits gefasste feste Pläne und Absichten für die Zukunft (z. B. 'Ich habe beschlossen, morgen mein Zimmer aufzuräumen')?",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"neighbour_successor": "zam-academy:englisch-realschule-6/e6-going-to-future-check",
+			"reason": "Bereits durch den freigegebenen Bestandsabgleich von englisch-realschule-6 (approved 2026-11-19) geregelt: e6-going-to-future-check ersetzt diese Karte dort. Dieses Paket übernimmt nichts und deklariert nichts; die Zeile steht nur, damit jede Alt-Id genau eine Zeile hat."
+		},
+		{
+			"de_by_cell": "de-by:realschule-7-englisch-grammatik-tenses",
+			"de_by_id": "01K4E7T0000000000000000J06",
+			"de_by_question": "Unterscheide das will-Future (will + Infinitiv: 1. spontane Entschlüsse im Moment des Sprechens, 2. allgemeine, nicht beeinflussbare Vorhersagen/Vermutungen mit think, hope, probably, 3. Versprechen) vom going-to-Future (am/is/are going to + Infinitiv: 1. feste Absichten und geplante Vorhaben, 2. unmittelbar bevorstehende Ereignisse mit sichtbaren Vorzeichen in der Gegenwart) und wähle die passende Form für: a) 'Look at those dark black clouds! It (rain).' b) 'The doorbell is ringing. – OK, I (open) the door.'",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"reason": "Mehrteiliger Kontrast will-Future / going-to-Future; Stoff der Jahrgangsstufe 6, im Paket englisch-realschule-6 als keep-active abgeglichen. Kein Nachfolger in Klasse 7; die Karte bleibt aktiv."
+		},
+		{
+			"de_by_cell": "de-by:realschule-7-englisch-grammatik-tenses",
+			"de_by_id": "01K4E7T0000000000000000J07",
+			"de_by_question": "Wie lautet die unregelmäßige Steigerung (Komparativ und Superlativ) des englischen Adjektivs 'good'?",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"neighbour_successor": "zam-academy:englisch-realschule-6/e6-comparatives-check",
+			"reason": "Bereits durch den freigegebenen Bestandsabgleich von englisch-realschule-6 (approved 2026-11-19) geregelt: e6-comparatives-check ersetzt diese Karte dort. Dieses Paket übernimmt nichts und deklariert nichts; die Zeile steht nur, damit jede Alt-Id genau eine Zeile hat."
+		},
+		{
+			"de_by_cell": "de-by:realschule-7-englisch-grammatik-tenses",
+			"de_by_id": "01K4E7T0000000000000000J08",
+			"de_by_question": "Formuliere die Regeln zur Steigerung englischer Adjektive (1. einsilbige Adjektive mit -er/-est; 2. zweisilbige auf -y mit -ier/-iest; 3. mehrsilbige Adjektive mit more/most), nenne die wichtigsten unregelmäßigen Steigerungsformen (good/better/best, bad/worse/worst, much/many/more/most, little/less/least) und bilde die Vergleichskonstruktionen 'as ... as' (Gleichheit) und '... than' (Ungleichheit) an Beispielen.",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"reason": "Mehrteilige Synthese zur Steigerung von Adjektiven; Stoff der Jahrgangsstufe 6, im Paket englisch-realschule-6 als keep-active abgeglichen. Kein Nachfolger in Klasse 7; die Karte bleibt aktiv."
+		},
+		{
+			"de_by_cell": "de-by:realschule-6-englisch-grammatik-grundlagen",
+			"de_by_id": "01K4E6G0000000000000000J01",
+			"de_by_question": "Wie lautet die grundlegende Merkregel für die 3. Person Einzahl (he, she, it) im englischen Simple Present?",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"reason": "3. Person Singular im Simple Present ist Stoff der Jahrgangsstufe 5; im Paket englisch-realschule-6 als keep-active abgeglichen. Kein Nachfolger in Klasse 7."
+		},
+		{
+			"de_by_cell": "de-by:realschule-6-englisch-grammatik-grundlagen",
+			"de_by_id": "01K4E6G0000000000000000J02",
+			"de_by_question": "Vergleiche Simple Present (Bildung: Infinitiv / he-she-it + s; Verwendung: regelmäßige Gewohnheiten, Tatsachen, Zeitpläne; Signalwörter: always, usually, often, sometimes, never, every day; Verneinung: don't / doesn't + Infinitiv) mit dem Present Continuous / Progressive (Bildung: am/is/are + Verb-ing; Verwendung: Handlungen, die genau im Augenblick des Sprechens ablaufen; Signalwörter: now, at the moment, Look!, Listen!) und setze ein: a) 'Listen! The birds (sing).' b) 'Emma usually (play) tennis on Fridays.'",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"reason": "Mehrteiliger Vergleich Simple Present / Present Progressive; Stoff der Jahrgangsstufen 5 und 6, im Paket englisch-realschule-6 als keep-active abgeglichen. Kein Nachfolger in Klasse 7."
+		},
+		{
+			"de_by_cell": "de-by:realschule-6-englisch-grammatik-grundlagen",
+			"de_by_id": "01K4E6G0000000000000000J03",
+			"de_by_question": "Wie wird eine Frage oder Verneinung im englischen Simple Past mit dem Hilfsverb 'did' gebildet?",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"neighbour_successor": "zam-academy:englisch-realschule-6/e6-simple-past-rev-check",
+			"reason": "Bereits durch den freigegebenen Bestandsabgleich von englisch-realschule-6 (approved 2026-11-19) geregelt: e6-simple-past-rev-check ersetzt diese Karte dort. Dieses Paket übernimmt nichts und deklariert nichts; die Zeile steht nur, damit jede Alt-Id genau eine Zeile hat."
+		},
+		{
+			"de_by_cell": "de-by:realschule-6-englisch-grammatik-grundlagen",
+			"de_by_id": "01K4E6G0000000000000000J04",
+			"de_by_question": "Erkläre die Bildung des Simple Past für: 1. Regelmäßige Verben (Infinitiv + -ed, Besonderheiten: stopped, played, cried), 2. Häufige unregelmäßige Verben (go -> went, see -> saw, buy -> bought, have -> had, be -> was/were), 3. Verneinte Sätze und Fragen mit did / didn't + Infinitiv und übersetze: a) 'Gestern ging ich in die Schule.' b) 'Hast du deine Hausaufgaben gemacht?' c) 'Wir sahen den Film nicht.'",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"reason": "Mehrteiliger Simple-Past-Abruf mit Übersetzungen; Stoff der Jahrgangsstufe 6, im Paket englisch-realschule-6 als keep-active abgeglichen. Kein Nachfolger in Klasse 7."
+		},
+		{
+			"de_by_cell": "de-by:realschule-6-englisch-grammatik-grundlagen",
+			"de_by_id": "01K4E6G0000000000000000J05",
+			"de_by_question": "Was drückt das englische Modalverb 'mustn't' im Gegensatz zu 'needn't' aus?",
+			"category": "A",
+			"academy_slug": "e7-must-have-to-check",
+			"action": "replace",
+			"reason": "Derselbe Einzelabruf: mustn't drückt im Gegensatz zu needn't ein Verbot aus. Wörtlich gleiche Frage; inhaltsgleiche Antwort (alt: „Ein striktes Verbot (‚Du darfst nicht!‘)“, neu: „ein Verbot (du darfst nicht)“) und binäre Auswahl gegen „keine Notwendigkeit“. mustn't und needn't stehen im LehrplanPLUS in Jahrgangsstufe 7 (E7 1.2 Wortschatz: modal verbs); englisch-realschule-6 hat die Karte deshalb aktiv gelassen. Freigegeben von Thomas am 2026-11-21 („Approve both“); Englisch 6 überträgt diese Karte nicht (dort keep-active)."
+		},
+		{
+			"de_by_cell": "de-by:realschule-6-englisch-grammatik-grundlagen",
+			"de_by_id": "01K4E6G0000000000000000J06",
+			"de_by_question": "Erkläre den bedeutungsentscheidenden Unterschied zwischen den englischen Modalverben: 1. must (Pflicht/Notwendigkeit: müssen), 2. mustn't (striktes Verbot: nicht dürfen!), 3. needn't / don't have to (keine Pflicht: nicht brauchen/nicht müssen), 4. can / can't (Können/Fähigkeit/Erlaubnis) und wähle die passende Form für: a) 'You (mustn't / needn't) touch that wire – it is dangerous!' b) 'Tomorrow is Sunday, so I (mustn't / needn't) get up early.'",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"reason": "Mehrteiliger Modalverb-Abruf (must, mustn't, needn't/don't have to, can/can't) mit zwei Lückensätzen. e7-must-have-to verteilt den Inhalt auf drei Karten; kein Nachfolger enthält den ganzen Abruf. Die Karte bleibt aktiv."
+		},
+		{
+			"de_by_cell": "de-by:realschule-6-englisch-grammatik-grundlagen",
+			"de_by_id": "01K4E6G0000000000000000J07",
+			"de_by_question": "Welches Wort ist das korrekte eigenständige Possessivpronomen (steht allein ohne nachfolgendes Nomen) für 'meins / meiner' im Englischen (z. B. 'This book is ...')?",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"neighbour_successor": "zam-academy:englisch-realschule-6/e6-possessives-check",
+			"reason": "Bereits durch den freigegebenen Bestandsabgleich von englisch-realschule-6 (approved 2026-11-19) geregelt: e6-possessives-check ersetzt diese Karte dort. Dieses Paket übernimmt nichts und deklariert nichts; die Zeile steht nur, damit jede Alt-Id genau eine Zeile hat."
+		},
+		{
+			"de_by_cell": "de-by:realschule-6-englisch-grammatik-grundlagen",
+			"de_by_id": "01K4E6G0000000000000000J08",
+			"de_by_question": "Erstelle eine vollständige Übersicht über die Personalpronomen als Subjekt (I, you, he, she, it, we, they), als Objekt (me, you, him, her, it, us, them), die Possessivbegleiter mit Nomen (my, your, his, her, its, our, their) und die selbstständigen Possessivpronomen ohne Nomen (mine, yours, his, hers, its, ours, theirs) und fülle die Lücken aus: a) 'Is that (your / yours) bag?' – 'No, it's (her / hers).' b) 'Give (he / him) the ball, it is (his / his's).'",
+			"category": "C",
+			"academy_slug": null,
+			"action": "keep-active",
+			"reason": "Mehrteilige Pronomenübersicht; Stoff der Jahrgangsstufen 5 und 6, im Paket englisch-realschule-6 als keep-active abgeglichen. Kein Nachfolger in Klasse 7."
+		}
+	]
+}
