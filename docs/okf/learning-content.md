@@ -7,7 +7,7 @@ tags:
   - learning-content
   - cards
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/learning-content.md"
-timestamp: 2026-11-22T18:55:00.000Z
+timestamp: 2026-11-22T19:55:00.000Z
 ---
 
 The Desktop Studio and the shared Studio panel both have a Learning Content page (Lerninhalte). The page opens on **Lern-Karten** (Learning cards). The other area is **Quellen** (Sources).
@@ -23,7 +23,7 @@ The topic import ([ADR 2026-10-14](../adr/2026-10-14-topic-import-and-source-pro
 - Each subtopic carries the Wikipedia article the model names for it, and its cards keep that article as their lookup term (Decision 4).
 - The model knows only what is public. A subtopic about one company's or one person's own knowledge comes with the reason, unticked and locked, and with the hint to import it from its source: notes, a file or a repository (Decision 5).
 
-The knowledge atlas opens the same dialog from a world region's **Hier importieren …** (*Fehlendes Wissen beschreiben*): the model is told where the cards will land, on a line of its own, never as prior knowledge, and the confirmed cards land there, each subtopic as the deepest level and the topic above it. If they cannot be put there, the result says so; the cards are kept. A Firma or Privat region does not offer it, since the model knows no company's or person's knowledge. For ready-made school and world packages, the atlas, onboarding, and the active-path panel on Lern-Karten open **ZAM Academy** directly; the legacy curriculum wizard has been removed.
+The knowledge atlas opens the same dialog from a world region's **Hier importieren …** (*Fehlendes Wissen beschreiben*): the model is told where the cards will land, on a line of its own, never as prior knowledge, and the confirmed cards land there, each subtopic as the deepest level and the topic above it. If they cannot be put there, the result says so; the cards are kept. A Firma or Privat region does not offer it, since the model knows no company's or person's knowledge. For ready-made school and world packages, the atlas, onboarding, and the active-path panel on Lern-Karten open **ZAM Academy** directly; the legacy curriculum wizard has been removed ([ADR 2026-11-22](../adr/2026-11-22-academy-index-browser-and-wizard-removal.md)). Legacy bundled `de-by:` school cells are intentionally not offered in the learner UI for first-time enrolment while migration to Academy cells continues.
 
 # Nachlesen
 
@@ -67,6 +67,7 @@ Browsing a source does not create tokens. An OKF article becomes learning tokens
 
 # Citations
 
+- [ADR 2026-11-22 — ZAM Academy Index Browser and Removal of the Curriculum Wizard](../adr/2026-11-22-academy-index-browser-and-wizard-removal.md)
 - [ADR 2026-10-19 — ZAM Academy Cells](../adr/2026-10-19-zam-academy-cells.md)
 - [ADR 2026-10-14b — Formulas, Images and Spoken Text in Cards](../adr/2026-10-14b-card-formulas-images-and-spoken-text.md)
 - [ADR 2026-10-10 — Learning Content: Cards and Sources](../adr/2026-10-10-learning-content-sources.md)

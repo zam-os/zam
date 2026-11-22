@@ -6,17 +6,23 @@ import {
   ACADEMY_SCHOOL_INDEPENDENT,
   academyAppSlug,
   academyUrl,
+  BUNDLED_TILES,
   buildAcademyBereichTiles,
   buildAcademyGradeTiles,
   buildAcademySchoolOptions,
   buildAcademySubjectTiles,
   bundleStandsIn,
+  countUserAcademyAppCards,
+  DEFAULT_ACADEMY_TAXONOMY,
   enrichAcademyCells,
+  enrolBundledCell,
   filterAcademyCells,
   formatAcademyGrades,
   getBundledCellTile,
+  openDatabase,
   parseAcademyCatalog,
   parseAcademyIndex,
+  userHoldsAcademyAppCards,
 } from "../../src/kernel/index.js";
 
 const entry = {
@@ -250,7 +256,7 @@ describe("parseAcademyIndex & academyAppSlug", () => {
     expect(index.pakete.find((p) => p.app === "uml")?.grades).toEqual([]);
   });
 
-  it("rejects malformed index entries", () => {
+  it("rejects malformed top-level index or taxonomy shapes", () => {
     expect(() => parseAcademyIndex(null)).toThrow(/Academy index/);
     expect(() =>
       parseAcademyIndex({ ...SAMPLE_INDEX_RAW, schema: 2 }),
@@ -258,15 +264,32 @@ describe("parseAcademyIndex & academyAppSlug", () => {
     expect(() =>
       parseAcademyIndex({
         ...SAMPLE_INDEX_RAW,
-        pakete: [{ ...SAMPLE_INDEX_RAW.pakete[0], app: "../evil" }],
+        schulen: [{ ...SAMPLE_INDEX_RAW.schulen[0], id: "../evil" }],
       }),
     ).toThrow(/slug/);
-    expect(() =>
-      parseAcademyIndex({
+  });
+
+  it("skips individual malformed or duplicate package entries while preserving valid ones", () => {
+    const warnings: string[] = [];
+    const parsed = parseAcademyIndex(
+      {
         ...SAMPLE_INDEX_RAW,
-        pakete: [SAMPLE_INDEX_RAW.pakete[0], SAMPLE_INDEX_RAW.pakete[0]],
-      }),
-    ).toThrow(/duplicate app/);
+        pakete: [
+          SAMPLE_INDEX_RAW.pakete[0],
+          { ...SAMPLE_INDEX_RAW.pakete[1], app: "../evil" },
+          SAMPLE_INDEX_RAW.pakete[0], // duplicate app
+          SAMPLE_INDEX_RAW.pakete[3],
+        ],
+      },
+      { onSkip: (reason) => warnings.push(reason) },
+    );
+    expect(parsed.pakete.map((p) => p.app)).toEqual([
+      "biologie-realschule-6",
+      "uml",
+    ]);
+    expect(warnings).toHaveLength(2);
+    expect(warnings[0]).toMatch(/slug/);
+    expect(warnings[1]).toMatch(/duplicate app/);
   });
 
   it("extracts app slugs from URLs, paths and tile ids", () => {
@@ -448,5 +471,78 @@ describe("academy enrichment, multi-stage tiles and search", () => {
     expect(formatAcademyGrades([6, 7, 8], labels)).toBe("Klassen 6–8");
     expect(formatAcademyGrades([5, 7], labels)).toBe("Klassen 5, 7");
     expect(formatAcademyGrades([], labels)).toBe("Übergreifend");
+  });
+
+  it("keeps DEFAULT_ACADEMY_TAXONOMY internally consistent and aligned with bundled Academy cells", () => {
+    const schoolIds = new Set(DEFAULT_ACADEMY_TAXONOMY.schulen.map((s) => s.id));
+    const bereichIds = new Set(
+      DEFAULT_ACADEMY_TAXONOMY.bereiche.map((b) => b.id),
+    );
+    const fachIds = new Set(DEFAULT_ACADEMY_TAXONOMY.faecher.map((f) => f.id));
+
+    expect(schoolIds.size).toBe(DEFAULT_ACADEMY_TAXONOMY.schulen.length);
+    expect(bereichIds.size).toBe(DEFAULT_ACADEMY_TAXONOMY.bereiche.length);
+    expect(fachIds.size).toBe(DEFAULT_ACADEMY_TAXONOMY.faecher.length);
+
+    for (const fach of DEFAULT_ACADEMY_TAXONOMY.faecher) {
+      expect(bereichIds.has(fach.bereich), `bereich for ${fach.id}`).toBe(true);
+    }
+    for (const verbund of DEFAULT_ACADEMY_TAXONOMY.fachverbunde) {
+      expect(schoolIds.has(verbund.school), `school for ${verbund.id}`).toBe(
+        true,
+      );
+      for (const path of verbund.paths) {
+        expect(fachIds.has(path), `path ${path} for ${verbund.id}`).toBe(true);
+      }
+    }
+
+    const academyTiles = Object.values(BUNDLED_TILES).filter((tile) =>
+      tile.tile_id.startsWith("zam-academy:"),
+    );
+    expect(academyTiles.length).toBeGreaterThan(0);
+    const enriched = enrichAcademyCells(
+      academyTiles.map((tile) => ({
+        id: tile.tile_id,
+        title: tile.title,
+        description: tile.description ?? "",
+        appUrl: null,
+      })),
+      null,
+      (id) => BUNDLED_TILES[id],
+    );
+    for (const row of enriched.cells) {
+      expect(row.facet.fach, `fach for ${row.id}`).not.toBeNull();
+      expect(row.facet.bereich, `bereich for ${row.id}`).not.toBeNull();
+      if (row.facet.school !== null) {
+        expect(schoolIds.has(row.facet.school), `school for ${row.id}`).toBe(
+          true,
+        );
+      }
+    }
+  });
+});
+
+describe("userHoldsAcademyAppCards (per-learner held check without tile)", () => {
+  it("clears held status once the learner detaches or deletes all cards for an app", async () => {
+    const db = await openDatabase({ path: ":memory:" });
+    try {
+      await enrolBundledCell(db, "learner", "zam-academy:uml");
+      const appUrl = `${ACADEMY_ORIGIN}/uml/`;
+      expect(await countUserAcademyAppCards(db, "learner", appUrl)).toBe(26);
+      expect(await userHoldsAcademyAppCards(db, "learner", appUrl)).toBe(true);
+      // Another learner in the same library holds no cards yet.
+      expect(await userHoldsAcademyAppCards(db, "other-user", appUrl)).toBe(
+        false,
+      );
+      // Detaching all of the learner's cards leaves installed_tiles intact,
+      // yet clears per-learner enrolment so "Take" is offered again.
+      await db
+        .prepare("UPDATE cards SET detached_at = '2026-11-22T00:00:00Z' WHERE user_id = ?")
+        .run("learner");
+      expect(await countUserAcademyAppCards(db, "learner", appUrl)).toBe(0);
+      expect(await userHoldsAcademyAppCards(db, "learner", appUrl)).toBe(false);
+    } finally {
+      await db.close();
+    }
   });
 });

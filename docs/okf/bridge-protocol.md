@@ -7,7 +7,7 @@ tags:
   - bridge
   - agents
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/bridge-protocol.md"
-timestamp: 2026-11-22T19:08:00.000Z
+timestamp: 2026-11-22T19:56:00.000Z
 ---
 
 `zam bridge <command>` is ZAM's machine-facing CLI transport: an agent
@@ -551,7 +551,7 @@ bridge's JSON helpers.
 
 # ZAM Academy commands
 
-The learner's academy actions (ADR 2026-10-19), called by Studio:
+The learner's academy actions (ADR 2026-10-19, amended by ADR 2026-11-22), called by Studio:
 
 - `academy-list` reads `https://academy.zam-os.org/catalog.json` and the
   lightweight `https://academy.zam-os.org/academy.json` index in parallel and
@@ -578,10 +578,14 @@ not mean the transaction has committed. Desktop subscribes before starting
 and filters by cell id, then removes its listener when the call settles.
 
 None of them is in `STUDIO_BRIDGE_COMMANDS` or behind an MCP tool.
-`bundled-cells-list` also lists the cells cached by the last check, and
-`bundled-cell-enrol` enrols them without fetching and emits the same
-`academy-progress` events. The legacy `curriculum-*` bridge commands have been
-removed in favor of ZAM Academy.
+`bundled-cells-list` also lists both locally cached Academy cells and uncached
+catalog-only entries from the learner's last cached `catalog.json` /
+`academy.json` (marked `requiresLearnerEnrol: true`). `bundled-cell-enrol`
+enrols bundled and locally cached cells without fetching and emits the same
+`academy-progress` events; for an uncached catalog-only Academy cell it never
+reaches the network and directs the learner to click „Aufnehmen“ in ZAM
+Academy. The legacy `curriculum-*` bridge commands have been removed in favor
+of ZAM Academy.
 
 # Trust and keys
 
@@ -607,6 +611,7 @@ whose token sits in a keychain ZAM cannot read fails to open with
 - Tests: `tests/cli/academy-progress.test.ts`
 - Code: `desktop/src/cell-import-progress.ts`, `desktop/src/academy-list.ts`, `src/kernel/library/kvt-attach.ts`, `src/kernel/library/academy-catalog.ts`, `src/kernel/library/academy-browse.ts`
 - Tests: `tests/desktop/cell-import-progress.test.ts`, `tests/desktop/academy-list.test.ts`, `tests/kernel/academy-catalog.test.ts`
+- [ADR 2026-11-22 — ZAM Academy Index Browser and Removal of the Curriculum Wizard](../adr/2026-11-22-academy-index-browser-and-wizard-removal.md)
 - [ADR 2026-10-19 — ZAM Academy Cells](../adr/2026-10-19-zam-academy-cells.md)
 - [ADR 2026-10-14b — Formulas, Images and Spoken Text in Cards](../adr/2026-10-14b-card-formulas-images-and-spoken-text.md)
 - [ADR 2026-08-14 — Central Learning Atoms and Identity](../adr/2026-08-14-central-learning-atoms-and-identity.md)

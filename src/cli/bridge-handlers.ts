@@ -4,6 +4,7 @@ import type {
   AnswerFormat,
   AnswerPresentation,
   BloomLevel,
+  BundledCellStatus,
   CardText,
   ChoiceEvidence,
   Database,
@@ -35,10 +36,12 @@ import {
   cardTopicTitle,
   clearTokenMaintenance,
   closeSessionObservation,
+  countUserAcademyAppCards,
   createAssignment,
   createToken,
   decideUpdate,
   type EnrolBundledCellProgress,
+  enrichAcademyCells,
   enrolBonusAtom,
   enrolBundledCell,
   ensureCard,
@@ -120,6 +123,7 @@ import {
 import {
   cachedCatalogTiles,
   readCachedCatalog,
+  readCachedIndex,
   readCachedTileVersion,
   resolveCachedTile,
 } from "./academy/cache.js";
@@ -2279,33 +2283,91 @@ export async function listBundledCellsHandler(
 ) {
   const userId = await resolveHandlerUser(db, params.user);
 
-  // Without a scope this is the plain catalogue. With one it answers the
-  // precedence question of ADR 2026-08-14 Decision 10: an import surface asks
-  // before offering the generic wizard, and gets both the covering cells and
-  // the verdict, so it cannot read the empty list as "no opinion".
+  // Without a scope this is the plain catalogue. With one it answers which
+  // bundled cells cover a curriculum position (ADR 2026-08-14 D10, updated by
+  // ADR 2026-11-22: ZAM Academy and free import replace the removed wizard).
   if (!params.provider) {
-    // Academy cells the learner's last catalog check cached are listed too
-    // (ADR 2026-10-19 D4). Nothing here reaches the network.
-    const extra = cachedCatalogTiles().filter(
+    // Academy cells from the learner's last catalog check are listed too
+    // (ADR 2026-10-19 D4, amended by ADR 2026-11-22). Nothing here reaches
+    // the network.
+    const cachedCatalog = readCachedCatalog();
+    const cachedIndex = readCachedIndex();
+    const cachedTiles = cachedCatalogTiles().filter(
       (tile) => !BUNDLED_TILES[tile.tile_id],
     );
+    const cachedTileIds = new Set(cachedTiles.map((tile) => tile.tile_id));
     const previews = new Set(
-      readCachedCatalog()
-        ?.cells.filter((entry) => entry.preview)
+      cachedCatalog?.cells
+        .filter((entry) => entry.preview)
         .map((entry) => entry.id),
     );
-    const cells = await getBundledCellsWithStatus(
+    const cells: BundledCellStatus[] = await getBundledCellsWithStatus(
       db,
       userId,
       [
         ...BUNDLED_CELLS,
-        ...extra.map((tile) => ({
+        ...cachedTiles.map((tile) => ({
           ...bundledCellInfoForTile(tile),
           preview: previews.has(tile.tile_id),
         })),
       ],
       (cellId) => BUNDLED_TILES[cellId] ?? resolveCachedTile(cellId),
     );
+
+    // Catalog-only cells whose `cell.json` has not been downloaded locally yet:
+    // list them from cached `catalog.json`/`academy.json` metadata so agents
+    // can discover them and point the learner to „Aufnehmen“ in ZAM Academy.
+    const uncachedEntries = (cachedCatalog?.cells ?? []).filter(
+      (entry) => !BUNDLED_TILES[entry.id] && !cachedTileIds.has(entry.id),
+    );
+    if (uncachedEntries.length > 0) {
+      const enriched = enrichAcademyCells(
+        uncachedEntries.map((entry) => ({
+          id: entry.id,
+          title: entry.title,
+          description: entry.description,
+          appUrl: entry.appUrl,
+        })),
+        cachedIndex,
+      ).cells;
+      const facetById = new Map(enriched.map((row) => [row.id, row.facet]));
+      for (const entry of uncachedEntries) {
+        const facet = facetById.get(entry.id);
+        const gradeParts: string[] = [];
+        if (facet?.schoolName) gradeParts.push(facet.schoolName);
+        if (facet && facet.grades.length > 0) {
+          gradeParts.push(
+            facet.grades.length === 1
+              ? `Klasse ${facet.grades[0]}`
+              : `Klassen ${facet.grades[0]}–${facet.grades[facet.grades.length - 1]}`,
+          );
+        }
+        const gradeLabel =
+          gradeParts.length > 0 ? gradeParts.join(" ") : "ZAM Academy";
+        const installedVersion = await installedTileVersion(db, entry.id);
+        const installed = installedVersion !== null;
+        const cardCount = installed
+          ? await countUserAcademyAppCards(db, userId, entry.appUrl)
+          : 0;
+        cells.push({
+          id: entry.id,
+          title: entry.title,
+          gradeLabel,
+          description: entry.description,
+          publisher: "ZAM Academy",
+          publishedAt: entry.version,
+          atomCount: 0,
+          inScopeAtomIds: [],
+          curriculumScopes: [],
+          preview: entry.preview,
+          installed,
+          enrolled: installed && cardCount > 0,
+          cardCount,
+          requiresLearnerEnrol: true,
+        });
+      }
+    }
+
     return { success: true as const, cells, scoped: false as const };
   }
 
@@ -2343,14 +2405,26 @@ export async function enrolBundledCellHandler(
   }
   const userId = await resolveHandlerUser(db, params.user);
   const cellId = params.cellId.trim();
-  // An agent may enrol a cell from the learner's last catalog check, but
-  // never update a held one: that is the learner's „Aktualisieren“
-  // (ADR 2026-10-19 D4). So a held cell resolves to its installed version.
+  // An agent may enrol a bundled cell or one already cached locally, but never
+  // reaches the network and never updates a held cell: that is the learner's
+  // „Aufnehmen“ / „Aktualisieren“ (ADR 2026-10-19 D4, amended by ADR 2026-11-22).
+  // So a held cell resolves to its installed version.
   const installed = await installedTileVersion(db, cellId);
+  const resolveTile = (id: string) =>
+    installed ? readCachedTileVersion(id, installed) : resolveCachedTile(id);
+  if (!BUNDLED_TILES[cellId] && !resolveTile(cellId)) {
+    const catalogEntry = readCachedCatalog()?.cells.find(
+      (entry) => entry.id === cellId,
+    );
+    if (catalogEntry) {
+      throw new Error(
+        `Academy cell "${cellId}" is in the catalog but not downloaded locally yet. Ask the learner to open ZAM Academy and click „Aufnehmen“ to download and enrol it.`,
+      );
+    }
+  }
   const result = await enrolBundledCell(db, userId, cellId, {
     onProgress: params.onProgress,
-    resolveTile: (id) =>
-      installed ? readCachedTileVersion(id, installed) : resolveCachedTile(id),
+    resolveTile,
   });
   return result;
 }

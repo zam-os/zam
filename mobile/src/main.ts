@@ -89,6 +89,7 @@ import {
   type AcademyCatalogEntry,
   type AcademyIndex,
   bundleStandsIn,
+  userHoldsAcademyAppCards,
 } from "../../src/kernel/library/academy-catalog.js";
 import { compareTileVersions } from "../../src/kernel/library/tile-version.js";
 import {
@@ -5005,7 +5006,8 @@ async function renderAcademyCells(refreshRemote = true): Promise<void> {
     const heldVersion = await installedTileVersion(db, id);
     const held = tile
       ? (statusById.get(id)?.enrolled ?? false)
-      : heldVersion !== null;
+      : heldVersion !== null &&
+        (await userHoldsAcademyAppCards(db, currentUserId, entry?.appUrl));
     const newer = held && compareTileVersions(version, heldVersion) === 1;
     // Either source is enough, as in the CLI's `academy-list`: a label one
     // release too long does no harm, a missing one says the content was

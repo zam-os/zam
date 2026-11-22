@@ -69,16 +69,14 @@ describe("persona content routing", () => {
       "academy",
       "free-import",
     ]);
-    expect(orderFreeContentPaths("curriculum", true).map((p) => p.id)).toEqual([
+    expect(orderFreeContentPaths("curriculum").map((p) => p.id)).toEqual([
       "academy",
       "free-import",
     ]);
-    expect(orderFreeContentPaths("curriculum", false).map((p) => p.id)).toEqual(
-      ["academy", "free-import"],
-    );
-    expect(
-      orderFreeContentPaths("free-import", false).map((p) => p.id),
-    ).toEqual(["free-import", "academy"]);
+    expect(orderFreeContentPaths("free-import").map((p) => p.id)).toEqual([
+      "free-import",
+      "academy",
+    ]);
   });
 
   it("separates onboarding into Free, AI Setup, and Agentic Coding Alpha flows", () => {

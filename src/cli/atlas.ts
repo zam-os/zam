@@ -326,7 +326,7 @@ export interface AtlasPlaceResult {
   cells: AtlasPlaceCell[];
   /** The curriculum position of a Schule region; null on Weltwissen. */
   scope: CurriculumScope | null;
-  /** Offer the generic curriculum wizard: no cell covers the position. */
+  /** Offer ZAM Academy (no bundled cell covers the position directly). */
   wizard: boolean;
 }
 

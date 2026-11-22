@@ -144,6 +144,86 @@ describe("academy import dialog lifecycle", () => {
     body.replaceChildren();
   });
 
+  it("keeps progress and prevents duplicate enrol when filtering or switching view mid-import", async () => {
+    const { body } = mount();
+    let finish!: (value: unknown) => void;
+    let enrolCalls = 0;
+    setBridgeTransport((command) => {
+      if (command === "academy-list") {
+        return Promise.resolve({
+          success: true,
+          offline: false,
+          cells: [
+            cell(),
+            cell({
+              id: "zam-academy:sql",
+              title: "SQL Grundlagen",
+              description: "Abfragen und Joins",
+              appUrl: "https://academy.zam-os.org/sql/",
+            }),
+          ],
+        });
+      }
+      enrolCalls++;
+      return new Promise((resolve) => {
+        finish = resolve;
+      });
+    });
+
+    await openAcademyList();
+    const overlay = body.children[0];
+    const umlCard = overlay
+      .all("article")
+      .find((a) => a.dataset.cellId === "zam-academy:uml")!;
+    const initialTake = umlCard
+      .all("button")
+      .find((b) => b.dataset.action === "take")!;
+    initialTake.click();
+    await vi.waitFor(() => expect(enrolCalls).toBe(1));
+    const bar = overlay.all("progress")[0];
+    expect(bar).toBeDefined();
+
+    // Switch to List view (triggers renderBrowser() and rebuilds every row).
+    const listViewBtn = overlay
+      .all("button")
+      .find((b) => b.dataset.view === "list")!;
+    listViewBtn.click();
+
+    // Also type in the search box to filter down to UML (another rebuild).
+    const searchInput = overlay.all("input")[0] as unknown as {
+      value: string;
+      emit: (type: string) => void;
+    };
+    searchInput.value = "UML";
+    searchInput.emit("input");
+
+    // Progress bar stays live, button stays disabled, second click is ignored.
+    expect(overlay.all("progress")).toEqual([bar]);
+    const rebuiltTake = overlay
+      .all("button")
+      .find((b) => b.dataset.action === "take")!;
+    expect(rebuiltTake).not.toBe(initialTake);
+    expect(rebuiltTake.disabled).toBe(true);
+    expect(rebuiltTake.textContent).toBe(t("academy_taking"));
+    rebuiltTake.click();
+    expect(enrolCalls).toBe(1);
+
+    // Closing & reopening while active preserves browserState (still List view).
+    overlay.click();
+    await openAcademyList();
+    expect(overlay.all("progress")).toEqual([bar]);
+    expect(
+      overlay.all("button").find((b) => b.dataset.view === "list")?.attributes.get("aria-pressed"),
+    ).toBe("true");
+
+    // Completing the import updates the rebuilt button and removes the bar.
+    finish({ success: true, cardsCreated: 26, version: cell().version });
+    await vi.waitFor(() => expect(overlay.all("progress")).toHaveLength(0));
+    expect(rebuiltTake.textContent).toBe(t("academy_taken"));
+    expect(rebuiltTake.disabled).toBe(true);
+    body.replaceChildren();
+  });
+
   it("removes a completed update bar and keeps the saved version in its button", async () => {
     const { body } = mount();
     setBridgeTransport(async (command) =>
@@ -320,7 +400,7 @@ describe("academy wiring", () => {
     expect(
       click.indexOf('take.textContent = t("academy_taking")'),
     ).toBeLessThan(click.indexOf("enrolAcademyCell(cell.id, progress.update)"));
-    expect(click).toMatch(/\.catch\(\(err\) => \{\s*setTake\(take\)/);
+    expect(click).toMatch(/\.catch\(\(err\) => \{\s*setTake\(entry\.button\)/);
   });
 
   it("puts „Aufnehmen“ back when another version than the row's was saved", () => {

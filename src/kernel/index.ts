@@ -519,8 +519,11 @@ export {
   academyAppSlug,
   academyUrl,
   bundleStandsIn,
+  countUserAcademyAppCards,
+  type ParseAcademyIndexOptions,
   parseAcademyCatalog,
   parseAcademyIndex,
+  userHoldsAcademyAppCards,
 } from "./library/academy-catalog.js";
 export {
   countAnswerPoints,

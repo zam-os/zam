@@ -31,6 +31,7 @@ import {
   enrolBundledCell,
   getBundledCellsWithStatus,
   installedTileVersion,
+  userHoldsAcademyAppCards,
 } from "../../kernel/index.js";
 import { resolveHandlerUser } from "../bridge-handlers.js";
 import {
@@ -89,31 +90,6 @@ function isAcademyTile(tile: BundledTile): boolean {
 
 function itemCount(tile: BundledTile): number {
   return tile.atoms.reduce((n, atom) => n + atom.practice_items.length, 0);
-}
-
-/**
- * Checks whether the learner holds at least one non-detached card pointing to
- * an academy app when the tile is installed in the library database (e.g.
- * synced from another device) but its `cell.json` is not cached locally.
- */
-async function userHoldsAppCards(
-  db: Database,
-  userId: string,
-  appUrl: string | null,
-): Promise<boolean> {
-  if (!appUrl) return true;
-  const row = (await db
-    .prepare(
-      `SELECT 1 AS ok
-         FROM cards c
-         JOIN tokens t ON t.id = c.token_id
-        WHERE c.user_id = ?
-          AND c.detached_at IS NULL
-          AND t.source_link LIKE ?
-        LIMIT 1`,
-    )
-    .get(userId, `${appUrl}%`)) as { ok: number } | undefined;
-  return Boolean(row);
 }
 
 /**
@@ -210,7 +186,7 @@ export async function academyListHandler(
     const held = tile
       ? (statuses.get(id)?.enrolled ?? false)
       : installedVer !== null &&
-        (await userHoldsAppCards(db, userId, entry?.appUrl ?? null));
+        (await userHoldsAcademyAppCards(db, userId, entry?.appUrl ?? null));
     const heldVersion = held ? installedVer : null;
     // The row shows what „Aufnehmen“ installs: the newer of catalog and
     // bundle.

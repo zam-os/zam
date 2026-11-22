@@ -164,7 +164,21 @@ export function applyAcademySchoolFilter(
 }
 
 const OVERLAY_ID = "academy-list-overlay";
-let activeImports = 0;
+
+interface ActiveCellImport {
+  kind: "enrol" | "update";
+  progress: ReturnType<typeof createCellImportProgress>;
+  button: HTMLButtonElement;
+  row: HTMLElement;
+  idleLabel: string;
+}
+
+/**
+ * In-flight enrolments/updates keyed by cell id. Kept outside the row DOM so
+ * filtering, searching, switching views/lenses, or closing & reopening the
+ * dialog never loses the live progress bar or re-enables „Aufnehmen“.
+ */
+const activeCellImports = new Map<string, ActiveCellImport>();
 
 export interface AcademyProgressEvent extends EnrolBundledCellProgress {
   type: string;
@@ -554,14 +568,6 @@ export function closeAcademyList(): void {
   previousFocus = null;
 }
 
-function importStarted(): void {
-  activeImports++;
-}
-
-function importFinished(): void {
-  activeImports--;
-}
-
 function setTake(button: HTMLButtonElement): void {
   button.className = "btn primary-btn btn-sm";
   button.textContent = t("academy_take");
@@ -678,6 +684,8 @@ export function academyRow(
     buttons.append(practise);
   }
 
+  const inFlight = activeCellImports.get(cell.id);
+
   if (cell.held && cell.newer) {
     const update = document.createElement("button");
     update.type = "button";
@@ -686,14 +694,28 @@ export function academyRow(
     const label = tf("academy_update_to", { version: cell.version });
     update.textContent = label;
     update.setAttribute("aria-label", `${label}: ${cell.title}`);
+    if (inFlight?.kind === "update") {
+      update.disabled = true;
+      update.textContent = t("academy_updating");
+      inFlight.button = update;
+      inFlight.row = row;
+    }
     update.addEventListener("click", () => {
+      if (activeCellImports.has(cell.id)) return;
       update.disabled = true;
       update.textContent = t("academy_updating");
       const progress = createCellImportProgress((key, counts) =>
         tf(key, counts),
       );
+      const entry: ActiveCellImport = {
+        kind: "update",
+        progress,
+        button: update,
+        row,
+        idleLabel: label,
+      };
+      activeCellImports.set(cell.id, entry);
       row.append(progress.element);
-      importStarted();
       status.textContent = t("academy_updating");
       updateAcademyCell(cell.id, progress.update)
         .then((result) => {
@@ -701,10 +723,12 @@ export function academyRow(
           progress.remove();
           cell.heldVersion = result.version ?? cell.version;
           cell.newer = false;
-          update.className = "btn secondary-btn btn-sm";
-          update.textContent = tf("academy_updated", {
+          entry.button.className = "btn secondary-btn btn-sm";
+          entry.button.textContent = tf("academy_updated", {
             version: cell.heldVersion,
           });
+          entry.button.disabled = true;
+          updateSummaryPill();
           status.textContent = `${cell.title}: ${tf("academy_updated", {
             version: cell.heldVersion,
           })}`;
@@ -714,31 +738,50 @@ export function academyRow(
         })
         .catch((err) => {
           progress.remove();
-          update.textContent = label;
-          update.disabled = false;
+          entry.button.textContent = entry.idleLabel;
+          entry.button.disabled = false;
           status.textContent = academyErrorText(err);
         })
-        .finally(importFinished);
+        .finally(() => {
+          activeCellImports.delete(cell.id);
+        });
     });
     buttons.append(update);
   } else {
     const take = document.createElement("button");
     take.type = "button";
     take.dataset.action = "take";
-    if (cell.held) {
+    if (inFlight?.kind === "enrol") {
+      take.className = "btn primary-btn btn-sm";
+      take.textContent = t("academy_taking");
+      take.disabled = true;
+      take.setAttribute("aria-label", `${t("academy_take")}: ${cell.title}`);
+      inFlight.button = take;
+      inFlight.row = row;
+    } else if (cell.held) {
       setTaken(take);
       take.setAttribute("aria-label", `${t("academy_taken")}: ${cell.title}`);
     } else {
       setTake(take);
       take.setAttribute("aria-label", `${t("academy_take")}: ${cell.title}`);
+    }
+    if (!cell.held) {
       take.addEventListener("click", () => {
+        if (activeCellImports.has(cell.id)) return;
         take.disabled = true;
         take.textContent = t("academy_taking");
         const progress = createCellImportProgress((key, counts) =>
           tf(key, counts),
         );
+        const entry: ActiveCellImport = {
+          kind: "enrol",
+          progress,
+          button: take,
+          row,
+          idleLabel: t("academy_take"),
+        };
+        activeCellImports.set(cell.id, entry);
         row.append(progress.element);
-        importStarted();
         status.textContent = t("academy_taking");
         enrolAcademyCell(cell.id, progress.update)
           .then((result) => {
@@ -749,13 +792,13 @@ export function academyRow(
             if (!other) progress.finish();
             progress.remove();
             if (other) {
-              setTake(take);
+              setTake(entry.button);
             } else {
-              setTaken(take);
+              setTaken(entry.button);
               cell.held = true;
               cell.heldVersion = result.version ?? cell.version;
               cell.newer = false;
-              take.setAttribute(
+              entry.button.setAttribute(
                 "aria-label",
                 `${t("academy_taken")}: ${cell.title}`,
               );
@@ -778,11 +821,13 @@ export function academyRow(
             }
           })
           .catch((err) => {
-            setTake(take);
+            setTake(entry.button);
             progress.remove();
             status.textContent = academyErrorText(err);
           })
-          .finally(importFinished);
+          .finally(() => {
+            activeCellImports.delete(cell.id);
+          });
       });
     }
     buttons.append(take);
@@ -806,6 +851,9 @@ export function academyRow(
   }
 
   row.append(footer);
+  if (inFlight) {
+    row.append(inFlight.progress.element);
+  }
   return row;
 }
 
@@ -1609,15 +1657,15 @@ export async function openAcademyList(
     document.activeElement instanceof HTMLElement
       ? document.activeElement
       : null;
-  currentOptions = options;
-  browserState = createAcademyBrowserState();
   const parts = ensureDialog();
-  if (activeImports > 0) {
+  if (activeCellImports.size > 0) {
     setBackgroundInert(true);
     parts.overlay.classList.add("active");
     parts.close.focus();
     return;
   }
+  currentOptions = options;
+  browserState = createAcademyBrowserState();
   parts.title.textContent = t("academy_title");
   parts.intro.textContent = t("academy_intro");
   parts.close.textContent = t("academy_close");

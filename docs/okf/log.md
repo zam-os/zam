@@ -2,6 +2,7 @@
 
 ## 2026-11-22
 
+- **Update** — [Learning Content](learning-content.md)
 - **Update** — [Token and Card Model](token-card-model.md)
 - **Update** — [FSRS-6 Scheduling](fsrs-scheduling.md)
 - **Update** — [Standalone Mobile Libraries](mobile-standalone-libraries.md)

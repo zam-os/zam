@@ -13,6 +13,7 @@
  * kernel has no HTTP. Mobile imports this module: no Node built-ins.
  */
 
+import type { Database } from "../db/types.js";
 import { compareTileVersions } from "./tile-version.js";
 
 /** The one origin ZAM reads academy content from; nothing can change it. */
@@ -158,13 +159,23 @@ export function parseAcademyCatalog(raw: unknown): AcademyCatalog {
   return { schema: 1, cells };
 }
 
+export interface ParseAcademyIndexOptions {
+  /** Called when an individual malformed/duplicate package entry is skipped. */
+  onSkip?: (reason: string) => void;
+}
+
 /**
  * Checks a parsed `academy.json` index (the metadata backbone of
  * `academy.zam-os.org`: schools, knowledge areas, subjects, combined
- * subjects and packages). Rejects malformed shapes so untrusted remote
- * JSON cannot inject invalid slugs, grades or hues.
+ * subjects and packages). Top-level structure and taxonomy arrays are
+ * validated strictly; individual malformed or duplicate package entries
+ * are skipped so one broken upstream package cannot drop facets for the
+ * rest of the catalog.
  */
-export function parseAcademyIndex(raw: unknown): AcademyIndex {
+export function parseAcademyIndex(
+  raw: unknown,
+  options?: ParseAcademyIndexOptions,
+): AcademyIndex {
   if (
     !isRecord(raw) ||
     raw.schema !== 1 ||
@@ -277,61 +288,67 @@ export function parseAcademyIndex(raw: unknown): AcademyIndex {
   );
 
   const seenApps = new Set<string>();
-  const pakete = raw.pakete.map((value, index): AcademyPackageMeta => {
+  const pakete: AcademyPackageMeta[] = [];
+  for (let index = 0; index < raw.pakete.length; index++) {
+    const value = raw.pakete[index];
     const where = `Academy index package ${index}`;
-    if (!isRecord(value)) throw new Error(`${where}: not an object`);
-    const id = slug(value.id, `${where}: id`);
-    const app = slug(value.app, `${where}: app`);
-    if (seenApps.has(app)) throw new Error(`${where}: duplicate app ${app}`);
-    seenApps.add(app);
-    const fach = slug(value.fach, `${where}: fach`);
-    const grade =
-      value.grade === null || value.grade === undefined
-        ? null
-        : gradeInt(value.grade, `${where}: grade`);
-    let grades: number[];
-    if (value.grades !== undefined) {
-      if (!Array.isArray(value.grades)) {
-        throw new Error(`${where}: grades must be an array`);
+    try {
+      if (!isRecord(value)) throw new Error(`${where}: not an object`);
+      const id = slug(value.id, `${where}: id`);
+      const app = slug(value.app, `${where}: app`);
+      if (seenApps.has(app)) throw new Error(`${where}: duplicate app ${app}`);
+      const fach = slug(value.fach, `${where}: fach`);
+      const grade =
+        value.grade === null || value.grade === undefined
+          ? null
+          : gradeInt(value.grade, `${where}: grade`);
+      let grades: number[];
+      if (value.grades !== undefined) {
+        if (!Array.isArray(value.grades)) {
+          throw new Error(`${where}: grades must be an array`);
+        }
+        grades = [
+          ...new Set(value.grades.map((g) => gradeInt(g, `${where}: grades`))),
+        ].sort((a, b) => a - b);
+      } else {
+        grades = grade !== null ? [grade] : [];
       }
-      grades = [
-        ...new Set(value.grades.map((g) => gradeInt(g, `${where}: grades`))),
-      ].sort((a, b) => a - b);
-    } else {
-      grades = grade !== null ? [grade] : [];
+      const school =
+        value.school === null || value.school === undefined
+          ? null
+          : slug(value.school, `${where}: school`);
+      const lessonsRaw = value.lessons;
+      const lessons =
+        typeof lessonsRaw === "number" &&
+        Number.isInteger(lessonsRaw) &&
+        lessonsRaw >= 0
+          ? lessonsRaw
+          : null;
+      const gebiete = Array.isArray(value.gebiete)
+        ? value.gebiete
+            .map((item) => text(item))
+            .filter(Boolean)
+            .slice(0, 30)
+        : [];
+      const zweige = text(value.zweige) || null;
+      seenApps.add(app);
+      pakete.push({
+        id,
+        app,
+        title: text(value.title) || id,
+        fach,
+        grade,
+        grades,
+        school,
+        zweige,
+        lessons,
+        gebiete,
+        desc: text(value.desc),
+      });
+    } catch (err) {
+      options?.onSkip?.(err instanceof Error ? err.message : String(err));
     }
-    const school =
-      value.school === null || value.school === undefined
-        ? null
-        : slug(value.school, `${where}: school`);
-    const lessonsRaw = value.lessons;
-    const lessons =
-      typeof lessonsRaw === "number" &&
-      Number.isInteger(lessonsRaw) &&
-      lessonsRaw >= 0
-        ? lessonsRaw
-        : null;
-    const gebiete = Array.isArray(value.gebiete)
-      ? value.gebiete
-          .map((item) => text(item))
-          .filter(Boolean)
-          .slice(0, 30)
-      : [];
-    const zweige = text(value.zweige) || null;
-    return {
-      id,
-      app,
-      title: text(value.title) || id,
-      fach,
-      grade,
-      grades,
-      school,
-      zweige,
-      lessons,
-      gebiete,
-      desc: text(value.desc),
-    };
-  });
+  }
 
   return {
     schema: 1,
@@ -419,4 +436,54 @@ export function bundleStandsIn(
   if (bundledVersion === undefined) return false;
   const order = compareTileVersions(String(bundledVersion), entry.version);
   return order === 0 || order === 1;
+}
+
+/**
+ * Counts active (non-detached) cards a learner holds for an academy app URL
+ * (e.g. `https://academy.zam-os.org/uml/#lesson=...`).
+ *
+ * Used by Desktop, CLI and Mobile when a catalog-only cell is installed in
+ * `installed_tiles` (for instance after a restart or sync from another device)
+ * without its `cell.json` loaded locally, so deleting or detaching all cards
+ * clears the learner's held state instead of leaving "Taken" disabled.
+ */
+export async function countUserAcademyAppCards(
+  db: Database,
+  userId: string,
+  appUrl: string | null | undefined,
+): Promise<number> {
+  const trimmed = appUrl?.trim();
+  if (!trimmed) return 0;
+  const prefix = trimmed.endsWith("/") ? trimmed : `${trimmed}/`;
+  const bare = prefix.slice(0, -1);
+  const escapedPrefix = prefix.replace(/[\\%_]/g, "\\$&");
+  const row = (await db
+    .prepare(
+      `SELECT COUNT(DISTINCT c.id) AS n
+         FROM cards c
+         JOIN tokens t ON t.id = c.token_id
+        WHERE c.user_id = ?
+          AND c.detached_at IS NULL
+          AND (
+            t.source_link = ?
+            OR t.source_link = ?
+            OR t.source_link LIKE ? ESCAPE '\\'
+          )`,
+    )
+    .get(userId, prefix, bare, `${escapedPrefix}%`)) as
+    | { n: number }
+    | undefined;
+  return Number(row?.n ?? 0);
+}
+
+/**
+ * Whether the learner holds at least one active (non-detached) card pointing
+ * to an academy app URL.
+ */
+export async function userHoldsAcademyAppCards(
+  db: Database,
+  userId: string,
+  appUrl: string | null | undefined,
+): Promise<boolean> {
+  return (await countUserAcademyAppCards(db, userId, appUrl)) > 0;
 }

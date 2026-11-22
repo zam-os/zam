@@ -913,19 +913,17 @@ describe("the learner's academy actions (ADR 2026-10-19 D4, D5)", () => {
 
   it("never lets the agent tools update a held cell or reach the network", async () => {
     await enrolBundledCell(db, "learner", "zam-academy:uml");
-    // The learner checked the catalog and cached both a newer UML build and a
-    // catalog-only cell.
+    // The learner opened the Academy list once, caching catalog.json and
+    // academy.json (without downloading individual cell.json files).
     const academy = fakeAcademy([
       { ...UML, version: "2099.1.1" },
       catalogOnly(),
     ]);
     await academyListHandler(db, { user: "learner", fetch: academy.fetch });
-    for (const entry of readCachedCatalog()!.cells) {
-      writeCachedCell(
-        entry,
-        (await fetchAcademyCell(entry, academy.fetch)).bytes,
-      );
-    }
+    expect(academy.requests).toEqual([
+      "https://academy.zam-os.org/catalog.json",
+      "https://academy.zam-os.org/academy.json",
+    ]);
 
     await enrolBundledCellHandler(db, {
       cellId: "zam-academy:uml",
@@ -935,20 +933,50 @@ describe("the learner's academy actions (ADR 2026-10-19 D4, D5)", () => {
       String(UML.version),
     );
 
-    // A cached catalog cell can be enrolled by an agent from the cache alone.
+    // Agent listing surfaces catalog-only entries from the cached catalog
+    // without touching the network or manual cache priming.
     const listed = await listBundledCellsHandler(db, { user: "learner" });
-    expect(listed.cells.map((cell) => cell.id)).toContain(
-      "zam-academy:nur-katalog",
+    const catalogRow = listed.cells.find(
+      (cell) => cell.id === "zam-academy:nur-katalog",
     );
-    const enrolled = await enrolBundledCellHandler(db, {
+    expect(catalogRow).toMatchObject({
+      id: "zam-academy:nur-katalog",
+      installed: false,
+      enrolled: false,
+      requiresLearnerEnrol: true,
+    });
+
+    // Enrolling an uncached catalog-only cell via an agent never reaches the
+    // network and directs the learner to click „Aufnehmen“ in ZAM Academy.
+    await expect(
+      enrolBundledCellHandler(db, {
+        cellId: "zam-academy:nur-katalog",
+        user: "learner",
+      }),
+    ).rejects.toThrow(/Aufnehmen/);
+    expect(academy.requests).toHaveLength(2);
+
+    // Once the learner takes the cell in ZAM Academy (which caches its tile
+    // and installs it), the agent sees it as enrolled without requiresLearnerEnrol.
+    const taken = await academyEnrolHandler(db, {
       cellId: "zam-academy:nur-katalog",
       user: "learner",
+      fetch: academy.fetch,
     });
-    // Its items are the UML items under another id here, so they are reused.
-    expect(enrolled.success).toBe(true);
+    expect(taken.success).toBe(true);
     expect(await installedTileVersion(db, "zam-academy:nur-katalog")).toBe(
       "2026.10.1",
     );
+    const afterTake = await listBundledCellsHandler(db, { user: "learner" });
+    const enrolledRow = afterTake.cells.find(
+      (cell) => cell.id === "zam-academy:nur-katalog",
+    );
+    expect(enrolledRow).toMatchObject({
+      id: "zam-academy:nur-katalog",
+      installed: true,
+      enrolled: true,
+    });
+    expect(enrolledRow?.requiresLearnerEnrol).toBeUndefined();
   });
 
   it("refuses a catalog-only cell in a team library", async () => {

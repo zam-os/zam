@@ -1,6 +1,6 @@
 # ZAM Academy: Cells from academy.zam-os.org, One-Click Enrolment, Links Back to the Lesson
 
-**Status:** Implemented — PR #419 (2026-10-19). Manual checks in the running apps and open questions 1–7 stay open\
+**Status:** Implemented — PR #419 (2026-10-19); Decisions 4–5 and the curriculum-wizard note amended by [2026-11-22](2026-11-22-academy-index-browser-and-wizard-removal.md)\
 **Date:** 2026-10-19\
 **Deciders:** Thomas (project owner)\
 **Plan:** `docs/plans/2026-10-19-zam-academy-cells.md`, removed at release

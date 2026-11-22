@@ -297,7 +297,6 @@ export const FREE_CONTENT_PATHS: readonly ContentPathDescriptor[] = [
 
 export function freeDefaultPathFor(
   defaultImportPath: string | undefined,
-  _hasNonAcademyCurriculumCells = false,
 ): string {
   if (defaultImportPath === "free-import") {
     return "free-import";
@@ -307,7 +306,6 @@ export function freeDefaultPathFor(
 
 export function orderFreeContentPaths(
   defaultImportPath: string | undefined,
-  _hasNonAcademyCurriculumCells = false,
 ): readonly ContentPathDescriptor[] {
   const preferredId = freeDefaultPathFor(defaultImportPath);
   const preferred = FREE_CONTENT_PATHS.find((path) => path.id === preferredId);
@@ -571,14 +569,10 @@ export function buildOnboardingSteps(
         paragraph(t("onboarding_content_body")),
       );
       const persona = ctx.personas.find((p) => p.id === selectedPersonaId);
-      const hasCurriculum = ctx.hasNonAcademyCurriculumCells ?? true;
-      const defaultPath = freeDefaultPathFor(
-        persona?.defaultImportPath,
-        hasCurriculum,
-      );
+      const defaultPath = freeDefaultPathFor(persona?.defaultImportPath);
       renderContentPathCards(
         container,
-        orderFreeContentPaths(persona?.defaultImportPath, hasCurriculum),
+        orderFreeContentPaths(persona?.defaultImportPath),
         defaultPath,
         actions,
         () => {},

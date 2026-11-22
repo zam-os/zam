@@ -1,6 +1,6 @@
 # LehrplanPLUS Curriculum Import Wizard
 
-**Status:** Partially implemented
+**Status:** Superseded by [2026-11-22](2026-11-22-academy-index-browser-and-wizard-removal.md) (curriculum wizard removed in favor of ZAM Academy and Free Import)
 **Date:** 2026-07-02
 **Deciders:** Thomas (project owner)
 **Related:**
