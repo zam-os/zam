@@ -3,7 +3,7 @@ import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 
 // Guards Tasks 2 and 3 of the MCP-Apps Studio panel plan
-// (docs/plans/2026-07-08): learning-content.ts and curriculum-wizard.ts must
+// (docs/plans/2026-07-08): learning-content.ts and academy-list.ts must
 // not pull in main.ts (Tauri APIs + Three.js), and the bridge-transport/i18n
 // seams they now use instead must stay framework-free — the MCP panel
 // (desktop/src/panel/panel.ts, Task 3) reuses them standalone, with no
@@ -23,10 +23,10 @@ describe("desktop module boundaries", () => {
       (m) => m[1] ?? m[2],
     );
 
-  it("learning-content.ts, curriculum-wizard.ts and library-topics.ts do not import from main", () => {
+  it("learning-content.ts, academy-list.ts and library-topics.ts do not import from main", () => {
     for (const file of [
       "learning-content.ts",
-      "curriculum-wizard.ts",
+      "academy-list.ts",
       // Shared with the MCP Apps panel through learning-content.ts.
       "library-topics.ts",
     ]) {

@@ -916,8 +916,15 @@ describe("learning content source", () => {
       kind: "workspace",
       id: "lab",
     });
-    setLearningContentSource({ kind: "curriculum" }, path);
-    expect(getLearningContentSource(path)).toEqual({ kind: "curriculum" });
+    // Legacy stored "curriculum" selections from before the wizard's removal
+    // are safely ignored so callers fall back to the active workspace.
+    const raw = JSON.parse(readFileSync(path, "utf8")) as Record<
+      string,
+      unknown
+    >;
+    raw.learningContent = { source: { kind: "curriculum" } };
+    writeFileSync(path, JSON.stringify(raw), "utf8");
+    expect(getLearningContentSource(path)).toBeNull();
     expect(getKnowledgeMapConfig(path).repoPath).toBe("/keep/me");
   });
 

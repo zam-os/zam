@@ -16,12 +16,16 @@ import {
   ACADEMY_ORIGIN,
   type AcademyCatalog,
   type AcademyCatalogEntry,
+  type AcademyIndex,
   parseAcademyCatalog,
+  parseAcademyIndex,
 } from "../../src/kernel/library/academy-catalog.js";
 import type { BundledTile } from "../../src/kernel/library/bundled-cells.js";
 
 export const ACADEMY_CATALOG_URL = `${ACADEMY_ORIGIN}/catalog.json`;
+export const ACADEMY_INDEX_URL = `${ACADEMY_ORIGIN}/academy.json`;
 const CATALOG_MAX_BYTES = 256 * 1024;
+const INDEX_MAX_BYTES = 512 * 1024;
 const CELL_MAX_BYTES = 2 * 1024 * 1024;
 const FETCH_TIMEOUT_MS = 15_000;
 
@@ -106,6 +110,13 @@ export async function fetchMobileAcademyCatalog(
     fetchImpl,
   );
   return parseAcademyCatalog(JSON.parse(new TextDecoder().decode(bytes)));
+}
+
+export async function fetchMobileAcademyIndex(
+  fetchImpl: AcademyFetch = fetch,
+): Promise<AcademyIndex> {
+  const bytes = await fetchBytes(ACADEMY_INDEX_URL, INDEX_MAX_BYTES, fetchImpl);
+  return parseAcademyIndex(JSON.parse(new TextDecoder().decode(bytes)));
 }
 
 export async function fetchMobileAcademyCell(

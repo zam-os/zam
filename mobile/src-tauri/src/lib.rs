@@ -1,4 +1,3 @@
-mod curriculum;
 mod db;
 mod on_device_llm;
 mod reminder;
@@ -94,8 +93,7 @@ pub fn run() {
             update::update_get_version,
             update::update_check,
             update::update_install,
-            vision::vision_request,
-            curriculum::curriculum_source_request
+            vision::vision_request
         ])
         .run(tauri::generate_context!())
         .expect("error while running the ZAM mobile shell");

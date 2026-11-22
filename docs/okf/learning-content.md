@@ -1,18 +1,18 @@
 ---
 type: architecture
 title: Learning Content
-description: The Learning Content page opens on Lern-Karten, three lists of tokens and cards, and Quellen shows one workspace, folder, or curriculum at a time.
+description: The Learning Content page opens on Lern-Karten, three lists of tokens and cards with ZAM Academy browsing, and Quellen shows one workspace or folder at a time.
 tags:
   - studio
   - learning-content
   - cards
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/learning-content.md"
-timestamp: 2026-10-16T01:00:00.000Z
+timestamp: 2026-11-22T18:55:00.000Z
 ---
 
 The Desktop Studio and the shared Studio panel both have a Learning Content page (Lerninhalte). The page opens on **Lern-Karten** (Learning cards). The other area is **Quellen** (Sources).
 
-The actions that create or manage cards stay on Lern-Karten: a new card, topic import, photo or PDF, file import, library topics, and Bonus while items are kept. In the Desktop window the header shows **Neue Karte** (New card) and one **Importieren** (Import) menu that holds photo or PDF, library topics, **Themen-Import** (Topic import), and file import; Bonus sits beside them while items are kept.
+The actions that create or manage cards stay on Lern-Karten: a new card, ZAM Academy packages, topic import, photo or PDF, file import, library topics, and Bonus while items are kept. In the Desktop window the header shows **Neue Karte** (New card) and one **Importieren** (Import) menu that holds photo or PDF, **Aus der ZAM Academy**, library topics, **Themen-Import** (Topic import), and file import; Bonus sits beside them while items are kept.
 
 The topic import ([ADR 2026-10-14](../adr/2026-10-14-topic-import-and-source-provenance.md)) replaced the goal import. It opens in a dialog of its own, with the same topic area as the first-run flow's topic page. That page follows only while the first-run content page's topic path is the one last chosen; choosing another path takes it out again.
 - The learner names the topic, at most 200 characters, and a larger field takes context, prior knowledge and details. Example: PostgreSQL after projects only in Microsoft SQL Server, learned from the parallels and the differences.
@@ -23,7 +23,7 @@ The topic import ([ADR 2026-10-14](../adr/2026-10-14-topic-import-and-source-pro
 - Each subtopic carries the Wikipedia article the model names for it, and its cards keep that article as their lookup term (Decision 4).
 - The model knows only what is public. A subtopic about one company's or one person's own knowledge comes with the reason, unticked and locked, and with the hint to import it from its source: notes, a file or a repository (Decision 5).
 
-The knowledge atlas opens the same dialog from a world region's **Hier importieren …** (*Fehlendes Wissen beschreiben*): the model is told where the cards will land, on a line of its own, never as prior knowledge, and the confirmed cards land there, each subtopic as the deepest level and the topic above it. If they cannot be put there, the result says so; the cards are kept. A Firma or Privat region does not offer it, since the model knows no company's or person's knowledge. Lehrplan, below, keeps the curriculum import and the enrolment of a learning path, and the menu has no curriculum entry.
+The knowledge atlas opens the same dialog from a world region's **Hier importieren …** (*Fehlendes Wissen beschreiben*): the model is told where the cards will land, on a line of its own, never as prior knowledge, and the confirmed cards land there, each subtopic as the deepest level and the topic above it. If they cannot be put there, the result says so; the cards are kept. A Firma or Privat region does not offer it, since the model knows no company's or person's knowledge. For ready-made school and world packages, the atlas, onboarding, and the active-path panel on Lern-Karten open **ZAM Academy** directly; the legacy curriculum wizard has been removed.
 
 # Nachlesen
 
@@ -45,7 +45,7 @@ A published token in Nicht gewählt can be taken as this learner's card. One tok
 
 # Quellen
 
-Quellen shows one source at a time. The switcher is labeled **Quelle**. It lists every connected workspace, then **Lehrplan** (Curriculum). A picked folder is shown while it is the selected Quelle. The active workspace is what a read returns when nothing is stored, and that read does not write the choice. The choice is remembered on this machine under `learningContent` and does not change `knowledgeMap.repoPath`.
+Quellen shows one source at a time. The switcher is labeled **Quelle**. It lists every connected workspace, and a picked folder is shown while it is the selected Quelle. The active workspace is what a read returns when nothing is stored (or when a legacy `curriculum` selection is present), and that read does not write the choice. The choice is remembered on this machine under `learningContent` and does not change `knowledgeMap.repoPath`.
 
 A folder that is not a workspace can be looked at in the Desktop window. Picking it does not add a workspace, link skills, or repair anything. A directory that is missing stays selectable, and the page says so.
 
@@ -53,15 +53,13 @@ For a workspace or a folder, the page lists that directory's OKF articles when `
 
 When the selected path is the real path of the package root that ships the ZAM skill, a symlink to that root included, the switcher marks it **Skillquelle** (Skill source). That source shows this repository's own map, or the validation errors, and does not substitute an example map. A different clone is an ordinary Quelle.
 
-Lehrplan hosts the existing curriculum browser in the Desktop window: school type, grade, subject, and the topics it already shows. Import and enrolment keep their current commands. Cancel starts the walk again while Lehrplan stays selected. Back on the first step leaves the browser open. The Lern-Karten header has no separate curriculum button. Onboarding and the active-path note point at Quellen → Lehrplan.
-
 Quellen does not repair a workspace, link skills, write an OKF article, or write a knowledge map. Remembering a browsed region as new cards is not part of this page.
 
 # The Studio panel
 
 The Studio panel reaches the bridge through the app-only `zam_studio_bridge`, which a host also lets a model call ([ADR 2026-10-08b](../adr/2026-10-08b-corporate-deployment-baseline.md), Decision 3). On that path a Quelle is a workspace id: `learning-content-workspace --workspace <id>` resolves the root from the machine-local registry and returns the OKF catalog, one article whose real path is a non-reserved `*.md` inside `docs/okf`, or the validated map. A `map.json` that resolves outside the workspace counts as absent. No other file is read; a citation to one answers that it opens in ZAM Desktop.
 
-The panel bridge does not offer `learning-content-browse` or `knowledge-map`, which take a path, and it refuses `learning-content-source --path` and `knowledge-map-feature --repo`. No `curriculum-*` command is on it. So the panel has no folder button and no curriculum browser; a stored folder and Lehrplan show the sentence that they open in ZAM Desktop, and the workspaces, their articles, and their maps keep working. The Desktop window runs the bridge directly and reads a Quelle by path, including other cited files inside it.
+The panel bridge does not offer `learning-content-browse` or `knowledge-map`, which take a path, and it refuses `learning-content-source --path` and `knowledge-map-feature --repo`. So the panel has no folder button; a stored folder shows the sentence that it opens in ZAM Desktop, and the workspaces, their articles, and their maps keep working. The Desktop window runs the bridge directly and reads a Quelle by path, including other cited files inside it.
 
 # Cards from an article
 
@@ -69,6 +67,7 @@ Browsing a source does not create tokens. An OKF article becomes learning tokens
 
 # Citations
 
+- [ADR 2026-10-19 — ZAM Academy Cells](../adr/2026-10-19-zam-academy-cells.md)
 - [ADR 2026-10-14b — Formulas, Images and Spoken Text in Cards](../adr/2026-10-14b-card-formulas-images-and-spoken-text.md)
 - [ADR 2026-10-10 — Learning Content: Cards and Sources](../adr/2026-10-10-learning-content-sources.md)
 - [ADR 2026-10-14 — Topic Import, and Where a Unit's Knowledge Comes From](../adr/2026-10-14-topic-import-and-source-provenance.md)
@@ -77,6 +76,5 @@ Browsing a source does not create tokens. An OKF article becomes learning tokens
 - [ADR 2026-07-18 — Knowledge-to-Learning Import](../adr/2026-07-18-okf-learning-import.md)
 - [ADR 2026-10-02 — Library Topics](../adr/2026-10-02-library-topics.md)
 - [ADR 2026-10-03 — Repo Knowledge Map](../adr/2026-10-03-repo-knowledge-map.md)
-- [ADR 2026-07-02 — LehrplanPLUS Curriculum Import Wizard](../adr/2026-07-02-lehrplanplus-import-wizard.md)
 - [ADR 2026-06-25c — Flexible ZAM Workspaces and Skill Wiring](../adr/2026-06-25c-flexible-zam-workspaces-and-skill-wiring.md)
-- Code: `desktop/src/learning-content.ts`, `desktop/src/topic-import.ts`, `desktop/src/onboarding.ts`, `src/kernel/import/topic-import.ts`, `src/kernel/models/token.ts`, `desktop/src/learning-content-sources.ts`, `desktop/src/learning-content-knowledge.ts`, `desktop/src/curriculum-wizard.ts`, `desktop/index.html`, `desktop/src/panel/studio-panel.html`, `src/kernel/library/learning-content.ts`, `src/cli/learning-content/browse.ts`, `src/cli/learning-content/citation.ts`, `src/cli/provisioning/index.ts`, `src/cli/commands/bridge.ts`, `src/cli/commands/mcp.ts`
+- Code: `desktop/src/learning-content.ts`, `desktop/src/academy-list.ts`, `desktop/src/topic-import.ts`, `desktop/src/onboarding.ts`, `src/kernel/import/topic-import.ts`, `src/kernel/models/token.ts`, `desktop/src/learning-content-sources.ts`, `desktop/src/learning-content-knowledge.ts`, `desktop/index.html`, `desktop/src/panel/studio-panel.html`, `src/kernel/library/learning-content.ts`, `src/cli/learning-content/browse.ts`, `src/cli/learning-content/citation.ts`, `src/cli/provisioning/index.ts`, `src/cli/commands/bridge.ts`, `src/cli/commands/mcp.ts`

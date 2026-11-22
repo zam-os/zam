@@ -183,7 +183,7 @@ interface OnboardingDeps {
    * modal overlays, so they open on top of the flow (plan Phase 8 / W1: wire
    * existing entry points, never reimplement them).
    */
-  openContentEntry(entry: "academy" | "curriculum" | "free-import"): void;
+  openContentEntry(entry: "academy" | "free-import"): void;
 }
 
 /**
@@ -204,7 +204,7 @@ export interface OnboardingStepActions {
   openExternal(url: string): void;
   goToStep(id: string): void;
   /** Trigger an existing Studio import entry point (modal overlays). */
-  openContentEntry(entry: "academy" | "curriculum" | "free-import"): void;
+  openContentEntry(entry: "academy" | "free-import"): void;
   /**
    * True once the learner has asked to leave the flow, while the page is
    * still shown; see {@link createOnboardingExit}.
@@ -218,9 +218,8 @@ export interface OnboardingStepActions {
  * The import paths offered on the content page — one row per
  * `PersonaDescriptor.defaultImportPath` value. The persona selects which row
  * leads (a default, never a lock); every row stays visible and reachable, and
- * the actions wire the EXISTING entry points (Quellen → Lehrplan,
- * Studio import modal, the topic and agent pages) instead of reimplementing
- * them.
+ * the actions wire the EXISTING entry points (ZAM Academy, Studio import modal,
+ * the topic and agent pages) instead of reimplementing them.
  */
 export interface ContentPathDescriptor {
   id: string;
@@ -228,7 +227,7 @@ export interface ContentPathDescriptor {
   bodyKey: string;
   actionLabelKey: string;
   action:
-    | { kind: "entry"; entry: "academy" | "curriculum" | "free-import" }
+    | { kind: "entry"; entry: "academy" | "free-import" }
     | { kind: "step"; step: string };
 }
 
@@ -238,7 +237,7 @@ export const CONTENT_PATHS: readonly ContentPathDescriptor[] = [
     labelKey: "onboarding_content_curriculum_label",
     bodyKey: "onboarding_content_curriculum_body",
     actionLabelKey: "onboarding_content_curriculum_action",
-    action: { kind: "entry", entry: "curriculum" },
+    action: { kind: "entry", entry: "academy" },
   },
   {
     id: "free-import",
@@ -277,8 +276,7 @@ export function orderContentPaths(
 
 /**
  * Content paths offered during the Free-mode first-run flow (Design W1).
- * `curriculum` is offered only while local bundled non-Academy curriculum
- * cells still exist (`hasNonAcademyCurriculumCells`).
+ * The curriculum wizard was removed; ZAM Academy replaces it.
  */
 export const FREE_CONTENT_PATHS: readonly ContentPathDescriptor[] = [
   {
@@ -287,13 +285,6 @@ export const FREE_CONTENT_PATHS: readonly ContentPathDescriptor[] = [
     bodyKey: "onboarding_content_academy_body",
     actionLabelKey: "onboarding_content_academy_action",
     action: { kind: "entry", entry: "academy" },
-  },
-  {
-    id: "curriculum",
-    labelKey: "onboarding_content_curriculum_label",
-    bodyKey: "onboarding_content_curriculum_body",
-    actionLabelKey: "onboarding_content_curriculum_action",
-    action: { kind: "entry", entry: "curriculum" },
   },
   {
     id: "free-import",
@@ -306,11 +297,8 @@ export const FREE_CONTENT_PATHS: readonly ContentPathDescriptor[] = [
 
 export function freeDefaultPathFor(
   defaultImportPath: string | undefined,
-  hasNonAcademyCurriculumCells = true,
+  _hasNonAcademyCurriculumCells = false,
 ): string {
-  if (defaultImportPath === "curriculum" && hasNonAcademyCurriculumCells) {
-    return "curriculum";
-  }
   if (defaultImportPath === "free-import") {
     return "free-import";
   }
@@ -319,18 +307,15 @@ export function freeDefaultPathFor(
 
 export function orderFreeContentPaths(
   defaultImportPath: string | undefined,
-  hasNonAcademyCurriculumCells = true,
+  _hasNonAcademyCurriculumCells = false,
 ): readonly ContentPathDescriptor[] {
-  const available = hasNonAcademyCurriculumCells
-    ? FREE_CONTENT_PATHS
-    : FREE_CONTENT_PATHS.filter((path) => path.id !== "curriculum");
-  const preferredId = freeDefaultPathFor(
-    defaultImportPath,
-    hasNonAcademyCurriculumCells,
-  );
-  const preferred = available.find((path) => path.id === preferredId);
-  if (!preferred) return available;
-  return [preferred, ...available.filter((path) => path.id !== preferredId)];
+  const preferredId = freeDefaultPathFor(defaultImportPath);
+  const preferred = FREE_CONTENT_PATHS.find((path) => path.id === preferredId);
+  if (!preferred) return FREE_CONTENT_PATHS;
+  return [
+    preferred,
+    ...FREE_CONTENT_PATHS.filter((path) => path.id !== preferredId),
+  ];
 }
 
 // ── Dashboard onboarding checklist (ADR 2026-07-24 §7, plan Phase 9) ────────
@@ -1606,7 +1591,7 @@ export function withTopicPlace(
   return proposals.map((proposal) => ({ ...proposal, placeBelow }));
 }
 
-/** The curriculum wizard's readiness gate, shared behavior (ADR §3). */
+/** Text-LLM readiness gate before topic generation. */
 async function topicTextLlmReady(): Promise<boolean> {
   try {
     const ensureRes = await runBridge<{ usable?: boolean }>("ensure-llm", [

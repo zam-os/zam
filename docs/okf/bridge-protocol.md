@@ -7,7 +7,7 @@ tags:
   - bridge
   - agents
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/bridge-protocol.md"
-timestamp: 2026-10-28T06:00:00.000Z
+timestamp: 2026-11-22T19:08:00.000Z
 ---
 
 `zam bridge <command>` is ZAM's machine-facing CLI transport: an agent
@@ -530,9 +530,9 @@ them. It is online-only and needs a model that reads images, or PDFs.
 The JSON bridge exposes the commit-controlled field-test path without a file or
 network import:
 
-- `bundled-cells-list` reports the four cells and per-learner
-  installed/enrolled status; `bundled-cell-enrol <cellId>` performs the
-  explicit install-then-enrol workflow idempotently.
+- `bundled-cells-list` reports the cells and per-learner installed/enrolled
+  status; `bundled-cell-enrol <cellId>` performs the explicit
+  install-then-enrol workflow idempotently.
 - `preconditions-get` and `precondition-assess <atomId> <known|learn>`
   expose finite hard-precondition deferral.
 - `pull-forward-candidates` and `pull-forward-execute` implement the
@@ -553,13 +553,18 @@ bridge's JSON helpers.
 
 The learner's academy actions (ADR 2026-10-19), called by Studio:
 
-- `academy-list` reads `https://academy.zam-os.org/catalog.json` and caches
-  it and its cells under `~/.zam/academy`. It returns each academy cell with
-  `version`, `items`, `appUrl`, `bundled`, `held`, `heldVersion` and
-  `newer`. Offline it answers from the cache, with `offline: true`. It writes
-  nothing to the library.
-- `academy-enrol <cellId>` enrols in the newest version known, bundled or
-  from the catalog.
+- `academy-list` reads `https://academy.zam-os.org/catalog.json` and the
+  lightweight `https://academy.zam-os.org/academy.json` index in parallel and
+  caches both under `~/.zam/academy` without downloading individual
+  `cell.json` bundles. It returns `taxonomy` (schools, areas, subjects,
+  subject combinations) and each academy cell enriched with `version`,
+  `items`, `appUrl`, `bundled`, `held`, `heldVersion`, `newer`, `preview` and
+  `facet` (school, grades, subject, lessons, topics). Offline it answers from
+  the cache or bundled tiles, with `offline: true`. It writes nothing to the
+  library.
+- `academy-enrol <cellId>` lazily fetches only that single cell's `cell.json`
+  when the bundled copy is older, caches it, and enrols in the newest version
+  known.
 - `academy-update <cellId>` installs the newer catalog version of one held
   cell, and reports `updated`, `from` and `version`.
 
@@ -575,7 +580,8 @@ and filters by cell id, then removes its listener when the call settles.
 None of them is in `STUDIO_BRIDGE_COMMANDS` or behind an MCP tool.
 `bundled-cells-list` also lists the cells cached by the last check, and
 `bundled-cell-enrol` enrols them without fetching and emits the same
-`academy-progress` events for the curriculum browser.
+`academy-progress` events. The legacy `curriculum-*` bridge commands have been
+removed in favor of ZAM Academy.
 
 # Trust and keys
 
@@ -599,8 +605,8 @@ whose token sits in a keychain ZAM cannot read fails to open with
 # Citations
 - Code: `src/cli/academy/progress.ts`
 - Tests: `tests/cli/academy-progress.test.ts`
-- Code: `desktop/src/curriculum-wizard.ts`, `desktop/src/cell-import-progress.ts`, `desktop/src/academy-list.ts`, `src/kernel/library/kvt-attach.ts`
-- Tests: `tests/desktop/cell-import-progress.test.ts`
+- Code: `desktop/src/cell-import-progress.ts`, `desktop/src/academy-list.ts`, `src/kernel/library/kvt-attach.ts`, `src/kernel/library/academy-catalog.ts`, `src/kernel/library/academy-browse.ts`
+- Tests: `tests/desktop/cell-import-progress.test.ts`, `tests/desktop/academy-list.test.ts`, `tests/kernel/academy-catalog.test.ts`
 - [ADR 2026-10-19 — ZAM Academy Cells](../adr/2026-10-19-zam-academy-cells.md)
 - [ADR 2026-10-14b — Formulas, Images and Spoken Text in Cards](../adr/2026-10-14b-card-formulas-images-and-spoken-text.md)
 - [ADR 2026-08-14 — Central Learning Atoms and Identity](../adr/2026-08-14-central-learning-atoms-and-identity.md)

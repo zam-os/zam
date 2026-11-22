@@ -4,11 +4,16 @@ import { mkdtempSync, readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { academyCacheDir } from "../../src/cli/academy/cache.js";
+import {
+  academyCacheDir,
+  readCachedCatalog,
+  writeCachedCell,
+} from "../../src/cli/academy/cache.js";
 import {
   type AcademyFetchOptions,
   fetchAcademyCatalog,
   fetchAcademyCell,
+  fetchAcademyIndex,
 } from "../../src/cli/academy/catalog-client.js";
 import {
   academyEnrolHandler,
@@ -448,7 +453,11 @@ describe("the learner's academy actions (ADR 2026-10-19 D4, D5)", () => {
       appUrl: "https://academy.zam-os.org/biologie-realschule-8/",
     });
     expect(await tilesInstalled()).toBe(0);
-    // All eight catalog cells were cached for a later „Aufnehmen“ or an agent.
+    // Listing only reads the lightweight index endpoints — never downloads individual cell.json files.
+    expect(academy.requests.sort()).toEqual([
+      "https://academy.zam-os.org/academy.json",
+      "https://academy.zam-os.org/catalog.json",
+    ]);
     expect(
       readFileSync(join(academyCacheDir(), "catalog.json"), "utf8"),
     ).toContain("zam-academy:nur-katalog");
@@ -477,6 +486,78 @@ describe("the learner's academy actions (ADR 2026-10-19 D4, D5)", () => {
     expect(cached.offline).toBe(true);
     expect(preview(cached.cells, "zam-academy:nur-katalog")).toBe(true);
     expect(preview(cached.cells, grade4)).toBe(false);
+  });
+
+  it("reads and caches academy.json in parallel to enrich school, grade and subject facets", async () => {
+    const indexPayload = {
+      schema: 1,
+      goal: "Alle Themen",
+      schulen: [
+        {
+          id: "gymnasium",
+          name: "Gymnasium",
+          wo: "am Gymnasium",
+          short: "Gym",
+          from: 5,
+          to: 13,
+        },
+      ],
+      bereiche: [{ id: "informatik", name: "Informatik", glyph: "</>" }],
+      faecher: [
+        {
+          id: "informatik",
+          name: "Informatik",
+          bereich: "informatik",
+          glyph: "</>",
+          hue: 190,
+          from: 6,
+        },
+      ],
+      fachverbunde: [],
+      pakete: [
+        {
+          id: "nur-katalog",
+          app: "nur-katalog",
+          title: "Nur im Katalog",
+          fach: "informatik",
+          grade: 11,
+          school: "gymnasium",
+          lessons: 18,
+          gebiete: ["Graphen", "Rekursion"],
+          desc: "Testpaket",
+        },
+      ],
+    };
+    const academy = fakeAcademy([catalogOnly()], {
+      "/academy.json": { body: Buffer.from(JSON.stringify(indexPayload)) },
+    });
+
+    const { index } = await fetchAcademyIndex(academy.fetch);
+    expect(index.pakete[0].grades).toEqual([11]);
+
+    academy.requests.length = 0;
+    const list = await academyListHandler(db, {
+      user: "learner",
+      fetch: academy.fetch,
+    });
+    expect(list.offline).toBe(false);
+    expect(academy.requests.sort()).toEqual([
+      "https://academy.zam-os.org/academy.json",
+      "https://academy.zam-os.org/catalog.json",
+    ]);
+    expect(
+      readFileSync(join(academyCacheDir(), "academy.json"), "utf8"),
+    ).toContain("nur-katalog");
+    const row = list.cells.find((c) => c.id === "zam-academy:nur-katalog");
+    expect(row?.facet).toMatchObject({
+      school: "gymnasium",
+      schoolName: "Gymnasium",
+      grades: [11],
+      fach: "informatik",
+      subjectName: "Informatik",
+      lessons: 18,
+      gebiete: ["Graphen", "Rekursion"],
+    });
   });
 
   it("answers from the cache, or the bundled cells, when offline", async () => {
@@ -664,10 +745,18 @@ describe("the learner's academy actions (ADR 2026-10-19 D4, D5)", () => {
   });
 
   it("keeps stdout one JSON result while streaming cell counts on stderr", async () => {
+    const tile = catalogOnly();
+    const academy = fakeAcademy([tile]);
     await academyListHandler(db, {
       user: "learner",
-      fetch: fakeAcademy([catalogOnly()]).fetch,
+      fetch: academy.fetch,
     });
+    // Listing no longer downloads individual cell.json files; seed the cache
+    // so the spawned bridge subprocess tests offline/cached enrolment progress.
+    const entry = readCachedCatalog()!.cells.find(
+      (c) => c.id === tile.tile_id,
+    )!;
+    writeCachedCell(entry, Buffer.from(JSON.stringify(tile)));
     // The CLI uses this test file's sandboxed HOME/.zam/zam.db, not the
     // handler's temp db. npm test builds dist first through its pretest hook.
     const result = spawnSync(
@@ -790,30 +879,53 @@ describe("the learner's academy actions (ADR 2026-10-19 D4, D5)", () => {
 
   it("installs the version the catalog lists, not a build it dropped", async () => {
     // An earlier check cached 2099; the catalog has since gone back to 2098.
-    await academyListHandler(db, {
-      user: "learner",
-      fetch: fakeAcademy([catalogOnly("2099.1.1")]).fetch,
-    });
-    await academyListHandler(db, {
-      user: "learner",
-      fetch: fakeAcademy([catalogOnly("2098.1.1")]).fetch,
-    });
+    const old2099 = fakeAcademy([catalogOnly("2099.1.1")]);
+    await academyListHandler(db, { user: "learner", fetch: old2099.fetch });
+    const oldEntry = readCachedCatalog()!.cells[0];
+    writeCachedCell(
+      oldEntry,
+      (await fetchAcademyCell(oldEntry, old2099.fetch)).bytes,
+    );
+
+    const rev2098 = fakeAcademy([catalogOnly("2098.1.1")]);
+    await academyListHandler(db, { user: "learner", fetch: rev2098.fetch });
+    // Offline refuses to fall back to the dropped 2099 build.
+    await expect(
+      academyEnrolHandler(db, {
+        cellId: "zam-academy:nur-katalog",
+        user: "learner",
+        fetch: offline,
+      }),
+    ).rejects.toThrow();
+
+    // Online downloads only the listed 2098 build on demand.
+    rev2098.requests.length = 0;
     const result = await academyEnrolHandler(db, {
       cellId: "zam-academy:nur-katalog",
       user: "learner",
-      fetch: offline,
+      fetch: rev2098.fetch,
     });
     expect(result.version).toBe("2098.1.1");
+    expect(rev2098.requests).toEqual([
+      "https://academy.zam-os.org/nur-katalog/cell.json",
+    ]);
   });
 
   it("never lets the agent tools update a held cell or reach the network", async () => {
     await enrolBundledCell(db, "learner", "zam-academy:uml");
-    // The learner checked the catalog: a newer version is cached.
-    await academyListHandler(db, {
-      user: "learner",
-      fetch: fakeAcademy([{ ...UML, version: "2099.1.1" }, catalogOnly()])
-        .fetch,
-    });
+    // The learner checked the catalog and cached both a newer UML build and a
+    // catalog-only cell.
+    const academy = fakeAcademy([
+      { ...UML, version: "2099.1.1" },
+      catalogOnly(),
+    ]);
+    await academyListHandler(db, { user: "learner", fetch: academy.fetch });
+    for (const entry of readCachedCatalog()!.cells) {
+      writeCachedCell(
+        entry,
+        (await fetchAcademyCell(entry, academy.fetch)).bytes,
+      );
+    }
 
     await enrolBundledCellHandler(db, {
       cellId: "zam-academy:uml",
@@ -823,7 +935,7 @@ describe("the learner's academy actions (ADR 2026-10-19 D4, D5)", () => {
       String(UML.version),
     );
 
-    // A cell from the learner's check can be enrolled, from the cache alone.
+    // A cached catalog cell can be enrolled by an agent from the cache alone.
     const listed = await listBundledCellsHandler(db, { user: "learner" });
     expect(listed.cells.map((cell) => cell.id)).toContain(
       "zam-academy:nur-katalog",

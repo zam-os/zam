@@ -2,9 +2,8 @@
  * *Hier importieren …* on the knowledge atlas (ADR 2026-10-13, Decision 9):
  * an import that starts at a region of the map.
  *
- * - **Aus dem Lehrplan.** The cell has precedence (ADR 2026-08-14, Decision
- *   10): the bundled cells for the region come first, and the generic
- *   curriculum wizard only where no cell covers the position.
+ * - **Aus der ZAM Academy.** The bundled cells for the region come first, and
+ *   the ZAM Academy browser lets the learner find and enrol further packages.
  * - **Fehlendes Wissen beschreiben.** The topic import (ADR 2026-10-14): the
  *   learner names what is missing and its context, the model proposes
  *   subtopics and cards, and they land at this region, each subtopic as its
@@ -36,8 +35,8 @@ export interface AtlasImportDeps {
   importTopic?(place: ImportPlace): void;
   /** Open the material import (photos, PDF, notes) at this place. */
   importMaterial(place: ImportPlace): void;
-  /** Open the generic curriculum wizard, where no cell covers the place. */
-  openCurriculumWizard?(): void;
+  /** Open ZAM Academy when no bundled cell covers the place (or to browse more). */
+  openAcademy?(): void;
   /** Called after a cell enrol changed the learner's cards. */
   onChanged(): void;
 }
@@ -246,13 +245,16 @@ function renderCells(
   const children: HTMLElement[] = [];
   if (result.cells.length > 0) children.push(list);
   else children.push(el("p", "atlas-import-help", t("atlas_import_no_cells")));
-  if (result.wizard && deps.openCurriculumWizard) {
-    const wizard = button("btn secondary-btn btn-sm", t("atlas_import_wizard"));
-    wizard.addEventListener("click", () => {
+  if (result.wizard && deps.openAcademy) {
+    const academy = button(
+      "btn secondary-btn btn-sm",
+      t("atlas_import_wizard"),
+    );
+    academy.addEventListener("click", () => {
       closeAtlasImport();
-      deps.openCurriculumWizard?.();
+      deps.openAcademy?.();
     });
-    children.push(wizard);
+    children.push(academy);
   }
   dialog.curriculum.replaceChildren(...children);
 }

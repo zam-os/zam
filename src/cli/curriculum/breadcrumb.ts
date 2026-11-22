@@ -1,14 +1,19 @@
 /**
- * Persists the learner's last navigated curriculum path so a reopened
- * wizard can show it first and jump straight back to the right level,
- * instead of re-navigating all steps from scratch (ADR 2026-07-02,
- * resolved decision 6). Backed by the existing settings/user_config store.
+ * Stores and reads a learner's remembered curriculum position (`settings` key
+ * `curriculum.lastSelection`), still consulted as an optional scope hint by
+ * material import and atlas scope-cell upgrades.
  */
 
 import { type Database, getSetting, setSetting } from "../../kernel/index.js";
-import type { CurriculumSelection } from "./types.js";
 
 const LAST_SELECTION_KEY = "curriculum.lastSelection";
+
+export interface CurriculumSelection {
+  schoolType?: string;
+  grade?: string;
+  subject?: string;
+  track?: string;
+}
 
 export interface CurriculumBreadcrumb extends CurriculumSelection {
   providerId: string;

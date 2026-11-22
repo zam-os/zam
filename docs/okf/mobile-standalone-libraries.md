@@ -1,16 +1,16 @@
 ---
 type: architecture
 title: Standalone Mobile Libraries
-description: ZAM Mobile runs standalone libraries, per-learner Flash or answer review, and cell-first curriculum flows on Android and iOS; pairing remains an optional multi-device upgrade.
+description: ZAM Mobile runs standalone libraries, per-learner Flash or answer review, and index-backed ZAM Academy browsing on Android and iOS; pairing remains an optional multi-device upgrade.
 tags:
   - mobile
   - android
   - ios
   - recall
   - offline
-  - curriculum
+  - academy
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/mobile-standalone-libraries.md"
-timestamp: 2026-10-27T14:24:28Z
+timestamp: 2026-11-22T19:08:00.000Z
 ---
 
 ZAM Mobile is a standalone learning app on Android and iOS. An unpaired first
@@ -43,35 +43,21 @@ same TypeScript kernel and node-free provisioning path on both mobile
 platforms, so scheduling, migrations, snapshots, and token/card behavior do not
 fork into Android or iOS implementations.
 
-# Curriculum discovery and cell precedence
+# ZAM Academy browsing and active learning paths
 
-Mobile navigates the same provider registry and manifests as Desktop: country
-or region, school type, grade, subject, optional track, then topic. A completed
-position is resolved against bundled-cell curriculum scopes before any generic
-import is offered. Every fitting reviewed cell is offered first. When a cell
-binds the position's grade, the cells are the only curriculum offer. A cell
-that fits only through grade-less module bindings, such as an IT module the
-school may teach in any year, covers the grade in part, so the provider's
-topic list follows below the cells. A position with no covering cell falls
-back to the topic list alone. Mobile takes this verdict from
-`needsGenericCurriculumImport`, as Desktop does. This implements the
-cell-precedence rule at the surface instead of asking a learner to understand
-the distinction.
+The ordinary Library screen shows active learning paths and one **Aus der ZAM
+Academy** action; it does not render the whole bundled catalog up front, and
+the legacy curriculum wizard has been removed. Tapping **Aus der ZAM Academy**
+fetches only `/catalog.json` and the lightweight `/academy.json` index from
+`https://academy.zam-os.org` in parallel (falling back cleanly to bundled tiles
+offline) and never downloads individual `cell.json` payloads while browsing.
 
-The ordinary Library screen shows active learning paths and one guided
-curriculum action; it does not render the whole bundled catalog. Cell status is
-computed with bulk queries over the relevant atoms, practice items, and cards,
-and provider-specific track aliases are normalized when a manifest and a
-published tile use different stable spellings.
-
-Reviewed bundled cells install and enrol without a model or network connection.
-A generic curriculum topic is stricter: its official source must have verified
-content, the native shell performs a bounded HTTPS text fetch on both Android
-and iOS, and a connected cloud text endpoint produces grounded card drafts.
-Every draft carries the official `source_link`, provider, and stable topic id,
-and must pass through the editable multi-draft confirmation UI before it
-becomes a token and personal card. HTTP and model selection stay outside the
-kernel.
+Mobile uses the shared kernel browsing logic (`src/kernel/library/academy-browse.ts`)
+to offer multi-stage selection (grade → subject → packages), a school filter,
+and live search. Tapping **Aufnehmen** or **Aktualisieren** lazily fetches only
+that one package's `cell.json` when the bundled copy is older, verifies its
+SHA-256, and installs and enrols it through `enrolBundledCell`. Bundled Academy
+cells install and enrol offline with no model or network connection.
 
 # Photos and PDFs as learning cards
 
@@ -116,12 +102,11 @@ Taking or updating a ZAM Academy cell shows the same accessible progress bar
 on Android and iOS as on Desktop. It starts indeterminate during preparation,
 then counts the kernel's installation and enrolment passes. Only successful
 completion fills the bar; a failure removes it and makes the action retryable.
-The curriculum browser's cell enrolment uses the same bar. The callbacks
-work with both local and server-backed libraries. Enrolment labels its counts
-as checked cards, including siblings that the budget leaves without a card.
-Completion removes the bar and reports the result. A successful update keeps
-its saved version in both the row metadata and update button, without fetching
-the catalog again.
+The callbacks work with both local and server-backed libraries. Enrolment
+labels its counts as checked cards, including siblings that the budget leaves
+without a card. Completion removes the bar and reports the result. A successful
+update keeps its saved version in both the row metadata and update button,
+without fetching the catalog again.
 
 A mobile review session persists a bounded kernel queue snapshot. It renders
 the item tier, turns valid Tier-1 binary checks into one-tap choices, offers
@@ -170,12 +155,12 @@ The review renders a card's question, Tier-1 options and revealed answer
 from its segments with the Studio's renderer
 ([card-text-segments.md](card-text-segments.md)); Temml (pinned to 0.13.5)
 loads as a lazy chunk. Voice reads the spoken projections. A card the phone
-generates (curriculum import) is stored as the plain projection: Unicode
-formulas, never raw LaTeX. A formula card cannot be edited as plain text
-on the phone; the kernel's refusal points to the Studio's card editor. The
-app's content-security policy allows its own `blob:`/`data:` images,
-`blob:` audio and local fonts, which the attachment strip and the renderer
-need; an image that is part of the card text is not repeated in the strip.
+generates is stored as the plain projection: Unicode formulas, never raw LaTeX.
+A formula card cannot be edited as plain text on the phone; the kernel's
+refusal points to the Studio's card editor. The app's content-security policy
+allows its own `blob:`/`data:` images, `blob:` audio and local fonts, which the
+attachment strip and the renderer need; an image that is part of the card text
+is not repeated in the strip.
 
 # Knowledge atlas
 
@@ -191,8 +176,9 @@ due cards and no new card. The map itself is not on Mobile yet.
 # Citations
 - Code: `mobile/src/academy-import-view.ts`
 - Tests: `tests/mobile/academy-import-view.test.ts`
-- Code: `desktop/src/curriculum-wizard.ts`, `desktop/src/cell-import-progress.ts`, `desktop/src/academy-list.ts`, `src/kernel/library/kvt-attach.ts`
+- Code: `desktop/src/cell-import-progress.ts`, `desktop/src/academy-list.ts`, `src/kernel/library/kvt-attach.ts`
 - Tests: `tests/desktop/cell-import-progress.test.ts`
+- [ADR 2026-10-19 — ZAM Academy Cells](../adr/2026-10-19-zam-academy-cells.md)
 - [ADR 2026-10-14b — Formulas, Images and Spoken Text in Cards](../adr/2026-10-14b-card-formulas-images-and-spoken-text.md)
 - [Flashcard quality contract — PR #321](https://github.com/zam-os/zam/pull/321)
 - [ADR 2026-07-06b — Checkpointed Review Dialogue](../adr/2026-07-06b-checkpointed-review-dialogue.md)
@@ -200,8 +186,8 @@ due cards and no new card. The map itself is not on Mobile yet.
 - Code: `mobile/src/discuss.ts`, `mobile/src/evaluate.ts`, `mobile/src/main.ts`, `mobile/src/review-session.ts`, `mobile/src/voice.ts`, `mobile/index.html`, `src/kernel/scheduler/study-settings.ts`, `src/kernel/recall/voice-review.ts`, `desktop/src/discussion.ts`
 - [ADR 2026-08-14 — Central Learning Atoms and Identity](../adr/2026-08-14-central-learning-atoms-and-identity.md)
 - [ADR 2026-08-14b — Published Atom Identity and Alignment](../adr/2026-08-14b-published-atom-identity-and-alignment.md)
-- Tests: `tests/mobile/curriculum.test.ts`, `tests/mobile/curriculum-wiring.test.ts`, `tests/mobile/review-session.test.ts`, `tests/kernel/bundled-cells.test.ts`, `tests/kernel/precondition-assessment.test.ts`
-- Code: `mobile/index.html`, `mobile/src/main.ts`, `mobile/src/curriculum.ts`, `mobile/src/import.ts`, `mobile/src-tauri/src/curriculum.rs`, `mobile/src-tauri/src/vision.rs`, `src/cli/curriculum/registry.ts`, `src/cli/curriculum/content-readiness.ts`, `src/kernel/library/bundled-cells.ts`
+- Tests: `tests/mobile/academy.test.ts`, `tests/mobile/curriculum-wiring.test.ts`, `tests/mobile/review-session.test.ts`, `tests/kernel/bundled-cells.test.ts`, `tests/kernel/precondition-assessment.test.ts`
+- Code: `mobile/index.html`, `mobile/src/main.ts`, `mobile/src/academy.ts`, `mobile/src/import.ts`, `mobile/src-tauri/src/vision.rs`, `src/kernel/library/academy-browse.ts`, `src/kernel/library/academy-catalog.ts`, `src/kernel/library/bundled-cells.ts`
 - [ADR 2026-10-05 — Learning Cards from Photos and Files](../adr/2026-10-05-learning-cards-from-photos-and-files.md)
 - Tests: `tests/mobile/material-import.test.ts`, `tests/mobile/material-import-wiring.test.ts`, `tests/mobile/vl-import.test.ts`
 - Code: `mobile/src/material-import.ts`, `mobile/src/material-review-view.ts`, `mobile/src/vl-import.ts`, `mobile/src/image-import.ts`, `mobile/src/study-offers.ts`

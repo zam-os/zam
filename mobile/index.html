@@ -328,19 +328,11 @@
                  learner does far more often. -->
             <div id="library-browse" class="stack">
               <div class="card stack">
-                <p class="group-title" data-i18n="learning_paths_heading">Lehrplan & Lernpfade</p>
-                <p class="t-secondary" data-i18n="learning_paths_desc">Wähle Schulart, Klasse und Fach. ZAM zeigt zuerst passende geprüfte Lernpfade.</p>
-                <button
-                  id="open-curriculum"
-                  class="btn primary"
-                  type="button"
-                  data-i18n="curriculum_choose"
-                >
-                  Lehrplan auswählen
-                </button>
+                <p class="group-title" data-i18n="learning_paths_heading">ZAM Academy &amp; Lernpfade</p>
+                <p class="t-secondary" data-i18n="learning_paths_desc">Wähle Klasse, Fach und Schulart in der ZAM Academy. Aktive Lernpfade bleiben hier sichtbar.</p>
                 <button
                   id="open-academy"
-                  class="btn"
+                  class="btn primary"
                   type="button"
                   data-i18n="academy_menu"
                 >
@@ -431,10 +423,8 @@
               <p id="detail-status" class="status" aria-live="polite"></p>
             </div>
 
-            <!-- One mobile-native catalog walk. It uses the same provider
-                 taxonomy and cell-precedence contract as Desktop; the body is
-                 rebuilt for the current step so 228 cells never become one
-                 scrolling wall. -->
+            <!-- Mobile-native ZAM Academy browser: multi-stage navigation
+                 (grade → subject → packages), school filter, and live search. -->
             <div id="library-curriculum" class="stack" hidden>
               <button
                 id="curriculum-back"
@@ -446,18 +436,9 @@
               </button>
               <div class="card stack">
                 <nav id="curriculum-breadcrumb" class="chip-row" aria-label="Auswahl"></nav>
-                <h2 id="curriculum-step-title" class="t-title">Lehrplan auswählen</h2>
+                <h2 id="curriculum-step-title" class="t-title">ZAM Academy</h2>
                 <p id="curriculum-step-hint" class="t-secondary"></p>
                 <div id="curriculum-options" class="stack"></div>
-                <button
-                  id="curriculum-model-settings"
-                  class="btn"
-                  type="button"
-                  hidden
-                  data-i18n="curriculum_open_ai_settings"
-                >
-                  KI in den Einstellungen verbinden
-                </button>
                 <p id="curriculum-status" class="status" aria-live="polite"></p>
               </div>
             </div>

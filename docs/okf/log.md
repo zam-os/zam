@@ -1,5 +1,12 @@
 # Log
 
+## 2026-11-22
+
+- **Update** — [Token and Card Model](token-card-model.md)
+- **Update** — [FSRS-6 Scheduling](fsrs-scheduling.md)
+- **Update** — [Standalone Mobile Libraries](mobile-standalone-libraries.md)
+- **Update** — [Bridge CLI Protocol](bridge-protocol.md)
+
 ## 2026-11-21
 
 - **Update** — [FSRS-6 Scheduling](fsrs-scheduling.md)

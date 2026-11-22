@@ -90,9 +90,9 @@ describe("the preview label", () => {
   // These render inside large views with no test DOM of their own.
   it.each([
     [
-      "the curriculum wizard's offer",
-      "desktop/src/curriculum-wizard.ts",
-      "if (cell.preview) text.append(academyPreviewLabel());",
+      "Studio's Academy browser",
+      "desktop/src/academy-list.ts",
+      "if (cell.preview) row.append(academyPreviewLabel());",
     ],
     [
       "Studio's active paths",
@@ -102,22 +102,15 @@ describe("the preview label", () => {
     [
       "Mobile's Academy list",
       "mobile/src/main.ts",
-      "if (preview) card.append(academyPreviewLabel());",
+      "if (item.preview) card.append(academyPreviewLabel());",
     ],
     [
-      "Mobile's curriculum offer and active paths",
+      "Mobile's active paths",
       "mobile/src/main.ts",
       "if (cell.preview) card.append(academyPreviewLabel());",
     ],
   ])("is wired into %s", (_surface, file, line) => {
     expect(readFileSync(file, "utf8")).toContain(line);
-  });
-
-  it("appears on both of Mobile's cell lists", () => {
-    const main = readFileSync("mobile/src/main.ts", "utf8");
-    expect(
-      main.match(/if \(cell\.preview\) card\.append\(academyPreviewLabel\(\)\);/g),
-    ).toHaveLength(2);
   });
 
   it("has its style in both apps, in the colours of each theme", () => {

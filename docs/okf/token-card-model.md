@@ -8,7 +8,7 @@ tags:
   - tokens
   - cards
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/token-card-model.md"
-timestamp: 2026-11-21T08:43:00Z
+timestamp: 2026-11-22T19:18:00.000Z
 ---
 
 ZAM's published central-learning model separates five objects:
@@ -62,13 +62,12 @@ cleared.
 Tokens carry an **editorial state**: `draft`, `in_review`, `published`, or
 `deprecated`. Only `published` content enters review queues, due lists,
 presentation admission and rating. Raw captures —
-MCP/Bridge `zam_add_token`, `zam token register`, Studio create, generic
-curriculum extract, source/URL capture, Mobile import, and generated
-split/foundation items — write `draft`. Curated KVT cells, OKF import that
-passes structural checks, and adoption of existing Anki/file cards remain
-identifiable published paths. `createToken()` still defaults to `published`
-so those curated callers stay explicit. First-run starter cards pass
-`published` so they remain immediately reviewable.
+MCP/Bridge `zam_add_token`, `zam token register`, Studio create, source/URL
+capture, Mobile import, and generated split/foundation items — write `draft`.
+Curated KVT cells, OKF import that passes structural checks, and adoption of
+existing Anki/file cards remain identifiable published paths. `createToken()`
+still defaults to `published` so those curated callers stay explicit. First-run
+starter cards pass `published` so they remain immediately reviewable.
 
 Publishing runs inexpensive structural checks: a required question for first
 publication of a draft, a non-empty criterion that is not a slug echo, and
@@ -239,7 +238,9 @@ names; a tile that names none keeps a link set elsewhere.
 **ZAM Academy cells** (ADR 2026-10-19) live in `zam-os/zam-academy` next to
 their training apps. They are published at
 `https://academy.zam-os.org/<app>/cell.json` and listed in `/catalog.json`
-with a SHA-256 each.
+with a SHA-256 each, accompanied by the lightweight `/academy.json` index
+for fast multi-stage browsing by grade, subject, school type, and knowledge
+area.
 
 - **Bundled copies.** `npm run academy:sync` copies every published catalog
   cell into the release. `npm run academy:sync -- --app <app-name>` copies
@@ -247,10 +248,13 @@ with a SHA-256 each.
   modes verify the catalog's SHA-256, tile id and version, and copy the cell
   bytes unchanged. A test checks the copies against
   `zam-academy-cells.lock.json`.
-- **Reading.** Opening „Aus der ZAM Academy“ in Studio or Mobile reads the
-  catalog and writes nothing to the library.
-- **„Aufnehmen“** enrols through `enrolBundledCell`, with the fetched tile as
-  `resolveTile`.
+- **Reading.** Opening „Aus der ZAM Academy“ in Studio or Mobile reads only
+  `/catalog.json` and `/academy.json` in parallel (zero `cell.json` downloads
+  while browsing) and writes nothing to the library. Offline, facets fall back
+  to bundled tiles.
+- **„Aufnehmen“** lazily fetches only that single cell's `cell.json` when the
+  bundled copy is older and enrols through `enrolBundledCell`, with the
+  fetched tile as `resolveTile`.
 - **„Aktualisieren“** installs the newer catalog version of one held cell.
 - **Progress.** Desktop and Mobile show a bar from the start of taking or
   updating a cell. Installation counts prepared practice items. Enrolment
@@ -259,10 +263,9 @@ with a SHA-256 each.
   does not claim every checked item received a card. Each pass fills half the
   bar. The end of installation says all cards are prepared; saving is shown
   at the end of enrolment, below 100% until the command succeeds. Preparation
-  before counts arrive is indeterminate. Taking a cell from the curriculum
-  browser uses the same display. Completion replaces the bar with result
-  text. A saved version differing from the offered one removes the bar and
-  permits retry. Desktop's Academy dialog can be closed during an import;
+  before counts arrive is indeterminate. Completion replaces the bar with
+  result text. A saved version differing from the offered one removes the bar
+  and permits retry. Desktop's Academy dialog can be closed during an import;
   reopening it while work is running retains the same rows and progress.
 - **No downgrade.** Enrolling never installs an older version than the
   library holds.
@@ -275,18 +278,17 @@ Curriculum discovery compares official subject ids with their fixture aliases
 track bindings keep groups II, IIIa and IIIb separate. A shared II/III binding
 reaches each of those groups; a binding for II alone never matches a learner
 in III, IIIa or IIIb. A combined II/III scope is a broad search filter.
-For LehrplanPLUS Mittelschule, `curriculumTrackMembers` normalizes the manifest
-track ids `regelklasse` and `mittlere-reife-klasse` to the compact track codes
+For LehrplanPLUS Mittelschule, `curriculumTrackMembers` normalizes the track
+ids `regelklasse` and `mittlere-reife-klasse` to the compact track codes
 `R` and `M` used by Mittelschule grade 7–9 Academy cells.
-The BwR 9 manifest offers group II only. Its Academy cell binds the five
-grade-9 learning areas to that group; its two optional VAT refreshers carry
-only an Academy binding. Wirtschaft und Recht 9 is the opposite case: one
-Fachlehrplan serves groups I and III, so its manifest track `wpfg1-3` reaches
-I, IIIa and IIIb, and its Academy cell binds the four grade-9 learning areas
-to `I` and `III` and never to II. Its four optional English lessons carry only
-an Academy binding. It replaces the old partial school cell of this grade:
-three of that cell's eight cards pass their review history to Academy
-successors, five retire without transferring mastery (approved 2026-10-22).
+The BwR 9 Academy cell binds the five grade-9 learning areas to group II; its
+two optional VAT refreshers carry only an Academy binding. Wirtschaft und Recht
+9 is the opposite case: one Fachlehrplan serves groups I and III, so its Academy
+cell binds the four grade-9 learning areas to `I` and `III` and never to II.
+Its four optional English lessons carry only an Academy binding. It replaces
+the old partial school cell of this grade: three of that cell's eight cards
+pass their review history to Academy successors, five retire without
+transferring mastery (approved 2026-10-22).
 Deutsch 9 is a third case: the Realschule has one Fachlehrplan for every group,
 so its Academy cell binds the four learning areas to grade 9 and names no
 track, and the cell is offered to I, II, IIIa and IIIb alike. Its first
@@ -447,9 +449,7 @@ IT modules Datennetze II (2.5.2), Objektorientierte Softwareentwicklung
 (2.7.2), and Künstliche Intelligenz (2.7.3) without a grade or track.
 The school chooses when these modules are taught. Curriculum discovery
 therefore offers the cell at Realschule IT positions in grades 5 to 10,
-under both `it` and `informatik`, across groups. Where only grade-less
-modules fit, including grade 10, the generic curriculum importer stays
-available alongside the cell.
+under both `it` and `informatik`, across groups.
 
 Every practice item links to its lesson in the training app. The cell
 declares neither `replaces` nor `retired_items`; it replaces no earlier
@@ -462,8 +462,7 @@ Informatik 8 Realschule covers the IT-Anfangsunterricht, modules 1.1 to
 1.9, which every Wahlpflichtfächergruppe completes by the end of grade 8.
 Its Academy cell, version 2026.10.3, binds each of its 40 lessons (33 with
 two practice items, seven with three, 87 practice items total) to grades 6, 7
-and 8 without a track, as `it-1.1` to `it-1.9`. The manifest keeps these
-modules inside Lernbereich 1 „Anfangsunterricht“. The cell replaces three old
+and 8 without a track, as `it-1.1` to `it-1.9`. The cell replaces three old
 school cells, one each for grades 6, 7 and 8. Of their 24 cards, ten A rows
 and one B row pass their histories on; the thirteen C cards are multi-part,
 outside 1.1 to 1.9, or uncertain, and are retired as `retired_items` (approved
@@ -471,11 +470,7 @@ outside 1.1 to 1.9, or uncertain, and are retired as `retired_items` (approved
 histories but no longer enter the review queue. The old cells are no longer
 bundled. A moved card keeps its schedule and history, and because every item
 is bound to grades 6, 7 and 8, a moved card from the grade-6 or grade-7 cell
-stays placed in its own grade. In each of these grades the cell covers the
-position fully, so the generic importer is not offered beside it, although
-the cell teaches only Lernbereich 1: coverage is decided per position (ADR
-2026-08-14 Decision 10), not per Lernbereich, as it was for the old school
-cells.
+stays placed in its own grade.
 
 Mathematik 10 has two Fachlehrpläne that differ in content, not only in
 depth: Zweig I learns Abbildungen and Logarithmusfunktionen, Zweig II/III
@@ -500,16 +495,15 @@ Gymnasium content, so those cards stay active in the libraries that hold
 them. The old cells are no longer bundled.
 
 Chemie 8 is offered only in Wahlpflichtfächergruppe I: Zweige II and III
-start chemistry in grade 9. The manifest track `wpfg1` is the only branch,
-and its Academy cell, version 2026.10.2, binds 32 core lessons to the five
-grade-8 learning areas with track `I` (30 with two practice items, two with
-three items, 66 practice items total). It replaces both old school cells of
-the grade with eight A rows (single-fact cards) and retires the eight
-multi-part C cards as `retired_items` (approved 2026-10-26). The eight retired
-cards keep their personal card states and review histories; they no longer
-enter the review queue. The old cells are no longer bundled. On an atom where
-a learner already holds the moved card, enrolment adds new sibling cards one
-per enrolment.
+start chemistry in grade 9. Its Academy cell, version 2026.10.2, binds 32 core
+lessons to the five grade-8 learning areas with track `I` (30 with two practice
+items, two with three items, 66 practice items total). It replaces both old
+school cells of the grade with eight A rows (single-fact cards) and retires the
+eight multi-part C cards as `retired_items` (approved 2026-10-26). The eight
+retired cards keep their personal card states and review histories; they no
+longer enter the review queue. The old cells are no longer bundled. On an atom
+where a learner already holds the moved card, enrolment adds new sibling cards
+one per enrolment.
 
 Englisch 8 Realschule is bundled as an Academy cell, version 2026.10.2,
 with 51 core lessons in seven stages and 102 English practice items. Its
@@ -558,16 +552,15 @@ histories; they no longer enter the review queue. The old cell is no longer
 bundled. On an atom where a learner already holds the moved card, enrolment
 adds the two new sibling cards one per enrolment.
 
-BwR 10 is offered only in group II, like BwR 9: the manifest track `wpfg2`
-is the only one, and its Academy cell, version 2026.10.2, binds 36 core
-lessons to the four grade-10 learning areas with track `II`; its two
-optional refreshers (input VAT, percentages "im Hundert") carry only an
-Academy binding. It replaces the old school cell of the grade with two A rows,
-the Herstellkosten of the Zuschlagskalkulation and the unit contribution
-margin db = p − kv, and retires the two multi-part C cards as
-`retired_items` (approved 2026-10-25). Both retired cards keep their
-personal card states and review histories; they no longer enter the review
-queue. The old cell is no longer bundled.
+BwR 10 is offered only in group II, like BwR 9: its Academy cell, version
+2026.10.2, binds 36 core lessons to the four grade-10 learning areas with
+track `II`; its two optional refreshers (input VAT, percentages "im Hundert")
+carry only an Academy binding. It replaces the old school cell of the grade
+with two A rows, the Herstellkosten of the Zuschlagskalkulation and the unit
+contribution margin db = p − kv, and retires the two multi-part C cards as
+`retired_items` (approved 2026-10-25). Both retired cards keep their personal
+card states and review histories; they no longer enter the review queue. The
+old cell is no longer bundled.
 
 Mathematik 7 Realschule is bundled as an Academy cell, version 2026.11.1,
 with 42 lessons and 126 practice items. Its bindings cover all 42 lessons in
@@ -620,9 +613,8 @@ under the provider `zam-academy`. The Schule lens shows them under "4. Klasse".
 A Grundschule grade carries no school-type name and does not count as a second
 school type. The island offers these three cells and each subject offers its
 own. A binding without a school type or grade places its atom under its Academy
-subject and stage. The LehrplanPLUS curriculum path keeps its generic import
-because the Academy bindings belong to a different provider. ZAM has no earlier
-Grundschule cell, so enrolling creates only unlearned cards.
+subject and stage. ZAM has no earlier Grundschule cell, so enrolling creates
+only unlearned cards.
 
 The Academy retired its separate preview status in November 2026 and records
 teacher acceptance through the app's package version. Release 0.67.0 no longer
@@ -666,7 +658,7 @@ Deutsch 5 Realschule [2]):
   (`deutsch-mittelschule-5` `2026.11.2` [51/102], `-6` `2026.11.2` [52/104],
   `-7` `2026.11.1` [37/74], `-8` `2026.11.1` [37/74], `mathematik-mittelschule-5`
   `2026.11.1` [32/64], `-6` `2026.11.1` [35/70], `-7` `2026.11.1` [32/96],
-  `-8` `2026.11.1` [31/93]); grades 7 and 8 normalize manifest tracks
+  `-8` `2026.11.1` [31/93]); grades 7 and 8 normalize track ids
   `regelklasse` and `mittlere-reife-klasse` to `R` and `M`.
 
 In release 0.64.0 (2026-11-14), ten more Academy cells joined (68 bundled
@@ -750,7 +742,7 @@ exact successor declarations may preserve it, while ambiguous or materially
 changed mappings require real re-retrieval.
 
 # Citations
-- Code: `desktop/src/curriculum-wizard.ts`, `desktop/src/cell-import-progress.ts`, `desktop/src/academy-list.ts`, `src/kernel/library/kvt-attach.ts`
+- Code: `desktop/src/cell-import-progress.ts`, `desktop/src/academy-list.ts`, `src/kernel/library/kvt-attach.ts`
 - Tests: `tests/desktop/cell-import-progress.test.ts`, `tests/kernel/zam-academy-grundschule-4-cells.test.ts`
 - [ADR 2026-10-26 — Explicit Withdrawal of Published Curriculum Bindings](../adr/2026-10-26-curriculum-binding-withdrawals.md)
 - [ADR 2026-10-19 — ZAM Academy Cells](../adr/2026-10-19-zam-academy-cells.md)
@@ -759,8 +751,8 @@ changed mappings require real re-retrieval.
 - [ADR 2026-08-14b — Published Atom Identity and Alignment](../adr/2026-08-14b-published-atom-identity-and-alignment.md)
 - [ADR 2026-10-02 — Library Topics](../adr/2026-10-02-library-topics.md)
 - [ADR 2026-10-05 — Learning Cards from Photos and Files](../adr/2026-10-05-learning-cards-from-photos-and-files.md)
-- Tests: `tests/kernel/zam-academy-2026-11-cells.test.ts`, `tests/kernel/zam-academy-2026-11-13-cells.test.ts`, `tests/kernel/zam-academy-2026-11-14-cells.test.ts`, `tests/kernel/zam-academy-2026-11-15-cells.test.ts`, `tests/kernel/zam-academy-englisch-realschule-8-cell.test.ts`, `tests/kernel/zam-academy-geschichte-realschule-8-cell.test.ts`, `tests/kernel/zam-academy-deutsch-realschule-8-cell.test.ts`, `tests/kernel/zam-academy-chemie-realschule-8-cell.test.ts`, `tests/kernel/zam-academy-informatik-realschule-8-cell.test.ts`, `tests/kernel/zam-academy-biologie-realschule-8-cell.test.ts`, `tests/kernel/kvt-card-text.test.ts`, `tests/kernel/zam-academy-politik-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-franzoesisch-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-englisch-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-deutsch-realschule-10-cell.test.ts`, `tests/kernel/kvt-attach.test.ts`, `tests/kernel/bundled-cells.test.ts`, `tests/kernel/tier-interaction-bonus.test.ts`, `tests/kernel/publication.test.ts`, `tests/kernel/assignment.test.ts`, `tests/kernel/library-topics.test.ts`, `tests/kernel/postgres-team.test.ts`, `tests/kernel/material-import.test.ts`, `tests/kernel/academy-catalog.test.ts`, `tests/kernel/academy-cells-lock.test.ts`, `tests/kernel/tile-version.test.ts`, `tests/kernel/zam-academy-uml-cell.test.ts`, `tests/kernel/zam-academy-geographie-realschule-9-cell.test.ts`, `tests/kernel/zam-academy-geschichte-realschule-9-cell.test.ts`, `tests/kernel/zam-academy-biologie-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-physik-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-physik-realschule-8-cell.test.ts`, `tests/kernel/zam-academy-mathematik-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-chemie-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-mathematik-realschule-8-cell.test.ts`, `tests/kernel/zam-academy-mathematik-realschule-7-cell.test.ts`, `tests/kernel/zam-academy-it-cells.test.ts`, `tests/kernel/zam-academy-informatik-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-bwr-realschule-9-cell.test.ts`, `tests/kernel/zam-academy-englisch-realschule-9-cell.test.ts`, `tests/kernel/zam-academy-franzoesisch-realschule-9-cell.test.ts`, `tests/cli/curriculum-lehrplanplus-bayern.test.ts`, `tests/cli/academy-sync-script.test.ts`, `tests/kernel/zam-academy-geschichte-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-bwr-realschule-10-cell.test.ts`
-- Code: `src/kernel/atlas/weltwissen-emblems.ts`, `src/kernel/atlas/weltwissen-seed.ts`, `src/kernel/atlas/palette.ts`, `src/kernel/library/kvt-attach.ts`, `src/kernel/library/bundled-cells.ts`, `src/kernel/library/bonus.ts`, `src/kernel/library/publication.ts`, `src/kernel/library/topics.ts`, `src/kernel/scheduler/queue.ts`, `src/kernel/import/material-import.ts`, `src/kernel/library/academy-catalog.ts`, `src/kernel/library/tile-version.ts`, `scripts/sync-academy-cells.mjs`, `src/cli/curriculum/providers/lehrplanplus-bayern/manifest.ts`
+- Tests: `tests/kernel/zam-academy-2026-11-cells.test.ts`, `tests/kernel/zam-academy-2026-11-13-cells.test.ts`, `tests/kernel/zam-academy-2026-11-14-cells.test.ts`, `tests/kernel/zam-academy-2026-11-15-cells.test.ts`, `tests/kernel/zam-academy-englisch-realschule-8-cell.test.ts`, `tests/kernel/zam-academy-geschichte-realschule-8-cell.test.ts`, `tests/kernel/zam-academy-deutsch-realschule-8-cell.test.ts`, `tests/kernel/zam-academy-chemie-realschule-8-cell.test.ts`, `tests/kernel/zam-academy-informatik-realschule-8-cell.test.ts`, `tests/kernel/zam-academy-biologie-realschule-8-cell.test.ts`, `tests/kernel/kvt-card-text.test.ts`, `tests/kernel/zam-academy-politik-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-franzoesisch-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-englisch-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-deutsch-realschule-10-cell.test.ts`, `tests/kernel/kvt-attach.test.ts`, `tests/kernel/bundled-cells.test.ts`, `tests/kernel/tier-interaction-bonus.test.ts`, `tests/kernel/publication.test.ts`, `tests/kernel/assignment.test.ts`, `tests/kernel/library-topics.test.ts`, `tests/kernel/postgres-team.test.ts`, `tests/kernel/material-import.test.ts`, `tests/kernel/academy-catalog.test.ts`, `tests/kernel/academy-cells-lock.test.ts`, `tests/kernel/tile-version.test.ts`, `tests/kernel/zam-academy-uml-cell.test.ts`, `tests/kernel/zam-academy-geographie-realschule-9-cell.test.ts`, `tests/kernel/zam-academy-geschichte-realschule-9-cell.test.ts`, `tests/kernel/zam-academy-biologie-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-physik-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-physik-realschule-8-cell.test.ts`, `tests/kernel/zam-academy-mathematik-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-chemie-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-mathematik-realschule-8-cell.test.ts`, `tests/kernel/zam-academy-mathematik-realschule-7-cell.test.ts`, `tests/kernel/zam-academy-it-cells.test.ts`, `tests/kernel/zam-academy-informatik-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-bwr-realschule-9-cell.test.ts`, `tests/kernel/zam-academy-englisch-realschule-9-cell.test.ts`, `tests/kernel/zam-academy-franzoesisch-realschule-9-cell.test.ts`, `tests/cli/academy-sync-script.test.ts`, `tests/kernel/zam-academy-geschichte-realschule-10-cell.test.ts`, `tests/kernel/zam-academy-bwr-realschule-10-cell.test.ts`
+- Code: `src/kernel/atlas/weltwissen-emblems.ts`, `src/kernel/atlas/weltwissen-seed.ts`, `src/kernel/atlas/palette.ts`, `src/kernel/library/kvt-attach.ts`, `src/kernel/library/bundled-cells.ts`, `src/kernel/library/bonus.ts`, `src/kernel/library/publication.ts`, `src/kernel/library/topics.ts`, `src/kernel/scheduler/queue.ts`, `src/kernel/import/material-import.ts`, `src/kernel/library/academy-catalog.ts`, `src/kernel/library/academy-browse.ts`, `src/kernel/library/tile-version.ts`, `scripts/sync-academy-cells.mjs`
 
 - [ADR 2026-03-26 — Personal Workflow Foundations](../adr/2026-03-26-personal-workflow-foundations.md)
 - [ADR 2026-07-04 — Knowledge Contexts](../adr/2026-07-04-knowledge-contexts.md)

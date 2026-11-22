@@ -120,12 +120,13 @@ describe("study-view card-management wiring", () => {
     for (const id of [
       "bundled-cells-container",
       "bundled-cells-list",
-      "btn-bundled-cells-open-curriculum",
+      "btn-bundled-cells-open-academy",
       "tier-badge",
       "fast-check-options",
     ]) {
       expect(html).toContain(`id="${id}"`);
     }
+    expect(html).not.toContain('id="btn-bundled-cells-open-curriculum"');
     expect(main).toContain("configureSessionWorkload");
     expect(main).toContain('"--max-new"');
     expect(main).toContain("renderFastCheckAnswer");
@@ -134,12 +135,9 @@ describe("study-view card-management wiring", () => {
     expect(studio).toContain('"bundled-cells-list"');
     expect(studio).toContain("cells.filter((cell) => cell.enrolled)");
     expect(studio).toContain("wireBundledCellsOpen();");
-    // Enrolling belongs to the curriculum wizard (ADR 2026-08-14 Decision 10);
-    // the studio list only shows what is already active.
+    // Enrolling belongs to ZAM Academy; the studio list only shows active paths.
     expect(studio).not.toContain('"bundled-cell-enrol"');
-    expect(desktopFile("src/curriculum-wizard.ts")).toContain(
-      '"bundled-cell-enrol"',
-    );
+    expect(desktopFile("src/academy-list.ts")).toContain('"academy-enrol"');
   });
 
   it("skips the switchView studio reload on the full-editor jump", () => {

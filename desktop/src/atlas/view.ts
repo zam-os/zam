@@ -85,8 +85,8 @@ export interface AtlasViewDeps {
   importTopic?(place: ImportPlace): void;
   /** Open the material import (photos, PDF, notes) at a place (D9). */
   importMaterial?(place: ImportPlace): void;
-  /** Open the generic curriculum wizard, where no cell covers a place. */
-  openCurriculumWizard?(): void;
+  /** Open ZAM Academy when no bundled cell covers a place. */
+  openAcademy?(): void;
   /** Open a page in the system browser: *Nachlesen* (ADR 2026-10-14, D4). */
   openExternal?(url: string): void;
 }
@@ -1131,7 +1131,7 @@ function regionPanel(
         importTopic:
           layout.view.lens.planet === "welt" ? s.deps.importTopic : undefined,
         importMaterial: (place) => s.deps.importMaterial?.(place),
-        openCurriculumWizard: s.deps.openCurriculumWizard,
+        openAcademy: s.deps.openAcademy,
         onChanged: () => void load(s, s.lens ?? undefined),
       },
     );

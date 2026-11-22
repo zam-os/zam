@@ -8,6 +8,8 @@ import {
   academyUpdateButton,
   academyErrorText,
   academyMetaText,
+  applyAcademySchoolFilter,
+  createAcademyBrowserState,
   enrolAcademyCell,
   fetchAcademyCells,
   isAcademyCellId,
@@ -17,6 +19,10 @@ import {
 } from "../../desktop/src/academy-list.js";
 import { setBridgeTransport } from "../../desktop/src/bridge-transport.js";
 import { setCurrentLocale, t } from "../../desktop/src/i18n.js";
+import {
+  DEFAULT_ACADEMY_TAXONOMY,
+  enrichAcademyCells,
+} from "../../src/kernel/index.js";
 import { AcademyElement, academyDom } from "../helpers/academy-dom.js";
 
 /** ADR 2026-10-19 Decision 5: the Studio side of the ZAM Academy. */
@@ -329,5 +335,71 @@ describe("academy wiring", () => {
     expect(list).toMatch(
       /else if \(listing\.offline\) \{[^}]*button\.disabled = false;/,
     );
+  });
+
+  it("exposes multi-stage navigation, school chips and live search", () => {
+    const list = file("desktop/src/academy-list.ts");
+    expect(list).toContain('searchInput.id = "academy-search-input"');
+    expect(list).toContain("buildAcademyGradeTiles");
+    expect(list).toContain("buildAcademySubjectTiles");
+    expect(list).toContain("buildAcademyBereichTiles");
+    expect(list).toContain("buildAcademySchoolOptions");
+    expect(list).toContain("filterAcademyCells");
+  });
+});
+
+describe("academy browser state", () => {
+  it("keeps the current grade when the chosen school teaches it, and steps back when it does not", () => {
+    const enriched = enrichAcademyCells(
+      [
+        cell({
+          id: "zam-academy:deutsch-grundschule-4",
+          title: "Deutsch 4 Grundschule",
+          appUrl: "https://academy.zam-os.org/deutsch-grundschule-4/",
+        }),
+        cell({
+          id: "zam-academy:biologie-realschule-8",
+          title: "Biologie 8 Realschule",
+          appUrl: "https://academy.zam-os.org/biologie-realschule-8/",
+        }),
+        cell({
+          id: "zam-academy:biologie-gymnasium-8",
+          title: "Biologie 8 Gymnasium",
+          appUrl: "https://academy.zam-os.org/biologie-gymnasium-8/",
+        }),
+      ],
+      null,
+    );
+    const cells = enriched.cells;
+
+    // On grade 8 / biologie, picking Gymnasium keeps grade 8 & biologie.
+    const onGrade8 = {
+      ...createAcademyBrowserState(),
+      grade: 8 as const,
+      subject: "biologie",
+    };
+    expect(
+      applyAcademySchoolFilter(
+        onGrade8,
+        "gymnasium",
+        cells,
+        DEFAULT_ACADEMY_TAXONOMY,
+      ),
+    ).toMatchObject({ school: "gymnasium", grade: 8, subject: "biologie" });
+
+    // On grade 4, picking Gymnasium steps cleanly back to grade selection.
+    const onGrade4 = {
+      ...createAcademyBrowserState(),
+      grade: 4 as const,
+      subject: "deutsch",
+    };
+    expect(
+      applyAcademySchoolFilter(
+        onGrade4,
+        "gymnasium",
+        cells,
+        DEFAULT_ACADEMY_TAXONOMY,
+      ),
+    ).toMatchObject({ school: "gymnasium", grade: null, subject: null });
   });
 });

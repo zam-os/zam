@@ -1117,32 +1117,13 @@
     {
       "id": "cells",
       "parent": "content",
-      "label": "Curriculum cells",
+      "label": "Learning cells",
       "link": "prefers",
-      "text": "Where a curriculum cell covers a learner's position, import goes through that cell first.",
+      "text": "Reviewed learning cells supply curated atoms, prerequisites, and practice items; ZAM Academy replaces the removed curriculum wizard.",
       "sources": [
         "CLAUDE.md",
-        "docs/adr/2026-08-14-central-learning-atoms-and-identity.md"
-      ]
-    },
-    {
-      "id": "generic-import",
-      "parent": "cells",
-      "label": "Generic import",
-      "link": "fall back to",
-      "text": "Where no cell reaches yet, or a cell covers a grade only in part, the manifest-driven curriculum import is the fallback.",
-      "sources": [
-        "CLAUDE.md"
-      ]
-    },
-    {
-      "id": "lehrplanplus",
-      "parent": "generic-import",
-      "label": "LehrplanPLUS",
-      "link": "reads",
-      "text": "An import wizard reads Bavaria's LehrplanPLUS curricula for school learners.",
-      "sources": [
-        "docs/adr/2026-07-02-lehrplanplus-import-wizard.md"
+        "docs/adr/2026-08-14-central-learning-atoms-and-identity.md",
+        "docs/adr/2026-10-19-zam-academy-cells.md"
       ]
     },
     {
@@ -1281,10 +1262,11 @@
       "parent": "cells",
       "label": "ZAM Academy",
       "link": "include",
-      "text": "ZAM Academy cells retain app learning with lesson links and respect branch-specific curriculum bindings.",
+      "text": "ZAM Academy cells link to lessons, load fast via academy.json, and filter by grade, subject, and school type.",
       "sources": [
         "docs/adr/2026-10-19-zam-academy-cells.md",
         "src/kernel/library/academy-catalog.ts",
+        "src/kernel/library/academy-browse.ts",
         "src/kernel/library/bundled-cells.ts"
       ]
     },
