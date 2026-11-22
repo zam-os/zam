@@ -56,7 +56,7 @@ describe("persona content routing", () => {
   it("wires actions to existing entry points, never new import machinery", () => {
     for (const path of CONTENT_PATHS) {
       if (path.action.kind === "entry") {
-        expect(["curriculum", "free-import"]).toContain(path.action.entry);
+        expect(["academy", "free-import"]).toContain(path.action.entry);
       } else {
         // Step targets must exist in the flow (agent page, topic page).
         expect(["agent", "topic"]).toContain(path.action.step);
@@ -64,23 +64,19 @@ describe("persona content routing", () => {
     }
   });
 
-  it("shows Free content paths and drops curriculum once all cells live in ZAM Academy", () => {
+  it("shows Free content paths using ZAM Academy instead of the removed curriculum wizard", () => {
     expect(FREE_CONTENT_PATHS.map((p) => p.id)).toEqual([
       "academy",
-      "curriculum",
       "free-import",
     ]);
-    expect(orderFreeContentPaths("curriculum", true).map((p) => p.id)).toEqual([
-      "curriculum",
+    expect(orderFreeContentPaths("curriculum").map((p) => p.id)).toEqual([
       "academy",
       "free-import",
     ]);
-    expect(orderFreeContentPaths("curriculum", false).map((p) => p.id)).toEqual(
-      ["academy", "free-import"],
-    );
-    expect(
-      orderFreeContentPaths("free-import", false).map((p) => p.id),
-    ).toEqual(["free-import", "academy"]);
+    expect(orderFreeContentPaths("free-import").map((p) => p.id)).toEqual([
+      "free-import",
+      "academy",
+    ]);
   });
 
   it("separates onboarding into Free, AI Setup, and Agentic Coding Alpha flows", () => {

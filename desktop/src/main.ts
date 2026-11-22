@@ -74,13 +74,6 @@ import {
   startStep,
   stepToBlame,
 } from "./boot-progress.js";
-import {
-  closeCurriculumBrowser,
-  initCurriculumWizard,
-  openCurriculumBrowser,
-  setCurriculumWizardModelSetup,
-  setCurriculumWizardOpener,
-} from "./curriculum-wizard.js";
 import { initMobilePairing } from "./mobile-pairing.js";
 import {
   deriveOnboardingChecklist,
@@ -139,16 +132,13 @@ import {
   initLearningContentStudio,
   loadStudioData,
   openCardInEditor,
-  openLearningContentCurriculum,
+  openLearningContentAcademy,
   setLearningContentExternalOpener,
   setLearningContentFilePicker,
   setLearningContentGraphOpener,
   setLearningContentProgressSource,
 } from "./learning-content.js";
-import {
-  setLearningContentCurriculumHost,
-  setLearningContentFolderPicker,
-} from "./learning-content-sources.js";
+import { setLearningContentFolderPicker } from "./learning-content-sources.js";
 import {
   openMaterialImportStart,
   setMaterialImportHost,
@@ -224,8 +214,7 @@ import {
 } from "./study-learning-ui.js";
 
 // Re-exported so any other importer of "./main.js" keeps working unchanged;
-// learning-content.ts and curriculum-wizard.ts now import these directly
-// from bridge-transport.js/i18n.js instead.
+// learning-content.ts now imports these directly from bridge-transport.js/i18n.js.
 export { runBridge, t, tf };
 
 // Installed at module scope — before any DOMContentLoaded handler can fire —
@@ -1476,7 +1465,7 @@ function initializeTranslations() {
     t("btn_run_onboarding");
   document.getElementById("graph-hint")!.textContent = t("graph_hint");
 
-  // Knowledge Context settings and wizard
+  // Knowledge Context settings
   const settingsContextTitle = document.getElementById("lbl-settings-context-title");
   if (settingsContextTitle) settingsContextTitle.textContent = t("settings_context_title");
   const settingsContextHelp = document.getElementById("lbl-settings-context-help");
@@ -1487,13 +1476,6 @@ function initializeTranslations() {
   if (deviceContextSelect) {
     const firstOpt = deviceContextSelect.querySelector("option");
     if (firstOpt) firstOpt.textContent = t("lbl_no_context_default");
-  }
-  const wizardContextLabel = document.getElementById("lbl-wizard-context");
-  if (wizardContextLabel) wizardContextLabel.textContent = t("wizard_context_label");
-  const wizardContextSelect = document.getElementById("wizard-context-select");
-  if (wizardContextSelect) {
-    const firstOpt = wizardContextSelect.querySelector("option");
-    if (firstOpt) firstOpt.textContent = t("lbl_no_context_assignment");
   }
 
   // Learning Content Studio translations
@@ -1627,24 +1609,6 @@ function initializeTranslations() {
   if (btnAcademyOpen) btnAcademyOpen.textContent = t("academy_menu");
   const btnDashboardLibraryTopics = document.getElementById("btn-dashboard-library-topics");
   if (btnDashboardLibraryTopics) btnDashboardLibraryTopics.textContent = t("dashboard_library_topics");
-  const lblCurriculumWizardTitle = document.getElementById("lbl-curriculum-wizard-title");
-  if (lblCurriculumWizardTitle) lblCurriculumWizardTitle.textContent = t("lbl_curriculum_wizard_title");
-  const btnCurriculumWizardBack = document.getElementById("btn-curriculum-wizard-back");
-  if (btnCurriculumWizardBack) btnCurriculumWizardBack.textContent = t("wizard_btn_back");
-  const btnCurriculumWizardNext = document.getElementById("btn-curriculum-wizard-next");
-  if (btnCurriculumWizardNext) btnCurriculumWizardNext.textContent = t("wizard_btn_next");
-  const btnCurriculumWizardCancel = document.getElementById("btn-curriculum-wizard-cancel");
-  if (btnCurriculumWizardCancel) btnCurriculumWizardCancel.textContent = t("lbl_cancel_action");
-  const btnCurriculumWizardResume = document.getElementById("btn-curriculum-wizard-resume");
-  if (btnCurriculumWizardResume) btnCurriculumWizardResume.textContent = t("wizard_btn_resume");
-  const btnCurriculumWizardRestart = document.getElementById("btn-curriculum-wizard-restart");
-  if (btnCurriculumWizardRestart) btnCurriculumWizardRestart.textContent = t("wizard_btn_restart");
-  const lblCurriculumWizardLoading = document.getElementById("lbl-curriculum-wizard-loading");
-  if (lblCurriculumWizardLoading) lblCurriculumWizardLoading.textContent = t("lbl_curriculum_wizard_loading");
-  const lblCurriculumWizardProgressStatus = document.getElementById("lbl-curriculum-wizard-progress-status");
-  if (lblCurriculumWizardProgressStatus) lblCurriculumWizardProgressStatus.textContent = t("lbl_curriculum_wizard_progress_status");
-  const lblCurriculumWizardProgressDetail = document.getElementById("lbl-curriculum-wizard-progress-detail");
-  if (lblCurriculumWizardProgressDetail) lblCurriculumWizardProgressDetail.textContent = t("lbl_curriculum_wizard_progress_detail");
 
   // Split Modal Translations
   const btnContentSplitCard = document.getElementById("btn-content-split-card");
@@ -9480,9 +9444,14 @@ async function openAtlas(): Promise<void> {
     // Import at a place (ADR 2026-10-13, Decision 9).
     importTopic: (place) => openTopicImportDialog(null, { place }),
     importMaterial: (place) => void openMaterialImportStart({ place }),
-    openCurriculumWizard: () => {
-      switchView("learning-content-view");
-      void openLearningContentCurriculum();
+    openAcademy: () => {
+      void openLearningContentAcademy({
+        onEnrolled: () => {
+          if (document.getElementById("atlas-view")?.classList.contains("active")) {
+            void openAtlas();
+          }
+        },
+      });
     },
     // Nachlesen (ADR 2026-10-14, Decision 4): the system browser.
     openExternal: (url) => void openUrl(url),
@@ -9654,17 +9623,6 @@ window.addEventListener("DOMContentLoaded", () => {
   wireModelFormDismissal();
   setupLocaleSwitcher();
   initPanel("learning-content", () => initLearningContentStudio());
-  initPanel("curriculum-wizard", () => {
-    initCurriculumWizard();
-    setLearningContentCurriculumHost({
-      open: openCurriculumBrowser,
-      close: closeCurriculumBrowser,
-    });
-    setCurriculumWizardOpener((url) => void openUrl(url));
-    // Text-LLM-offline in the wizard links back to the onboarding model page
-    // instead of dead-ending in an error (ADR 2026-07-24 §7, plan Phase 9).
-    setCurriculumWizardModelSetup(() => showOnboardingAt("model"));
-  });
   initPanel("server-db", () =>
     initServerDbWizard(
       handleServerDbReady,
@@ -9725,15 +9683,10 @@ window.addEventListener("DOMContentLoaded", () => {
       hasNonAcademyCurriculumCells,
     }),
     openExternal: (url) => void openUrl(url),
-    // Free import and Academy stay modals; curriculum opens from Quellen → Lehrplan.
+    // Both free import and ZAM Academy open as document-level modals.
     openContentEntry: (entry) => {
       if (entry === "academy") {
-        document.getElementById("btn-academy-open")?.click();
-        return;
-      }
-      if (entry === "curriculum") {
-        switchView("learning-content-view");
-        void openLearningContentCurriculum();
+        void openLearningContentAcademy();
         return;
       }
       document.getElementById("btn-content-import")?.click();

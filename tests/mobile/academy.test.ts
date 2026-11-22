@@ -7,6 +7,7 @@ import {
   type AcademyFetch,
   fetchMobileAcademyCatalog,
   fetchMobileAcademyCell,
+  fetchMobileAcademyIndex,
 } from "../../mobile/src/academy.js";
 import {
   type BundledTile,
@@ -129,6 +130,56 @@ describe("Mobile academy client", () => {
     ).rejects.toThrow(/hash/);
   });
 
+  it("reads the lightweight academy.json index with no redirects and no cookies", async () => {
+    const indexJson = JSON.stringify({
+      schema: 1,
+      goal: "Alle Themen",
+      schulen: [
+        {
+          id: "realschule",
+          name: "Realschule",
+          wo: "an der Realschule",
+          short: "Real",
+          from: 5,
+          to: 10,
+        },
+      ],
+      bereiche: [{ id: "informatik", name: "Informatik", glyph: "</>" }],
+      faecher: [
+        {
+          id: "informatik",
+          name: "Informatik",
+          bereich: "informatik",
+          glyph: "</>",
+          hue: 190,
+          from: 6,
+        },
+      ],
+      fachverbunde: [],
+      pakete: [
+        {
+          id: "nur-katalog",
+          app: "nur-katalog",
+          title: "Nur im Katalog",
+          fach: "informatik",
+          grade: 9,
+          school: "realschule",
+          lessons: 12,
+          gebiete: ["Algorithmen"],
+          desc: "Test",
+        },
+      ],
+    });
+    const { fetchImpl, calls } = fakeFetch({ "/academy.json": indexJson });
+    const index = await fetchMobileAcademyIndex(fetchImpl);
+    expect(index.pakete[0].grades).toEqual([9]);
+    expect(calls[0].url).toBe("https://academy.zam-os.org/academy.json");
+    expect(calls[0].init).toMatchObject({
+      redirect: "error",
+      credentials: "omit",
+    });
+  });
+
   it("enrols the learner in a cell fetched from the catalog", async () => {
     const { fetchImpl } = fakeFetch({
       "/catalog.json": catalogFor(catalogOnlyBytes),
@@ -191,19 +242,30 @@ describe("Mobile academy wiring", () => {
     expect(main).toContain("createCellImportProgress");
   });
 
-  it("keeps a cell whose download failed, and fetches it again on the tap", () => {
+  it("fetches only catalog.json and academy.json on open, never every cell.json", () => {
     const main = file("mobile/src/main.ts");
-    expect(main).toContain("failed.set(entry.id, errorMessage(error))");
-    expect(main).toContain('tf("academy_cell_failed", { version, error })');
-    expect(main).toMatch(
-      /academyTiles\.set\(id, await fetchMobileAcademyCell\(entry\)\);\s*\} catch \(error\) \{\s*if \(!bundleStandsIn\(entry, BUNDLED_TILES\[id\]\?\.version\)\) throw error;/,
+    const render = main.slice(
+      main.indexOf("async function renderAcademyCells"),
+      main.indexOf("async function takeAcademyCell"),
     );
+    expect(render).toContain("fetchMobileAcademyCatalog()");
+    expect(render).toContain("fetchMobileAcademyIndex()");
+    expect(render).not.toContain("fetchMobileAcademyCell");
   });
 
-  it("fetches the cells in parallel, so one stalled cell cannot hold the screen", () => {
+  it("downloads the chosen cell on tap and falls back to the bundle only at the same version or newer", () => {
     const main = file("mobile/src/main.ts");
-    expect(main).toMatch(
-      /await Promise\.all\(\s*entries\.map\(async \(entry\) =>/,
-    );
+    const take = main.slice(main.indexOf("async function takeAcademyCell"));
+    expect(take).toContain("fetchMobileAcademyCell(entry)");
+    expect(take).toContain("bundleStandsIn(entry, BUNDLED_TILES[id]?.version)");
+    expect(take).toContain('tf("academy_cell_failed"');
+  });
+
+  it("supports multi-stage navigation and live search in Mobile Academy", () => {
+    const main = file("mobile/src/main.ts");
+    expect(main).toContain("buildAcademyGradeTiles");
+    expect(main).toContain("buildAcademySubjectTiles");
+    expect(main).toContain("buildAcademySchoolOptions");
+    expect(main).toContain("filterAcademyCells");
   });
 });

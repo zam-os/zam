@@ -8,15 +8,22 @@ import {
   academyUpdateButton,
   academyErrorText,
   academyMetaText,
+  applyAcademySchoolFilter,
+  createAcademyBrowserState,
   enrolAcademyCell,
   fetchAcademyCells,
   isAcademyCellId,
   openAcademyList,
+  reconcileAcademyListFilters,
   setAcademyProgressSource,
   updateAcademyCell,
 } from "../../desktop/src/academy-list.js";
 import { setBridgeTransport } from "../../desktop/src/bridge-transport.js";
 import { setCurrentLocale, t } from "../../desktop/src/i18n.js";
+import {
+  DEFAULT_ACADEMY_TAXONOMY,
+  enrichAcademyCells,
+} from "../../src/kernel/index.js";
 import { AcademyElement, academyDom } from "../helpers/academy-dom.js";
 
 /** ADR 2026-10-19 Decision 5: the Studio side of the ZAM Academy. */
@@ -135,6 +142,86 @@ describe("academy import dialog lifecycle", () => {
     finish({ success: true, cardsCreated: 26, version: cell().version });
     await vi.waitFor(() => expect(overlay.all("progress")).toHaveLength(0));
     expect(take.textContent).toBe(t("academy_taken"));
+    body.replaceChildren();
+  });
+
+  it("keeps progress and prevents duplicate enrol when filtering or switching view mid-import", async () => {
+    const { body } = mount();
+    let finish!: (value: unknown) => void;
+    let enrolCalls = 0;
+    setBridgeTransport((command) => {
+      if (command === "academy-list") {
+        return Promise.resolve({
+          success: true,
+          offline: false,
+          cells: [
+            cell(),
+            cell({
+              id: "zam-academy:sql",
+              title: "SQL Grundlagen",
+              description: "Abfragen und Joins",
+              appUrl: "https://academy.zam-os.org/sql/",
+            }),
+          ],
+        });
+      }
+      enrolCalls++;
+      return new Promise((resolve) => {
+        finish = resolve;
+      });
+    });
+
+    await openAcademyList();
+    const overlay = body.children[0];
+    const umlCard = overlay
+      .all("article")
+      .find((a) => a.dataset.cellId === "zam-academy:uml")!;
+    const initialTake = umlCard
+      .all("button")
+      .find((b) => b.dataset.action === "take")!;
+    initialTake.click();
+    await vi.waitFor(() => expect(enrolCalls).toBe(1));
+    const bar = overlay.all("progress")[0];
+    expect(bar).toBeDefined();
+
+    // Switch to List view (triggers renderBrowser() and rebuilds every row).
+    const listViewBtn = overlay
+      .all("button")
+      .find((b) => b.dataset.view === "list")!;
+    listViewBtn.click();
+
+    // Also type in the search box to filter down to UML (another rebuild).
+    const searchInput = overlay.all("input")[0] as unknown as {
+      value: string;
+      emit: (type: string) => void;
+    };
+    searchInput.value = "UML";
+    searchInput.emit("input");
+
+    // Progress bar stays live, button stays disabled, second click is ignored.
+    expect(overlay.all("progress")).toEqual([bar]);
+    const rebuiltTake = overlay
+      .all("button")
+      .find((b) => b.dataset.action === "take")!;
+    expect(rebuiltTake).not.toBe(initialTake);
+    expect(rebuiltTake.disabled).toBe(true);
+    expect(rebuiltTake.textContent).toBe(t("academy_taking"));
+    rebuiltTake.click();
+    expect(enrolCalls).toBe(1);
+
+    // Closing & reopening while active preserves browserState (still List view).
+    overlay.click();
+    await openAcademyList();
+    expect(overlay.all("progress")).toEqual([bar]);
+    expect(
+      overlay.all("button").find((b) => b.dataset.view === "list")?.attributes.get("aria-pressed"),
+    ).toBe("true");
+
+    // Completing the import updates the rebuilt button and removes the bar.
+    finish({ success: true, cardsCreated: 26, version: cell().version });
+    await vi.waitFor(() => expect(overlay.all("progress")).toHaveLength(0));
+    expect(rebuiltTake.textContent).toBe(t("academy_taken"));
+    expect(rebuiltTake.disabled).toBe(true);
     body.replaceChildren();
   });
 
@@ -314,7 +401,7 @@ describe("academy wiring", () => {
     expect(
       click.indexOf('take.textContent = t("academy_taking")'),
     ).toBeLessThan(click.indexOf("enrolAcademyCell(cell.id, progress.update)"));
-    expect(click).toMatch(/\.catch\(\(err\) => \{\s*setTake\(take\)/);
+    expect(click).toMatch(/\.catch\(\(err\) => \{\s*setTake\(entry\.button\)/);
   });
 
   it("puts „Aufnehmen“ back when another version than the row's was saved", () => {
@@ -329,5 +416,131 @@ describe("academy wiring", () => {
     expect(list).toMatch(
       /else if \(listing\.offline\) \{[^}]*button\.disabled = false;/,
     );
+  });
+
+  it("exposes multi-stage navigation, school chips and live search", () => {
+    const list = file("desktop/src/academy-list.ts");
+    expect(list).toContain('searchInput.id = "academy-search-input"');
+    expect(list).toContain("buildAcademyGradeTiles");
+    expect(list).toContain("buildAcademySubjectTiles");
+    expect(list).toContain("buildAcademyBereichTiles");
+    expect(list).toContain("buildAcademySchoolOptions");
+    expect(list).toContain("filterAcademyCells");
+  });
+});
+
+describe("academy browser state", () => {
+  it("keeps the current grade when the chosen school teaches it, and steps back when it does not", () => {
+    const enriched = enrichAcademyCells(
+      [
+        cell({
+          id: "zam-academy:deutsch-grundschule-4",
+          title: "Deutsch 4 Grundschule",
+          appUrl: "https://academy.zam-os.org/deutsch-grundschule-4/",
+        }),
+        cell({
+          id: "zam-academy:biologie-realschule-8",
+          title: "Biologie 8 Realschule",
+          appUrl: "https://academy.zam-os.org/biologie-realschule-8/",
+        }),
+        cell({
+          id: "zam-academy:biologie-gymnasium-8",
+          title: "Biologie 8 Gymnasium",
+          appUrl: "https://academy.zam-os.org/biologie-gymnasium-8/",
+        }),
+      ],
+      null,
+    );
+    const cells = enriched.cells;
+
+    // On grade 8 / biologie, picking Gymnasium keeps grade 8 & biologie.
+    const onGrade8 = {
+      ...createAcademyBrowserState(),
+      grade: 8 as const,
+      subject: "biologie",
+    };
+    expect(
+      applyAcademySchoolFilter(
+        onGrade8,
+        "gymnasium",
+        cells,
+        DEFAULT_ACADEMY_TAXONOMY,
+      ),
+    ).toMatchObject({ school: "gymnasium", grade: 8, subject: "biologie" });
+
+    // On grade 4, picking Gymnasium steps cleanly back to grade selection.
+    const onGrade4 = {
+      ...createAcademyBrowserState(),
+      grade: 4 as const,
+      subject: "deutsch",
+    };
+    expect(
+      applyAcademySchoolFilter(
+        onGrade4,
+        "gymnasium",
+        cells,
+        DEFAULT_ACADEMY_TAXONOMY,
+      ),
+    ).toMatchObject({ school: "gymnasium", grade: null, subject: null });
+  });
+
+  it("clears incompatible grade and subject filters in list view when switching school or grade", () => {
+    const cells = enrichAcademyCells(
+      [
+        cell({
+          id: "zam-academy:deutsch-grundschule-4",
+          title: "Deutsch 4 Grundschule",
+          appUrl: "https://academy.zam-os.org/deutsch-grundschule-4/",
+        }),
+        cell({
+          id: "zam-academy:biologie-realschule-5",
+          title: "Biologie 5 Realschule",
+          appUrl: "https://academy.zam-os.org/biologie-realschule-5/",
+        }),
+        cell({
+          id: "zam-academy:physik-realschule-10",
+          title: "Physik 10 Realschule",
+          appUrl: "https://academy.zam-os.org/physik-realschule-10/",
+        }),
+      ],
+      null,
+    ).cells;
+
+    // Starting at Realschule / Klasse 10 / Physik, switching school to Grundschule
+    // drops stale grade 10 and subject physik so Grundschule packages stay visible.
+    const listGrade10Physik = {
+      ...createAcademyBrowserState(),
+      mode: "list" as const,
+      school: "realschule",
+      grade: 10 as const,
+      subject: "physik",
+    };
+    expect(
+      reconcileAcademyListFilters(
+        { ...listGrade10Physik, school: "grundschule" },
+        cells,
+        DEFAULT_ACADEMY_TAXONOMY,
+      ),
+    ).toMatchObject({
+      mode: "list",
+      school: "grundschule",
+      grade: null,
+      subject: null,
+    });
+
+    // Switching grade from 10 to 5 in Realschule drops stale subject physik
+    // (grade 5 only has Biologie), preventing an empty list under „Alle Fächer“.
+    expect(
+      reconcileAcademyListFilters(
+        { ...listGrade10Physik, grade: 5 },
+        cells,
+        DEFAULT_ACADEMY_TAXONOMY,
+      ),
+    ).toMatchObject({
+      mode: "list",
+      school: "realschule",
+      grade: 5,
+      subject: null,
+    });
   });
 });

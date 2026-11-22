@@ -768,6 +768,12 @@ export interface BundledCellStatus extends BundledCellInfo {
   installed: boolean;
   enrolled: boolean;
   cardCount: number;
+  /**
+   * True when this cell comes from the cached ZAM Academy catalog without a
+   * local `cell.json` copy yet: agents can see it, but the learner must click
+   * „Aufnehmen“ in ZAM Academy to download and enrol it (ADR 2026-11-22).
+   */
+  requiresLearnerEnrol?: boolean;
 }
 
 export interface BundledCellEnrolResult {

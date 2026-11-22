@@ -23,8 +23,10 @@ import { join } from "node:path";
 import {
   type AcademyCatalog,
   type AcademyCatalogEntry,
+  type AcademyIndex,
   type BundledTile,
   parseAcademyCatalog,
+  parseAcademyIndex,
 } from "../../kernel/index.js";
 
 export function academyCacheDir(): string {
@@ -62,6 +64,23 @@ export function readCachedCatalog(): AcademyCatalog | null {
   if (!existsSync(path)) return null;
   try {
     return parseAcademyCatalog(JSON.parse(readFileSync(path, "utf8")));
+  } catch {
+    return null;
+  }
+}
+
+/** Stores an index (`academy.json`) that already passed `parseAcademyIndex`. */
+export function writeCachedIndex(bytes: Buffer): void {
+  mkdirSync(academyCacheDir(), { recursive: true });
+  writeAtomically(join(academyCacheDir(), "academy.json"), bytes);
+}
+
+/** The index (`academy.json`) of the learner's last check, or null. */
+export function readCachedIndex(): AcademyIndex | null {
+  const path = join(academyCacheDir(), "academy.json");
+  if (!existsSync(path)) return null;
+  try {
+    return parseAcademyIndex(JSON.parse(readFileSync(path, "utf8")));
   } catch {
     return null;
   }
@@ -121,7 +140,7 @@ export function cachedCatalogTiles(): BundledTile[] {
   const catalog = readCachedCatalog();
   if (!catalog) return [];
   return catalog.cells
-    .map((entry) => resolveCachedTile(entry.id))
+    .map((entry) => readCachedCell(entry))
     .filter((tile): tile is BundledTile => tile !== undefined);
 }
 

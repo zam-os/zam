@@ -20,30 +20,27 @@ afterEach(() => {
 });
 
 describe("learning content sources shell", () => {
-  it("names the switcher in German and English", () => {
+  it("names the switcher and Academy entry points in German and English", () => {
     setCurrentLocale("de");
     expect(t("lbl_content_source")).toBe("Quelle");
     expect(t("btn_content_choose_folder")).toBe("Ordner wählen …");
-    expect(t("content_source_curriculum")).toBe("Lehrplan");
     expect(t("onboarding_content_curriculum_action")).toBe(
-      "Quellen → Lehrplan",
+      "ZAM Academy öffnen",
     );
-    expect(t("lbl_bundled_cells_desc")).toContain("Quellen → Lehrplan");
+    expect(t("lbl_bundled_cells_desc")).toContain("ZAM Academy");
     expect(t("content_source_skill")).toBe("Skillquelle");
     expect(t("content_source_reader_close")).toBe("Schließen");
     setCurrentLocale("en");
     expect(t("lbl_content_source")).toBe("Source");
     expect(t("btn_content_choose_folder")).toBe("Choose folder…");
-    expect(t("onboarding_content_curriculum_action")).toBe(
-      "Sources → Curriculum",
-    );
+    expect(t("onboarding_content_curriculum_action")).toBe("Open ZAM Academy");
     expect(t("content_source_skill")).toBe("Skill source");
     expect(t("content_source_reader_refused")).toBe(
       "That file is outside this source.",
     );
   });
 
-  it("puts the Quelle controls in both shells and the curriculum browser only in the Desktop window", () => {
+  it("puts the Quelle controls in both shells and removes the curriculum wizard", () => {
     const desktop = read("desktop/index.html");
     const panel = read("desktop/src/panel/studio-panel.html");
     for (const id of [
@@ -59,13 +56,13 @@ describe("learning content sources shell", () => {
       expect(desktop, id).toContain(`id="${id}"`);
       expect(panel, id).toContain(`id="${id}"`);
     }
-    // Decision 11: no curriculum command reaches the Studio panel.
+    // The curriculum wizard was removed; ZAM Academy replaces it.
     for (const id of [
       "content-sources-curriculum",
       "curriculum-wizard-step-body",
       "btn-curriculum-wizard-next",
     ]) {
-      expect(desktop, id).toContain(`id="${id}"`);
+      expect(desktop, id).not.toContain(`id="${id}"`);
       expect(panel, id).not.toContain(`id="${id}"`);
     }
     expect(desktop).not.toContain("btn-content-curriculum-wizard");
@@ -73,9 +70,8 @@ describe("learning content sources shell", () => {
 
     const source = read("desktop/src/learning-content-sources.ts");
     expect(source).toContain('"learning-content-source"');
-    expect(source).toContain('"--kind", "curriculum"');
-    expect(source).not.toContain("curriculum.disabled = true");
-    expect(source).not.toContain("content_source_curriculum_wait");
+    expect(source).not.toContain('"--kind", "curriculum"');
+    expect(source).not.toContain("content_source_curriculum");
     expect(source).toContain('"--kind", "folder"');
     expect(source).not.toContain("workspace-add");
     expect(source).not.toContain("workspace-repair");
@@ -83,15 +79,12 @@ describe("learning content sources shell", () => {
     expect(source).not.toContain("curriculum-confirm-topic");
     expect(source).not.toContain("bundled-cell-enrol");
     expect(source).toContain("showSourceKnowledge");
-    const wizard = read("desktop/src/curriculum-wizard.ts");
-    expect(wizard).toContain('"curriculum-confirm-topic"');
-    expect(wizard).toContain('"bundled-cell-enrol"');
-    expect(wizard).not.toContain("plugin-opener");
-    expect(wizard).not.toContain("btn-content-curriculum-wizard");
     const main = read("desktop/src/main.ts");
     expect(main).toContain("setLearningContentFolderPicker");
-    expect(main).toContain("setLearningContentCurriculumHost");
-    expect(main).toContain("openLearningContentCurriculum");
+    expect(main).toContain("openLearningContentAcademy");
+    expect(main).not.toContain("setLearningContentCurriculumHost");
+    expect(main).not.toContain("openLearningContentCurriculum");
+    expect(main).not.toContain("curriculum-wizard");
     expect(main).not.toContain("btn-content-curriculum-wizard");
     const panelEntry = read("desktop/src/panel/panel.ts");
     expect(panelEntry).not.toContain("setLearningContentCurriculumHost");

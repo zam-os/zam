@@ -1284,7 +1284,7 @@ export interface AtlasPlaceResponse {
     track?: string;
     subject?: string;
   } | null;
-  /** Offer the generic curriculum wizard: no cell covers the position. */
+  /** Offer ZAM Academy (no bundled cell covers the position directly). */
   wizard: boolean;
 }
 

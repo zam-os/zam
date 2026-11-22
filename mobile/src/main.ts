@@ -44,7 +44,6 @@ import {
   type ZamPairLlmEndpoint,
   type ZamPairPayloadV1,
 } from "../../src/bridge/mobile-pairing.js";
-import type { TopicNode } from "../../src/cli/curriculum/types.js";
 import {
   OPENROUTER_PROVIDER,
   OPENROUTER_RECOMMENDED_MODELS,
@@ -73,13 +72,30 @@ import {
   installedTileVersion,
 } from "../../src/kernel/library/bundled-cells.js";
 import {
+  ACADEMY_GRADE_CROSS,
+  type AcademyCellFacet,
+  type AcademyGradeFilter,
+  type AcademyTaxonomy,
+  buildAcademyGradeTiles,
+  buildAcademySchoolOptions,
+  buildAcademySubjectTiles,
+  DEFAULT_ACADEMY_TAXONOMY,
+  enrichAcademyCells,
+  filterAcademyCells,
+  formatAcademyGrades,
+  sortAcademyCellsForDisplay,
+} from "../../src/kernel/library/academy-browse.js";
+import {
   type AcademyCatalogEntry,
+  type AcademyIndex,
   bundleStandsIn,
+  userHoldsAcademyAppCards,
 } from "../../src/kernel/library/academy-catalog.js";
 import { compareTileVersions } from "../../src/kernel/library/tile-version.js";
 import {
   fetchMobileAcademyCatalog,
   fetchMobileAcademyCell,
+  fetchMobileAcademyIndex,
 } from "./academy.js";
 import {
   type AcademyImportRow,
@@ -152,25 +168,12 @@ import {
   TranslationFailedError,
   translateCard,
 } from "./ai/translate.js";
-import {
-  applyMobileCurriculumChoice,
-  initialMobileCurriculumState,
-  type MobileCurriculumOption,
-  type MobileCurriculumState,
-  type MobileCurriculumStep,
-  type MobileCurriculumView,
-  NoMobileCurriculumModelError,
-  nextMobileCurriculumView,
-  previewMobileCurriculumTopic,
-  resolveMobileCurriculumPosition,
-} from "./curriculum.js";
 import { prepareMobileChoiceOptions } from "./choice-generate.js";
 import { discussMobileReview } from "./discuss.js";
 import {
   evaluateMobileAnswer,
   evaluationCompleteness,
   evaluationSpeech,
-  generateViaHttp,
   type MobileEvaluationResult,
   NoEvaluationBackendError,
   type OnDeviceLlmGenerateResult,
@@ -224,10 +227,7 @@ import {
   diagnoseMobileCloudCapability,
   resolveMobileCloudChain,
 } from "./model-registry.js";
-import {
-  createMultiDraftController,
-  type MultiDraftController,
-} from "./multi-draft.js";
+import type { MultiDraftController } from "./multi-draft.js";
 import { createTauriDatabase } from "./provider.js";
 import {
   formatTimeInput,
@@ -281,7 +281,6 @@ import {
   type MobileUpdateInfo,
 } from "./update.js";
 import {
-  extractChatCompletionsContent,
   MOBILE_REQUEST_MAX_BYTES,
   type VisionRequestFn,
 } from "./vl-import.js";
@@ -449,7 +448,6 @@ const bundledCellsList = element<HTMLElement>("bundled-cells-list");
 const bundledCellsStatus = element<HTMLParagraphElement>(
   "bundled-cells-status",
 );
-const openCurriculumButton = element<HTMLButtonElement>("open-curriculum");
 const openAcademyButton = element<HTMLButtonElement>("open-academy");
 const libraryCurriculum = element<HTMLElement>("library-curriculum");
 const curriculumBackButton = element<HTMLButtonElement>("curriculum-back");
@@ -457,9 +455,6 @@ const curriculumBreadcrumb = element<HTMLElement>("curriculum-breadcrumb");
 const curriculumStepTitle = element<HTMLElement>("curriculum-step-title");
 const curriculumStepHint = element<HTMLElement>("curriculum-step-hint");
 const curriculumOptions = element<HTMLElement>("curriculum-options");
-const curriculumModelSettings = element<HTMLButtonElement>(
-  "curriculum-model-settings",
-);
 const curriculumStatus = element<HTMLParagraphElement>("curriculum-status");
 const libraryAddButton = element<HTMLButtonElement>("library-add");
 const libraryBackButton = element<HTMLButtonElement>("library-back");
@@ -1752,26 +1747,14 @@ function renderImportDraft(draft: MobileTokenDraft, message?: string): void {
   setImportStatus(
     message ??
       t(
-        draft.origin === "bridge-json"
+        draft.origin === "bridge-json" ||
+          draft.origin === "image-vl" ||
+          draft.origin === "curriculum"
           ? "import_bridge_checked"
-          : draft.origin === "image-vl"
-            ? "import_bridge_checked"
-            : draft.origin === "curriculum"
-              ? "curriculum_preview_ready"
-              : "import_quick_prepared",
+          : "import_quick_prepared",
       ),
   );
   importConcept.focus();
-}
-
-function startMultiDraftImport(
-  drafts: MobileTokenDraft[],
-  message?: string,
-): void {
-  multiDraftController = createMultiDraftController(drafts);
-  const first = multiDraftController.current();
-  if (!first) return;
-  renderImportDraft(first, message);
 }
 
 function prepareImportText(text: string, message?: string): void {
@@ -4588,17 +4571,6 @@ let librarySearchTimer: number | undefined;
 /** Total cards, so the result count can say "8 of 240". */
 let libraryTotal = 0;
 
-interface CurriculumTrailEntry {
-  step: MobileCurriculumStep;
-  option: MobileCurriculumOption;
-}
-
-let curriculumState: MobileCurriculumState = initialMobileCurriculumState();
-let curriculumTrail: CurriculumTrailEntry[] = [];
-let curriculumView: MobileCurriculumView | null =
-  nextMobileCurriculumView(curriculumState);
-let curriculumRenderRevision = 0;
-
 type LibraryMode = "browse" | "detail" | "add" | "curriculum";
 
 function showLibraryMode(mode: LibraryMode): void {
@@ -4622,316 +4594,6 @@ function setCurriculumStatus(text: string, isError = false): void {
   curriculumStatus.classList.toggle("error", isError);
 }
 
-function rebuildCurriculumSelection(): void {
-  curriculumState = initialMobileCurriculumState();
-  let after: MobileCurriculumStep | undefined;
-  for (const entry of curriculumTrail) {
-    curriculumState = applyMobileCurriculumChoice(
-      curriculumState,
-      entry.step,
-      entry.option,
-    );
-    after = entry.step;
-  }
-  curriculumView = nextMobileCurriculumView(curriculumState, after);
-}
-
-function renderCurriculumBreadcrumb(): void {
-  curriculumBreadcrumb.replaceChildren();
-  curriculumTrail.forEach((entry, index) => {
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className = "chip curriculum-crumb";
-    button.textContent = entry.option.label;
-    button.addEventListener("click", () => {
-      curriculumTrail = curriculumTrail.slice(0, index);
-      rebuildCurriculumSelection();
-      void renderCurriculumView();
-    });
-    curriculumBreadcrumb.appendChild(button);
-  });
-  curriculumBreadcrumb.hidden = curriculumTrail.length === 0;
-}
-
-function curriculumRow(
-  titleText: string,
-  detailText: string | undefined,
-): { button: HTMLButtonElement; text: HTMLElement } {
-  const button = document.createElement("button");
-  button.type = "button";
-  button.className = "row";
-
-  const text = document.createElement("span");
-  text.className = "row-text";
-  const title = document.createElement("span");
-  title.textContent = titleText;
-  text.appendChild(title);
-  if (detailText) {
-    const detail = document.createElement("span");
-    detail.className = "t-footnote";
-    detail.textContent = detailText;
-    text.appendChild(detail);
-  }
-
-  const chevron = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-  chevron.setAttribute("class", "row-chevron");
-  chevron.setAttribute("viewBox", "0 0 8 14");
-  chevron.setAttribute("aria-hidden", "true");
-  const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-  path.setAttribute("d", "M1 1l6 6-6 6");
-  chevron.appendChild(path);
-  button.append(text, chevron);
-  return { button, text };
-}
-
-async function enrolCurriculumCell(
-  cell: BundledCellStatus,
-  action: HTMLButtonElement,
-): Promise<void> {
-  if (!currentUserId || cell.enrolled) return;
-  action.disabled = true;
-  const progress = createCellImportProgress((key, counts) => tf(key, counts));
-  action.parentElement?.append(progress.element);
-  setCurriculumStatus("");
-  try {
-    const result = await enrolBundledCell(db, currentUserId, cell.id, {
-      onProgress: progress.update,
-    });
-    progress.finish();
-    setCurriculumStatus(
-      tf("learning_path_enrolled", {
-        title: cell.title,
-        n: result.cardsCreated,
-      }),
-    );
-    await Promise.all([refreshBundledCells(), refresh(currentUserId)]);
-    await renderCurriculumView();
-  } catch (error) {
-    progress.remove();
-    setCurriculumStatus(
-      tf("library_failed", { error: errorMessage(error) }),
-      true,
-    );
-    action.disabled = false;
-  }
-}
-
-function renderCurriculumCells(cells: BundledCellStatus[]): void {
-  const heading = document.createElement("p");
-  heading.className = "group-title";
-  heading.textContent = t("curriculum_cells_first_title");
-  const body = document.createElement("p");
-  body.className = "t-secondary";
-  body.textContent = t("curriculum_cells_first_body");
-  curriculumOptions.append(heading, body);
-
-  for (const cell of cells) {
-    const card = document.createElement("section");
-    card.className = "curriculum-cell-offer stack";
-    const title = document.createElement("h3");
-    title.className = "t-headline";
-    title.textContent = cell.title;
-    const meta = document.createElement("p");
-    meta.className = "t-footnote";
-    meta.textContent = `${cell.gradeLabel} · ${tf("learning_path_atoms", {
-      n: cell.inScopeAtomIds.length,
-    })}`;
-    const description = document.createElement("p");
-    description.className = "t-secondary";
-    description.textContent = cell.description;
-    const action = document.createElement("button");
-    action.type = "button";
-    action.className = cell.enrolled ? "btn" : "btn primary";
-    action.disabled = cell.enrolled;
-    action.textContent = cell.enrolled
-      ? t("learning_path_active")
-      : t("learning_path_enrol");
-    action.addEventListener("click", () => {
-      void enrolCurriculumCell(cell, action);
-    });
-    card.append(title);
-    if (cell.preview) card.append(academyPreviewLabel());
-    card.append(meta, description, action);
-    curriculumOptions.appendChild(card);
-  }
-}
-
-async function previewCurriculumTopic(
-  topic: TopicNode,
-  button: HTMLButtonElement,
-): Promise<void> {
-  if (!currentUserId || !curriculumState.providerId) return;
-  button.disabled = true;
-  curriculumModelSettings.hidden = true;
-  setCurriculumStatus(t("curriculum_generating"));
-  try {
-    const subject = curriculumTrail.find((entry) => entry.step === "subject")
-      ?.option.label;
-    const grade = curriculumTrail.find((entry) => entry.step === "grade")
-      ?.option.label;
-    const drafts = await previewMobileCurriculumTopic(db, {
-      providerId: curriculumState.providerId,
-      topic,
-      category: [subject, grade].filter(Boolean).join(" · "),
-      locale: learnerLocale || getLocale(),
-      ports: {
-        fetchSource: (url) =>
-          invoke<string>("curriculum_source_request", {
-            url,
-            timeoutMs: 20_000,
-          }),
-        generateText: (endpoint, prompt) =>
-          generateViaHttp(
-            endpoint,
-            prompt,
-            async (url, init) => {
-              const response = await invoke<string>("vision_request", {
-                url,
-                headers: Object.fromEntries(
-                  new Headers(init.headers).entries(),
-                ),
-                body: String(init.body ?? ""),
-                timeoutMs: 180_000,
-              });
-              return extractChatCompletionsContent(response);
-            },
-            12_000,
-          ),
-      },
-    });
-    resetImport();
-    startMultiDraftImport(drafts, t("curriculum_preview_ready"));
-  } catch (error) {
-    const noModel = error instanceof NoMobileCurriculumModelError;
-    curriculumModelSettings.hidden = !noModel;
-    setCurriculumStatus(
-      noModel
-        ? t("curriculum_no_model")
-        : tf("curriculum_failed", { error: errorMessage(error) }),
-      true,
-    );
-    button.disabled = false;
-  }
-}
-
-async function renderCurriculumPosition(revision: number): Promise<void> {
-  if (!currentUserId) return;
-  setCurriculumStatus(t("curriculum_loading"));
-  try {
-    const position = await resolveMobileCurriculumPosition(
-      db,
-      currentUserId,
-      curriculumState,
-    );
-    if (revision !== curriculumRenderRevision) return;
-    curriculumOptions.replaceChildren();
-    setCurriculumStatus("");
-
-    if (position.cells.length > 0) renderCurriculumCells(position.cells);
-    if (!position.needsGenericImport) return;
-
-    const heading = document.createElement("p");
-    heading.className = "group-title";
-    heading.textContent = t("curriculum_fallback_title");
-    const body = document.createElement("p");
-    body.className = "t-secondary";
-    body.textContent = t(
-      position.cells.length > 0
-        ? "curriculum_partial_body"
-        : "curriculum_fallback_body",
-    );
-    curriculumOptions.append(heading, body);
-
-    const list = document.createElement("div");
-    list.className = "list";
-    let available = 0;
-    for (const topic of position.topics) {
-      const detail = [
-        topic.description,
-        topic.hours
-          ? tf("curriculum_hours", { hours: topic.hours })
-          : undefined,
-        topic.contentStatus === "verified"
-          ? undefined
-          : t("curriculum_topic_unavailable"),
-      ]
-        .filter(Boolean)
-        .join(" · ");
-      const { button } = curriculumRow(topic.label, detail || undefined);
-      const verified = topic.contentStatus === "verified";
-      button.disabled = !verified;
-      if (verified) {
-        available += 1;
-        button.addEventListener("click", () => {
-          void previewCurriculumTopic(topic, button);
-        });
-      }
-      list.appendChild(button);
-    }
-    curriculumOptions.appendChild(list);
-    if (available === 0) setCurriculumStatus(t("curriculum_no_topics"));
-  } catch (error) {
-    if (revision !== curriculumRenderRevision) return;
-    curriculumOptions.replaceChildren();
-    setCurriculumStatus(
-      tf("curriculum_failed", { error: errorMessage(error) }),
-      true,
-    );
-  }
-}
-
-async function renderCurriculumView(): Promise<void> {
-  const revision = ++curriculumRenderRevision;
-  const screen = libraryCurriculum.closest<HTMLElement>(".screen");
-  if (screen) screen.scrollTop = 0;
-  renderCurriculumBreadcrumb();
-  curriculumOptions.replaceChildren();
-  curriculumModelSettings.hidden = true;
-  setCurriculumStatus("");
-
-  if (!curriculumView) {
-    curriculumStepTitle.textContent = t("curriculum_choose");
-    curriculumStepHint.textContent = t("curriculum_no_topics");
-    return;
-  }
-  curriculumStepTitle.textContent = t(`curriculum_step_${curriculumView.step}`);
-  curriculumStepHint.textContent = t("curriculum_step_hint");
-
-  if (curriculumView.step === "topic") {
-    await renderCurriculumPosition(revision);
-    return;
-  }
-
-  const list = document.createElement("div");
-  list.className = "list";
-  for (const option of curriculumView.options) {
-    const { button } = curriculumRow(option.label, option.description);
-    button.addEventListener("click", () => {
-      if (!curriculumView) return;
-      const step = curriculumView.step;
-      curriculumState = applyMobileCurriculumChoice(
-        curriculumState,
-        step,
-        option,
-      );
-      curriculumTrail.push({ step, option });
-      curriculumView = nextMobileCurriculumView(curriculumState, step);
-      void renderCurriculumView();
-    });
-    list.appendChild(button);
-  }
-  curriculumOptions.appendChild(list);
-}
-
-function openMobileCurriculum(): void {
-  curriculumState = initialMobileCurriculumState();
-  curriculumTrail = [];
-  curriculumView = nextMobileCurriculumView(curriculumState);
-  showImport();
-  showLibraryMode("curriculum");
-  void renderCurriculumView();
-}
-
 // ── ZAM Academy (ADR 2026-10-19 D4, D5) ─────────────────────────────────────
 // Cells fetched on the learner's tap, for this session.
 const academyTiles = new Map<string, BundledTile>();
@@ -4940,44 +4602,368 @@ const academyImports = new Map<string, {
   row: AcademyImportRow;
 }>();
 
+interface MobileAcademyItem {
+  id: string;
+  title: string;
+  description: string;
+  appUrl: string | null;
+  version: string;
+  items: number;
+  held: boolean;
+  newer: boolean;
+  preview: boolean;
+  entry?: AcademyCatalogEntry;
+  entryAhead: boolean;
+  facet: AcademyCellFacet;
+}
+
+let mobileAcademyItems: MobileAcademyItem[] = [];
+let mobileAcademyTaxonomy: AcademyTaxonomy = DEFAULT_ACADEMY_TAXONOMY;
+let mobileAcademyIndex: AcademyIndex | null = null;
+let mobileAcademyEntries: AcademyCatalogEntry[] = [];
+let mobileAcademySchool: string | null = null;
+let mobileAcademyGrade: AcademyGradeFilter = null;
+let mobileAcademySubject: string | null = null;
+let mobileAcademyQuery = "";
+
 async function openMobileAcademy(): Promise<void> {
-  curriculumTrail = [];
-  curriculumView = null;
+  mobileAcademySchool = null;
+  mobileAcademyGrade = null;
+  mobileAcademySubject = null;
+  mobileAcademyQuery = "";
   showImport();
   showLibraryMode("curriculum");
-  renderCurriculumBreadcrumb();
+  curriculumBreadcrumb.replaceChildren();
   curriculumOptions.replaceChildren();
-  curriculumModelSettings.hidden = true;
   curriculumStepTitle.textContent = t("academy_title");
   curriculumStepHint.textContent = t("academy_intro");
   await renderAcademyCells();
 }
 
-async function renderAcademyCells(): Promise<void> {
-  if (!currentUserId) return;
-  setCurriculumStatus(t("academy_loading"));
-  let entries: AcademyCatalogEntry[] = [];
-  let offline = false;
-  const failed = new Map<string, string>();
-  try {
-    entries = (await fetchMobileAcademyCatalog()).cells;
-    // In parallel, each under the client's timeout: one stalled cell cannot
-    // hold the screen.
-    await Promise.all(
-      entries.map(async (entry) => {
-        if (String(academyTiles.get(entry.id)?.version) === entry.version) return;
-        try {
-          academyTiles.set(entry.id, await fetchMobileAcademyCell(entry));
-        } catch (error) {
-          // Listed anyway, with the error; „Aufnehmen“ fetches it again.
-          failed.set(entry.id, errorMessage(error));
-        }
-      }),
-    );
-  } catch {
-    offline = true;
+function mobileAcademyGradeLabel(
+  key: number | typeof ACADEMY_GRADE_CROSS,
+): string {
+  return key === ACADEMY_GRADE_CROSS
+    ? t("academy_grade_cross")
+    : tf("academy_grade_single", { grade: key });
+}
+
+function renderMobileAcademyBreadcrumb(): void {
+  curriculumBreadcrumb.replaceChildren();
+  const crumbs: Array<{ label: string; onClick?: () => void }> = [];
+  if (mobileAcademySchool) {
+    const sName =
+      mobileAcademyTaxonomy.schulen.find((s) => s.id === mobileAcademySchool)
+        ?.name ?? t("academy_school_independent");
+    crumbs.push({
+      label: sName,
+      onClick: () => {
+        mobileAcademySchool = null;
+        renderMobileAcademyView();
+      },
+    });
+  }
+  if (mobileAcademyGrade !== null) {
+    crumbs.push({
+      label: mobileAcademyGradeLabel(mobileAcademyGrade),
+      onClick: () => {
+        mobileAcademyGrade = null;
+        mobileAcademySubject = null;
+        renderMobileAcademyView();
+      },
+    });
+  }
+  if (mobileAcademySubject !== null) {
+    const fName =
+      mobileAcademyTaxonomy.faecher.find((f) => f.id === mobileAcademySubject)
+        ?.name ?? t("academy_other_bucket");
+    crumbs.push({
+      label: fName,
+      onClick: () => {
+        mobileAcademySubject = null;
+        renderMobileAcademyView();
+      },
+    });
+  }
+  for (const crumb of crumbs) {
+    const chip = document.createElement("button");
+    chip.type = "button";
+    chip.className = "chip";
+    chip.textContent = crumb.label;
+    if (crumb.onClick) chip.addEventListener("click", crumb.onClick);
+    curriculumBreadcrumb.appendChild(chip);
+  }
+}
+
+function renderMobileAcademyCard(item: MobileAcademyItem): HTMLElement {
+  const card = document.createElement("section");
+  card.className = "curriculum-cell-offer stack";
+  const title = document.createElement("h3");
+  title.className = "t-headline";
+  title.textContent = item.title;
+
+  const badgeParts: string[] = [];
+  if (item.facet.schoolName) badgeParts.push(item.facet.schoolName);
+  badgeParts.push(
+    formatAcademyGrades(item.facet.grades, {
+      gradeSingle: (n) => tf("academy_grade_single", { grade: n }),
+      gradeRange: (range) => tf("academy_grade_range", { range }),
+      crossGrade: t("academy_grade_cross"),
+    }),
+  );
+  if (item.facet.subjectName) badgeParts.push(item.facet.subjectName);
+
+  const sub = document.createElement("p");
+  sub.className = "t-footnote";
+  sub.textContent = badgeParts.join(" · ");
+
+  const meta = document.createElement("p");
+  meta.className = "t-footnote";
+  const baseMeta = tf("academy_row_meta", {
+    items: item.items,
+    version: item.version,
+  });
+  meta.textContent =
+    item.facet.lessons && item.facet.lessons > 0
+      ? `${tf("academy_lessons_count", { lessons: item.facet.lessons })} · ${baseMeta}`
+      : baseMeta;
+
+  card.append(title);
+  if (item.preview) card.append(academyPreviewLabel());
+  card.append(sub, meta);
+
+  if (item.appUrl) {
+    const practise = document.createElement("a");
+    practise.className = "btn";
+    practise.href = item.appUrl;
+    practise.target = "_blank";
+    practise.rel = "noreferrer";
+    practise.textContent = t("academy_practise");
+    wireExternalLink(practise, openUrl);
+    card.append(practise);
   }
 
+  const action = document.createElement("button");
+  action.type = "button";
+  action.className = item.held && !item.newer ? "btn" : "btn primary";
+  action.disabled = (item.held && !item.newer) || academyImports.has(item.id);
+  action.textContent = item.newer
+    ? tf("academy_update_to", { version: item.version })
+    : item.held
+      ? t("academy_taken")
+      : t("academy_take");
+  action.addEventListener("click", () => {
+    void takeAcademyCell(item.id, item.entryAhead ? item.entry : undefined, {
+      action,
+      meta,
+      held: item.held,
+      items: item.items,
+    });
+  });
+  card.append(action);
+  const importing = academyImports.get(item.id);
+  if (importing) {
+    importing.row = {
+      action,
+      meta,
+      held: importing.row.held,
+      items: item.items,
+    };
+    card.append(importing.progress.element);
+  }
+  return card;
+}
+
+function renderMobileAcademyView(): void {
+  renderMobileAcademyBreadcrumb();
+  curriculumOptions.replaceChildren();
+
+  // Persistent search input + school filter chips
+  const search = document.createElement("input");
+  search.type = "search";
+  search.className = "input";
+  search.placeholder = t("academy_search_placeholder");
+  search.setAttribute("aria-label", t("academy_search_placeholder"));
+  search.value = mobileAcademyQuery;
+  search.addEventListener("input", () => {
+    mobileAcademyQuery = search.value;
+    renderMobileAcademyStageBody(stageBody);
+  });
+  curriculumOptions.append(search);
+
+  const schoolOptions = buildAcademySchoolOptions(
+    mobileAcademyItems,
+    mobileAcademyTaxonomy,
+  );
+  if (schoolOptions.length > 1) {
+    const chips = document.createElement("div");
+    chips.className = "chip-row";
+    const addSchoolChip = (id: string | null, label: string) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = mobileAcademySchool === id ? "chip active" : "chip";
+      btn.setAttribute("aria-pressed", String(mobileAcademySchool === id));
+      btn.textContent = label;
+      btn.addEventListener("click", () => {
+        mobileAcademySchool = mobileAcademySchool === id ? null : id;
+        if (
+          mobileAcademyGrade !== null &&
+          filterAcademyCells(
+            mobileAcademyItems,
+            { school: mobileAcademySchool, grade: mobileAcademyGrade },
+            mobileAcademyTaxonomy,
+          ).length === 0
+        ) {
+          mobileAcademyGrade = null;
+          mobileAcademySubject = null;
+        }
+        renderMobileAcademyView();
+      });
+      chips.append(btn);
+    };
+    addSchoolChip(null, t("academy_all_schools"));
+    for (const opt of schoolOptions) {
+      addSchoolChip(
+        opt.id,
+        `${opt.short ?? opt.name ?? t("academy_school_independent")} (${opt.total})`,
+      );
+    }
+    curriculumOptions.append(chips);
+  }
+
+  const stageBody = document.createElement("div");
+  stageBody.className = "stack";
+  curriculumOptions.append(stageBody);
+  renderMobileAcademyStageBody(stageBody);
+}
+
+function renderMobileAcademyStageBody(container: HTMLElement): void {
+  container.replaceChildren();
+
+  if (mobileAcademyQuery.trim()) {
+    const matches = sortAcademyCellsForDisplay(
+      filterAcademyCells(
+        mobileAcademyItems,
+        { school: mobileAcademySchool, query: mobileAcademyQuery },
+        mobileAcademyTaxonomy,
+      ),
+      mobileAcademyTaxonomy,
+    );
+    if (matches.length === 0) {
+      const note = document.createElement("p");
+      note.className = "t-secondary";
+      note.textContent = t("academy_no_matches");
+      container.append(note);
+      return;
+    }
+    for (const item of matches) container.append(renderMobileAcademyCard(item));
+    return;
+  }
+
+  // Stage 1: Grade
+  if (mobileAcademyGrade === null) {
+    const grades = buildAcademyGradeTiles(
+      mobileAcademyItems,
+      mobileAcademyTaxonomy,
+      mobileAcademySchool,
+    );
+    const list = document.createElement("div");
+    list.className = "stack";
+    for (const tile of grades) {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "row";
+      const countText = tf(
+        tile.total === 1 ? "academy_pkg_count_one" : "academy_pkg_count_many",
+        { count: tile.total },
+      );
+      const schools = tile.schools.length ? ` · ${tile.schools.join(", ")}` : "";
+      btn.textContent = `${mobileAcademyGradeLabel(tile.key)} — ${countText}${schools}`;
+      btn.addEventListener("click", () => {
+        mobileAcademyGrade = tile.key;
+        mobileAcademySubject = null;
+        renderMobileAcademyView();
+      });
+      list.append(btn);
+    }
+    container.append(list);
+    return;
+  }
+
+  // Stage 2: Subject
+  if (mobileAcademySubject === null) {
+    const subjects = buildAcademySubjectTiles(
+      mobileAcademyItems,
+      mobileAcademyTaxonomy,
+      { school: mobileAcademySchool, grade: mobileAcademyGrade },
+    );
+    const list = document.createElement("div");
+    list.className = "stack";
+    for (const tile of subjects) {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "row";
+      const countText = tf(
+        tile.total === 1 ? "academy_pkg_count_one" : "academy_pkg_count_many",
+        { count: tile.total },
+      );
+      const schools = tile.schools
+        .map((s) =>
+          s.combinationGlyph
+            ? `${s.short} (${s.combinationGlyph})`
+            : s.combination
+              ? `${s.short} (${s.combination})`
+              : s.short,
+        )
+        .join(", ");
+      btn.textContent = `${tile.name ?? t("academy_other_bucket")} — ${countText}${schools ? ` · ${schools}` : ""}`;
+      btn.addEventListener("click", () => {
+        mobileAcademySubject = tile.id;
+        renderMobileAcademyView();
+      });
+      list.append(btn);
+    }
+    container.append(list);
+    return;
+  }
+
+  // Stage 3: Packages (matching grade + subject + optional school)
+  const matches = sortAcademyCellsForDisplay(
+    filterAcademyCells(
+      mobileAcademyItems,
+      {
+        school: mobileAcademySchool,
+        grade: mobileAcademyGrade,
+        subject: mobileAcademySubject,
+      },
+      mobileAcademyTaxonomy,
+    ),
+    mobileAcademyTaxonomy,
+  );
+  for (const item of matches) container.append(renderMobileAcademyCard(item));
+}
+
+async function renderAcademyCells(refreshRemote = true): Promise<void> {
+  if (!currentUserId) return;
+  let offline = false;
+  if (refreshRemote) {
+    setCurriculumStatus(t("academy_loading"));
+    // Fetch only the two lightweight index files in parallel — never every cell.json.
+    const [catalogResult, indexResult] = await Promise.allSettled([
+      fetchMobileAcademyCatalog(),
+      fetchMobileAcademyIndex(),
+    ]);
+    if (catalogResult.status === "fulfilled") {
+      mobileAcademyEntries = catalogResult.value.cells;
+    } else {
+      offline = true;
+    }
+    if (indexResult.status === "fulfilled") {
+      mobileAcademyIndex = indexResult.value;
+    }
+  }
+
+  const entries = mobileAcademyEntries;
   const tileOf = (id: string): BundledTile | undefined => {
     const compiled = BUNDLED_TILES[id];
     const fetched = academyTiles.get(id);
@@ -5002,14 +4988,14 @@ async function renderAcademyCells(): Promise<void> {
     tiles.map(bundledCellInfoForTile),
     tileOf,
   );
+  const statusById = new Map(statuses.map((s) => [s.id, s]));
+  const entryById = new Map(entries.map((e) => [e.id, e]));
 
-  curriculumOptions.replaceChildren();
+  const rawItems: Array<Omit<MobileAcademyItem, "facet">> = [];
   for (const id of ids) {
     const tile = tileOf(id);
-    const entry = entries.find((cell) => cell.id === id);
+    const entry = entryById.get(id);
     if (!tile && !entry) continue;
-    // A catalog entry whose cell did not arrive keeps its row, from the
-    // catalog: what „Aufnehmen“ fetches is the entry's version.
     const entryAhead =
       entry !== undefined &&
       (!tile || compareTileVersions(entry.version, String(tile.version)) === 1);
@@ -5019,66 +5005,35 @@ async function renderAcademyCells(): Promise<void> {
       : (tile?.atoms.reduce((n, atom) => n + atom.practice_items.length, 0) ?? 0);
     const heldVersion = await installedTileVersion(db, id);
     const held = tile
-      ? (statuses.find((cell) => cell.id === id)?.enrolled ?? false)
-      : heldVersion !== null;
+      ? (statusById.get(id)?.enrolled ?? false)
+      : heldVersion !== null &&
+        (await userHoldsAcademyAppCards(db, currentUserId, entry?.appUrl));
     const newer = held && compareTileVersions(version, heldVersion) === 1;
     // Either source is enough, as in the CLI's `academy-list`: a label one
     // release too long does no harm, a missing one says the content was
     // reviewed.
     const preview =
-      entry?.preview === true ||
-      statuses.find((cell) => cell.id === id)?.preview === true;
+      entry?.preview === true || statusById.get(id)?.preview === true;
 
-    const card = document.createElement("section");
-    card.className = "curriculum-cell-offer stack";
-    const title = document.createElement("h3");
-    title.className = "t-headline";
-    title.textContent = entry?.title ?? tile?.title ?? id;
-    const meta = document.createElement("p");
-    meta.className = "t-footnote";
-    meta.textContent = tf("academy_row_meta", { items, version });
-    card.append(title);
-    if (preview) card.append(academyPreviewLabel());
-    card.append(meta);
-    const error = entryAhead ? failed.get(id) : undefined;
-    if (error) {
-      const note = document.createElement("p");
-      note.className = "t-footnote";
-      note.textContent = tf("academy_cell_failed", { version, error });
-      card.append(note);
-    }
-
-    if (entry?.appUrl) {
-      const practise = document.createElement("a");
-      practise.className = "btn";
-      practise.href = entry.appUrl;
-      practise.target = "_blank";
-      practise.rel = "noreferrer";
-      practise.textContent = t("academy_practise");
-      wireExternalLink(practise, openUrl);
-      card.append(practise);
-    }
-
-    const action = document.createElement("button");
-    action.type = "button";
-    action.className = held && !newer ? "btn" : "btn primary";
-    action.disabled = (held && !newer) || academyImports.has(id);
-    action.textContent = newer
-      ? tf("academy_update_to", { version })
-      : held
-        ? t("academy_taken")
-        : t("academy_take");
-    action.addEventListener("click", () => {
-      void takeAcademyCell(id, entryAhead ? entry : undefined, { action, meta, held, items });
+    rawItems.push({
+      id,
+      title: entry?.title ?? tile?.title ?? id,
+      description: entry?.description ?? tile?.description ?? "",
+      appUrl: entry?.appUrl ?? null,
+      version,
+      items,
+      held,
+      newer,
+      preview,
+      entry,
+      entryAhead,
     });
-    card.append(action);
-    const importing = academyImports.get(id);
-    if (importing) {
-      importing.row = { action, meta, held: importing.row.held, items };
-      card.append(importing.progress.element);
-    }
-    curriculumOptions.append(card);
   }
+
+  const enriched = enrichAcademyCells(rawItems, mobileAcademyIndex, tileOf);
+  mobileAcademyTaxonomy = enriched.taxonomy;
+  mobileAcademyItems = enriched.cells;
+  renderMobileAcademyView();
   setCurriculumStatus(offline ? t("academy_offline") : "");
 }
 
@@ -5097,13 +5052,24 @@ async function takeAcademyCell(
   action.parentElement?.append(progress.element);
   setCurriculumStatus("");
   try {
-    // The row showed the entry's version: fetch it now if it did not arrive.
-    // The bundle stands in only if it is that version or newer.
-    if (entry && String(academyTiles.get(id)?.version) !== entry.version) {
+    // Download only the one tapped cell on demand. The bundle stands in only
+    // if it is that version or newer.
+    if (
+      entry &&
+      !bundleStandsIn(entry, BUNDLED_TILES[id]?.version) &&
+      String(academyTiles.get(id)?.version) !== entry.version
+    ) {
       try {
         academyTiles.set(id, await fetchMobileAcademyCell(entry));
       } catch (error) {
-        if (!bundleStandsIn(entry, BUNDLED_TILES[id]?.version)) throw error;
+        if (!bundleStandsIn(entry, BUNDLED_TILES[id]?.version)) {
+          throw new Error(
+            tf("academy_cell_failed", {
+              version: entry.version,
+              error: errorMessage(error),
+            }),
+          );
+        }
       }
     }
     // The tap is „Aufnehmen“ or „Aktualisieren“: the newest version this
@@ -5123,6 +5089,12 @@ async function takeAcademyCell(
       }),
     );
     progress.remove();
+    const item = mobileAcademyItems.find((rowItem) => rowItem.id === id);
+    if (item) {
+      item.held = true;
+      item.newer = false;
+      if (version) item.version = version;
+    }
     // The saved version is known already; do not fetch the whole Academy
     // again before showing completion.
     await Promise.all([refreshBundledCells(), refresh(userId)]).catch((error) =>
@@ -5213,8 +5185,7 @@ function renderBundledCells(cells: BundledCellStatus[]): void {
     description.className = "t-secondary";
     description.textContent = cell.description;
 
-    // Active paths only; activating one happens in the curriculum chooser,
-    // which is the surface that knows which cells cover a learner position.
+    // Active paths only; enrolling happens in ZAM Academy.
     const action = document.createElement("button");
     action.type = "button";
     action.className = "btn";
@@ -5286,23 +5257,29 @@ librarySearch.addEventListener("input", () => {
   librarySearchTimer = window.setTimeout(() => void refreshLibrary(), 250);
 });
 
-openCurriculumButton.addEventListener("click", openMobileCurriculum);
 openAcademyButton.addEventListener("click", () => {
   void openMobileAcademy();
 });
 
 curriculumBackButton.addEventListener("click", () => {
-  if (curriculumTrail.length === 0) {
-    showLibraryMode("browse");
-    void refreshLibrary();
+  if (mobileAcademyQuery.trim()) {
+    mobileAcademyQuery = "";
+    renderMobileAcademyView();
     return;
   }
-  curriculumTrail.pop();
-  rebuildCurriculumSelection();
-  void renderCurriculumView();
+  if (mobileAcademySubject !== null) {
+    mobileAcademySubject = null;
+    renderMobileAcademyView();
+    return;
+  }
+  if (mobileAcademyGrade !== null) {
+    mobileAcademyGrade = null;
+    renderMobileAcademyView();
+    return;
+  }
+  showLibraryMode("browse");
+  void refreshLibrary();
 });
-
-curriculumModelSettings.addEventListener("click", showSettings);
 
 libraryAddButton.addEventListener("click", () => {
   resetImport();

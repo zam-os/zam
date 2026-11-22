@@ -48,6 +48,7 @@ describe("the atlas import dialog", () => {
 
   afterEach(() => {
     closeAtlasImport();
+    body.replaceChildren();
     setCurrentLocale("en");
     vi.unstubAllGlobals();
     setBridgeTransport(async () => {
@@ -70,6 +71,51 @@ describe("the atlas import dialog", () => {
     );
     expect(rows[1].join(" ")).not.toContain("Vorschau");
   });
+
+  it("hides unenrolled legacy de-by: school cells and offers ZAM Academy instead (ADR 2026-11-22 D4)", async () => {
+    const openAcademy = vi.fn();
+    setBridgeTransport(async () => ({
+      success: true,
+      cells: [
+        atlasCell("de-by:bos-10-optik", false),
+        { ...atlasCell("de-by:realschule-optik", false), enrolled: true },
+      ],
+      wizard: false,
+    }));
+    await openAtlasImport(PLACE, {
+      importMaterial: () => {},
+      openAcademy,
+      onChanged: () => {},
+    });
+    const rows = body.all("li");
+    expect(rows).toHaveLength(1);
+    expect(rows[0].all("span")[1].textContent).toBe("de-by:realschule-optik");
+    expect(
+      body
+        .all("button")
+        .filter((btn) => btn.textContent === t("atlas_import_enrol")),
+    ).toHaveLength(0);
+
+    // When only hidden unenrolled de-by: cells matched, offer ZAM Academy.
+    closeAtlasImport();
+    setBridgeTransport(async () => ({
+      success: true,
+      cells: [atlasCell("de-by:bos-10-optik", false)],
+      wizard: false,
+    }));
+    await openAtlasImport(PLACE, {
+      importMaterial: () => {},
+      openAcademy,
+      onChanged: () => {},
+    });
+    expect(body.all("li")).toHaveLength(0);
+    const academyBtn = body
+      .all("button")
+      .find((btn) => btn.textContent === t("atlas_import_wizard"));
+    expect(academyBtn).toBeDefined();
+    academyBtn!.click();
+    expect(openAcademy).toHaveBeenCalledOnce();
+  });
 });
 
 describe("the preview label", () => {
@@ -90,9 +136,9 @@ describe("the preview label", () => {
   // These render inside large views with no test DOM of their own.
   it.each([
     [
-      "the curriculum wizard's offer",
-      "desktop/src/curriculum-wizard.ts",
-      "if (cell.preview) text.append(academyPreviewLabel());",
+      "Studio's Academy browser",
+      "desktop/src/academy-list.ts",
+      "if (cell.preview) row.append(academyPreviewLabel());",
     ],
     [
       "Studio's active paths",
@@ -102,22 +148,15 @@ describe("the preview label", () => {
     [
       "Mobile's Academy list",
       "mobile/src/main.ts",
-      "if (preview) card.append(academyPreviewLabel());",
+      "if (item.preview) card.append(academyPreviewLabel());",
     ],
     [
-      "Mobile's curriculum offer and active paths",
+      "Mobile's active paths",
       "mobile/src/main.ts",
       "if (cell.preview) card.append(academyPreviewLabel());",
     ],
   ])("is wired into %s", (_surface, file, line) => {
     expect(readFileSync(file, "utf8")).toContain(line);
-  });
-
-  it("appears on both of Mobile's cell lists", () => {
-    const main = readFileSync("mobile/src/main.ts", "utf8");
-    expect(
-      main.match(/if \(cell\.preview\) card\.append\(academyPreviewLabel\(\)\);/g),
-    ).toHaveLength(2);
   });
 
   it("has its style in both apps, in the colours of each theme", () => {

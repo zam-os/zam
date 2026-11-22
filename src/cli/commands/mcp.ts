@@ -1535,7 +1535,7 @@ export function createMcpServer(
     "zam_bundled_cells_list",
     {
       description:
-        "List bundled learning cells available for onboarding and their installation/enrolment status",
+        "List bundled learning cells and cached ZAM Academy catalog cells with installation/enrolment status. Entries with requiresLearnerEnrol=true are not downloaded locally yet; ask the learner to click „Aufnehmen“ in ZAM Academy.",
       inputSchema: {
         user: z.string().optional().describe("User ID to check enrolment for"),
       },
@@ -1555,7 +1555,7 @@ export function createMcpServer(
     "zam_bundled_cell_enrol",
     {
       description:
-        "Install and enrol in a bundled learning cell (e.g. 'de-by:realschule-optik')",
+        "Install and enrol in a bundled or locally cached learning cell (e.g. 'zam-academy:uml'). Uncached catalog-only Academy cells require the learner to click „Aufnehmen“ in ZAM Academy.",
       inputSchema: {
         cellId: z.string().describe("ID of the bundled cell to enrol in"),
         user: z.string().optional().describe("User ID to enrol"),

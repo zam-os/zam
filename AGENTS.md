@@ -64,13 +64,16 @@ open a terminal.
   Canonical ids become stable only when they cross the public release contract.
   In a tile, that explicit mapping is `replaces` on a practice item — the only
   thing that moves a learner's card and review history to a new item id.
-- **The cell has precedence over generic import** (ADR 2026-08-14 Decision 10).
-  Where a cell covers a learner's curriculum position, import goes through it;
-  the manifest-driven curriculum importer is the fallback for positions no cell
-  reaches yet. A cell that fits a grade only through grade-less module bindings
-  covers it in part: offer the cell and the importer beside it. An import
-  surface asks `needsGenericCurriculumImport(scope)` before offering the wizard. A cell carries resolved sources, prerequisites
-  and reviewed items; a generic import carries none of that.
+- **ZAM Academy and Free Import replace the curriculum wizard** (ADR
+  2026-08-14 Decision 10, superseded by ADR 2026-11-22). The manifest-driven
+  curriculum importer and wizard UI have been removed; do not restore them.
+  Curated school and topic packages come from **ZAM Academy**, and arbitrary
+  personal or non-covered material uses **Free Import** (text, URLs, photos,
+  PDFs). `findBundledCellsForScope(scope)` and
+  `needsGenericCurriculumImport(scope)` remain in the kernel for Atlas/scope
+  lookup (and surfaces offer ZAM Academy where the wizard used to be). Legacy
+  bundled `de-by:` school cells are intentionally not offered in learner UI
+  while their `replaces` migrations proceed.
 - **Schema changes** go in BOTH `src/kernel/db/schema.ts` and an idempotent
   numbered migration (M-series) in `runMigrations`
   (`src/kernel/db/provision.ts`), and increment `CURRENT_SCHEMA_VERSION` there
@@ -119,16 +122,20 @@ open a terminal.
   tool must change nothing. Secrets go to child processes on stdin or in that
   child's environment, never on a command line. See
   `docs/okf/agent-trust-model.md`.
-- **ZAM Academy cells (ADR 2026-10-19)** are maintained in
-  `zam-os/zam-academy` next to their training apps, never edited here. A
-  release copies them with `npm run academy:sync`, and
+- **ZAM Academy cells (ADR 2026-10-19, amended by ADR 2026-11-22)** are
+  maintained in `zam-os/zam-academy` next to their training apps, never edited
+  here. A release copies them with `npm run academy:sync`, and
   `tests/kernel/academy-cells-lock.test.ts` fails on a hand edit. Only a
   learner's action reads `https://academy.zam-os.org` (`zam bridge
-  academy-*`, Mobile's tap). The origin is a constant, redirects fail, and
-  agent tools read only the cache in `~/.zam/academy`. A card's web
-  `source_link` opens in the system browser only on a click, only for
-  http(s) (`desktop/src/source-link.ts`). Integrating new cells and
-  replacing the `de-by:` school cells follows
+  academy-*`, Mobile's tap). Listing fetches only `catalog.json` and
+  `academy.json` in parallel; individual `cell.json` files download lazily on
+  „Aufnehmen“ / „Aktualisieren“. The origin is a constant, redirects fail, and
+  agent tools read only the cache in `~/.zam/academy` (`zam_bundled_cells_list`
+  surfaces uncached catalog entries with `requiresLearnerEnrol: true`, and
+  `zam_bundled_cell_enrol` directs the learner to click „Aufnehmen“ in ZAM
+  Academy for uncached entries). A card's web `source_link` opens in the system
+  browser only on a click, only for http(s) (`desktop/src/source-link.ts`).
+  Integrating new cells and replacing the `de-by:` school cells follows
   `docs/plans/2026-11-08-academy-cell-integration.md`.
 - New kernel API must be re-exported from `src/kernel/index.ts`.
 - **`docs/okf/` is not hand-editable.** It is an OKF knowledge bundle whose

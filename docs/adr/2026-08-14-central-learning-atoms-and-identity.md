@@ -1,6 +1,6 @@
 # Five-Object Learning Model and Reactive Scheduling
 
-**Status:** Accepted — finalised for the field-test architecture (2026-08-14)\
+**Status:** Accepted — finalised for the field-test architecture (2026-08-14); Decision 10's manifest-driven wizard fallback superseded by [2026-11-22](2026-11-22-academy-index-browser-and-wizard-removal.md)\
 **Date:** 2026-08-14  
 **Deciders:** Thomas (project owner)  
 **Final owner amendment:** Every learning state may rebuild its compatibility

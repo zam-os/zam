@@ -14,14 +14,13 @@ import {
   applyLearningContentSourceChrome,
   initLearningContentSources,
   refreshLearningContentSources,
-  reopenCurriculumBrowserIfSelected,
-  selectLearningContentCurriculum,
 } from "./learning-content-sources.js";
 import {
   academyPreviewLabel,
   academyUpdateButton,
   initAcademyList,
   isAcademyCellId,
+  openAcademyList,
 } from "./academy-list.js";
 import { initLibraryTopics, startLibraryTopic } from "./library-topics.js";
 import { initMaterialBonus, refreshMaterialBonus } from "./material-bonus.js";
@@ -551,6 +550,7 @@ export function applyLearningContentChrome(): void {
   setText("btn-content-segment-unpublished", t("content_segment_unpublished"));
   setText("btn-content-open-graph", t("btn_open_atlas"));
   setText("btn-content-take-card", t("btn_take_card"));
+  setText("btn-bundled-cells-open-academy", t("academy_menu"));
   applyLearningContentSourceChrome();
   syncAreaChrome();
   syncSegmentChrome();
@@ -595,11 +595,17 @@ function showArea(next: LearningArea): void {
   if (next === "sources") void refreshLearningContentSources();
 }
 
-/** One door for the curriculum: Quellen → Lehrplan. */
-export async function openLearningContentCurriculum(): Promise<void> {
-  area = "sources";
-  syncAreaChrome();
-  await selectLearningContentCurriculum();
+/** Open the ZAM Academy browser and refresh the Studio card list on enrolment. */
+export async function openLearningContentAcademy(
+  options: { onEnrolled?: () => void | Promise<void> } = {},
+): Promise<void> {
+  await openAcademyList({
+    openExternal: (url) => externalOpener?.(url),
+    onEnrolled: async () => {
+      await loadStudioData();
+      await options.onEnrolled?.();
+    },
+  });
 }
 
 function blankCard(
@@ -1195,7 +1201,6 @@ export async function loadStudioData(): Promise<void> {
     rebuildCategoryFilter(currentDomains());
     await loadBundledCells();
     if (generation !== loadGeneration) return;
-    if (area === "sources") reopenCurriculumBrowserIfSelected();
     refreshCardsList();
     updateUIForSelection();
   } catch (err) {
@@ -3402,13 +3407,11 @@ let bundledCellsListEl: HTMLElement | null = null;
 let bundledCellsOpenWired = false;
 
 function wireBundledCellsOpen(): void {
-  const openButton = document.getElementById(
-    "btn-bundled-cells-open-curriculum",
-  );
+  const openButton = document.getElementById("btn-bundled-cells-open-academy");
   if (!openButton || bundledCellsOpenWired) return;
-  openButton.textContent = t("btn_curriculum_wizard");
+  openButton.textContent = t("academy_menu");
   openButton.addEventListener("click", () => {
-    void openLearningContentCurriculum();
+    void openLearningContentAcademy();
   });
   bundledCellsOpenWired = true;
 }
@@ -3500,8 +3503,7 @@ function renderBundledCells(cells: BundledCellItem[]): void {
     const inScopeCount = cell.inScopeAtomIds?.length ?? cell.atomCount;
     countEl.textContent = tf("lbl_cell_atom_count", { count: inScopeCount });
 
-    // This list shows active paths only; enrolling happens in the curriculum
-    // wizard, which is the surface that knows which cells cover a position.
+    // This list shows active paths only; enrolling happens in ZAM Academy.
     const stateBtn = document.createElement("button");
     stateBtn.type = "button";
     stateBtn.className = "btn secondary-btn btn-xs";

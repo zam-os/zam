@@ -348,6 +348,14 @@ describe("zam bridge atlas commands", () => {
     expect(place.cells.some((c: { installed: boolean }) => c.installed)).toBe(
       true,
     );
+    // ADR 2026-11-22 D4: unenrolled legacy non-Academy school cells are never
+    // offered for first-time enrolment in Atlas.
+    expect(
+      place.cells.filter(
+        (c: { id: string; enrolled: boolean }) =>
+          !c.id.startsWith("zam-academy:") && !c.enrolled,
+      ),
+    ).toEqual([]);
     expect(place.wizard).toBe(false);
     expect(
       runCliError(["bridge", "atlas-place", "--region", "gibt.es.nicht"]).error,

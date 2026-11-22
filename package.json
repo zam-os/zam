@@ -49,7 +49,6 @@
     "knowledge-map:prototype": "vite build --config vite.config.panel.mts --mode knowledge-map-viewer && tsx src/cli/index.ts knowledge-map view --repo . --out dist/knowledge-map-prototype.html --no-open",
     "format": "biome format --write src/",
     "desktop:prepare": "node scripts/prepare-desktop-bridge.mjs",
-    "curriculum:topic-coverage": "tsx scripts/curriculum-topic-coverage-smoke.ts",
     "curriculum:sync-bundled-cells": "node scripts/update-bundled-cells-imports.mjs",
     "academy:sync": "node scripts/sync-academy-cells.mjs",
     "mobile:check": "cargo check --manifest-path mobile/src-tauri/Cargo.toml",

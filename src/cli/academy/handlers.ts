@@ -6,11 +6,20 @@
  * „Aufnehmen“ or clicks „Aktualisieren“. They are the only code that
  * fetches academy content. They are neither MCP tools nor Studio-panel
  * bridge commands, because a model can drive both of those.
+ *
+ * Listing fetches only the lightweight `catalog.json` and `academy.json`
+ * index files in parallel — never individual `cell.json` bundles. A cell
+ * file is downloaded on demand only when the learner clicks „Aufnehmen“ or
+ * „Aktualisieren“ (and skipped when this build already bundles that version
+ * or newer).
  */
 
 import {
   type AcademyCatalog,
   type AcademyCatalogEntry,
+  type AcademyCellFacet,
+  type AcademyIndex,
+  type AcademyTaxonomy,
   BUNDLED_TILES,
   type BundledTile,
   bundledCellInfoForTile,
@@ -18,22 +27,28 @@ import {
   compareTileVersions,
   type Database,
   type EnrolBundledCellProgress,
+  enrichAcademyCells,
   enrolBundledCell,
   getBundledCellsWithStatus,
   installedTileVersion,
+  userHoldsAcademyAppCards,
 } from "../../kernel/index.js";
 import { resolveHandlerUser } from "../bridge-handlers.js";
 import {
   readCachedCatalog,
   readCachedCell,
+  readCachedIndex,
+  readCachedTileVersion,
   resolveCachedTile,
   writeCachedCatalog,
   writeCachedCell,
+  writeCachedIndex,
 } from "./cache.js";
 import {
   type AcademyFetchOptions,
   fetchAcademyCatalog,
   fetchAcademyCell,
+  fetchAcademyIndex,
 } from "./catalog-client.js";
 
 export interface AcademyCellRow {
@@ -57,6 +72,8 @@ export interface AcademyCellRow {
   newer: boolean;
   /** No teacher has reviewed its content yet. */
   preview: boolean;
+  /** School, grade, subject and topic metadata from `academy.json` (or fallback). */
+  facet: AcademyCellFacet;
 }
 
 export interface AcademyHandlerParams {
@@ -76,8 +93,10 @@ function itemCount(tile: BundledTile): number {
 }
 
 /**
- * Reads the catalog, caches it and the cells it lists, and returns every
- * academy cell with the learner's status. The library is not written.
+ * Reads `catalog.json` and `academy.json` in parallel, caches both, and
+ * returns every academy cell enriched with school/grade/subject facets and
+ * the learner's enrolment status. Writes nothing to the library and never
+ * downloads individual `cell.json` files.
  * Without network it answers from the cache, or from the bundled cells.
  */
 export async function academyListHandler(
@@ -86,25 +105,30 @@ export async function academyListHandler(
 ) {
   const userId = await resolveHandlerUser(db, params.user);
   let catalog: AcademyCatalog | null = null;
+  let index: AcademyIndex | null = null;
   let offline = false;
   let error: string | undefined;
-  try {
-    const fetched = await fetchAcademyCatalog(params.fetch);
-    writeCachedCatalog(fetched.bytes);
-    catalog = fetched.catalog;
-    for (const entry of catalog.cells) {
-      if (readCachedCell(entry)) continue;
-      try {
-        const { bytes } = await fetchAcademyCell(entry, params.fetch);
-        writeCachedCell(entry, bytes);
-      } catch {
-        // Listed anyway; „Aufnehmen“ fetches it again.
-      }
-    }
-  } catch (err) {
+
+  const [catalogResult, indexResult] = await Promise.allSettled([
+    fetchAcademyCatalog(params.fetch),
+    fetchAcademyIndex(params.fetch),
+  ]);
+
+  if (catalogResult.status === "fulfilled") {
+    writeCachedCatalog(catalogResult.value.bytes);
+    catalog = catalogResult.value.catalog;
+  } else {
     offline = true;
-    error = (err as Error).message || String(err);
+    const err = catalogResult.reason;
+    error = err instanceof Error ? err.message : String(err);
     catalog = readCachedCatalog();
+  }
+
+  if (indexResult.status === "fulfilled") {
+    writeCachedIndex(indexResult.value.bytes);
+    index = indexResult.value.index;
+  } else {
+    index = readCachedIndex();
   }
 
   const entries = new Map<string, AcademyCatalogEntry>(
@@ -116,27 +140,54 @@ export async function academyListHandler(
       .map((tile) => tile.tile_id),
     ...entries.keys(),
   ]);
-  const tileOf = (id: string) => BUNDLED_TILES[id] ?? resolveCachedTile(id);
-  const tiles = [...ids]
-    .map((id) => tileOf(id))
-    .filter((tile): tile is BundledTile => tile !== undefined);
+
+  // Read installed tile versions in one query instead of one query per cell.
+  const installedRows = (await db
+    .prepare("SELECT tile_id, version FROM installed_tiles WHERE version <> ''")
+    .all()) as Array<{ tile_id: string; version: string }>;
+  const installedVersions = new Map(
+    installedRows.map((row) => [row.tile_id, row.version]),
+  );
+
+  // Only inspect tiles that are already in memory (bundled) or already
+  // installed and cached on disk — never touch disk for uninstalled cells.
+  const localTiles = new Map<string, BundledTile>();
+  for (const id of ids) {
+    const bundled = BUNDLED_TILES[id];
+    if (bundled) {
+      localTiles.set(id, bundled);
+      continue;
+    }
+    const installedVer = installedVersions.get(id);
+    if (!installedVer) continue;
+    const entry = entries.get(id);
+    const cached =
+      readCachedTileVersion(id, installedVer) ??
+      (entry ? readCachedCell(entry) : undefined);
+    if (cached) localTiles.set(id, cached);
+  }
+
   const statuses = new Map(
     (
       await getBundledCellsWithStatus(
         db,
         userId,
-        tiles.map(bundledCellInfoForTile),
-        tileOf,
+        [...localTiles.values()].map(bundledCellInfoForTile),
+        (id) => localTiles.get(id),
       )
     ).map((status) => [status.id, status]),
   );
 
-  const cells: AcademyCellRow[] = [];
+  const rawCells: Array<Omit<AcademyCellRow, "facet">> = [];
   for (const id of [...ids].sort()) {
     const entry = entries.get(id);
-    const tile = tileOf(id);
-    const held = statuses.get(id)?.enrolled ?? false;
-    const heldVersion = held ? await installedTileVersion(db, id) : null;
+    const tile = localTiles.get(id);
+    const installedVer = installedVersions.get(id) ?? null;
+    const held = tile
+      ? (statuses.get(id)?.enrolled ?? false)
+      : installedVer !== null &&
+        (await userHoldsAcademyAppCards(db, userId, entry?.appUrl ?? null));
+    const heldVersion = held ? installedVer : null;
     // The row shows what „Aufnehmen“ installs: the newer of catalog and
     // bundle.
     const bundled = BUNDLED_TILES[id];
@@ -144,7 +195,7 @@ export async function academyListHandler(
       bundled !== undefined &&
       (entry === undefined ||
         compareTileVersions(String(bundled.version), entry.version) === 1);
-    cells.push({
+    rawCells.push({
       id,
       title: entry?.title ?? tile?.title ?? id,
       description: entry?.description ?? tile?.description ?? "",
@@ -156,7 +207,7 @@ export async function academyListHandler(
         ? itemCount(bundled)
         : (entry?.items ?? (tile ? itemCount(tile) : 0)),
       appUrl: entry?.appUrl ?? null,
-      bundled: Boolean(BUNDLED_TILES[id]),
+      bundled: Boolean(bundled),
       held,
       heldVersion,
       newer:
@@ -168,11 +219,19 @@ export async function academyListHandler(
       preview: entry?.preview === true || statuses.get(id)?.preview === true,
     });
   }
+
+  const { taxonomy, cells } = enrichAcademyCells(
+    rawCells,
+    index,
+    (id) => BUNDLED_TILES[id] ?? localTiles.get(id),
+  );
+
   return {
     success: true as const,
     offline,
     ...(error ? { error } : {}),
-    cells,
+    taxonomy: taxonomy as AcademyTaxonomy,
+    cells: cells as AcademyCellRow[],
   };
 }
 
@@ -217,14 +276,10 @@ export async function academyEnrolHandler(
     // Without the catalog, a bundled cell still enrols.
     if (bundledVersion === undefined) throw err;
   }
-  if (entry) {
-    try {
-      await cacheEntryCell(entry, params.fetch);
-    } catch (err) {
-      // The learner took the version the catalog showed: the bundle stands
-      // in only if it is that version or newer.
-      if (!bundleStandsIn(entry, bundledVersion)) throw err;
-    }
+  if (entry && !bundleStandsIn(entry, bundledVersion)) {
+    // Download only the one requested cell on demand. If the download fails,
+    // never silently fall back to an older bundled version.
+    await cacheEntryCell(entry, params.fetch);
   }
   const result = await enrolBundledCell(db, userId, cellId, {
     resolveTile: resolveCachedTile,

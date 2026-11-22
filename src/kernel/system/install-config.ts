@@ -51,8 +51,7 @@ export interface MachineGraph3dConfig {
  */
 export type LearningContentSource =
   | { kind: "workspace"; id: string }
-  | { kind: "folder"; path: string }
-  | { kind: "curriculum" };
+  | { kind: "folder"; path: string };
 
 export interface MachineLearningContentConfig {
   source?: LearningContentSource;
@@ -1090,7 +1089,6 @@ export function getLearningContentSource(
     const folder = source.path.trim();
     return folder ? { kind: "folder", path: folder } : null;
   }
-  if (source.kind === "curriculum") return { kind: "curriculum" };
   return null;
 }
 
@@ -1110,7 +1108,6 @@ export function resolveLearningContentSelection(
     return { kind: "workspace", id: stored.id };
   }
   if (stored?.kind === "folder") return stored;
-  if (stored?.kind === "curriculum") return stored;
   if (
     activeWorkspaceId &&
     workspaces.some((workspace) => workspace.id === activeWorkspaceId)
@@ -1154,7 +1151,7 @@ function normalizeLearningContentSource(
     if (!folder) throw new Error("A folder path is required");
     return { kind: "folder", path: folder };
   }
-  return { kind: "curriculum" };
+  throw new Error("Learning content source kind must be workspace or folder");
 }
 
 export function getKnowledgeMapConfig(

@@ -326,7 +326,7 @@ export interface AtlasPlaceResult {
   cells: AtlasPlaceCell[];
   /** The curriculum position of a Schule region; null on Weltwissen. */
   scope: CurriculumScope | null;
-  /** Offer the generic curriculum wizard: no cell covers the position. */
+  /** Offer ZAM Academy (no bundled cell covers the position directly). */
   wizard: boolean;
 }
 
@@ -447,8 +447,15 @@ export async function atlasPlace(
     found = await weltwissenCells(db, opts.region, atomIds);
   }
   const cells: AtlasPlaceCell[] = [];
-  for (const cell of found.slice(0, 40)) {
+  for (const cell of found) {
+    if (cells.length >= 40) break;
     const status = await getBundledCellEnrolment(db, opts.userId, cell.id);
+    // ADR 2026-11-22 Decision 4: legacy bundled `de-by:` school cells are not
+    // offered for first-time enrolment in learner UI; keep them only when the
+    // learner is already enrolled so existing study paths stay visible.
+    if (!cell.id.startsWith("zam-academy:") && !status.enrolled) {
+      continue;
+    }
     cells.push({
       id: cell.id,
       title: cell.title,
@@ -468,7 +475,7 @@ export async function atlasPlace(
       lens.planet !== "welt"
         ? false
         : scope
-          ? needsGenericCurriculumImport(scope)
+          ? needsGenericCurriculumImport(scope) || cells.length === 0
           : cells.length === 0 && !holdsStages,
   };
 }

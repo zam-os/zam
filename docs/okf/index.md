@@ -18,10 +18,10 @@ Current truth only — the *why* behind it lives in [../adr/](../adr/)
 
 - [Agent and Library Trust Model](agent-trust-model.md) — Agents and library content are untrusted, so every ZAM tool must be safe to auto-approve; files, network, the agent surface and keys each have one rule that enforces this.
 - [Kernel and CLI Architecture](kernel-architecture.md) — ZAM is split into an AI-agnostic learning kernel and a thin CLI orchestration layer; all learning logic lives in the kernel, all LLM/HTTP code in the CLI.
-- [Learning Content](learning-content.md) — The Learning Content page opens on Lern-Karten, three lists of tokens and cards, and Quellen shows one workspace, folder, or curriculum at a time.
+- [Learning Content](learning-content.md) — The Learning Content page opens on Lern-Karten, three lists of tokens and cards with ZAM Academy browsing, and Quellen shows one workspace or folder at a time.
 - [Local AI Runtimes](local-ai-runtimes.md) — Local text and image generation is offered only on accelerated hardware - Foundry Local for text, Ollama for images - because CPU generation is too slow to review with; embeddings are the exception and run on any machine.
 - [MCP Transport and Surfaces](mcp-surfaces.md) — zam mcp is the preferred agent transport, and the Agent Plugins package ships it with ZAM's portable skill for compatible clients.
-- [Standalone Mobile Libraries](mobile-standalone-libraries.md) — ZAM Mobile runs standalone libraries, per-learner Flash or answer review, and cell-first curriculum flows on Android and iOS; pairing remains an optional multi-device upgrade.
+- [Standalone Mobile Libraries](mobile-standalone-libraries.md) — ZAM Mobile runs standalone libraries, per-learner Flash or answer review, and index-backed ZAM Academy browsing on Android and iOS; pairing remains an optional multi-device upgrade.
 - [Observer Privacy Model and Policy Enforcement](observer-privacy-model.md) — The machine-local screen observation switch, two-layer consent and the ObserverPolicy contract for screen capture, and how shell observation is redacted and retained.
 - [Hands-Free Voice Mode](voice-mode.md) — Voice review shares one controller across device and cloud speech tiers, while Free mode on Desktop hides voice and mode switchers until With AI is enabled.
 

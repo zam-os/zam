@@ -33,7 +33,7 @@ Status: `Draft` → `Proposed` → `Accepted` → `Implemented` (or `Partially i
 | [2026-06-25c](2026-06-25c-flexible-zam-workspaces-and-skill-wiring.md) | Flexible ZAM Workspaces and Skill Wiring | Proposed |
 | [2026-06-27](2026-06-27-recall-session-llm-pipeline.md) | Recall-Session LLM Pipeline (Prompt Cache & Prefetch) | Proposed |
 | [2026-06-30](2026-06-30-learning-content-studio.md) | Learning Content Studio | Implemented |
-| [2026-07-02](2026-07-02-lehrplanplus-import-wizard.md) | LehrplanPLUS Curriculum Import Wizard | Partially implemented |
+| [2026-07-02](2026-07-02-lehrplanplus-import-wizard.md) | LehrplanPLUS Curriculum Import Wizard | Superseded by 2026-11-22 |
 | [2026-07-03](2026-07-03-rag-semantic-token-search.md) | RAG / Semantic Token Search on a Self-Hosted, No-License-Cost Store | Partially implemented |
 | [2026-07-04](2026-07-04-hierarchical-domain-ontology-and-token-identity.md) | Hierarchical Domain Ontology and Composite Token Identity | Draft |
 | [2026-07-04](2026-07-04-human-friendly-titles-and-prefixed-domains.md) | Human-friendly Titles and Prefixed Domains for the Knowledge Graph | Implemented |
@@ -73,7 +73,7 @@ Status: `Draft` → `Proposed` → `Accepted` → `Implemented` (or `Partially i
 | [2026-08-09](2026-08-09-free-offline-learning-and-anki-interoperability.md) | Free Offline Learning and Anki Interoperability | Accepted |
 | [2026-08-09b](2026-08-09b-agent-plugin-package.md) | Portable Agent Plugin Package | Implemented |
 | [2026-08-09c](2026-08-09c-on-device-ai-preference.md) | On-Device AI Across Capabilities: One Preference, Honest Tiers | Accepted |
-| [2026-08-14](2026-08-14-central-learning-atoms-and-identity.md) | Five-Object Learning Model and Reactive Scheduling | Accepted — finalised for field-test architecture |
+| [2026-08-14](2026-08-14-central-learning-atoms-and-identity.md) | Five-Object Learning Model and Reactive Scheduling | Accepted — finalised for field-test architecture; Decision 10 fallback superseded by 2026-11-22 |
 | [2026-08-14b](2026-08-14b-published-atom-identity-and-alignment.md) | Published Atom Identity and Alignment Semantics | Accepted — staged pilot and publication boundaries |
 | [2026-09-04](2026-09-04-team-library-postgres-entra-pilot.md) | Team Learning Library on Managed PostgreSQL: Entra Identity, Per-Learner Roles, and a ZAM-Only Server | Proposed |
 | [2026-09-08](2026-09-08-answer-points-and-score-based-rating.md) | Answer Points and Score-Based Rating | Implemented |
@@ -90,6 +90,7 @@ Status: `Draft` → `Proposed` → `Accepted` → `Implemented` (or `Partially i
 | [2026-10-13](2026-10-13-knowledge-atlas.md) | Knowledge Atlas: A Zoomable Map of What You Know | Proposed |
 | [2026-10-14](2026-10-14-topic-import-and-source-provenance.md) | Topic Import, and Where a Unit's Knowledge Comes From | Proposed |
 | [2026-10-14b](2026-10-14b-card-formulas-images-and-spoken-text.md) | Card Text Beyond Plain Strings: Formulas, Images and Spoken Text | Partially implemented — built; owner checks, the math font and SVG rasterising open |
-| [2026-10-19](2026-10-19-zam-academy-cells.md) | ZAM Academy: Cells from academy.zam-os.org, One-Click Enrolment, Links Back to the Lesson | Implemented — PR #419; manual app checks open |
+| [2026-10-19](2026-10-19-zam-academy-cells.md) | ZAM Academy: Cells from academy.zam-os.org, One-Click Enrolment, Links Back to the Lesson | Implemented — PR #419; Decisions 4–5 amended by 2026-11-22 |
 | [2026-11-15](2026-11-15-guided-work-subtasks-and-review.md) | Guided Work: Subtasks with an Owner, Evidence from the Result, and a Colleague's Review | Accepted |
 | [2026-11-21](2026-11-21-diagnosed-foundation-gaps.md) | Diagnosed Foundation Gaps: The Evaluator Names a Missing Prerequisite, the Learner Pulls It Forward | Accepted — Decision 7 implemented in #495 |
+| [2026-11-22](2026-11-22-academy-index-browser-and-wizard-removal.md) | ZAM Academy Index Browser and Removal of the Curriculum Wizard | Implemented — PR #496 |

@@ -17,15 +17,19 @@ import {
   ACADEMY_ORIGIN,
   type AcademyCatalog,
   type AcademyCatalogEntry,
+  type AcademyIndex,
   type BundledTile,
   parseAcademyCatalog,
+  parseAcademyIndex,
 } from "../../kernel/index.js";
 import { CONTENT_USER_AGENT } from "../adapters/source-reader.js";
 import { type SafeFetchOptions, safeFetch } from "../net/safe-fetch.js";
 import { sha256Hex } from "./cache.js";
 
 export const ACADEMY_CATALOG_URL = `${ACADEMY_ORIGIN}/catalog.json`;
+export const ACADEMY_INDEX_URL = `${ACADEMY_ORIGIN}/academy.json`;
 const CATALOG_MAX_BYTES = 256 * 1024;
+const INDEX_MAX_BYTES = 512 * 1024;
 const CELL_MAX_BYTES = 2 * 1024 * 1024;
 
 /** Test seams of `safeFetch`. Never a URL: the origin is fixed. */
@@ -64,6 +68,14 @@ export async function fetchAcademyCatalog(
   );
   const catalog = parseAcademyCatalog(JSON.parse(bytes.toString("utf8")));
   return { catalog, bytes };
+}
+
+export async function fetchAcademyIndex(
+  options: AcademyFetchOptions = {},
+): Promise<{ index: AcademyIndex; bytes: Buffer }> {
+  const bytes = await fetchBytes(ACADEMY_INDEX_URL, INDEX_MAX_BYTES, options);
+  const index = parseAcademyIndex(JSON.parse(bytes.toString("utf8")));
+  return { index, bytes };
 }
 
 export async function fetchAcademyCell(
