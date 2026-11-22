@@ -8,7 +8,7 @@ tags:
   - tokens
   - cards
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/token-card-model.md"
-timestamp: 2026-11-22T19:18:00.000Z
+timestamp: 2026-11-22T21:11:00.000Z
 ---
 
 ZAM's published central-learning model separates five objects:
@@ -235,7 +235,7 @@ knowledge is taught, such as a lesson of a ZAM Academy app
 only after `#` form one library topic. A reinstall moves a link the tile
 names; a tile that names none keeps a link set elsewhere.
 
-**ZAM Academy cells** (ADR 2026-10-19) live in `zam-os/zam-academy` next to
+**ZAM Academy cells** (ADR 2026-10-19, amended by ADR 2026-11-22) live in `zam-os/zam-academy` next to
 their training apps. They are published at
 `https://academy.zam-os.org/<app>/cell.json` and listed in `/catalog.json`
 with a SHA-256 each, accompanied by the lightweight `/academy.json` index
@@ -579,8 +579,8 @@ histories via `replaces`, `01K4M7K0000000000000000J02` retires via
 Mathematik 8 has two Fachlehrpläne as well: Zweig I learns the Drehung, space
 coordinates, Ungleichungen and lines y = mx + t, Zweig II/III triangles and
 Schrägbilder, which Zweig I learnt in grade 7. Its Academy cell binds each
-lesson to `I`, to `II_III` or to both, with that branch's learning area. It
-replaces the three old school cells of the grade, which were version 1 of
+lesson to `I`, to `II_III` or to both, with that branch's own learning area.
+It replaces the three old school cells of the grade, which were version 1 of
 this content and are no longer bundled: nine A and eight B rows pass their
 review history to one successor each, seven C cards keep their own history
 and stay in active use, and nothing is retired (approved 2026-10-23).
@@ -734,6 +734,15 @@ other mapped cards retain their IDs and histories. The Physik 7 Gymnasium
 mapping keeps all eight legacy cards active. All source school cells remain
 bundled.
 
+Release 0.68.0 bundles 99 Academy cells. It adds six Grade 7 courses: Deutsch 7
+and Geographie 7 in Gymnasium, plus BwR 7 (`II` and `IIIa` tracks), Englisch 7,
+Französisch 7 (`IIIa` track) and Geschichte 7 in Realschule. All six approved
+mappings transfer 17 matching practice-item review histories via `replaces`
+(4 in BwR 7, 3 in Deutsch 7 Gymnasium, 2 each in Englisch 7, Französisch 7 and
+Geographie 7, and 4 in Geschichte 7) with no `retired_items`. All source
+`de-by:` school cells remain bundled for existing learners and are not offered
+for first-time enrolment in learner UI (ADR 2026-11-22).
+
 Different cells may reuse the same atom and some of the same practice items.
 Installation status therefore checks every declared atom and item id, while
 enrolment status checks personal card coverage of every in-scope atom. Personal
@@ -743,7 +752,8 @@ changed mappings require real re-retrieval.
 
 # Citations
 - Code: `desktop/src/cell-import-progress.ts`, `desktop/src/academy-list.ts`, `src/kernel/library/kvt-attach.ts`
-- Tests: `tests/desktop/cell-import-progress.test.ts`, `tests/kernel/zam-academy-grundschule-4-cells.test.ts`
+- Tests: `tests/desktop/cell-import-progress.test.ts`, `tests/kernel/zam-academy-grundschule-4-cells.test.ts`, `tests/kernel/zam-academy-2026-11-21-cells.test.ts`, `tests/kernel/zam-academy-2026-11-22-cells.test.ts`
+- [ADR 2026-11-22 — ZAM Academy Index Browser and Removal of the Curriculum Wizard](../adr/2026-11-22-academy-index-browser-and-wizard-removal.md)
 - [ADR 2026-10-26 — Explicit Withdrawal of Published Curriculum Bindings](../adr/2026-10-26-curriculum-binding-withdrawals.md)
 - [ADR 2026-10-19 — ZAM Academy Cells](../adr/2026-10-19-zam-academy-cells.md)
 - [ADR 2026-10-14b — Formulas, Images and Spoken Text in Cards](../adr/2026-10-14b-card-formulas-images-and-spoken-text.md)

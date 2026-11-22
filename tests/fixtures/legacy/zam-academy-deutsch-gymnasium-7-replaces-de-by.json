@@ -1,0 +1,77 @@
+{
+	"schema": 1,
+	"status": "approved",
+	"approved": "2026-11-22",
+	"source": "Thomas approved the three proposed Category A history transfers for Deutsch 7 Gymnasium in the Antigravity chat for PR #185 on 2026-11-22: “Übernahmen sind freigegeben. Du darfst als Admin mergen”.",
+	"source_repository": "https://github.com/zam-os/zam",
+	"source_commit": "d83ea3b2f93609b7ed25432c1cb37774dc59c537",
+	"sources": [
+		{
+			"file": "tests/fixtures/de-by-gymnasium-7-deutsch-konjunktiv-indirekte-rede-passiv-syntax-kvt.json",
+			"sha256": "d00483db8b14e221103c95e61fe98ac3a0a96089c16872daa9bf3bd07686fd2b",
+			"tile_id": "de-by:gymnasium-7-deutsch-konjunktiv-indirekte-rede-passiv-syntax"
+		},
+		{
+			"file": "tests/fixtures/de-by-gymnasium-7-deutsch-texte-inhaltsangabe-ballade-interpretation-kvt.json",
+			"sha256": "92cd2f75ace32acc2b0744d3d2fcb464d055afa8893e6194ad57ca873eac2d07",
+			"tile_id": "de-by:gymnasium-7-deutsch-texte-inhaltsangabe-ballade-interpretation"
+		}
+	],
+	"rows": [
+		{
+			"de_by_id": "01K4D7G0000000000000000J01",
+			"category": "A",
+			"action": "replace",
+			"academy_slug": "d7-indikativ-konjunktiv-rede-check",
+			"reason": "The old item and its proposed successor ask for the exact same atomic retrieval: Konjunktiv I (derived from the present stem) as the primary choice for distanced indirect speech."
+		},
+		{
+			"de_by_id": "01K4D7G0000000000000000J02",
+			"category": "C",
+			"action": "keep-active",
+			"related_slug": "d7-indikativ-konjunktiv-rede-recall",
+			"reason": "The old synthesis prompt bundles Konjunktiv I endings, the three-step substitution cascade, Konjunktiv II formation/functions and an applied transformation exercise; no single Academy card holds that whole retrieval."
+		},
+		{
+			"de_by_id": "01K4D7G0000000000000000J03",
+			"category": "C",
+			"action": "keep-active",
+			"reason": "Identifying Zustandspassiv belongs to Grade 6 LehrplanPLUS D6 4.2.3 and is already kept active in deutsch-gymnasium-6; Grade 7 does not claim this Grade 6 voice item."
+		},
+		{
+			"de_by_id": "01K4D7G0000000000000000J04",
+			"category": "C",
+			"action": "keep-active",
+			"related_slug": "d7-komma-infinitiv-partizip-check",
+			"reason": "The old prompt combines active/passive voices, five passive tense forms and infinitive-group comma rules; only the comma part overlaps with Grade 7, and deutsch-gymnasium-6 already inventories this item as keep-active."
+		},
+		{
+			"de_by_id": "01K4D7T0000000000000000J01",
+			"category": "A",
+			"action": "replace",
+			"academy_slug": "d7-inhaltsangabe-check",
+			"reason": "Both the legacy item and its proposed successor preserve the exact atomic retrieval of the four mandatory parts in the summary opening sentence (Titel, Autor, Textsorte, Thema)."
+		},
+		{
+			"de_by_id": "01K4D7T0000000000000000J02",
+			"category": "C",
+			"action": "keep-active",
+			"related_slug": "d7-inhaltsangabe-recall",
+			"reason": "The old prompt requires explaining the whole summary structure (TATT, chronological sections, tense rules, objectivity, indirect speech) and includes a detailed sample model; no single new card preserves all parts together."
+		},
+		{
+			"de_by_id": "01K4D7T0000000000000000J03",
+			"category": "A",
+			"action": "replace",
+			"academy_slug": "d7-gattungen-ballade-check",
+			"reason": "Both items test the same core atomic knowledge: why the ballad unites all three literary genres (Epik, Lyrik and Dramatik)."
+		},
+		{
+			"de_by_id": "01K4D7T0000000000000000J04",
+			"category": "C",
+			"action": "keep-active",
+			"related_slug": "d7-gattungen-ballade-recall",
+			"reason": "The old synthesis prompt bundles ballad genre triad, three sub-types across Goethe/Schiller/Fontane and the three-step interpretation plan; the new Grade 7 item focuses on distinguishing the three aspects in Goethe's Erlkönig."
+		}
+	]
+}

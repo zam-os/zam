@@ -60,6 +60,12 @@
     "file": "zam-academy-bwr-realschule-10-kvt.json"
   },
   {
+    "id": "zam-academy:bwr-realschule-7",
+    "version": "2026.11.2",
+    "sha256": "f878cb6a219f615f2fc0416a65bf3b46fdcc687e908f964a56b8e333c10ff7e4",
+    "file": "zam-academy-bwr-realschule-7-kvt.json"
+  },
+  {
     "id": "zam-academy:bwr-realschule-9",
     "version": "2026.10.1",
     "sha256": "4eedd23e5af3016eede0db4eb3e2e717b8b811ae34ad38713ccc2116c788a342",
@@ -106,6 +112,12 @@
     "version": "2026.11.1",
     "sha256": "1432225df8f54b8766f7a8f5cdfe863ac470e0bea656ad62bd4163845ea1b34d",
     "file": "zam-academy-deutsch-gymnasium-6-kvt.json"
+  },
+  {
+    "id": "zam-academy:deutsch-gymnasium-7",
+    "version": "2026.11.1",
+    "sha256": "d732520cd218f1654c6670356e081e8f0f11852f86a7fd250a248550f63b97d4",
+    "file": "zam-academy-deutsch-gymnasium-7-kvt.json"
   },
   {
     "id": "zam-academy:deutsch-mittelschule-5",
@@ -210,6 +222,12 @@
     "file": "zam-academy-englisch-realschule-6-kvt.json"
   },
   {
+    "id": "zam-academy:englisch-realschule-7",
+    "version": "2026.11.2",
+    "sha256": "3691459cdd0c081978c23be66cf943b0277dd9aaa77466092e6d0d2f05fd12c0",
+    "file": "zam-academy-englisch-realschule-7-kvt.json"
+  },
+  {
     "id": "zam-academy:englisch-realschule-8",
     "version": "2026.10.2",
     "sha256": "b47a776ab9f7d7d42d4c9ab88d89ce4e1ccee634671bc2fd721d78cb233e4b1b",
@@ -240,6 +258,12 @@
     "file": "zam-academy-franzoesisch-realschule-10-kvt.json"
   },
   {
+    "id": "zam-academy:franzoesisch-realschule-7",
+    "version": "2026.11.1",
+    "sha256": "44c0b5b438e571fb8fff3becd15857b3a0fffb96661f8f1846ebc4d465bb6a76",
+    "file": "zam-academy-franzoesisch-realschule-7-kvt.json"
+  },
+  {
     "id": "zam-academy:franzoesisch-realschule-8",
     "version": "2026.10.2",
     "sha256": "f05f910a492a9492da4e4a49655d34fad9b5a4acf669989fb75f0fbbce4b13d4",
@@ -256,6 +280,12 @@
     "version": "2026.11.1",
     "sha256": "f5e8eab0a831dba363c8f93409ba9715900ce5884c5cc7ba2058ca05c2a73879",
     "file": "zam-academy-geographie-gymnasium-5-kvt.json"
+  },
+  {
+    "id": "zam-academy:geographie-gymnasium-7",
+    "version": "2026.11.2",
+    "sha256": "4d0e3a85d2cda0b895c689552bb0653a834456f3d4e89ea6e28ed5c8d2cfbb6d",
+    "file": "zam-academy-geographie-gymnasium-7-kvt.json"
   },
   {
     "id": "zam-academy:geographie-realschule-5",
@@ -298,6 +328,12 @@
     "version": "2026.11.1",
     "sha256": "8473095093bf3cd6fb0a404eb7a67824b8066824071cedea6fc6e5139a8ca3cb",
     "file": "zam-academy-geschichte-realschule-6-kvt.json"
+  },
+  {
+    "id": "zam-academy:geschichte-realschule-7",
+    "version": "2026.11.2",
+    "sha256": "cf581fc7c3b20f3b30c1c8ebf6786bd87661f3438010858c29362766541260d4",
+    "file": "zam-academy-geschichte-realschule-7-kvt.json"
   },
   {
     "id": "zam-academy:geschichte-realschule-8",

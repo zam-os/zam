@@ -1,0 +1,118 @@
+{
+  "schema": 1,
+  "status": "approved",
+  "approved": "2026-11-22",
+  "source_repository": "https://github.com/zam-os/zam",
+  "source_commit": "7897672c2caa8435c89bf39eac41e1efc75521c2",
+  "source": "Thomas approved all 4 proposed A transfers in Antigravity chat on 2026-11-22 before ZAM 0.68.0 release: „Die 4+4 A-Zeilen für bwr-realschule-7 und geschichte-realschule-7 hiermit freigeben, zuerst in zam-os/zam-academy veröffentlichen und dann alle 6 Pakete in ZAM 0.68.0 aufnehmen“. All 6 C rows remain without retired_items.",
+  "policy": "A: same atomic retrieval, one successor proposes replaces. B: whole multi-part prompt retained on one dedicated successor. C: split, off-curriculum or corrected; keep-active or propose-retire-after-approval, never replaces.",
+  "neighbouring_grade_review": "de-by:realschule-8-bwr-erfolgskonten-guv-werkstoffe-rabatte (4 Karten: J01/J02 zu Erfolgskonten/GUV, J03/J04 zu Werkstoffeinkauf/Bezugskosten/Rabatten/Skonto) mischt BwR-7-Grundlagen (Werkstoffe, Rabatt, Erfolgskonten) mit klarem BwR-8-Stoff (Löhne, Miete, 6001 BZKR, Skonto; GUV im Zweig IIIa erst in Klasse 8) und bleibt vorerst unberührt bei BwR 8 (Rückfrage an Thomas im PR, ob J01 oder J03 später zu BwR 7 gehören sollen). de-by:realschule-8-wirtschaft-recht-konsum-geld-jugend gehört zu Wirtschaft und Recht 8 II und bleibt unberührt.",
+  "sources": [
+    {
+      "file": "tests/fixtures/de-by-realschule-7-bwr-unternehmen-inventur-bilanz-kvt.json",
+      "tile_id": "de-by:realschule-7-bwr-unternehmen-inventur-bilanz",
+      "version": "2026.10.1",
+      "sha256": "d053c3a46cfe2efb2351ad6990f4bfaa3748afb8f97d74b0c8a2dad197de9631",
+      "source_path": "tests/fixtures/curriculum/de-by-realschule-7-bwr-unternehmen-inventur-bilanz-kvt.json"
+    },
+    {
+      "file": "tests/fixtures/de-by-realschule-7-bwr-bestandskonten-buchungssatz-eroeffnung-kvt.json",
+      "tile_id": "de-by:realschule-7-bwr-bestandskonten-buchungssatz-eroeffnung",
+      "version": "2026.10.1",
+      "sha256": "6b47ebfeff5ba515a8495ef4009e4b0d180145b2f6bbc334eb05308cef147fbb",
+      "source_path": "tests/fixtures/curriculum/de-by-realschule-7-bwr-bestandskonten-buchungssatz-eroeffnung-kvt.json"
+    }
+  ],
+  "rows": [
+    {
+      "de_by_cell": "de-by:realschule-7-bwr-unternehmen-inventur-bilanz",
+      "de_by_id": "01K4W7B0000000000000000J01",
+      "de_by_question": "Nach welchem Ausprägung des Ökonomischen Prinzips handelt ein Betrieb, der ein vorgegebenes Produktionsziel (z. B. 1.000 Fahrräder) mit möglichst geringem Mitteleinsatz (Kosten) erreichen will?",
+      "category": "C",
+      "action": "keep-active",
+      "academy_slug": null,
+      "reason": "Ökonomisches Prinzip (Minimal-/Maximalprinzip) steht nicht im LehrplanPLUS BwR 7 (sondern erst bzw. in Wirtschaft und Recht); kein Nachfolger in BwR 7, bestehender Lernstand bleibt aktiv."
+    },
+    {
+      "de_by_cell": "de-by:realschule-7-bwr-unternehmen-inventur-bilanz",
+      "de_by_id": "01K4W7B0000000000000000J02",
+      "de_by_question": "Erkläre das Grundproblem der Wirtschaftswissenschaften (Knappheit der Güter bei unbegrenzten menschlichen Bedürfnissen), gliedere Bedürfnisse nach Dringlichkeit (Existenz-, Kultur- und Luxusbedürfnisse), systematisiere Güterarten (freie Güter vs. wirtschaftliche / knappe Güter; Konsum- vs. Produktionsgüter; Gebrauchs- vs. Verbrauchsgüter) und grenze das Minimalprinzip (festes Ziel -> minimaler Mitteleinsatz) vom Maximalprinzip (feste Mittel -> maximaler Erfolg) anhand konkreter betrieblicher und privater Alltagsbeispiele ab.",
+      "category": "C",
+      "action": "keep-active",
+      "academy_slug": null,
+      "reason": "Mehrteilige Synthese zu Bedürfnisdringlichkeit, Güterklassifikation und Minimal-/Maximalprinzip; kein Inhalt des LehrplanPLUS BwR 7, bestehende Karte bleibt unverändert aktiv."
+    },
+    {
+      "de_by_cell": "de-by:realschule-7-bwr-unternehmen-inventur-bilanz",
+      "de_by_id": "01K4W7B0000000000000000J03",
+      "de_by_question": "Wie lautet die fundamentale Bilanzgleichung zur Ermittlung des Eigenkapitals (Reinvermögens) eines Unternehmens?",
+      "category": "A",
+      "action": "replace",
+      "academy_slug": "bwr7-gb-bilanz-check",
+      "reason": "Identischer atomarer Einzelabruf: Eigenkapital (Reinvermögen) = Vermögen − Schulden; bwr7-gb-bilanz-check fragt exakt diese Bilanzgleichung mit denselben Antwortoptionen."
+    },
+    {
+      "de_by_cell": "de-by:realschule-7-bwr-unternehmen-inventur-bilanz",
+      "de_by_id": "01K4W7B0000000000000000J04",
+      "de_by_question": "Erkläre den Weg von der Inventur zur Eröffnungsbilanz: 1. Inventur (tatsächliche Bestandsaufnahme aller Vermögenswerte und Schulden zum Bilanzstichtag durch Zählen, Messen, Wiegen [körperliche Inventur] und Buchwerte [Buchinventur]), 2. Inventar (ausführliches staffelförmiges Verzeichnis: A. Vermögen gegliedert nach Liquidität [Anlagevermögen AV, Umlaufvermögen UV], B. Schulden gegliedert nach Fälligkeit [Langfristige/Kurzfristige Schulden], C. Ermittlung des Reinvermögens / Eigenkapitals), 3. Bilanz (stark verdichtetes T-Konto: linke Seite Aktiva / Mittelverwendung / Investition, rechte Seite Passiva / Mittelherkunft / Finanzierung; Bilanzsumme Aktiva = Bilanzsumme Passiva) und erstelle eine Bilanz aus folgenden Werten: Grundstücke 200.000 €, Maschinen 80.000 €, Bankguthaben 40.000 €, Kasse 5.000 €, Darlehensschulden 120.000 €, Verbindlichkeiten aus L.L. 30.000 €.",
+      "category": "C",
+      "action": "propose-retire-after-approval",
+      "academy_slug": null,
+      "reason": "Mehrteiliger Gesamtabruf über Inventur, Inventar, Bilanz und konkrete Zahlenaufgabe (auf gb-inventur-inventar und gb-bilanz verteilt); zudem verwendet der Alttext „VLL“ statt „VE“ laut aktueller ISB-Kontenliste für BwR 7. Zur Stilllegung nach Freigabe vorgeschlagen."
+    },
+    {
+      "de_by_cell": "de-by:realschule-7-bwr-unternehmen-inventur-bilanz",
+      "de_by_id": "01K4W7B0000000000000000J05",
+      "de_by_question": "Welche der 4 Bilanzveränderungen liegt vor, wenn ein Betrieb einen neuen Lieferwagen (Fuhrpark) im Wert von 35.000 € durch sofortige Banküberweisung kauft?",
+      "category": "A",
+      "action": "replace",
+      "academy_slug": "bwr7-gb-bilanzveraenderungen-check",
+      "reason": "Identischer Einzelabruf am selben Lieferwagen-Beispiel über 35.000 Euro gegen Banküberweisung (Aktivtausch, Bilanzsumme bleibt unverändert)."
+    },
+    {
+      "de_by_cell": "de-by:realschule-7-bwr-unternehmen-inventur-bilanz",
+      "de_by_id": "01K4W7B0000000000000000J06",
+      "de_by_question": "Definiere und vergleiche die 4 Grundtypen der Bilanzveränderung: 1. Aktivtausch (+Aktivposten / -Aktivposten; Bilanzsumme bleibt konstant), 2. Passivtausch (+Passivposten / -Passivposten; Bilanzsumme bleibt konstant), 3. Aktiv-Passiv-Mehrung / Bilanzverlängerung (+Aktivposten / +Passivposten; Bilanzsumme steigt), 4. Aktiv-Passiv-Minderung / Bilanzverkürzung (-Aktivposten / -Passivposten; Bilanzsumme sinkt) und ordne folgende 4 Geschäftsfälle eindeutig zu: a) Kauf von Rohstoffen auf Ziel (Rechnung) 10.000 €, b) Barabhebung vom Bankkonto zur Kasse 1.500 €, c) Begleichung einer Lieferantenverbindlichkeit durch Banküberweisung 6.000 €, d) Umwandlung einer kurzfristigen Lieferantenschuld in ein langfristiges Bankdarlehen 25.000 €.",
+      "category": "C",
+      "action": "propose-retire-after-approval",
+      "academy_slug": null,
+      "reason": "Mehrteiliger Abruf aus vier Definitionen plus vier Fällen; zudem bucht die Musterlösung einen Rohstoffeinkauf als Bestandsmehrung auf VLL ohne Vorsteuer statt aufwandsorientiert auf AWR und VORST an VE. Zur Stilllegung nach Freigabe vorgeschlagen."
+    },
+    {
+      "de_by_cell": "de-by:realschule-7-bwr-bestandskonten-buchungssatz-eroeffnung",
+      "de_by_id": "01K4W7K0000000000000000J01",
+      "de_by_question": "Auf welcher Kontoseite (Soll oder Haben) werden bei einem Aktivkonto (z. B. Fuhrpark, Bank, Kasse) der Anfangsbestand (AB) und sämtliche Zugänge (+) erfasst?",
+      "category": "A",
+      "action": "replace",
+      "academy_slug": "bwr7-gb-bestandskonten-check",
+      "reason": "Identischer Einzelabruf zu Anfangsbestand und Zugängen auf einem Aktivkonto (Soll-Seite links) mit denselben Binäroptionen."
+    },
+    {
+      "de_by_cell": "de-by:realschule-7-bwr-bestandskonten-buchungssatz-eroeffnung",
+      "de_by_id": "01K4W7K0000000000000000J02",
+      "de_by_question": "Erkläre das System der doppelten Buchführung (Doppik) bei der Auflösung der Bilanz in T-Konten: 1. Aktivkonten (stehen auf der linken Bilanzseite Aktiva -> Anfangsbestand AB und Zugänge [+] im Soll, Abgänge [-] und Schlussbestand SB im Haben), 2. Passivkonten (stehen auf der rechten Bilanzseite Passiva -> Anfangsbestand AB und Zugänge [+] im Haben, Abgänge [-] und Schlussbestand SB im Soll), 3. Das Eröffnungsbilanzkonto (EBK als spiegelbildliches Gegenkonto) und das Schlussbilanzkonto (SBK).",
+      "category": "C",
+      "action": "propose-retire-after-approval",
+      "academy_slug": null,
+      "reason": "Mehrteilige Synthese über Bestandskonten (LB 3) und Konteneröffnung/SBK (nur II LB 5); außerdem arbeitet der Alttext mit einem Eröffnungsbilanzkonto (EBK), das in der ISB-Kontenliste und im BwR-7-Lehrplan nicht vorkommt, und nutzt VLL statt VE. Zur Stilllegung nach Freigabe vorgeschlagen."
+    },
+    {
+      "de_by_cell": "de-by:realschule-7-bwr-bestandskonten-buchungssatz-eroeffnung",
+      "de_by_id": "01K4W7K0000000000000000J03",
+      "de_by_question": "Wie lautet die universelle Grundregel zur Formulierung jedes Buchungssatzes im betrieblichen Rechnungswesen?",
+      "category": "A",
+      "action": "replace",
+      "academy_slug": "bwr7-gb-buchungssatz-check",
+      "reason": "Identischer Einzelabruf zur Grundregel jedes Buchungssatzes („Soll an Haben“) mit denselben zwei Antwortoptionen."
+    },
+    {
+      "de_by_cell": "de-by:realschule-7-bwr-bestandskonten-buchungssatz-eroeffnung",
+      "de_by_id": "01K4W7K0000000000000000J04",
+      "de_by_question": "Erkläre den 4-stufigen Denkprozess zur Bildung eines fehlerfreien Buchungssatzes: 1. Welche Konten sind berührt?, 2. Handelt es sich um Aktiv- oder Passivkonten?, 3. Liegt ein Zugang (+) oder ein Abgang (-) vor?, 4. Muss im Soll oder im Haben gebucht werden? -> Buchungsregel 'Per [Sollkonto] an [Habenkonto] [Betrag]' und bilde die Buchungssätze für folgende 3 Geschäftsfälle: a) Wir kaufen Büromöbel (BGA) für 4.200 € gegen Barzahlung, b) Ein Kunde begleicht unsere Ausgangsrechnung (Forderungen) über 8.500 € durch Banküberweisung, c) Wir kaufen Fertigungsmaterial (Rohstoffe) im Wert von 14.000 € auf Ziel (Lieferantenrechnung).",
+      "category": "C",
+      "action": "propose-retire-after-approval",
+      "academy_slug": null,
+      "reason": "Mehrteiliger Abruf aus Vier-Schritte-Schema und drei Buchungsaufgaben; der Alttext verwendet „Per … an …“, bucht BGA/Rohstoffe ohne Umsatzsteuer und nutzt R/VLL statt aufwandsorientierter Buchung auf AWR + VORST an VE. Zur Stilllegung nach Freigabe vorgeschlagen."
+    }
+  ]
+}

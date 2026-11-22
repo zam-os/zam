@@ -35,7 +35,11 @@ const RS7_CELL_IDS = [
 ];
 const ACADEMY_RS7_IDS = [
   "zam-academy:biologie-realschule-7",
+  "zam-academy:bwr-realschule-7",
   "zam-academy:deutsch-realschule-7",
+  "zam-academy:englisch-realschule-7",
+  "zam-academy:franzoesisch-realschule-7",
+  "zam-academy:geschichte-realschule-7",
   "zam-academy:informatik-realschule-8",
   "zam-academy:mathematik-realschule-7",
   "zam-academy:physik-realschule-7",

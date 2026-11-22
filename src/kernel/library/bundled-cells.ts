@@ -20,7 +20,7 @@ export interface BundledTile extends KvtTile {
 }
 
 // --- begin bundled-tile-imports ---
-// --- Fixture Imports (234 tiles) ---
+// --- Fixture Imports (240 tiles) ---
 import tile1Raw from "../../../tests/fixtures/curriculum/de-by-bos-10-optik-kvt.json" with {
   type: "json",
 };
@@ -429,6 +429,9 @@ import tile147Raw from "../../../tests/fixtures/curriculum/zam-academy-biologie-
 import tile144Raw from "../../../tests/fixtures/curriculum/zam-academy-biologie-realschule-10-kvt.json" with {
   type: "json",
 };
+import tile235Raw from "../../../tests/fixtures/curriculum/zam-academy-bwr-realschule-7-kvt.json" with {
+  type: "json",
+};
 import tile149Raw from "../../../tests/fixtures/curriculum/zam-academy-bwr-realschule-9-kvt.json" with {
   type: "json",
 };
@@ -454,6 +457,9 @@ import tile221Raw from "../../../tests/fixtures/curriculum/zam-academy-deutsch-g
   type: "json",
 };
 import tile219Raw from "../../../tests/fixtures/curriculum/zam-academy-deutsch-gymnasium-6-kvt.json" with {
+  type: "json",
+};
+import tile236Raw from "../../../tests/fixtures/curriculum/zam-academy-deutsch-gymnasium-7-kvt.json" with {
   type: "json",
 };
 import tile155Raw from "../../../tests/fixtures/curriculum/zam-academy-deutsch-mittelschule-5-kvt.json" with {
@@ -504,6 +510,9 @@ import tile164Raw from "../../../tests/fixtures/curriculum/zam-academy-englisch-
 import tile223Raw from "../../../tests/fixtures/curriculum/zam-academy-englisch-realschule-6-kvt.json" with {
   type: "json",
 };
+import tile237Raw from "../../../tests/fixtures/curriculum/zam-academy-englisch-realschule-7-kvt.json" with {
+  type: "json",
+};
 import tile165Raw from "../../../tests/fixtures/curriculum/zam-academy-englisch-realschule-8-kvt.json" with {
   type: "json",
 };
@@ -519,6 +528,9 @@ import tile167Raw from "../../../tests/fixtures/curriculum/zam-academy-franzoesi
 import tile234Raw from "../../../tests/fixtures/curriculum/zam-academy-franzoesisch-gymnasium-6-kvt.json" with {
   type: "json",
 };
+import tile238Raw from "../../../tests/fixtures/curriculum/zam-academy-franzoesisch-realschule-7-kvt.json" with {
+  type: "json",
+};
 import tile169Raw from "../../../tests/fixtures/curriculum/zam-academy-franzoesisch-realschule-8-kvt.json" with {
   type: "json",
 };
@@ -529,6 +541,9 @@ import tile168Raw from "../../../tests/fixtures/curriculum/zam-academy-franzoesi
   type: "json",
 };
 import tile171Raw from "../../../tests/fixtures/curriculum/zam-academy-geographie-gymnasium-5-kvt.json" with {
+  type: "json",
+};
+import tile239Raw from "../../../tests/fixtures/curriculum/zam-academy-geographie-gymnasium-7-kvt.json" with {
   type: "json",
 };
 import tile172Raw from "../../../tests/fixtures/curriculum/zam-academy-geographie-realschule-5-kvt.json" with {
@@ -547,6 +562,9 @@ import tile217Raw from "../../../tests/fixtures/curriculum/zam-academy-geschicht
   type: "json",
 };
 import tile218Raw from "../../../tests/fixtures/curriculum/zam-academy-geschichte-realschule-6-kvt.json" with {
+  type: "json",
+};
+import tile240Raw from "../../../tests/fixtures/curriculum/zam-academy-geschichte-realschule-7-kvt.json" with {
   type: "json",
 };
 import tile176Raw from "../../../tests/fixtures/curriculum/zam-academy-geschichte-realschule-8-kvt.json" with {
@@ -1238,6 +1256,18 @@ export const BUNDLED_TILES: Record<string, BundledTile> = {
     tile233Raw as unknown as BundledTile,
   [(tile234Raw as unknown as BundledTile).tile_id]:
     tile234Raw as unknown as BundledTile,
+  [(tile235Raw as unknown as BundledTile).tile_id]:
+    tile235Raw as unknown as BundledTile,
+  [(tile236Raw as unknown as BundledTile).tile_id]:
+    tile236Raw as unknown as BundledTile,
+  [(tile237Raw as unknown as BundledTile).tile_id]:
+    tile237Raw as unknown as BundledTile,
+  [(tile238Raw as unknown as BundledTile).tile_id]:
+    tile238Raw as unknown as BundledTile,
+  [(tile239Raw as unknown as BundledTile).tile_id]:
+    tile239Raw as unknown as BundledTile,
+  [(tile240Raw as unknown as BundledTile).tile_id]:
+    tile240Raw as unknown as BundledTile,
 };
 // --- end bundled-tile-map ---
 

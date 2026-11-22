@@ -1,0 +1,1521 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "zam-academy:geographie-gymnasium-7",
+  "version": "2026.11.2",
+  "title": "Geographie 7 Gymnasium (ZAM Academy)",
+  "description": "Lernkarten zu Europakarten, Klima, Plattentektonik, ländlichen und städtischen Räumen, Meeren und Küsten nach LehrplanPLUS Bayern.",
+  "publisher": "ZAM Academy",
+  "sources": [
+    {
+      "uri": "https://academy.zam-os.org/geographie-gymnasium-7/",
+      "label": "ZAM Academy · Geographie 7 Gymnasium"
+    },
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/7/geographie",
+      "label": "LehrplanPLUS · Geographie 7 Gymnasium",
+      "checked": "2026-11-21"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01M803NQ6K9AFJKJSSGW1MHY0A",
+      "atom_uri": "urn:zam:atom:01M803NQ6K9AFJKJSSGW1MHY0A",
+      "namespace": "zam-academy-geographie-gymnasium-7",
+      "slug": "geo7-karten-skizzieren",
+      "title": "Karten lesen und skizzieren",
+      "domain": "geographie/lb1",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/geographie-gymnasium-7/#lesson=karten-skizzieren",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-gymnasium-7",
+          "topic_code": "lb1",
+          "topic_title": "Geographische Arbeitstechniken"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "geographie",
+          "topic_code": "lb1",
+          "topic_title": "Geographische Arbeitstechniken"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M803NQ6K8C3NM01A6GSBJVMX",
+          "slug": "geo7-karten-skizzieren-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Welche Kartenart zeigt gezielt ein Thema wie Personenverkehr?",
+          "concept": "Eine thematische Karte.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-7/#lesson=karten-skizzieren",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eine thematische Karte.",
+              "Eine physische Karte."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M803NQ6KH5YDX1DG9HNBBVDT",
+          "slug": "geo7-karten-skizzieren-erklaren",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche Angaben helfen anderen, deine Kartenskizze zu verstehen?",
+          "concept": "Ein Titel nennt das Thema. Ein Nordpfeil zeigt die Richtung. Die Legende erklärt die Zeichen.",
+          "sample_solution": "Ein Titel nennt das Thema. Ein Nordpfeil zeigt die Richtung. Die Legende erklärt die Zeichen.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-7/#lesson=karten-skizzieren"
+        }
+      ]
+    },
+    {
+      "id": "01M803NQ6KM5CKRZDQ62YTGSNQ",
+      "atom_uri": "urn:zam:atom:01M803NQ6KM5CKRZDQ62YTGSNQ",
+      "namespace": "zam-academy-geographie-gymnasium-7",
+      "slug": "geo7-bilder-vergleichen",
+      "title": "Bilder und Satellitenbilder auswerten",
+      "domain": "geographie/lb1",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/geographie-gymnasium-7/#lesson=bilder-vergleichen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-gymnasium-7",
+          "topic_code": "lb1",
+          "topic_title": "Geographische Arbeitstechniken"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "geographie",
+          "topic_code": "lb1",
+          "topic_title": "Geographische Arbeitstechniken"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M803NQ6KNWDBX0FY163E1FNG",
+          "slug": "geo7-bilder-vergleichen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Ist die Aussage «Hier liegen drei rechteckige Wasserflächen» eine Beobachtung oder eine Deutung?",
+          "concept": "Eine Beobachtung.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-7/#lesson=bilder-vergleichen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eine Beobachtung.",
+              "Eine Deutung."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M803NQ6KCEKA3E4J7PCYKN5X",
+          "slug": "geo7-bilder-vergleichen-erklaren",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum prüfst du bei einem Vergleich zweier Satellitenbilder das Datum?",
+          "concept": "Jahreszeit, Wasserstand oder Wetter können sich ändern. Ein Unterschied im Bild belegt allein keine dauerhafte Veränderung der Nutzung.",
+          "sample_solution": "Jahreszeit, Wasserstand oder Wetter können sich ändern. Ein Unterschied im Bild belegt allein keine dauerhafte Veränderung der Nutzung.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-7/#lesson=bilder-vergleichen"
+        }
+      ]
+    },
+    {
+      "id": "01M803NQ6KZCV7GDC5B13P2DQJ",
+      "atom_uri": "urn:zam:atom:01M803NQ6KZCV7GDC5B13P2DQJ",
+      "namespace": "zam-academy-geographie-gymnasium-7",
+      "slug": "geo7-diagramme-lesen",
+      "title": "Diagramme und Statistiken lesen",
+      "domain": "geographie/lb1",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/geographie-gymnasium-7/#lesson=diagramme-lesen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-gymnasium-7",
+          "topic_code": "lb1",
+          "topic_title": "Geographische Arbeitstechniken"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "geographie",
+          "topic_code": "lb1",
+          "topic_title": "Geographische Arbeitstechniken"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M803NQ6KYAYTFYGHFB0E3FWD",
+          "slug": "geo7-diagramme-lesen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Welche Diagrammform zeigt Anteile an einem Ganzen in einem unterteilten Streifen?",
+          "concept": "Ein Banddiagramm.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-7/#lesson=diagramme-lesen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein Banddiagramm.",
+              "Ein Liniendiagramm."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M803NQ6KND6EEQJB0XJB6SPN",
+          "slug": "geo7-diagramme-lesen-erklaren",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum überschätzt ein Quadrat mit doppelter Seitenlänge eine Verdopplung des dargestellten Werts?",
+          "concept": "Die Fläche wächst in zwei Richtungen. Doppelte Seitenlänge ergibt die vierfache Fläche.",
+          "sample_solution": "Die Fläche wächst in zwei Richtungen. Doppelte Seitenlänge ergibt die vierfache Fläche.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-7/#lesson=diagramme-lesen"
+        }
+      ]
+    },
+    {
+      "id": "01M803NQ6KQDFBBRX28VV21SPS",
+      "atom_uri": "urn:zam:atom:01M803NQ6KQDFBBRX28VV21SPS",
+      "namespace": "zam-academy-geographie-gymnasium-7",
+      "slug": "geo7-quellen-prufen",
+      "title": "Geographische Quellen prüfen",
+      "domain": "geographie/lb1",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/geographie-gymnasium-7/#lesson=quellen-prufen",
+      "prerequisites": [
+        {
+          "atom_id": "01M803NQ6K9AFJKJSSGW1MHY0A",
+          "type": "soft",
+          "rationale": "Das Thema „Karten lesen und skizzieren“ liefert Grundlagen für diese Lektion."
+        },
+        {
+          "atom_id": "01M803NQ6KM5CKRZDQ62YTGSNQ",
+          "type": "soft",
+          "rationale": "Das Thema „Bilder und Satellitenbilder auswerten“ liefert Grundlagen für diese Lektion."
+        },
+        {
+          "atom_id": "01M803NQ6KZCV7GDC5B13P2DQJ",
+          "type": "soft",
+          "rationale": "Das Thema „Diagramme und Statistiken lesen“ liefert Grundlagen für diese Lektion."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-gymnasium-7",
+          "topic_code": "lb1",
+          "topic_title": "Geographische Arbeitstechniken"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "geographie",
+          "topic_code": "lb1",
+          "topic_title": "Geographische Arbeitstechniken"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M803NQ6KDJ6BMB6DPXPFBB78",
+          "slug": "geo7-quellen-prufen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Was braucht man zum Vergleich von Messreihen an zwei Orten?",
+          "concept": "Vergleichbare Messgröße, Zeiträume und Methoden.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-7/#lesson=quellen-prufen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Vergleichbare Messgröße, Zeiträume und Methoden.",
+              "Nur gleich große Ausschnitte der beiden Karten."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M803NQ6KYBNGR7QHZ9M5H9JB",
+          "slug": "geo7-quellen-prufen-erklaren",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche Quellenangaben helfen anderen, Daten deiner eigenen Karte zu überprüfen?",
+          "concept": "Nenne die verantwortliche Einrichtung, die genaue Quelle, den Datenzeitraum und bei Onlinequellen das Abrufdatum.",
+          "sample_solution": "Nenne die verantwortliche Einrichtung, die genaue Quelle, den Datenzeitraum und bei Onlinequellen das Abrufdatum.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-7/#lesson=quellen-prufen"
+        }
+      ]
+    },
+    {
+      "id": "01M803NQ6KM9BPRRG8JJ85BCMD",
+      "atom_uri": "urn:zam:atom:01M803NQ6KM9BPRRG8JJ85BCMD",
+      "namespace": "zam-academy-geographie-gymnasium-7",
+      "slug": "geo7-europa-teilraume",
+      "title": "Staaten und Teilräume Europas",
+      "domain": "geographie/lb2",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/geographie-gymnasium-7/#lesson=europa-teilraume",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-gymnasium-7",
+          "topic_code": "lb2",
+          "topic_title": "Einheit und Vielfalt in Europa"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "geographie",
+          "topic_code": "lb2",
+          "topic_title": "Einheit und Vielfalt in Europa"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M803NQ6K0TCJ7177XACBEK5V",
+          "slug": "geo7-europa-teilraume-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Auf welcher Halbinsel liegt Portugal?",
+          "concept": "Auf der Iberischen Halbinsel.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-7/#lesson=europa-teilraume",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Auf der Iberischen Halbinsel.",
+              "Auf der Apenninenhalbinsel."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M803NQ6KA5TNC5MWRK6JJ6PF",
+          "slug": "geo7-europa-teilraume-erklaren",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie kannst du Tschechien durch die Lage zu zwei Nachbarstaaten in Europa verorten?",
+          "concept": "Tschechien liegt in Mitteleuropa, zum Beispiel östlich von Deutschland und südlich von Polen.",
+          "sample_solution": "Tschechien liegt in Mitteleuropa, zum Beispiel östlich von Deutschland und südlich von Polen.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-7/#lesson=europa-teilraume"
+        }
+      ]
+    },
+    {
+      "id": "01M803NQ6KW6KGCW339GFVSZD4",
+      "atom_uri": "urn:zam:atom:01M803NQ6KW6KGCW339GFVSZD4",
+      "namespace": "zam-academy-geographie-gymnasium-7",
+      "slug": "geo7-eu-binnenmarkt",
+      "title": "Wie Europa zusammenarbeitet",
+      "domain": "geographie/lb2",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/geographie-gymnasium-7/#lesson=eu-binnenmarkt",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-gymnasium-7",
+          "topic_code": "lb2",
+          "topic_title": "Einheit und Vielfalt in Europa"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "geographie",
+          "topic_code": "lb2",
+          "topic_title": "Einheit und Vielfalt in Europa"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M803NQ6KRNH5RR0V186P9KTC",
+          "slug": "geo7-eu-binnenmarkt-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Welche Freiheit des EU-Binnenmarkts steht beim Handel mit Schuhen im Vordergrund?",
+          "concept": "Freier Warenverkehr.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-7/#lesson=eu-binnenmarkt",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Freier Warenverkehr.",
+              "Freier Dienstleistungsverkehr."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M803NQ6KRMYCT2E9Q3FDCYC7",
+          "slug": "geo7-eu-binnenmarkt-erklaren",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche vier Freiheiten gehören zum EU-Binnenmarkt?",
+          "concept": "Freier Verkehr von Waren, Personen, Dienstleistungen und Kapital.",
+          "sample_solution": "Freier Verkehr von Waren, Personen, Dienstleistungen und Kapital.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-7/#lesson=eu-binnenmarkt"
+        }
+      ]
+    },
+    {
+      "id": "01M803NQ6KKTJAQ874AMNB9TTA",
+      "atom_uri": "urn:zam:atom:01M803NQ6KKTJAQ874AMNB9TTA",
+      "namespace": "zam-academy-geographie-gymnasium-7",
+      "slug": "geo7-kultur-migration",
+      "title": "Sprachen, Lebensweisen und Migration",
+      "domain": "geographie/lb2",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/geographie-gymnasium-7/#lesson=kultur-migration",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-gymnasium-7",
+          "topic_code": "lb2",
+          "topic_title": "Einheit und Vielfalt in Europa"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "geographie",
+          "topic_code": "lb2",
+          "topic_title": "Einheit und Vielfalt in Europa"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M803NQ6K78EP531FZ5AH1T3H",
+          "slug": "geo7-kultur-migration-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Wie vergleichst du Lebensweisen in zwei Regionen fair?",
+          "concept": "Anhand konkreter Lebenssituationen und vergleichbarer Kriterien.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-7/#lesson=kultur-migration",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Anhand konkreter Lebenssituationen und vergleichbarer Kriterien.",
+              "Indem du von jeweils einer Person auf das ganze Land schließt."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M803NQ6K4CNF638VVQ37CRPM",
+          "slug": "geo7-kultur-migration-erklaren",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Nenne je eine mögliche Folge von Arbeitsmigration für Herkunfts- und Zielort.",
+          "concept": "Am Herkunftsort kann eine Arbeitskraft fehlen. Der Zielort kann eine Arbeitskraft mit neuen Erfahrungen gewinnen.",
+          "sample_solution": "Am Herkunftsort kann eine Arbeitskraft fehlen. Der Zielort kann eine Arbeitskraft mit neuen Erfahrungen gewinnen.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-7/#lesson=kultur-migration"
+        }
+      ]
+    },
+    {
+      "id": "01M803NQ6KMD3CN5MJZ2Z9XRGX",
+      "atom_uri": "urn:zam:atom:01M803NQ6KMD3CN5MJZ2Z9XRGX",
+      "namespace": "zam-academy-geographie-gymnasium-7",
+      "slug": "geo7-europa-naturraume",
+      "title": "Europas Lage und Großlandschaften",
+      "domain": "geographie/lb3",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/geographie-gymnasium-7/#lesson=europa-naturraume",
+      "prerequisites": [
+        {
+          "atom_id": "01M803NQ6KM9BPRRG8JJ85BCMD",
+          "type": "soft",
+          "rationale": "Das Thema „Staaten und Teilräume Europas“ liefert Grundlagen für diese Lektion."
+        },
+        {
+          "atom_id": "01M803NQ6K9AFJKJSSGW1MHY0A",
+          "type": "soft",
+          "rationale": "Das Thema „Karten lesen und skizzieren“ liefert Grundlagen für diese Lektion."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-gymnasium-7",
+          "topic_code": "lb3",
+          "topic_title": "Naturgeographie Europas im Überblick"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "geographie",
+          "topic_code": "lb3",
+          "topic_title": "Naturgeographie Europas im Überblick"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M803NQ6KDG3FZGRVCBXEDP4B",
+          "slug": "geo7-europa-naturraume-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Welches Gebirge gilt als Teil der östlichen Grenze Europas zu Asien?",
+          "concept": "Das Uralgebirge.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-7/#lesson=europa-naturraume",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Das Uralgebirge.",
+              "Die Karpaten."
+            ],
+            "correct_index": 0
+          },
+          "replaces": [
+            "01K4YG6E000000000000000J01"
+          ]
+        },
+        {
+          "id": "01M803NQ6KPAXKF7KJ8W3BB41Z",
+          "slug": "geo7-europa-naturraume-erklaren",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Nenne ein Gebirge und eine Ebene in Europa und beschreibe ihre Lage.",
+          "concept": "Die Alpen liegen in Mittel- und im nördlichen Südeuropa. Die Osteuropäische Ebene erstreckt sich weit im Osten Europas.",
+          "sample_solution": "Die Alpen liegen in Mittel- und im nördlichen Südeuropa. Die Osteuropäische Ebene erstreckt sich weit im Osten Europas.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-7/#lesson=europa-naturraume"
+        }
+      ]
+    },
+    {
+      "id": "01M803NQ6K9MA2MQT71DXB8MEY",
+      "atom_uri": "urn:zam:atom:01M803NQ6K9MA2MQT71DXB8MEY",
+      "namespace": "zam-academy-geographie-gymnasium-7",
+      "slug": "geo7-klima-vergleichen",
+      "title": "Europas Klima im Vergleich",
+      "domain": "geographie/lb3",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/geographie-gymnasium-7/#lesson=klima-vergleichen",
+      "prerequisites": [
+        {
+          "atom_id": "01M803NQ6KZCV7GDC5B13P2DQJ",
+          "type": "soft",
+          "rationale": "Das Thema „Diagramme und Statistiken lesen“ liefert Grundlagen für diese Lektion."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-gymnasium-7",
+          "topic_code": "lb3",
+          "topic_title": "Naturgeographie Europas im Überblick"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "geographie",
+          "topic_code": "lb3",
+          "topic_title": "Naturgeographie Europas im Überblick"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M803NQ6KCXP1GETNGV1FGCB6",
+          "slug": "geo7-klima-vergleichen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Welche atlantische Strömung setzt das Golfstromsystem in Richtung Nordwesteuropa fort?",
+          "concept": "Der Nordatlantikstrom.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-7/#lesson=klima-vergleichen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Nordatlantikstrom.",
+              "Der Kanarenstrom."
+            ],
+            "correct_index": 0
+          },
+          "replaces": [
+            "01K4G7P0000000000000000J03"
+          ]
+        },
+        {
+          "id": "01M803NQ6KZNHXFV7FJ8SN7R8D",
+          "slug": "geo7-klima-vergleichen-erklaren",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie erkennst du bei zwei Klimadiagrammen auf ähnlicher Breite den stärkeren Meereseinfluss?",
+          "concept": "Typisch ist die kleinere Spanne zwischen wärmstem und kältestem Monatsmittel. Das Meer speichert Wärme und dämpft die Schwankung.",
+          "sample_solution": "Typisch ist die kleinere Spanne zwischen wärmstem und kältestem Monatsmittel. Das Meer speichert Wärme und dämpft die Schwankung.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-7/#lesson=klima-vergleichen"
+        }
+      ]
+    },
+    {
+      "id": "01M803NQ6KE4XGQM6FGAWCEHN7",
+      "atom_uri": "urn:zam:atom:01M803NQ6KE4XGQM6FGAWCEHN7",
+      "namespace": "zam-academy-geographie-gymnasium-7",
+      "slug": "geo7-vegetation-und-wasser",
+      "title": "Klima, Boden und Vegetation",
+      "domain": "geographie/lb3",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/geographie-gymnasium-7/#lesson=vegetation-und-wasser",
+      "prerequisites": [
+        {
+          "atom_id": "01M803NQ6K9MA2MQT71DXB8MEY",
+          "type": "soft",
+          "rationale": "Das Thema „Europas Klima im Vergleich“ liefert Grundlagen für diese Lektion."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-gymnasium-7",
+          "topic_code": "lb3",
+          "topic_title": "Naturgeographie Europas im Überblick"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "geographie",
+          "topic_code": "lb3",
+          "topic_title": "Naturgeographie Europas im Überblick"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M803NQ6K51QSSVBJXEEDSWMJ",
+          "slug": "geo7-vegetation-und-wasser-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Auf welcher Seite eines Gebirges ist Steigungsregen am ehesten zu erwarten?",
+          "concept": "Auf der dem feuchten Wind zugewandten Seite.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-7/#lesson=vegetation-und-wasser",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Auf der dem feuchten Wind zugewandten Seite.",
+              "Auf der windabgewandten Seite."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M803NQ6KX47HZZBPMAPFMZSP",
+          "slug": "geo7-vegetation-und-wasser-erklaren",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum kann Vegetation in zwei Gebieten mit ähnlichen Temperaturen unterschiedlich sein?",
+          "concept": "Niederschlag und Wasserspeicherung im Boden können verschieden sein. Beides beeinflusst die Menge an Wasser, die Pflanzen nutzen können.",
+          "sample_solution": "Niederschlag und Wasserspeicherung im Boden können verschieden sein. Beides beeinflusst die Menge an Wasser, die Pflanzen nutzen können.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-7/#lesson=vegetation-und-wasser"
+        }
+      ]
+    },
+    {
+      "id": "01M803NQ6KCPC6Q2AX54J71XCB",
+      "atom_uri": "urn:zam:atom:01M803NQ6KCPC6Q2AX54J71XCB",
+      "namespace": "zam-academy-geographie-gymnasium-7",
+      "slug": "geo7-plattengrenzen",
+      "title": "Plattengrenzen, Vulkanismus und Erdbeben",
+      "domain": "geographie/lb3",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/geographie-gymnasium-7/#lesson=plattengrenzen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-gymnasium-7",
+          "topic_code": "lb3",
+          "topic_title": "Naturgeographie Europas im Überblick"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "geographie",
+          "topic_code": "lb3",
+          "topic_title": "Naturgeographie Europas im Überblick"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M803NQ6KMB3AC305GMM1K3XH",
+          "slug": "geo7-plattengrenzen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Was bedeutet Subduktion?",
+          "concept": "Eine tektonische Platte taucht unter eine andere ab.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-7/#lesson=plattengrenzen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eine tektonische Platte taucht unter eine andere ab.",
+              "Zwei Platten bewegen sich voneinander weg."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M803NQ6K14V4W4FSYFRNTTQP",
+          "slug": "geo7-plattengrenzen-erklaren",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie unterscheidet sich die Bewegung der Platten in Island von der in einer Subduktionszone?",
+          "concept": "In Island bewegen sich die Platten an einer auseinanderlaufenden Grenze voneinander weg. In einer Subduktionszone bewegen sie sich aufeinander zu und eine Platte taucht ab.",
+          "sample_solution": "In Island bewegen sich die Platten an einer auseinanderlaufenden Grenze voneinander weg. In einer Subduktionszone bewegen sie sich aufeinander zu und eine Platte taucht ab.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-7/#lesson=plattengrenzen"
+        }
+      ]
+    },
+    {
+      "id": "01M803NQ6KJ5QCKE3EKDS6JP7G",
+      "atom_uri": "urn:zam:atom:01M803NQ6KJ5QCKE3EKDS6JP7G",
+      "namespace": "zam-academy-geographie-gymnasium-7",
+      "slug": "geo7-naturgefahren",
+      "title": "Leben mit Naturgefahren",
+      "domain": "geographie/lb3",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/geographie-gymnasium-7/#lesson=naturgefahren",
+      "prerequisites": [
+        {
+          "atom_id": "01M803NQ6KCPC6Q2AX54J71XCB",
+          "type": "soft",
+          "rationale": "Das Thema „Plattengrenzen, Vulkanismus und Erdbeben“ liefert Grundlagen für diese Lektion."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-gymnasium-7",
+          "topic_code": "lb3",
+          "topic_title": "Naturgeographie Europas im Überblick"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "geographie",
+          "topic_code": "lb3",
+          "topic_title": "Naturgeographie Europas im Überblick"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M803NQ6KMXQAV6R0XRJGW00B",
+          "slug": "geo7-naturgefahren-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Was senkt bei gleich starker Erschütterung die Verwundbarkeit von Gebäuden?",
+          "concept": "Erdbebengerechte Bauweise.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-7/#lesson=naturgefahren",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Erdbebengerechte Bauweise.",
+              "Eine größere Zahl gefährdeter Gebäude."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M803NQ6KNTEM91VD4GRSQ38E",
+          "slug": "geo7-naturgefahren-erklaren",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche drei Fragen helfen, das Risiko einer Naturgefahr zu beurteilen?",
+          "concept": "Was kann passieren? Wer oder was liegt im betroffenen Raum? Wie verwundbar sind Menschen, Gebäude und Infrastruktur?",
+          "sample_solution": "Was kann passieren? Wer oder was liegt im betroffenen Raum? Wie verwundbar sind Menschen, Gebäude und Infrastruktur?",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-7/#lesson=naturgefahren"
+        }
+      ]
+    },
+    {
+      "id": "01M803NQ6KMPBAXMW5EWX80QKA",
+      "atom_uri": "urn:zam:atom:01M803NQ6KMPBAXMW5EWX80QKA",
+      "namespace": "zam-academy-geographie-gymnasium-7",
+      "slug": "geo7-bewasserung",
+      "title": "Bewässerung und intensive Landwirtschaft",
+      "domain": "geographie/lb4",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/geographie-gymnasium-7/#lesson=bewasserung",
+      "prerequisites": [
+        {
+          "atom_id": "01M803NQ6KE4XGQM6FGAWCEHN7",
+          "type": "soft",
+          "rationale": "Das Thema „Klima, Boden und Vegetation“ liefert Grundlagen für diese Lektion."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-gymnasium-7",
+          "topic_code": "lb4",
+          "topic_title": "Ländliche Räume Europas"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "geographie",
+          "topic_code": "lb4",
+          "topic_title": "Ländliche Räume Europas"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M803NQ6KMAD3QC0HN0NWE4SY",
+          "slug": "geo7-bewasserung-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Wie kann bei sparsamerer Bewässerung je Hektar die Gesamtentnahme trotzdem steigen?",
+          "concept": "Die bewässerte Fläche wächst ausreichend stark.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-7/#lesson=bewasserung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die bewässerte Fläche wächst ausreichend stark.",
+              "Die bewässerte Fläche schrumpft bei unveränderter Kultur."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M803NQ6K3PHKMG82E6S61ZG0",
+          "slug": "geo7-bewasserung-erklaren",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Was kann mit dem Grundwasser passieren, wenn die Entnahme langfristig größer als die Neubildung ist?",
+          "concept": "Der Grundwasservorrat kann abnehmen und der Wasserspiegel sinken. In Küstennähe kann Salzwasser in den Grundwasserleiter eindringen.",
+          "sample_solution": "Der Grundwasservorrat kann abnehmen und der Wasserspiegel sinken. In Küstennähe kann Salzwasser in den Grundwasserleiter eindringen.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-7/#lesson=bewasserung"
+        }
+      ]
+    },
+    {
+      "id": "01M803NQ6KE768VD7ZKW02V2JV",
+      "atom_uri": "urn:zam:atom:01M803NQ6KE768VD7ZKW02V2JV",
+      "namespace": "zam-academy-geographie-gymnasium-7",
+      "slug": "geo7-weidewirtschaft",
+      "title": "Weidewirtschaft in ländlichen Räumen",
+      "domain": "geographie/lb4",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/geographie-gymnasium-7/#lesson=weidewirtschaft",
+      "prerequisites": [
+        {
+          "atom_id": "01M803NQ6K9MA2MQT71DXB8MEY",
+          "type": "soft",
+          "rationale": "Das Thema „Europas Klima im Vergleich“ liefert Grundlagen für diese Lektion."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-gymnasium-7",
+          "topic_code": "lb4",
+          "topic_title": "Ländliche Räume Europas"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "geographie",
+          "topic_code": "lb4",
+          "topic_title": "Ländliche Räume Europas"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M803NQ6K0PR98H4P3050FSRJ",
+          "slug": "geo7-weidewirtschaft-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Welcher Vergleich zeigt eine extensivere Weidenutzung?",
+          "concept": "Weniger Tiere je Hektar bei geringerem Betriebsmittelseinsatz.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-7/#lesson=weidewirtschaft",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Weniger Tiere je Hektar bei geringerem Betriebsmittelseinsatz.",
+              "Mehr Tiere je Hektar bei höherem Betriebsmittelseinsatz."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M803NQ6KHF9CPDNV0ZYZXS69",
+          "slug": "geo7-weidewirtschaft-erklaren",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum können gleich gute Weiden unterschiedlich gut für Milchproduktion geeignet sein?",
+          "concept": "Die Lage zur Molkerei und zu Transportwegen beeinflusst Kosten und Absatz. Auch bei ähnlichen natürlichen Bedingungen kann sich die Nutzung daher unterscheiden.",
+          "sample_solution": "Die Lage zur Molkerei und zu Transportwegen beeinflusst Kosten und Absatz. Auch bei ähnlichen natürlichen Bedingungen kann sich die Nutzung daher unterscheiden.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-7/#lesson=weidewirtschaft"
+        }
+      ]
+    },
+    {
+      "id": "01M803NQ6KXTGF8AC84441FH5Q",
+      "atom_uri": "urn:zam:atom:01M803NQ6KXTGF8AC84441FH5Q",
+      "namespace": "zam-academy-geographie-gymnasium-7",
+      "slug": "geo7-lebensmittelwahl",
+      "title": "Regional oder importiert?",
+      "domain": "geographie/lb4",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/geographie-gymnasium-7/#lesson=lebensmittelwahl",
+      "prerequisites": [
+        {
+          "atom_id": "01M803NQ6KMPBAXMW5EWX80QKA",
+          "type": "soft",
+          "rationale": "Das Thema „Bewässerung und intensive Landwirtschaft“ liefert Grundlagen für diese Lektion."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-gymnasium-7",
+          "topic_code": "lb4",
+          "topic_title": "Ländliche Räume Europas"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "geographie",
+          "topic_code": "lb4",
+          "topic_title": "Ländliche Räume Europas"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M803NQ6M8AEHJT2DK910VDYE",
+          "slug": "geo7-lebensmittelwahl-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Welcher Teil der Lebensmittelbilanz wird durch eine Gewächshausheizung unmittelbar verändert?",
+          "concept": "Die Produktion.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-7/#lesson=lebensmittelwahl",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Produktion.",
+              "Der Transport."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M803NQ6MBKKH0X2BAMQ51RZT",
+          "slug": "geo7-lebensmittelwahl-erklaren",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum reichen Transportkilometer allein für die Umweltbewertung eines Lebensmittels nicht aus?",
+          "concept": "Auch Anbau, Heizenergie, Wasserverbrauch, Transportmittel, Lagerung und Verderb verändern die Bilanz.",
+          "sample_solution": "Auch Anbau, Heizenergie, Wasserverbrauch, Transportmittel, Lagerung und Verderb verändern die Bilanz.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-7/#lesson=lebensmittelwahl"
+        }
+      ]
+    },
+    {
+      "id": "01M803NQ6KZFW5HZZWPCN6VR8Z",
+      "atom_uri": "urn:zam:atom:01M803NQ6KZFW5HZZWPCN6VR8Z",
+      "namespace": "zam-academy-geographie-gymnasium-7",
+      "slug": "geo7-periphere-raume",
+      "title": "Periphere Räume, Arbeit und Wandel",
+      "domain": "geographie/lb4",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/geographie-gymnasium-7/#lesson=periphere-raume",
+      "prerequisites": [
+        {
+          "atom_id": "01M803NQ6KKTJAQ874AMNB9TTA",
+          "type": "soft",
+          "rationale": "Das Thema „Sprachen, Lebensweisen und Migration“ liefert Grundlagen für diese Lektion."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-gymnasium-7",
+          "topic_code": "lb4",
+          "topic_title": "Ländliche Räume Europas"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "geographie",
+          "topic_code": "lb4",
+          "topic_title": "Ländliche Räume Europas"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M803NQ6M9JYC0DS0VA31VRF9",
+          "slug": "geo7-periphere-raume-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Was beschreibt eine regionale Disparität?",
+          "concept": "Einen Unterschied zwischen Regionen, etwa bei Erreichbarkeit oder Einkommen.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-7/#lesson=periphere-raume",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Einen Unterschied zwischen Regionen, etwa bei Erreichbarkeit oder Einkommen.",
+              "Einen Unterschied zwischen zwei Monaten am selben Ort."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M803NQ6MZZTMJS6XVXVV6NCX",
+          "slug": "geo7-periphere-raume-erklaren",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie kann eine abgestimmte Bus- und Bahnverbindung regionale Unterschiede verringern?",
+          "concept": "Kürzere oder verlässlichere Fahrten verbessern die Erreichbarkeit von Arbeit, Bildung und Versorgung. Der Nutzen hängt auch von Takt und Preis ab.",
+          "sample_solution": "Kürzere oder verlässlichere Fahrten verbessern die Erreichbarkeit von Arbeit, Bildung und Versorgung. Der Nutzen hängt auch von Takt und Preis ab.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-7/#lesson=periphere-raume"
+        }
+      ]
+    },
+    {
+      "id": "01M803NQ6KJJJ76NTKR2EJMZCX",
+      "atom_uri": "urn:zam:atom:01M803NQ6KJJJ76NTKR2EJMZCX",
+      "namespace": "zam-academy-geographie-gymnasium-7",
+      "slug": "geo7-metropole",
+      "title": "Eine Metropole lesen",
+      "domain": "geographie/lb5",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/geographie-gymnasium-7/#lesson=metropole",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-gymnasium-7",
+          "topic_code": "lb5",
+          "topic_title": "Metropolen und Verdichtungsräume in Europa"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "geographie",
+          "topic_code": "lb5",
+          "topic_title": "Metropolen und Verdichtungsräume in Europa"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M803NQ6MBGR8QRJVMYK0G8TV",
+          "slug": "geo7-metropole-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Woran erkennst du einen Verdichtungsraum?",
+          "concept": "Dichte Siedlung, viele Arbeitsplätze und enge Verkehrsverflechtungen.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-7/#lesson=metropole",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Dichte Siedlung, viele Arbeitsplätze und enge Verkehrsverflechtungen.",
+              "Wenige Siedlungen und kaum Verbindungen zwischen ihnen."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M803NQ6MWJ5KHWR10XCAHAJH",
+          "slug": "geo7-metropole-erklaren",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Weshalb ist der Verdichtungsraum einer Großstadt oft größer als das Stadtgebiet?",
+          "concept": "Wohn-, Arbeits- und Versorgungswege verbinden die Stadt mit Orten jenseits der Verwaltungsgrenze.",
+          "sample_solution": "Wohn-, Arbeits- und Versorgungswege verbinden die Stadt mit Orten jenseits der Verwaltungsgrenze.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-7/#lesson=metropole"
+        }
+      ]
+    },
+    {
+      "id": "01M803NQ6KN5JZ2MYZGS863VBB",
+      "atom_uri": "urn:zam:atom:01M803NQ6KN5JZ2MYZGS863VBB",
+      "namespace": "zam-academy-geographie-gymnasium-7",
+      "slug": "geo7-standortfaktoren",
+      "title": "Standortwahl für Unternehmen",
+      "domain": "geographie/lb5",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/geographie-gymnasium-7/#lesson=standortfaktoren",
+      "prerequisites": [
+        {
+          "atom_id": "01M803NQ6KJJJ76NTKR2EJMZCX",
+          "type": "soft",
+          "rationale": "Das Thema „Eine Metropole lesen“ liefert Grundlagen für diese Lektion."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-gymnasium-7",
+          "topic_code": "lb5",
+          "topic_title": "Metropolen und Verdichtungsräume in Europa"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "geographie",
+          "topic_code": "lb5",
+          "topic_title": "Metropolen und Verdichtungsräume in Europa"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M803NQ6MNWF4M977JJD9TH10",
+          "slug": "geo7-standortfaktoren-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Was ist für ein Umschlaglager meist besonders wichtig?",
+          "concept": "Anschluss an Güterverkehrswege.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-7/#lesson=standortfaktoren",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Anschluss an Güterverkehrswege.",
+              "Nähe zu einer Universität ohne geeignete Lieferwege."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M803NQ6MXNJRVCYHKV0J8RTN",
+          "slug": "geo7-standortfaktoren-erklaren",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Warum können zwei Branchen denselben Standort unterschiedlich bewerten?",
+          "concept": "Sie brauchen unterschiedliche Dinge. Ein Lager gewichtet Verkehr und Fläche stärker, ein Forschungsteam etwa Fachkräfte, Laborpartner und ein gutes Datennetz.",
+          "sample_solution": "Sie brauchen unterschiedliche Dinge. Ein Lager gewichtet Verkehr und Fläche stärker, ein Forschungsteam etwa Fachkräfte, Laborpartner und ein gutes Datennetz.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-7/#lesson=standortfaktoren"
+        }
+      ]
+    },
+    {
+      "id": "01M803NQ6KASZRA769G8VR4VQF",
+      "atom_uri": "urn:zam:atom:01M803NQ6KASZRA769G8VR4VQF",
+      "namespace": "zam-academy-geographie-gymnasium-7",
+      "slug": "geo7-europa-vernetzen",
+      "title": "Verbindungen über Grenzen planen",
+      "domain": "geographie/lb5",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/geographie-gymnasium-7/#lesson=europa-vernetzen",
+      "prerequisites": [
+        {
+          "atom_id": "01M803NQ6KJJJ76NTKR2EJMZCX",
+          "type": "soft",
+          "rationale": "Das Thema „Eine Metropole lesen“ liefert Grundlagen für diese Lektion."
+        },
+        {
+          "atom_id": "01M803NQ6KW6KGCW339GFVSZD4",
+          "type": "soft",
+          "rationale": "Das Thema „Wie Europa zusammenarbeitet“ liefert Grundlagen für diese Lektion."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-gymnasium-7",
+          "topic_code": "lb5",
+          "topic_title": "Metropolen und Verdichtungsräume in Europa"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "geographie",
+          "topic_code": "lb5",
+          "topic_title": "Metropolen und Verdichtungsräume in Europa"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M803NQ6MTA7GJGDA5THK3MTX",
+          "slug": "geo7-europa-vernetzen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Welche Angabe ergänzt die Fahrzeit, wenn du den Zugang zu einer neuen Bahnverbindung beurteilst?",
+          "concept": "Ticketpreis und Erreichbarkeit der Haltestellen.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-7/#lesson=europa-vernetzen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ticketpreis und Erreichbarkeit der Haltestellen.",
+              "Farbe des Streckenverlaufs auf der Werbekarte."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M803NQ6MWQ9YBS0PTKWXV1E0",
+          "slug": "geo7-europa-vernetzen-erklaren",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Welche drei Perspektiven brauchst du, um eine grenzüberschreitende Verkehrsverbindung zu bewerten?",
+          "concept": "Prüfe wirtschaftliche Folgen wie Handel, soziale Folgen wie den Zugang sowie ökologische Folgen wie Flächenbedarf und Eingriffe in Lebensräume.",
+          "sample_solution": "Prüfe wirtschaftliche Folgen wie Handel, soziale Folgen wie den Zugang sowie ökologische Folgen wie Flächenbedarf und Eingriffe in Lebensräume.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-7/#lesson=europa-vernetzen"
+        }
+      ]
+    },
+    {
+      "id": "01M803NQ6KF8JS8H2JCDQ41MCB",
+      "atom_uri": "urn:zam:atom:01M803NQ6KF8JS8H2JCDQ41MCB",
+      "namespace": "zam-academy-geographie-gymnasium-7",
+      "slug": "geo7-meere-kuestenformen",
+      "title": "Europas Meere und Küstenformen",
+      "domain": "geographie/lb6",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/geographie-gymnasium-7/#lesson=meere-kuestenformen",
+      "prerequisites": [],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-gymnasium-7",
+          "topic_code": "lb6",
+          "topic_title": "Meere und Küsten Europas"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "geographie",
+          "topic_code": "lb6",
+          "topic_title": "Meere und Küsten Europas"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M803NQ6MG41YWSXQC8QG995H",
+          "slug": "geo7-meere-kuestenformen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Wie entstanden die tiefen Meeresbuchten an Norwegens Fjordküste?",
+          "concept": "Meerwasser überflutete Täler, die Gletscher geformt hatten.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-7/#lesson=meere-kuestenformen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Meerwasser überflutete Täler, die Gletscher geformt hatten.",
+              "Wind schuf die tiefen Buchten durch Ablagerung von Sand."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M803NQ6MP9QXHV55V4ASARQS",
+          "slug": "geo7-meere-kuestenformen-erklaren",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie unterscheiden sich Nordsee und Ostsee beim Wasseraustausch mit dem Atlantik?",
+          "concept": "Die Nordsee ist breit mit dem Atlantik verbunden. Der Austausch der Ostsee mit der Nordsee ist durch engere Meerengen begrenzt.",
+          "sample_solution": "Die Nordsee ist breit mit dem Atlantik verbunden. Der Austausch der Ostsee mit der Nordsee ist durch engere Meerengen begrenzt.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-7/#lesson=meere-kuestenformen"
+        }
+      ]
+    },
+    {
+      "id": "01M803NQ6KSY6F4WPZ67K07DJS",
+      "atom_uri": "urn:zam:atom:01M803NQ6KSY6F4WPZ67K07DJS",
+      "namespace": "zam-academy-geographie-gymnasium-7",
+      "slug": "geo7-hafen-hinterland",
+      "title": "Häfen als Knoten des Handels",
+      "domain": "geographie/lb6",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/geographie-gymnasium-7/#lesson=hafen-hinterland",
+      "prerequisites": [
+        {
+          "atom_id": "01M803NQ6K9AFJKJSSGW1MHY0A",
+          "type": "soft",
+          "rationale": "Das Thema „Karten lesen und skizzieren“ liefert Grundlagen für diese Lektion."
+        },
+        {
+          "atom_id": "01M803NQ6KF8JS8H2JCDQ41MCB",
+          "type": "soft",
+          "rationale": "Das Thema „Europas Meere und Küstenformen“ liefert Grundlagen für diese Lektion."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-gymnasium-7",
+          "topic_code": "lb6",
+          "topic_title": "Meere und Küsten Europas"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "geographie",
+          "topic_code": "lb6",
+          "topic_title": "Meere und Küsten Europas"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M803NQ6MM2NGJ900S3QJ3MW5",
+          "slug": "geo7-hafen-hinterland-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Wie heißt das Einzugsgebiet, das über einen Seehafen versorgt wird?",
+          "concept": "Hinterland.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-7/#lesson=hafen-hinterland",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Hinterland.",
+              "Gezeitenzone."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M803NQ6MNGZWYBHPCC2YP013",
+          "slug": "geo7-hafen-hinterland-erklaren",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie verbindet ein Seehafen die Seeschifffahrt mit Land und Binnengewässern?",
+          "concept": "Im Hafen werden Güter umgeschlagen. Sie können beispielsweise vom Seeschiff auf Bahn, Lkw oder Binnenschiff wechseln.",
+          "sample_solution": "Im Hafen werden Güter umgeschlagen. Sie können beispielsweise vom Seeschiff auf Bahn, Lkw oder Binnenschiff wechseln.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-7/#lesson=hafen-hinterland"
+        }
+      ]
+    },
+    {
+      "id": "01M803NQ6KSCYVQQYFQ6ETWG4V",
+      "atom_uri": "urn:zam:atom:01M803NQ6KSCYVQQYFQ6ETWG4V",
+      "namespace": "zam-academy-geographie-gymnasium-7",
+      "slug": "geo7-meer-nutzen",
+      "title": "Fischerei, Rohstoffe und Küstentourismus",
+      "domain": "geographie/lb6",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/geographie-gymnasium-7/#lesson=meer-nutzen",
+      "prerequisites": [
+        {
+          "atom_id": "01M803NQ6KF8JS8H2JCDQ41MCB",
+          "type": "soft",
+          "rationale": "Das Thema „Europas Meere und Küstenformen“ liefert Grundlagen für diese Lektion."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-gymnasium-7",
+          "topic_code": "lb6",
+          "topic_title": "Meere und Küsten Europas"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "geographie",
+          "topic_code": "lb6",
+          "topic_title": "Meere und Küsten Europas"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M803NQ6M33S8S7MKW7KWXAZC",
+          "slug": "geo7-meer-nutzen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Was unterscheidet Aquakultur von Fischerei?",
+          "concept": "Aquakultur züchtet Wasserorganismen, Fischerei fängt wild lebende Tiere.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-7/#lesson=meer-nutzen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Aquakultur züchtet Wasserorganismen, Fischerei fängt wild lebende Tiere.",
+              "Aquakultur fängt wild lebende Tiere, Fischerei züchtet sie."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M803NQ6M8K57P9HMNNCTZ9HS",
+          "slug": "geo7-meer-nutzen-erklaren",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Nenne bei einer touristisch genutzten Küste einen möglichen wirtschaftlichen Nutzen und eine mögliche Belastung.",
+          "concept": "Tourismus kann Arbeit und Einnahmen bringen. Er kann auch Wasserverbrauch, Müll und Verkehr erhöhen.",
+          "sample_solution": "Tourismus kann Arbeit und Einnahmen bringen. Er kann auch Wasserverbrauch, Müll und Verkehr erhöhen.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-7/#lesson=meer-nutzen"
+        }
+      ]
+    },
+    {
+      "id": "01M803NQ6K8VBZ60FT4GQQ80FS",
+      "atom_uri": "urn:zam:atom:01M803NQ6K8VBZ60FT4GQQ80FS",
+      "namespace": "zam-academy-geographie-gymnasium-7",
+      "slug": "geo7-watt-schuetzen",
+      "title": "Das Wattenmeer beobachten und schützen",
+      "domain": "geographie/lb6",
+      "reduction": "classical",
+      "typical_age_min": 12,
+      "source_link": "https://academy.zam-os.org/geographie-gymnasium-7/#lesson=watt-schuetzen",
+      "prerequisites": [
+        {
+          "atom_id": "01M803NQ6KF8JS8H2JCDQ41MCB",
+          "type": "soft",
+          "rationale": "Das Thema „Europas Meere und Küstenformen“ liefert Grundlagen für diese Lektion."
+        },
+        {
+          "atom_id": "01M803NQ6KSCYVQQYFQ6ETWG4V",
+          "type": "soft",
+          "rationale": "Das Thema „Fischerei, Rohstoffe und Küstentourismus“ liefert Grundlagen für diese Lektion."
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "zam-academy",
+          "subject": "geographie-gymnasium-7",
+          "topic_code": "lb6",
+          "topic_title": "Meere und Küsten Europas"
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "geographie",
+          "topic_code": "lb6",
+          "topic_title": "Meere und Küsten Europas"
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01M803NQ6MSCJ9K8PRWVVDTRWQ",
+          "slug": "geo7-watt-schuetzen-check",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "edge_representative": true,
+          "question": "Wann fallen weite Wattflächen frei?",
+          "concept": "Bei Niedrigwasser.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-7/#lesson=watt-schuetzen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Bei Niedrigwasser.",
+              "Bei Hochwasser."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01M803NQ6MN883MG09YR7YWVYX",
+          "slug": "geo7-watt-schuetzen-erklaren",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie prüfst du, ob eine zeitweise Ruhezone die Störung von Zugvögeln verringert?",
+          "concept": "Vergleiche die Zahl der Störungen vor und nach der Einrichtung am selben Ort und bei vergleichbarer Tide, Beobachtungsdauer und Jahreszeit.",
+          "sample_solution": "Vergleiche die Zahl der Störungen vor und nach der Einrichtung am selben Ort und bei vergleichbarer Tide, Beobachtungsdauer und Jahreszeit.",
+          "source_link": "https://academy.zam-os.org/geographie-gymnasium-7/#lesson=watt-schuetzen"
+        }
+      ]
+    }
+  ]
+}

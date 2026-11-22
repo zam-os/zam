@@ -1,0 +1,4439 @@
+{
+	"$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+	"tile_id": "zam-academy:englisch-realschule-7",
+	"version": "2026.11.2",
+	"title": "Englisch 7 Realschule (ZAM Academy)",
+	"description": "Englisch 7 Realschule Bayern: 45 Lektionen zu Geschichte Großbritanniens und Irlands, Irland, Jugendkultur, Schule, Leben in den USA, Jugendliteratur, Grammatik und Arbeitstechniken mit 135 Wiederholungsfragen. Natürliches Hören, Live-Sprechen und Ganzschrift ergänzen die App.",
+	"publisher": "ZAM Academy",
+	"sources": [
+		{
+			"uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/7/englisch",
+			"label": "ISB · LehrplanPLUS Englisch 7 Realschule",
+			"checked": "2026-11-21"
+		},
+		{
+			"uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/6/englisch",
+			"label": "ISB · LehrplanPLUS Englisch 6 Realschule (Vorjahr)",
+			"checked": "2026-11-21"
+		},
+		{
+			"uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/8/englisch",
+			"label": "ISB · LehrplanPLUS Englisch 8 Realschule (Folgejahr)",
+			"checked": "2026-11-21"
+		},
+		{
+			"uri": "https://en.wikipedia.org/wiki/Celtic_Britons",
+			"label": "Celtic Britons - Wikipedia",
+			"checked": "2026-11-21"
+		},
+		{
+			"uri": "https://en.wikipedia.org/wiki/Roman_Britain",
+			"label": "Roman Britain - Wikipedia",
+			"checked": "2026-11-21"
+		},
+		{
+			"uri": "https://en.wikipedia.org/wiki/Hadrian%27s_Wall",
+			"label": "Hadrian's Wall - Wikipedia",
+			"checked": "2026-11-21"
+		},
+		{
+			"uri": "https://en.wikipedia.org/wiki/Anglo-Saxons",
+			"label": "Anglo-Saxons - Wikipedia",
+			"checked": "2026-11-21"
+		},
+		{
+			"uri": "https://www.bbc.co.uk/bitesize/topics/zxsbcdm",
+			"label": "Anglo-Saxons - KS2 History - BBC Bitesize",
+			"checked": "2026-11-21"
+		},
+		{
+			"uri": "https://en.wikipedia.org/wiki/Norman_Conquest",
+			"label": "Norman Conquest - Wikipedia",
+			"checked": "2026-11-21"
+		},
+		{
+			"uri": "https://en.wikipedia.org/wiki/Bayeux_Tapestry",
+			"label": "Bayeux Tapestry - Wikipedia",
+			"checked": "2026-11-21"
+		},
+		{
+			"uri": "https://en.wikipedia.org/wiki/Great_Famine_(Ireland)",
+			"label": "Great Famine (Ireland) - Wikipedia",
+			"checked": "2026-11-21"
+		},
+		{
+			"uri": "https://en.wikipedia.org/wiki/Irish_Americans",
+			"label": "Irish Americans - Wikipedia",
+			"checked": "2026-11-21"
+		},
+		{
+			"uri": "https://en.wikipedia.org/wiki/Ireland",
+			"label": "Ireland - Wikipedia",
+			"checked": "2026-11-21"
+		},
+		{
+			"uri": "https://en.wikipedia.org/wiki/Republic_of_Ireland",
+			"label": "Republic of Ireland - Wikipedia",
+			"checked": "2026-11-21"
+		},
+		{
+			"uri": "https://en.wikipedia.org/wiki/Northern_Ireland",
+			"label": "Northern Ireland - Wikipedia",
+			"checked": "2026-11-21"
+		},
+		{
+			"uri": "https://en.wikipedia.org/wiki/Good_Friday_Agreement",
+			"label": "Good Friday Agreement - Wikipedia",
+			"checked": "2026-11-21"
+		},
+		{
+			"uri": "https://european-union.europa.eu/principles-countries-history/eu-countries/ireland_en",
+			"label": "Ireland – EU country | European Union",
+			"checked": "2026-11-21"
+		},
+		{
+			"uri": "https://www.gov.ie/en/",
+			"label": "Government of Ireland: Welcome to gov.ie",
+			"checked": "2026-11-21"
+		},
+		{
+			"uri": "https://en.wikipedia.org/wiki/Irish_language",
+			"label": "Irish language - Wikipedia",
+			"checked": "2026-11-21"
+		},
+		{
+			"uri": "https://en.wikipedia.org/wiki/Gaelic_Athletic_Association",
+			"label": "Gaelic Athletic Association - Wikipedia",
+			"checked": "2026-11-21"
+		},
+		{
+			"uri": "https://en.wikipedia.org/wiki/Saint_Patrick%27s_Day",
+			"label": "Saint Patrick's Day - Wikipedia",
+			"checked": "2026-11-21"
+		},
+		{
+			"uri": "https://en.wikipedia.org/wiki/River_Shannon",
+			"label": "River Shannon - Wikipedia",
+			"checked": "2026-11-21"
+		},
+		{
+			"uri": "https://en.wikipedia.org/wiki/Cliffs_of_Moher",
+			"label": "Cliffs of Moher - Wikipedia",
+			"checked": "2026-11-21"
+		},
+		{
+			"uri": "https://en.wikipedia.org/wiki/Dublin",
+			"label": "Dublin - Wikipedia",
+			"checked": "2026-11-21"
+		},
+		{
+			"uri": "https://www.ireland.com/en-gb/",
+			"label": "Ireland’s official holiday and travel guide | Ireland.com",
+			"checked": "2026-11-21"
+		},
+		{
+			"uri": "https://www.discoverireland.ie/",
+			"label": "Find Yourself on a Short Break With Discover Ireland",
+			"checked": "2026-11-21"
+		},
+		{
+			"uri": "https://en.wikipedia.org/wiki/Youth_culture",
+			"label": "Youth culture - Wikipedia",
+			"checked": "2026-11-21"
+		},
+		{
+			"uri": "https://en.wikipedia.org/wiki/Hip-hop",
+			"label": "Hip-hop - Wikipedia",
+			"checked": "2026-11-21"
+		},
+		{
+			"uri": "https://en.wikipedia.org/wiki/Punk_rock",
+			"label": "Punk rock - Wikipedia",
+			"checked": "2026-11-21"
+		},
+		{
+			"uri": "https://en.wikipedia.org/wiki/Skateboarding_at_the_Summer_Olympics",
+			"label": "Skateboarding at the Summer Olympics - Wikipedia",
+			"checked": "2026-11-21"
+		},
+		{
+			"uri": "https://en.wikipedia.org/wiki/Education_in_England",
+			"label": "Education in England - Wikipedia",
+			"checked": "2026-11-21"
+		},
+		{
+			"uri": "https://en.wikipedia.org/wiki/Boarding_school",
+			"label": "Boarding school - Wikipedia",
+			"checked": "2026-11-21"
+		},
+		{
+			"uri": "https://en.wikipedia.org/wiki/Eton_College",
+			"label": "Eton College - Wikipedia",
+			"checked": "2026-11-21"
+		},
+		{
+			"uri": "https://en.wikipedia.org/wiki/Education_in_the_United_States",
+			"label": "Education in the United States - Wikipedia",
+			"checked": "2026-11-21"
+		},
+		{
+			"uri": "https://en.wikipedia.org/wiki/Sales_taxes_in_the_United_States",
+			"label": "Sales taxes in the United States - Wikipedia",
+			"checked": "2026-11-21"
+		},
+		{
+			"uri": "https://en.wikipedia.org/wiki/Independence_Day_(United_States)",
+			"label": "Independence Day (United States) - Wikipedia",
+			"checked": "2026-11-21"
+		},
+		{
+			"uri": "https://en.wikipedia.org/wiki/Hollywood",
+			"label": "Hollywood - Wikipedia",
+			"checked": "2026-11-21"
+		},
+		{
+			"uri": "https://en.wikipedia.org/wiki/Broadway_theatre",
+			"label": "Broadway theatre - Wikipedia",
+			"checked": "2026-11-21"
+		},
+		{
+			"uri": "https://en.wikipedia.org/wiki/Treasure_Island",
+			"label": "Treasure Island - Wikipedia",
+			"checked": "2026-11-21"
+		},
+		{
+			"uri": "https://en.wikipedia.org/wiki/Sherlock_Holmes",
+			"label": "Sherlock Holmes - Wikipedia",
+			"checked": "2026-11-21"
+		},
+		{
+			"uri": "https://en.wikipedia.org/wiki/Roald_Dahl",
+			"label": "Roald Dahl - Wikipedia",
+			"checked": "2026-11-21"
+		},
+		{
+			"uri": "https://en.wikipedia.org/wiki/J._K._Rowling",
+			"label": "J. K. Rowling - Wikipedia",
+			"checked": "2026-11-21"
+		},
+		{
+			"uri": "https://dictionary.cambridge.org/dictionary/learner-english/",
+			"label": "Cambridge Learner’s Dictionary: Definitions & Meanings",
+			"checked": "2026-11-21"
+		},
+		{
+			"uri": "https://www.oxfordlearnersdictionaries.com/",
+			"label": "Oxford Learner's Dictionaries",
+			"checked": "2026-11-21"
+		},
+		{
+			"uri": "https://www.bbc.co.uk/learningenglish",
+			"label": "BBC Learning English - Homepage",
+			"checked": "2026-11-21"
+		},
+		{
+			"uri": "https://www.bbc.co.uk/bitesize",
+			"label": "Home - BBC Bitesize",
+			"checked": "2026-11-21"
+		}
+	],
+	"atoms": [
+		{
+			"id": "01M7YWAG7A5XB13VTEGE6W2W86",
+			"atom_uri": "urn:zam:atom:01M7YWAG7A5XB13VTEGE6W2W86",
+			"namespace": "zam-academy-englisch-realschule-7",
+			"slug": "e7-celts",
+			"title": "The Celts: Britain and Ireland before the Romans",
+			"domain": "englisch/history",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-celts",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-7",
+					"topic_code": "history",
+					"topic_title": "Highlights of British & Irish history"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb2",
+					"topic_title": "Interkulturelle Kompetenzen",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb4",
+					"topic_title": "Methodische Kompetenzen",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7YWAG7A5XB13VTEGE6W2W9K",
+					"slug": "e7-celts-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie heißen die Priester der Kelten, die zugleich Lehrer und Richter waren?",
+					"concept": "die Druiden (Druids)",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-celts",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"die Druiden (Druids)",
+							"die Normannen (Normans)"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7YWAG7A5XB13VTEGE6W2W9M",
+					"slug": "e7-celts-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Nenne drei keltische Sprachen, die heute noch gesprochen werden.",
+					"concept": "Irisch (Irish), Schottisch-Gälisch (Scottish Gaelic) und Walisisch (Welsh)",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-celts",
+					"sample_solution": "Irisch (Irish), Schottisch-Gälisch (Scottish Gaelic) und Walisisch (Welsh)"
+				},
+				{
+					"id": "01M7YWAG7A5XB13VTEGE6W2W9N",
+					"slug": "e7-celts-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "In welcher Reihenfolge liest du einen Sachtext, wenn du erst das Thema und dann Einzelheiten brauchst?",
+					"concept": "erst reading for gist (Gesamtzusammenhang), dann reading for detail (Einzelheiten)",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-celts",
+					"sample_solution": "erst reading for gist (Gesamtzusammenhang), dann reading for detail (Einzelheiten)"
+				}
+			]
+		},
+		{
+			"id": "01M7YWAG7A5XB13VTEGE6W2W87",
+			"atom_uri": "urn:zam:atom:01M7YWAG7A5XB13VTEGE6W2W87",
+			"namespace": "zam-academy-englisch-realschule-7",
+			"slug": "e7-romans",
+			"title": "Roman Britain: Roads, baths and Hadrian's Wall",
+			"domain": "englisch/history",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-romans",
+			"prerequisites": [
+				{
+					"atom_id": "01M7YWAG7A5XB13VTEGE6W2W86",
+					"type": "soft",
+					"rationale": "Roman Britain: Roads, baths and Hadrian's Wall builds on e7-celts."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-7",
+					"topic_code": "history",
+					"topic_title": "Highlights of British & Irish history"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb2",
+					"topic_title": "Interkulturelle Kompetenzen",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb3",
+					"topic_title": "Text- und Medienkompetenzen",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7YWAG7A5XB13VTEGE6W2W9P",
+					"slug": "e7-romans-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "In welchem Jahr begann die römische Eroberung Britanniens unter Kaiser Claudius?",
+					"concept": "AD 43",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-romans",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"AD 43",
+							"AD 410"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7YWAG7A5XB13VTEGE6W2W9Q",
+					"slug": "e7-romans-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was ist der Hadrianswall und wo verläuft er?",
+					"concept": "eine römische Grenzmauer ab AD 122 quer durch Nordengland, vom Solway Firth im Westen bis zum River Tyne im Osten",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-romans",
+					"sample_solution": "eine römische Grenzmauer ab AD 122 quer durch Nordengland, vom Solway Firth im Westen bis zum River Tyne im Osten"
+				},
+				{
+					"id": "01M7YWAG7A5XB13VTEGE6W2W9R",
+					"slug": "e7-romans-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche beiden Gebiete der Britischen Inseln wurden nie römische Provinz?",
+					"concept": "Caledonia (Schottland) und Hibernia (Irland)",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-romans",
+					"sample_solution": "Caledonia (Schottland) und Hibernia (Irland)"
+				}
+			]
+		},
+		{
+			"id": "01M7YWAG7A5XB13VTEGE6W2W88",
+			"atom_uri": "urn:zam:atom:01M7YWAG7A5XB13VTEGE6W2W88",
+			"namespace": "zam-academy-englisch-realschule-7",
+			"slug": "e7-anglo-saxons",
+			"title": "Anglo-Saxons and Vikings: Where English comes from",
+			"domain": "englisch/history",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-anglo-saxons",
+			"prerequisites": [
+				{
+					"atom_id": "01M7YWAG7A5XB13VTEGE6W2W87",
+					"type": "soft",
+					"rationale": "Anglo-Saxons and Vikings: Where English comes from builds on e7-romans."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-7",
+					"topic_code": "history",
+					"topic_title": "Highlights of British & Irish history"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb2",
+					"topic_title": "Interkulturelle Kompetenzen",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7YWAG7A5XB13VTEGE6W2W9S",
+					"slug": "e7-anglo-saxons-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Von welchem Volksstamm hat England seinen Namen?",
+					"concept": "von den Angeln (Angles): Angle-land",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-anglo-saxons",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"von den Angeln (Angles): Angle-land",
+							"von den Normannen (Normans)"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7YWAG7A5XB13VTEGE6W2W9T",
+					"slug": "e7-anglo-saxons-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Woher kamen die Angeln, Sachsen und Jüten, die ab etwa 450 nach Britannien zogen?",
+					"concept": "aus dem Gebiet des heutigen Norddeutschlands und Dänemarks, über die Nordsee",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-anglo-saxons",
+					"sample_solution": "aus dem Gebiet des heutigen Norddeutschlands und Dänemarks, über die Nordsee"
+				},
+				{
+					"id": "01M7YWAG7A5XB13VTEGE6W2W9V",
+					"slug": "e7-anglo-saxons-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Warum ähneln viele englische Grundwörter wie water oder house dem Deutschen?",
+					"concept": "weil sie aus dem Old English der Angelsachsen stammen, einer germanischen Sprache wie das Deutsche",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-anglo-saxons",
+					"sample_solution": "weil sie aus dem Old English der Angelsachsen stammen, einer germanischen Sprache wie das Deutsche"
+				}
+			]
+		},
+		{
+			"id": "01M7YWAG7A5XB13VTEGE6W2W89",
+			"atom_uri": "urn:zam:atom:01M7YWAG7A5XB13VTEGE6W2W89",
+			"namespace": "zam-academy-englisch-realschule-7",
+			"slug": "e7-normans",
+			"title": "1066: The Normans conquer England",
+			"domain": "englisch/history",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-normans",
+			"prerequisites": [
+				{
+					"atom_id": "01M7YWAG7A5XB13VTEGE6W2W88",
+					"type": "soft",
+					"rationale": "1066: The Normans conquer England builds on e7-anglo-saxons."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-7",
+					"topic_code": "history",
+					"topic_title": "Highlights of British & Irish history"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb2",
+					"topic_title": "Interkulturelle Kompetenzen",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7YWAG7A5XB13VTEGE6W2W9W",
+					"slug": "e7-normans-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wer gewann am 14. Oktober 1066 die Schlacht von Hastings?",
+					"concept": "William of Normandy (William the Conqueror)",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-normans",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"William of Normandy (William the Conqueror)",
+							"Harold Godwinson"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7YWAG7A5XB13VTEGE6W2W9X",
+					"slug": "e7-normans-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was ließ William the Conqueror 1086 im Domesday Book festhalten?",
+					"concept": "eine Bestandsaufnahme von Land, Menschen und Tieren in England",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-normans",
+					"sample_solution": "eine Bestandsaufnahme von Land, Menschen und Tieren in England"
+				},
+				{
+					"id": "01M7YWAG7A5XB13VTEGE6W2W9Y",
+					"slug": "e7-normans-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Warum heißt das Tier pig, das Fleisch aber pork?",
+					"concept": "Nach 1066 sprach der normannische Adel Französisch (porc), die angelsächsischen Bauern Englisch (pig); beide Wörter blieben.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-normans",
+					"sample_solution": "Nach 1066 sprach der normannische Adel Französisch (porc), die angelsächsischen Bauern Englisch (pig); beide Wörter blieben."
+				}
+			]
+		},
+		{
+			"id": "01M7YWAG7A5XB13VTEGE6W2W8A",
+			"atom_uri": "urn:zam:atom:01M7YWAG7A5XB13VTEGE6W2W8A",
+			"namespace": "zam-academy-englisch-realschule-7",
+			"slug": "e7-famine-emigration",
+			"title": "The Great Famine: Irish emigration to the USA",
+			"domain": "englisch/history",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-famine-emigration",
+			"prerequisites": [
+				{
+					"atom_id": "01M7YWAG7A5XB13VTEGE6W2W8B",
+					"type": "soft",
+					"rationale": "The Great Famine: Irish emigration to the USA builds on e7-ireland-map."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-7",
+					"topic_code": "history",
+					"topic_title": "Highlights of British & Irish history"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb2",
+					"topic_title": "Interkulturelle Kompetenzen",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb3",
+					"topic_title": "Text- und Medienkompetenzen",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7YWAG7A5XB13VTEGE6W2W9Z",
+					"slug": "e7-famine-emigration-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was löste ab 1845 die Große Hungersnot in Irland aus?",
+					"concept": "die Kartoffelfäule (potato blight), die die Kartoffelernten vernichtete",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-famine-emigration",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"die Kartoffelfäule (potato blight), die die Kartoffelernten vernichtete",
+							"ein Krieg mit England"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VV7",
+					"slug": "e7-famine-emigration-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche Folgen hatte die Große Hungersnot (1845 bis etwa 1852) für die Bevölkerung Irlands?",
+					"concept": "Rund eine Million Menschen starben, und mehr als eine Million wanderten aus, u. a. in die USA und nach Kanada.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-famine-emigration",
+					"sample_solution": "Rund eine Million Menschen starben, und mehr als eine Million wanderten aus, u. a. in die USA und nach Kanada."
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VV8",
+					"slug": "e7-famine-emigration-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Mit welchen englischen Wörtern verknüpfst du Ursache und Folge?",
+					"concept": "because / because of (Ursache), so und that's why (Folge)",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-famine-emigration",
+					"sample_solution": "because / because of (Ursache), so und that's why (Folge)"
+				}
+			]
+		},
+		{
+			"id": "01M7YWAG7A5XB13VTEGE6W2W8B",
+			"atom_uri": "urn:zam:atom:01M7YWAG7A5XB13VTEGE6W2W8B",
+			"namespace": "zam-academy-englisch-realschule-7",
+			"slug": "e7-ireland-map",
+			"title": "One island, two states: The geography of Ireland",
+			"domain": "englisch/ireland",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-ireland-map",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-7",
+					"topic_code": "ireland",
+					"topic_title": "Ireland: Part of Europe"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb2",
+					"topic_title": "Interkulturelle Kompetenzen",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VV9",
+					"slug": "e7-ireland-map-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Zu welchem Staat gehört Nordirland?",
+					"concept": "zum Vereinigten Königreich (United Kingdom)",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-ireland-map",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"zum Vereinigten Königreich (United Kingdom)",
+							"zur Republik Irland"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VVA",
+					"slug": "e7-ireland-map-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche zwei Staaten liegen auf der Insel Irland, und wie heißen ihre Hauptstädte?",
+					"concept": "die Republik Irland (Dublin) und Nordirland (Belfast)",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-ireland-map",
+					"sample_solution": "die Republik Irland (Dublin) und Nordirland (Belfast)"
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VVB",
+					"slug": "e7-ireland-map-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie heißt der längste Fluss der Insel Irland?",
+					"concept": "der Shannon",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-ireland-map",
+					"sample_solution": "der Shannon"
+				}
+			]
+		},
+		{
+			"id": "01M7YWAG7A5XB13VTEGE6W2W8C",
+			"atom_uri": "urn:zam:atom:01M7YWAG7A5XB13VTEGE6W2W8C",
+			"namespace": "zam-academy-englisch-realschule-7",
+			"slug": "e7-ireland-culture",
+			"title": "Irish culture: Language, games and music",
+			"domain": "englisch/ireland",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-ireland-culture",
+			"prerequisites": [
+				{
+					"atom_id": "01M7YWAG7A5XB13VTEGE6W2W8B",
+					"type": "soft",
+					"rationale": "Irish culture: Language, games and music builds on e7-ireland-map."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-7",
+					"topic_code": "ireland",
+					"topic_title": "Ireland: Part of Europe"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb2",
+					"topic_title": "Interkulturelle Kompetenzen",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VVC",
+					"slug": "e7-ireland-culture-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie nennt man in Irland die alte Landessprache auf Englisch?",
+					"concept": "Irish (Gaeilge)",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-ireland-culture",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Irish (Gaeilge)",
+							"Gaelic"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VVD",
+					"slug": "e7-ireland-culture-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "An welchem Datum ist St Patrick's Day, und welches Symbol tragen viele Menschen?",
+					"concept": "am 17. März; das Kleeblatt (shamrock)",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-ireland-culture",
+					"sample_solution": "am 17. März; das Kleeblatt (shamrock)"
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VVE",
+					"slug": "e7-ireland-culture-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Nenne zwei gälische Sportarten und den Verband, der sie organisiert.",
+					"concept": "Hurling (für Frauen: Camogie) und Gaelic football; die GAA (Gaelic Athletic Association)",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-ireland-culture",
+					"sample_solution": "Hurling (für Frauen: Camogie) und Gaelic football; die GAA (Gaelic Athletic Association)"
+				}
+			]
+		},
+		{
+			"id": "01M7YWAG7A5XB13VTEGE6W2W8D",
+			"atom_uri": "urn:zam:atom:01M7YWAG7A5XB13VTEGE6W2W8D",
+			"namespace": "zam-academy-englisch-realschule-7",
+			"slug": "e7-ireland-economy",
+			"title": "From farms to tech: Working in Ireland",
+			"domain": "englisch/ireland",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-ireland-economy",
+			"prerequisites": [
+				{
+					"atom_id": "01M7YWAG7A5XB13VTEGE6W2W8B",
+					"type": "soft",
+					"rationale": "From farms to tech: Working in Ireland builds on e7-ireland-map."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-7",
+					"topic_code": "ireland",
+					"topic_title": "Ireland: Part of Europe"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb2",
+					"topic_title": "Interkulturelle Kompetenzen",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb3",
+					"topic_title": "Text- und Medienkompetenzen",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb4",
+					"topic_title": "Methodische Kompetenzen",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VVF",
+					"slug": "e7-ireland-economy-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Seit wann ist Irland Mitglied der Europäischen Gemeinschaft, der heutigen EU?",
+					"concept": "seit 1973",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-ireland-economy",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"seit 1973",
+							"seit 2020"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VVG",
+					"slug": "e7-ireland-economy-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Mit welcher Währung zahlt man in der Republik Irland, mit welcher in Nordirland?",
+					"concept": "Republik Irland: Euro; Nordirland: Pfund (pound sterling)",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-ireland-economy",
+					"sample_solution": "Republik Irland: Euro; Nordirland: Pfund (pound sterling)"
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VVH",
+					"slug": "e7-ireland-economy-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Mit welchen Redemitteln beschreibst du eine einfache Grafik auf Englisch?",
+					"concept": "The chart shows …, Most …, Only a few …, In contrast, …",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-ireland-economy",
+					"sample_solution": "The chart shows …, Most …, Only a few …, In contrast, …"
+				}
+			]
+		},
+		{
+			"id": "01M7YWAG7A5XB13VTEGE6W2W8E",
+			"atom_uri": "urn:zam:atom:01M7YWAG7A5XB13VTEGE6W2W8E",
+			"namespace": "zam-academy-englisch-realschule-7",
+			"slug": "e7-ireland-politics",
+			"title": "Politics on the island: The Republic, Northern Ireland and peace",
+			"domain": "englisch/ireland",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-ireland-politics",
+			"prerequisites": [
+				{
+					"atom_id": "01M7YWAG7A5XB13VTEGE6W2W8B",
+					"type": "soft",
+					"rationale": "Politics on the island: The Republic, Northern Ireland and peace builds on e7-ireland-map."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-7",
+					"topic_code": "ireland",
+					"topic_title": "Ireland: Part of Europe"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb2",
+					"topic_title": "Interkulturelle Kompetenzen",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VVJ",
+					"slug": "e7-ireland-politics-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie heißt der Regierungschef der Republik Irland?",
+					"concept": "der Taoiseach",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-ireland-politics",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"der Taoiseach",
+							"der President"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VVK",
+					"slug": "e7-ireland-politics-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was regelte das Good Friday Agreement vom 10. April 1998?",
+					"concept": "Es beendete weitgehend den Nordirlandkonflikt (the Troubles); beide Gemeinschaften teilen sich die Regierung Nordirlands.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-ireland-politics",
+					"sample_solution": "Es beendete weitgehend den Nordirlandkonflikt (the Troubles); beide Gemeinschaften teilen sich die Regierung Nordirlands."
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VVM",
+					"slug": "e7-ireland-politics-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wer ist Staatsoberhaupt der Republik Irland?",
+					"concept": "der Präsident oder die Präsidentin (President)",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-ireland-politics",
+					"sample_solution": "der Präsident oder die Präsidentin (President)"
+				}
+			]
+		},
+		{
+			"id": "01M7YWAG7A5XB13VTEGE6W2W8F",
+			"atom_uri": "urn:zam:atom:01M7YWAG7A5XB13VTEGE6W2W8F",
+			"namespace": "zam-academy-englisch-realschule-7",
+			"slug": "e7-dublin-directions",
+			"title": "At the tourist information centre in Dublin",
+			"domain": "englisch/ireland",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-dublin-directions",
+			"prerequisites": [
+				{
+					"atom_id": "01M7YWAG7A5XB13VTEGE6W2W8B",
+					"type": "soft",
+					"rationale": "At the tourist information centre in Dublin builds on e7-ireland-map."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-7",
+					"topic_code": "ireland",
+					"topic_title": "Ireland: Part of Europe"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb2",
+					"topic_title": "Interkulturelle Kompetenzen",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb4",
+					"topic_title": "Methodische Kompetenzen",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VVN",
+					"slug": "e7-dublin-directions-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie bittest du höflich darum, dass jemand etwas wiederholt?",
+					"concept": "Sorry, could you say that again, please?",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-dublin-directions",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Sorry, could you say that again, please?",
+							"Repeat!"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VVP",
+					"slug": "e7-dublin-directions-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie fragst du in der Touristeninformation höflich nach dem Weg zu St Stephen's Green?",
+					"concept": "Excuse me, could you tell me how to get to St Stephen's Green, please?",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-dublin-directions",
+					"sample_solution": "Excuse me, could you tell me how to get to St Stephen's Green, please?"
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VVQ",
+					"slug": "e7-dublin-directions-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie sagst du auf Englisch „Überqueren Sie die Brücke und gehen Sie geradeaus.“?",
+					"concept": "Cross the bridge and go straight on.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-dublin-directions",
+					"sample_solution": "Cross the bridge and go straight on."
+				}
+			]
+		},
+		{
+			"id": "01M7YWAG7A5XB13VTEGE6W2W8G",
+			"atom_uri": "urn:zam:atom:01M7YWAG7A5XB13VTEGE6W2W8G",
+			"namespace": "zam-academy-englisch-realschule-7",
+			"slug": "e7-ireland-brochure",
+			"title": "Mediation: A brochure about the Cliffs of Moher",
+			"domain": "englisch/ireland",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-ireland-brochure",
+			"prerequisites": [
+				{
+					"atom_id": "01M7YWAG7A5XB13VTEGE6W2W9D",
+					"type": "soft",
+					"rationale": "Mediation: A brochure about the Cliffs of Moher builds on e7-word-formation."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-7",
+					"topic_code": "ireland",
+					"topic_title": "Ireland: Part of Europe"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb4",
+					"topic_title": "Methodische Kompetenzen",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VVR",
+					"slug": "e7-ireland-brochure-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie gibst du bei einer schriftlichen Sprachmittlung einen englischen Text auf Deutsch wieder?",
+					"concept": "sinngemäß und nur das für den Adressaten Wichtige",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-ireland-brochure",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"sinngemäß und nur das für den Adressaten Wichtige",
+							"Wort für Wort übersetzt"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VVS",
+					"slug": "e7-ireland-brochure-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was bedeutet unforgettable, und wie erschließt du es?",
+					"concept": "unvergesslich: un- (nicht) + forget (vergessen) + -able (kann man)",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-ireland-brochure",
+					"sample_solution": "unvergesslich: un- (nicht) + forget (vergessen) + -able (kann man)"
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VVT",
+					"slug": "e7-ireland-brochure-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was übernimmst du bei einer Sprachmittlung immer genau?",
+					"concept": "Zahlen, Namen und wichtige Hinweise (z. B. Sicherheitsregeln)",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-ireland-brochure",
+					"sample_solution": "Zahlen, Namen und wichtige Hinweise (z. B. Sicherheitsregeln)"
+				}
+			]
+		},
+		{
+			"id": "01M7YWAG7A5XB13VTEGE6W2W8H",
+			"atom_uri": "urn:zam:atom:01M7YWAG7A5XB13VTEGE6W2W8H",
+			"namespace": "zam-academy-englisch-realschule-7",
+			"slug": "e7-youth-music-film",
+			"title": "Music, film and theatre: What are you into?",
+			"domain": "englisch/youth",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-youth-music-film",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-7",
+					"topic_code": "youth",
+					"topic_title": "Youth culture"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb3",
+					"topic_title": "Text- und Medienkompetenzen",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VVV",
+					"slug": "e7-youth-music-film-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wo entstand der Hip-Hop?",
+					"concept": "in der Bronx in New York, Anfang der 1970er-Jahre",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-youth-music-film",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"in der Bronx in New York, Anfang der 1970er-Jahre",
+							"in Liverpool in den 1960er-Jahren"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VVW",
+					"slug": "e7-youth-music-film-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie drückst du auf Englisch starke Ablehnung aus, z. B. gegenüber einer Musikrichtung?",
+					"concept": "I can't stand …",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-youth-music-film",
+					"sample_solution": "I can't stand …"
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VVX",
+					"slug": "e7-youth-music-film-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie sagst du auf Englisch „Die Musik macht mich glücklich.“?",
+					"concept": "The music makes me feel happy.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-youth-music-film",
+					"sample_solution": "The music makes me feel happy."
+				}
+			]
+		},
+		{
+			"id": "01M7YWAG7A5XB13VTEGE6W2W8J",
+			"atom_uri": "urn:zam:atom:01M7YWAG7A5XB13VTEGE6W2W8J",
+			"namespace": "zam-academy-englisch-realschule-7",
+			"slug": "e7-youth-sport-fashion",
+			"title": "Skate parks and second-hand style: Sport and fashion",
+			"domain": "englisch/youth",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-youth-sport-fashion",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-7",
+					"topic_code": "youth",
+					"topic_title": "Youth culture"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb2",
+					"topic_title": "Interkulturelle Kompetenzen",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb3",
+					"topic_title": "Text- und Medienkompetenzen",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VVY",
+					"slug": "e7-youth-sport-fashion-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie heißen trainers im amerikanischen Englisch?",
+					"concept": "sneakers",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-youth-sport-fashion",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"sneakers",
+							"boots"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VVZ",
+					"slug": "e7-youth-sport-fashion-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Seit welchen Olympischen Spielen ist Skateboarding olympisch?",
+					"concept": "seit den Spielen von Tokio 2020 (ausgetragen 2021)",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-youth-sport-fashion",
+					"sample_solution": "seit den Spielen von Tokio 2020 (ausgetragen 2021)"
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VW0",
+					"slug": "e7-youth-sport-fashion-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Mit welcher Wendung stellst du zwei Seiten einer Sache gegenüber?",
+					"concept": "On the one hand … on the other hand …",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-youth-sport-fashion",
+					"sample_solution": "On the one hand … on the other hand …"
+				}
+			]
+		},
+		{
+			"id": "01M7YWAG7A5XB13VTEGE6W2W8K",
+			"atom_uri": "urn:zam:atom:01M7YWAG7A5XB13VTEGE6W2W8K",
+			"namespace": "zam-academy-englisch-realschule-7",
+			"slug": "e7-youth-interview",
+			"title": "Listening: An interview with a young Irish musician",
+			"domain": "englisch/youth",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-youth-interview",
+			"prerequisites": [
+				{
+					"atom_id": "01M7YWAG7A5XB13VTEGE6W2W8H",
+					"type": "soft",
+					"rationale": "Listening: An interview with a young Irish musician builds on e7-youth-music-film."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-7",
+					"topic_code": "youth",
+					"topic_title": "Youth culture"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb2",
+					"topic_title": "Interkulturelle Kompetenzen",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb4",
+					"topic_title": "Methodische Kompetenzen",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VW1",
+					"slug": "e7-youth-interview-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Worauf achtest du beim ersten Hören eines längeren Interviews?",
+					"concept": "auf Thema und Personen (listening for gist)",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-youth-interview",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"auf Thema und Personen (listening for gist)",
+							"auf jedes einzelne Wort"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VW2",
+					"slug": "e7-youth-interview-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "An welchen Signalwörtern erkennst du in einem Hörtext eine Meinung?",
+					"concept": "I think …, I believe …, For me …, The best thing is …, What I don't like is …",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-youth-interview",
+					"sample_solution": "I think …, I believe …, For me …, The best thing is …, What I don't like is …"
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VW3",
+					"slug": "e7-youth-interview-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie notierst du Informationen beim Hören?",
+					"concept": "nur mit Stichwörtern (key words), nicht in ganzen Sätzen",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-youth-interview",
+					"sample_solution": "nur mit Stichwörtern (key words), nicht in ganzen Sätzen"
+				}
+			]
+		},
+		{
+			"id": "01M7YWAG7A5XB13VTEGE6W2W8M",
+			"atom_uri": "urn:zam:atom:01M7YWAG7A5XB13VTEGE6W2W8M",
+			"namespace": "zam-academy-englisch-realschule-7",
+			"slug": "e7-short-talk",
+			"title": "Giving a short talk on youth culture",
+			"domain": "englisch/youth",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-short-talk",
+			"prerequisites": [
+				{
+					"atom_id": "01M7YWAG7A5XB13VTEGE6W2W8H",
+					"type": "soft",
+					"rationale": "Giving a short talk on youth culture builds on e7-youth-music-film."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-7",
+					"topic_code": "youth",
+					"topic_title": "Youth culture"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb4",
+					"topic_title": "Methodische Kompetenzen",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VW4",
+					"slug": "e7-short-talk-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Mit welchem Satz beginnst du einen short talk?",
+					"concept": "Today I'm going to talk about …",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-short-talk",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Today I'm going to talk about …",
+							"To sum up, …"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VW5",
+					"slug": "e7-short-talk-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was schreibst du auf eine Stichwortkarte (cue card) für einen short talk?",
+					"concept": "nur Schlüsselwörter, keine ganzen Sätze",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-short-talk",
+					"sample_solution": "nur Schlüsselwörter, keine ganzen Sätze"
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VW6",
+					"slug": "e7-short-talk-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Mit welchen Sätzen beendest du einen short talk?",
+					"concept": "To sum up, … Thank you for listening. Do you have any questions?",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-short-talk",
+					"sample_solution": "To sum up, … Thank you for listening. Do you have any questions?"
+				}
+			]
+		},
+		{
+			"id": "01M7YWAG7A5XB13VTEGE6W2W8N",
+			"atom_uri": "urn:zam:atom:01M7YWAG7A5XB13VTEGE6W2W8N",
+			"namespace": "zam-academy-englisch-realschule-7",
+			"slug": "e7-school-types",
+			"title": "State, private or boarding school?",
+			"domain": "englisch/school",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-school-types",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-7",
+					"topic_code": "school",
+					"topic_title": "School life"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb2",
+					"topic_title": "Interkulturelle Kompetenzen",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VW7",
+					"slug": "e7-school-types-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was ist eine public school in England?",
+					"concept": "eine teure Privatschule mit Schulgeld (z. B. Eton)",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-school-types",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"eine teure Privatschule mit Schulgeld (z. B. Eton)",
+							"eine kostenlose staatliche Schule"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VW8",
+					"slug": "e7-school-types-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie heißt die kostenlose staatliche Schule in England und wie in den USA?",
+					"concept": "England: state school; USA: public school",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-school-types",
+					"sample_solution": "England: state school; USA: public school"
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VW9",
+					"slug": "e7-school-types-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was ist eine boarding school?",
+					"concept": "ein Internat: Die Schülerinnen und Schüler wohnen während der Schulzeit (term) an der Schule.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-school-types",
+					"sample_solution": "ein Internat: Die Schülerinnen und Schüler wohnen während der Schulzeit (term) an der Schule."
+				}
+			]
+		},
+		{
+			"id": "01M7YWAG7A5XB13VTEGE6W2W8P",
+			"atom_uri": "urn:zam:atom:01M7YWAG7A5XB13VTEGE6W2W8P",
+			"namespace": "zam-academy-englisch-realschule-7",
+			"slug": "e7-school-diversity",
+			"title": "Many languages, one class: Diversity at school",
+			"domain": "englisch/school",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-school-diversity",
+			"prerequisites": [
+				{
+					"atom_id": "01M7YWAG7A5XB13VTEGE6W2W8N",
+					"type": "soft",
+					"rationale": "Many languages, one class: Diversity at school builds on e7-school-types."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-7",
+					"topic_code": "school",
+					"topic_title": "School life"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb2",
+					"topic_title": "Interkulturelle Kompetenzen",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb3",
+					"topic_title": "Text- und Medienkompetenzen",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VWA",
+					"slug": "e7-school-diversity-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was bedeutet diversity im Schulalltag?",
+					"concept": "Vielfalt, z. B. Kinder mit Familien aus vielen Ländern und Sprachen",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-school-diversity",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Vielfalt, z. B. Kinder mit Familien aus vielen Ländern und Sprachen",
+							"Schuluniform"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VWB",
+					"slug": "e7-school-diversity-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie reagierst du respektvoll, wenn dir ein Brauch einer Mitschülerin fremd ist?",
+					"concept": "mit einer offenen Frage statt eines Urteils, z. B. What do you usually do at Eid?",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-school-diversity",
+					"sample_solution": "mit einer offenen Frage statt eines Urteils, z. B. What do you usually do at Eid?"
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VWC",
+					"slug": "e7-school-diversity-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie fragst du auf Englisch, wie man auf Polnisch Hallo sagt?",
+					"concept": "How do you say hello in Polish?",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-school-diversity",
+					"sample_solution": "How do you say hello in Polish?"
+				}
+			]
+		},
+		{
+			"id": "01M7YWAG7A5XB13VTEGE6W2W8Q",
+			"atom_uri": "urn:zam:atom:01M7YWAG7A5XB13VTEGE6W2W8Q",
+			"namespace": "zam-academy-englisch-realschule-7",
+			"slug": "e7-usa-family",
+			"title": "Home and family life in the USA",
+			"domain": "englisch/usa",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-usa-family",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-7",
+					"topic_code": "usa",
+					"topic_title": "Life in the USA"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb2",
+					"topic_title": "Interkulturelle Kompetenzen",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VWD",
+					"slug": "e7-usa-family-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie heißt Taschengeld im amerikanischen Englisch?",
+					"concept": "allowance",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-usa-family",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"allowance",
+							"pocket money"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VWE",
+					"slug": "e7-usa-family-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was sind chores?",
+					"concept": "Aufgaben im Haushalt, z. B. mow the lawn oder take out the trash",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-usa-family",
+					"sample_solution": "Aufgaben im Haushalt, z. B. mow the lawn oder take out the trash"
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VWF",
+					"slug": "e7-usa-family-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie heißen flat und rubbish im amerikanischen Englisch?",
+					"concept": "apartment und trash",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-usa-family",
+					"sample_solution": "apartment und trash"
+				}
+			]
+		},
+		{
+			"id": "01M7YWAG7A5XB13VTEGE6W2W8R",
+			"atom_uri": "urn:zam:atom:01M7YWAG7A5XB13VTEGE6W2W8R",
+			"namespace": "zam-academy-englisch-realschule-7",
+			"slug": "e7-usa-holidays-food",
+			"title": "Fireworks, pumpkins and pancakes: Holidays and food",
+			"domain": "englisch/usa",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-usa-holidays-food",
+			"prerequisites": [
+				{
+					"atom_id": "01M7YWAG7A5XB13VTEGE6W2W8Q",
+					"type": "soft",
+					"rationale": "Fireworks, pumpkins and pancakes: Holidays and food builds on e7-usa-family."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-7",
+					"topic_code": "usa",
+					"topic_title": "Life in the USA"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb2",
+					"topic_title": "Interkulturelle Kompetenzen",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VWG",
+					"slug": "e7-usa-holidays-food-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was feiern die USA am Fourth of July?",
+					"concept": "die Unabhängigkeitserklärung von 1776 (Independence Day)",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-usa-holidays-food",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"die Unabhängigkeitserklärung von 1776 (Independence Day)",
+							"das Ende des Bürgerkriegs"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VWH",
+					"slug": "e7-usa-holidays-food-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was ist ein potluck?",
+					"concept": "ein Essen, zu dem jeder Gast ein Gericht mitbringt",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-usa-holidays-food",
+					"sample_solution": "ein Essen, zu dem jeder Gast ein Gericht mitbringt"
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VWJ",
+					"slug": "e7-usa-holidays-food-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was rufen Kinder an Halloween an der Haustür?",
+					"concept": "Trick or treat!",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-usa-holidays-food",
+					"sample_solution": "Trick or treat!"
+				}
+			]
+		},
+		{
+			"id": "01M7YWAG7A5XB13VTEGE6W2W8S",
+			"atom_uri": "urn:zam:atom:01M7YWAG7A5XB13VTEGE6W2W8S",
+			"namespace": "zam-academy-englisch-realschule-7",
+			"slug": "e7-usa-shopping",
+			"title": "Shopping at the mall: Prices, tax and sizes",
+			"domain": "englisch/usa",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-usa-shopping",
+			"prerequisites": [
+				{
+					"atom_id": "01M7YWAG7A5XB13VTEGE6W2W8Q",
+					"type": "soft",
+					"rationale": "Shopping at the mall: Prices, tax and sizes builds on e7-usa-family."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-7",
+					"topic_code": "usa",
+					"topic_title": "Life in the USA"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb2",
+					"topic_title": "Interkulturelle Kompetenzen",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VWK",
+					"slug": "e7-usa-shopping-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wann kommt in den USA die sales tax zum Preis dazu?",
+					"concept": "erst an der Kasse; der Preis auf dem Schild ist meist ohne Steuer",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-usa-shopping",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"erst an der Kasse; der Preis auf dem Schild ist meist ohne Steuer",
+							"sie ist immer schon im Schildpreis enthalten"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VWM",
+					"slug": "e7-usa-shopping-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie fragst du in einem Laden, ob es ein Kleidungsstück in Größe M gibt?",
+					"concept": "Do you have this in a medium?",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-usa-shopping",
+					"sample_solution": "Do you have this in a medium?"
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VWN",
+					"slug": "e7-usa-shopping-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Ein Hoodie kostet laut Schild 40 Dollar, die sales tax beträgt 7 %. Was zahlst du an der Kasse?",
+					"concept": "42,80 Dollar (40 Dollar + 2,80 Dollar Steuer)",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-usa-shopping",
+					"sample_solution": "42,80 Dollar (40 Dollar + 2,80 Dollar Steuer)"
+				}
+			]
+		},
+		{
+			"id": "01M7YWAG7A5XB13VTEGE6W2W8T",
+			"atom_uri": "urn:zam:atom:01M7YWAG7A5XB13VTEGE6W2W8T",
+			"namespace": "zam-academy-englisch-realschule-7",
+			"slug": "e7-usa-entertainment",
+			"title": "Hollywood, Broadway and big games: Entertainment and sports",
+			"domain": "englisch/usa",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-usa-entertainment",
+			"prerequisites": [
+				{
+					"atom_id": "01M7YWAG7A5XB13VTEGE6W2W8Q",
+					"type": "soft",
+					"rationale": "Hollywood, Broadway and big games: Entertainment and sports builds on e7-usa-family."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-7",
+					"topic_code": "usa",
+					"topic_title": "Life in the USA"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb2",
+					"topic_title": "Interkulturelle Kompetenzen",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb3",
+					"topic_title": "Text- und Medienkompetenzen",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VWP",
+					"slug": "e7-usa-entertainment-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "In welcher Stadt liegt Hollywood?",
+					"concept": "in Los Angeles",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-usa-entertainment",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"in Los Angeles",
+							"in New York"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VWQ",
+					"slug": "e7-usa-entertainment-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wofür stehen Broadway und Nashville?",
+					"concept": "Broadway (New York): Musicals und Theater; Nashville (Tennessee): Countrymusik",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-usa-entertainment",
+					"sample_solution": "Broadway (New York): Musicals und Theater; Nashville (Tennessee): Countrymusik"
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VWR",
+					"slug": "e7-usa-entertainment-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie heißt das Finale der American-Football-Saison?",
+					"concept": "der Super Bowl",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-usa-entertainment",
+					"sample_solution": "der Super Bowl"
+				}
+			]
+		},
+		{
+			"id": "01M7YWAG7A5XB13VTEGE6W2W8V",
+			"atom_uri": "urn:zam:atom:01M7YWAG7A5XB13VTEGE6W2W8V",
+			"namespace": "zam-academy-englisch-realschule-7",
+			"slug": "e7-lit-treasure-island",
+			"title": "Treasure Island: Reading an adventure classic",
+			"domain": "englisch/literature",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-lit-treasure-island",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-7",
+					"topic_code": "literature",
+					"topic_title": "Teen literature"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb3",
+					"topic_title": "Text- und Medienkompetenzen",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb4",
+					"topic_title": "Methodische Kompetenzen",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VWS",
+					"slug": "e7-lit-treasure-island-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wer schrieb Treasure Island (1883)?",
+					"concept": "Robert Louis Stevenson",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-lit-treasure-island",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Robert Louis Stevenson",
+							"Arthur Conan Doyle"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VWT",
+					"slug": "e7-lit-treasure-island-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was machst du beim extensiven Lesen mit einem unbekannten Wort, das für die Handlung unwichtig ist?",
+					"concept": "Ich überspringe es (skip).",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-lit-treasure-island",
+					"sample_solution": "Ich überspringe es (skip)."
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VWV",
+					"slug": "e7-lit-treasure-island-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie heißen der junge Erzähler und der einbeinige Schiffskoch in Treasure Island?",
+					"concept": "Jim Hawkins und Long John Silver",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-lit-treasure-island",
+					"sample_solution": "Jim Hawkins und Long John Silver"
+				}
+			]
+		},
+		{
+			"id": "01M7YWAG7A5XB13VTEGE6W2W8W",
+			"atom_uri": "urn:zam:atom:01M7YWAG7A5XB13VTEGE6W2W8W",
+			"namespace": "zam-academy-englisch-realschule-7",
+			"slug": "e7-lit-sherlock",
+			"title": "Sherlock Holmes: A detective story",
+			"domain": "englisch/literature",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-lit-sherlock",
+			"prerequisites": [
+				{
+					"atom_id": "01M7YWAG7A5XB13VTEGE6W2W95",
+					"type": "soft",
+					"rationale": "Sherlock Holmes: A detective story builds on e7-past-perfect."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-7",
+					"topic_code": "literature",
+					"topic_title": "Teen literature"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb3",
+					"topic_title": "Text- und Medienkompetenzen",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VWW",
+					"slug": "e7-lit-sherlock-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie heißt der Detektiv von Arthur Conan Doyle, und wo wohnt er?",
+					"concept": "Sherlock Holmes, 221B Baker Street in London",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-lit-sherlock",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"Sherlock Holmes, 221B Baker Street in London",
+							"Hercule Poirot in Brüssel"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VWX",
+					"slug": "e7-lit-sherlock-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was ist ein clue in einer Detektivgeschichte?",
+					"concept": "ein Hinweis, aus dem der Detektiv Schlüsse zieht (deduction)",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-lit-sherlock",
+					"sample_solution": "ein Hinweis, aus dem der Detektiv Schlüsse zieht (deduction)"
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VWY",
+					"slug": "e7-lit-sherlock-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche Zeitform verwendest du beim Nacherzählen für das, was vor der Haupthandlung schon geschehen war?",
+					"concept": "das Past Perfect (had + past participle)",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-lit-sherlock",
+					"sample_solution": "das Past Perfect (had + past participle)"
+				}
+			]
+		},
+		{
+			"id": "01M7YWAG7A5XB13VTEGE6W2W8X",
+			"atom_uri": "urn:zam:atom:01M7YWAG7A5XB13VTEGE6W2W8X",
+			"namespace": "zam-academy-englisch-realschule-7",
+			"slug": "e7-lit-dahl-rowling",
+			"title": "Roald Dahl and J. K. Rowling: Books, films and audiobooks",
+			"domain": "englisch/literature",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-lit-dahl-rowling",
+			"prerequisites": [
+				{
+					"atom_id": "01M7YWAG7A5XB13VTEGE6W2W8V",
+					"type": "soft",
+					"rationale": "Roald Dahl and J. K. Rowling: Books, films and audiobooks builds on e7-lit-treasure-island."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-7",
+					"topic_code": "literature",
+					"topic_title": "Teen literature"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb3",
+					"topic_title": "Text- und Medienkompetenzen",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VWZ",
+					"slug": "e7-lit-dahl-rowling-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "In welchem Jahr erschien der erste Harry-Potter-Band?",
+					"concept": "1997",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-lit-dahl-rowling",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"1997",
+							"2007"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VX0",
+					"slug": "e7-lit-dahl-rowling-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wo wurde Roald Dahl geboren, und woher stammten seine Eltern?",
+					"concept": "in Llandaff bei Cardiff in Wales (1916); seine Eltern stammten aus Norwegen",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-lit-dahl-rowling",
+					"sample_solution": "in Llandaff bei Cardiff in Wales (1916); seine Eltern stammten aus Norwegen"
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VX1",
+					"slug": "e7-lit-dahl-rowling-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Woran erkennst du einen Tagebucheintrag (diary entry) aus Sicht einer Figur?",
+					"concept": "Datum, Anrede Dear Diary, Ich-Form, Gedanken und Gefühle der Figur",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-lit-dahl-rowling",
+					"sample_solution": "Datum, Anrede Dear Diary, Ich-Form, Gedanken und Gefühle der Figur"
+				}
+			]
+		},
+		{
+			"id": "01M7YWAG7A5XB13VTEGE6W2W8Y",
+			"atom_uri": "urn:zam:atom:01M7YWAG7A5XB13VTEGE6W2W8Y",
+			"namespace": "zam-academy-englisch-realschule-7",
+			"slug": "e7-relative-who-which",
+			"title": "Defining relative clauses with who, which and that",
+			"domain": "englisch/grammar1",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-relative-who-which",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-7",
+					"topic_code": "grammar1",
+					"topic_title": "Grammar I: Describing more exactly"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VX2",
+					"slug": "e7-relative-who-which-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welches Relativpronomen verwendest du für Personen in einem defining relative clause?",
+					"concept": "who (oder that)",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-relative-who-which",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"who (oder that)",
+							"which"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VX3",
+					"slug": "e7-relative-who-which-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wann setzt du bei einem notwendigen Relativsatz (defining relative clause) ein Komma?",
+					"concept": "nie; anders als im Deutschen steht kein Komma",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-relative-who-which",
+					"sample_solution": "nie; anders als im Deutschen steht kein Komma"
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VX4",
+					"slug": "e7-relative-who-which-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was ist falsch an „The book which I read it was exciting.“?",
+					"concept": "Das Pronomen it wiederholt das Nomen; richtig: The book which I read was exciting.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-relative-who-which",
+					"sample_solution": "Das Pronomen it wiederholt das Nomen; richtig: The book which I read was exciting."
+				}
+			]
+		},
+		{
+			"id": "01M7YWAG7A5XB13VTEGE6W2W8Z",
+			"atom_uri": "urn:zam:atom:01M7YWAG7A5XB13VTEGE6W2W8Z",
+			"namespace": "zam-academy-englisch-realschule-7",
+			"slug": "e7-relative-whose-where",
+			"title": "Relative clauses with whose and where",
+			"domain": "englisch/grammar1",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-relative-whose-where",
+			"prerequisites": [
+				{
+					"atom_id": "01M7YWAG7A5XB13VTEGE6W2W8Y",
+					"type": "soft",
+					"rationale": "Relative clauses with whose and where builds on e7-relative-who-which."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-7",
+					"topic_code": "grammar1",
+					"topic_title": "Grammar I: Describing more exactly"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VX5",
+					"slug": "e7-relative-whose-where-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welches Relativpronomen drückt Besitz aus (deutsch: dessen, deren)?",
+					"concept": "whose + Nomen",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-relative-whose-where",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"whose + Nomen",
+							"who's"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VX6",
+					"slug": "e7-relative-whose-where-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welches Relativpronomen verwendest du für Orte?",
+					"concept": "where, z. B. the city where my aunt lives",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-relative-whose-where",
+					"sample_solution": "where, z. B. the city where my aunt lives"
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VX7",
+					"slug": "e7-relative-whose-where-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was ist der Unterschied zwischen whose und who's?",
+					"concept": "whose drückt Besitz aus; who's ist die Kurzform von who is oder who has",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-relative-whose-where",
+					"sample_solution": "whose drückt Besitz aus; who's ist die Kurzform von who is oder who has"
+				}
+			]
+		},
+		{
+			"id": "01M7YWAG7A5XB13VTEGE6W2W90",
+			"atom_uri": "urn:zam:atom:01M7YWAG7A5XB13VTEGE6W2W90",
+			"namespace": "zam-academy-englisch-realschule-7",
+			"slug": "e7-contact-clauses",
+			"title": "Contact clauses: Relative clauses without a pronoun",
+			"domain": "englisch/grammar1",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-contact-clauses",
+			"prerequisites": [
+				{
+					"atom_id": "01M7YWAG7A5XB13VTEGE6W2W8Y",
+					"type": "soft",
+					"rationale": "Contact clauses: Relative clauses without a pronoun builds on e7-relative-who-which."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-7",
+					"topic_code": "grammar1",
+					"topic_title": "Grammar I: Describing more exactly"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VX8",
+					"slug": "e7-contact-clauses-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wann kannst du das Relativpronomen weglassen (contact clause)?",
+					"concept": "wenn es Objekt ist, also direkt danach ein eigenes Subjekt folgt",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-contact-clauses",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"wenn es Objekt ist, also direkt danach ein eigenes Subjekt folgt",
+							"wenn es Subjekt ist, also direkt danach ein Verb folgt"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VX9",
+					"slug": "e7-contact-clauses-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Warum kann who in „The girl who lives next door is from Cork.“ nicht wegfallen?",
+					"concept": "who ist das Subjekt des Relativsatzes (danach folgt das Verb lives)",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-contact-clauses",
+					"sample_solution": "who ist das Subjekt des Relativsatzes (danach folgt das Verb lives)"
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VXA",
+					"slug": "e7-contact-clauses-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Bilde einen contact clause aus „The film which we watched was exciting.“",
+					"concept": "The film we watched was exciting.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-contact-clauses",
+					"sample_solution": "The film we watched was exciting."
+				}
+			]
+		},
+		{
+			"id": "01M7YWAG7A5XB13VTEGE6W2W91",
+			"atom_uri": "urn:zam:atom:01M7YWAG7A5XB13VTEGE6W2W91",
+			"namespace": "zam-academy-englisch-realschule-7",
+			"slug": "e7-adverbs-manner",
+			"title": "Adverbs of manner: How do you do it?",
+			"domain": "englisch/grammar1",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-adverbs-manner",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-7",
+					"topic_code": "grammar1",
+					"topic_title": "Grammar I: Describing more exactly"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VXB",
+					"slug": "e7-adverbs-manner-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie lautet das Adverb zu good?",
+					"concept": "well",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-adverbs-manner",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"well",
+							"goodly"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VXC",
+					"slug": "e7-adverbs-manner-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was beschreibt ein adverb of manner, was ein Adjektiv?",
+					"concept": "Das Adverb beschreibt ein Verb (wie jemand etwas tut), das Adjektiv ein Nomen (wie jemand/etwas ist).",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-adverbs-manner",
+					"sample_solution": "Das Adverb beschreibt ein Verb (wie jemand etwas tut), das Adjektiv ein Nomen (wie jemand/etwas ist)."
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VXD",
+					"slug": "e7-adverbs-manner-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Warum heißt es „You look tired.“ und nicht „You look tiredly.“?",
+					"concept": "Nach look, sound, feel, taste, smell und be steht ein Adjektiv, weil es den Zustand des Subjekts beschreibt.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-adverbs-manner",
+					"sample_solution": "Nach look, sound, feel, taste, smell und be steht ein Adjektiv, weil es den Zustand des Subjekts beschreibt."
+				}
+			]
+		},
+		{
+			"id": "01M7YWAG7A5XB13VTEGE6W2W92",
+			"atom_uri": "urn:zam:atom:01M7YWAG7A5XB13VTEGE6W2W92",
+			"namespace": "zam-academy-englisch-realschule-7",
+			"slug": "e7-question-tags",
+			"title": "Question tags: You're from Cork, aren't you?",
+			"domain": "englisch/grammar1",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-question-tags",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-7",
+					"topic_code": "grammar1",
+					"topic_title": "Grammar I: Describing more exactly"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb2",
+					"topic_title": "Interkulturelle Kompetenzen",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VXE",
+					"slug": "e7-question-tags-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welcher question tag passt zu „You're from Cork, …?“",
+					"concept": "aren't you",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-question-tags",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"aren't you",
+							"are you"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VXF",
+					"slug": "e7-question-tags-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche Hilfsverben nimmst du im question tag, wenn der Satz kein Hilfsverb hat?",
+					"concept": "do, does oder did, z. B. She plays the fiddle, doesn't she?",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-question-tags",
+					"sample_solution": "do, does oder did, z. B. She plays the fiddle, doesn't she?"
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VXG",
+					"slug": "e7-question-tags-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was zeigt eine fallende Stimme am Ende eines question tag?",
+					"concept": "dass du Zustimmung erwartest (keine echte Frage)",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-question-tags",
+					"sample_solution": "dass du Zustimmung erwartest (keine echte Frage)"
+				}
+			]
+		},
+		{
+			"id": "01M7YWAG7A5XB13VTEGE6W2W93",
+			"atom_uri": "urn:zam:atom:01M7YWAG7A5XB13VTEGE6W2W93",
+			"namespace": "zam-academy-englisch-realschule-7",
+			"slug": "e7-past-vs-perfect",
+			"title": "Simple past or present perfect?",
+			"domain": "englisch/grammar2",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-past-vs-perfect",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-7",
+					"topic_code": "grammar2",
+					"topic_title": "Grammar II: Time, duty & conditions"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VXH",
+					"slug": "e7-past-vs-perfect-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche Zeitform muss im Englischen zwingend gewählt werden, wenn ein Signalwort einen genau abgeschlossenen Zeitpunkt in der Vergangenheit benennt (z. B. 'yesterday', 'in 2018', 'two days ago')?",
+					"concept": "das Simple Past (Past Simple)",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-past-vs-perfect",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"das Simple Past (Past Simple)",
+							"das Present Perfect Simple"
+						],
+						"correct_index": 0
+					},
+					"replaces": [
+						"01K4E7T0000000000000000J01"
+					]
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VXJ",
+					"slug": "e7-past-vs-perfect-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wann verwendest du das Present Perfect statt des Simple Past?",
+					"concept": "wenn der Zeitpunkt unbestimmt oder unwichtig ist und das Ergebnis jetzt zählt oder ein Zeitraum bis jetzt reicht (ever, never, already, yet, just, since, for)",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-past-vs-perfect",
+					"sample_solution": "wenn der Zeitpunkt unbestimmt oder unwichtig ist und das Ergebnis jetzt zählt oder ein Zeitraum bis jetzt reicht (ever, never, already, yet, just, since, for)"
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VXK",
+					"slug": "e7-past-vs-perfect-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was ist falsch an „I have seen the film yesterday.“?",
+					"concept": "yesterday nennt einen abgeschlossenen Zeitpunkt; richtig: I saw the film yesterday.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-past-vs-perfect",
+					"sample_solution": "yesterday nennt einen abgeschlossenen Zeitpunkt; richtig: I saw the film yesterday."
+				}
+			]
+		},
+		{
+			"id": "01M7YWAG7A5XB13VTEGE6W2W94",
+			"atom_uri": "urn:zam:atom:01M7YWAG7A5XB13VTEGE6W2W94",
+			"namespace": "zam-academy-englisch-realschule-7",
+			"slug": "e7-perfect-progressive",
+			"title": "Present perfect progressive with since and for",
+			"domain": "englisch/grammar2",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-perfect-progressive",
+			"prerequisites": [
+				{
+					"atom_id": "01M7YWAG7A5XB13VTEGE6W2W93",
+					"type": "soft",
+					"rationale": "Present perfect progressive with since and for builds on e7-past-vs-perfect."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-7",
+					"topic_code": "grammar2",
+					"topic_title": "Grammar II: Time, duty & conditions"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VXM",
+					"slug": "e7-perfect-progressive-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Steht bei „two hours“ since oder for?",
+					"concept": "for (Zeitraum)",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-perfect-progressive",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"for (Zeitraum)",
+							"since (Zeitpunkt)"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VXN",
+					"slug": "e7-perfect-progressive-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie bildest du das Present Perfect Progressive?",
+					"concept": "have/has + been + -ing-Form, z. B. I have been waiting",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-perfect-progressive",
+					"sample_solution": "have/has + been + -ing-Form, z. B. I have been waiting"
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VXP",
+					"slug": "e7-perfect-progressive-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie übersetzt du „Ich warte seit einer Stunde.“?",
+					"concept": "I have been waiting for an hour.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-perfect-progressive",
+					"sample_solution": "I have been waiting for an hour."
+				}
+			]
+		},
+		{
+			"id": "01M7YWAG7A5XB13VTEGE6W2W95",
+			"atom_uri": "urn:zam:atom:01M7YWAG7A5XB13VTEGE6W2W95",
+			"namespace": "zam-academy-englisch-realschule-7",
+			"slug": "e7-past-perfect",
+			"title": "Past perfect: What had happened before?",
+			"domain": "englisch/grammar2",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-past-perfect",
+			"prerequisites": [
+				{
+					"atom_id": "01M7YWAG7A5XB13VTEGE6W2W93",
+					"type": "soft",
+					"rationale": "Past perfect: What had happened before? builds on e7-past-vs-perfect."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-7",
+					"topic_code": "grammar2",
+					"topic_title": "Grammar II: Time, duty & conditions"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VXQ",
+					"slug": "e7-past-perfect-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie bildest du das Past Perfect?",
+					"concept": "had + past participle (3. Verbform)",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-past-perfect",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"had + past participle (3. Verbform)",
+							"have/has + past participle"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VXR",
+					"slug": "e7-past-perfect-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wofür verwendest du das Past Perfect?",
+					"concept": "für eine Handlung, die vor einer anderen vergangenen Handlung schon abgeschlossen war",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-past-perfect",
+					"sample_solution": "für eine Handlung, die vor einer anderen vergangenen Handlung schon abgeschlossen war"
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VXS",
+					"slug": "e7-past-perfect-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Ergänze: When Liam arrived at the bus stop, the bus … (leave).",
+					"concept": "had already left",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-past-perfect",
+					"sample_solution": "had already left"
+				}
+			]
+		},
+		{
+			"id": "01M7YWAG7A5XB13VTEGE6W2W96",
+			"atom_uri": "urn:zam:atom:01M7YWAG7A5XB13VTEGE6W2W96",
+			"namespace": "zam-academy-englisch-realschule-7",
+			"slug": "e7-must-have-to",
+			"title": "Must, have to, mustn't and needn't",
+			"domain": "englisch/grammar2",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-must-have-to",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-7",
+					"topic_code": "grammar2",
+					"topic_title": "Grammar II: Time, duty & conditions"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb2",
+					"topic_title": "Interkulturelle Kompetenzen",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VXT",
+					"slug": "e7-must-have-to-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was drückt das englische Modalverb 'mustn't' im Gegensatz zu 'needn't' aus?",
+					"concept": "ein Verbot (du darfst nicht)",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-must-have-to",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"ein Verbot (du darfst nicht)",
+							"keine Notwendigkeit (du musst nicht)"
+						],
+						"correct_index": 0
+					},
+					"replaces": [
+						"01K4E6G0000000000000000J05"
+					]
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VXV",
+					"slug": "e7-must-have-to-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie drückst du „müssen“ in der Vergangenheit aus?",
+					"concept": "mit had to, weil must keine Vergangenheitsform hat",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-must-have-to",
+					"sample_solution": "mit had to, weil must keine Vergangenheitsform hat"
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VXW",
+					"slug": "e7-must-have-to-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie übersetzt du „Du musst morgen nicht kommen.“?",
+					"concept": "You needn't come tomorrow. / You don't have to come tomorrow.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-must-have-to",
+					"sample_solution": "You needn't come tomorrow. / You don't have to come tomorrow."
+				}
+			]
+		},
+		{
+			"id": "01M7YWAG7A5XB13VTEGE6W2W97",
+			"atom_uri": "urn:zam:atom:01M7YWAG7A5XB13VTEGE6W2W97",
+			"namespace": "zam-academy-englisch-realschule-7",
+			"slug": "e7-ought-might",
+			"title": "Ought to and might: Advice and possibility",
+			"domain": "englisch/grammar2",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-ought-might",
+			"prerequisites": [
+				{
+					"atom_id": "01M7YWAG7A5XB13VTEGE6W2W96",
+					"type": "soft",
+					"rationale": "Ought to and might: Advice and possibility builds on e7-must-have-to."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-7",
+					"topic_code": "grammar2",
+					"topic_title": "Grammar II: Time, duty & conditions"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VXX",
+					"slug": "e7-ought-might-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was drückt might aus?",
+					"concept": "eine Möglichkeit (könnte, vielleicht)",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-ought-might",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"eine Möglichkeit (könnte, vielleicht)",
+							"eine Pflicht (muss)"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VXY",
+					"slug": "e7-ought-might-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was folgt nach ought?",
+					"concept": "to + Grundform, z. B. You ought to take a raincoat.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-ought-might",
+					"sample_solution": "to + Grundform, z. B. You ought to take a raincoat."
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VXZ",
+					"slug": "e7-ought-might-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Mit welchem Modalverb gibst du einen Rat, der fast dasselbe bedeutet wie ought to?",
+					"concept": "should",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-ought-might",
+					"sample_solution": "should"
+				}
+			]
+		},
+		{
+			"id": "01M7YWAG7A5XB13VTEGE6W2W98",
+			"atom_uri": "urn:zam:atom:01M7YWAG7A5XB13VTEGE6W2W98",
+			"namespace": "zam-academy-englisch-realschule-7",
+			"slug": "e7-if-type-0-1",
+			"title": "If-clauses type 0 and type 1",
+			"domain": "englisch/grammar2",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-if-type-0-1",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-7",
+					"topic_code": "grammar2",
+					"topic_title": "Grammar II: Time, duty & conditions"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VY0",
+					"slug": "e7-if-type-0-1-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche Zeitform steht im if-Satz von Typ 1?",
+					"concept": "das Simple Present",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-if-type-0-1",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"das Simple Present",
+							"will + Grundform"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VY1",
+					"slug": "e7-if-type-0-1-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie ist ein if-Satz Typ 1 aufgebaut?",
+					"concept": "if + Simple Present, Hauptsatz will + Grundform, z. B. If it rains, we will stay at home.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-if-type-0-1",
+					"sample_solution": "if + Simple Present, Hauptsatz will + Grundform, z. B. If it rains, we will stay at home."
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VY2",
+					"slug": "e7-if-type-0-1-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wann verwendest du if-Sätze Typ 0?",
+					"concept": "für Dinge, die immer gelten (Naturgesetze, Regeln): Simple Present in beiden Teilen",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-if-type-0-1",
+					"sample_solution": "für Dinge, die immer gelten (Naturgesetze, Regeln): Simple Present in beiden Teilen"
+				}
+			]
+		},
+		{
+			"id": "01M7YWAG7A5XB13VTEGE6W2W99",
+			"atom_uri": "urn:zam:atom:01M7YWAG7A5XB13VTEGE6W2W99",
+			"namespace": "zam-academy-englisch-realschule-7",
+			"slug": "e7-if-type-2",
+			"title": "If-clauses type 2: If I lived in Dublin …",
+			"domain": "englisch/grammar2",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-if-type-2",
+			"prerequisites": [
+				{
+					"atom_id": "01M7YWAG7A5XB13VTEGE6W2W98",
+					"type": "soft",
+					"rationale": "If-clauses type 2: If I lived in Dublin … builds on e7-if-type-0-1."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-7",
+					"topic_code": "grammar2",
+					"topic_title": "Grammar II: Time, duty & conditions"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VY3",
+					"slug": "e7-if-type-2-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welche Form steht im Hauptsatz eines if-Satzes Typ 2?",
+					"concept": "would + Grundform",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-if-type-2",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"would + Grundform",
+							"will + Grundform"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VY4",
+					"slug": "e7-if-type-2-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wann verwendest du einen if-Satz Typ 2?",
+					"concept": "für unwahrscheinliche oder nur gedachte Bedingungen: if + Simple Past, would + Grundform",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-if-type-2",
+					"sample_solution": "für unwahrscheinliche oder nur gedachte Bedingungen: if + Simple Past, would + Grundform"
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VY5",
+					"slug": "e7-if-type-2-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie gibst du mit einem if-Satz einen Rat („An deiner Stelle würde ich …“)?",
+					"concept": "If I were you, I would …",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-if-type-2",
+					"sample_solution": "If I were you, I would …"
+				}
+			]
+		},
+		{
+			"id": "01M7YWAG7A5XB13VTEGE6W2W9A",
+			"atom_uri": "urn:zam:atom:01M7YWAG7A5XB13VTEGE6W2W9A",
+			"namespace": "zam-academy-englisch-realschule-7",
+			"slug": "e7-paraphrasing",
+			"title": "When a word is missing: Paraphrasing and the propword one",
+			"domain": "englisch/words-texts",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-paraphrasing",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-7",
+					"topic_code": "words_texts",
+					"topic_title": "Words, sounds & strategies"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb4",
+					"topic_title": "Methodische Kompetenzen",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VY6",
+					"slug": "e7-paraphrasing-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welches Stützwort ersetzt ein Nomen im Singular, z. B. „the blue …“?",
+					"concept": "one",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-paraphrasing",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"one",
+							"it"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VY7",
+					"slug": "e7-paraphrasing-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Mit welchen Redemitteln umschreibst du ein Wort, das dir fehlt?",
+					"concept": "It's a synonym of …, It's the opposite of …, It's a kind of …, It's a thing you use to …, It's a person who …, It's a place where …",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-paraphrasing",
+					"sample_solution": "It's a synonym of …, It's the opposite of …, It's a kind of …, It's a thing you use to …, It's a person who …, It's a place where …"
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VY8",
+					"slug": "e7-paraphrasing-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie lautet der Plural des Stützworts one?",
+					"concept": "ones, z. B. Have you got bigger ones?",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-paraphrasing",
+					"sample_solution": "ones, z. B. Have you got bigger ones?"
+				}
+			]
+		},
+		{
+			"id": "01M7YWAG7A5XB13VTEGE6W2W9B",
+			"atom_uri": "urn:zam:atom:01M7YWAG7A5XB13VTEGE6W2W9B",
+			"namespace": "zam-academy-englisch-realschule-7",
+			"slug": "e7-verb-chunks",
+			"title": "Word partners: Two objects, idioms and collocations",
+			"domain": "englisch/words-texts",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-verb-chunks",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-7",
+					"topic_code": "words_texts",
+					"topic_title": "Words, sounds & strategies"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb4",
+					"topic_title": "Methodische Kompetenzen",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VY9",
+					"slug": "e7-verb-chunks-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was bedeutet by heart?",
+					"concept": "auswendig",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-verb-chunks",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"auswendig",
+							"von Herzen"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VYA",
+					"slug": "e7-verb-chunks-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie sagst du „ein Versprechen halten“ auf Englisch?",
+					"concept": "keep a promise",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-verb-chunks",
+					"sample_solution": "keep a promise"
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VYB",
+					"slug": "e7-verb-chunks-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Forme um: „Dad bought me a jacket.“ (Sache zuerst)",
+					"concept": "Dad bought a jacket for me.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-verb-chunks",
+					"sample_solution": "Dad bought a jacket for me."
+				}
+			]
+		},
+		{
+			"id": "01M7YWAG7A5XB13VTEGE6W2W9C",
+			"atom_uri": "urn:zam:atom:01M7YWAG7A5XB13VTEGE6W2W9C",
+			"namespace": "zam-academy-englisch-realschule-7",
+			"slug": "e7-phrasal-chunks",
+			"title": "Phrasal verbs and verb + to-infinitive or -ing",
+			"domain": "englisch/words-texts",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-phrasal-chunks",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-7",
+					"topic_code": "words_texts",
+					"topic_title": "Words, sounds & strategies"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb4",
+					"topic_title": "Methodische Kompetenzen",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VYC",
+					"slug": "e7-phrasal-chunks-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Folgt nach enjoy die -ing-Form oder to + Grundform?",
+					"concept": "die -ing-Form (enjoy doing sth)",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-phrasal-chunks",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"die -ing-Form (enjoy doing sth)",
+							"to + Grundform"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VYD",
+					"slug": "e7-phrasal-chunks-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was bedeuten work out und look up?",
+					"concept": "work out: herausfinden, lösen (auch trainieren); look up: nachschlagen",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-phrasal-chunks",
+					"sample_solution": "work out: herausfinden, lösen (auch trainieren); look up: nachschlagen"
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VYE",
+					"slug": "e7-phrasal-chunks-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Nenne drei Verben, nach denen to + Grundform folgt.",
+					"concept": "z. B. decide, hope, want, plan, manage, promise",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-phrasal-chunks",
+					"sample_solution": "z. B. decide, hope, want, plan, manage, promise"
+				}
+			]
+		},
+		{
+			"id": "01M7YWAG7A5XB13VTEGE6W2W9D",
+			"atom_uri": "urn:zam:atom:01M7YWAG7A5XB13VTEGE6W2W9D",
+			"namespace": "zam-academy-englisch-realschule-7",
+			"slug": "e7-word-formation",
+			"title": "Building words: Prefixes, suffixes, compounds and conversion",
+			"domain": "englisch/words-texts",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-word-formation",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-7",
+					"topic_code": "words_texts",
+					"topic_title": "Words, sounds & strategies"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb4",
+					"topic_title": "Methodische Kompetenzen",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VYF",
+					"slug": "e7-word-formation-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was bedeutet das Suffix -less, z. B. in helpless?",
+					"concept": "ohne (helpless = hilflos)",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-word-formation",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"ohne (helpless = hilflos)",
+							"voll (helpless = hilfreich)"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VYG",
+					"slug": "e7-word-formation-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was ist Konversion (conversion)?",
+					"concept": "Ein Wort wechselt die Wortart, ohne sich zu verändern, z. B. cold (kalt) – a cold (Erkältung).",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-word-formation",
+					"sample_solution": "Ein Wort wechselt die Wortart, ohne sich zu verändern, z. B. cold (kalt) – a cold (Erkältung)."
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VYH",
+					"slug": "e7-word-formation-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Welche Bedeutung haben die Präfixe un-/dis- und re-?",
+					"concept": "un-/dis-: nicht (unhappy, dislike); re-: wieder (rewrite)",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-word-formation",
+					"sample_solution": "un-/dis-: nicht (unhappy, dislike); re-: wieder (rewrite)"
+				}
+			]
+		},
+		{
+			"id": "01M7YWAG7A5XB13VTEGE6W2W9E",
+			"atom_uri": "urn:zam:atom:01M7YWAG7A5XB13VTEGE6W2W9E",
+			"namespace": "zam-academy-englisch-realschule-7",
+			"slug": "e7-dictionary",
+			"title": "Using a dictionary: Finding the right meaning",
+			"domain": "englisch/words-texts",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-dictionary",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-7",
+					"topic_code": "words_texts",
+					"topic_title": "Words, sounds & strategies"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb4",
+					"topic_title": "Methodische Kompetenzen",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VYJ",
+					"slug": "e7-dictionary-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wofür steht sth in einem Wörterbucheintrag?",
+					"concept": "something",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-dictionary",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"something",
+							"somebody"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VYK",
+					"slug": "e7-dictionary-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie findest du im Wörterbuch die passende Bedeutung eines Wortes?",
+					"concept": "Wortart im Satz bestimmen, Beispielsätze lesen, Bedeutung im Satz testen",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-dictionary",
+					"sample_solution": "Wortart im Satz bestimmen, Beispielsätze lesen, Bedeutung im Satz testen"
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VYM",
+					"slug": "e7-dictionary-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was bedeutet bank in „We sat on the bank of the River Shannon.“?",
+					"concept": "Ufer",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-dictionary",
+					"sample_solution": "Ufer"
+				}
+			]
+		},
+		{
+			"id": "01M7YWAG7A5XB13VTEGE6W2W9F",
+			"atom_uri": "urn:zam:atom:01M7YWAG7A5XB13VTEGE6W2W9F",
+			"namespace": "zam-academy-englisch-realschule-7",
+			"slug": "e7-pronunciation",
+			"title": "Sounds, silent letters and reading aloud",
+			"domain": "englisch/words-texts",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-pronunciation",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-7",
+					"topic_code": "words_texts",
+					"topic_title": "Words, sounds & strategies"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb4",
+					"topic_title": "Methodische Kompetenzen",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VYN",
+					"slug": "e7-pronunciation-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welcher Buchstabe ist in knight stumm?",
+					"concept": "k (und gh)",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-pronunciation",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"k (und gh)",
+							"n"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VYP",
+					"slug": "e7-pronunciation-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie verändert sich die Stimme am Ende einer Frage mit Fragewort (Where …?) und am Ende einer Ja/Nein-Frage?",
+					"concept": "Bei W-Fragen fällt sie, bei Ja/Nein-Fragen steigt sie meist.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-pronunciation",
+					"sample_solution": "Bei W-Fragen fällt sie, bei Ja/Nein-Fragen steigt sie meist."
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VYQ",
+					"slug": "e7-pronunciation-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie klärst du die Aussprache eines unbekannten Wortes?",
+					"concept": "Lautschrift im Wörterbuch lesen oder die Audiofunktion eines elektronischen Wörterbuchs nutzen",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-pronunciation",
+					"sample_solution": "Lautschrift im Wörterbuch lesen oder die Audiofunktion eines elektronischen Wörterbuchs nutzen"
+				}
+			]
+		},
+		{
+			"id": "01M7YWAG7A5XB13VTEGE6W2W9G",
+			"atom_uri": "urn:zam:atom:01M7YWAG7A5XB13VTEGE6W2W9G",
+			"namespace": "zam-academy-englisch-realschule-7",
+			"slug": "e7-letters-forms",
+			"title": "Personal letters, e-mails and forms",
+			"domain": "englisch/words-texts",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-letters-forms",
+			"prerequisites": [],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-7",
+					"topic_code": "words_texts",
+					"topic_title": "Words, sounds & strategies"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb2",
+					"topic_title": "Interkulturelle Kompetenzen",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb3",
+					"topic_title": "Text- und Medienkompetenzen",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb5",
+					"topic_title": "Themengebiete",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VYR",
+					"slug": "e7-letters-forms-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Welches linking word leitet einen Gegensatz ein?",
+					"concept": "however",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-letters-forms",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"however",
+							"because"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VYS",
+					"slug": "e7-letters-forms-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie ist ein persönlicher Brief aufgebaut?",
+					"concept": "Anrede mit Komma, Einleitung mit Bezug, gegliederter Hauptteil mit linking words, Schlussformel und Name",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-letters-forms",
+					"sample_solution": "Anrede mit Komma, Einleitung mit Bezug, gegliederter Hauptteil mit linking words, Schlussformel und Name"
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VYT",
+					"slug": "e7-letters-forms-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie schreibst du den 14. Mai 2012 im britischen und im amerikanischen Format?",
+					"concept": "britisch 14/05/2012 (Tag zuerst), amerikanisch 05/14/2012 (Monat zuerst)",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-letters-forms",
+					"sample_solution": "britisch 14/05/2012 (Tag zuerst), amerikanisch 05/14/2012 (Monat zuerst)"
+				}
+			]
+		},
+		{
+			"id": "01M7YWAG7A5XB13VTEGE6W2W9H",
+			"atom_uri": "urn:zam:atom:01M7YWAG7A5XB13VTEGE6W2W9H",
+			"namespace": "zam-academy-englisch-realschule-7",
+			"slug": "e7-error-log",
+			"title": "Learning smarter: Error log and vocabulary networks",
+			"domain": "englisch/words-texts",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-error-log",
+			"prerequisites": [
+				{
+					"atom_id": "01M7YWAG7A5XB13VTEGE6W2W9D",
+					"type": "soft",
+					"rationale": "Learning smarter: Error log and vocabulary networks builds on e7-word-formation."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-7",
+					"topic_code": "words_texts",
+					"topic_title": "Words, sounds & strategies"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb1.2",
+					"topic_title": "Verfügen über sprachliche Mittel",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb4",
+					"topic_title": "Methodische Kompetenzen",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VYV",
+					"slug": "e7-error-log-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Was gehört zu einem Eintrag im Fehlerprotokoll (error log)?",
+					"concept": "falscher Satz, Korrektur, Regel in eigenen Worten, eigenes Beispiel",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-error-log",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"falscher Satz, Korrektur, Regel in eigenen Worten, eigenes Beispiel",
+							"nur die Note"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VYW",
+					"slug": "e7-error-log-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was ist ein word field?",
+					"concept": "eine Sammlung von Wörtern zu einem Thema, z. B. Ireland: island, coast, river",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-error-log",
+					"sample_solution": "eine Sammlung von Wörtern zu einem Thema, z. B. Ireland: island, coast, river"
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VYX",
+					"slug": "e7-error-log-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie lernst du ein neues Wort nachhaltiger als in einer Liste?",
+					"concept": "mit einem erklärenden Beispielsatz oder einer eigenen Definition",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-error-log",
+					"sample_solution": "mit einem erklärenden Beispielsatz oder einer eigenen Definition"
+				}
+			]
+		},
+		{
+			"id": "01M7YWAG7A5XB13VTEGE6W2W9J",
+			"atom_uri": "urn:zam:atom:01M7YWAG7A5XB13VTEGE6W2W9J",
+			"namespace": "zam-academy-englisch-realschule-7",
+			"slug": "e7-mediation-guide",
+			"title": "Mediation: Guiding English-speaking visitors in your town",
+			"domain": "englisch/words-texts",
+			"reduction": "formal",
+			"typical_age_min": 12,
+			"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-mediation-guide",
+			"prerequisites": [
+				{
+					"atom_id": "01M7YWAG7A5XB13VTEGE6W2W9A",
+					"type": "soft",
+					"rationale": "Mediation: Guiding English-speaking visitors in your town builds on e7-paraphrasing."
+				}
+			],
+			"curricula": [
+				{
+					"provider": "zam-academy",
+					"subject": "englisch-realschule-7",
+					"topic_code": "words_texts",
+					"topic_title": "Words, sounds & strategies"
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb1.1",
+					"topic_title": "Kommunikative Fertigkeiten",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb2",
+					"topic_title": "Interkulturelle Kompetenzen",
+					"exam_relevant": false
+				},
+				{
+					"provider": "lehrplanplus-bayern",
+					"school_type": "realschule",
+					"grade": 7,
+					"subject": "englisch",
+					"topic_code": "lb4",
+					"topic_title": "Methodische Kompetenzen",
+					"exam_relevant": false
+				}
+			],
+			"practice_items": [
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VYY",
+					"slug": "e7-mediation-guide-check",
+					"language": "de",
+					"tier": "tier1_fast",
+					"bloom_level": 1,
+					"question": "Wie gibst du eine Ja/Nein-Frage beim Sprachmitteln weiter?",
+					"concept": "He wants to know if/whether …",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-mediation-guide",
+					"fast_check": {
+						"type": "binary_choice",
+						"options": [
+							"He wants to know if/whether …",
+							"He wants to know that …"
+						],
+						"correct_index": 0
+					}
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VYZ",
+					"slug": "e7-mediation-guide-recall",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Was tust du, wenn dir beim Sprachmitteln ein Wort fehlt?",
+					"concept": "umschreiben, ein einfacheres Wort wählen, zeigen oder ein Bild benutzen (Kompensationsstrategien)",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-mediation-guide",
+					"sample_solution": "umschreiben, ein einfacheres Wort wählen, zeigen oder ein Bild benutzen (Kompensationsstrategien)"
+				},
+				{
+					"id": "01M7YWAG7B8HZ2Z6BDRDEN1VZ0",
+					"slug": "e7-mediation-guide-apply",
+					"language": "de",
+					"tier": "tier2_synthesis",
+					"bloom_level": 2,
+					"question": "Wie sagst du „Gehen Sie bis zur Ampel.“ auf Englisch?",
+					"concept": "Go as far as the traffic lights.",
+					"source_link": "https://academy.zam-os.org/englisch-realschule-7/#lesson=e7-mediation-guide",
+					"sample_solution": "Go as far as the traffic lights."
+				}
+			]
+		}
+	]
+}
