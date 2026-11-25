@@ -94,3 +94,4 @@ Status: `Draft` → `Proposed` → `Accepted` → `Implemented` (or `Partially i
 | [2026-11-15](2026-11-15-guided-work-subtasks-and-review.md) | Guided Work: Subtasks with an Owner, Evidence from the Result, and a Colleague's Review | Accepted |
 | [2026-11-21](2026-11-21-diagnosed-foundation-gaps.md) | Diagnosed Foundation Gaps: The Evaluator Names a Missing Prerequisite, the Learner Pulls It Forward | Accepted — Decision 7 implemented in #495 |
 | [2026-11-22](2026-11-22-academy-index-browser-and-wizard-removal.md) | ZAM Academy Index Browser and Removal of the Curriculum Wizard | Implemented — PR #496 |
+| [2026-11-25](2026-11-25-private-academy-providers.md) | Private Academy Providers: Packages Behind a Login, Enrolled Like the ZAM Academy | Accepted |
