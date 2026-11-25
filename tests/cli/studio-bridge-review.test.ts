@@ -176,6 +176,16 @@ describe("Studio bridge review (ADR 2026-10-08b D3)", () => {
     ]) {
       expect(mcpSource, forbidden).not.toContain(forbidden);
     }
+    // The agent tools' handlers read only the cache (ADR 2026-11-25 D9).
+    for (const path of [
+      "../../src/cli/academy/agent-cells.ts",
+      "../../src/cli/bridge-handlers.ts",
+    ]) {
+      const source = readFileSync(join(__dirname, path), "utf8");
+      for (const fetcher of ["provider-client", "catalog-client", "safeFetch"]) {
+        expect(source, `${path}: ${fetcher}`).not.toContain(fetcher);
+      }
+    }
   });
 
   it("does not let setting-set write a security switch", async () => {

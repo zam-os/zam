@@ -792,6 +792,13 @@ export interface BundledCellStatus extends BundledCellInfo {
    * „Aufnehmen“ in ZAM Academy to download and enrol it (ADR 2026-11-22).
    */
   requiresLearnerEnrol?: boolean;
+  /** A private provider's package (ADR 2026-11-25): which provider. */
+  provider?: { id: string; title: string };
+  /**
+   * The library holds it (a curator installed it, or the learner did): an
+   * agent can enrol from the library without any download.
+   */
+  installedInLibrary?: boolean;
 }
 
 export interface BundledCellEnrolResult {

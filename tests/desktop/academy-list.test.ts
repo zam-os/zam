@@ -169,6 +169,14 @@ describe("academy import dialog lifecycle", () => {
       if (command === "academy-provider-list") {
         return Promise.resolve({ success: true, providers: [] });
       }
+      if (command === "academy-installed-list") {
+        return Promise.resolve({
+          success: true,
+          teamLibrary: false,
+          curator: false,
+          tiles: [],
+        });
+      }
       enrolCalls++;
       return new Promise((resolve) => {
         finish = resolve;
@@ -405,13 +413,11 @@ describe("academy wiring", () => {
   it("shows an import at once, and permits retry on failure", () => {
     const list = file("desktop/src/academy-list.ts");
     const click = list.slice(list.indexOf('take.addEventListener("click"'));
+    const enrolCall = click.search(/enrolAcademyCell\(\s*cell\.id,/);
+    expect(enrolCall).toBeGreaterThan(-1);
     expect(
       click.indexOf('take.textContent = t("academy_taking")'),
-    ).toBeLessThan(
-      click.indexOf(
-        "enrolAcademyCell(cell.id, progress.update, cell.provider)",
-      ),
-    );
+    ).toBeLessThan(enrolCall);
     expect(click).toMatch(/\.catch\(\(err\) => \{\s*setTake\(entry\.button\)/);
   });
 

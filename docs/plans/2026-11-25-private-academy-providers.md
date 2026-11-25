@@ -1,6 +1,6 @@
 # Private Academy providers — implementation plan
 
-**Status:** Phases 1–3 are built, except 3.6, which needs the Phase 0 host; the PostgreSQL case of 1.5 runs in CI. Phases 4–6 are open; Phases 0 and 7 are the owner's. Phase 3 was checked in the Studio preview with a mocked bridge (add, confirm, switch, enrol, sign-in, changed file, Settings remove).\
+**Status:** Phases 1–5 are built, except 3.6, which needs the Phase 0 host; the PostgreSQL cases of 1.5 and 4.1 run in CI. Phase 6 is open; Phases 0 and 7 are the owner's. Phase 3 was checked in the Studio preview with a mocked bridge (add, confirm, switch, enrol, sign-in, changed file, Settings remove).\
 **Decision:** [ADR 2026-11-25 — Private Academy Providers](../adr/2026-11-25-private-academy-providers.md). Its decisions are cited here as **D1–D9**. Read the ADR first; this plan does not repeat its reasons.\
 **Branch:** `feat/private-academy-providers`, from `main`. One feature, one branch, one PR, one commit per phase.
 
@@ -134,17 +134,17 @@ Goal: a learner adds a provider, browses and enrols in Studio, opens lessons, an
 
 Goal: D7 on PostgreSQL.
 
-- [ ] **4.1** `zam team install-cell <id>:<slug>` on the learner's normal library connection: refuses when the connected role is not a curator (`pg_has_role(current_user, 'zam_curator', 'member')`, the check `zam team members` runs for others); fetches with the curator's own token; installs with `namespace`, `appUrl` and `preview`; creates no cards.
-- [ ] **4.2** Studio: in a team library, a curator sees „Für die Bibliothek installieren“ on provider rows. Every member sees the provider tiles installed in the library (`listInstalledProviderTiles`) with „Aufnehmen“, which calls a new bridge command `academy-enrol-installed <tileId>` → `enrolInstalledTile`. No provider confirmation and no network are needed for that. Listing and enrolling also pass the tiles' app URLs to `rememberLessonOrigins`, so reviews skip those lessons (2.7).
-- [ ] **4.3** Updates: the curator installs the newer version; `replaces` moves members' history inside the namespace. New items reach members the same way they reach members after `zam team reinstall-tiles` today. Find that path and reuse it; do not invent a second one.
-- [ ] **4.4** `docs/okf/learning-content.md` (through `zam_okf_upsert`): the curator install, and that apprentices are added with `zam team add-member --no-curator`.
-- [ ] Exit for the phase: `npm run pg:test` with the member/curator cases from 1.5 and an install-cell case; a namespace violation is refused on PostgreSQL too.
+- [x] **4.1** `zam team install-cell <id>:<slug>` on the learner's normal library connection: refuses when the connected role is not a curator (`pg_has_role(current_user, 'zam_curator', 'member')`, the check `zam team members` runs for others); fetches with the curator's own token; installs with `namespace`, `appUrl` and `preview`; creates no cards. Built as `providerInstallForLibraryHandler` (also the bridge command `academy-install-for-library`) with `connectedRoleIsCurator` in `src/cli/deploy/team-provision.ts`.
+- [x] **4.2** Studio: in a team library, a curator sees „Für die Bibliothek installieren“ on provider rows. Every member sees the provider tiles installed in the library (`listInstalledProviderTiles`) with „Aufnehmen“, which calls a new bridge command `academy-enrol-installed <tileId>` → `enrolInstalledTile`. No provider confirmation and no network are needed for that. Listing and enrolling also pass the tiles' app URLs to `rememberLessonOrigins`, so reviews skip those lessons (2.7). Built as the chip „In dieser Bibliothek“ (bridge `academy-installed-list`, shown when a team library holds provider tiles) and, in a provider's view, a row action per `libraryAction` (`install`, `installed`, `curator-only`).
+- [x] **4.3** Updates: the curator installs the newer version; `replaces` moves members' history inside the namespace. New items reach members the same way they reach members after `zam team reinstall-tiles` today. Find that path and reuse it; do not invent a second one. Found: a reinstall changes no cards, and only enrolling again hands out new items (`academyUpdateHandler` does exactly that). So `listInstalledProviderTiles` reports `newItems`, and a member's row offers „Neue Karten holen“, which enrols again.
+- [x] **4.4** `docs/okf/learning-content.md` (through `zam_okf_upsert`): the curator install, and that apprentices are added with `zam team add-member --no-curator`.
+- [x] Exit for the phase: `tests/cli/academy-provider.test.ts` (curator install, member-only rows, enrol from the library, new items after an update, through a PostgreSQL-dialect wrapper of the SQLite library), `tests/desktop/academy-providers.test.ts` (library chip, „Neue Karten holen“, curator install, curator-only), and `tests/kernel/postgres-team.test.ts` (real roles: curator check, member enrols but cannot install, the guard) in CI.
 
 ## Phase 5 — Agent tools
 
-- [ ] **5.1** `zam_bundled_cells_list` (in `src/cli/bridge-handlers.ts`) also lists cached provider cells of every confirmed provider, with `provider: { id, title }` and `requiresLearnerEnrol` as today, and the provider tiles installed in a team library with `installedInLibrary: true`.
-- [ ] **5.2** `zam_bundled_cell_enrol` enrols a cached provider cell (with `namespace`) or, in a team library, an installed provider tile (`enrolInstalledTile`). It never fetches.
-- [ ] Exit: `tests/cli/mcp.test.ts` — provider fields present; the fetch transport is never called from either tool.
+- [x] **5.1** `zam_bundled_cells_list` (in `src/cli/bridge-handlers.ts`) also lists cached provider cells of every confirmed provider, with `provider: { id, title }` and `requiresLearnerEnrol` as today, and the provider tiles installed in a team library with `installedInLibrary: true`.
+- [x] **5.2** `zam_bundled_cell_enrol` enrols a cached provider cell (with `namespace`) or, in a team library, an installed provider tile (`enrolInstalledTile`). It never fetches.
+- [x] Exit: `tests/cli/academy-provider.test.ts` against both handlers (provider fields, `requiresLearnerEnrol`, enrol from the cache and from the library, a team-library member, no request made), and `tests/cli/studio-bridge-review.test.ts` asserts that `src/cli/academy/agent-cells.ts` and `src/cli/bridge-handlers.ts` import no fetcher. Built in `src/cli/academy/agent-cells.ts`.
 
 ## Phase 6 — Documentation and acceptance
 

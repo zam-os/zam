@@ -26,15 +26,21 @@ import {
   type EnrolBundledCellProgress,
   enrichAcademyCells,
   enrolBundledCell,
+  enrolInstalledTile,
   getBundledCellsWithStatus,
   installedTileVersion,
+  installKvtTile,
+  isProviderTileId,
   listConfirmedProviders,
+  listInstalledProviderTiles,
   type ProviderChangedField,
   providerChange,
+  rememberLessonOrigins,
   removeConfirmedProvider,
   reservedProviderIds,
 } from "../../kernel/index.js";
 import { resolveHandlerUser } from "../bridge-handlers.js";
+import { connectedRoleIsCurator } from "../deploy/team-provision.js";
 import {
   type ProviderCacheScope,
   readCachedCatalog,
@@ -91,6 +97,12 @@ export interface ProviderCellRow {
   heldVersion: string | null;
   newer: boolean;
   preview: boolean;
+  /**
+   * In a team library (ADR 2026-11-25 D7) the row's action: a curator
+   * installs for the library (or it is already there), everyone else waits
+   * for a curator. Absent in a personal library.
+   */
+  libraryAction?: "install" | "installed" | "curator-only";
   facet: AcademyCellFacet;
 }
 
@@ -293,9 +305,39 @@ export async function providerListHandler(
     ).map((status) => [status.id, status]),
   );
 
+  // A team library takes a provider's packages through a curator (D7): the
+  // row offers „Für die Bibliothek installieren“ instead of „Aufnehmen“, and
+  // learners enrol from the library's own list.
+  const teamLibrary = db.dialect === "postgres";
+  const curator = teamLibrary && (await connectedRoleIsCurator(db));
   const rawCells: Array<Omit<ProviderCellRow, "facet">> = entries.map(
     (entry) => {
       const installed = installedVersions.get(entry.id) ?? null;
+      if (teamLibrary) {
+        const current =
+          installed !== null &&
+          compareTileVersions(entry.version, installed) !== 1;
+        return {
+          id: entry.id,
+          provider: confirmed.provider.id,
+          title: entry.title,
+          description: entry.description,
+          language: entry.language,
+          version: entry.version,
+          items: entry.items,
+          appUrl: entry.appUrl,
+          bundled: false,
+          held: false,
+          heldVersion: null,
+          newer: false,
+          preview: entry.preview,
+          libraryAction: current
+            ? "installed"
+            : curator
+              ? "install"
+              : "curator-only",
+        };
+      }
       const held = statuses.get(entry.id)?.enrolled ?? false;
       const heldVersion = held ? installed : null;
       return {
@@ -324,6 +366,8 @@ export async function providerListHandler(
     ...(error ? { error } : {}),
     provider: providerSummary(confirmed.origin, confirmed.provider),
     ...(providerChanged ? { providerChanged } : {}),
+    teamLibrary,
+    curator,
     taxonomy: taxonomy as AcademyTaxonomy,
     cells: cells as ProviderCellRow[],
   };
@@ -468,4 +512,124 @@ export async function providerUpdateHandler(
     version: await installedTileVersion(db, cellId),
     cardsCreated: result.cardsCreated,
   };
+}
+
+// ── Team libraries: a curator installs, members enrol (ADR 2026-11-25 D7) ──
+
+/**
+ * „Für die Bibliothek installieren“ / `zam team install-cell`: a curator
+ * installs a provider's package into the team library with their own login.
+ * Writes the tile once and creates no cards, for anyone.
+ */
+export async function providerInstallForLibraryHandler(
+  db: Database,
+  params: ProviderHandlerParams & {
+    cellId: string;
+    onProgress?: (progress: { done: number; total: number }) => void;
+  },
+) {
+  const cellId = params.cellId?.trim() ?? "";
+  const colon = cellId.indexOf(":");
+  const confirmed = requireProvider(colon > 0 ? cellId.slice(0, colon) : "");
+  if (db.dialect !== "postgres") {
+    throw new Error(
+      "Only a team library installs packages for everyone; in a personal library use „Aufnehmen“",
+    );
+  }
+  if (!(await connectedRoleIsCurator(db))) {
+    throw new Error(
+      "CURATOR_REQUIRED: only a curator installs packages for the team library",
+    );
+  }
+  const token = providerTokenSupplier(confirmed, params.getToken);
+  const entry = await providerEntry(
+    confirmed,
+    cellId,
+    token,
+    params.fetch,
+    true,
+  );
+  if (!entry) throw new Error(`${cellId} is not in the provider's catalog`);
+  const from = await installedTileVersion(db, cellId);
+  if (from && compareTileVersions(entry.version, from) !== 1) {
+    return {
+      success: true as const,
+      cellId,
+      installed: false,
+      version: from,
+    };
+  }
+  const scope = scopeOf(confirmed);
+  if (!readCachedCell(entry, scope)) {
+    const { bytes } = await fetchProviderCell(
+      confirmed,
+      entry,
+      token,
+      params.fetch,
+    );
+    writeCachedCell(entry, bytes, scope);
+  }
+  const tile = resolveCachedTile(cellId, scope);
+  if (!tile) throw new Error(`${cellId}: the downloaded cell is not readable`);
+  await installKvtTile(db, tile, {
+    namespace: confirmed.provider.id,
+    appUrl: entry.appUrl,
+    preview: entry.preview,
+    onProgress: params.onProgress,
+  });
+  rememberLessonOrigins([entry.appUrl]);
+  return {
+    success: true as const,
+    cellId,
+    installed: true,
+    from,
+    version: await installedTileVersion(db, cellId),
+  };
+}
+
+/**
+ * The provider packages this library holds, with the learner's state. No
+ * network and no provider confirmation: a member sees what a curator
+ * installed. Their lesson origins are remembered so reviews never fetch them.
+ */
+export async function installedProviderTilesHandler(
+  db: Database,
+  params: { user?: string } = {},
+) {
+  const userId = await resolveHandlerUser(db, params.user);
+  const tiles = await listInstalledProviderTiles(db, userId);
+  rememberLessonOrigins(
+    tiles.map((tile) => tile.appUrl).filter((url): url is string => !!url),
+  );
+  const teamLibrary = db.dialect === "postgres";
+  return {
+    success: true as const,
+    teamLibrary,
+    curator: teamLibrary && (await connectedRoleIsCurator(db)),
+    tiles,
+  };
+}
+
+/** „Aufnehmen“ / „Neue Karten holen“ on a provider package the library holds. */
+export async function enrolInstalledHandler(
+  db: Database,
+  params: {
+    cellId: string;
+    user?: string;
+    onProgress?: (progress: { done: number; total: number }) => void;
+  },
+) {
+  const cellId = params.cellId?.trim() ?? "";
+  if (!isProviderTileId(cellId)) {
+    throw new Error(`${cellId} is not a provider package`);
+  }
+  const userId = await resolveHandlerUser(db, params.user);
+  const result = await enrolInstalledTile(db, userId, cellId, {
+    onProgress: params.onProgress,
+  });
+  const [tile] = (await listInstalledProviderTiles(db, userId)).filter(
+    (row) => row.tileId === cellId,
+  );
+  if (tile?.appUrl) rememberLessonOrigins([tile.appUrl]);
+  return result;
 }

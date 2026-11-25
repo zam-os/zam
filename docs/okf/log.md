@@ -1,5 +1,9 @@
 # Log
 
+## 2026-11-25
+
+- **Update** — [Learning Content](learning-content.md)
+
 ## 2026-11-22
 
 - **Update** — [Learning Content](learning-content.md)

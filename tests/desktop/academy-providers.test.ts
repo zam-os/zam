@@ -204,4 +204,159 @@ describe("Studio: private Academy providers", () => {
     ]);
     body.replaceChildren();
   });
+
+  it("lists what a team library holds and enrols from it (D7)", async () => {
+    const { body } = mount();
+    const calls: string[][] = [];
+    setBridgeTransport(async (command, args) => {
+      calls.push([command, ...args]);
+      if (command === "academy-provider-list") {
+        return { success: true, providers: [] };
+      }
+      if (command === "academy-installed-list") {
+        return {
+          success: true,
+          teamLibrary: true,
+          curator: false,
+          tiles: [
+            {
+              tileId: "example-provider:lf3",
+              providerId: "example-provider",
+              version: "2026.11.2",
+              title: "LF3",
+              description: "",
+              appUrl: "https://provider.example/lf3/",
+              preview: true,
+              items: 24,
+              held: true,
+              newItems: 2,
+            },
+          ],
+        };
+      }
+      if (command === "academy-list") {
+        return { success: true, offline: false, cells: [] };
+      }
+      if (command === "academy-enrol-installed") {
+        return { success: true, cardsCreated: 2, version: "2026.11.2" };
+      }
+      return { success: true };
+    });
+
+    await openAcademyList();
+    const overlay = body.children[0];
+    await vi.waitFor(() =>
+      expect(
+        overlay.all("button").some((b) => b.dataset.provider === "@library"),
+      ).toBe(true),
+    );
+    overlay
+      .all("button")
+      .find((b) => b.dataset.provider === "@library")!
+      .click();
+    await vi.waitFor(() =>
+      expect(overlay.all("article").map((a) => a.dataset.cellId)).toEqual([
+        "example-provider:lf3",
+      ]),
+    );
+    // Held, with items the member has no card for yet: „Neue Karten holen“.
+    const update = findButton(overlay, "update");
+    expect(update.textContent).toBe(t("academy_library_new_cards"));
+    update.click();
+    await vi.waitFor(() =>
+      expect(calls).toContainEqual([
+        "academy-enrol-installed",
+        "example-provider:lf3",
+      ]),
+    );
+    expect(calls.some(([command]) => command === "academy-enrol")).toBe(false);
+    body.replaceChildren();
+  });
+
+  it("lets a curator install a provider's package for the library, and nobody else", async () => {
+    const { body } = mount();
+    const calls: string[][] = [];
+    let curator = true;
+    setBridgeTransport(async (command, args) => {
+      calls.push([command, ...args]);
+      if (command === "academy-provider-list") {
+        return { success: true, providers: [PROVIDER] };
+      }
+      if (command === "academy-installed-list") {
+        return { success: true, teamLibrary: true, curator, tiles: [] };
+      }
+      if (command === "academy-list") {
+        return {
+          success: true,
+          offline: false,
+          provider: PROVIDER,
+          teamLibrary: true,
+          curator,
+          cells: [
+            {
+              id: "example-provider:lf3",
+              provider: "example-provider",
+              title: "LF3",
+              description: "",
+              language: "de",
+              version: "2026.11.1",
+              items: 24,
+              appUrl: "https://provider.example/lf3/",
+              bundled: false,
+              held: false,
+              heldVersion: null,
+              newer: false,
+              preview: true,
+              libraryAction: curator ? "install" : "curator-only",
+            },
+          ],
+        };
+      }
+      if (command === "academy-install-for-library") {
+        return { success: true, installed: true, version: "2026.11.1" };
+      }
+      return { success: true };
+    });
+
+    const openProvider = async () => {
+      await openAcademyList();
+      const overlay = body.children[0];
+      await vi.waitFor(() =>
+        expect(
+          overlay
+            .all("button")
+            .some((b) => b.dataset.provider === "example-provider"),
+        ).toBe(true),
+      );
+      overlay
+        .all("button")
+        .find((b) => b.dataset.provider === "example-provider")!
+        .click();
+      await vi.waitFor(() =>
+        expect(overlay.all("article")).toHaveLength(1),
+      );
+      return overlay;
+    };
+
+    const overlay = await openProvider();
+    const install = findButton(overlay, "library-install");
+    expect(install.textContent).toBe(t("academy_library_install"));
+    install.click();
+    await vi.waitFor(() =>
+      expect(install.textContent).toBe(t("academy_library_installed")),
+    );
+    expect(calls).toContainEqual([
+      "academy-install-for-library",
+      "example-provider:lf3",
+    ]);
+    expect(calls.some(([command]) => command === "academy-enrol")).toBe(false);
+
+    curator = false;
+    body.replaceChildren();
+    const memberOverlay = await openProvider();
+    const waiting = findButton(memberOverlay, "library-install");
+    expect(waiting.textContent).toBe(t("academy_library_curator_only"));
+    expect(waiting.disabled).toBe(true);
+    body.replaceChildren();
+  });
 });

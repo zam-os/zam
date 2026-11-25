@@ -77,6 +77,7 @@ import {
   installedTileVersion,
   isAnswerFormat,
   isObserverPolicyConfigured,
+  isProviderTileId,
   isScreenObservationEnabled,
   isStudyLearningMode,
   endSession as kernelEndSession,
@@ -123,6 +124,10 @@ import {
   withdrawAssignment,
   writeCardText,
 } from "../kernel/index.js";
+import {
+  enrolProviderCellForAgent,
+  providerCellsForAgents,
+} from "./academy/agent-cells.js";
 import {
   readCachedCatalog,
   readCachedCell,
@@ -2389,6 +2394,17 @@ export async function listBundledCellsHandler(
       }
     }
 
+    // Private Academy providers (ADR 2026-11-25 D9): cells cached from each
+    // confirmed provider's last check, and the provider packages the library
+    // holds. Still nothing here reaches the network.
+    cells.push(
+      ...(await providerCellsForAgents(
+        db,
+        userId,
+        new Set(cells.map((cell) => cell.id)),
+      )),
+    );
+
     return { success: true as const, cells, scoped: false as const };
   }
 
@@ -2426,6 +2442,11 @@ export async function enrolBundledCellHandler(
   }
   const userId = await resolveHandlerUser(db, params.user);
   const cellId = params.cellId.trim();
+  // A private provider's package (ADR 2026-11-25 D9): from the library, or
+  // from the cache of the learner's last check. Never a download.
+  if (isProviderTileId(cellId)) {
+    return enrolProviderCellForAgent(db, userId, cellId, params.onProgress);
+  }
   // An agent may enrol a bundled cell or one already cached locally, but never
   // reaches the network and never updates a held cell: that is the learner's
   // „Aufnehmen“ / „Aktualisieren“ (ADR 2026-10-19 D4, amended by ADR 2026-11-22).

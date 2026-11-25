@@ -5,6 +5,7 @@ import { RLS_PROTECTED_TABLES } from "../../src/cli/deploy/rls-policies.js";
 import {
   ADMIN_TABLES,
   addTeamMember,
+  connectedRoleIsCurator,
   entraPrincipalDirectory,
   KNOWLEDGE_TABLES,
   LIBRARY_SETTINGS_TABLES,
@@ -740,6 +741,10 @@ describeWithPostgres("zam team on PostgreSQL (needs POSTGRES_URL)", () => {
       const asAlice = await connectAs("alice@example.org");
       const asBob = await connectAs("bob@example.org");
       try {
+        // The connection's own role decides who installs for everyone.
+        expect(await connectedRoleIsCurator(asAlice)).toBe(true);
+        expect(await connectedRoleIsCurator(asBob)).toBe(false);
+
         // The curator installs: the tile, its atoms and their owners.
         await installKvtTile(asAlice, publicTile());
         await installKvtTile(asAlice, providerTile(), {

@@ -26,6 +26,12 @@ export interface InstalledProviderTile {
   items: number;
   /** The learner holds at least one active card on the tile's atoms. */
   held: boolean;
+  /**
+   * Published items the learner holds no card for. After a curator installed
+   * a newer version, enrolling again hands them out (within the usual
+   * enrolment budget), as „Aktualisieren“ does for a personal library.
+   */
+  newItems: number;
 }
 
 export interface EnrolInstalledTileResult {
@@ -99,6 +105,19 @@ export async function listInstalledProviderTiles(
             AND c.detached_at IS NULL`,
       )
       .get(row.tile_id, userId)) as { n: number };
+    const missing = (await db
+      .prepare(
+        `SELECT COUNT(DISTINCT t.id) AS n
+           FROM tokens t
+           JOIN tile_atoms ta ON ta.atom_id = t.atom_id
+          WHERE ta.tile_id = ?
+            AND t.deprecated_at IS NULL
+            AND t.editorial_state = 'published'
+            AND NOT EXISTS (
+              SELECT 1 FROM cards c WHERE c.token_id = t.id AND c.user_id = ?
+            )`,
+      )
+      .get(row.tile_id, userId)) as { n: number };
     out.push({
       tileId: row.tile_id,
       providerId,
@@ -109,6 +128,7 @@ export async function listInstalledProviderTiles(
       preview: Number(row.preview ?? 0) === 1,
       items: Number(items.n),
       held: Number(held.n) > 0,
+      newItems: Number(missing.n),
     });
   }
   return out;

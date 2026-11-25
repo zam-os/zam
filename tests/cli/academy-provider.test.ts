@@ -17,19 +17,60 @@ import {
   academyProviderCheckHandler,
   academyProviderListHandler,
   academyProviderRemoveHandler,
+  enrolInstalledHandler,
+  installedProviderTilesHandler,
   providerEnrolHandler,
+  providerInstallForLibraryHandler,
   providerListHandler,
   providerUpdateHandler,
 } from "../../src/cli/academy/provider-handlers.js";
-import { getReview } from "../../src/cli/bridge-handlers.js";
+import {
+  enrolBundledCellHandler,
+  getReview,
+  listBundledCellsHandler,
+} from "../../src/cli/bridge-handlers.js";
 import { executeBridgeCommandJson } from "../../src/cli/commands/bridge.js";
 import type { SafeTransport } from "../../src/cli/net/safe-fetch.js";
 import {
   type Database,
+  installKvtTile,
   type KvtTile,
   listConfirmedProviders,
   openDatabase,
+  reviewSuppressedOrigins,
 } from "../../src/kernel/index.js";
+
+/**
+ * The SQLite library dressed as a team library: PostgreSQL dialect, and the
+ * curator check answered by `curator`. The SQL itself still runs on SQLite;
+ * the real roles and grants are covered by tests/kernel/postgres-team.test.ts.
+ */
+function asTeamLibrary(
+  db: Database,
+  curator: boolean,
+  learner = "learner",
+): Database {
+  const answer = (row: Record<string, unknown>) => ({
+    get: async () => row,
+    all: async () => [row],
+    run: async () => ({}),
+  });
+  return new Proxy(db, {
+    get(target, prop) {
+      if (prop === "dialect") return "postgres";
+      if (prop === "prepare") {
+        return (sql: string) =>
+          sql.includes("pg_has_role")
+            ? answer({ curator })
+            : sql.includes("current_learner_id()")
+              ? answer({ role: learner, learner })
+              : target.prepare(sql);
+      }
+      const value = Reflect.get(target, prop, target);
+      return typeof value === "function" ? value.bind(target) : value;
+    },
+  }) as Database;
+}
 
 const ORIGIN = "https://provider.example";
 const TENANT = "00000000-0000-0000-0000-000000000000";
@@ -552,6 +593,202 @@ describe("private Academy providers (ADR 2026-11-25)", () => {
     // Without the provider on this machine there is nothing to offer.
     academyProviderRemoveHandler({ id: "example-provider" });
     expect(await providerFeedbackFor(db, itemId)).toBeNull();
+  });
+
+  it("lets a curator install for a team library, and nobody else (D7)", async () => {
+    const provider = fakeProvider();
+    await confirm(provider);
+    const asCurator = asTeamLibrary(db, true);
+    const asMember = asTeamLibrary(db, false);
+
+    // In a team library the rows offer the curator's install, not „Aufnehmen“.
+    const before = await providerListHandler(asCurator, {
+      provider: "example-provider",
+      user: "learner",
+      fetch: provider.fetch,
+      getToken: provider.getToken,
+    });
+    expect(before).toMatchObject({ teamLibrary: true, curator: true });
+    expect(before.cells[0]).toMatchObject({ libraryAction: "install", held: false });
+    const memberView = await providerListHandler(asMember, {
+      provider: "example-provider",
+      user: "learner",
+      fetch: provider.fetch,
+      getToken: provider.getToken,
+    });
+    expect(memberView.cells[0].libraryAction).toBe("curator-only");
+
+    await expect(
+      providerInstallForLibraryHandler(asMember, {
+        cellId: "example-provider:optik",
+        fetch: provider.fetch,
+        getToken: provider.getToken,
+      }),
+    ).rejects.toThrow(/CURATOR_REQUIRED/);
+    await expect(
+      providerInstallForLibraryHandler(db, {
+        cellId: "example-provider:optik",
+        fetch: provider.fetch,
+        getToken: provider.getToken,
+      }),
+    ).rejects.toThrow(/Only a team library/);
+
+    const installed = await providerInstallForLibraryHandler(asCurator, {
+      cellId: "example-provider:optik",
+      fetch: provider.fetch,
+      getToken: provider.getToken,
+    });
+    expect(installed).toMatchObject({ installed: true, version: "2026.11.1" });
+    // Installing for the library hands out no cards, to anyone.
+    const cards = (await db
+      .prepare("SELECT COUNT(*) AS n FROM cards")
+      .get()) as { n: number };
+    expect(Number(cards.n)).toBe(0);
+    expect(
+      (
+        await providerInstallForLibraryHandler(asCurator, {
+          cellId: "example-provider:optik",
+          fetch: provider.fetch,
+          getToken: provider.getToken,
+        })
+      ).installed,
+    ).toBe(false);
+    const after = await providerListHandler(asCurator, {
+      provider: "example-provider",
+      user: "learner",
+      fetch: provider.fetch,
+      getToken: provider.getToken,
+    });
+    expect(after.cells[0].libraryAction).toBe("installed");
+  });
+
+  it("lets members enrol from the library alone, and offers new items after an update (D7)", async () => {
+    const provider = fakeProvider();
+    await confirm(provider);
+    await providerInstallForLibraryHandler(asTeamLibrary(db, true), {
+      cellId: "example-provider:optik",
+      fetch: provider.fetch,
+      getToken: provider.getToken,
+    });
+    // The member has not confirmed the provider on their machine.
+    academyProviderRemoveHandler({ id: "example-provider" });
+    const member = asTeamLibrary(db, false, "member");
+
+    const listed = await installedProviderTilesHandler(member, { user: "member" });
+    expect(listed).toMatchObject({ teamLibrary: true, curator: false });
+    expect(listed.tiles[0]).toMatchObject({
+      tileId: "example-provider:optik",
+      appUrl: `${ORIGIN}/optik/`,
+      held: false,
+    });
+    // A review never fetches these lessons, even without the provider here.
+    expect(reviewSuppressedOrigins().has(ORIGIN)).toBe(true);
+
+    const enrolled = await enrolInstalledHandler(member, {
+      cellId: "example-provider:optik",
+      user: "member",
+    });
+    expect(enrolled.cardsCreated).toBeGreaterThan(0);
+
+    // A curator installs a newer version with one more item.
+    const next = providerTile("2026.11.2");
+    next.atoms[0].practice_items.push({
+      ...next.atoms[0].practice_items[0],
+      id: "01K3X9A7R4B8C1D2E3F4P5N001",
+      slug: "p-optik-new-item",
+    });
+    await installKvtTile(db, next, { namespace: "example-provider" });
+    const stale = await installedProviderTilesHandler(member, { user: "member" });
+    expect(stale.tiles[0]).toMatchObject({ held: true, version: "2026.11.2" });
+    expect(stale.tiles[0].newItems).toBeGreaterThan(0);
+    const again = await enrolInstalledHandler(member, {
+      cellId: "example-provider:optik",
+      user: "member",
+    });
+    expect(again.cardsCreated).toBeGreaterThan(0);
+
+    await expect(
+      enrolInstalledHandler(member, { cellId: "zam-academy:uml", user: "member" }),
+    ).rejects.toThrow(/not a provider package/);
+  });
+
+  it("shows agents provider cells from the cache only, and enrols without a download (D9)", async () => {
+    const provider = fakeProvider();
+    await confirm(provider);
+    // The learner opened the provider once: catalog cached, cell not yet.
+    await providerListHandler(db, {
+      provider: "example-provider",
+      user: "learner",
+      fetch: provider.fetch,
+      getToken: provider.getToken,
+    });
+    const requests = provider.seen.length;
+
+    const listed = await listBundledCellsHandler(db, { user: "learner" });
+    const row = listed.cells.find((cell) => cell.id === "example-provider:optik");
+    expect(row).toMatchObject({
+      provider: { id: "example-provider", title: "Example Academy" },
+      requiresLearnerEnrol: true,
+      installed: false,
+    });
+    await expect(
+      enrolBundledCellHandler(db, {
+        cellId: "example-provider:optik",
+        user: "learner",
+      }),
+    ).rejects.toThrow(/not downloaded locally yet/);
+
+    // After the learner's own „Aufnehmen“ the cell is cached and installed;
+    // an agent enrols another learner from the library.
+    await providerEnrolHandler(db, {
+      provider: "example-provider",
+      cellId: "example-provider:optik",
+      user: "learner",
+      fetch: provider.fetch,
+      getToken: provider.getToken,
+    });
+    const afterRequests = provider.seen.length;
+    const other = await enrolBundledCellHandler(db, {
+      cellId: "example-provider:optik",
+      user: "other",
+    });
+    expect(other).toMatchObject({ success: true, installed: true });
+    expect(other.cardsCreated).toBeGreaterThan(0);
+    const again = await listBundledCellsHandler(db, { user: "other" });
+    expect(
+      again.cells.find((cell) => cell.id === "example-provider:optik"),
+    ).toMatchObject({ enrolled: true, provider: { id: "example-provider" } });
+
+    // The agent calls made no request at all.
+    expect(provider.seen.length).toBe(afterRequests);
+    expect(afterRequests).toBeGreaterThan(requests);
+  });
+
+  it("lets an agent enrol a team-library member in what a curator installed (D7, D9)", async () => {
+    const provider = fakeProvider();
+    await confirm(provider);
+    await providerInstallForLibraryHandler(asTeamLibrary(db, true), {
+      cellId: "example-provider:optik",
+      fetch: provider.fetch,
+      getToken: provider.getToken,
+    });
+    academyProviderRemoveHandler({ id: "example-provider" });
+    const member = asTeamLibrary(db, false, "member");
+    const listed = await listBundledCellsHandler(member, { user: "member" });
+    expect(
+      listed.cells.find((cell) => cell.id === "example-provider:optik"),
+    ).toMatchObject({ installedInLibrary: true, enrolled: false });
+    const enrolled = await enrolBundledCellHandler(member, {
+      cellId: "example-provider:optik",
+      user: "member",
+    });
+    expect(enrolled.cardsCreated).toBeGreaterThan(0);
+    await expect(
+      enrolBundledCellHandler(member, {
+        cellId: "example-provider:other",
+        user: "member",
+      }),
+    ).rejects.toThrow(/A curator installs it first/);
   });
 
   it("answers the provider bridge commands in JSON, errors included", async () => {

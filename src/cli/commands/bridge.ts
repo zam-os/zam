@@ -187,7 +187,10 @@ import {
   academyProviderCheckHandler,
   academyProviderListHandler,
   academyProviderRemoveHandler,
+  enrolInstalledHandler,
+  installedProviderTilesHandler,
   providerEnrolHandler,
+  providerInstallForLibraryHandler,
   providerListHandler,
   providerUpdateHandler,
 } from "../academy/provider-handlers.js";
@@ -8775,6 +8778,74 @@ bridgeCommand
     } catch (err: unknown) {
       jsonError((err as Error).message || String(err));
     }
+  });
+
+// ── zam bridge academy-install-for-library / academy-installed-list /
+//    academy-enrol-installed ──────────────────────────────────────────────
+// A team library (ADR 2026-11-25 D7): a curator installs a provider's package
+// once, with their own login; every member lists and enrols from what the
+// library holds, with no network. Learner clicks, not panel commands.
+
+bridgeCommand
+  .command("academy-install-for-library <cellId>")
+  .description(
+    "Install a confirmed provider's package into the team library (curator, JSON)",
+  )
+  .action(async (cellId) => {
+    await withDb(async (db) => {
+      try {
+        const onProgress = academyProgress(cellId, progressOut);
+        jsonOut(
+          await providerInstallForLibraryHandler(db, {
+            cellId,
+            onProgress: (progress) =>
+              onProgress({ phase: "installing", ...progress }),
+          }),
+        );
+      } catch (err: unknown) {
+        jsonError((err as Error).message || String(err));
+      }
+    });
+  });
+
+bridgeCommand
+  .command("academy-installed-list")
+  .description(
+    "List the provider packages this library holds, with the learner's state (JSON)",
+  )
+  .option("--user <userId>", "User ID")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        jsonOut(await installedProviderTilesHandler(db, { user: opts.user }));
+      } catch (err: unknown) {
+        jsonError((err as Error).message || String(err));
+      }
+    });
+  });
+
+bridgeCommand
+  .command("academy-enrol-installed <cellId>")
+  .description(
+    "Enrol in a provider package the library holds; no download (JSON)",
+  )
+  .option("--user <userId>", "User ID")
+  .action(async (cellId, opts) => {
+    await withDb(async (db) => {
+      try {
+        const onProgress = academyProgress(cellId, progressOut);
+        jsonOut(
+          await enrolInstalledHandler(db, {
+            cellId,
+            user: opts.user,
+            onProgress: (progress) =>
+              onProgress({ phase: "enrolling", ...progress }),
+          }),
+        );
+      } catch (err: unknown) {
+        jsonError((err as Error).message || String(err));
+      }
+    });
   });
 
 // ── zam bridge bundled-tiles-reconcile ─────────────────────────────────────
