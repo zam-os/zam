@@ -22,6 +22,8 @@ export interface InstalledProviderTile {
   description: string;
   appUrl: string | null;
   preview: boolean;
+  /** The atoms the tile owns (`tile_atoms`), sorted. */
+  atoms: string[];
   /** Published items the tile's atoms hold: the most cards enrolment gives. */
   items: number;
   /** The learner holds at least one active card on the tile's atoms. */
@@ -84,6 +86,11 @@ export async function listInstalledProviderTiles(
     if (!isProviderTileId(row.tile_id)) continue;
     const providerId = prefixOf(row.tile_id);
     if (wanted && !wanted.has(providerId)) continue;
+    const atoms = (await db
+      .prepare(
+        "SELECT atom_id FROM tile_atoms WHERE tile_id = ? ORDER BY atom_id",
+      )
+      .all(row.tile_id)) as Array<{ atom_id: string }>;
     const items = (await db
       .prepare(
         `SELECT COUNT(DISTINCT t.id) AS n
@@ -126,6 +133,7 @@ export async function listInstalledProviderTiles(
       description: row.description?.trim() ?? "",
       appUrl: row.app_url,
       preview: Number(row.preview ?? 0) === 1,
+      atoms: atoms.map((atom) => atom.atom_id),
       items: Number(items.n),
       held: Number(held.n) > 0,
       newItems: Number(missing.n),

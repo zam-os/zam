@@ -775,9 +775,11 @@ describe("private Academy providers (ADR 2026-11-25)", () => {
     academyProviderRemoveHandler({ id: "example-provider" });
     const member = asTeamLibrary(db, false, "member");
     const listed = await listBundledCellsHandler(member, { user: "member" });
-    expect(
-      listed.cells.find((cell) => cell.id === "example-provider:optik"),
-    ).toMatchObject({ installedInLibrary: true, enrolled: false });
+    const row = listed.cells.find((cell) => cell.id === "example-provider:optik");
+    expect(row).toMatchObject({ installedInLibrary: true, enrolled: false });
+    // Without the provider's cache the library still knows the tile's atoms.
+    expect(row?.atomCount).toBeGreaterThan(0);
+    expect(row?.inScopeAtomIds).toHaveLength(row?.atomCount ?? -1);
     const enrolled = await enrolBundledCellHandler(member, {
       cellId: "example-provider:optik",
       user: "member",

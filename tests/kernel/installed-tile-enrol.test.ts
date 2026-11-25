@@ -90,6 +90,11 @@ describe("enrolInstalledTile and listInstalledProviderTiles", () => {
       held: false,
     });
     expect(listed.items).toBeGreaterThan(0);
+    expect(listed.atoms).toEqual(
+      providerTile()
+        .atoms.map((atom) => atom.id)
+        .sort(),
+    );
 
     const first = await enrolInstalledTile(
       db,

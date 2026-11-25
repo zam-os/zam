@@ -350,6 +350,10 @@ describe("Studio: private Academy providers", () => {
       "example-provider:lf3",
     ]);
     expect(calls.some(([command]) => command === "academy-enrol")).toBe(false);
+    // The curator sees „In dieser Bibliothek“ at once, not after reopening.
+    expect(
+      overlay.all("button").some((b) => b.dataset.provider === "@library"),
+    ).toBe(true);
 
     curator = false;
     body.replaceChildren();

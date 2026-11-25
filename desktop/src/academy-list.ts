@@ -825,6 +825,8 @@ function libraryActionButton(
         });
         if (libraryInfo) {
           libraryInfo = { ...libraryInfo, count: libraryInfo.count + 1 };
+          // The first install brings „In dieser Bibliothek“ into the switch.
+          if (dialog) renderProviderStrip(dialog);
         }
         void Promise.resolve(options.onEnrolled?.()).catch((err) =>
           console.error("academy: refresh after library install failed", err),
