@@ -659,6 +659,7 @@ export {
   type InstalledProviderTile,
   isProviderTileId,
   listInstalledProviderTiles,
+  providerTileForItem,
 } from "./library/installed-tiles.js";
 export type {
   InstallKvtOptions,

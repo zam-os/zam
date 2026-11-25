@@ -10,6 +10,7 @@ import { join, resolve } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { academyCacheDir } from "../../src/cli/academy/cache.js";
 import type { AcademyFetchOptions } from "../../src/cli/academy/catalog-client.js";
+import { providerFeedbackFor } from "../../src/cli/academy/feedback.js";
 import { academyListHandler } from "../../src/cli/academy/handlers.js";
 import {
   academyProviderAddHandler,
@@ -20,6 +21,7 @@ import {
   providerListHandler,
   providerUpdateHandler,
 } from "../../src/cli/academy/provider-handlers.js";
+import { getReview } from "../../src/cli/bridge-handlers.js";
 import { executeBridgeCommandJson } from "../../src/cli/commands/bridge.js";
 import type { SafeTransport } from "../../src/cli/net/safe-fetch.js";
 import {
@@ -507,6 +509,49 @@ describe("private Academy providers (ADR 2026-11-25)", () => {
         fetch: provider.fetch,
       }),
     ).rejects.toThrow(/zam team install-cell/);
+  });
+
+  it("builds the report link from tile, item and version only (D8)", async () => {
+    const provider = fakeProvider();
+    await confirm(provider);
+    await providerEnrolHandler(db, {
+      provider: "example-provider",
+      cellId: "example-provider:optik",
+      user: "learner",
+      fetch: provider.fetch,
+      getToken: provider.getToken,
+    });
+    const itemId = "01K3X9A7R4B8C1D2E3F4P5H001";
+    expect(await providerFeedbackFor(db, itemId)).toBe(
+      `https://feedback.example/new?tile=example-provider%3Aoptik&item=${itemId}`,
+    );
+    // No report link for items outside a provider tile.
+    expect(await providerFeedbackFor(db, "01K3X9A7R4B8C1D2E3F4G5H001")).toBe(
+      null,
+    );
+
+    // get-review hands it to a rendering surface, and only to one.
+    const withMedia = await getReview(db, {
+      user: "learner",
+      includeMedia: true,
+      noResolve: true,
+      noDynamicQuestion: true,
+    });
+    expect(
+      (withMedia as { card?: { feedbackUrl?: string } }).card?.feedbackUrl,
+    ).toContain("tile=example-provider%3Aoptik");
+    const plain = await getReview(db, {
+      user: "learner",
+      noResolve: true,
+      noDynamicQuestion: true,
+    });
+    expect(
+      (plain as { card?: { feedbackUrl?: string } }).card?.feedbackUrl,
+    ).toBeUndefined();
+
+    // Without the provider on this machine there is nothing to offer.
+    academyProviderRemoveHandler({ id: "example-provider" });
+    expect(await providerFeedbackFor(db, itemId)).toBeNull();
   });
 
   it("answers the provider bridge commands in JSON, errors included", async () => {

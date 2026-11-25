@@ -130,6 +130,7 @@ import {
   readCachedTileVersion,
   resolveCachedTile,
 } from "./academy/cache.js";
+import { providerFeedbackFor } from "./academy/feedback.js";
 import { resolveOperationKnowledgeContexts } from "./knowledge-contexts.js";
 import { ensureHighQualityQuestion } from "./llm/client.js";
 import {
@@ -393,6 +394,11 @@ export async function getReview(db: Database, params: GetReviewParams) {
         item.tokenId,
       ) ?? null)
     : null;
+  // „Fehler melden ↗“ on a private provider's card (ADR 2026-11-25 D8), for
+  // a rendering surface only, which opens it on the learner's click.
+  const feedbackUrl = params.includeMedia
+    ? await providerFeedbackFor(db, item.tokenId).catch(() => null)
+    : null;
 
   return {
     userId,
@@ -406,6 +412,7 @@ export async function getReview(db: Database, params: GetReviewParams) {
           }
         : {}),
       media,
+      ...(feedbackUrl ? { feedbackUrl } : {}),
     },
     prompt,
     questionSource,

@@ -165,3 +165,27 @@ export async function enrolInstalledTile(
     alreadyEnrolled: result.cardsCreated === 0 && result.cardsReused > 0,
   };
 }
+
+/**
+ * The provider tile a practice item belongs to, with the version the library
+ * holds, or null for an item of a bundled or Academy tile (or none). The
+ * report link of ADR 2026-11-25 Decision 8 names exactly these.
+ */
+export async function providerTileForItem(
+  db: Database,
+  itemId: string,
+): Promise<{ tileId: string; version: string } | null> {
+  const rows = (await db
+    .prepare(
+      `SELECT ta.tile_id AS tile_id, it.version AS version
+         FROM tokens t
+         JOIN tile_atoms ta ON ta.atom_id = t.atom_id
+         JOIN installed_tiles it ON it.tile_id = ta.tile_id
+        WHERE t.id = ?
+          AND it.version <> ''
+        ORDER BY ta.tile_id`,
+    )
+    .all(itemId)) as Array<{ tile_id: string; version: string }>;
+  const own = rows.find((row) => isProviderTileId(row.tile_id));
+  return own ? { tileId: own.tile_id, version: own.version } : null;
+}

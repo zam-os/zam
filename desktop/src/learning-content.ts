@@ -19,7 +19,7 @@ import {
   academyPreviewLabel,
   academyUpdateButton,
   initAcademyList,
-  isAcademyCellId,
+  isAcademyOrProviderCellId,
   openAcademyList,
 } from "./academy-list.js";
 import { initLibraryTopics, startLibraryTopic } from "./library-topics.js";
@@ -3511,11 +3511,12 @@ function renderBundledCells(cells: BundledCellItem[]): void {
     stateBtn.disabled = true;
 
     // A held academy cell is updated only on the learner's click (ADR
-    // 2026-10-19 D4): check the catalog, then „Aktualisieren auf …“.
+    // 2026-10-19 D4): check the catalog, then „Aktualisieren auf …“. A
+    // confirmed provider's package works the same way (ADR 2026-11-25).
     const buttons = document.createElement("span");
     buttons.style.display = "flex";
     buttons.style.gap = "6px";
-    if (isAcademyCellId(cell.id)) {
+    if (isAcademyOrProviderCellId(cell.id)) {
       buttons.append(academyUpdateButton(cell.id, () => loadBundledCells()));
     }
     buttons.append(stateBtn);

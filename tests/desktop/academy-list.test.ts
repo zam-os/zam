@@ -4,10 +4,10 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   type AcademyCellRow,
   type AcademyProgressEvent,
-  academyRow,
-  academyUpdateButton,
   academyErrorText,
   academyMetaText,
+  academyRow,
+  academyUpdateButton,
   applyAcademySchoolFilter,
   createAcademyBrowserState,
   enrolAcademyCell,
@@ -165,6 +165,10 @@ describe("academy import dialog lifecycle", () => {
           ],
         });
       }
+      // The dialog also reads the confirmed providers (ADR 2026-11-25).
+      if (command === "academy-provider-list") {
+        return Promise.resolve({ success: true, providers: [] });
+      }
       enrolCalls++;
       return new Promise((resolve) => {
         finish = resolve;
@@ -214,7 +218,10 @@ describe("academy import dialog lifecycle", () => {
     await openAcademyList();
     expect(overlay.all("progress")).toEqual([bar]);
     expect(
-      overlay.all("button").find((b) => b.dataset.view === "list")?.attributes.get("aria-pressed"),
+      overlay
+        .all("button")
+        .find((b) => b.dataset.view === "list")
+        ?.attributes.get("aria-pressed"),
     ).toBe("true");
 
     // Completing the import updates the rebuilt button and removes the bar.
@@ -388,10 +395,10 @@ describe("academy wiring", () => {
     expect(content).toContain("onEnrolled: () => loadStudioData()");
   });
 
-  it("offers the update check only on a held academy cell", () => {
+  it("offers the update check only on a held academy or provider cell", () => {
     const content = file("desktop/src/learning-content.ts");
     expect(content).toMatch(
-      /if \(isAcademyCellId\(cell\.id\)\) \{\s*buttons\.append\(academyUpdateButton\(cell\.id/,
+      /if \(isAcademyOrProviderCellId\(cell\.id\)\) \{\s*buttons\.append\(academyUpdateButton\(cell\.id/,
     );
   });
 
@@ -400,7 +407,11 @@ describe("academy wiring", () => {
     const click = list.slice(list.indexOf('take.addEventListener("click"'));
     expect(
       click.indexOf('take.textContent = t("academy_taking")'),
-    ).toBeLessThan(click.indexOf("enrolAcademyCell(cell.id, progress.update)"));
+    ).toBeLessThan(
+      click.indexOf(
+        "enrolAcademyCell(cell.id, progress.update, cell.provider)",
+      ),
+    );
     expect(click).toMatch(/\.catch\(\(err\) => \{\s*setTake\(entry\.button\)/);
   });
 

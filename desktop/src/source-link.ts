@@ -24,8 +24,21 @@ export interface WebSourceLink {
   href: string;
   label: string;
   title: string;
-  /** A lesson of a ZAM Academy app. */
+  /** A lesson of a ZAM Academy app, or of a confirmed private provider. */
   academy: boolean;
+}
+
+/**
+ * Hosts of the private Academy providers the learner confirmed on this
+ * machine (ADR 2026-11-25 Decision 6). Studio sets them from
+ * `academy-provider-list`; Mobile and the MCP Apps panel never do, so there a
+ * provider link keeps the plain host label. Library content never sets them:
+ * a link does not become a „lesson“ by naming itself one.
+ */
+let providerLessonHosts: ReadonlySet<string> = new Set();
+
+export function setProviderLessonHosts(hosts: readonly string[]): void {
+  providerLessonHosts = new Set(hosts.map((host) => host.toLowerCase()));
 }
 
 /**
@@ -46,7 +59,7 @@ export function webSourceLink(
   if (url.protocol !== "https:" && url.protocol !== "http:") return null;
   if (!url.hostname) return null;
   const href = url.toString();
-  if (url.hostname === ACADEMY_HOST) {
+  if (url.hostname === ACADEMY_HOST || providerLessonHosts.has(url.hostname)) {
     return { href, label: lessonLabel, title: href, academy: true };
   }
   return {
