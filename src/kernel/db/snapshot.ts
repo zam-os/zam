@@ -46,6 +46,10 @@ export const SNAPSHOT_TABLES = [
   // Decision 7). Rebuildable, but without it a restore would reinstall every
   // installed tile once.
   "installed_tiles",
+  // Which tile brought which atom (ADR 2026-11-25, M050). Not derivable from
+  // the other tables: without it a member cannot enrol from an installed
+  // provider tile, and the provider namespace guard cannot tell owners apart.
+  "tile_atoms",
   // Choice options (ADR 2026-09-27): the shared cache keeps an offline device
   // usable after a restore; exclusions are the learner's own disputes.
   "choice_distractors",

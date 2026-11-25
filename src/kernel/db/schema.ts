@@ -239,6 +239,21 @@ CREATE TABLE IF NOT EXISTS session_subtasks (
 );
 `;
 
+/**
+ * Which tile brought which atom into the library (ADR 2026-11-25, M050).
+ * An atom may belong to several tiles (an overlay tile adds to it), hence the
+ * composite key. Knowledge, shared; written only by the tile installer. A
+ * team-library member enrols from it without the tile's file (Decision 7),
+ * and a provider's namespace guard reads it (Decision 5).
+ */
+export const TILE_ATOM_TABLES = `
+CREATE TABLE IF NOT EXISTS tile_atoms (
+  tile_id  TEXT NOT NULL,
+  atom_id  TEXT NOT NULL REFERENCES learning_atoms(id) ON DELETE CASCADE,
+  PRIMARY KEY (tile_id, atom_id)
+);
+`;
+
 export const SCHEMA_TABLES = `
 -- PRAGMAs (WAL, foreign_keys) are set programmatically in connection.ts,
 -- not here, because libsql embedded replicas manage their own WAL.
@@ -729,15 +744,21 @@ ${ATLAS_TABLES}${ATLAS_LAND_TABLES}${ATLAS_VARIANT_TABLES}${EMBLEM_TABLES}${CONN
 -- Bundled tiles this library has installed, and the version it holds
 -- (ADR 2026-10-14b Decision 7, M048). A later app version reinstalls a
 -- tile whose version differs, so learners who already enrolled receive a
--- cosmetic fix. Knowledge, shared; written only by the installer.
+-- cosmetic fix. Knowledge, shared; written only by the installer. Title,
+-- description, app URL and preview (M050) let a team-library member see a
+-- provider tile a curator installed without its file (ADR 2026-11-25 D7).
 CREATE TABLE IF NOT EXISTS installed_tiles (
   tile_id      TEXT PRIMARY KEY,
   version      TEXT NOT NULL,
   installed_at TEXT NOT NULL,
   failed_at    TEXT,
-  last_error   TEXT
+  last_error   TEXT,
+  title        TEXT NOT NULL DEFAULT '',
+  description  TEXT NOT NULL DEFAULT '',
+  app_url      TEXT,
+  preview      INTEGER NOT NULL DEFAULT 0
 );
-`;
+${TILE_ATOM_TABLES}`;
 
 /** Performance indexes. Applied after migrations — see `SCHEMA_TABLES`. */
 export const SCHEMA_INDEXES = `
@@ -772,6 +793,7 @@ CREATE INDEX IF NOT EXISTS idx_session_subtasks_session ON session_subtasks(sess
 CREATE INDEX IF NOT EXISTS idx_tokens_title ON tokens(title);
 CREATE INDEX IF NOT EXISTS idx_token_contexts_context ON token_contexts(context_id);
 CREATE INDEX IF NOT EXISTS idx_tokens_atom ON tokens(atom_id);
+CREATE INDEX IF NOT EXISTS idx_tile_atoms_atom ON tile_atoms(atom_id);
 CREATE INDEX IF NOT EXISTS idx_choice_distractors_token
   ON choice_distractors(token_id, source_hash);
 CREATE INDEX IF NOT EXISTS idx_atom_bindings_provider

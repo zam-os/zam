@@ -90,6 +90,8 @@ export const KNOWLEDGE_TABLES = [
   // Bundled tile versions the library holds (ADR 2026-10-14b Decision 7);
   // written by whoever installs a tile, which is curators' work.
   "installed_tiles",
+  // Which tile brought which atom (ADR 2026-11-25, M050); same writer.
+  "tile_atoms",
   "agent_skills",
   // Knowledge atlas (ADR 2026-10-13): the shared map, kept by curators.
   "atlas_lenses",

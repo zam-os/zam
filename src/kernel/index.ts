@@ -511,6 +511,7 @@ export {
   type AcademyBereich,
   type AcademyCatalog,
   type AcademyCatalogEntry,
+  type AcademyCatalogSource,
   type AcademyFach,
   type AcademyFachverbund,
   type AcademyIndex,
@@ -523,8 +524,21 @@ export {
   type ParseAcademyIndexOptions,
   parseAcademyCatalog,
   parseAcademyIndex,
+  providerOrigin,
   userHoldsAcademyAppCards,
 } from "./library/academy-catalog.js";
+export {
+  ACADEMY_PROVIDER_FILE,
+  type AcademyProvider,
+  type AcademyProviderAuth,
+  isGuid,
+  parseAcademyProvider,
+  providerFeedbackUrl,
+  providerTokenScope,
+  reservedProviderIds,
+  tileInNamespace,
+  ZAM_ACADEMY_PREFIX,
+} from "./library/academy-provider.js";
 export {
   countAnswerPoints,
   MAX_SCORED_BLOOM_LEVEL,
@@ -639,6 +653,13 @@ export {
   liftDollarMath,
   looksLikeMath,
 } from "./library/dollar-lift.js";
+export {
+  type EnrolInstalledTileResult,
+  enrolInstalledTile,
+  type InstalledProviderTile,
+  isProviderTileId,
+  listInstalledProviderTiles,
+} from "./library/installed-tiles.js";
 export type {
   InstallKvtOptions,
   InstallKvtResult,

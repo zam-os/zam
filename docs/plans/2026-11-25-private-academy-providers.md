@@ -1,6 +1,6 @@
 # Private Academy providers — implementation plan
 
-**Status:** Not started.\
+**Status:** Phase 1 is built; its PostgreSQL case (1.5) runs in CI. Phases 2–6 are open; Phases 0 and 7 are the owner's.\
 **Decision:** [ADR 2026-11-25 — Private Academy Providers](../adr/2026-11-25-private-academy-providers.md). Its decisions are cited here as **D1–D9**. Read the ADR first; this plan does not repeat its reasons.\
 **Branch:** `feat/private-academy-providers`, from `main`. One feature, one branch, one PR, one commit per phase.
 
@@ -43,19 +43,19 @@ Exit evidence: the four checks recorded in the organisation's own runbook, not i
 
 Goal: the kernel can parse a provider, parse its catalog against its own origin, install a provider tile only inside its namespace, and enrol a member from an installed tile. No fetching, no UI.
 
-- [ ] **1.1** New module `src/kernel/library/academy-provider.ts`, exported through `src/kernel/index.ts` (D2):
+- [x] **1.1** New module `src/kernel/library/academy-provider.ts`, exported through `src/kernel/index.ts` (D2):
   - `AcademyProvider` = `{ schema: 1; id; title; publisher; auth: { kind: "none" } | { kind: "entra-cli"; tenant; api }; feedback: string | null }`.
   - `parseAcademyProvider(raw)`: strict. `id` matches the catalog's tile-id prefix part (`^[a-z0-9-]{1,40}$`). `tenant` and `api` are GUIDs, lower-cased before the check `^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$`. `feedback` is an `https:` URL whose only `{…}` placeholders are `{tile}`, `{item}`, `{version}`. Unknown keys are ignored; anything missing or invalid throws.
   - `reservedProviderIds()`: `zam-academy` plus the prefix of every `BUNDLED_TILES` id.
   - `providerTokenScope(provider)` returns `api://<api>/.default`, built here, never taken from the file.
   - `providerFeedbackUrl(provider, { tile, item, version })` fills the three placeholders with `encodeURIComponent` and nothing else.
   - Exit: `tests/kernel/academy-provider.test.ts` — valid file; each invalid field; a scope string in the file is ignored; an unknown placeholder fails; reserved ids are refused.
-- [ ] **1.2** Catalog parsing against a provider origin (D4, D5):
-  - `academyUrl(path, where, origin = ACADEMY_ORIGIN)` and `parseAcademyCatalog(raw, options?: { origin: string; prefix: string })`. Without options the behaviour is today's, byte for byte.
+- [x] **1.2** Catalog parsing against a provider origin (D4, D5):
+  - `academyUrl(path, where, origin = ACADEMY_ORIGIN)` and `parseAcademyCatalog(raw, options?: { origin: string; prefix: string })`. Without options the behaviour is today's, byte for byte. `providerOrigin(value)` accepts only a bare https origin and returns its canonical form (lower-case, punycode).
   - With options, every entry id must start with `<prefix>:`, and `app` and `cell` resolve against `origin`.
   - `parseAcademyIndex` needs no change (it carries no URLs); confirm with a test that a vocational-school taxonomy (school with grades 10–12, subjects named after Lernfelder) parses.
   - Exit: `tests/kernel/academy-catalog.test.ts` gains provider cases (own origin, foreign prefix refused, path that escapes the origin refused); its existing cases are untouched.
-- [ ] **1.3** Tile ownership and installed-tile metadata, migration **M050**:
+- [x] **1.3** Tile ownership and installed-tile metadata, migration **M050**:
 
   ```sql
   CREATE TABLE IF NOT EXISTS tile_atoms (
@@ -74,19 +74,21 @@ Goal: the kernel can parse a provider, parse its catalog against its own origin,
   - `installKvtTile` writes a `tile_atoms` row for every atom of the tile (insert or ignore) and the tile's `title` and `description` into `installed_tiles`. New install options `appUrl` and `preview` fill the other two columns; their default keeps today's values.
   - Add `tile_atoms` to `SNAPSHOT_TABLES` (`src/kernel/db/snapshot.ts`, next to `installed_tiles`) and to the curator-written knowledge tables in `src/cli/deploy/team-provision.ts` (next to `installed_tiles`).
   - Existing libraries get rows for a tile the next time it is installed or reconciled; nothing backfills. Provider tiles are always installed after M050, so they always have rows.
-  - Exit: `tests/kernel/kvt-attach.test.ts` (rows written, reinstall idempotent, overlay tile adds its own rows), the provision tests for M050 on SQLite, and `tests/kernel/postgres-provision.test.ts` for PostgreSQL.
-- [ ] **1.4** Namespace guard in `installKvtTile` (D5), active only with the new option `namespace: string`:
+  - Exit: `tests/kernel/kvt-provider-namespace.test.ts` (rows written, reinstall idempotent, overlay tile adds its own rows, metadata kept when omitted), the provision tests for M050 on SQLite (`tests/kernel/provision.test.ts`, marker guard), and the PostgreSQL suites in CI.
+- [x] **1.4** Namespace guard in `installKvtTile` (D5), active only with the new option `namespace: string`:
   - The tile id must start with `<namespace>:`.
   - Every atom id of the tile must be new to the library, or already owned in `tile_atoms` only by tiles with that prefix.
   - Every practice-item id must be new, or already a token whose atom passes the same rule.
   - Every `replaces` id: no such token → skipped and not recorded; a token on an atom owned by the namespace → moved as today; anything else → the install throws before it writes (the transaction rolls back).
+  - Every `retired_items` id follows the same rule. Found while building: a tile's `retired_items` deprecates tokens by id, so without it a provider could retire public items.
   - Prerequisites keep today's same-tile rule.
   - Without `namespace`, nothing changes.
-  - Exit: `tests/kernel/kvt-attach.test.ts` — foreign tile prefix; reused public atom id; reused public item id; foreign `replaces`; unknown `replaces` skipped without a `practice_item_replacements` row; own `replaces` moves cards and review logs; no option = old behaviour.
-- [ ] **1.5** Enrolment from an installed tile (D7):
+  - Exit: `tests/kernel/kvt-provider-namespace.test.ts` — foreign tile prefix; reused public atom id (nothing written); an existing atom without a recorded owner; reused public item id; foreign `replaces`; retired public item; unknown `replaces` skipped without a `practice_item_replacements` row; own `replaces` moves cards; own reinstall; no option = old behaviour.
+- [x] **1.5** Enrolment from an installed tile (D7):
   - `enrolInstalledTile(db, userId, tileId)`: the atoms come from `tile_atoms`, then `materialiseKvtCards`. It refuses a tile that is not installed or has no `tile_atoms` rows, and writes only learning state.
   - `listInstalledProviderTiles(db, userId, prefixes?)`: every installed tile whose prefix is not reserved, with version, title, description, app URL, preview, published item count and whether the learner holds cards.
-  - Exit: a new `tests/kernel/installed-tile-enrol.test.ts`, and a case in `tests/kernel/postgres-team.test.ts`: a member (not curator) can enrol and cannot install; a curator can install.
+  - Both live in the new `src/kernel/library/installed-tiles.ts`; `enrolInstalledTile` refuses bundled and Academy tiles, which keep `enrolBundledCell` and its in-scope atoms.
+  - Exit: a new `tests/kernel/installed-tile-enrol.test.ts`, and a case in `tests/kernel/postgres-team.test.ts`: a member (not curator) can enrol and cannot install; a curator can install; the guard holds on PostgreSQL. That case needs `POSTGRES_URL`, so its evidence is the CI run of the PR.
 
 ## Phase 2 — CLI: confirmed providers, token, fetch, commands
 

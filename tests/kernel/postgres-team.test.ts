@@ -1,3 +1,5 @@
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { RLS_PROTECTED_TABLES } from "../../src/cli/deploy/rls-policies.js";
 import {
@@ -28,10 +30,14 @@ import {
   createAssignment,
   createToken,
   detachCardForUser,
+  enrolInstalledTile,
   ensureCard,
   getSetting,
+  installKvtTile,
+  type KvtTile,
   listActiveDistractors,
   listAssignmentsForLearner,
+  listInstalledProviderTiles,
   listLibraryTopics,
   setSetting,
   startLibraryTopic,
@@ -678,6 +684,101 @@ describeWithPostgres("zam team on PostgreSQL (needs POSTGRES_URL)", () => {
       });
       await raw.prepare("SELECT 1 AS one").get();
       await raw.close();
+    } finally {
+      await reset();
+    }
+  });
+
+  it("lets a curator install a provider tile and a member only enrol from it (ADR 2026-11-25 D5, D7)", async () => {
+    await reset();
+    const fixtures = join(__dirname, "../fixtures/curriculum");
+    const publicTile = () =>
+      JSON.parse(
+        readFileSync(
+          join(fixtures, "de-by-realschule-optik-kvt.json"),
+          "utf-8",
+        ),
+      ) as KvtTile;
+    const providerTile = () => {
+      const tile = JSON.parse(
+        readFileSync(
+          join(fixtures, "de-by-realschule-optik-kvt.json"),
+          "utf-8",
+        ).replaceAll("01K3X9A7R4B8C1D2E3F4G5", "01K3X9A7R4B8C1D2E3F4P5"),
+      ) as KvtTile;
+      tile.tile_id = "example-provider:optik";
+      tile.version = "2026.11.1";
+      for (const atom of tile.atoms) {
+        atom.atom_uri = `urn:zam:atom:${atom.id}`;
+        atom.slug = `p-${atom.slug}`;
+        atom.curricula = [];
+        for (const item of atom.practice_items) {
+          if (item.slug) item.slug = `p-${item.slug}`;
+        }
+      }
+      return tile;
+    };
+    try {
+      const control = adminDb();
+      let bobId: string;
+      try {
+        await provisionTeamLibrary(control, { schema });
+        await addTeamMember(control, localDirectory, {
+          upn: "alice@example.org",
+          database,
+        });
+        const bob = await addTeamMember(control, localDirectory, {
+          upn: "bob@example.org",
+          database,
+          curator: false,
+        });
+        bobId = bob.userId;
+      } finally {
+        await control.close?.();
+      }
+
+      const asAlice = await connectAs("alice@example.org");
+      const asBob = await connectAs("bob@example.org");
+      try {
+        // The curator installs: the tile, its atoms and their owners.
+        await installKvtTile(asAlice, publicTile());
+        await installKvtTile(asAlice, providerTile(), {
+          namespace: "example-provider",
+          appUrl: "https://provider.example/optik/",
+        });
+        // The guard holds on PostgreSQL too.
+        const hijack = providerTile();
+        hijack.atoms[0].practice_items[0].id = "01K3X9A7R4B8C1D2E3F4G5H001";
+        await expect(
+          installKvtTile(asAlice, hijack, { namespace: "example-provider" }),
+        ).rejects.toThrow(/belongs to content outside/);
+
+        // A member may not install …
+        await expect(
+          installKvtTile(asBob, providerTile(), {
+            namespace: "example-provider",
+          }),
+        ).rejects.toThrow();
+
+        // … but sees the installed tile and enrols from the library alone.
+        const [listed] = await listInstalledProviderTiles(asBob, bobId);
+        expect(listed).toMatchObject({
+          tileId: "example-provider:optik",
+          appUrl: "https://provider.example/optik/",
+          held: false,
+        });
+        const enrolled = await enrolInstalledTile(
+          asBob,
+          bobId,
+          "example-provider:optik",
+        );
+        expect(enrolled.cardsCreated).toBeGreaterThan(0);
+        const [after] = await listInstalledProviderTiles(asBob, bobId);
+        expect(after.held).toBe(true);
+      } finally {
+        await asAlice.close?.();
+        await asBob.close?.();
+      }
     } finally {
       await reset();
     }

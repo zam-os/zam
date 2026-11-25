@@ -218,8 +218,9 @@ security switch (ADR 2026-10-08b), and only the learner can change it:
   a provider's cell must be new to the library or already belong to a tile
   in the provider's namespace. A private cell can never rewrite a public
   atom or item by reusing its id.
-- **`replaces`** may name only items of the provider's own tiles. A private
-  cell can never move review history off a public item.
+- **`replaces` and `retired_items`** may name only items of the provider's
+  own tiles. A private cell can never move review history off a public
+  item, nor retire one.
 - **Prerequisites stay inside one tile,** as for every tile today. A private
   package that builds on a public Academy package names it in its lesson
   text instead of repeating it, which keeps the rule that the same content
@@ -461,3 +462,6 @@ Each step can ship on its own:
   prerequisites on public atoms was wrong; prerequisites now stay inside one
   tile. The code also showed that a tile can overwrite atoms and items by
   id, so the namespace rule now covers atom and item ids, not only tile ids.
+- 2026-11-25 — Decision 5, while building Phase 1: `retired_items`
+  deprecates tokens by id like `replaces` moves them, so it follows the same
+  rule.

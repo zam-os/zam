@@ -1,0 +1,167 @@
+/**
+ * Provider tiles a library already holds (ADR 2026-11-25, Decision 7).
+ *
+ * In a team library a curator installs a private provider's package once.
+ * A member then enrols from what the library holds — `installed_tiles` and
+ * `tile_atoms` (M050) — without the tile's file, without a download and
+ * without a token, and writes only their own learning state. Bundled and
+ * public Academy tiles keep their own enrolment (`enrolBundledCell`), which
+ * knows their in-scope atoms.
+ */
+
+import type { Database } from "../db/types.js";
+import { reservedProviderIds } from "./academy-provider.js";
+import { type KvtProgress, materialiseKvtCards } from "./kvt-attach.js";
+
+export interface InstalledProviderTile {
+  tileId: string;
+  /** The tile-id prefix, i.e. the provider's id. */
+  providerId: string;
+  version: string;
+  title: string;
+  description: string;
+  appUrl: string | null;
+  preview: boolean;
+  /** Published items the tile's atoms hold: the most cards enrolment gives. */
+  items: number;
+  /** The learner holds at least one active card on the tile's atoms. */
+  held: boolean;
+}
+
+export interface EnrolInstalledTileResult {
+  success: true;
+  cellId: string;
+  version: string;
+  cardsCreated: number;
+  cardsReused: number;
+  alreadyEnrolled: boolean;
+}
+
+function prefixOf(tileId: string): string {
+  const colon = tileId.indexOf(":");
+  return colon > 0 ? tileId.slice(0, colon) : "";
+}
+
+/** A tile id in a provider namespace: neither bundled nor the public Academy. */
+export function isProviderTileId(tileId: string): boolean {
+  const prefix = prefixOf(tileId);
+  return prefix !== "" && !reservedProviderIds().has(prefix);
+}
+
+/**
+ * Every provider tile the library holds, with the learner's state. `prefixes`
+ * narrows the list to some providers.
+ */
+export async function listInstalledProviderTiles(
+  db: Database,
+  userId: string,
+  prefixes?: readonly string[],
+): Promise<InstalledProviderTile[]> {
+  const rows = (await db
+    .prepare(
+      `SELECT tile_id, version, title, description, app_url, preview
+         FROM installed_tiles
+        WHERE version <> ''
+        ORDER BY tile_id`,
+    )
+    .all()) as Array<{
+    tile_id: string;
+    version: string;
+    title: string | null;
+    description: string | null;
+    app_url: string | null;
+    preview: number | null;
+  }>;
+  const wanted = prefixes ? new Set(prefixes) : null;
+  const out: InstalledProviderTile[] = [];
+  for (const row of rows) {
+    if (!isProviderTileId(row.tile_id)) continue;
+    const providerId = prefixOf(row.tile_id);
+    if (wanted && !wanted.has(providerId)) continue;
+    const items = (await db
+      .prepare(
+        `SELECT COUNT(DISTINCT t.id) AS n
+           FROM tokens t
+           JOIN tile_atoms ta ON ta.atom_id = t.atom_id
+          WHERE ta.tile_id = ?
+            AND t.deprecated_at IS NULL
+            AND t.editorial_state = 'published'`,
+      )
+      .get(row.tile_id)) as { n: number };
+    const held = (await db
+      .prepare(
+        `SELECT COUNT(DISTINCT c.id) AS n
+           FROM cards c
+           JOIN tokens t ON t.id = c.token_id
+           JOIN tile_atoms ta ON ta.atom_id = t.atom_id
+          WHERE ta.tile_id = ?
+            AND c.user_id = ?
+            AND c.detached_at IS NULL`,
+      )
+      .get(row.tile_id, userId)) as { n: number };
+    out.push({
+      tileId: row.tile_id,
+      providerId,
+      version: row.version,
+      title: row.title?.trim() || row.tile_id,
+      description: row.description?.trim() ?? "",
+      appUrl: row.app_url,
+      preview: Number(row.preview ?? 0) === 1,
+      items: Number(items.n),
+      held: Number(held.n) > 0,
+    });
+  }
+  return out;
+}
+
+/**
+ * „Aufnehmen“ on a provider tile the library already holds: creates the
+ * learner's own cards for the tile's atoms and nothing else.
+ */
+export async function enrolInstalledTile(
+  db: Database,
+  userId: string,
+  tileId: string,
+  options: { onProgress?: (progress: KvtProgress) => void } = {},
+): Promise<EnrolInstalledTileResult> {
+  if (!userId.trim()) {
+    throw new Error("userId is required to enrol in a learning cell");
+  }
+  if (!isProviderTileId(tileId)) {
+    throw new Error(
+      `${tileId} is not a provider tile; bundled and Academy cells enrol with enrolBundledCell`,
+    );
+  }
+  const installed = (await db
+    .prepare(
+      "SELECT version FROM installed_tiles WHERE tile_id = ? AND version <> ''",
+    )
+    .get(tileId)) as { version: string } | undefined;
+  if (!installed) {
+    throw new Error(`${tileId} is not installed in this library`);
+  }
+  const atoms = (await db
+    .prepare(
+      "SELECT atom_id FROM tile_atoms WHERE tile_id = ? ORDER BY atom_id",
+    )
+    .all(tileId)) as Array<{ atom_id: string }>;
+  if (atoms.length === 0) {
+    throw new Error(
+      `${tileId} has no recorded atoms; its installer must install it again`,
+    );
+  }
+  const result = await materialiseKvtCards(
+    db,
+    userId,
+    atoms.map((row) => row.atom_id),
+    { onProgress: options.onProgress },
+  );
+  return {
+    success: true,
+    cellId: tileId,
+    version: installed.version,
+    cardsCreated: result.cardsCreated,
+    cardsReused: result.cardsReused,
+    alreadyEnrolled: result.cardsCreated === 0 && result.cardsReused > 0,
+  };
+}
