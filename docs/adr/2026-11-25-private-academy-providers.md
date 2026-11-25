@@ -1,6 +1,6 @@
 # Private Academy Providers: Packages Behind a Login, Enrolled Like the ZAM Academy
 
-**Status:** Proposed\
+**Status:** Accepted\
 **Date:** 2026-11-25\
 **Deciders:** Thomas (project owner)\
 **Related:**
@@ -448,3 +448,4 @@ Each step can ship on its own:
 ## Status history
 
 - 2026-11-25 — Proposed.
+- 2026-11-25 — Accepted by the project owner (PR #498).
