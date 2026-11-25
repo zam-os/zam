@@ -8,7 +8,7 @@ tags:
   - mcp
   - secrets
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/agent-trust-model.md"
-timestamp: 2026-11-06T09:00:00.000Z
+timestamp: 2026-11-25T19:00:00.000Z
 ---
 
 ZAM treats two things as untrusted: the **agent** that calls its tools, and
@@ -115,6 +115,32 @@ content, so it is narrower still.
   read a machine-local cache (`~/.zam/academy`) of the learner's last check,
   and the enrol tool never updates a held cell.
 
+**Private Academy providers** (ADR 2026-11-25) follow the same rules, each on
+its own confirmed origin, plus these:
+
+- **The provider list is a security switch.** It decides where a login token
+  goes, so it lives in `~/.zam/config.json` (`academy.providers`), and only the
+  learner writes it: „Hinzufügen“ in Studio or `zam academy provider add`,
+  with the hash of the provider file they were shown. No MCP tool, no
+  `STUDIO_BRIDGE_COMMANDS` entry and no `setting-set` key writes it. Every
+  entry is checked again on read, and a changed provider file is used only
+  after the learner confirms it again.
+- **The token goes nowhere else.** For an `entra-cli` provider ZAM asks the
+  Azure CLI for a token only after tenant and API are canonical GUIDs, since
+  `az` runs through a shell on Windows, and builds the scope from the API GUID
+  itself. The token travels only as `Authorization` to the confirmed origin,
+  with no redirects, and is never stored or logged. The provider file is read
+  without one.
+- **A provider writes only in its own namespace.** Its catalog lists only
+  `<id>:` tiles, and `installKvtTile` with a `namespace` refuses an atom, item,
+  `replaces` or `retired_items` id that belongs to anyone else by
+  `tile_atoms`, before it writes anything.
+- **Reviews skip its lessons.** A confirmed provider's origin, and the lesson
+  origins remembered for installed provider tiles (`academy.lessonOrigins`,
+  which can only suppress), resolve to nothing in `src/cli/review-context.ts`.
+- **Agents** see provider cells from the per-provider cache and the packages
+  the library holds, and enrol only from there (`src/cli/academy/agent-cells.ts`).
+
 **A card's web `source_link`** opens in the system browser only on the
 learner's click, and only for `http:` and `https:`. Its label shows the host
 in punycode, so a look-alike host cannot pass as a known one
@@ -136,7 +162,8 @@ is itself local or LAN.
   with the options it may not pass (`backup-create --dir`,
   `model-upsert --key-ref`, `model-upsert --confirm-endpoint`). A test fails
   when a command joins the list without an entry. Trusted folders, secrets,
-  pairing, observation and endpoint confirmation stay off the list. A card
+  pairing, observation, endpoint confirmation and Academy providers stay off
+  the list. A card
   write without a source an agent may cite asks the person through the
   host's elicitation form, which the model cannot answer (ADR 2026-10-14,
   Decision 3); without one it is refused.
@@ -214,12 +241,13 @@ before it ships:
 2. A URL from an argument or the library is fetched only through `safeFetch`;
    a model call goes through the model client's endpoint check.
 3. No argument can write a security switch: trusted folders, secret backends,
-   observation, pairing, endpoint confirmation.
+   observation, pairing, endpoint confirmation, Academy providers.
 4. A Studio panel command gets its entry in `STUDIO_BRIDGE_COMMANDS`, with the
    options it must refuse; a pre-approved tool joins the reviewed list only
    if it changes nothing.
 
 # Citations
+- [ADR 2026-11-25 — Private Academy Providers](../adr/2026-11-25-private-academy-providers.md)
 - [ADR 2026-10-19 — ZAM Academy Cells](../adr/2026-10-19-zam-academy-cells.md)
 
 - [ADR 2026-10-14b — Formulas, Images and Spoken Text in Cards](../adr/2026-10-14b-card-formulas-images-and-spoken-text.md)
@@ -227,5 +255,5 @@ before it ships:
 - [ADR 2026-10-08b — Corporate Deployment Baseline](../adr/2026-10-08b-corporate-deployment-baseline.md)
 - [ADR 2026-10-08 — Observation Without Content](../adr/2026-10-08-skill-learner-observation.md)
 - [ADR 2026-07-30b — Credential Secret Backends](../adr/2026-07-30b-credential-secret-backends.md)
-- Code: `src/kernel/system/trusted-paths.ts`, `src/cli/trusted-folders.ts`, `src/cli/commands/trust.ts`, `src/cli/net/safe-fetch.ts`, `src/cli/adapters/source-reader.ts`, `src/cli/review-context.ts`, `src/kernel/recall/reference-resolver.ts`, `src/cli/okf/io.ts`, `src/cli/okf/bundle.ts`, `src/cli/commands/mcp.ts`, `src/cli/agent-approval.ts`, `src/cli/agent-connect.ts`, `src/copilot-extension/loopback-guard.ts`, `src/kernel/secrets/os-store.ts`, `src/kernel/secrets/backends/os.ts`, `src/kernel/secrets/session-store.ts`, `src/kernel/credentials.ts`, `src/kernel/system/endpoint-confirmation.ts`, `src/cli/llm/model-registry.ts`, `src/cli/llm/client.ts`, `src/cli/llm/capability-probe.ts`, `src/kernel/models/settings.ts`, `desktop/src/mobile-pairing.ts`, `src/cli/academy/catalog-client.ts`, `src/cli/academy/cache.ts`, `src/cli/academy/handlers.ts`, `mobile/src/academy.ts`, `desktop/src/source-link.ts`
-- Tests: `tests/kernel/trusted-worktrees.test.ts`, `tests/kernel/trusted-paths.test.ts`, `tests/cli/okf-confinement.test.ts`, `tests/cli/trusted-folders.test.ts`, `tests/cli/safe-fetch.test.ts`, `tests/cli/model-endpoint-check.test.ts`, `tests/cli/studio-bridge-review.test.ts`, `tests/cli/agent-approval.test.ts`, `tests/cli/copilot-loopback-guard.test.ts`, `tests/kernel/os-secret-store.test.ts`, `tests/kernel/credentials-os-store.test.ts`, `tests/kernel/bitwarden-session-store.test.ts`, `tests/cli/keys-follow-endpoints.test.ts`, `tests/cli/model-registry.test.ts`, `tests/kernel/secret-masking.test.ts`, `tests/cli/academy.test.ts`, `tests/mobile/academy.test.ts`, `tests/desktop/source-link.test.ts`
+- Code: `src/kernel/system/trusted-paths.ts`, `src/cli/trusted-folders.ts`, `src/cli/commands/trust.ts`, `src/cli/net/safe-fetch.ts`, `src/cli/adapters/source-reader.ts`, `src/cli/review-context.ts`, `src/kernel/recall/reference-resolver.ts`, `src/cli/okf/io.ts`, `src/cli/okf/bundle.ts`, `src/cli/commands/mcp.ts`, `src/cli/agent-approval.ts`, `src/cli/agent-connect.ts`, `src/copilot-extension/loopback-guard.ts`, `src/kernel/secrets/os-store.ts`, `src/kernel/secrets/backends/os.ts`, `src/kernel/secrets/session-store.ts`, `src/kernel/credentials.ts`, `src/kernel/system/endpoint-confirmation.ts`, `src/cli/llm/model-registry.ts`, `src/cli/llm/client.ts`, `src/cli/llm/capability-probe.ts`, `src/kernel/models/settings.ts`, `desktop/src/mobile-pairing.ts`, `src/cli/academy/catalog-client.ts`, `src/cli/academy/cache.ts`, `src/cli/academy/handlers.ts`, `src/cli/academy/provider-client.ts`, `src/cli/academy/provider-handlers.ts`, `src/cli/academy/agent-cells.ts`, `src/kernel/system/academy-providers.ts`, `src/kernel/library/academy-provider.ts`, `src/kernel/library/kvt-attach.ts`, `src/cli/db/entra-cli.ts`, `mobile/src/academy.ts`, `desktop/src/source-link.ts`
+- Tests: `tests/kernel/trusted-worktrees.test.ts`, `tests/kernel/trusted-paths.test.ts`, `tests/cli/okf-confinement.test.ts`, `tests/cli/trusted-folders.test.ts`, `tests/cli/safe-fetch.test.ts`, `tests/cli/model-endpoint-check.test.ts`, `tests/cli/studio-bridge-review.test.ts`, `tests/cli/agent-approval.test.ts`, `tests/cli/copilot-loopback-guard.test.ts`, `tests/kernel/os-secret-store.test.ts`, `tests/kernel/credentials-os-store.test.ts`, `tests/kernel/bitwarden-session-store.test.ts`, `tests/cli/keys-follow-endpoints.test.ts`, `tests/cli/model-registry.test.ts`, `tests/kernel/secret-masking.test.ts`, `tests/cli/academy.test.ts`, `tests/cli/academy-provider.test.ts`, `tests/kernel/academy-providers.test.ts`, `tests/kernel/kvt-provider-namespace.test.ts`, `tests/cli/entra-cli.test.ts`, `tests/mobile/academy.test.ts`, `tests/desktop/source-link.test.ts`

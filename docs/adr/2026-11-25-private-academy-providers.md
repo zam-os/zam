@@ -1,6 +1,6 @@
 # Private Academy Providers: Packages Behind a Login, Enrolled Like the ZAM Academy
 
-**Status:** Accepted\
+**Status:** Implemented — PR #500; the live check against a provider host (plan 3.6) waits for the hosting spike\
 **Date:** 2026-11-25\
 **Deciders:** Thomas (project owner)\
 **Plan:** [`docs/plans/2026-11-25-private-academy-providers.md`](../plans/2026-11-25-private-academy-providers.md)\
@@ -465,3 +465,11 @@ Each step can ship on its own:
 - 2026-11-25 — Decision 5, while building Phase 1: `retired_items`
   deprecates tokens by id like `replaces` moves them, so it follows the same
   rule.
+- 2026-11-25 — Implemented on `feat/private-academy-providers` (PR #500),
+  Phases 1–6 of the plan. Decision 6: the review context cannot read the
+  library at its call sites, so besides confirmed providers it skips a
+  machine-local list of lesson origins (`academy.lessonOrigins`) that a
+  member's listing of installed provider tiles fills. Decision 7: new items
+  of an updated package reach a member when they enrol again („Neue Karten
+  holen“), as a personal library's „Aktualisieren“ does. The live check
+  against a provider host waits for the hosting spike (plan Phase 0).

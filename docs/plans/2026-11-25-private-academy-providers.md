@@ -1,6 +1,6 @@
 # Private Academy providers — implementation plan
 
-**Status:** Phases 1–5 are built, except 3.6, which needs the Phase 0 host; the PostgreSQL cases of 1.5 and 4.1 run in CI. Phase 6 is open; Phases 0 and 7 are the owner's. Phase 3 was checked in the Studio preview with a mocked bridge (add, confirm, switch, enrol, sign-in, changed file, Settings remove).\
+**Status:** Phases 1–6 are built, except 3.6, which needs the Phase 0 host; the PostgreSQL cases of 1.5 and 4.1 run in CI. The final check below passed on 2026-11-25; Phases 0 and 7 are the owner's. Phase 3 was checked in the Studio preview with a mocked bridge (add, confirm, switch, enrol, sign-in, changed file, Settings remove).\
 **Decision:** [ADR 2026-11-25 — Private Academy Providers](../adr/2026-11-25-private-academy-providers.md). Its decisions are cited here as **D1–D9**. Read the ADR first; this plan does not repeat its reasons.\
 **Branch:** `feat/private-academy-providers`, from `main`. One feature, one branch, one PR, one commit per phase.
 
@@ -148,10 +148,10 @@ Goal: D7 on PostgreSQL.
 
 ## Phase 6 — Documentation and acceptance
 
-- [ ] **6.1** `docs/okf/agent-trust-model.md` through `zam_okf_upsert`: the provider list as a security switch, the token rule, the namespace guard, the review-context suppression.
-- [ ] **6.2** Knowledge map: update `academy-learner-fetch` to cover provider catalogs and add one statement for private providers, citing the new modules; run `npm run dev -- knowledge-map validate --repo . --write`. Exit: the "ZAM's own map" test in `tests/cli/knowledge-map.test.ts` passes.
-- [ ] **6.3** `CLAUDE.md` key conventions: one line on private providers (ADR 2026-11-25) — never named in this repository, never bundled, namespace guard, learner-confirmed list.
-- [ ] **6.4** ADR status → Implemented with the PR number, a status-history line, and the README row.
+- [x] **6.1** `docs/okf/agent-trust-model.md` through `zam_okf_upsert` (its `upsertArticle`, run from the worktree): the provider list as a security switch, the token rule, the namespace guard, the review-context suppression.
+- [x] **6.2** Knowledge map: update `academy-learner-fetch` to cover provider catalogs and add one statement for private providers, citing the new modules; run `npm run dev -- knowledge-map validate --repo . --write`. Exit: the "ZAM's own map" test in `tests/cli/knowledge-map.test.ts` passes.
+- [x] **6.3** `CLAUDE.md` key conventions: one line on private providers (ADR 2026-11-25) — never named in this repository, never bundled, namespace guard, learner-confirmed list.
+- [x] **6.4** ADR status → Implemented with the PR number, a status-history line, and the README row.
 
 ## Phase 7 — Pilot (outside ZAM, owner)
 
@@ -163,6 +163,8 @@ Goal: D7 on PostgreSQL.
 ## Final check — nothing slipped
 
 Before the PR leaves draft, walk this table and every checkbox above; each row needs its evidence.
+
+Walked on 2026-11-25: every ZAM item is checked; open are only Phase 0, 3.6 and Phase 7, all outside this repository or waiting for it. No provider tile under `tests/fixtures/`; `tests/cli/academy.test.ts`, `tests/kernel/academy-cells-lock.test.ts`, `tests/kernel/bundled-cells.test.ts` and `tests/mobile/academy.test.ts` are unchanged against `main`, and `tests/kernel/academy-catalog.test.ts` only gained cases (two lines rewrapped by Biome). Every regression test of the ADR's Delivery list exists. The branch diff names no organisation, host, tenant or group.
 
 | ADR | Items |
 |---|---|
