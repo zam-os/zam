@@ -1,6 +1,6 @@
 # Private Academy Providers: Packages Behind a Login, Enrolled Like the ZAM Academy
 
-**Status:** Implemented — PR #500; the live check against a provider host (plan 3.6) waits for the hosting spike\
+**Status:** Implemented — PR #500; live check against a provider host run (plan 3.6), lesson sign-in and „Fehler melden“ still open\
 **Date:** 2026-11-25\
 **Deciders:** Thomas (project owner)\
 **Plan:** [`docs/plans/2026-11-25-private-academy-providers.md`](../plans/2026-11-25-private-academy-providers.md)\
@@ -312,9 +312,13 @@ Nothing in ZAM depends on this shape, but the pilot uses it:
 - **`/zam-provider.json`** is excluded from authentication.
 - **Deployment** from the private repository uses a federated credential, so
   no secret is stored.
+- **Browser sign-in may need an admin once:** in a tenant that does not let
+  users consent to apps, the lesson pages show "Approval required" until an
+  admin consents to the app's sign-in permissions (`openid profile email`).
+  ZAM's token does not need it, because the Azure CLI is pre-authorised.
 
 The pilot's first step checks this shape in a spike: the Azure CLI token,
-the excluded path, and that a member outside the group gets 403.
+the excluded path, and that a user outside the group gets no token.
 
 ## Consequences
 
@@ -473,3 +477,11 @@ Each step can ship on its own:
   of an updated package reach a member when they enrol again („Neue Karten
   holen“), as a personal library's „Aktualisieren“ does. The live check
   against a provider host waits for the hosting spike (plan Phase 0).
+- 2026-11-25 — The hosting spike passed (plan Phase 0). Outside the group,
+  Entra issues no token at all (AADSTS50105) rather than the site answering
+  403. The live check in the Studio (plan 3.6) ran against it: add, curator
+  install, take from the library, one review, remove. It found that a library
+  row without the provider's cache showed no atoms, and that the source
+  switch gained „In dieser Bibliothek“ only on reopening; both are fixed.
+  Browser sign-in to a lesson waits for the host tenant's admin consent (see
+  Hosting), and „Fehler melden“ for a provider with a report link.

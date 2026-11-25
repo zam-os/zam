@@ -1,6 +1,6 @@
 # Private Academy providers — implementation plan
 
-**Status:** Phases 1–6 are built, except 3.6, which needs the Phase 0 host; the PostgreSQL cases of 1.5 and 4.1 run in CI. The final check below passed on 2026-11-25; Phases 0 and 7 are the owner's. Phase 3 was checked in the Studio preview with a mocked bridge (add, confirm, switch, enrol, sign-in, changed file, Settings remove).\
+**Status:** Phases 0–6 are done, except two parts of 3.6: the lesson's browser sign-in and „Fehler melden“, see there. The PostgreSQL cases of 1.5 and 4.1 run in CI. The final check below passed on 2026-11-25; Phases 0 and 7 are the owner's. Phase 3 was checked in the Studio preview with a mocked bridge (add, confirm, switch, enrol, sign-in, changed file, Settings remove).\
 **Decision:** [ADR 2026-11-25 — Private Academy Providers](../adr/2026-11-25-private-academy-providers.md). Its decisions are cited here as **D1–D9**. Read the ADR first; this plan does not repeat its reasons.\
 **Branch:** `feat/private-academy-providers`, from `main`. One feature, one branch, one PR, one commit per phase.
 
@@ -31,11 +31,13 @@ The ADR describes the goal; reading the code showed three things it has to rest 
 
 Goal: the token path of the ADR's hosting section works before any client code depends on it. Phases 1–2 can start meanwhile; item 3.6 needs this phase.
 
-- [ ] **0.1** A web app with built-in Entra authentication, "assignment required", and one test group.
-- [ ] **0.2** The app registration exposes one API scope, and the Azure CLI's client id may request tokens for it. `az account get-access-token --tenant <t> --scope api://<api>/.default` returns a token whose `aud` the app accepts.
-- [ ] **0.3** `/zam-provider.json` answers without login; every other path asks for it.
-- [ ] **0.4** A member of the test group gets 200 with the token; a tenant user outside the group gets 403.
-- [ ] **0.5** A one-card test package (`example`-style ids, published only there) for item 3.6.
+- [x] **0.1** A web app with built-in Entra authentication, "assignment required", and one test group.
+- [x] **0.2** The app registration exposes one API scope, and the Azure CLI's client id may request tokens for it. `az account get-access-token --tenant <t> --scope api://<api>/.default` returns a token whose `aud` the app accepts.
+- [x] **0.3** `/zam-provider.json` answers without login; every other path asks for it.
+- [x] **0.4** A member of the test group gets 200 with the token; a tenant user outside the group gets no token: Entra refuses it (AADSTS50105), so the site never sees the request. Checked with a fresh sign-in in an empty Azure CLI profile; an earlier try only hit the CLI's token cache.
+- [x] **0.5** A one-card test package (`example`-style ids, published only there) for item 3.6.
+
+Done 2026-11-25, recorded in the organisation's runbook. Found on the way: in a tenant that does not let users consent to apps, the browser sign-in to the lesson pages needs an admin's consent once (ADR, Hosting). ZAM's token path does not.
 
 Exit evidence: the four checks recorded in the organisation's own runbook, not in this repository. If 0.2 fails, the fallback is the ADR's Static Web App + private Blob alternative, and item 2.2 asks for the storage scope instead; stop and ask the owner before switching.
 
@@ -129,6 +131,10 @@ Goal: a learner adds a provider, browses and enrols in Studio, opens lessons, an
 - [x] **3.4** „Fehler melden ↗“ (D8): the review payload carries `feedbackUrl` for a card whose tile (via `tokens.atom_id` → `tile_atoms` → `installed_tiles`) belongs to a confirmed provider with `feedback`. The CLI builds it with `providerFeedbackUrl`. Studio shows the button after the answer is revealed and opens the system browser through the existing `openUrl` path. The payload carries it only for a rendering surface (`--media`), like the emblem. Exit: `tests/cli/academy-provider.test.ts` (only tile, item and version; only with media; none without the provider), `tests/desktop/academy-providers.test.ts` (the button opens the link) and `tests/desktop/source-link-wiring.test.ts` (the reveal wires it).
 - [x] **3.5** Errors: `ENTRA_LOGIN_REQUIRED` shows „Mit Microsoft anmelden“ through the existing `entra-login` flow (as in `desktop/src/server-db.ts`); `PROVIDER_ACCESS_DENIED` shows „Kein Zugang — bitte an <publisher> wenden“.
 - [ ] **3.6** (Waits for Phase 0.) End-to-end check in the real Studio, against the spike host and its test package (Phase 0), in an isolated profile: add the provider, enrol, review one card, open the lesson (browser sign-in), „Fehler melden“, remove the provider. Exit: screenshots and the bridge log of that run, summarised in the PR.
+  Ran 2026-11-25 in the branch Studio, isolated profile, on a PostgreSQL test team library as curator:
+  - Passed: adding the provider (the confirmed hash is stored); the catalog with the learner's token; „Für die Bibliothek installieren“; „Aufnehmen“ under „In dieser Bibliothek“ (one card); one review of it with its fast check; the lesson URL as the card's source link; removing the provider, after which the library still lists and holds the package.
+  - Fixed on the way: a library row without the provider's cache showed „0 Atome“, because `listInstalledProviderTiles` did not report the tile's atoms. And the source switch gained „In dieser Bibliothek“ only on reopening after the first install.
+  - Open: opening the lesson in the browser waits for the host tenant's admin consent (Phase 0 note). „Fehler melden“ waits for a test provider with a report link.
 
 ## Phase 4 — Team library: curator installs, members enrol
 
