@@ -28,7 +28,7 @@ import {
   parseAcademyProvider,
   providerOrigin,
 } from "../../kernel/index.js";
-import { entraCliApiToken } from "../db/entra-cli.js";
+import { EntraNotAssignedError, entraCliApiToken } from "../db/entra-cli.js";
 import { sha256Hex } from "./cache.js";
 import {
   type AcademyFetchOptions,
@@ -45,19 +45,26 @@ export type ProviderTokenSupplier = () => Promise<string | null>;
 
 /**
  * Asks the Azure CLI at most once per learner action, and only for a provider
- * whose confirmed file says `entra-cli`.
+ * whose confirmed file says `entra-cli`. An account the provider has not let
+ * in gets `PROVIDER_ACCESS_DENIED`, like a refused request, not a sign-in.
  */
 export function providerTokenSupplier(
   confirmed: ConfirmedAcademyProvider,
   getToken: (tenant: string, api: string) => Promise<string> = entraCliApiToken,
 ): ProviderTokenSupplier {
   let pending: Promise<string | null> | null = null;
+  const { title, publisher } = confirmed.provider;
   return () => {
     if (!pending) {
       const auth = confirmed.provider.auth;
       pending =
         auth.kind === "entra-cli"
-          ? getToken(auth.tenant, auth.api)
+          ? getToken(auth.tenant, auth.api).catch((err: unknown) => {
+              if (!(err instanceof EntraNotAssignedError)) throw err;
+              throw new Error(
+                `PROVIDER_ACCESS_DENIED: ${title} has not given this Microsoft account access. Ask ${publisher} for access.`,
+              );
+            })
           : Promise.resolve(null);
       // A failed attempt may be retried on the next call.
       pending.catch(() => {

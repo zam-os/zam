@@ -45,6 +45,21 @@ export class EntraLoginRequiredError extends Error {
   }
 }
 
+/**
+ * Thrown when Entra refuses the token because the signed-in account is not
+ * assigned to the application ("assignment required", AADSTS50105). Signing
+ * in again cannot help: whoever runs the application has to grant access.
+ */
+export class EntraNotAssignedError extends Error {
+  readonly code = "ENTRA_NOT_ASSIGNED";
+  constructor() {
+    super(
+      "ENTRA_NOT_ASSIGNED: This Microsoft account has not been given access to the application.",
+    );
+    this.name = "EntraNotAssignedError";
+  }
+}
+
 export interface ExecResult {
   code: number | null;
   stdout: string;
@@ -189,7 +204,10 @@ export async function entraCliApiToken(
     "-o",
     "tsv",
   ]);
-  if (result.code !== 0 || result.spawnError) throw classifyFailure(result);
+  if (result.code !== 0 || result.spawnError) {
+    if (/AADSTS50105\b/.test(result.stderr)) throw new EntraNotAssignedError();
+    throw classifyFailure(result);
+  }
   const token = result.stdout.trim();
   if (!token) {
     throw new EntraLoginRequiredError(

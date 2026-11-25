@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   EntraLoginRequiredError,
+  EntraNotAssignedError,
   type ExecFn,
   type ExecResult,
   entraCliAccessToken,
@@ -173,5 +174,21 @@ describe("Azure CLI token for a provider API (ADR 2026-11-25 D4)", () => {
     });
     const error = await entraCliApiToken(TENANT, API, exec).catch((e) => e);
     expect(isEntraLoginRequired(error)).toBe(true);
+  });
+
+  it("tells an account the app was not assigned to apart from a missing login", async () => {
+    // What az prints when "assignment required" refuses the signed-in user;
+    // its own hint to run `az login` would not help.
+    const exec = fakeExec({
+      code: 1,
+      stderr: [
+        "ERROR: AADSTS50105: Your administrator has configured the application Example ('11111111-1111-1111-1111-111111111111') to block users unless they are specifically granted ('assigned') access to the application.",
+        "Interactive authentication is needed. Please run:",
+        `az login --scope api://${API}/.default`,
+      ].join("\n"),
+    });
+    const error = await entraCliApiToken(TENANT, API, exec).catch((e) => e);
+    expect(error).toBeInstanceOf(EntraNotAssignedError);
+    expect(isEntraLoginRequired(error)).toBe(false);
   });
 });

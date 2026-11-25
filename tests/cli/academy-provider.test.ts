@@ -30,6 +30,7 @@ import {
   listBundledCellsHandler,
 } from "../../src/cli/bridge-handlers.js";
 import { executeBridgeCommandJson } from "../../src/cli/commands/bridge.js";
+import { EntraNotAssignedError } from "../../src/cli/db/entra-cli.js";
 import type { SafeTransport } from "../../src/cli/net/safe-fetch.js";
 import {
   type Database,
@@ -482,6 +483,26 @@ describe("private Academy providers (ADR 2026-11-25)", () => {
         getToken: provider.getToken,
       }),
     ).rejects.toThrow(/PROVIDER_ACCESS_DENIED: Example Academy/);
+  });
+
+  it("reports an account Entra refuses (not assigned) as PROVIDER_ACCESS_DENIED, not a sign-in", async () => {
+    const provider = fakeProvider();
+    await confirm(provider);
+    const error = await providerListHandler(db, {
+      provider: "example-provider",
+      user: "learner",
+      fetch: provider.fetch,
+      getToken: async () => {
+        throw new EntraNotAssignedError();
+      },
+    }).catch((e) => e);
+    expect(String(error.message)).toMatch(
+      /^PROVIDER_ACCESS_DENIED: Example Academy .*Ask /,
+    );
+    // Without a token nothing went to the provider beyond the provider file.
+    expect(provider.seen.some((r) => r.url.endsWith("/catalog.json"))).toBe(
+      false,
+    );
   });
 
   it("asks no token from a provider without login", async () => {

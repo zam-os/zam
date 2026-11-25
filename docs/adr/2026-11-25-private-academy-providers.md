@@ -202,7 +202,9 @@ security switch (ADR 2026-10-08b), and only the learner can change it:
   - A missing Azure CLI login keeps today's `ENTRA_LOGIN_REQUIRED`. Studio
     shows „Mit Microsoft anmelden“, which already runs `entra-login`.
   - HTTP 401 or 403 becomes `PROVIDER_ACCESS_DENIED`, and Studio says
-    „Kein Zugang — bitte an <publisher> wenden“.
+    „Kein Zugang — bitte an <publisher> wenden“. So does Entra refusing the
+    token because the account is not assigned to the app (AADSTS50105):
+    signing in again cannot help there.
 - **Reachability:** a provider's host must pass `safeFetch`'s address
   checks, like every remote source. A provider on a private network address
   is not supported.
