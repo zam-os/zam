@@ -1447,6 +1447,17 @@ export {
   unregisterSecretBackend,
 } from "./secrets/index.js";
 export {
+  type ConfirmedAcademyProvider,
+  confirmedProvider,
+  confirmProvider,
+  listConfirmedProviders,
+  type ProviderChangedField,
+  providerChange,
+  rememberLessonOrigins,
+  removeConfirmedProvider,
+  reviewSuppressedOrigins,
+} from "./system/academy-providers.js";
+export {
   confirmEndpoint,
   confirmedEndpointFor,
   isEndpointUnconfirmed,

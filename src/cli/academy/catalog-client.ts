@@ -28,9 +28,9 @@ import { sha256Hex } from "./cache.js";
 
 export const ACADEMY_CATALOG_URL = `${ACADEMY_ORIGIN}/catalog.json`;
 export const ACADEMY_INDEX_URL = `${ACADEMY_ORIGIN}/academy.json`;
-const CATALOG_MAX_BYTES = 256 * 1024;
-const INDEX_MAX_BYTES = 512 * 1024;
-const CELL_MAX_BYTES = 2 * 1024 * 1024;
+export const CATALOG_MAX_BYTES = 256 * 1024;
+export const INDEX_MAX_BYTES = 512 * 1024;
+export const CELL_MAX_BYTES = 2 * 1024 * 1024;
 
 /** Test seams of `safeFetch`. Never a URL: the origin is fixed. */
 export type AcademyFetchOptions = Pick<
@@ -38,24 +38,56 @@ export type AcademyFetchOptions = Pick<
   "transport" | "resolve"
 >;
 
-async function fetchBytes(
+/** The one origin a request may go to, and what it may carry. */
+export interface OriginScope {
+  origin: string;
+  /** Extra headers, such as a provider's `Authorization`. */
+  headers?: Record<string, string>;
+  /** A private provider: 401 and 403 become `PROVIDER_ACCESS_DENIED`. */
+  provider?: { title: string; publisher: string };
+}
+
+/**
+ * GET `url` with the Academy rules: only on `scope.origin`, no redirect at
+ * all, a size limit. Headers — a token included — therefore never leave
+ * that origin (ADR 2026-11-25 Decision 4).
+ */
+export async function fetchOriginBytes(
   url: string,
   maxBytes: number,
   options: AcademyFetchOptions,
+  scope: OriginScope,
 ): Promise<Buffer> {
-  if (new URL(url).origin !== ACADEMY_ORIGIN) {
-    throw new Error(`Academy content comes only from ${ACADEMY_ORIGIN}`);
+  if (new URL(url).origin !== scope.origin) {
+    throw new Error(`Academy content comes only from ${scope.origin}`);
   }
   const response = await safeFetch(url, {
     ...options,
     maxBytes,
     maxRedirects: 0,
-    headers: { Accept: "application/json", "User-Agent": CONTENT_USER_AGENT },
+    headers: {
+      Accept: "application/json",
+      "User-Agent": CONTENT_USER_AGENT,
+      ...scope.headers,
+    },
   });
+  if (scope.provider && (response.status === 401 || response.status === 403)) {
+    throw new Error(
+      `PROVIDER_ACCESS_DENIED: ${scope.provider.title} did not let this account in (HTTP ${response.status}). Ask ${scope.provider.publisher} for access.`,
+    );
+  }
   if (!response.ok) {
     throw new Error(`${url}: HTTP ${response.status} ${response.statusText}`);
   }
   return Buffer.from(await response.arrayBuffer());
+}
+
+function fetchBytes(
+  url: string,
+  maxBytes: number,
+  options: AcademyFetchOptions,
+): Promise<Buffer> {
+  return fetchOriginBytes(url, maxBytes, options, { origin: ACADEMY_ORIGIN });
 }
 
 export async function fetchAcademyCatalog(

@@ -13,6 +13,7 @@ import {
   resolveReviewContext as kernelResolveReviewContext,
   type ReferenceFetcher,
   type ReviewContext,
+  reviewSuppressedOrigins,
 } from "../kernel/index.js";
 import { CONTENT_USER_AGENT } from "./adapters/source-reader.js";
 import { safeFetch } from "./net/safe-fetch.js";
@@ -49,14 +50,32 @@ function isAcademyLink(sourceLink: string | null | undefined): boolean {
 }
 
 /**
+ * A private provider's lesson (ADR 2026-11-25 Decision 6): its origin is a
+ * confirmed provider's, or one recorded for an installed provider tile. The
+ * page sits behind a login and the review carries no token, so a fetch could
+ * only reach a sign-in page.
+ */
+function isProviderLink(sourceLink: string | null | undefined): boolean {
+  if (!sourceLink) return false;
+  let origin: string;
+  try {
+    origin = new URL(sourceLink).origin;
+  } catch {
+    return false;
+  }
+  return reviewSuppressedOrigins().has(origin);
+}
+
+/**
  * Resolve a token's source_link into bounded, review-ready context through
- * the outbound fetcher. An Academy link resolves to nothing, with no request.
+ * the outbound fetcher. An Academy or provider link resolves to nothing,
+ * with no request.
  */
 export async function resolveReviewContext(
   sourceLink: string | null | undefined,
   opts?: ResolveReviewContextOptions,
 ): Promise<ReviewContext | null> {
-  if (isAcademyLink(sourceLink)) return null;
+  if (isAcademyLink(sourceLink) || isProviderLink(sourceLink)) return null;
   return kernelResolveReviewContext(sourceLink, {
     fetch: fetchReference,
     maxChars: opts?.maxChars,

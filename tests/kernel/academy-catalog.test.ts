@@ -439,6 +439,17 @@ describe("parseAcademyIndex & academyAppSlug", () => {
       "biologie-realschule-8",
     );
     expect(academyAppSlug("zam-academy:sql")).toBe("sql");
+    expect(
+      academyAppSlug("https://academy.zam-os.org/uml/#lesson=klassen"),
+    ).toBe("uml");
+  });
+
+  it("extracts the app slug from a private provider's app URL (ADR 2026-11-25)", () => {
+    expect(academyAppSlug("https://provider.example/lf3/")).toBe("lf3");
+    expect(academyAppSlug("https://provider.example/lf3/#lesson=osi")).toBe(
+      "lf3",
+    );
+    expect(academyAppSlug("https://provider.example/")).toBe("");
   });
 });
 

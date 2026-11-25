@@ -13,6 +13,13 @@ import { execFile } from "node:child_process";
 import { homedir } from "node:os";
 import { registerPostgresPasswordSupplier } from "../../kernel/db/connection.js";
 
+/**
+ * A canonical lower-case GUID. Kept here rather than imported from the
+ * provider module, so the database connection path loads no curriculum.
+ */
+const GUID = /^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$/;
+const isGuid = (value: string): boolean => GUID.test(value);
+
 /** Resource the token must be issued for — Azure Database for PostgreSQL. */
 export const ENTRA_POSTGRES_RESOURCE_TYPE = "oss-rdbms";
 
@@ -136,6 +143,47 @@ export async function entraCliAccessToken(
     "get-access-token",
     "--resource-type",
     ENTRA_POSTGRES_RESOURCE_TYPE,
+    "--query",
+    "accessToken",
+    "-o",
+    "tsv",
+  ]);
+  if (result.code !== 0 || result.spawnError) throw classifyFailure(result);
+  const token = result.stdout.trim();
+  if (!token) {
+    throw new EntraLoginRequiredError(
+      "no-token",
+      "The Azure CLI returned an empty token. Run `az login` and try again.",
+    );
+  }
+  return token;
+}
+
+/**
+ * A fresh Entra access token for a private Academy provider's API
+ * (ADR 2026-11-25 Decision 4): `az account get-access-token` for that tenant
+ * and the scope `api://<api>/.default`.
+ *
+ * `az` runs through a shell on Windows, and both values come from a provider
+ * file. So each must be a canonical lower-case GUID before the process
+ * starts, and the scope is built here from the API GUID — nothing else of
+ * the file ever reaches the command line.
+ */
+export async function entraCliApiToken(
+  tenant: string,
+  api: string,
+  exec: ExecFn = defaultExec,
+): Promise<string> {
+  if (!isGuid(tenant) || !isGuid(api)) {
+    throw new Error("Provider tenant and API must be GUIDs");
+  }
+  const result = await exec("az", [
+    "account",
+    "get-access-token",
+    "--tenant",
+    tenant,
+    "--scope",
+    `api://${api}/.default`,
     "--query",
     "accessToken",
     "-o",

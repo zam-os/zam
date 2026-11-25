@@ -1,6 +1,6 @@
 # Private Academy providers — implementation plan
 
-**Status:** Phase 1 is built; its PostgreSQL case (1.5) runs in CI. Phases 2–6 are open; Phases 0 and 7 are the owner's.\
+**Status:** Phases 1–2 are built; the PostgreSQL case of 1.5 runs in CI. Phases 3–6 are open; Phases 0 and 7 are the owner's.\
 **Decision:** [ADR 2026-11-25 — Private Academy Providers](../adr/2026-11-25-private-academy-providers.md). Its decisions are cited here as **D1–D9**. Read the ADR first; this plan does not repeat its reasons.\
 **Branch:** `feat/private-academy-providers`, from `main`. One feature, one branch, one PR, one commit per phase.
 
@@ -94,29 +94,30 @@ Goal: the kernel can parse a provider, parse its catalog against its own origin,
 
 Goal: from the CLI, a learner can add a provider, list its catalog, enrol and update, with the token sent only to the provider's origin. Studio has the bridge commands it needs.
 
-- [ ] **2.1** Confirmed providers in the install config (D3), helpers in a new `src/kernel/system/academy-providers.ts` beside `endpoint-confirmation.ts`:
+- [x] **2.1** Confirmed providers in the install config (D3), helpers in a new `src/kernel/system/academy-providers.ts` beside `endpoint-confirmation.ts`:
   - `InstallConfig.academy?.providers?: ConfirmedAcademyProvider[]` with `{ origin, provider: AcademyProvider, sha256, confirmedAt }`; `sha256` is the hash of the provider file's bytes the learner saw.
-  - `listConfirmedProviders`, `confirmProvider` (refuses a reserved id, a duplicate id and a duplicate origin), `removeConfirmedProvider`, `providerChange(confirmed, served)` → which of `id`, `auth`, `feedback` differ.
-  - Exit: `tests/kernel/academy-providers.test.ts`, and the security-switch tests (`tests/cli/studio-bridge-review.test.ts`, `tests/cli/keys-follow-endpoints.test.ts` as the model) assert that no MCP tool and no `STUDIO_BRIDGE_COMMANDS` entry writes `academy.providers`.
-- [ ] **2.2** Token for a provider API in `src/cli/db/entra-cli.ts` (D4):
-  - `entraCliApiToken(tenant, api, exec = defaultExec)`: re-checks both GUIDs, then runs `az account get-access-token --tenant <tenant> --scope api://<api>/.default --query accessToken -o tsv`, with the same failure classification as `entraCliAccessToken`.
+  - `listConfirmedProviders`, `confirmProvider` (refuses a reserved id and an id another origin holds; the same origin re-confirms), `removeConfirmedProvider`, `providerChange(confirmed, served)` → which of `id`, `auth`, `feedback` differ. Every stored entry is checked again on read, so a hand-edited config cannot widen what ZAM trusts.
+  - Exit: `tests/kernel/academy-providers.test.ts`, and `tests/cli/studio-bridge-review.test.ts`: none of the academy commands is a panel command, `zam mcp`'s source imports no provider writer or fetcher, and `setting-set` refuses `academy.providers` and `academy.lessonOrigins`.
+- [x] **2.2** Token for a provider API in `src/cli/db/entra-cli.ts` (D4):
+  - `entraCliApiToken(tenant, api, exec = defaultExec)`: re-checks both GUIDs, then runs `az account get-access-token --tenant <tenant> --scope api://<api>/.default --query accessToken -o tsv`, with the same failure classification as `entraCliAccessToken`. The GUID check is local to the module, so the database connection path loads no curriculum.
   - Exit: `tests/cli/entra-cli.test.ts` — exact arguments; a non-GUID or a GUID with shell metacharacters is refused **before** `exec` is called (the mock records no call).
-- [ ] **2.3** Provider fetching, new `src/cli/academy/provider-client.ts` (D4):
+- [x] **2.3** Provider fetching, new `src/cli/academy/provider-client.ts` (D4):
   - Refactor `fetchBytes` in `src/cli/academy/catalog-client.ts` to take the allowed origin and extra headers; the public calls pass `ACADEMY_ORIGIN` and no headers.
   - `fetchProviderFile(url)`: https only; the URL is reduced to its origin plus the fixed path `/zam-provider.json`; no token; `maxRedirects: 0`; 16 KiB limit; returns parsed file and bytes.
   - `fetchProviderCatalog`, `fetchProviderIndex`, `fetchProviderCell` take the confirmed provider and a token supplier. The supplier is called at most once per learner action. The `Authorization` header is set only when the request URL's origin equals the confirmed origin. 401 and 403 become `PROVIDER_ACCESS_DENIED`.
   - Exit: a new `tests/cli/academy-provider.test.ts` with the `transport` seam — redirect refused; the token never reaches another origin (headers captured per request); 401 mapping; hash and prefix mismatches; `auth: none` sends no header.
-- [ ] **2.4** Per-provider cache in `src/cli/academy/cache.ts`: every function takes an optional provider id; with one, files live under `~/.zam/academy/providers/<id>/`. Public paths are unchanged. `removeConfirmedProvider` deletes the provider's folder. Exit: cache tests for both layouts.
-- [ ] **2.5** Handlers in `src/cli/academy/handlers.ts` take `provider?: string`:
+- [x] **2.4** Per-provider cache in `src/cli/academy/cache.ts`: every function takes an optional provider scope (`{ providerId, origin }`, the origin re-parses the cached catalog); with one, files live under `~/.zam/academy/providers/<id>/`. Public paths are unchanged. `academy-provider-remove` deletes the provider's folder. Exit: `tests/cli/academy-provider.test.ts` (cell cached per provider, folder removed) and `tests/cli/academy.test.ts` unchanged.
+- [x] **2.5** Handlers for a provider in a new `src/cli/academy/provider-handlers.ts`; the public handlers in `handlers.ts` are untouched and the bridge dispatches on `--provider`:
   - Unknown provider → `PROVIDER_NOT_CONFIRMED`.
-  - `academyListHandler` also fetches the provider file and reports `providerChanged` with the served values; it keeps using the confirmed copy.
-  - Enrol and update pass `namespace` (1.4), `appUrl` and `preview` to the install, through `enrolBundledCell` or a sibling for provider tiles. A provider tile on a team library is refused with a pointer to `zam team install-cell` (Phase 4).
-  - Exit: `tests/cli/academy-provider.test.ts` (list, enrol, update, changed provider file) and `tests/cli/academy.test.ts` unchanged.
-- [ ] **2.6** Commands. None of them goes into `STUDIO_BRIDGE_COMMANDS`, and no MCP tool calls them:
+  - The list also fetches the provider file and reports `providerChanged` with the served values; it keeps using the confirmed copy.
+  - Enrol and update pass `namespace` (1.4), `appUrl` and `preview` to the install through a new `install` option of `enrolBundledCell`. A provider tile on a team library is refused with a pointer to `zam team install-cell` (Phase 4).
+  - Found while building: `academyAppSlug` knew only the public origin, so provider cells never met their `academy.json` packages. It now takes the first path segment of any http(s) app URL; public results are unchanged (`tests/kernel/academy-catalog.test.ts`).
+  - Exit: `tests/cli/academy-provider.test.ts` (list, enrol, update, changed provider file, foreign entry, redirect, 403, no-login provider, team-library refusal) and `tests/cli/academy.test.ts` unchanged.
+- [x] **2.6** Commands. None of them goes into `STUDIO_BRIDGE_COMMANDS`, and no MCP tool calls them:
   - Bridge: `academy-provider-check <url>` (reads and parses the provider file, returns what Studio shows, writes nothing); `academy-provider-add <url> --sha256 <hex>` (fetches again and saves only if the bytes still hash to what the learner confirmed); `academy-provider-remove <id>`; `academy-provider-list`; and `--provider <id>` on `academy-list`, `academy-enrol`, `academy-update`.
   - CLI: a new `zam academy provider add|list|remove` group; `add` shows the same details and asks for confirmation (`--yes` for scripts).
-  - Exit: bridge tests for JSON-only output and error codes; `tests/cli/studio-bridge-review.test.ts` still lists none of them.
-- [ ] **2.7** The review context never fetches a provider page (D6) in `src/cli/review-context.ts`: a link resolves to nothing when its origin is a confirmed provider's, or the origin of an `installed_tiles.app_url` whose tile is a provider tile. Suppressing a fetch is always safe, so library content may widen this list. Exit: review-context tests for both cases and for an unrelated link that still resolves.
+  - Exit: bridge tests for JSON-only output and error codes (`tests/cli/academy-provider.test.ts` through `executeBridgeCommandJson`); `tests/cli/studio-bridge-review.test.ts` lists none of them.
+- [x] **2.7** The review context never fetches a provider page (D6) in `src/cli/review-context.ts`: a link resolves to nothing when its origin is a confirmed provider's, or one in the machine-local `academy.lessonOrigins` (`rememberLessonOrigins`). Changed from the first draft: the review context has no database at its seven call sites, so it cannot read `installed_tiles`; Phase 4 records an installed provider tile's app origin there when a member lists or enrols it. The list only suppresses, so library content may fill it. Exit: `tests/cli/safe-fetch.test.ts` — both cases make no request, and an unrelated link still goes through the usual checks.
 
 ## Phase 3 — Studio
 
@@ -134,7 +135,7 @@ Goal: a learner adds a provider, browses and enrols in Studio, opens lessons, an
 Goal: D7 on PostgreSQL.
 
 - [ ] **4.1** `zam team install-cell <id>:<slug>` on the learner's normal library connection: refuses when the connected role is not a curator (`pg_has_role(current_user, 'zam_curator', 'member')`, the check `zam team members` runs for others); fetches with the curator's own token; installs with `namespace`, `appUrl` and `preview`; creates no cards.
-- [ ] **4.2** Studio: in a team library, a curator sees „Für die Bibliothek installieren“ on provider rows. Every member sees the provider tiles installed in the library (`listInstalledProviderTiles`) with „Aufnehmen“, which calls a new bridge command `academy-enrol-installed <tileId>` → `enrolInstalledTile`. No provider confirmation and no network are needed for that.
+- [ ] **4.2** Studio: in a team library, a curator sees „Für die Bibliothek installieren“ on provider rows. Every member sees the provider tiles installed in the library (`listInstalledProviderTiles`) with „Aufnehmen“, which calls a new bridge command `academy-enrol-installed <tileId>` → `enrolInstalledTile`. No provider confirmation and no network are needed for that. Listing and enrolling also pass the tiles' app URLs to `rememberLessonOrigins`, so reviews skip those lessons (2.7).
 - [ ] **4.3** Updates: the curator installs the newer version; `replaces` moves members' history inside the namespace. New items reach members the same way they reach members after `zam team reinstall-tiles` today. Find that path and reuse it; do not invent a second one.
 - [ ] **4.4** `docs/okf/learning-content.md` (through `zam_okf_upsert`): the curator install, and that apprentices are added with `zam team add-member --no-curator`.
 - [ ] Exit for the phase: `npm run pg:test` with the member/curator cases from 1.5 and an install-cell case; a namespace violation is refused on PostgreSQL too.

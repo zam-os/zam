@@ -4,6 +4,7 @@ import {
   type ExecFn,
   type ExecResult,
   entraCliAccessToken,
+  entraCliApiToken,
   entraCliSignedInUpn,
   isEntraLoginRequired,
 } from "../../src/cli/db/entra-cli.js";
@@ -118,5 +119,59 @@ describe("Azure CLI token source", () => {
       ),
     ).toBe(true);
     expect(isEntraLoginRequired(new Error("connection refused"))).toBe(false);
+  });
+});
+
+describe("Azure CLI token for a provider API (ADR 2026-11-25 D4)", () => {
+  const TENANT = "00000000-0000-0000-0000-000000000000";
+  const API = "11111111-1111-1111-1111-111111111111";
+
+  it("asks for the tenant and the scope built from the API GUID", async () => {
+    const calls: string[][] = [];
+    const exec: ExecFn = async (file, args) => {
+      calls.push([file, ...args]);
+      return { code: 0, stdout: "tok\n", stderr: "" };
+    };
+    await expect(entraCliApiToken(TENANT, API, exec)).resolves.toBe("tok");
+    expect(calls).toEqual([
+      [
+        "az",
+        "account",
+        "get-access-token",
+        "--tenant",
+        TENANT,
+        "--scope",
+        `api://${API}/.default`,
+        "--query",
+        "accessToken",
+        "-o",
+        "tsv",
+      ],
+    ]);
+  });
+
+  it.each([
+    ["a tenant name", "contoso.example", API],
+    ["shell characters after the GUID", TENANT, `${API}&calc`],
+    ["a quote", TENANT, `${API}"`],
+    ["an upper-case GUID", TENANT, API.replace(/1/g, "A")],
+    ["an empty value", "", API],
+  ])("refuses %s before az starts", async (_label, tenant, api) => {
+    const calls: string[][] = [];
+    const exec: ExecFn = async (file, args) => {
+      calls.push([file, ...args]);
+      return { code: 0, stdout: "tok", stderr: "" };
+    };
+    await expect(entraCliApiToken(tenant, api, exec)).rejects.toThrow(/GUID/);
+    expect(calls).toEqual([]);
+  });
+
+  it("turns a missing login into ENTRA_LOGIN_REQUIRED", async () => {
+    const exec = fakeExec({
+      code: 1,
+      stderr: "Please run 'az login' to setup account.",
+    });
+    const error = await entraCliApiToken(TENANT, API, exec).catch((e) => e);
+    expect(isEntraLoginRequired(error)).toBe(true);
   });
 });

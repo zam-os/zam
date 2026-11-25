@@ -1807,6 +1807,12 @@ export interface EnrolBundledCellOptions {
    */
   resolveTile?: (cellId: string) => BundledTile | undefined;
   onProgress?: (progress: EnrolBundledCellProgress) => void;
+  /**
+   * A private provider's cell (ADR 2026-11-25): its namespace, app URL and
+   * preview mark go to `installKvtTile`, whose guard keeps the tile inside
+   * the namespace.
+   */
+  install?: { namespace?: string; appUrl?: string | null; preview?: boolean };
 }
 
 /** Counts work in each pass, including items already held by the learner. */
@@ -1868,6 +1874,7 @@ export async function enrolBundledCell(
   const installed = await installedTileVersion(db, cellId);
   if (compareTileVersions(installed, String(tile.version)) !== 1) {
     await installKvtTile(db, tile, {
+      ...options.install,
       onProgress: options.onProgress
         ? (progress) =>
             options.onProgress?.({ phase: "installing", ...progress })

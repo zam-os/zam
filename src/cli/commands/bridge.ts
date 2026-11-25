@@ -183,6 +183,15 @@ import {
 } from "../academy/handlers.js";
 import { academyProgress } from "../academy/progress.js";
 import {
+  academyProviderAddHandler,
+  academyProviderCheckHandler,
+  academyProviderListHandler,
+  academyProviderRemoveHandler,
+  providerEnrolHandler,
+  providerListHandler,
+  providerUpdateHandler,
+} from "../academy/provider-handlers.js";
+import {
   readImageOCR,
   readLocalFile,
   readWebLink,
@@ -8626,16 +8635,27 @@ bridgeCommand
 // a click. They are the only code that fetches academy.zam-os.org, and they
 // are deliberately not in STUDIO_BRIDGE_COMMANDS or behind an MCP tool.
 
+// With `--provider <id>` the same three act on a private provider the learner
+// confirmed on this machine (ADR 2026-11-25 D4–D6).
+
 bridgeCommand
   .command("academy-list")
   .description(
     "Read the ZAM Academy catalog and list its cells with enrolment status (JSON)",
   )
   .option("--user <userId>", "User ID to check status for")
+  .option("--provider <id>", "A confirmed private provider instead")
   .action(async (opts) => {
     await withDb(async (db) => {
       try {
-        jsonOut(await academyListHandler(db, { user: opts.user }));
+        jsonOut(
+          opts.provider
+            ? await providerListHandler(db, {
+                provider: opts.provider,
+                user: opts.user,
+              })
+            : await academyListHandler(db, { user: opts.user }),
+        );
       } catch (err: unknown) {
         jsonError((err as Error).message || String(err));
       }
@@ -8646,15 +8666,24 @@ bridgeCommand
   .command("academy-enrol <cellId>")
   .description("Enrol in a ZAM Academy cell, newest version known (JSON)")
   .option("--user <userId>", "User ID to enrol")
+  .option("--provider <id>", "A confirmed private provider instead")
   .action(async (cellId, opts) => {
     await withDb(async (db) => {
       try {
+        const onProgress = academyProgress(cellId, progressOut);
         jsonOut(
-          await academyEnrolHandler(db, {
-            cellId,
-            user: opts.user,
-            onProgress: academyProgress(cellId, progressOut),
-          }),
+          opts.provider
+            ? await providerEnrolHandler(db, {
+                provider: opts.provider,
+                cellId,
+                user: opts.user,
+                onProgress,
+              })
+            : await academyEnrolHandler(db, {
+                cellId,
+                user: opts.user,
+                onProgress,
+              }),
         );
       } catch (err: unknown) {
         jsonError((err as Error).message || String(err));
@@ -8668,20 +8697,84 @@ bridgeCommand
     "Install the catalog's newer version of one held ZAM Academy cell (JSON)",
   )
   .option("--user <userId>", "User ID")
+  .option("--provider <id>", "A confirmed private provider instead")
   .action(async (cellId, opts) => {
     await withDb(async (db) => {
       try {
+        const onProgress = academyProgress(cellId, progressOut);
         jsonOut(
-          await academyUpdateHandler(db, {
-            cellId,
-            user: opts.user,
-            onProgress: academyProgress(cellId, progressOut),
-          }),
+          opts.provider
+            ? await providerUpdateHandler(db, {
+                provider: opts.provider,
+                cellId,
+                user: opts.user,
+                onProgress,
+              })
+            : await academyUpdateHandler(db, {
+                cellId,
+                user: opts.user,
+                onProgress,
+              }),
         );
       } catch (err: unknown) {
         jsonError((err as Error).message || String(err));
       }
     });
+  });
+
+// ── zam bridge academy-provider-* ──────────────────────────────────────────
+// Adding a private provider decides where a login token goes (ADR 2026-11-25
+// D3). Studio's „Anbieter hinzufügen“ calls check, then add with the hash the
+// learner saw. Like the academy actions above, these are deliberately not in
+// STUDIO_BRIDGE_COMMANDS and not behind an MCP tool.
+
+bridgeCommand
+  .command("academy-provider-check <url>")
+  .description(
+    "Read a provider's zam-provider.json for the learner to confirm; writes nothing (JSON)",
+  )
+  .action(async (url) => {
+    try {
+      jsonOut(await academyProviderCheckHandler({ url }));
+    } catch (err: unknown) {
+      jsonError((err as Error).message || String(err));
+    }
+  });
+
+bridgeCommand
+  .command("academy-provider-add <url>")
+  .description(
+    "Save a provider the learner confirmed; the file must still have the checked hash (JSON)",
+  )
+  .requiredOption("--sha256 <hex>", "Hash of the provider file the learner saw")
+  .action(async (url, opts) => {
+    try {
+      jsonOut(await academyProviderAddHandler({ url, sha256: opts.sha256 }));
+    } catch (err: unknown) {
+      jsonError((err as Error).message || String(err));
+    }
+  });
+
+bridgeCommand
+  .command("academy-provider-remove <id>")
+  .description("Forget a provider and its cache; cards stay (JSON)")
+  .action((id) => {
+    try {
+      jsonOut(academyProviderRemoveHandler({ id }));
+    } catch (err: unknown) {
+      jsonError((err as Error).message || String(err));
+    }
+  });
+
+bridgeCommand
+  .command("academy-provider-list")
+  .description("List the providers confirmed on this machine (JSON)")
+  .action(() => {
+    try {
+      jsonOut(academyProviderListHandler());
+    } catch (err: unknown) {
+      jsonError((err as Error).message || String(err));
+    }
   });
 
 // ── zam bridge bundled-tiles-reconcile ─────────────────────────────────────

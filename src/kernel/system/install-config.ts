@@ -126,12 +126,38 @@ export interface InstallConfig {
    * tool an agent can call.
    */
   trustedFolders?: string[];
+  /**
+   * Private Academy providers this learner confirmed on this machine
+   * (ADR 2026-11-25 Decision 3), and lesson origins a review must never
+   * fetch. Written by Studio and `zam academy provider`, never by a tool an
+   * agent can call; see `academy-providers.ts`.
+   */
+  academy?: MachineAcademyConfig;
   /** Machine-local paths to existing personal/team/community workspaces. */
   workspaces?: WorkspaceConfig[];
   /** Machine-local id of the workspace currently active in this install. */
   activeWorkspaceId?: string;
   /** App version that last ran the install verify/repair pass on this machine. */
   lastRepairedVersion?: string;
+}
+
+/** Private Academy providers of this install (ADR 2026-11-25). */
+export interface MachineAcademyConfig {
+  /** Confirmed providers, one per origin and id. */
+  providers?: Array<{
+    origin: string;
+    /** The provider file as the learner confirmed it (parsed form). */
+    provider: unknown;
+    /** SHA-256 of the provider file's bytes the learner saw. */
+    sha256: string;
+    confirmedAt: string;
+  }>;
+  /**
+   * Origins of provider lessons a review never fetches, beside the confirmed
+   * providers' own. Only suppresses: widening it can never make ZAM send a
+   * request or a token anywhere.
+   */
+  lessonOrigins?: string[];
 }
 
 /** Observation switches of this install (ADR 2026-10-08). */

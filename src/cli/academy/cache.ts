@@ -5,6 +5,11 @@
  * with it, under `~/.zam/academy`. Like other machine-local state, it lives
  * outside the library database, which may be shared.
  *
+ * A private provider (ADR 2026-11-25 D4) gets its own folder,
+ * `~/.zam/academy/providers/<id>/`, with the same layout. Every function takes
+ * an optional provider scope; without one it is the public Academy's cache,
+ * exactly as before.
+ *
  * Agent tools read only this cache: a tool call is not the learner's
  * action, so it never reaches the network. This module therefore imports
  * nothing that fetches.
@@ -16,6 +21,7 @@ import {
   mkdirSync,
   readFileSync,
   renameSync,
+  rmSync,
   writeFileSync,
 } from "node:fs";
 import { homedir } from "node:os";
@@ -29,12 +35,35 @@ import {
   parseAcademyIndex,
 } from "../../kernel/index.js";
 
-export function academyCacheDir(): string {
-  return join(homedir(), ".zam", "academy");
+/** Which provider's cache: its id (the tile prefix) and confirmed origin. */
+export interface ProviderCacheScope {
+  providerId: string;
+  origin: string;
 }
 
-function cellsDir(): string {
-  return join(academyCacheDir(), "cells");
+const PROVIDER_ID = /^[a-z0-9][a-z0-9-]{0,39}$/;
+
+function providerDir(providerId: string): string {
+  // The id is a checked slug already; checked again because it names a folder.
+  if (!PROVIDER_ID.test(providerId)) {
+    throw new Error(`Invalid provider id ${providerId}`);
+  }
+  return join(homedir(), ".zam", "academy", "providers", providerId);
+}
+
+export function academyCacheDir(scope?: ProviderCacheScope): string {
+  return scope
+    ? providerDir(scope.providerId)
+    : join(homedir(), ".zam", "academy");
+}
+
+function cellsDir(scope?: ProviderCacheScope): string {
+  return join(academyCacheDir(scope), "cells");
+}
+
+/** Deletes a provider's whole cache folder. */
+export function removeProviderCache(providerId: string): void {
+  rmSync(providerDir(providerId), { recursive: true, force: true });
 }
 
 /** `zam-academy:uml` 2026.10.1 → `zam-academy_uml@2026.10.1.json`. */
@@ -53,31 +82,47 @@ export function sha256Hex(bytes: Buffer): string {
 }
 
 /** Stores a catalog that already passed `parseAcademyCatalog`. */
-export function writeCachedCatalog(bytes: Buffer): void {
-  mkdirSync(academyCacheDir(), { recursive: true });
-  writeAtomically(join(academyCacheDir(), "catalog.json"), bytes);
+export function writeCachedCatalog(
+  bytes: Buffer,
+  scope?: ProviderCacheScope,
+): void {
+  mkdirSync(academyCacheDir(scope), { recursive: true });
+  writeAtomically(join(academyCacheDir(scope), "catalog.json"), bytes);
 }
 
 /** The catalog of the learner's last check, or null. */
-export function readCachedCatalog(): AcademyCatalog | null {
-  const path = join(academyCacheDir(), "catalog.json");
+export function readCachedCatalog(
+  scope?: ProviderCacheScope,
+): AcademyCatalog | null {
+  const path = join(academyCacheDir(scope), "catalog.json");
   if (!existsSync(path)) return null;
   try {
-    return parseAcademyCatalog(JSON.parse(readFileSync(path, "utf8")));
+    const raw = JSON.parse(readFileSync(path, "utf8"));
+    return scope
+      ? parseAcademyCatalog(raw, {
+          origin: scope.origin,
+          prefix: scope.providerId,
+        })
+      : parseAcademyCatalog(raw);
   } catch {
     return null;
   }
 }
 
 /** Stores an index (`academy.json`) that already passed `parseAcademyIndex`. */
-export function writeCachedIndex(bytes: Buffer): void {
-  mkdirSync(academyCacheDir(), { recursive: true });
-  writeAtomically(join(academyCacheDir(), "academy.json"), bytes);
+export function writeCachedIndex(
+  bytes: Buffer,
+  scope?: ProviderCacheScope,
+): void {
+  mkdirSync(academyCacheDir(scope), { recursive: true });
+  writeAtomically(join(academyCacheDir(scope), "academy.json"), bytes);
 }
 
 /** The index (`academy.json`) of the learner's last check, or null. */
-export function readCachedIndex(): AcademyIndex | null {
-  const path = join(academyCacheDir(), "academy.json");
+export function readCachedIndex(
+  scope?: ProviderCacheScope,
+): AcademyIndex | null {
+  const path = join(academyCacheDir(scope), "academy.json");
   if (!existsSync(path)) return null;
   try {
     return parseAcademyIndex(JSON.parse(readFileSync(path, "utf8")));
@@ -90,15 +135,16 @@ export function readCachedIndex(): AcademyIndex | null {
 export function writeCachedCell(
   entry: AcademyCatalogEntry,
   bytes: Buffer,
+  scope?: ProviderCacheScope,
 ): void {
   if (sha256Hex(bytes) !== entry.sha256) {
     throw new Error(
       `Academy cell ${entry.id}: hash does not match the catalog`,
     );
   }
-  mkdirSync(cellsDir(), { recursive: true });
+  mkdirSync(cellsDir(scope), { recursive: true });
   writeAtomically(
-    join(cellsDir(), cellFileName(entry.id, entry.version)),
+    join(cellsDir(scope), cellFileName(entry.id, entry.version)),
     bytes,
   );
 }
@@ -106,8 +152,9 @@ export function writeCachedCell(
 /** The cached cell for this catalog entry, if its bytes still match. */
 export function readCachedCell(
   entry: AcademyCatalogEntry,
+  scope?: ProviderCacheScope,
 ): BundledTile | undefined {
-  const path = join(cellsDir(), cellFileName(entry.id, entry.version));
+  const path = join(cellsDir(scope), cellFileName(entry.id, entry.version));
   if (!existsSync(path)) return undefined;
   const bytes = readFileSync(path);
   if (sha256Hex(bytes) !== entry.sha256) return undefined;
@@ -119,28 +166,32 @@ export function readCachedCell(
  * checked. A build the catalog no longer lists is never resolved, even if
  * an earlier check cached it.
  */
-export function resolveCachedTile(id: string): BundledTile | undefined {
-  const entry = readCachedCatalog()?.cells.find((cell) => cell.id === id);
-  return entry ? readCachedCell(entry) : undefined;
+export function resolveCachedTile(
+  id: string,
+  scope?: ProviderCacheScope,
+): BundledTile | undefined {
+  const entry = readCachedCatalog(scope)?.cells.find((cell) => cell.id === id);
+  return entry ? readCachedCell(entry, scope) : undefined;
 }
 
 /** The cached cell of exactly this version, if a check fetched it. */
 export function readCachedTileVersion(
   id: string,
   version: string,
+  scope?: ProviderCacheScope,
 ): BundledTile | undefined {
-  const path = join(cellsDir(), cellFileName(id, version));
+  const path = join(cellsDir(scope), cellFileName(id, version));
   if (!existsSync(path)) return undefined;
   const tile = parseCell(readFileSync(path), id);
   return tile && String(tile.version) === version ? tile : undefined;
 }
 
 /** Every cached cell the last catalog lists, newest version each. */
-export function cachedCatalogTiles(): BundledTile[] {
-  const catalog = readCachedCatalog();
+export function cachedCatalogTiles(scope?: ProviderCacheScope): BundledTile[] {
+  const catalog = readCachedCatalog(scope);
   if (!catalog) return [];
   return catalog.cells
-    .map((entry) => readCachedCell(entry))
+    .map((entry) => readCachedCell(entry, scope))
     .filter((tile): tile is BundledTile => tile !== undefined);
 }
 

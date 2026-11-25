@@ -392,6 +392,17 @@ export function academyAppSlug(value: string | null | undefined): string {
   if (trimmed.startsWith("zam-academy:")) {
     return trimmed.slice("zam-academy:".length);
   }
+  // Any app URL, a private provider's included (ADR 2026-11-25): the first
+  // path segment names the app.
+  if (/^https?:\/\//i.test(trimmed)) {
+    try {
+      return (
+        new URL(trimmed).pathname.replace(/^\/+|\/+$/g, "").split("/")[0] ?? ""
+      );
+    } catch {
+      // Not a URL after all: fall through.
+    }
+  }
   const stripped = trimmed
     .replace(ACADEMY_ORIGIN, "")
     .replace(/^\/+|\/+$/g, "");
