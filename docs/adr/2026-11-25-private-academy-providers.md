@@ -3,6 +3,7 @@
 **Status:** Accepted\
 **Date:** 2026-11-25\
 **Deciders:** Thomas (project owner)\
+**Plan:** [`docs/plans/2026-11-25-private-academy-providers.md`](../plans/2026-11-25-private-academy-providers.md)\
 **Related:**
 [2026-10-19](2026-10-19-zam-academy-cells.md) (the Academy: catalog, cells,
 learner-only fetching, open question 6 on team libraries) ·
@@ -213,11 +214,17 @@ security switch (ADR 2026-10-08b), and only the learner can change it:
   is parsed and when a cell is installed.
 - **Reserved ids:** a provider `id` must not be `zam-academy`, the prefix of
   any bundled tile, or the id of another confirmed provider.
+- **Atoms and items stay the provider's own:** every atom id and item id in
+  a provider's cell must be new to the library or already belong to a tile
+  in the provider's namespace. A private cell can never rewrite a public
+  atom or item by reusing its id.
 - **`replaces`** may name only items of the provider's own tiles. A private
   cell can never move review history off a public item.
-- **Prerequisites** may point at any atom, so a private package can build on
-  public Academy cells instead of repeating them. That follows the rule that
-  the same content is never learned twice.
+- **Prerequisites stay inside one tile,** as for every tile today. A private
+  package that builds on a public Academy package names it in its lesson
+  text instead of repeating it, which keeps the rule that the same content
+  is never learned twice. Prerequisites across tiles are a separate, later
+  change.
 
 ### 6. Studio shows providers beside the ZAM Academy
 
@@ -449,3 +456,8 @@ Each step can ship on its own:
 
 - 2026-11-25 — Proposed.
 - 2026-11-25 — Accepted by the project owner (PR #498).
+- 2026-11-25 — Decision 5 corrected while writing the plan. `installKvtTile`
+  refuses prerequisites outside a tile, so the sentence allowing
+  prerequisites on public atoms was wrong; prerequisites now stay inside one
+  tile. The code also showed that a tile can overwrite atoms and items by
+  id, so the namespace rule now covers atom and item ids, not only tile ids.
