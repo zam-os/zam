@@ -22,6 +22,7 @@ import {
   initAcademyProviderSettings,
   providerFeedbackRow,
   refreshProviderLessonHosts,
+  translateAcademyProviderSettings,
 } from "./academy-providers.js";
 import {
   academyPracticeLink,
@@ -1121,6 +1122,7 @@ function initSettingsViewModeControls(): void {
 
 // ── STATIC TRANSLATIONS INITIALIZER ──────────────────────────────────────
 function initializeTranslations() {
+  translateAcademyProviderSettings();
   setNavLabel("nav-dashboard", t("nav_today"));
   setNavLabel("nav-settings", t("nav_settings"));
   setNavLabel("nav-stats", t("nav_stats"));

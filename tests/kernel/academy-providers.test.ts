@@ -8,7 +8,6 @@ import {
   listConfirmedProviders,
   parseAcademyProvider,
   providerChange,
-  rememberLessonOrigins,
   removeConfirmedProvider,
   reviewSuppressedOrigins,
 } from "../../src/kernel/index.js";
@@ -189,15 +188,13 @@ describe("confirmed Academy providers (ADR 2026-11-25 D3)", () => {
       { origin: "https://provider.example", provider: provider(), sha256: SHA },
       config,
     );
-    rememberLessonOrigins(
-      [
-        "https://lessons.example/optik/#lesson=1",
-        "http://plain.example/x",
-        "not a url",
-      ],
-      config,
-    );
-    rememberLessonOrigins(["https://lessons.example/other/"], config);
+    const stored = JSON.parse(readFileSync(config, "utf8"));
+    stored.academy.lessonOrigins = [
+      "https://lessons.example/optik/",
+      "https://lessons.example/other/",
+      "not a url",
+    ];
+    writeFileSync(config, JSON.stringify(stored));
     expect([...reviewSuppressedOrigins(config)].sort()).toEqual([
       "https://lessons.example",
       "https://provider.example",

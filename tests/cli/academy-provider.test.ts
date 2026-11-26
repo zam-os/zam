@@ -5,9 +5,10 @@
  */
 import { createHash } from "node:crypto";
 import { existsSync, mkdtempSync, readFileSync, rmSync } from "node:fs";
+import https from "node:https";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { academyCacheDir } from "../../src/cli/academy/cache.js";
 import type { AcademyFetchOptions } from "../../src/cli/academy/catalog-client.js";
 import { providerFeedbackFor } from "../../src/cli/academy/feedback.js";
@@ -34,11 +35,11 @@ import { EntraNotAssignedError } from "../../src/cli/db/entra-cli.js";
 import type { SafeTransport } from "../../src/cli/net/safe-fetch.js";
 import {
   type Database,
+  hasInstalledProviderOrigin,
   installKvtTile,
   type KvtTile,
   listConfirmedProviders,
   openDatabase,
-  reviewSuppressedOrigins,
 } from "../../src/kernel/index.js";
 
 /**
@@ -92,6 +93,7 @@ function providerTile(version = "2026.11.1"): KvtTile {
     atom.atom_uri = `urn:zam:atom:${atom.id}`;
     atom.slug = `p-${atom.slug}`;
     atom.curricula = [];
+    atom.source_link = `${ORIGIN}/optik/#lesson=${atom.slug}`;
     for (const item of atom.practice_items) {
       if (item.slug) item.slug = `p-${item.slug}`;
     }
@@ -551,6 +553,62 @@ describe("private Academy providers (ADR 2026-11-25)", () => {
     expect(changed.tokenCalls).toEqual([[TENANT, API]]);
   });
 
+  it("keeps the manifest confirmation available when the old API returns 401", async () => {
+    await confirm(fakeProvider());
+    const changed = fakeProvider({
+      file: {
+        schema: 1,
+        id: "example-provider",
+        title: "Example Academy",
+        publisher: "Example training department",
+        auth: { kind: "entra-cli", tenant: TENANT, api: TENANT },
+      },
+      routes: { "/catalog.json": { status: 401 } },
+    });
+    const listing = await providerListHandler(db, {
+      provider: "example-provider",
+      user: "learner",
+      fetch: changed.fetch,
+      getToken: changed.getToken,
+    });
+    expect(listing.providerChanged?.fields).toContain("auth");
+    expect(listing.providerAccessError).toMatch(/^PROVIDER_ACCESS_DENIED/);
+    expect(changed.tokenCalls).toEqual([[TENANT, API]]);
+  });
+
+  it("preserves a personal learner's package status without its cached cell", async () => {
+    const provider = fakeProvider();
+    await confirm(provider);
+    const params = {
+      provider: "example-provider",
+      user: "learner",
+      fetch: provider.fetch,
+      getToken: provider.getToken,
+    };
+    await providerEnrolHandler(db, {
+      ...params,
+      cellId: "example-provider:optik",
+    });
+    academyProviderRemoveHandler({ id: params.provider });
+    await confirm(provider);
+    const updated = fakeProvider({ tiles: [providerTile("2026.11.2")] });
+    const listing = await providerListHandler(db, {
+      ...params,
+      fetch: updated.fetch,
+    });
+    expect(listing.cells[0]).toMatchObject({
+      held: true,
+      heldVersion: "2026.11.1",
+      newer: true,
+    });
+    const bundled = await listBundledCellsHandler(db, { user: "learner" });
+    const row = bundled.cells.find(
+      (cell) => cell.id === "example-provider:optik",
+    );
+    expect(row).toMatchObject({ installed: true, enrolled: true });
+    expect(row?.cardCount).toBeGreaterThan(0);
+  });
+
   it("refuses an unknown provider, a foreign cell and a team library", async () => {
     const provider = fakeProvider();
     await expect(
@@ -630,7 +688,10 @@ describe("private Academy providers (ADR 2026-11-25)", () => {
       getToken: provider.getToken,
     });
     expect(before).toMatchObject({ teamLibrary: true, curator: true });
-    expect(before.cells[0]).toMatchObject({ libraryAction: "install", held: false });
+    expect(before.cells[0]).toMatchObject({
+      libraryAction: "install",
+      held: false,
+    });
     const memberView = await providerListHandler(asMember, {
       provider: "example-provider",
       user: "learner",
@@ -695,7 +756,9 @@ describe("private Academy providers (ADR 2026-11-25)", () => {
     academyProviderRemoveHandler({ id: "example-provider" });
     const member = asTeamLibrary(db, false, "member");
 
-    const listed = await installedProviderTilesHandler(member, { user: "member" });
+    const listed = await installedProviderTilesHandler(member, {
+      user: "member",
+    });
     expect(listed).toMatchObject({ teamLibrary: true, curator: false });
     expect(listed.tiles[0]).toMatchObject({
       tileId: "example-provider:optik",
@@ -703,7 +766,7 @@ describe("private Academy providers (ADR 2026-11-25)", () => {
       held: false,
     });
     // A review never fetches these lessons, even without the provider here.
-    expect(reviewSuppressedOrigins().has(ORIGIN)).toBe(true);
+    expect(await hasInstalledProviderOrigin(db, ORIGIN)).toBe(true);
 
     const enrolled = await enrolInstalledHandler(member, {
       cellId: "example-provider:optik",
@@ -718,8 +781,12 @@ describe("private Academy providers (ADR 2026-11-25)", () => {
       id: "01K3X9A7R4B8C1D2E3F4P5N001",
       slug: "p-optik-new-item",
     });
-    await installKvtTile(db, next, { namespace: "example-provider" });
-    const stale = await installedProviderTilesHandler(member, { user: "member" });
+    await installKvtTile(db, next, {
+      provider: { id: "example-provider", origin: ORIGIN },
+    });
+    const stale = await installedProviderTilesHandler(member, {
+      user: "member",
+    });
     expect(stale.tiles[0]).toMatchObject({ held: true, version: "2026.11.2" });
     expect(stale.tiles[0].newItems).toBeGreaterThan(0);
     const again = await enrolInstalledHandler(member, {
@@ -729,7 +796,10 @@ describe("private Academy providers (ADR 2026-11-25)", () => {
     expect(again.cardsCreated).toBeGreaterThan(0);
 
     await expect(
-      enrolInstalledHandler(member, { cellId: "zam-academy:uml", user: "member" }),
+      enrolInstalledHandler(member, {
+        cellId: "zam-academy:uml",
+        user: "member",
+      }),
     ).rejects.toThrow(/not a provider package/);
   });
 
@@ -746,7 +816,9 @@ describe("private Academy providers (ADR 2026-11-25)", () => {
     const requests = provider.seen.length;
 
     const listed = await listBundledCellsHandler(db, { user: "learner" });
-    const row = listed.cells.find((cell) => cell.id === "example-provider:optik");
+    const row = listed.cells.find(
+      (cell) => cell.id === "example-provider:optik",
+    );
     expect(row).toMatchObject({
       provider: { id: "example-provider", title: "Example Academy" },
       requiresLearnerEnrol: true,
@@ -796,7 +868,9 @@ describe("private Academy providers (ADR 2026-11-25)", () => {
     academyProviderRemoveHandler({ id: "example-provider" });
     const member = asTeamLibrary(db, false, "member");
     const listed = await listBundledCellsHandler(member, { user: "member" });
-    const row = listed.cells.find((cell) => cell.id === "example-provider:optik");
+    const row = listed.cells.find(
+      (cell) => cell.id === "example-provider:optik",
+    );
     expect(row).toMatchObject({ installedInLibrary: true, enrolled: false });
     // Without the provider's cache the library still knows the tile's atoms.
     expect(row?.atomCount).toBeGreaterThan(0);
@@ -806,12 +880,67 @@ describe("private Academy providers (ADR 2026-11-25)", () => {
       user: "member",
     });
     expect(enrolled.cardsCreated).toBeGreaterThan(0);
+    // Direct review from a fresh client, without the Academy installed-list call.
+    const network = vi.spyOn(https, "request");
+    try {
+      const review = await getReview(member, {
+        user: "member",
+        noDynamicQuestion: true,
+      });
+      expect(review.hasReview).toBe(true);
+      expect(review.card?.sourceLink).toContain(ORIGIN);
+      expect(review.resolvedContext).toBeNull();
+      expect(network).not.toHaveBeenCalled();
+    } finally {
+      network.mockRestore();
+    }
+    await confirm(provider);
+    await providerListHandler(member, {
+      provider: "example-provider",
+      user: "member",
+      fetch: provider.fetch,
+      getToken: provider.getToken,
+    });
+    const withCatalog = await listBundledCellsHandler(member, {
+      user: "member",
+    });
+    expect(
+      withCatalog.cells.find((cell) => cell.id === "example-provider:optik"),
+    ).toMatchObject({
+      installedInLibrary: true,
+      enrolled: true,
+      atomCount: row?.atomCount,
+    });
     await expect(
       enrolBundledCellHandler(member, {
         cellId: "example-provider:other",
         user: "member",
       }),
     ).rejects.toThrow(/A curator installs it first/);
+  });
+
+  it("treats an empty installed version as retryable from the cached provider cell", async () => {
+    const provider = fakeProvider();
+    await confirm(provider);
+    const cellId = "example-provider:optik";
+    await providerEnrolHandler(db, {
+      provider: "example-provider",
+      cellId,
+      user: "learner",
+      fetch: provider.fetch,
+      getToken: provider.getToken,
+    });
+    await db
+      .prepare("UPDATE installed_tiles SET version = '' WHERE tile_id = ?")
+      .run(cellId);
+    const listing = await listBundledCellsHandler(db, { user: "other" });
+    expect(listing.cells.find((cell) => cell.id === cellId)).toMatchObject({
+      installed: false,
+      requiresLearnerEnrol: false,
+    });
+    await expect(
+      enrolBundledCellHandler(db, { cellId, user: "other" }),
+    ).resolves.toMatchObject({ success: true });
   });
 
   it("answers the provider bridge commands in JSON, errors included", async () => {

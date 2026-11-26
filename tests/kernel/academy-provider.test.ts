@@ -103,6 +103,10 @@ describe("parseAcademyProvider", () => {
     ["a stray brace", { feedback: "https://f.example/{tile" }],
     ["credentials in the link", { feedback: "https://u:p@f.example/{tile}" }],
     ["a report link that is no URL", { feedback: "not a url" }],
+    [
+      "a report link without a fixed host",
+      { feedback: "https://{item}.feedback.example/new" },
+    ],
   ])("refuses %s", (_label, overrides) => {
     expect(() => parseAcademyProvider(file(overrides))).toThrow(
       /Provider file/,

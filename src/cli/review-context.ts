@@ -9,8 +9,11 @@
 import {
   ACADEMY_ORIGIN,
   canonicalRoots,
+  type Database,
   getTrustedFolders,
+  hasInstalledProviderOrigin,
   resolveReviewContext as kernelResolveReviewContext,
+  providerTileForItem,
   type ReferenceFetcher,
   type ReviewContext,
   reviewSuppressedOrigins,
@@ -27,6 +30,8 @@ export interface ResolveReviewContextOptions {
    * folders. The learner's trusted folders always apply (ADR 2026-10-08b D1).
    */
   roots?: readonly string[];
+  db?: Database;
+  tokenId?: string;
 }
 
 const fetchReference: ReferenceFetcher = (url) =>
@@ -55,15 +60,22 @@ function isAcademyLink(sourceLink: string | null | undefined): boolean {
  * page sits behind a login and the review carries no token, so a fetch could
  * only reach a sign-in page.
  */
-function isProviderLink(sourceLink: string | null | undefined): boolean {
+async function isProviderLink(
+  sourceLink: string | null | undefined,
+  { db, tokenId }: ResolveReviewContextOptions,
+): Promise<boolean> {
   if (!sourceLink) return false;
-  let origin: string;
+  let url: URL;
   try {
-    origin = new URL(sourceLink).origin;
+    url = new URL(sourceLink);
   } catch {
     return false;
   }
-  return reviewSuppressedOrigins().has(origin);
+  if (url.protocol !== "http:" && url.protocol !== "https:") return false;
+  if (reviewSuppressedOrigins().has(url.origin)) return true;
+  if (!db) return false;
+  if (tokenId && (await providerTileForItem(db, tokenId))) return true;
+  return hasInstalledProviderOrigin(db, url.origin);
 }
 
 /**
@@ -73,12 +85,13 @@ function isProviderLink(sourceLink: string | null | undefined): boolean {
  */
 export async function resolveReviewContext(
   sourceLink: string | null | undefined,
-  opts?: ResolveReviewContextOptions,
+  opts: ResolveReviewContextOptions = {},
 ): Promise<ReviewContext | null> {
-  if (isAcademyLink(sourceLink) || isProviderLink(sourceLink)) return null;
+  if (isAcademyLink(sourceLink) || (await isProviderLink(sourceLink, opts)))
+    return null;
   return kernelResolveReviewContext(sourceLink, {
     fetch: fetchReference,
-    maxChars: opts?.maxChars,
-    roots: canonicalRoots([...(opts?.roots ?? []), ...getTrustedFolders()]),
+    maxChars: opts.maxChars,
+    roots: canonicalRoots([...(opts.roots ?? []), ...getTrustedFolders()]),
   });
 }

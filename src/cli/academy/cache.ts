@@ -53,7 +53,7 @@ function providerDir(providerId: string): string {
 
 export function academyCacheDir(scope?: ProviderCacheScope): string {
   return scope
-    ? providerDir(scope.providerId)
+    ? join(providerDir(scope.providerId), sha256Hex(Buffer.from(scope.origin)))
     : join(homedir(), ".zam", "academy");
 }
 
@@ -158,7 +158,8 @@ export function readCachedCell(
   if (!existsSync(path)) return undefined;
   const bytes = readFileSync(path);
   if (sha256Hex(bytes) !== entry.sha256) return undefined;
-  return parseCell(bytes, entry.id);
+  const tile = parseCell(bytes, entry.id);
+  return tile && String(tile.version) === entry.version ? tile : undefined;
 }
 
 /**

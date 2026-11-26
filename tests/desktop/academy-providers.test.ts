@@ -2,7 +2,10 @@
  * Private Academy providers in Studio (ADR 2026-11-25, Decisions 3, 6, 8).
  */
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { openAcademyList } from "../../desktop/src/academy-list.js";
+import {
+  academyUpdateButton,
+  openAcademyList,
+} from "../../desktop/src/academy-list.js";
 import {
   providerErrorBlock,
   providerFeedbackRow,
@@ -261,6 +264,15 @@ describe("Studio: private Academy providers", () => {
     );
     // Held, with items the member has no card for yet: „Neue Karten holen“.
     const update = findButton(overlay, "update");
+    expect(
+      overlay
+        .all("div")
+        .some(
+          (part) =>
+            part.className === "academy-pkg-meta" &&
+            part.textContent.includes("example-provider"),
+        ),
+    ).toBe(true);
     expect(update.textContent).toBe(t("academy_library_new_cards"));
     update.click();
     await vi.waitFor(() =>
@@ -271,6 +283,24 @@ describe("Studio: private Academy providers", () => {
     );
     expect(calls.some(([command]) => command === "academy-enrol")).toBe(false);
     body.replaceChildren();
+  });
+
+  it("takes new team cards from Lern-Karten without checking the catalog", async () => {
+    mount();
+    const transport = vi.fn(async () => ({
+      success: true,
+      cardsCreated: 1,
+      version: "2026.11.2",
+    }));
+    setBridgeTransport(transport);
+    const updated = vi.fn();
+    const button = academyUpdateButton("example-provider:lf3", updated, true);
+    expect(button.textContent).toBe(t("academy_library_new_cards"));
+    button.click();
+    await vi.waitFor(() => expect(updated).toHaveBeenCalled());
+    expect(transport.mock.calls).toEqual([
+      ["academy-enrol-installed", ["example-provider:lf3"]],
+    ]);
   });
 
   it("lets a curator install a provider's package for the library, and nobody else", async () => {
@@ -332,9 +362,7 @@ describe("Studio: private Academy providers", () => {
         .all("button")
         .find((b) => b.dataset.provider === "example-provider")!
         .click();
-      await vi.waitFor(() =>
-        expect(overlay.all("article")).toHaveLength(1),
-      );
+      await vi.waitFor(() => expect(overlay.all("article")).toHaveLength(1));
       return overlay;
     };
 

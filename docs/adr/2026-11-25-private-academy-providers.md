@@ -189,7 +189,8 @@ security switch (ADR 2026-10-08b), and only the learner can change it:
     catalog;
   - fetches go only through `safeFetch`.
 - **Cache:** `~/.zam/academy/providers/<id>/`, beside today's cache, never
-  in the database.
+  in the database. A subdirectory keyed by the origin keeps different
+  publishers' caches apart when a device reuses an ID.
 - **Login (`entra-cli`):**
   - ZAM runs `az account get-access-token --tenant <tenant> --scope
     api://<api>/.default`.
@@ -216,6 +217,9 @@ security switch (ADR 2026-10-08b), and only the learner can change it:
   is parsed and when a cell is installed.
 - **Reserved ids:** a provider `id` must not be `zam-academy`, the prefix of
   any bundled tile, or the id of another confirmed provider.
+- **The library pins each provider ID to its confirmed HTTPS origin.** The
+  first successful install records the binding. A later install for the
+  same ID must match it, including when a different curator installs it.
 - **Atoms and items stay the provider's own:** every atom id and item id in
   a provider's cell must be new to the library or already belong to a tile
   in the provider's namespace. A private cell can never rewrite a public
@@ -243,7 +247,8 @@ security switch (ADR 2026-10-08b), and only the learner can change it:
   - A click opens the system browser, where the Microsoft sign-in happens.
     ZAM passes no token to the browser.
 - **The review context resolves a provider link to nothing**, as it does an
-  Academy link. A review never fetches a private page.
+  Academy link. It checks the confirmed origins and the library's installed
+  provider tiles, including when a member reviews from a new device.
 - **Library topics** (ADR 2026-10-02) work unchanged: one topic per app URL.
 
 ### 7. In a team library, a curator installs and members only enrol
@@ -258,7 +263,9 @@ security switch (ADR 2026-10-08b), and only the learner can change it:
   library, and „Aufnehmen“ only creates the member's own cards: no download,
   no token.
 - **Updates:** the curator installs a newer version. `replaces` carries the
-  members' review history.
+  members' review history. The install records the declaration and the
+  member's next review or enrolment moves their own card and logs under
+  the existing row-level policies.
 - **Lesson links:** a member who has not confirmed the provider locally sees
   the link with its plain host label. It still opens on click, and the
   page asks for the member's own Microsoft login.
@@ -278,7 +285,8 @@ security switch (ADR 2026-10-08b), and only the learner can change it:
   - Only the tile id, item id and tile version are filled in, URL-encoded.
   - Never the question, the answer, the learner's input or any learner id.
   - The report link's host was shown when the learner confirmed the
-    provider (Decision 3).
+    provider (Decision 3). The origin stays fixed and placeholders appear only
+  in the path, query or fragment.
 - **Where a report goes** (an issue form, a survey) is the provider's
   choice. ZAM sends nothing itself.
 - **Leaving preview:** a package keeps `preview: true` in the provider's
@@ -487,3 +495,8 @@ Each step can ship on its own:
   switch gained „In dieser Bibliothek“ only on reopening; both are fixed.
   Browser sign-in to a lesson waits for the host tenant's admin consent (see
   Hosting), and „Fehler melden“ for a provider with a report link.
+- 2026-11-26 — The PR #500 review pinned provider origins in the library
+  (M051), resolved review suppression directly from installed content,
+  and moved team history transfer into the learner's own review and
+  enrolment flows. Studio keeps reconfirmation available after an auth
+  rotation, and report destinations use a fixed origin.

@@ -25,7 +25,6 @@ import {
   clearReviewContextCache,
   confirmProvider,
   parseAcademyProvider,
-  rememberLessonOrigins,
   removeConfirmedProvider,
 } from "../../src/kernel/index.js";
 
@@ -386,7 +385,6 @@ describe("source links go through the fetcher", () => {
       }),
       sha256: "a".repeat(64),
     });
-    rememberLessonOrigins(["https://lessons.example/optik/"]);
     const transport = vi.spyOn(https, "request");
     const fetchSpy = vi.fn();
     vi.stubGlobal("fetch", fetchSpy);
@@ -394,7 +392,6 @@ describe("source links go through the fetcher", () => {
       for (const link of [
         "https://provider.example/optik/#lesson=1",
         "https://PROVIDER.example/",
-        "https://lessons.example/optik/#lesson=2",
       ]) {
         expect(await resolveReviewContext(link), link).toBeNull();
       }

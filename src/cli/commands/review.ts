@@ -131,6 +131,8 @@ export const reviewCommand = new Command("review")
           console.log(`Source: ${prompt.sourceLink}`);
           if (opts.resolve !== false) {
             const ctx = await resolveReviewContext(item.sourceLink, {
+              db,
+              tokenId: item.tokenId,
               maxChars: 1200,
             }).catch(() => null);
             if (ctx && ctx.sourceType === "dynamic_search") {

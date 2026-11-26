@@ -10,15 +10,15 @@
  */
 
 import {
+  assertAcademyProviderOrigin,
   type BundledCellEnrolResult,
   type BundledCellStatus,
-  type BundledTile,
   bundledCellInfoForTile,
   type Database,
   type EnrolBundledCellProgress,
   enrolBundledCell,
   enrolInstalledTile,
-  getBundledCellsWithStatus,
+  type InstalledProviderTile,
   installedTileVersion,
   isProviderTileId,
   listConfirmedProviders,
@@ -28,9 +28,33 @@ import {
   type ProviderCacheScope,
   readCachedCatalog,
   readCachedCell,
-  readCachedTileVersion,
-  resolveCachedTile,
 } from "./cache.js";
+
+function installedStatus(
+  tile: InstalledProviderTile,
+  provider: NonNullable<BundledCellStatus["provider"]>,
+  teamLibrary: boolean,
+): BundledCellStatus {
+  return {
+    id: tile.tileId,
+    title: tile.title,
+    gradeLabel: provider.title,
+    description: tile.description,
+    publisher: provider.title,
+    publishedAt: tile.version,
+    atomCount: tile.atoms.length,
+    inScopeAtomIds: tile.atoms,
+    curriculumScopes: [],
+    preview: tile.preview,
+    installed: true,
+    enrolled: tile.held,
+    cardCount: tile.cardCount,
+    ...(teamLibrary
+      ? { installedInLibrary: true, newItems: tile.newItems }
+      : {}),
+    provider,
+  };
+}
 
 /**
  * Provider cells an agent may list, beside the bundled and Academy cells
@@ -42,7 +66,15 @@ export async function providerCellsForAgents(
   known: Set<string>,
 ): Promise<BundledCellStatus[]> {
   const out: BundledCellStatus[] = [];
-  for (const confirmed of listConfirmedProviders()) {
+  const teamLibrary = db.dialect === "postgres";
+  const installed = new Map(
+    (await listInstalledProviderTiles(db, userId)).map((tile) => [
+      tile.tileId,
+      tile,
+    ]),
+  );
+  const confirmedProviders = listConfirmedProviders();
+  for (const confirmed of confirmedProviders) {
     const provider = {
       id: confirmed.provider.id,
       title: confirmed.provider.title,
@@ -53,37 +85,17 @@ export async function providerCellsForAgents(
     };
     const catalog = readCachedCatalog(scope);
     if (!catalog) continue;
-    const local = new Map<string, BundledTile>();
-    const uncached = [];
     for (const entry of catalog.cells) {
       if (known.has(entry.id)) continue;
-      const installed = await installedTileVersion(db, entry.id);
-      const tile =
-        (installed
-          ? readCachedTileVersion(entry.id, installed, scope)
-          : undefined) ?? readCachedCell(entry, scope);
-      if (tile) local.set(entry.id, tile);
-      else uncached.push(entry);
-    }
-    const previews = new Set(
-      catalog.cells.filter((entry) => entry.preview).map((entry) => entry.id),
-    );
-    const statuses = await getBundledCellsWithStatus(
-      db,
-      userId,
-      [...local.values()].map((tile) => ({
-        ...bundledCellInfoForTile(tile),
-        publisher: confirmed.provider.publisher,
-        preview: previews.has(tile.tile_id),
-      })),
-      (id) => local.get(id),
-    );
-    for (const status of statuses) {
-      out.push({ ...status, provider });
-      known.add(status.id);
-    }
-    for (const entry of uncached) {
-      const installed = (await installedTileVersion(db, entry.id)) !== null;
+      const libraryTile = installed.get(entry.id);
+      if (libraryTile) {
+        if (libraryTile.origin !== confirmed.origin) continue;
+        out.push(installedStatus(libraryTile, provider, teamLibrary));
+        known.add(entry.id);
+        continue;
+      }
+      const tile = readCachedCell(entry, scope);
+      const info = tile ? bundledCellInfoForTile(tile) : null;
       out.push({
         id: entry.id,
         title: entry.title,
@@ -91,16 +103,15 @@ export async function providerCellsForAgents(
         description: entry.description,
         publisher: confirmed.provider.publisher,
         publishedAt: entry.version,
-        atomCount: 0,
-        inScopeAtomIds: [],
-        curriculumScopes: [],
+        atomCount: info?.atomCount ?? 0,
+        inScopeAtomIds: info?.inScopeAtomIds ?? [],
+        curriculumScopes: info?.curriculumScopes ?? [],
         preview: entry.preview,
-        installed,
+        installed: false,
         enrolled: false,
         cardCount: 0,
-        requiresLearnerEnrol: !installed,
+        requiresLearnerEnrol: teamLibrary || !tile,
         provider,
-        ...(installed ? { installedInLibrary: true } : {}),
       });
       known.add(entry.id);
     }
@@ -108,25 +119,22 @@ export async function providerCellsForAgents(
 
   // What the library holds although no confirmed provider lists it here — in
   // a team library, every package a curator installed.
-  for (const tile of await listInstalledProviderTiles(db, userId)) {
+  for (const tile of installed.values()) {
     if (known.has(tile.tileId)) continue;
-    out.push({
-      id: tile.tileId,
-      title: tile.title,
-      gradeLabel: tile.providerId,
-      description: tile.description,
-      publisher: tile.providerId,
-      publishedAt: tile.version,
-      atomCount: tile.atoms.length,
-      inScopeAtomIds: tile.atoms,
-      curriculumScopes: [],
-      preview: tile.preview,
-      installed: true,
-      enrolled: tile.held,
-      cardCount: Math.max(0, tile.items - tile.newItems),
-      installedInLibrary: true,
-      provider: { id: tile.providerId, title: tile.providerId },
-    });
+    const confirmed = confirmedProviders.find(
+      (entry) =>
+        entry.provider.id === tile.providerId && entry.origin === tile.origin,
+    );
+    out.push(
+      installedStatus(
+        tile,
+        {
+          id: tile.providerId,
+          title: confirmed?.provider.title ?? tile.providerId,
+        },
+        teamLibrary,
+      ),
+    );
     known.add(tile.tileId);
   }
   return out;
@@ -179,10 +187,12 @@ export async function enrolProviderCellForAgent(
         : `Provider package "${cellId}" is not downloaded locally yet. Ask the learner to open it in ZAM Academy and click „Aufnehmen“.`,
     );
   }
+  const provider = { id: prefix, origin: scope.origin };
+  await assertAcademyProviderOrigin(db, provider);
   return enrolBundledCell(db, userId, cellId, {
-    resolveTile: (id) => resolveCachedTile(id, scope),
+    resolveTile: () => tile,
     install: {
-      namespace: prefix,
+      provider,
       appUrl: entry.appUrl,
       preview: entry.preview,
     },

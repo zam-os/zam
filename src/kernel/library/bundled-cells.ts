@@ -7,6 +7,7 @@ import academyCellsLock from "../../../tests/fixtures/curriculum/zam-academy-cel
 import type { Database } from "../db/types.js";
 import {
   hasPendingCurriculumRetirements,
+  type InstallKvtOptions,
   installKvtTile,
   type KvtTile,
   materialiseKvtCards,
@@ -799,6 +800,8 @@ export interface BundledCellStatus extends BundledCellInfo {
    * agent can enrol from the library without any download.
    */
   installedInLibrary?: boolean;
+  /** Additional cards a learner can take from an installed team tile. */
+  newItems?: number;
 }
 
 export interface BundledCellEnrolResult {
@@ -1815,11 +1818,11 @@ export interface EnrolBundledCellOptions {
   resolveTile?: (cellId: string) => BundledTile | undefined;
   onProgress?: (progress: EnrolBundledCellProgress) => void;
   /**
-   * A private provider's cell (ADR 2026-11-25): its namespace, app URL and
+   * A private provider's cell (ADR 2026-11-25): its identity, app URL and
    * preview mark go to `installKvtTile`, whose guard keeps the tile inside
    * the namespace.
    */
-  install?: { namespace?: string; appUrl?: string | null; preview?: boolean };
+  install?: Pick<InstallKvtOptions, "provider" | "appUrl" | "preview">;
 }
 
 /** Counts work in each pass, including items already held by the learner. */
@@ -1849,7 +1852,9 @@ export async function installedTileVersion(
   tileId: string,
 ): Promise<string | null> {
   const row = (await db
-    .prepare("SELECT version FROM installed_tiles WHERE tile_id = ?")
+    .prepare(
+      "SELECT version FROM installed_tiles WHERE tile_id = ? AND version <> ''",
+    )
     .get(tileId)) as { version: string | null } | undefined;
   return row?.version ?? null;
 }

@@ -48,6 +48,12 @@ import { addPrerequisite, removePrerequisite } from "../models/prerequisite.js";
 import { type BloomLevel, getTokenById, insertToken } from "../models/token.js";
 import { syncCuratedDistractors } from "../recall/choice-options.js";
 import { sha256HexBytes } from "../util/sha256.js";
+import { providerOrigin } from "./academy-catalog.js";
+import {
+  type AcademyProviderIdentity,
+  assertAcademyProviderOrigin,
+  tileInNamespace,
+} from "./academy-provider.js";
 import {
   type CardText,
   normalizeCardText,
@@ -55,8 +61,10 @@ import {
   validateCardText,
 } from "./card-text.js";
 import { writeCardText } from "./card-text-store.js";
+import { applyPendingItemReplacements } from "./item-replacements.js";
 import { assertFieldsReadyToPublish } from "./publication.js";
 import { publishTokenRevisionInTransaction } from "./revision.js";
+import { compareTileVersions } from "./tile-version.js";
 
 /**
  * A published atom id is a ULID (AGENTS.md), never a semantic string.
@@ -346,12 +354,12 @@ export interface InstallKvtOptions {
   /** Counts processed practice items; the transaction may still be saving. */
   onProgress?: (progress: KvtProgress) => void;
   /**
-   * A private provider's id (ADR 2026-11-25 Decision 5). When set, the tile
-   * may only write inside `<namespace>:`: its tile id, every atom and item it
+   * A private provider's identity (ADR 2026-11-25 Decision 5). The tile
+   * may only write inside `<id>:`: its tile id, every atom and item it
    * names, and every item it replaces or retires must be new to the library
    * or already belong to that namespace. Unset for bundled and public cells.
    */
-  namespace?: string;
+  provider?: AcademyProviderIdentity;
   /** The app the tile's catalog entry names; kept when omitted. */
   appUrl?: string | null;
   /** The catalog's preview mark; kept when omitted. */
@@ -442,7 +450,8 @@ async function applyDeclaredReplacements(
    * (ADR 2026-11-25 Decision 5): nothing to move, and nothing is recorded,
    * so the declaration cannot reach a tile installed later.
    */
-  skip: ReadonlySet<string> = new Set(),
+  skip: ReadonlySet<string>,
+  deferLearningState: boolean,
 ): Promise<number> {
   let moved = 0;
   for (const oldId of item.replaces ?? []) {
@@ -464,27 +473,29 @@ async function applyDeclaredReplacements(
     const superseded = await getTokenById(tx, oldId);
     if (!superseded) continue;
 
-    const collision = (await tx
-      .prepare(
-        `SELECT old.user_id AS user_id
-           FROM cards old
-           JOIN cards fresh ON fresh.user_id = old.user_id
-          WHERE old.token_id = ? AND fresh.token_id = ?
-          LIMIT 1`,
-      )
-      .get(oldId, item.id)) as { user_id: string } | undefined;
-    if (collision) {
-      throw new Error(
-        `Cannot move ${oldId} to ${item.id}: ${collision.user_id} holds a ` +
-          `card on both. That is a merge, and mastery is never merged ` +
-          `automatically — resolve it explicitly and re-test.`,
-      );
-    }
+    if (!deferLearningState) {
+      const collision = (await tx
+        .prepare(
+          `SELECT old.user_id AS user_id
+             FROM cards old
+             JOIN cards fresh ON fresh.user_id = old.user_id
+            WHERE old.token_id = ? AND fresh.token_id = ?
+            LIMIT 1`,
+        )
+        .get(oldId, item.id)) as { user_id: string } | undefined;
+      if (collision) {
+        throw new Error(
+          `Cannot move ${oldId} to ${item.id}: ${collision.user_id} holds a ` +
+            `card on both. That is a merge, and mastery is never merged ` +
+            `automatically — resolve it explicitly and re-test.`,
+        );
+      }
 
-    for (const table of ["cards", "review_logs"] as const) {
-      await tx
-        .prepare(`UPDATE ${table} SET token_id = ? WHERE token_id = ?`)
-        .run(item.id, oldId);
+      for (const table of ["cards", "review_logs"] as const) {
+        await tx
+          .prepare(`UPDATE ${table} SET token_id = ? WHERE token_id = ?`)
+          .run(item.id, oldId);
+      }
     }
     await tx
       .prepare(
@@ -857,13 +868,9 @@ export async function installKvtTile(
     const images = await tileImages(db, tile, opts);
     return await installTileInTransaction(db, tile, images, opts);
   } catch (error) {
-    // A provider tile that names a tile id outside its namespace must not
-    // even leave a failure mark there: it would flag someone else's tile.
-    if (
-      opts.namespace === undefined ||
-      (tile.tile_id.startsWith(`${opts.namespace}:`) &&
-        tile.tile_id !== `${opts.namespace}:`)
-    ) {
+    // Only bundled tiles use background reconciliation and its retry marker.
+    // A refused provider install must never leave a mark on another tile.
+    if (!opts.provider) {
       await recordTileFailure(db, tile, error);
     }
     throw error;
@@ -952,7 +959,7 @@ async function assertTileInNamespace(
   namespace: string,
 ): Promise<Set<string>> {
   const prefix = `${namespace}:`;
-  if (!tile.tile_id.startsWith(prefix) || tile.tile_id === prefix) {
+  if (!tileInNamespace(tile.tile_id, namespace)) {
     throw new Error(
       `Tile ${tile.tile_id} is outside the namespace ${prefix} of its provider`,
     );
@@ -1020,7 +1027,7 @@ async function recordTileMetadata(
 ): Promise<void> {
   const row = (await tx
     .prepare(
-      "SELECT title, description, app_url, preview FROM installed_tiles WHERE tile_id = ?",
+      "SELECT title, description, app_url, preview, provider_origin FROM installed_tiles WHERE tile_id = ?",
     )
     .get(tile.tile_id)) as
     | {
@@ -1028,6 +1035,7 @@ async function recordTileMetadata(
         description: string;
         app_url: string | null;
         preview: number;
+        provider_origin: string | null;
       }
     | undefined;
   if (!row) return;
@@ -1036,21 +1044,25 @@ async function recordTileMetadata(
   const appUrl = opts.appUrl === undefined ? row.app_url : opts.appUrl;
   const preview =
     opts.preview === undefined ? Number(row.preview) : opts.preview ? 1 : 0;
+  const origin = opts.provider
+    ? providerOrigin(opts.provider.origin)
+    : row.provider_origin;
   if (
     row.title === title &&
     row.description === description &&
     row.app_url === appUrl &&
-    Number(row.preview) === preview
+    Number(row.preview) === preview &&
+    row.provider_origin === origin
   ) {
     return;
   }
   await tx
     .prepare(
       `UPDATE installed_tiles
-          SET title = ?, description = ?, app_url = ?, preview = ?
+          SET title = ?, description = ?, app_url = ?, preview = ?, provider_origin = ?
         WHERE tile_id = ?`,
     )
-    .run(title, description, appUrl, preview, tile.tile_id);
+    .run(title, description, appUrl, preview, origin, tile.tile_id);
 }
 
 /**
@@ -1087,12 +1099,41 @@ async function installTileInTransaction(
 ): Promise<InstallKvtResult> {
   const onProgress = opts.onProgress;
   return db.transaction(async (tx) => {
-    // Before anything is written: a provider tile that reaches outside its
-    // namespace fails as a whole (ADR 2026-11-25 Decision 5).
-    const unknownIds =
-      opts.namespace === undefined
-        ? new Set<string>()
-        : await assertTileInNamespace(tx, tile, opts.namespace);
+    // Serialize the ownership checks with other tile installs on PostgreSQL.
+    if (tx.dialect === "postgres") {
+      await tx
+        .prepare("SELECT pg_advisory_xact_lock(hashtextextended(?, 0))")
+        .get("zam:tile-install");
+    }
+    let unknownIds = new Set<string>();
+    if (opts.provider) {
+      await assertAcademyProviderOrigin(tx, opts.provider);
+      unknownIds = await assertTileInNamespace(tx, tile, opts.provider.id);
+      const installed = (await tx
+        .prepare("SELECT version FROM installed_tiles WHERE tile_id = ?")
+        .get(tile.tile_id)) as { version: string } | undefined;
+      if (
+        installed &&
+        compareTileVersions(installed.version, String(tile.version)) === 1
+      ) {
+        throw new Error(
+          `${tile.tile_id} already has a newer version (${installed.version})`,
+        );
+      }
+    }
+    // RLS keeps a curator's connection from rewriting another learner's cards.
+    // Record and deprecate here. Each learner applies the same declaration later.
+    const hasReplacements = tile.atoms.some((atom) =>
+      atom.practice_items.some((item) => item.replaces?.length),
+    );
+    const deferLearningState =
+      tx.dialect === "postgres" &&
+      hasReplacements &&
+      (
+        (await tx
+          .prepare("SELECT row_security_active('cards'::regclass) AS active")
+          .get()) as { active: boolean }
+      ).active;
     const total = tile.atoms.reduce(
       (n, atom) => n + atom.practice_items.length,
       0,
@@ -1294,6 +1335,7 @@ async function installTileInTransaction(
             tile,
             item,
             unknownIds,
+            deferLearningState,
           );
           onProgress?.({ done: ++done, total });
           continue;
@@ -1397,6 +1439,7 @@ async function installTileInTransaction(
           tile,
           item,
           unknownIds,
+          deferLearningState,
         );
         onProgress?.({ done: ++done, total });
       }
@@ -1404,6 +1447,7 @@ async function installTileInTransaction(
 
     for (const retired of tile.retired_items ?? []) {
       assertItemId(retired.id, "retired practice-item id");
+      if (unknownIds.has(retired.id)) continue;
       const existing = await getTokenById(tx, retired.id);
       if (!existing) continue;
       await tx
@@ -1534,6 +1578,12 @@ export async function materialiseKvtCards(
   }
   atomIds = [...new Set(atomIds)];
   return db.transaction(async (tx) => {
+    if (tx.dialect === "postgres") {
+      await tx
+        .prepare("SELECT pg_advisory_xact_lock_shared(hashtextextended(?, 0))")
+        .get("zam:tile-install");
+    }
+    await applyPendingItemReplacements(tx, userId);
     let cardsCreated = 0;
     let cardsReused = 0;
     let done = 0;

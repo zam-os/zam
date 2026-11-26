@@ -25,6 +25,7 @@ import {
   addPrerequisite,
   admitPresentation,
   analyzeObservation,
+  applyPendingItemReplacements,
   assertPrerequisitePlanets,
   assessPrecondition,
   assignTokenToContext,
@@ -368,6 +369,8 @@ export async function getReview(db: Database, params: GetReviewParams) {
   if (params.noResolve !== true) {
     try {
       resolvedContext = await resolveReviewContext(item.sourceLink, {
+        db,
+        tokenId: item.tokenId,
         roots: params.roots,
       });
     } catch {
@@ -476,6 +479,9 @@ export async function getReviewsBatch(
   params: GetReviewsBatchParams,
 ) {
   const userId = await resolveHandlerUser(db, params.user);
+  if (!params.respectWorkload && !params.tokenIds) {
+    await applyPendingItemReplacements(db, userId);
+  }
   const sourceCards =
     params.respectWorkload || params.tokenIds
       ? (
@@ -596,6 +602,8 @@ export async function getReviewsBatch(
       if (params.noResolve !== true && token.source_link) {
         try {
           resolvedContext = await resolveReviewContext(token.source_link, {
+            db,
+            tokenId: token.id,
             roots: params.roots,
           });
         } catch {

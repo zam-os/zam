@@ -44,6 +44,9 @@ providerCommand
   .option("--json", "Output as JSON")
   .action(async (url: string, opts: { yes?: boolean; json?: boolean }) => {
     try {
+      if (opts.json && !opts.yes) {
+        throw new Error("Pass --yes to confirm a provider when using --json");
+      }
       const check = await academyProviderCheckHandler({ url });
       if (!opts.json) {
         console.log("This provider says:");
@@ -85,7 +88,9 @@ providerCommand
         console.log(`Added ${added.provider.title} (${added.provider.id}).`);
       }
     } catch (err) {
-      console.error((err as Error).message || String(err));
+      const error = err instanceof Error ? err.message : String(err);
+      if (opts.json) console.log(JSON.stringify({ success: false, error }));
+      else console.error(error);
       process.exitCode = 1;
     }
   });

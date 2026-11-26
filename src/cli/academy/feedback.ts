@@ -23,7 +23,7 @@ export async function providerFeedbackFor(
   if (!tile) return null;
   const providerId = tile.tileId.slice(0, tile.tileId.indexOf(":"));
   const confirmed = confirmedProvider(providerId);
-  if (!confirmed) return null;
+  if (!confirmed || confirmed.origin !== tile.origin) return null;
   return providerFeedbackUrl(confirmed.provider, {
     tile: tile.tileId,
     item: itemId,

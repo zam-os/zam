@@ -401,18 +401,22 @@ function renderSettingsList(): void {
   }
 }
 
-/** Wires the Settings card, if the host page has one. */
-export function initAcademyProviderSettings(): void {
-  const row = document.getElementById("academy-providers-row");
-  if (!row) return;
+export function translateAcademyProviderSettings(): void {
   const title = document.getElementById("lbl-settings-academy-providers");
   if (title) title.textContent = t("settings_academy_providers");
   const help = document.getElementById("academy-providers-help");
   if (help) help.textContent = t("settings_academy_providers_help");
   const addButton = document.getElementById("btn-academy-provider-add");
+  if (addButton) addButton.textContent = t("provider_add");
+  renderSettingsList();
+}
+
+/** Wires the Settings card, if the host page has one. */
+export function initAcademyProviderSettings(): void {
+  if (!document.getElementById("academy-providers-row")) return;
+  const addButton = document.getElementById("btn-academy-provider-add");
   const panel = document.getElementById("academy-providers-add");
   if (addButton && panel) {
-    addButton.textContent = t("provider_add");
     addButton.addEventListener("click", () => {
       addButton.hidden = true;
       renderAddProviderPanel(panel, {
@@ -428,5 +432,5 @@ export function initAcademyProviderSettings(): void {
     });
   }
   onProvidersChanged(renderSettingsList);
-  renderSettingsList();
+  translateAcademyProviderSettings();
 }

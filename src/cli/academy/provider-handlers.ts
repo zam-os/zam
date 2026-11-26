@@ -16,8 +16,8 @@ import {
   type AcademyIndex,
   type AcademyProvider,
   type AcademyTaxonomy,
+  assertAcademyProviderOrigin,
   type BundledTile,
-  bundledCellInfoForTile,
   type ConfirmedAcademyProvider,
   compareTileVersions,
   confirmedProvider,
@@ -27,7 +27,6 @@ import {
   enrichAcademyCells,
   enrolBundledCell,
   enrolInstalledTile,
-  getBundledCellsWithStatus,
   installedTileVersion,
   installKvtTile,
   isProviderTileId,
@@ -35,7 +34,6 @@ import {
   listInstalledProviderTiles,
   type ProviderChangedField,
   providerChange,
-  rememberLessonOrigins,
   removeConfirmedProvider,
   reservedProviderIds,
 } from "../../kernel/index.js";
@@ -48,7 +46,6 @@ import {
   readCachedIndex,
   readCachedTileVersion,
   removeProviderCache,
-  resolveCachedTile,
   writeCachedCatalog,
   writeCachedCell,
   writeCachedIndex,
@@ -257,6 +254,7 @@ export async function providerListHandler(
   let index: AcademyIndex | null = null;
   let offline = false;
   let error: string | undefined;
+  let providerAccessError: string | undefined;
   const [catalogResult, indexResult] = await Promise.allSettled([
     fetchProviderCatalog(confirmed, token, params.fetch),
     fetchProviderIndex(confirmed, token, params.fetch),
@@ -265,11 +263,17 @@ export async function providerListHandler(
     writeCachedCatalog(catalogResult.value.bytes, scope);
     catalog = catalogResult.value.catalog;
   } else {
-    if (mustSurface(catalogResult.reason)) throw catalogResult.reason;
-    offline = true;
     const err = catalogResult.reason;
-    error = err instanceof Error ? err.message : String(err);
-    catalog = readCachedCatalog(scope);
+    const message = err instanceof Error ? err.message : String(err);
+    if (mustSurface(err)) {
+      if (!providerChanged) throw err;
+      // The anonymous manifest can be read even when the old auth fails.
+      providerAccessError = message;
+    } else {
+      offline = true;
+      error = message;
+      catalog = readCachedCatalog(scope);
+    }
   }
   if (indexResult.status === "fulfilled") {
     writeCachedIndex(indexResult.value.bytes, scope);
@@ -279,31 +283,20 @@ export async function providerListHandler(
   }
 
   const entries = catalog?.cells ?? [];
-  const installedRows = (await db
-    .prepare("SELECT tile_id, version FROM installed_tiles WHERE version <> ''")
-    .all()) as Array<{ tile_id: string; version: string }>;
-  const installedVersions = new Map(
-    installedRows.map((row) => [row.tile_id, row.version]),
+  const installed = new Map(
+    (await listInstalledProviderTiles(db, userId, [confirmed.provider.id]))
+      .filter((tile) => tile.origin === confirmed.origin)
+      .map((tile) => [tile.tileId, tile]),
   );
   const localTiles = new Map<string, BundledTile>();
   for (const entry of entries) {
-    const installed = installedVersions.get(entry.id);
-    if (!installed) continue;
+    const heldVersion = installed.get(entry.id)?.version;
     const cached =
-      readCachedTileVersion(entry.id, installed, scope) ??
-      readCachedCell(entry, scope);
+      (heldVersion
+        ? readCachedTileVersion(entry.id, heldVersion, scope)
+        : undefined) ?? readCachedCell(entry, scope);
     if (cached) localTiles.set(entry.id, cached);
   }
-  const statuses = new Map(
-    (
-      await getBundledCellsWithStatus(
-        db,
-        userId,
-        [...localTiles.values()].map(bundledCellInfoForTile),
-        (id) => localTiles.get(id),
-      )
-    ).map((status) => [status.id, status]),
-  );
 
   // A team library takes a provider's packages through a curator (D7): the
   // row offers „Für die Bibliothek installieren“ instead of „Aufnehmen“, and
@@ -312,11 +305,11 @@ export async function providerListHandler(
   const curator = teamLibrary && (await connectedRoleIsCurator(db));
   const rawCells: Array<Omit<ProviderCellRow, "facet">> = entries.map(
     (entry) => {
-      const installed = installedVersions.get(entry.id) ?? null;
+      const libraryTile = installed.get(entry.id);
+      const version = libraryTile?.version ?? null;
       if (teamLibrary) {
         const current =
-          installed !== null &&
-          compareTileVersions(entry.version, installed) !== 1;
+          version !== null && compareTileVersions(entry.version, version) !== 1;
         return {
           id: entry.id,
           provider: confirmed.provider.id,
@@ -338,8 +331,8 @@ export async function providerListHandler(
               : "curator-only",
         };
       }
-      const held = statuses.get(entry.id)?.enrolled ?? false;
-      const heldVersion = held ? installed : null;
+      const held = libraryTile?.held ?? false;
+      const heldVersion = held ? version : null;
       return {
         id: entry.id,
         provider: confirmed.provider.id,
@@ -366,6 +359,7 @@ export async function providerListHandler(
     ...(error ? { error } : {}),
     provider: providerSummary(confirmed.origin, confirmed.provider),
     ...(providerChanged ? { providerChanged } : {}),
+    ...(providerAccessError ? { providerAccessError } : {}),
     teamLibrary,
     curator,
     taxonomy: taxonomy as AcademyTaxonomy,
@@ -400,25 +394,37 @@ async function installProviderCell(
     onProgress?: (progress: EnrolBundledCellProgress) => void;
   },
 ) {
-  const scope = scopeOf(confirmed);
-  if (!readCachedCell(entry, scope)) {
-    const { bytes } = await fetchProviderCell(
-      confirmed,
-      entry,
-      token,
-      params.fetch,
-    );
-    writeCachedCell(entry, bytes, scope);
-  }
+  const provider = { id: confirmed.provider.id, origin: confirmed.origin };
+  await assertAcademyProviderOrigin(db, provider);
+  const tile = await loadProviderCell(confirmed, entry, token, params.fetch);
   return enrolBundledCell(db, userId, entry.id, {
-    resolveTile: (id) => resolveCachedTile(id, scope),
+    resolveTile: () => tile,
     install: {
-      namespace: confirmed.provider.id,
+      provider,
       appUrl: entry.appUrl,
       preview: entry.preview,
     },
     onProgress: params.onProgress,
   });
+}
+
+async function loadProviderCell(
+  confirmed: ConfirmedAcademyProvider,
+  entry: AcademyCatalogEntry,
+  token: ProviderTokenSupplier,
+  fetch: AcademyFetchOptions | undefined,
+): Promise<BundledTile> {
+  const scope = scopeOf(confirmed);
+  const cached = readCachedCell(entry, scope);
+  if (cached) return cached;
+  const { tile, bytes } = await fetchProviderCell(
+    confirmed,
+    entry,
+    token,
+    fetch,
+  );
+  writeCachedCell(entry, bytes, scope);
+  return tile;
 }
 
 function refuseTeamLibrary(db: Database): void {
@@ -541,6 +547,8 @@ export async function providerInstallForLibraryHandler(
       "CURATOR_REQUIRED: only a curator installs packages for the team library",
     );
   }
+  const provider = { id: confirmed.provider.id, origin: confirmed.origin };
+  await assertAcademyProviderOrigin(db, provider);
   const token = providerTokenSupplier(confirmed, params.getToken);
   const entry = await providerEntry(
     confirmed,
@@ -559,25 +567,13 @@ export async function providerInstallForLibraryHandler(
       version: from,
     };
   }
-  const scope = scopeOf(confirmed);
-  if (!readCachedCell(entry, scope)) {
-    const { bytes } = await fetchProviderCell(
-      confirmed,
-      entry,
-      token,
-      params.fetch,
-    );
-    writeCachedCell(entry, bytes, scope);
-  }
-  const tile = resolveCachedTile(cellId, scope);
-  if (!tile) throw new Error(`${cellId}: the downloaded cell is not readable`);
+  const tile = await loadProviderCell(confirmed, entry, token, params.fetch);
   await installKvtTile(db, tile, {
-    namespace: confirmed.provider.id,
+    provider,
     appUrl: entry.appUrl,
     preview: entry.preview,
     onProgress: params.onProgress,
   });
-  rememberLessonOrigins([entry.appUrl]);
   return {
     success: true as const,
     cellId,
@@ -590,7 +586,7 @@ export async function providerInstallForLibraryHandler(
 /**
  * The provider packages this library holds, with the learner's state. No
  * network and no provider confirmation: a member sees what a curator
- * installed. Their lesson origins are remembered so reviews never fetch them.
+ * installed.
  */
 export async function installedProviderTilesHandler(
   db: Database,
@@ -598,9 +594,6 @@ export async function installedProviderTilesHandler(
 ) {
   const userId = await resolveHandlerUser(db, params.user);
   const tiles = await listInstalledProviderTiles(db, userId);
-  rememberLessonOrigins(
-    tiles.map((tile) => tile.appUrl).filter((url): url is string => !!url),
-  );
   const teamLibrary = db.dialect === "postgres";
   return {
     success: true as const,
@@ -624,12 +617,7 @@ export async function enrolInstalledHandler(
     throw new Error(`${cellId} is not a provider package`);
   }
   const userId = await resolveHandlerUser(db, params.user);
-  const result = await enrolInstalledTile(db, userId, cellId, {
+  return enrolInstalledTile(db, userId, cellId, {
     onProgress: params.onProgress,
   });
-  const [tile] = (await listInstalledProviderTiles(db, userId)).filter(
-    (row) => row.tileId === cellId,
-  );
-  if (tile?.appUrl) rememberLessonOrigins([tile.appUrl]);
-  return result;
 }

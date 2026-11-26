@@ -756,7 +756,8 @@ CREATE TABLE IF NOT EXISTS installed_tiles (
   title        TEXT NOT NULL DEFAULT '',
   description  TEXT NOT NULL DEFAULT '',
   app_url      TEXT,
-  preview      INTEGER NOT NULL DEFAULT 0
+  preview      INTEGER NOT NULL DEFAULT 0,
+  provider_origin TEXT
 );
 ${TILE_ATOM_TABLES}`;
 

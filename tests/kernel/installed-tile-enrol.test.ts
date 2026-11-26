@@ -18,6 +18,7 @@ import {
 
 const FIXTURES = resolve(__dirname, "../fixtures/curriculum");
 const NAMESPACE = "example-provider";
+const PROVIDER = { id: NAMESPACE, origin: "https://provider.example" };
 
 function providerTile(): KvtTile {
   const raw = readFileSync(
@@ -73,7 +74,7 @@ describe("enrolInstalledTile and listInstalledProviderTiles", () => {
 
   it("installs creating no cards, then enrols a member from the library alone", async () => {
     await installKvtTile(db, providerTile(), {
-      namespace: NAMESPACE,
+      provider: PROVIDER,
       appUrl: "https://provider.example/optik/",
       preview: true,
     });
@@ -122,7 +123,7 @@ describe("enrolInstalledTile and listInstalledProviderTiles", () => {
   });
 
   it("lists only provider tiles, narrowed by prefix when asked", async () => {
-    await installKvtTile(db, providerTile(), { namespace: NAMESPACE });
+    await installKvtTile(db, providerTile(), { provider: PROVIDER });
     const publicTile = JSON.parse(
       readFileSync(join(FIXTURES, "de-by-realschule-optik-kvt.json"), "utf-8"),
     );
@@ -146,7 +147,7 @@ describe("enrolInstalledTile and listInstalledProviderTiles", () => {
       enrolInstalledTile(db, " ", `${NAMESPACE}:optik`),
     ).rejects.toThrow(/userId/);
 
-    await installKvtTile(db, providerTile(), { namespace: NAMESPACE });
+    await installKvtTile(db, providerTile(), { provider: PROVIDER });
     await db.prepare("DELETE FROM tile_atoms").run();
     await expect(
       enrolInstalledTile(db, "member-a", `${NAMESPACE}:optik`),

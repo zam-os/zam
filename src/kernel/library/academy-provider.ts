@@ -12,6 +12,8 @@
  * strict, and the token scope is built from a GUID, never taken from the file.
  */
 
+import type { Database } from "../db/types.js";
+import { providerOrigin } from "./academy-catalog.js";
 import { BUNDLED_TILES } from "./bundled-cells.js";
 
 /** The fixed path of the provider file on every provider origin. */
@@ -107,6 +109,10 @@ function parseFeedback(raw: unknown): string | null {
   if (typeof raw !== "string" || !raw || raw.length > MAX_FEEDBACK) {
     throw new Error("Provider file: feedback must be an https URL template");
   }
+  const authority = /^https:\/\/([^/?#\\]+)(?=[/?#]|$)/i.exec(raw)?.[1];
+  if (!authority || /[{}]/.test(authority)) {
+    throw new Error("Provider file: feedback must have a fixed https host");
+  }
   // Every brace must open one allowed placeholder and close it again.
   const stripped = raw.replace(/\{([a-z]*)\}/g, (_, name: string) => {
     if (!FEEDBACK_PLACEHOLDERS.has(name)) {
@@ -195,6 +201,57 @@ export function tileInNamespace(tileId: string, providerId: string): boolean {
   return (
     tileId.startsWith(`${providerId}:`) && tileId.length > providerId.length + 1
   );
+}
+
+export interface AcademyProviderIdentity {
+  id: string;
+  origin: string;
+}
+
+/** Pilot tiles stored the app URL, which was constrained to the provider origin. */
+export function installedProviderOrigin(
+  origin: string | null,
+  appUrl: string | null,
+): string | null {
+  if (origin) return origin;
+  try {
+    return appUrl ? providerOrigin(new URL(appUrl).origin) : null;
+  } catch {
+    return null;
+  }
+}
+
+/** All tiles in a library's provider namespace must come from one origin. */
+export async function assertAcademyProviderOrigin(
+  db: Database,
+  provider: AcademyProviderIdentity,
+): Promise<void> {
+  if (
+    !PROVIDER_ID.test(provider.id) ||
+    reservedProviderIds().has(provider.id)
+  ) {
+    throw new Error(`Invalid or reserved provider id ${provider.id}`);
+  }
+  const origin = providerOrigin(provider.origin);
+  const tiles = (await db
+    .prepare(
+      `SELECT provider_origin, app_url FROM installed_tiles
+        WHERE tile_id LIKE ? AND version <> ''`,
+    )
+    .all(`${provider.id}:%`)) as Array<{
+    provider_origin: string | null;
+    app_url: string | null;
+  }>;
+  if (
+    tiles.some(
+      (row) =>
+        installedProviderOrigin(row.provider_origin, row.app_url) !== origin,
+    )
+  ) {
+    throw new Error(
+      `PROVIDER_ORIGIN_MISMATCH: ${provider.id} is already installed in this library with a different or unrecorded origin`,
+    );
+  }
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {

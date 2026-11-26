@@ -531,6 +531,8 @@ export {
   ACADEMY_PROVIDER_FILE,
   type AcademyProvider,
   type AcademyProviderAuth,
+  type AcademyProviderIdentity,
+  assertAcademyProviderOrigin,
   isGuid,
   parseAcademyProvider,
   providerFeedbackUrl,
@@ -656,11 +658,13 @@ export {
 export {
   type EnrolInstalledTileResult,
   enrolInstalledTile,
+  hasInstalledProviderOrigin,
   type InstalledProviderTile,
   isProviderTileId,
   listInstalledProviderTiles,
   providerTileForItem,
 } from "./library/installed-tiles.js";
+export { applyPendingItemReplacements } from "./library/item-replacements.js";
 export type {
   InstallKvtOptions,
   InstallKvtResult,
@@ -1454,7 +1458,6 @@ export {
   listConfirmedProviders,
   type ProviderChangedField,
   providerChange,
-  rememberLessonOrigins,
   removeConfirmedProvider,
   reviewSuppressedOrigins,
 } from "./system/academy-providers.js";

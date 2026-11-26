@@ -14,6 +14,7 @@ import {
   validateCardText,
 } from "../library/card-text.js";
 import { parseStoredCardText } from "../library/card-text-store.js";
+import { applyPendingItemReplacements } from "../library/item-replacements.js";
 import { bindStandingAssignments } from "../models/assignment.js";
 import { cardTopicTitle, TOPIC_TITLE_SQL } from "../models/card.js";
 import { getDisplayTitle } from "../models/token.js";
@@ -210,6 +211,7 @@ export async function buildReviewQueue(
   // An assignment constrains the queue (ADR 2026-07-04 Decision 10), and the
   // learner's own client is the only party allowed to write their cards
   // (ADR 2026-09-04, RLS). A no-op once every standing assignment is bound.
+  await applyPendingItemReplacements(db, options.userId);
   await bindStandingAssignments(db, options.userId);
 
   // ── Step 1: Fetch due cards (review, relearning, learning — not new) ───

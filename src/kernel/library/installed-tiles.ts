@@ -10,13 +10,17 @@
  */
 
 import type { Database } from "../db/types.js";
-import { reservedProviderIds } from "./academy-provider.js";
+import {
+  installedProviderOrigin,
+  reservedProviderIds,
+} from "./academy-provider.js";
 import { type KvtProgress, materialiseKvtCards } from "./kvt-attach.js";
 
 export interface InstalledProviderTile {
   tileId: string;
   /** The tile-id prefix, i.e. the provider's id. */
   providerId: string;
+  origin: string;
   version: string;
   title: string;
   description: string;
@@ -26,6 +30,7 @@ export interface InstalledProviderTile {
   atoms: string[];
   /** Published items the tile's atoms hold: the most cards enrolment gives. */
   items: number;
+  cardCount: number;
   /** The learner holds at least one active card on the tile's atoms. */
   held: boolean;
   /**
@@ -67,9 +72,9 @@ export async function listInstalledProviderTiles(
 ): Promise<InstalledProviderTile[]> {
   const rows = (await db
     .prepare(
-      `SELECT tile_id, version, title, description, app_url, preview
+      `SELECT tile_id, version, title, description, app_url, preview, provider_origin
          FROM installed_tiles
-        WHERE version <> ''
+        WHERE version <> '' AND (provider_origin IS NOT NULL OR app_url IS NOT NULL)
         ORDER BY tile_id`,
     )
     .all()) as Array<{
@@ -78,6 +83,7 @@ export async function listInstalledProviderTiles(
     title: string | null;
     description: string | null;
     app_url: string | null;
+    provider_origin: string | null;
     preview: number | null;
   }>;
   const wanted = prefixes ? new Set(prefixes) : null;
@@ -86,6 +92,8 @@ export async function listInstalledProviderTiles(
     if (!isProviderTileId(row.tile_id)) continue;
     const providerId = prefixOf(row.tile_id);
     if (wanted && !wanted.has(providerId)) continue;
+    const origin = installedProviderOrigin(row.provider_origin, row.app_url);
+    if (!origin) continue;
     const atoms = (await db
       .prepare(
         "SELECT atom_id FROM tile_atoms WHERE tile_id = ? ORDER BY atom_id",
@@ -128,6 +136,7 @@ export async function listInstalledProviderTiles(
     out.push({
       tileId: row.tile_id,
       providerId,
+      origin,
       version: row.version,
       title: row.title?.trim() || row.tile_id,
       description: row.description?.trim() ?? "",
@@ -135,6 +144,7 @@ export async function listInstalledProviderTiles(
       preview: Number(row.preview ?? 0) === 1,
       atoms: atoms.map((atom) => atom.atom_id),
       items: Number(items.n),
+      cardCount: Number(held.n),
       held: Number(held.n) > 0,
       newItems: Number(missing.n),
     });
@@ -162,10 +172,20 @@ export async function enrolInstalledTile(
   }
   const installed = (await db
     .prepare(
-      "SELECT version FROM installed_tiles WHERE tile_id = ? AND version <> ''",
+      `SELECT version, provider_origin, app_url FROM installed_tiles
+        WHERE tile_id = ? AND version <> ''`,
     )
-    .get(tileId)) as { version: string } | undefined;
-  if (!installed) {
+    .get(tileId)) as
+    | {
+        version: string;
+        provider_origin: string | null;
+        app_url: string | null;
+      }
+    | undefined;
+  if (
+    !installed ||
+    !installedProviderOrigin(installed.provider_origin, installed.app_url)
+  ) {
     throw new Error(`${tileId} is not installed in this library`);
   }
   const atoms = (await db
@@ -202,18 +222,50 @@ export async function enrolInstalledTile(
 export async function providerTileForItem(
   db: Database,
   itemId: string,
-): Promise<{ tileId: string; version: string } | null> {
+): Promise<{ tileId: string; version: string; origin: string } | null> {
   const rows = (await db
     .prepare(
-      `SELECT ta.tile_id AS tile_id, it.version AS version
+      `SELECT ta.tile_id AS tile_id, it.version, it.provider_origin, it.app_url
          FROM tokens t
          JOIN tile_atoms ta ON ta.atom_id = t.atom_id
          JOIN installed_tiles it ON it.tile_id = ta.tile_id
         WHERE t.id = ?
           AND it.version <> ''
+          AND (it.provider_origin IS NOT NULL OR it.app_url IS NOT NULL)
         ORDER BY ta.tile_id`,
     )
-    .all(itemId)) as Array<{ tile_id: string; version: string }>;
-  const own = rows.find((row) => isProviderTileId(row.tile_id));
-  return own ? { tileId: own.tile_id, version: own.version } : null;
+    .all(itemId)) as Array<{
+    tile_id: string;
+    version: string;
+    provider_origin: string | null;
+    app_url: string | null;
+  }>;
+  for (const row of rows) {
+    if (!isProviderTileId(row.tile_id)) continue;
+    const origin = installedProviderOrigin(row.provider_origin, row.app_url);
+    if (origin) return { tileId: row.tile_id, version: row.version, origin };
+  }
+  return null;
+}
+
+/** True for an origin currently represented by a private provider tile. */
+export async function hasInstalledProviderOrigin(
+  db: Database,
+  origin: string,
+): Promise<boolean> {
+  const rows = (await db
+    .prepare(
+      `SELECT tile_id, provider_origin, app_url FROM installed_tiles
+        WHERE version <> '' AND (provider_origin = ? OR app_url LIKE ?)`,
+    )
+    .all(origin, `${origin}/%`)) as Array<{
+    tile_id: string;
+    provider_origin: string | null;
+    app_url: string | null;
+  }>;
+  return rows.some(
+    (row) =>
+      isProviderTileId(row.tile_id) &&
+      installedProviderOrigin(row.provider_origin, row.app_url) === origin,
+  );
 }

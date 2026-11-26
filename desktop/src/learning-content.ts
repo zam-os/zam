@@ -3401,6 +3401,8 @@ interface BundledCellItem {
   enrolled: boolean;
   cardCount: number;
   preview: boolean;
+  installedInLibrary?: boolean;
+  newItems?: number;
 }
 
 let bundledCellsListEl: HTMLElement | null = null;
@@ -3516,7 +3518,11 @@ function renderBundledCells(cells: BundledCellItem[]): void {
     const buttons = document.createElement("span");
     buttons.style.display = "flex";
     buttons.style.gap = "6px";
-    if (isAcademyOrProviderCellId(cell.id)) {
+    if (cell.installedInLibrary) {
+      if (cell.newItems) {
+        buttons.append(academyUpdateButton(cell.id, () => loadBundledCells(), true));
+      }
+    } else if (isAcademyOrProviderCellId(cell.id)) {
       buttons.append(academyUpdateButton(cell.id, () => loadBundledCells()));
     }
     buttons.append(stateBtn);

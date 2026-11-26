@@ -150,8 +150,8 @@ export function providerChange(
 }
 
 /**
- * Origins a review never fetches: every confirmed provider's, and the lesson
- * origins recorded for installed provider tiles (ADR 2026-11-25 Decision 6).
+ * Confirmed and previously remembered origins. The review also checks its
+ * current database for installed provider tiles (ADR 2026-11-25 Decision 6).
  */
 export function reviewSuppressedOrigins(configPath?: string): Set<string> {
   const origins = new Set(
@@ -166,33 +166,4 @@ export function reviewSuppressedOrigins(configPath?: string): Set<string> {
     }
   }
   return origins;
-}
-
-/**
- * Adds lesson origins a review must not fetch. Only suppresses, so library
- * content may supply them; only https origins are kept.
- */
-export function rememberLessonOrigins(
-  urls: readonly string[],
-  configPath?: string,
-): void {
-  const fresh: string[] = [];
-  for (const value of urls) {
-    try {
-      const url = new URL(value);
-      if (url.protocol === "https:" && url.hostname) fresh.push(url.origin);
-    } catch {
-      // Not a URL: nothing to remember.
-    }
-  }
-  if (fresh.length === 0) return;
-  const known = loadInstallConfig(configPath).academy?.lessonOrigins ?? [];
-  if (fresh.every((origin) => known.includes(origin))) return;
-  updateInstallConfig((config) => {
-    const merged = new Set([
-      ...(config.academy?.lessonOrigins ?? []),
-      ...fresh,
-    ]);
-    config.academy = { ...config.academy, lessonOrigins: [...merged].sort() };
-  }, configPath);
 }

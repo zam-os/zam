@@ -35,7 +35,7 @@ import type { Database } from "./types.js";
  * never runs on any existing library. `tests/kernel/provision.test.ts` guards
  * the constant against the M-series markers below.
  */
-export const CURRENT_SCHEMA_VERSION = 50;
+export const CURRENT_SCHEMA_VERSION = 51;
 
 const SCHEMA_VERSION_TABLE = "zam_schema_version";
 
@@ -1111,6 +1111,14 @@ export async function runMigrations(db: Database): Promise<void> {
     if (!tileCols.includes(column)) {
       await db.exec(`ALTER TABLE installed_tiles ADD COLUMN ${column} ${ddl}`);
     }
+  }
+
+  // M051: bind installed private tiles to the provider origin confirmed by
+  // their installer. Pilot tiles can still derive it from their same-origin app URL.
+  if (!tileCols.includes("provider_origin")) {
+    await db.exec(
+      "ALTER TABLE installed_tiles ADD COLUMN provider_origin TEXT",
+    );
   }
 }
 

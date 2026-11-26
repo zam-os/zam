@@ -28,6 +28,7 @@ import type { Database } from "../../src/kernel/db/types.js";
 import {
   bindSettingsScope,
   bindStandingAssignments,
+  buildReviewQueue,
   createAssignment,
   createToken,
   detachCardForUser,
@@ -154,6 +155,10 @@ describe("entraPrincipalDirectory", () => {
 
 describeWithPostgres("zam team on PostgreSQL (needs POSTGRES_URL)", () => {
   const url = POSTGRES_URL as string;
+  const provider = {
+    id: "example-provider",
+    origin: "https://provider.example",
+  };
   const admin = POSTGRES_URL ? new URL(url) : ({} as URL);
   const schema = "zam_team";
   const database = admin.pathname ? admin.pathname.replace(/^\//, "") : "";
@@ -748,20 +753,20 @@ describeWithPostgres("zam team on PostgreSQL (needs POSTGRES_URL)", () => {
         // The curator installs: the tile, its atoms and their owners.
         await installKvtTile(asAlice, publicTile());
         await installKvtTile(asAlice, providerTile(), {
-          namespace: "example-provider",
+          provider,
           appUrl: "https://provider.example/optik/",
         });
         // The guard holds on PostgreSQL too.
         const hijack = providerTile();
         hijack.atoms[0].practice_items[0].id = "01K3X9A7R4B8C1D2E3F4G5H001";
         await expect(
-          installKvtTile(asAlice, hijack, { namespace: "example-provider" }),
+          installKvtTile(asAlice, hijack, { provider }),
         ).rejects.toThrow(/belongs to content outside/);
 
         // A member may not install …
         await expect(
           installKvtTile(asBob, providerTile(), {
-            namespace: "example-provider",
+            provider,
           }),
         ).rejects.toThrow();
 
@@ -780,6 +785,44 @@ describeWithPostgres("zam team on PostgreSQL (needs POSTGRES_URL)", () => {
         expect(enrolled.cardsCreated).toBeGreaterThan(0);
         const [after] = await listInstalledProviderTiles(asBob, bobId);
         expect(after.held).toBe(true);
+
+        const next = providerTile();
+        next.version = "2026.11.2";
+        const item = next.atoms[0].practice_items[0];
+        const oldId = item.id;
+        const card = await ensureCard(asBob, oldId, bobId);
+        await asBob
+          .prepare("UPDATE cards SET reps = 6, stability = 30 WHERE id = ?")
+          .run(card.id);
+        await asBob
+          .prepare(
+            `INSERT INTO review_logs (id, card_id, token_id, user_id, rating, reviewed_at, scheduled_at)
+           VALUES ('01K3X9A7R4B8C1D2E3F4G5R001', ?, ?, ?, 3,
+                   '2026-08-01T10:00:00.000Z', '2026-08-01T09:00:00.000Z')`,
+          )
+          .run(card.id, oldId, bobId);
+        item.id = "01K3X9A7R4B8C1D2E3F4P5N001";
+        item.slug = "provider-optik-successor";
+        item.replaces = [oldId];
+        await installKvtTile(asAlice, next, { provider });
+        expect(
+          await asAlice
+            .prepare("SELECT id FROM cards WHERE id = ?")
+            .get(card.id),
+        ).toBeUndefined();
+
+        await buildReviewQueue(asBob, { userId: bobId });
+        await enrolInstalledTile(asBob, bobId, next.tile_id);
+        expect(
+          await asBob
+            .prepare("SELECT token_id, reps, stability FROM cards WHERE id = ?")
+            .get(card.id),
+        ).toMatchObject({ token_id: item.id, reps: 6, stability: 30 });
+        expect(
+          await asBob
+            .prepare("SELECT token_id FROM review_logs WHERE card_id = ?")
+            .all(card.id),
+        ).toEqual([{ token_id: item.id }]);
       } finally {
         await asAlice.close?.();
         await asBob.close?.();

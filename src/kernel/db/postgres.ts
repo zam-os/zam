@@ -316,10 +316,11 @@ export function openPostgresDatabase(
         const tableName = match[1].replace(/['"]/g, "").trim();
         const client = await getActiveClient();
         const res = await client.query(
-          `SELECT column_name AS name
-             FROM information_schema.columns
-            WHERE table_name = $1
-         ORDER BY ordinal_position`,
+          `SELECT attname AS name
+             FROM pg_catalog.pg_attribute
+            WHERE attrelid = pg_catalog.to_regclass(pg_catalog.quote_ident($1))
+              AND attnum > 0 AND NOT attisdropped
+         ORDER BY attnum`,
           [tableName],
         );
         return res.rows;

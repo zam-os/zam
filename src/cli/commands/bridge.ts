@@ -4510,7 +4510,7 @@ bridgeCommand
       let resolvedContextContent: string | null = opts.sourceContent ?? null;
       if (resolvedContextContent == null && opts.sourceLink) {
         try {
-          const resolved = await resolveReviewContext(opts.sourceLink);
+          const resolved = await resolveReviewContext(opts.sourceLink, { db });
           resolvedContextContent = resolved?.content ?? null;
         } catch {
           // ignore context resolution errors
@@ -4629,7 +4629,7 @@ bridgeCommand
       let resolvedContextContent: string | null = opts.sourceContent ?? null;
       if (resolvedContextContent == null && opts.sourceLink) {
         try {
-          const resolved = await resolveReviewContext(opts.sourceLink);
+          const resolved = await resolveReviewContext(opts.sourceLink, { db });
           resolvedContextContent = resolved?.content ?? null;
         } catch {
           // ignore context resolution errors

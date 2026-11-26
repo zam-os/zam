@@ -19,6 +19,7 @@ const FIXTURES = resolve(__dirname, "../fixtures/curriculum");
 const PUBLIC_ID_STEM = "01K3X9A7R4B8C1D2E3F4G5";
 const PROVIDER_ID_STEM = "01K3X9A7R4B8C1D2E3F4P5";
 const NAMESPACE = "example-provider";
+const PROVIDER = { id: NAMESPACE, origin: "https://provider.example" };
 
 function loadFixture(name: string): KvtTile {
   return JSON.parse(readFileSync(join(FIXTURES, `${name}.json`), "utf-8"));
@@ -114,7 +115,7 @@ describe("tile ownership and provider namespaces", () => {
 
     it("keeps title, description, app URL and preview of the tile", async () => {
       await installKvtTile(db, providerTile(), {
-        namespace: NAMESPACE,
+        provider: PROVIDER,
         appUrl: "https://provider.example/optik/",
         preview: true,
       });
@@ -132,7 +133,7 @@ describe("tile ownership and provider namespaces", () => {
       });
       // A reinstall that passes neither keeps both.
       await installKvtTile(db, providerTile("2026.11.2"), {
-        namespace: NAMESPACE,
+        provider: PROVIDER,
       });
       expect(await read()).toMatchObject({
         app_url: "https://provider.example/optik/",
@@ -144,7 +145,7 @@ describe("tile ownership and provider namespaces", () => {
   describe("namespace guard (ADR 2026-11-25 Decision 5)", () => {
     it("installs a provider tile inside its namespace", async () => {
       const tile = providerTile();
-      const result = await installKvtTile(db, tile, { namespace: NAMESPACE });
+      const result = await installKvtTile(db, tile, { provider: PROVIDER });
       expect(result.tokensCreated).toBeGreaterThan(0);
       expect(
         await count(
@@ -159,11 +160,11 @@ describe("tile ownership and provider namespaces", () => {
       const tile = providerTile();
       tile.tile_id = "zam-academy:optik";
       await expect(
-        installKvtTile(db, tile, { namespace: NAMESPACE }),
+        installKvtTile(db, tile, { provider: PROVIDER }),
       ).rejects.toThrow(/outside the namespace example-provider:/);
       tile.tile_id = `${NAMESPACE}-x:optik`;
       await expect(
-        installKvtTile(db, tile, { namespace: NAMESPACE }),
+        installKvtTile(db, tile, { provider: PROVIDER }),
       ).rejects.toThrow(/outside the namespace/);
     });
 
@@ -177,7 +178,7 @@ describe("tile ownership and provider namespaces", () => {
       const tile = providerTile();
       tile.tile_id = publicTile.tile_id;
       await expect(
-        installKvtTile(db, tile, { namespace: NAMESPACE }),
+        installKvtTile(db, tile, { provider: PROVIDER }),
       ).rejects.toThrow(/outside the namespace/);
       expect(
         await db
@@ -200,7 +201,7 @@ describe("tile ownership and provider namespaces", () => {
       reidAtom(tile, 1, `${PUBLIC_ID_STEM}A001`);
       tile.atoms[1].title = "Hijacked";
       await expect(
-        installKvtTile(db, tile, { namespace: NAMESPACE }),
+        installKvtTile(db, tile, { provider: PROVIDER }),
       ).rejects.toThrow(/atom 01K3X9A7R4B8C1D2E3F4G5A001/);
 
       expect(await count(db, "SELECT COUNT(*) AS n FROM learning_atoms")).toBe(
@@ -227,7 +228,7 @@ describe("tile ownership and provider namespaces", () => {
       const tile = providerTile();
       reidAtom(tile, 0, `${PUBLIC_ID_STEM}A001`);
       await expect(
-        installKvtTile(db, tile, { namespace: NAMESPACE }),
+        installKvtTile(db, tile, { provider: PROVIDER }),
       ).rejects.toThrow(/belongs to content outside/);
     });
 
@@ -236,7 +237,7 @@ describe("tile ownership and provider namespaces", () => {
       const tile = providerTile();
       tile.atoms[0].practice_items[0].id = `${PUBLIC_ID_STEM}H001`;
       await expect(
-        installKvtTile(db, tile, { namespace: NAMESPACE }),
+        installKvtTile(db, tile, { provider: PROVIDER }),
       ).rejects.toThrow(/item 01K3X9A7R4B8C1D2E3F4G5H001/);
     });
 
@@ -246,7 +247,7 @@ describe("tile ownership and provider namespaces", () => {
       const tile = providerTile();
       tile.atoms[0].practice_items[0].replaces = [`${PUBLIC_ID_STEM}H001`];
       await expect(
-        installKvtTile(db, tile, { namespace: NAMESPACE }),
+        installKvtTile(db, tile, { provider: PROVIDER }),
       ).rejects.toThrow(/replaced or retired item/);
       expect(
         (await getCard(db, `${PUBLIC_ID_STEM}H001`, "learner-a"))?.token_id,
@@ -258,7 +259,7 @@ describe("tile ownership and provider namespaces", () => {
       const tile = providerTile();
       tile.retired_items = [{ id: `${PUBLIC_ID_STEM}H001` }];
       await expect(
-        installKvtTile(db, tile, { namespace: NAMESPACE }),
+        installKvtTile(db, tile, { provider: PROVIDER }),
       ).rejects.toThrow(/replaced or retired item/);
       const row = (await db
         .prepare("SELECT deprecated_at FROM tokens WHERE id = ?")
@@ -269,7 +270,7 @@ describe("tile ownership and provider namespaces", () => {
     it("skips an unknown replaced id without recording it", async () => {
       const tile = providerTile();
       tile.atoms[0].practice_items[0].replaces = [`${PUBLIC_ID_STEM}D003`];
-      const result = await installKvtTile(db, tile, { namespace: NAMESPACE });
+      const result = await installKvtTile(db, tile, { provider: PROVIDER });
       expect(result.itemsSuperseded).toBe(0);
       expect(
         await count(
@@ -281,7 +282,7 @@ describe("tile ownership and provider namespaces", () => {
     });
 
     it("moves history between the provider's own items", async () => {
-      await installKvtTile(db, providerTile(), { namespace: NAMESPACE });
+      await installKvtTile(db, providerTile(), { provider: PROVIDER });
       const oldId = `${PROVIDER_ID_STEM}H001`;
       const newId = `${PROVIDER_ID_STEM}D001`;
       const card = await ensureCard(db, oldId, "learner-a");
@@ -294,17 +295,47 @@ describe("tile ownership and provider namespaces", () => {
         item.slug = `${atom.slug}-successor`;
         item.replaces = [oldId];
       }
-      const result = await installKvtTile(db, next, { namespace: NAMESPACE });
+      const result = await installKvtTile(db, next, { provider: PROVIDER });
       expect(result.itemsSuperseded).toBe(1);
       expect((await getCard(db, newId, "learner-a"))?.id).toBe(card?.id);
     });
 
     it("lets a provider reinstall its own atoms and items", async () => {
-      await installKvtTile(db, providerTile(), { namespace: NAMESPACE });
+      await installKvtTile(db, providerTile(), { provider: PROVIDER });
       const next = providerTile("2026.11.2");
       next.atoms[0].title = "Optik, überarbeitet";
       await expect(
-        installKvtTile(db, next, { namespace: NAMESPACE }),
+        installKvtTile(db, next, { provider: PROVIDER }),
+      ).resolves.toMatchObject({ version: "2026.11.2" });
+    });
+
+    it("pins a namespace to one origin across tiles, including pilot installs", async () => {
+      const appUrl = `${PROVIDER.origin}/optik/`;
+      const original = providerTile();
+      await installKvtTile(db, original, { provider: PROVIDER, appUrl });
+      await db
+        .prepare(
+          "UPDATE installed_tiles SET provider_origin = NULL WHERE tile_id = ?",
+        )
+        .run(original.tile_id);
+      const second = {
+        ...providerTile("2026.11.2"),
+        tile_id: `${NAMESPACE}:second`,
+      };
+      await expect(
+        installKvtTile(db, second, {
+          provider: { ...PROVIDER, origin: "https://other.example" },
+        }),
+      ).rejects.toThrow(/PROVIDER_ORIGIN_MISMATCH/);
+      expect(
+        await db
+          .prepare(
+            "SELECT version, failed_at FROM installed_tiles WHERE tile_id = ?",
+          )
+          .get(second.tile_id),
+      ).toBeUndefined();
+      await expect(
+        installKvtTile(db, second, { provider: PROVIDER }),
       ).resolves.toMatchObject({ version: "2026.11.2" });
     });
 

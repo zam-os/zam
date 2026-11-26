@@ -7,7 +7,7 @@ tags:
   - learning-content
   - cards
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/learning-content.md"
-timestamp: 2026-11-25T18:00:00.000Z
+timestamp: 2026-11-26T06:00:00.000Z
 ---
 
 The Desktop Studio and the shared Studio panel both have a Learning Content page (Lerninhalte). The page opens on **Lern-Karten** (Learning cards). The other area is **Quellen** (Sources).
@@ -30,9 +30,9 @@ The knowledge atlas opens the same dialog from a world region's **Hier importier
 The ZAM Academy dialog also shows **private providers** ([ADR 2026-11-25](../adr/2026-11-25-private-academy-providers.md)): packages an organisation publishes behind a login, for example for its apprentices, in the Academy's own format.
 - **Adding one.** „Anbieter hinzufügen …“ in the Academy dialog or under *Academy-Anbieter* in Settings. The learner pastes the address; ZAM reads the provider file and shows its name, publisher, host, login and where error reports go. Only „Hinzufügen“ saves it, on this machine. The terminal has `zam academy provider add|list|remove`. No agent tool and no panel command adds, changes or removes a provider.
 - **Browsing.** One chip per provider beside „ZAM Academy“; a provider's packages are browsed like the Academy's. A provider with Microsoft login uses the Azure CLI's token. Without a login the dialog offers „Mit Microsoft anmelden“; a refused account reads „Kein Zugang“ with the publisher's name.
-- **A changed provider file** shows a banner. ZAM keeps using the version the learner confirmed until „Neue Fassung bestätigen“.
+- **A changed provider file** offers „Neue Fassung bestätigen“ even if the catalog rejects the previously confirmed sign-in. ZAM starts using the new settings after that confirmation.
 - **Cards** link back to the provider's lessons („Lektion öffnen ↗“ for providers confirmed on this machine). When the provider names a report link, „Fehler melden ↗“ follows the revealed answer; it carries only the tile, item and version.
-- **Team library.** A curator installs a package for everyone, with „Für die Bibliothek installieren“ in the provider's view or `zam team install-cell <id>`, and that creates no cards. Everyone takes it under „In dieser Bibliothek“, with no download and no provider of their own. After a curator installed a newer version, „Neue Karten holen“ hands out the new items. Apprentices are added with `zam team add-member --no-curator`, so only curators install.
+- **Team library.** A curator installs a package for everyone, with „Für die Bibliothek installieren“ in the provider's view or `zam team install-cell <id>`, and that creates no cards. Everyone takes it under „In dieser Bibliothek“, with no download and no provider of their own. After a curator installs a newer version, „Neue Karten holen“ in Academy and Lern-Karten adds the new items. Declared replacements carry the existing card and its reviews to the successor when the member next reviews or enrols. The held status comes from the library, including on a device without a cached package file. Apprentices are added with `zam team add-member --no-curator`, so only curators install.
 
 # Nachlesen
 

@@ -57,6 +57,28 @@ async function dropSchema(name: string): Promise<void> {
 }
 
 describeWithPostgres("PostgreSQL provisioning (needs POSTGRES_URL)", () => {
+  it("upgrades the active schema when another library already has the new column", async () => {
+    const current = await freshSchema("zam_provision_current");
+    const pilot = await freshSchema("zam_provision_pilot");
+    try {
+      await applySchemaAndMigrations(current);
+      await applySchemaAndMigrations(pilot);
+      await pilot.exec(`
+        ALTER TABLE installed_tiles DROP COLUMN provider_origin;
+        UPDATE zam_schema_version SET version = 50;
+      `);
+      await ensureSchemaAndMigrations(pilot);
+      await expect(
+        pilot.prepare("SELECT provider_origin FROM installed_tiles").all(),
+      ).resolves.toEqual([]);
+    } finally {
+      await current.close();
+      await pilot.close();
+      await dropSchema("zam_provision_current");
+      await dropSchema("zam_provision_pilot");
+    }
+  });
+
   it("provisions the whole schema and stays repeatable", async () => {
     const db = await freshSchema("zam_provision_a");
     try {

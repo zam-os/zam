@@ -1276,10 +1276,11 @@
       "parent": "academy-cells",
       "label": "Private providers",
       "link": "also from",
-      "text": "A private Academy provider serves packages behind a login; only the learner adds one, and its tiles write only inside its own namespace.",
+      "text": "The learner confirms a private Academy provider, and the library pins the provider namespace to that confirmed origin.",
       "sources": [
         "docs/adr/2026-11-25-private-academy-providers.md",
         "src/kernel/system/academy-providers.ts",
+        "src/kernel/library/academy-provider.ts",
         "src/kernel/library/kvt-attach.ts",
         "desktop/src/academy-providers.ts"
       ]
