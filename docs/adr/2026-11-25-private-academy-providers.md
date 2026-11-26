@@ -1,6 +1,6 @@
 # Private Academy Providers: Packages Behind a Login, Enrolled Like the ZAM Academy
 
-**Status:** Accepted\
+**Status:** Implemented — PR #500; live check against a provider host run (plan 3.6), lesson sign-in and „Fehler melden“ still open\
 **Date:** 2026-11-25\
 **Deciders:** Thomas (project owner)\
 **Plan:** [`docs/plans/2026-11-25-private-academy-providers.md`](../plans/2026-11-25-private-academy-providers.md)\
@@ -189,7 +189,8 @@ security switch (ADR 2026-10-08b), and only the learner can change it:
     catalog;
   - fetches go only through `safeFetch`.
 - **Cache:** `~/.zam/academy/providers/<id>/`, beside today's cache, never
-  in the database.
+  in the database. A subdirectory keyed by the origin keeps different
+  publishers' caches apart when a device reuses an ID.
 - **Login (`entra-cli`):**
   - ZAM runs `az account get-access-token --tenant <tenant> --scope
     api://<api>/.default`.
@@ -202,7 +203,9 @@ security switch (ADR 2026-10-08b), and only the learner can change it:
   - A missing Azure CLI login keeps today's `ENTRA_LOGIN_REQUIRED`. Studio
     shows „Mit Microsoft anmelden“, which already runs `entra-login`.
   - HTTP 401 or 403 becomes `PROVIDER_ACCESS_DENIED`, and Studio says
-    „Kein Zugang — bitte an <publisher> wenden“.
+    „Kein Zugang — bitte an <publisher> wenden“. So does Entra refusing the
+    token because the account is not assigned to the app (AADSTS50105):
+    signing in again cannot help there.
 - **Reachability:** a provider's host must pass `safeFetch`'s address
   checks, like every remote source. A provider on a private network address
   is not supported.
@@ -214,12 +217,16 @@ security switch (ADR 2026-10-08b), and only the learner can change it:
   is parsed and when a cell is installed.
 - **Reserved ids:** a provider `id` must not be `zam-academy`, the prefix of
   any bundled tile, or the id of another confirmed provider.
+- **The library pins each provider ID to its confirmed HTTPS origin.** The
+  first successful install records the binding. A later install for the
+  same ID must match it, including when a different curator installs it.
 - **Atoms and items stay the provider's own:** every atom id and item id in
   a provider's cell must be new to the library or already belong to a tile
   in the provider's namespace. A private cell can never rewrite a public
   atom or item by reusing its id.
-- **`replaces`** may name only items of the provider's own tiles. A private
-  cell can never move review history off a public item.
+- **`replaces` and `retired_items`** may name only items of the provider's
+  own tiles. A private cell can never move review history off a public
+  item, nor retire one.
 - **Prerequisites stay inside one tile,** as for every tile today. A private
   package that builds on a public Academy package names it in its lesson
   text instead of repeating it, which keeps the rule that the same content
@@ -240,7 +247,8 @@ security switch (ADR 2026-10-08b), and only the learner can change it:
   - A click opens the system browser, where the Microsoft sign-in happens.
     ZAM passes no token to the browser.
 - **The review context resolves a provider link to nothing**, as it does an
-  Academy link. A review never fetches a private page.
+  Academy link. It checks the confirmed origins and the library's installed
+  provider tiles, including when a member reviews from a new device.
 - **Library topics** (ADR 2026-10-02) work unchanged: one topic per app URL.
 
 ### 7. In a team library, a curator installs and members only enrol
@@ -255,7 +263,9 @@ security switch (ADR 2026-10-08b), and only the learner can change it:
   library, and „Aufnehmen“ only creates the member's own cards: no download,
   no token.
 - **Updates:** the curator installs a newer version. `replaces` carries the
-  members' review history.
+  members' review history. The install records the declaration and the
+  member's next review or enrolment moves their own card and logs under
+  the existing row-level policies.
 - **Lesson links:** a member who has not confirmed the provider locally sees
   the link with its plain host label. It still opens on click, and the
   page asks for the member's own Microsoft login.
@@ -275,7 +285,8 @@ security switch (ADR 2026-10-08b), and only the learner can change it:
   - Only the tile id, item id and tile version are filled in, URL-encoded.
   - Never the question, the answer, the learner's input or any learner id.
   - The report link's host was shown when the learner confirmed the
-    provider (Decision 3).
+    provider (Decision 3). The origin stays fixed and placeholders appear only
+  in the path, query or fragment.
 - **Where a report goes** (an issue form, a survey) is the provider's
   choice. ZAM sends nothing itself.
 - **Leaving preview:** a package keeps `preview: true` in the provider's
@@ -311,9 +322,13 @@ Nothing in ZAM depends on this shape, but the pilot uses it:
 - **`/zam-provider.json`** is excluded from authentication.
 - **Deployment** from the private repository uses a federated credential, so
   no secret is stored.
+- **Browser sign-in may need an admin once:** in a tenant that does not let
+  users consent to apps, the lesson pages show "Approval required" until an
+  admin consents to the app's sign-in permissions (`openid profile email`).
+  ZAM's token does not need it, because the Azure CLI is pre-authorised.
 
 The pilot's first step checks this shape in a spike: the Azure CLI token,
-the excluded path, and that a member outside the group gets 403.
+the excluded path, and that a user outside the group gets no token.
 
 ## Consequences
 
@@ -461,3 +476,27 @@ Each step can ship on its own:
   prerequisites on public atoms was wrong; prerequisites now stay inside one
   tile. The code also showed that a tile can overwrite atoms and items by
   id, so the namespace rule now covers atom and item ids, not only tile ids.
+- 2026-11-25 — Decision 5, while building Phase 1: `retired_items`
+  deprecates tokens by id like `replaces` moves them, so it follows the same
+  rule.
+- 2026-11-25 — Implemented on `feat/private-academy-providers` (PR #500),
+  Phases 1–6 of the plan. Decision 6: the review context cannot read the
+  library at its call sites, so besides confirmed providers it skips a
+  machine-local list of lesson origins (`academy.lessonOrigins`) that a
+  member's listing of installed provider tiles fills. Decision 7: new items
+  of an updated package reach a member when they enrol again („Neue Karten
+  holen“), as a personal library's „Aktualisieren“ does. The live check
+  against a provider host waits for the hosting spike (plan Phase 0).
+- 2026-11-25 — The hosting spike passed (plan Phase 0). Outside the group,
+  Entra issues no token at all (AADSTS50105) rather than the site answering
+  403. The live check in the Studio (plan 3.6) ran against it: add, curator
+  install, take from the library, one review, remove. It found that a library
+  row without the provider's cache showed no atoms, and that the source
+  switch gained „In dieser Bibliothek“ only on reopening; both are fixed.
+  Browser sign-in to a lesson waits for the host tenant's admin consent (see
+  Hosting), and „Fehler melden“ for a provider with a report link.
+- 2026-11-26 — The PR #500 review pinned provider origins in the library
+  (M051), resolved review suppression directly from installed content,
+  and moved team history transfer into the learner's own review and
+  enrolment flows. Studio keeps reconfirmation available after an auth
+  rotation, and report destinations use a fixed origin.

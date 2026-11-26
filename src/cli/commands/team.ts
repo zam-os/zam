@@ -16,6 +16,7 @@ import {
   type PostgresCredentials,
   reconcileInstalledBundledTiles,
 } from "../../kernel/index.js";
+import { providerInstallForLibraryHandler } from "../academy/provider-handlers.js";
 import { isEntraLoginRequired } from "../db/entra-cli.js";
 import {
   addTeamMember,
@@ -26,7 +27,7 @@ import {
   provisionTeamLibrary,
   removeTeamMember,
 } from "../deploy/team-provision.js";
-import { jsonOut } from "./shared/db.js";
+import { jsonOut, withDb } from "./shared/db.js";
 
 export const teamCommand = new Command("team").description(
   "Administer the team library on PostgreSQL (administrator only)",
@@ -158,6 +159,36 @@ teamCommand
     for (const failure of result.failed) {
       console.log(`  failed: ${failure.tileId} — ${failure.error}`);
     }
+  });
+
+// ── zam team install-cell ──────────────────────────────────────────────────
+
+teamCommand
+  .command("install-cell <cellId>")
+  .description(
+    "Install a confirmed private provider's package for the whole team library (curator)",
+  )
+  .option("--json", "Output as JSON")
+  .action(async (cellId: string, opts: { json?: boolean }) => {
+    const json = Boolean(opts.json);
+    // The curator's own connection and login (ADR 2026-11-25 Decision 7):
+    // the grants decide, not an administrator connection.
+    await withDb(async (db) => {
+      try {
+        const result = await providerInstallForLibraryHandler(db, { cellId });
+        if (json) {
+          jsonOut(result);
+          return;
+        }
+        console.log(
+          result.installed
+            ? `Installed ${cellId} ${result.version} for the team library. Members take it with „Aufnehmen“.`
+            : `${cellId} ${result.version} is already in the team library.`,
+        );
+      } catch (err) {
+        report((err as Error).message || String(err), json);
+      }
+    });
   });
 
 // ── zam team add-member ────────────────────────────────────────────────────

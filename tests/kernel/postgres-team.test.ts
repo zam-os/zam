@@ -1,8 +1,11 @@
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { RLS_PROTECTED_TABLES } from "../../src/cli/deploy/rls-policies.js";
 import {
   ADMIN_TABLES,
   addTeamMember,
+  connectedRoleIsCurator,
   entraPrincipalDirectory,
   KNOWLEDGE_TABLES,
   LIBRARY_SETTINGS_TABLES,
@@ -25,13 +28,18 @@ import type { Database } from "../../src/kernel/db/types.js";
 import {
   bindSettingsScope,
   bindStandingAssignments,
+  buildReviewQueue,
   createAssignment,
   createToken,
   detachCardForUser,
+  enrolInstalledTile,
   ensureCard,
   getSetting,
+  installKvtTile,
+  type KvtTile,
   listActiveDistractors,
   listAssignmentsForLearner,
+  listInstalledProviderTiles,
   listLibraryTopics,
   setSetting,
   startLibraryTopic,
@@ -147,6 +155,10 @@ describe("entraPrincipalDirectory", () => {
 
 describeWithPostgres("zam team on PostgreSQL (needs POSTGRES_URL)", () => {
   const url = POSTGRES_URL as string;
+  const provider = {
+    id: "example-provider",
+    origin: "https://provider.example",
+  };
   const admin = POSTGRES_URL ? new URL(url) : ({} as URL);
   const schema = "zam_team";
   const database = admin.pathname ? admin.pathname.replace(/^\//, "") : "";
@@ -678,6 +690,143 @@ describeWithPostgres("zam team on PostgreSQL (needs POSTGRES_URL)", () => {
       });
       await raw.prepare("SELECT 1 AS one").get();
       await raw.close();
+    } finally {
+      await reset();
+    }
+  });
+
+  it("lets a curator install a provider tile and a member only enrol from it (ADR 2026-11-25 D5, D7)", async () => {
+    await reset();
+    const fixtures = join(__dirname, "../fixtures/curriculum");
+    const publicTile = () =>
+      JSON.parse(
+        readFileSync(
+          join(fixtures, "de-by-realschule-optik-kvt.json"),
+          "utf-8",
+        ),
+      ) as KvtTile;
+    const providerTile = () => {
+      const tile = JSON.parse(
+        readFileSync(
+          join(fixtures, "de-by-realschule-optik-kvt.json"),
+          "utf-8",
+        ).replaceAll("01K3X9A7R4B8C1D2E3F4G5", "01K3X9A7R4B8C1D2E3F4P5"),
+      ) as KvtTile;
+      tile.tile_id = "example-provider:optik";
+      tile.version = "2026.11.1";
+      for (const atom of tile.atoms) {
+        atom.atom_uri = `urn:zam:atom:${atom.id}`;
+        atom.slug = `p-${atom.slug}`;
+        atom.curricula = [];
+        for (const item of atom.practice_items) {
+          if (item.slug) item.slug = `p-${item.slug}`;
+        }
+      }
+      return tile;
+    };
+    try {
+      const control = adminDb();
+      let bobId: string;
+      try {
+        await provisionTeamLibrary(control, { schema });
+        await addTeamMember(control, localDirectory, {
+          upn: "alice@example.org",
+          database,
+        });
+        const bob = await addTeamMember(control, localDirectory, {
+          upn: "bob@example.org",
+          database,
+          curator: false,
+        });
+        bobId = bob.userId;
+      } finally {
+        await control.close?.();
+      }
+
+      const asAlice = await connectAs("alice@example.org");
+      const asBob = await connectAs("bob@example.org");
+      try {
+        // The connection's own role decides who installs for everyone.
+        expect(await connectedRoleIsCurator(asAlice)).toBe(true);
+        expect(await connectedRoleIsCurator(asBob)).toBe(false);
+
+        // The curator installs: the tile, its atoms and their owners.
+        await installKvtTile(asAlice, publicTile());
+        await installKvtTile(asAlice, providerTile(), {
+          provider,
+          appUrl: "https://provider.example/optik/",
+        });
+        // The guard holds on PostgreSQL too.
+        const hijack = providerTile();
+        hijack.atoms[0].practice_items[0].id = "01K3X9A7R4B8C1D2E3F4G5H001";
+        await expect(
+          installKvtTile(asAlice, hijack, { provider }),
+        ).rejects.toThrow(/belongs to content outside/);
+
+        // A member may not install …
+        await expect(
+          installKvtTile(asBob, providerTile(), {
+            provider,
+          }),
+        ).rejects.toThrow();
+
+        // … but sees the installed tile and enrols from the library alone.
+        const [listed] = await listInstalledProviderTiles(asBob, bobId);
+        expect(listed).toMatchObject({
+          tileId: "example-provider:optik",
+          appUrl: "https://provider.example/optik/",
+          held: false,
+        });
+        const enrolled = await enrolInstalledTile(
+          asBob,
+          bobId,
+          "example-provider:optik",
+        );
+        expect(enrolled.cardsCreated).toBeGreaterThan(0);
+        const [after] = await listInstalledProviderTiles(asBob, bobId);
+        expect(after.held).toBe(true);
+
+        const next = providerTile();
+        next.version = "2026.11.2";
+        const item = next.atoms[0].practice_items[0];
+        const oldId = item.id;
+        const card = await ensureCard(asBob, oldId, bobId);
+        await asBob
+          .prepare("UPDATE cards SET reps = 6, stability = 30 WHERE id = ?")
+          .run(card.id);
+        await asBob
+          .prepare(
+            `INSERT INTO review_logs (id, card_id, token_id, user_id, rating, reviewed_at, scheduled_at)
+           VALUES ('01K3X9A7R4B8C1D2E3F4G5R001', ?, ?, ?, 3,
+                   '2026-08-01T10:00:00.000Z', '2026-08-01T09:00:00.000Z')`,
+          )
+          .run(card.id, oldId, bobId);
+        item.id = "01K3X9A7R4B8C1D2E3F4P5N001";
+        item.slug = "provider-optik-successor";
+        item.replaces = [oldId];
+        await installKvtTile(asAlice, next, { provider });
+        expect(
+          await asAlice
+            .prepare("SELECT id FROM cards WHERE id = ?")
+            .get(card.id),
+        ).toBeUndefined();
+
+        await buildReviewQueue(asBob, { userId: bobId });
+        await enrolInstalledTile(asBob, bobId, next.tile_id);
+        expect(
+          await asBob
+            .prepare("SELECT token_id, reps, stability FROM cards WHERE id = ?")
+            .get(card.id),
+        ).toMatchObject({ token_id: item.id, reps: 6, stability: 30 });
+        expect(
+          await asBob
+            .prepare("SELECT token_id FROM review_logs WHERE card_id = ?")
+            .all(card.id),
+        ).toEqual([{ token_id: item.id }]);
+      } finally {
+        await asAlice.close?.();
+        await asBob.close?.();
+      }
     } finally {
       await reset();
     }

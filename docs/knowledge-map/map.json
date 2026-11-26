@@ -772,9 +772,10 @@
       "parent": "untrusted-callers",
       "label": "Academy catalog",
       "link": "fetch only on a learner's action",
-      "text": "Only a learner's own action reads the academy catalog; agent tools see just the cache that check left.",
+      "text": "Only a learner's own action reads the academy catalog or a private provider's; agent tools see just the cache that check left.",
       "sources": [
         "src/cli/academy/catalog-client.ts",
+        "src/cli/academy/provider-client.ts",
         "src/cli/academy/cache.ts"
       ]
     },
@@ -1268,6 +1269,20 @@
         "src/kernel/library/academy-catalog.ts",
         "src/kernel/library/academy-browse.ts",
         "src/kernel/library/bundled-cells.ts"
+      ]
+    },
+    {
+      "id": "private-academy-providers",
+      "parent": "academy-cells",
+      "label": "Private providers",
+      "link": "also from",
+      "text": "The learner confirms a private Academy provider, and the library pins the provider namespace to that confirmed origin.",
+      "sources": [
+        "docs/adr/2026-11-25-private-academy-providers.md",
+        "src/kernel/system/academy-providers.ts",
+        "src/kernel/library/academy-provider.ts",
+        "src/kernel/library/kvt-attach.ts",
+        "desktop/src/academy-providers.ts"
       ]
     },
     {

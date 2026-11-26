@@ -511,6 +511,7 @@ export {
   type AcademyBereich,
   type AcademyCatalog,
   type AcademyCatalogEntry,
+  type AcademyCatalogSource,
   type AcademyFach,
   type AcademyFachverbund,
   type AcademyIndex,
@@ -523,8 +524,23 @@ export {
   type ParseAcademyIndexOptions,
   parseAcademyCatalog,
   parseAcademyIndex,
+  providerOrigin,
   userHoldsAcademyAppCards,
 } from "./library/academy-catalog.js";
+export {
+  ACADEMY_PROVIDER_FILE,
+  type AcademyProvider,
+  type AcademyProviderAuth,
+  type AcademyProviderIdentity,
+  assertAcademyProviderOrigin,
+  isGuid,
+  parseAcademyProvider,
+  providerFeedbackUrl,
+  providerTokenScope,
+  reservedProviderIds,
+  tileInNamespace,
+  ZAM_ACADEMY_PREFIX,
+} from "./library/academy-provider.js";
 export {
   countAnswerPoints,
   MAX_SCORED_BLOOM_LEVEL,
@@ -639,6 +655,16 @@ export {
   liftDollarMath,
   looksLikeMath,
 } from "./library/dollar-lift.js";
+export {
+  type EnrolInstalledTileResult,
+  enrolInstalledTile,
+  hasInstalledProviderOrigin,
+  type InstalledProviderTile,
+  isProviderTileId,
+  listInstalledProviderTiles,
+  providerTileForItem,
+} from "./library/installed-tiles.js";
+export { applyPendingItemReplacements } from "./library/item-replacements.js";
 export type {
   InstallKvtOptions,
   InstallKvtResult,
@@ -1425,6 +1451,16 @@ export {
   setOsSecretStoreForTests,
   unregisterSecretBackend,
 } from "./secrets/index.js";
+export {
+  type ConfirmedAcademyProvider,
+  confirmedProvider,
+  confirmProvider,
+  listConfirmedProviders,
+  type ProviderChangedField,
+  providerChange,
+  removeConfirmedProvider,
+  reviewSuppressedOrigins,
+} from "./system/academy-providers.js";
 export {
   confirmEndpoint,
   confirmedEndpointFor,

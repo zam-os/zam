@@ -15,6 +15,16 @@ describe("web source links are wired on every surface", () => {
     );
   });
 
+  it("Studio review offers a provider's report link and learns the provider hosts (ADR 2026-11-25)", () => {
+    const main = file("desktop/src/main.ts");
+    expect(main).toMatch(
+      /if \(activeCard\.feedbackUrl\) \{\s*revealContentList\.appendChild\(providerFeedbackRow\(activeCard\.feedbackUrl, \(url\) => void openUrl\(url\)\)\);/,
+    );
+    expect(main).toContain("void refreshProviderLessonHosts();");
+    expect(main).toContain("initAcademyProviderSettings();");
+    expect(file("desktop/index.html")).toContain('id="academy-providers-row"');
+  });
+
   it("the card editor offers „Öffnen ↗“ for a web source", () => {
     expect(file("desktop/index.html")).toContain('id="btn-editor-open-source"');
     const content = file("desktop/src/learning-content.ts");

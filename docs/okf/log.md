@@ -1,5 +1,16 @@
 # Log
 
+## 2026-11-26
+
+- **Update** — [Token and Card Model](token-card-model.md)
+- **Update** — [Learning Content](learning-content.md)
+- **Update** — [Agent and Library Trust Model](agent-trust-model.md)
+
+## 2026-11-25
+
+- **Update** — [Agent and Library Trust Model](agent-trust-model.md)
+- **Update** — [Learning Content](learning-content.md)
+
 ## 2026-11-22
 
 - **Update** — [Learning Content](learning-content.md)

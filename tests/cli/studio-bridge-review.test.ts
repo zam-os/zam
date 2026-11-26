@@ -4,7 +4,13 @@
  * calls it, and the list changes only together with this test.
  */
 
-import { existsSync, mkdtempSync, readdirSync, rmSync } from "node:fs";
+import {
+  existsSync,
+  mkdtempSync,
+  readdirSync,
+  readFileSync,
+  rmSync,
+} from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
@@ -144,6 +150,44 @@ describe("Studio bridge review (ADR 2026-10-08b D3)", () => {
     }
   });
 
+  it("keeps the learner's Academy actions and private providers off the bridge (ADR 2026-11-25 D3)", () => {
+    for (const command of [
+      "academy-list",
+      "academy-enrol",
+      "academy-update",
+      "academy-provider-check",
+      "academy-provider-add",
+      "academy-provider-remove",
+      "academy-provider-list",
+    ]) {
+      expect(STUDIO_BRIDGE_ALLOWED_COMMANDS.has(command), command).toBe(false);
+    }
+    // No MCP tool reaches the provider list or a provider's network either.
+    const mcpSource = readFileSync(
+      join(__dirname, "../../src/cli/commands/mcp.ts"),
+      "utf8",
+    );
+    for (const forbidden of [
+      "provider-handlers",
+      "provider-client",
+      "confirmProvider",
+      "removeConfirmedProvider",
+      "rememberLessonOrigins",
+    ]) {
+      expect(mcpSource, forbidden).not.toContain(forbidden);
+    }
+    // The agent tools' handlers read only the cache (ADR 2026-11-25 D9).
+    for (const path of [
+      "../../src/cli/academy/agent-cells.ts",
+      "../../src/cli/bridge-handlers.ts",
+    ]) {
+      const source = readFileSync(join(__dirname, path), "utf8");
+      for (const fetcher of ["provider-client", "catalog-client", "safeFetch"]) {
+        expect(source, `${path}: ${fetcher}`).not.toContain(fetcher);
+      }
+    }
+  });
+
   it("does not let setting-set write a security switch", async () => {
     for (const key of [
       "observation.screen",
@@ -151,6 +195,8 @@ describe("Studio bridge review (ADR 2026-10-08b D3)", () => {
       "llm.api_key",
       "secrets.backend",
       "mobile.pairing",
+      "academy.providers",
+      "academy.lessonOrigins",
     ]) {
       await expect(
         executeBridgeCommandJson("setting-set", [

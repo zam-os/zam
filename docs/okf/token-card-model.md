@@ -8,7 +8,7 @@ tags:
   - tokens
   - cards
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/token-card-model.md"
-timestamp: 2026-11-22T21:11:00.000Z
+timestamp: 2026-11-26T06:00:00.000Z
 ---
 
 ZAM's published central-learning model separates five objects:
@@ -202,6 +202,12 @@ items within the normal learning budget instead of enrolling existing
 learners in every new card at once. A concept appears in a learner's queue
 only after that card exists and the token is published. Installation,
 enrolment, and publication remain separate kernel steps.
+
+In team PostgreSQL libraries, a tile install writes declared `replaces`
+mappings as shared knowledge. The learner's next review or package enrolment
+applies the succession within their own row-level permissions, preserving
+the card ID, FSRS state and review log. When several histories would have
+to merge or a succession is ambiguous, the histories stay separate.
 
 Curriculum bindings merge across cells: an omitted binding remains installed.
 An atom can explicitly withdraw a wrong published binding through
@@ -751,7 +757,7 @@ exact successor declarations may preserve it, while ambiguous or materially
 changed mappings require real re-retrieval.
 
 # Citations
-- Code: `desktop/src/cell-import-progress.ts`, `desktop/src/academy-list.ts`, `src/kernel/library/kvt-attach.ts`
+- Code: `desktop/src/cell-import-progress.ts`, `desktop/src/academy-list.ts`, `src/kernel/library/item-replacements.ts`, `src/kernel/library/kvt-attach.ts`
 - Tests: `tests/desktop/cell-import-progress.test.ts`, `tests/kernel/zam-academy-grundschule-4-cells.test.ts`, `tests/kernel/zam-academy-2026-11-21-cells.test.ts`, `tests/kernel/zam-academy-2026-11-22-cells.test.ts`
 - [ADR 2026-11-22 — ZAM Academy Index Browser and Removal of the Curriculum Wizard](../adr/2026-11-22-academy-index-browser-and-wizard-removal.md)
 - [ADR 2026-10-26 — Explicit Withdrawal of Published Curriculum Bindings](../adr/2026-10-26-curriculum-binding-withdrawals.md)

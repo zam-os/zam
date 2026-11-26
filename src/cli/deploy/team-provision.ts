@@ -90,6 +90,8 @@ export const KNOWLEDGE_TABLES = [
   // Bundled tile versions the library holds (ADR 2026-10-14b Decision 7);
   // written by whoever installs a tile, which is curators' work.
   "installed_tiles",
+  // Which tile brought which atom (ADR 2026-11-25, M050); same writer.
+  "tile_atoms",
   "agent_skills",
   // Knowledge atlas (ADR 2026-10-13): the shared map, kept by curators.
   "atlas_lenses",
@@ -604,4 +606,24 @@ export async function listTeamMembers(db: Database): Promise<TeamMember[]> {
     curator: Boolean(row.curator),
     createdAt: row.createdAt ?? nowIso(),
   }));
+}
+
+/**
+ * Whether the connection's own role may publish knowledge in the team library
+ * (ADR 2026-11-25 Decision 7: a curator installs a provider package for
+ * everyone). False on any error, e.g. a library that is not provisioned.
+ */
+export async function connectedRoleIsCurator(db: Database): Promise<boolean> {
+  if (db.dialect !== "postgres") return false;
+  try {
+    const row = (await db
+      .prepare(
+        `SELECT pg_has_role(current_user, '${TEAM_CURATOR_ROLE}', 'member') AS curator`,
+      )
+      .get()) as { curator: boolean | string | number } | undefined;
+    const value = row?.curator;
+    return value === true || value === "t" || value === "true" || value === 1;
+  } catch {
+    return false;
+  }
 }

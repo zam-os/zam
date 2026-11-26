@@ -7,6 +7,7 @@ import academyCellsLock from "../../../tests/fixtures/curriculum/zam-academy-cel
 import type { Database } from "../db/types.js";
 import {
   hasPendingCurriculumRetirements,
+  type InstallKvtOptions,
   installKvtTile,
   type KvtTile,
   materialiseKvtCards,
@@ -792,6 +793,15 @@ export interface BundledCellStatus extends BundledCellInfo {
    * „Aufnehmen“ in ZAM Academy to download and enrol it (ADR 2026-11-22).
    */
   requiresLearnerEnrol?: boolean;
+  /** A private provider's package (ADR 2026-11-25): which provider. */
+  provider?: { id: string; title: string };
+  /**
+   * The library holds it (a curator installed it, or the learner did): an
+   * agent can enrol from the library without any download.
+   */
+  installedInLibrary?: boolean;
+  /** Additional cards a learner can take from an installed team tile. */
+  newItems?: number;
 }
 
 export interface BundledCellEnrolResult {
@@ -1807,6 +1817,12 @@ export interface EnrolBundledCellOptions {
    */
   resolveTile?: (cellId: string) => BundledTile | undefined;
   onProgress?: (progress: EnrolBundledCellProgress) => void;
+  /**
+   * A private provider's cell (ADR 2026-11-25): its identity, app URL and
+   * preview mark go to `installKvtTile`, whose guard keeps the tile inside
+   * the namespace.
+   */
+  install?: Pick<InstallKvtOptions, "provider" | "appUrl" | "preview">;
 }
 
 /** Counts work in each pass, including items already held by the learner. */
@@ -1836,7 +1852,9 @@ export async function installedTileVersion(
   tileId: string,
 ): Promise<string | null> {
   const row = (await db
-    .prepare("SELECT version FROM installed_tiles WHERE tile_id = ?")
+    .prepare(
+      "SELECT version FROM installed_tiles WHERE tile_id = ? AND version <> ''",
+    )
     .get(tileId)) as { version: string | null } | undefined;
   return row?.version ?? null;
 }
@@ -1868,6 +1886,7 @@ export async function enrolBundledCell(
   const installed = await installedTileVersion(db, cellId);
   if (compareTileVersions(installed, String(tile.version)) !== 1) {
     await installKvtTile(db, tile, {
+      ...options.install,
       onProgress: options.onProgress
         ? (progress) =>
             options.onProgress?.({ phase: "installing", ...progress })

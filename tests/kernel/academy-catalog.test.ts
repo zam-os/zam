@@ -22,6 +22,7 @@ import {
   openDatabase,
   parseAcademyCatalog,
   parseAcademyIndex,
+  providerOrigin,
   userHoldsAcademyAppCards,
 } from "../../src/kernel/index.js";
 
@@ -102,6 +103,95 @@ describe("parseAcademyCatalog (ADR 2026-10-19 D2, D4)", () => {
     ).toThrow(/duplicate/);
     expect(() => parseAcademyCatalog({ schema: 2, cells: [] })).toThrow();
     expect(() => parseAcademyCatalog(null)).toThrow();
+  });
+});
+
+describe("parseAcademyCatalog for a private provider (ADR 2026-11-25 D4, D5)", () => {
+  const source = {
+    origin: "https://provider.example",
+    prefix: "example-provider",
+  };
+  const own = {
+    ...entry,
+    id: "example-provider:lf3",
+    app: "/lf3/",
+    cell: "/lf3/cell.json",
+  };
+
+  it("resolves paths against the provider's own origin", () => {
+    const catalog = parseAcademyCatalog({ schema: 1, cells: [own] }, source);
+    expect(catalog.cells[0]).toMatchObject({
+      id: "example-provider:lf3",
+      appUrl: "https://provider.example/lf3/",
+      cellUrl: "https://provider.example/lf3/cell.json",
+    });
+  });
+
+  it("refuses an entry outside the provider's namespace", () => {
+    for (const id of [
+      "zam-academy:uml",
+      "de-by:anything",
+      "example-provider-x:lf3",
+      "other:lf3",
+    ]) {
+      expect(
+        () =>
+          parseAcademyCatalog({ schema: 1, cells: [{ ...own, id }] }, source),
+        id,
+      ).toThrow(/outside the namespace/);
+    }
+  });
+
+  it("never lets a provider entry name another host", () => {
+    for (const cell of [
+      "https://academy.zam-os.org/uml/cell.json",
+      "//evil.example/cell.json",
+      "/lf3/../../cell.json",
+    ]) {
+      expect(
+        () =>
+          parseAcademyCatalog({ schema: 1, cells: [{ ...own, cell }] }, source),
+        cell,
+      ).toThrow(/plain path on https:\/\/provider\.example/);
+    }
+  });
+
+  it("refuses a provider origin that is not a bare https origin", () => {
+    for (const origin of [
+      "http://provider.example",
+      "https://provider.example/academy",
+      "https://provider.example?x=1",
+      "https://provider.example#x",
+      "https://user:pw@provider.example",
+      "provider.example",
+    ]) {
+      expect(
+        () =>
+          parseAcademyCatalog(
+            { schema: 1, cells: [own] },
+            { ...source, origin },
+          ),
+        origin,
+      ).toThrow(/Provider origin/);
+    }
+  });
+
+  it("keeps the canonical origin form", () => {
+    expect(providerOrigin("https://Provider.Example/")).toBe(
+      "https://provider.example",
+    );
+    expect(providerOrigin("https://bücher.example")).toBe(
+      "https://xn--bcher-kva.example",
+    );
+  });
+
+  it("leaves the public catalog exactly as before without a source", () => {
+    expect(
+      parseAcademyCatalog({ schema: 1, cells: [entry] }).cells[0].appUrl,
+    ).toBe(`${ACADEMY_ORIGIN}/uml/`);
+    expect(() =>
+      parseAcademyCatalog({ schema: 1, cells: [{ ...entry, id: "x:y" }] }),
+    ).not.toThrow();
   });
 });
 
@@ -245,6 +335,57 @@ const SAMPLE_INDEX_RAW = {
   ],
 };
 
+describe("parseAcademyIndex for a vocational school (ADR 2026-11-25 D1)", () => {
+  it("takes a school with years 10–12 and Lernfeld subjects as data", () => {
+    const index = parseAcademyIndex({
+      schema: 1,
+      goal: "",
+      schulen: [
+        {
+          id: "berufsschule-it",
+          name: "Berufsschule – IT-Berufe",
+          short: "BS",
+          from: 10,
+          to: 12,
+        },
+      ],
+      bereiche: [{ id: "it", name: "IT", glyph: "</>" }],
+      faecher: [
+        {
+          id: "it-systeme",
+          name: "IT-Systeme",
+          bereich: "it",
+          glyph: "LAN",
+          hue: 200,
+          from: 10,
+          to: 12,
+        },
+      ],
+      fachverbunde: [],
+      pakete: [
+        {
+          id: "lf3",
+          app: "lf3",
+          title: "LF3 Clients in Netzwerke einbinden",
+          fach: "it-systeme",
+          grade: 10,
+          school: "berufsschule-it",
+          lessons: 8,
+          gebiete: ["OSI", "Subnetting"],
+          desc: "Jahrgangsstufe 10",
+        },
+      ],
+    });
+    expect(index.schulen[0]).toMatchObject({ from: 10, to: 12 });
+    expect(index.pakete[0]).toMatchObject({
+      id: "lf3",
+      fach: "it-systeme",
+      grade: 10,
+      school: "berufsschule-it",
+    });
+  });
+});
+
 describe("parseAcademyIndex & academyAppSlug", () => {
   it("parses schools, areas, subjects, combined subjects and multi-grade packages", () => {
     const index = parseAcademyIndex(SAMPLE_INDEX_RAW);
@@ -298,6 +439,17 @@ describe("parseAcademyIndex & academyAppSlug", () => {
       "biologie-realschule-8",
     );
     expect(academyAppSlug("zam-academy:sql")).toBe("sql");
+    expect(
+      academyAppSlug("https://academy.zam-os.org/uml/#lesson=klassen"),
+    ).toBe("uml");
+  });
+
+  it("extracts the app slug from a private provider's app URL (ADR 2026-11-25)", () => {
+    expect(academyAppSlug("https://provider.example/lf3/")).toBe("lf3");
+    expect(academyAppSlug("https://provider.example/lf3/#lesson=osi")).toBe(
+      "lf3",
+    );
+    expect(academyAppSlug("https://provider.example/")).toBe("");
   });
 });
 
@@ -474,7 +626,9 @@ describe("academy enrichment, multi-stage tiles and search", () => {
   });
 
   it("keeps DEFAULT_ACADEMY_TAXONOMY internally consistent and aligned with bundled Academy cells", () => {
-    const schoolIds = new Set(DEFAULT_ACADEMY_TAXONOMY.schulen.map((s) => s.id));
+    const schoolIds = new Set(
+      DEFAULT_ACADEMY_TAXONOMY.schulen.map((s) => s.id),
+    );
     const bereichIds = new Set(
       DEFAULT_ACADEMY_TAXONOMY.bereiche.map((b) => b.id),
     );
@@ -537,7 +691,9 @@ describe("userHoldsAcademyAppCards (per-learner held check without tile)", () =>
       // Detaching all of the learner's cards leaves installed_tiles intact,
       // yet clears per-learner enrolment so "Take" is offered again.
       await db
-        .prepare("UPDATE cards SET detached_at = '2026-11-22T00:00:00Z' WHERE user_id = ?")
+        .prepare(
+          "UPDATE cards SET detached_at = '2026-11-22T00:00:00Z' WHERE user_id = ?",
+        )
         .run("learner");
       expect(await countUserAcademyAppCards(db, "learner", appUrl)).toBe(0);
       expect(await userHoldsAcademyAppCards(db, "learner", appUrl)).toBe(false);

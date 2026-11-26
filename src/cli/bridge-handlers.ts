@@ -25,6 +25,7 @@ import {
   addPrerequisite,
   admitPresentation,
   analyzeObservation,
+  applyPendingItemReplacements,
   assertPrerequisitePlanets,
   assessPrecondition,
   assignTokenToContext,
@@ -77,6 +78,7 @@ import {
   installedTileVersion,
   isAnswerFormat,
   isObserverPolicyConfigured,
+  isProviderTileId,
   isScreenObservationEnabled,
   isStudyLearningMode,
   endSession as kernelEndSession,
@@ -124,12 +126,17 @@ import {
   writeCardText,
 } from "../kernel/index.js";
 import {
+  enrolProviderCellForAgent,
+  providerCellsForAgents,
+} from "./academy/agent-cells.js";
+import {
   readCachedCatalog,
   readCachedCell,
   readCachedIndex,
   readCachedTileVersion,
   resolveCachedTile,
 } from "./academy/cache.js";
+import { providerFeedbackFor } from "./academy/feedback.js";
 import { resolveOperationKnowledgeContexts } from "./knowledge-contexts.js";
 import { ensureHighQualityQuestion } from "./llm/client.js";
 import {
@@ -362,6 +369,8 @@ export async function getReview(db: Database, params: GetReviewParams) {
   if (params.noResolve !== true) {
     try {
       resolvedContext = await resolveReviewContext(item.sourceLink, {
+        db,
+        tokenId: item.tokenId,
         roots: params.roots,
       });
     } catch {
@@ -393,6 +402,11 @@ export async function getReview(db: Database, params: GetReviewParams) {
         item.tokenId,
       ) ?? null)
     : null;
+  // „Fehler melden ↗“ on a private provider's card (ADR 2026-11-25 D8), for
+  // a rendering surface only, which opens it on the learner's click.
+  const feedbackUrl = params.includeMedia
+    ? await providerFeedbackFor(db, item.tokenId).catch(() => null)
+    : null;
 
   return {
     userId,
@@ -406,6 +420,7 @@ export async function getReview(db: Database, params: GetReviewParams) {
           }
         : {}),
       media,
+      ...(feedbackUrl ? { feedbackUrl } : {}),
     },
     prompt,
     questionSource,
@@ -464,6 +479,9 @@ export async function getReviewsBatch(
   params: GetReviewsBatchParams,
 ) {
   const userId = await resolveHandlerUser(db, params.user);
+  if (!params.respectWorkload && !params.tokenIds) {
+    await applyPendingItemReplacements(db, userId);
+  }
   const sourceCards =
     params.respectWorkload || params.tokenIds
       ? (
@@ -584,6 +602,8 @@ export async function getReviewsBatch(
       if (params.noResolve !== true && token.source_link) {
         try {
           resolvedContext = await resolveReviewContext(token.source_link, {
+            db,
+            tokenId: token.id,
             roots: params.roots,
           });
         } catch {
@@ -2382,6 +2402,17 @@ export async function listBundledCellsHandler(
       }
     }
 
+    // Private Academy providers (ADR 2026-11-25 D9): cells cached from each
+    // confirmed provider's last check, and the provider packages the library
+    // holds. Still nothing here reaches the network.
+    cells.push(
+      ...(await providerCellsForAgents(
+        db,
+        userId,
+        new Set(cells.map((cell) => cell.id)),
+      )),
+    );
+
     return { success: true as const, cells, scoped: false as const };
   }
 
@@ -2419,6 +2450,11 @@ export async function enrolBundledCellHandler(
   }
   const userId = await resolveHandlerUser(db, params.user);
   const cellId = params.cellId.trim();
+  // A private provider's package (ADR 2026-11-25 D9): from the library, or
+  // from the cache of the learner's last check. Never a download.
+  if (isProviderTileId(cellId)) {
+    return enrolProviderCellForAgent(db, userId, cellId, params.onProgress);
+  }
   // An agent may enrol a bundled cell or one already cached locally, but never
   // reaches the network and never updates a held cell: that is the learner's
   // „Aufnehmen“ / „Aktualisieren“ (ADR 2026-10-19 D4, amended by ADR 2026-11-22).

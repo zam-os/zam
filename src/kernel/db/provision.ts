@@ -25,6 +25,7 @@ import {
   SCHEMA_INDEXES,
   SCHEMA_TABLES,
   SESSION_SUBTASK_TABLES,
+  TILE_ATOM_TABLES,
 } from "./schema.js";
 import type { Database } from "./types.js";
 
@@ -34,7 +35,7 @@ import type { Database } from "./types.js";
  * never runs on any existing library. `tests/kernel/provision.test.ts` guards
  * the constant against the M-series markers below.
  */
-export const CURRENT_SCHEMA_VERSION = 49;
+export const CURRENT_SCHEMA_VERSION = 51;
 
 const SCHEMA_VERSION_TABLE = "zam_schema_version";
 
@@ -1094,6 +1095,31 @@ export async function runMigrations(db: Database): Promise<void> {
   // and 6) — a piece of work with an owner, beside session_steps, which
   // stays the record that a token was exercised.
   await db.exec(SESSION_SUBTASK_TABLES);
+
+  // M050: which tile brought which atom (ADR 2026-11-25, Decisions 5 and 7),
+  // and what a team-library member needs to see an installed tile without
+  // its file. Nothing backfills: a tile gets its rows when it is next
+  // installed or reconciled.
+  await db.exec(TILE_ATOM_TABLES);
+  const tileCols = await columnsOf(db, "installed_tiles");
+  for (const [column, ddl] of [
+    ["title", "TEXT NOT NULL DEFAULT ''"],
+    ["description", "TEXT NOT NULL DEFAULT ''"],
+    ["app_url", "TEXT"],
+    ["preview", "INTEGER NOT NULL DEFAULT 0"],
+  ] as const) {
+    if (!tileCols.includes(column)) {
+      await db.exec(`ALTER TABLE installed_tiles ADD COLUMN ${column} ${ddl}`);
+    }
+  }
+
+  // M051: bind installed private tiles to the provider origin confirmed by
+  // their installer. Pilot tiles can still derive it from their same-origin app URL.
+  if (!tileCols.includes("provider_origin")) {
+    await db.exec(
+      "ALTER TABLE installed_tiles ADD COLUMN provider_origin TEXT",
+    );
+  }
 }
 
 /**

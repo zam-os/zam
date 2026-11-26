@@ -215,9 +215,10 @@ export const learnCommand = new Command("learn")
         // Now reveal the stored answer.
         let resolved = null;
         if (opts.resolve !== false && item.sourceLink) {
-          resolved = await resolveReviewContext(item.sourceLink).catch(
-            () => null,
-          );
+          resolved = await resolveReviewContext(item.sourceLink, {
+            db,
+            tokenId: item.tokenId,
+          }).catch(() => null);
         }
         const token = await getTokenById(db, item.tokenId);
 

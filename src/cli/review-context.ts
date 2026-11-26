@@ -9,10 +9,14 @@
 import {
   ACADEMY_ORIGIN,
   canonicalRoots,
+  type Database,
   getTrustedFolders,
+  hasInstalledProviderOrigin,
   resolveReviewContext as kernelResolveReviewContext,
+  providerTileForItem,
   type ReferenceFetcher,
   type ReviewContext,
+  reviewSuppressedOrigins,
 } from "../kernel/index.js";
 import { CONTENT_USER_AGENT } from "./adapters/source-reader.js";
 import { safeFetch } from "./net/safe-fetch.js";
@@ -26,6 +30,8 @@ export interface ResolveReviewContextOptions {
    * folders. The learner's trusted folders always apply (ADR 2026-10-08b D1).
    */
   roots?: readonly string[];
+  db?: Database;
+  tokenId?: string;
 }
 
 const fetchReference: ReferenceFetcher = (url) =>
@@ -49,17 +55,43 @@ function isAcademyLink(sourceLink: string | null | undefined): boolean {
 }
 
 /**
+ * A private provider's lesson (ADR 2026-11-25 Decision 6): its origin is a
+ * confirmed provider's, or one recorded for an installed provider tile. The
+ * page sits behind a login and the review carries no token, so a fetch could
+ * only reach a sign-in page.
+ */
+async function isProviderLink(
+  sourceLink: string | null | undefined,
+  { db, tokenId }: ResolveReviewContextOptions,
+): Promise<boolean> {
+  if (!sourceLink) return false;
+  let url: URL;
+  try {
+    url = new URL(sourceLink);
+  } catch {
+    return false;
+  }
+  if (url.protocol !== "http:" && url.protocol !== "https:") return false;
+  if (reviewSuppressedOrigins().has(url.origin)) return true;
+  if (!db) return false;
+  if (tokenId && (await providerTileForItem(db, tokenId))) return true;
+  return hasInstalledProviderOrigin(db, url.origin);
+}
+
+/**
  * Resolve a token's source_link into bounded, review-ready context through
- * the outbound fetcher. An Academy link resolves to nothing, with no request.
+ * the outbound fetcher. An Academy or provider link resolves to nothing,
+ * with no request.
  */
 export async function resolveReviewContext(
   sourceLink: string | null | undefined,
-  opts?: ResolveReviewContextOptions,
+  opts: ResolveReviewContextOptions = {},
 ): Promise<ReviewContext | null> {
-  if (isAcademyLink(sourceLink)) return null;
+  if (isAcademyLink(sourceLink) || (await isProviderLink(sourceLink, opts)))
+    return null;
   return kernelResolveReviewContext(sourceLink, {
     fetch: fetchReference,
-    maxChars: opts?.maxChars,
-    roots: canonicalRoots([...(opts?.roots ?? []), ...getTrustedFolders()]),
+    maxChars: opts.maxChars,
+    roots: canonicalRoots([...(opts.roots ?? []), ...getTrustedFolders()]),
   });
 }

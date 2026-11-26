@@ -19,6 +19,12 @@ import {
 } from "../../src/kernel/atlas/palette.js";
 import { initContentImportMenu } from "./content-import-menu.js";
 import {
+  initAcademyProviderSettings,
+  providerFeedbackRow,
+  refreshProviderLessonHosts,
+  translateAcademyProviderSettings,
+} from "./academy-providers.js";
+import {
   academyPracticeLink,
   type WebSourceLink,
   webSourceLink,
@@ -613,6 +619,8 @@ interface BridgeCard {
   state: string;
   dueAt: string;
   sourceLink?: string;
+  /** A private provider's report link for this card (ADR 2026-11-25 D8). */
+  feedbackUrl?: string;
   context?: string;
   media?: BridgeMedia[];
   atomId?: string | null;
@@ -1114,6 +1122,7 @@ function initSettingsViewModeControls(): void {
 
 // ── STATIC TRANSLATIONS INITIALIZER ──────────────────────────────────────
 function initializeTranslations() {
+  translateAcademyProviderSettings();
   setNavLabel("nav-dashboard", t("nav_today"));
   setNavLabel("nav-settings", t("nav_settings"));
   setNavLabel("nav-stats", t("nav_stats"));
@@ -5372,6 +5381,7 @@ function refreshSettingsData(): void {
   void loadDatabaseStatus();
   void loadObservationStatus();
   void loadTrustedFolders();
+  void refreshProviderLessonHosts();
   void loadSettingsKnowledgeContext();
   void loadAgentHarnessStatus();
   void loadDynamicQuestionSetting();
@@ -7233,6 +7243,13 @@ function renderReveal(
       codeBox.textContent = resolvedContextContent;
       revealContentList.appendChild(codeBox);
     }
+  }
+
+  // „Fehler melden ↗“ on a private provider's card (ADR 2026-11-25 D8): the
+  // provider's own report link, carrying only tile, item and version, opened
+  // in the system browser on the learner's click.
+  if (activeCard.feedbackUrl) {
+    revealContentList.appendChild(providerFeedbackRow(activeCard.feedbackUrl, (url) => void openUrl(url)));
   }
 
   // Show/hide the static reference answer box based on whether local AI evaluation succeeded.
@@ -9661,6 +9678,10 @@ window.addEventListener("DOMContentLoaded", () => {
       openTopicImportDialog(document.getElementById("btn-content-import-menu")),
     );
   initContentImportMenu();
+  // Private Academy providers (ADR 2026-11-25): their lesson links and the
+  // Settings card; the confirmed hosts are read once at start.
+  initAcademyProviderSettings();
+  void refreshProviderLessonHosts();
   // Empty deck on a library with topics (ADR 2026-10-02): start from them.
   document
     .getElementById("btn-dashboard-library-topics")

@@ -48,6 +48,12 @@ import { addPrerequisite, removePrerequisite } from "../models/prerequisite.js";
 import { type BloomLevel, getTokenById, insertToken } from "../models/token.js";
 import { syncCuratedDistractors } from "../recall/choice-options.js";
 import { sha256HexBytes } from "../util/sha256.js";
+import { providerOrigin } from "./academy-catalog.js";
+import {
+  type AcademyProviderIdentity,
+  assertAcademyProviderOrigin,
+  tileInNamespace,
+} from "./academy-provider.js";
 import {
   type CardText,
   normalizeCardText,
@@ -55,8 +61,10 @@ import {
   validateCardText,
 } from "./card-text.js";
 import { writeCardText } from "./card-text-store.js";
+import { applyPendingItemReplacements } from "./item-replacements.js";
 import { assertFieldsReadyToPublish } from "./publication.js";
 import { publishTokenRevisionInTransaction } from "./revision.js";
+import { compareTileVersions } from "./tile-version.js";
 
 /**
  * A published atom id is a ULID (AGENTS.md), never a semantic string.
@@ -321,6 +329,8 @@ export interface KvtTile {
   tile_id: string;
   version: string;
   title?: string;
+  /** One line for a list; kept in `installed_tiles` (M050). */
+  description?: string;
   publisher?: string;
   atoms: KvtAtom[];
   /**
@@ -343,6 +353,17 @@ export interface InstallKvtOptions {
   media?: (sha256: string) => Uint8Array | null;
   /** Counts processed practice items; the transaction may still be saving. */
   onProgress?: (progress: KvtProgress) => void;
+  /**
+   * A private provider's identity (ADR 2026-11-25 Decision 5). The tile
+   * may only write inside `<id>:`: its tile id, every atom and item it
+   * names, and every item it replaces or retires must be new to the library
+   * or already belong to that namespace. Unset for bundled and public cells.
+   */
+  provider?: AcademyProviderIdentity;
+  /** The app the tile's catalog entry names; kept when omitted. */
+  appUrl?: string | null;
+  /** The catalog's preview mark; kept when omitted. */
+  preview?: boolean;
 }
 
 export interface KvtProgress {
@@ -424,6 +445,13 @@ async function applyDeclaredReplacements(
   tx: Database,
   tile: KvtTile,
   item: KvtPracticeItem,
+  /**
+   * Replaced ids a provider tile named that the library does not hold
+   * (ADR 2026-11-25 Decision 5): nothing to move, and nothing is recorded,
+   * so the declaration cannot reach a tile installed later.
+   */
+  skip: ReadonlySet<string>,
+  deferLearningState: boolean,
 ): Promise<number> {
   let moved = 0;
   for (const oldId of item.replaces ?? []) {
@@ -431,6 +459,7 @@ async function applyDeclaredReplacements(
     if (oldId === item.id) {
       throw new Error(`Practice item ${item.id} declares itself as replaced`);
     }
+    if (skip.has(oldId)) continue;
 
     await tx
       .prepare(
@@ -444,27 +473,29 @@ async function applyDeclaredReplacements(
     const superseded = await getTokenById(tx, oldId);
     if (!superseded) continue;
 
-    const collision = (await tx
-      .prepare(
-        `SELECT old.user_id AS user_id
-           FROM cards old
-           JOIN cards fresh ON fresh.user_id = old.user_id
-          WHERE old.token_id = ? AND fresh.token_id = ?
-          LIMIT 1`,
-      )
-      .get(oldId, item.id)) as { user_id: string } | undefined;
-    if (collision) {
-      throw new Error(
-        `Cannot move ${oldId} to ${item.id}: ${collision.user_id} holds a ` +
-          `card on both. That is a merge, and mastery is never merged ` +
-          `automatically — resolve it explicitly and re-test.`,
-      );
-    }
+    if (!deferLearningState) {
+      const collision = (await tx
+        .prepare(
+          `SELECT old.user_id AS user_id
+             FROM cards old
+             JOIN cards fresh ON fresh.user_id = old.user_id
+            WHERE old.token_id = ? AND fresh.token_id = ?
+            LIMIT 1`,
+        )
+        .get(oldId, item.id)) as { user_id: string } | undefined;
+      if (collision) {
+        throw new Error(
+          `Cannot move ${oldId} to ${item.id}: ${collision.user_id} holds a ` +
+            `card on both. That is a merge, and mastery is never merged ` +
+            `automatically — resolve it explicitly and re-test.`,
+        );
+      }
 
-    for (const table of ["cards", "review_logs"] as const) {
-      await tx
-        .prepare(`UPDATE ${table} SET token_id = ? WHERE token_id = ?`)
-        .run(item.id, oldId);
+      for (const table of ["cards", "review_logs"] as const) {
+        await tx
+          .prepare(`UPDATE ${table} SET token_id = ? WHERE token_id = ?`)
+          .run(item.id, oldId);
+      }
     }
     await tx
       .prepare(
@@ -835,9 +866,13 @@ export async function installKvtTile(
       total: tile.atoms.reduce((n, atom) => n + atom.practice_items.length, 0),
     });
     const images = await tileImages(db, tile, opts);
-    return await installTileInTransaction(db, tile, images, opts.onProgress);
+    return await installTileInTransaction(db, tile, images, opts);
   } catch (error) {
-    await recordTileFailure(db, tile, error);
+    // Only bundled tiles use background reconciliation and its retry marker.
+    // A refused provider install must never leave a mark on another tile.
+    if (!opts.provider) {
+      await recordTileFailure(db, tile, error);
+    }
     throw error;
   }
 }
@@ -910,6 +945,127 @@ async function tileImages(
 }
 
 /**
+ * A provider tile may write only inside its namespace (ADR 2026-11-25
+ * Decision 5). Every atom and item it names, and every item it replaces or
+ * retires, must be new to the library or already belong — by `tile_atoms` —
+ * only to tiles in `<namespace>:`. An existing atom with no recorded owner
+ * (a library from before M050, or content from elsewhere) is not the
+ * provider's. Returns the replaced and retired ids the library does not hold,
+ * which the install then skips without recording.
+ */
+async function assertTileInNamespace(
+  tx: Database,
+  tile: KvtTile,
+  namespace: string,
+): Promise<Set<string>> {
+  const prefix = `${namespace}:`;
+  if (!tileInNamespace(tile.tile_id, namespace)) {
+    throw new Error(
+      `Tile ${tile.tile_id} is outside the namespace ${prefix} of its provider`,
+    );
+  }
+  const ownerCache = new Map<string, boolean>();
+  const atomIsOwn = async (atomId: string): Promise<boolean> => {
+    const known = ownerCache.get(atomId);
+    if (known !== undefined) return known;
+    const owners = (await tx
+      .prepare("SELECT tile_id FROM tile_atoms WHERE atom_id = ?")
+      .all(atomId)) as Array<{ tile_id: string }>;
+    const own =
+      owners.length > 0 &&
+      owners.every((row) => row.tile_id.startsWith(prefix));
+    ownerCache.set(atomId, own);
+    return own;
+  };
+  /** null when the library has no such token. */
+  const tokenIsOwn = async (itemId: string): Promise<boolean | null> => {
+    const row = (await tx
+      .prepare("SELECT atom_id FROM tokens WHERE id = ?")
+      .get(itemId)) as { atom_id: string | null } | undefined;
+    if (!row) return null;
+    return row.atom_id ? atomIsOwn(row.atom_id) : false;
+  };
+  const refuse = (what: string, id: string): never => {
+    throw new Error(
+      `Tile ${tile.tile_id} names the ${what} ${id}, which belongs to content outside ${prefix}`,
+    );
+  };
+
+  for (const atom of tile.atoms) {
+    const held = await tx
+      .prepare("SELECT 1 FROM learning_atoms WHERE id = ?")
+      .get(atom.id);
+    if (held && !(await atomIsOwn(atom.id))) refuse("atom", atom.id);
+    for (const item of atom.practice_items) {
+      if ((await tokenIsOwn(item.id)) === false) refuse("item", item.id);
+    }
+  }
+
+  const unknown = new Set<string>();
+  const declared = [
+    ...tile.atoms.flatMap((atom) =>
+      atom.practice_items.flatMap((item) => item.replaces ?? []),
+    ),
+    ...(tile.retired_items ?? []).map((retired) => retired.id),
+  ];
+  for (const oldId of declared) {
+    const own = await tokenIsOwn(oldId);
+    if (own === null) unknown.add(oldId);
+    else if (!own) refuse("replaced or retired item", oldId);
+  }
+  return unknown;
+}
+
+/**
+ * Title and description from the tile, app URL and preview from the caller
+ * (kept when it passes none). Written only when something changed.
+ */
+async function recordTileMetadata(
+  tx: Database,
+  tile: KvtTile,
+  opts: InstallKvtOptions,
+): Promise<void> {
+  const row = (await tx
+    .prepare(
+      "SELECT title, description, app_url, preview, provider_origin FROM installed_tiles WHERE tile_id = ?",
+    )
+    .get(tile.tile_id)) as
+    | {
+        title: string;
+        description: string;
+        app_url: string | null;
+        preview: number;
+        provider_origin: string | null;
+      }
+    | undefined;
+  if (!row) return;
+  const title = tile.title?.trim() ?? "";
+  const description = tile.description?.trim() ?? "";
+  const appUrl = opts.appUrl === undefined ? row.app_url : opts.appUrl;
+  const preview =
+    opts.preview === undefined ? Number(row.preview) : opts.preview ? 1 : 0;
+  const origin = opts.provider
+    ? providerOrigin(opts.provider.origin)
+    : row.provider_origin;
+  if (
+    row.title === title &&
+    row.description === description &&
+    row.app_url === appUrl &&
+    Number(row.preview) === preview &&
+    row.provider_origin === origin
+  ) {
+    return;
+  }
+  await tx
+    .prepare(
+      `UPDATE installed_tiles
+          SET title = ?, description = ?, app_url = ?, preview = ?, provider_origin = ?
+        WHERE tile_id = ?`,
+    )
+    .run(title, description, appUrl, preview, origin, tile.tile_id);
+}
+
+/**
  * Remember that a tile failed to install, so a background reinstall tries it
  * again later instead of in a loop. Best effort: the original error matters
  * more than this bookkeeping.
@@ -939,9 +1095,45 @@ async function installTileInTransaction(
   db: Database,
   tile: KvtTile,
   images: Array<{ hash: string; type: string; bytes: Uint8Array }> = [],
-  onProgress?: (progress: KvtProgress) => void,
+  opts: InstallKvtOptions = {},
 ): Promise<InstallKvtResult> {
+  const onProgress = opts.onProgress;
   return db.transaction(async (tx) => {
+    // Serialize the ownership checks with other tile installs on PostgreSQL.
+    if (tx.dialect === "postgres") {
+      await tx
+        .prepare("SELECT pg_advisory_xact_lock(hashtextextended(?, 0))")
+        .get("zam:tile-install");
+    }
+    let unknownIds = new Set<string>();
+    if (opts.provider) {
+      await assertAcademyProviderOrigin(tx, opts.provider);
+      unknownIds = await assertTileInNamespace(tx, tile, opts.provider.id);
+      const installed = (await tx
+        .prepare("SELECT version FROM installed_tiles WHERE tile_id = ?")
+        .get(tile.tile_id)) as { version: string } | undefined;
+      if (
+        installed &&
+        compareTileVersions(installed.version, String(tile.version)) === 1
+      ) {
+        throw new Error(
+          `${tile.tile_id} already has a newer version (${installed.version})`,
+        );
+      }
+    }
+    // RLS keeps a curator's connection from rewriting another learner's cards.
+    // Record and deprecate here. Each learner applies the same declaration later.
+    const hasReplacements = tile.atoms.some((atom) =>
+      atom.practice_items.some((item) => item.replaces?.length),
+    );
+    const deferLearningState =
+      tx.dialect === "postgres" &&
+      hasReplacements &&
+      (
+        (await tx
+          .prepare("SELECT row_security_active('cards'::regclass) AS active")
+          .get()) as { active: boolean }
+      ).active;
     const total = tile.atoms.reduce(
       (n, atom) => n + atom.practice_items.length,
       0,
@@ -1138,7 +1330,13 @@ async function installTileInTransaction(
           );
           await syncCuratedDistractors(tx, asToken, choiceDistractorsOf(item));
           tokensCreated += 1;
-          itemsSuperseded += await applyDeclaredReplacements(tx, tile, item);
+          itemsSuperseded += await applyDeclaredReplacements(
+            tx,
+            tile,
+            item,
+            unknownIds,
+            deferLearningState,
+          );
           onProgress?.({ done: ++done, total });
           continue;
         }
@@ -1236,13 +1434,20 @@ async function installTileInTransaction(
             .run(fastCheck.stored, item.id);
         }
         await syncCuratedDistractors(tx, asToken, choiceDistractorsOf(item));
-        itemsSuperseded += await applyDeclaredReplacements(tx, tile, item);
+        itemsSuperseded += await applyDeclaredReplacements(
+          tx,
+          tile,
+          item,
+          unknownIds,
+          deferLearningState,
+        );
         onProgress?.({ done: ++done, total });
       }
     }
 
     for (const retired of tile.retired_items ?? []) {
       assertItemId(retired.id, "retired practice-item id");
+      if (unknownIds.has(retired.id)) continue;
       const existing = await getTokenById(tx, retired.id);
       if (!existing) continue;
       await tx
@@ -1327,6 +1532,18 @@ async function installTileInTransaction(
       )
       .run(tile.tile_id, String(tile.version), now);
 
+    // Which atoms this tile brought, and what a member sees without its file
+    // (ADR 2026-11-25, M050). An unchanged reinstall writes nothing here.
+    for (const atom of tile.atoms) {
+      await tx
+        .prepare(
+          `INSERT INTO tile_atoms (tile_id, atom_id) VALUES (?, ?)
+           ON CONFLICT (tile_id, atom_id) DO NOTHING`,
+        )
+        .run(tile.tile_id, atom.id);
+    }
+    await recordTileMetadata(tx, tile, opts);
+
     return {
       tileId: tile.tile_id,
       version: tile.version,
@@ -1361,6 +1578,12 @@ export async function materialiseKvtCards(
   }
   atomIds = [...new Set(atomIds)];
   return db.transaction(async (tx) => {
+    if (tx.dialect === "postgres") {
+      await tx
+        .prepare("SELECT pg_advisory_xact_lock_shared(hashtextextended(?, 0))")
+        .get("zam:tile-install");
+    }
+    await applyPendingItemReplacements(tx, userId);
     let cardsCreated = 0;
     let cardsReused = 0;
     let done = 0;

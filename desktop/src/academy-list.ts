@@ -27,8 +27,18 @@ import {
   formatAcademyGrades,
   sortAcademyCellsForDisplay,
 } from "../../src/kernel/library/academy-browse.js";
-import { runBridge } from "./bridge-transport.js";
 import type { EnrolBundledCellProgress } from "../../src/kernel/library/bundled-cells.js";
+import {
+  confirmedProviders,
+  type ProviderChanged,
+  type ProviderSummary,
+  providerChangedBanner,
+  providerErrorBlock,
+  providerOfCellId,
+  refreshProviderLessonHosts,
+  renderAddProviderPanel,
+} from "./academy-providers.js";
+import { runBridge } from "./bridge-transport.js";
 import { createCellImportProgress } from "./cell-import-progress.js";
 import { t, tf } from "./i18n.js";
 
@@ -46,12 +56,23 @@ export interface AcademyCellRow {
   newer: boolean;
   preview?: boolean;
   facet?: AcademyCellFacet;
+  /** A private provider's package (ADR 2026-11-25): that provider's id. */
+  provider?: string;
+  providerTitle?: string;
+  /** A provider package the team library holds: enrol from the library. */
+  installed?: boolean;
+  /** A provider's row in a team library: install, installed, or wait. */
+  libraryAction?: "install" | "installed" | "curator-only";
 }
 
 export interface AcademyListing {
   offline: boolean;
   cells: AcademyCellRow[];
   taxonomy?: AcademyTaxonomy;
+  /** A private provider's listing: who it is, and a changed provider file. */
+  provider?: ProviderSummary;
+  providerChanged?: ProviderChanged;
+  providerAccessError?: string;
 }
 
 export interface AcademyListOptions {
@@ -261,6 +282,11 @@ export function isAcademyCellId(id: string): boolean {
   return id.startsWith("zam-academy:");
 }
 
+/** An Academy cell, or a package of a provider confirmed on this machine. */
+export function isAcademyOrProviderCellId(id: string): boolean {
+  return isAcademyCellId(id) || providerOfCellId(id) !== null;
+}
+
 /** "26 Karten · Version 2026.10.1" */
 export function academyMetaText(cell: AcademyCellRow): string {
   return tf("academy_row_meta", { items: cell.items, version: cell.version });
@@ -274,31 +300,52 @@ export function academyPreviewLabel(): HTMLElement {
   return label;
 }
 
-export async function fetchAcademyCells(): Promise<AcademyListing> {
+/** `--provider <id>` for a private provider's package, nothing for the Academy. */
+function providerArgs(provider: string | null | undefined): string[] {
+  return provider ? ["--provider", provider] : [];
+}
+
+export async function fetchAcademyCells(
+  provider?: string | null,
+): Promise<AcademyListing> {
   const listing = await runBridge<{
     success: boolean;
     offline: boolean;
     cells: AcademyCellRow[];
     taxonomy?: AcademyTaxonomy;
-  }>("academy-list");
+    provider?: ProviderSummary;
+    providerChanged?: ProviderChanged;
+    providerAccessError?: string;
+  }>("academy-list", providerArgs(provider));
   if (!listing?.success) throw new Error(t("academy_error"));
   return {
     offline: listing.offline,
-    cells: listing.cells,
+    cells: listing.cells.map((cell) =>
+      listing.provider ? { ...cell, providerTitle: listing.provider.title } : cell,
+    ),
     taxonomy: listing.taxonomy,
+    provider: listing.provider,
+    providerChanged: listing.providerChanged,
+    providerAccessError: listing.providerAccessError,
   };
 }
 
 export async function enrolAcademyCell(
   id: string,
   onProgress?: (progress: EnrolBundledCellProgress) => void,
+  provider?: string | null,
+  /** A package the team library holds enrols from there, with no download. */
+  fromLibrary = false,
 ): Promise<{ cardsCreated: number; version: string | null }> {
   const result = await withAcademyProgress(id, onProgress, () =>
     runBridge<{
       success: boolean;
       cardsCreated: number;
       version: string | null;
-    }>("academy-enrol", [id]),
+    }>(
+      fromLibrary ? "academy-enrol-installed" : "academy-enrol",
+      fromLibrary ? [id] : [id, ...providerArgs(provider)],
+    ),
   );
   if (!result?.success) throw new Error(t("academy_error"));
   return result;
@@ -307,13 +354,14 @@ export async function enrolAcademyCell(
 export async function updateAcademyCell(
   id: string,
   onProgress?: (progress: EnrolBundledCellProgress) => void,
+  provider?: string | null,
 ): Promise<{ updated: boolean; version: string | null }> {
   const result = await withAcademyProgress(id, onProgress, () =>
     runBridge<{
       success: boolean;
       updated: boolean;
       version: string | null;
-    }>("academy-update", [id]),
+    }>("academy-update", [id, ...providerArgs(provider)]),
   );
   if (!result?.success) throw new Error(t("academy_error"));
   return result;
@@ -380,6 +428,8 @@ interface DialogParts {
   title: HTMLElement;
   summary: HTMLElement;
   intro: HTMLElement;
+  /** „ZAM Academy“ and one chip per confirmed provider, plus „Anbieter hinzufügen“. */
+  providerStrip: HTMLElement;
   searchLabel: HTMLLabelElement;
   searchInput: HTMLInputElement;
   viewGroup: HTMLElement;
@@ -404,6 +454,86 @@ let currentCells: AcademyCellRow[] = [];
 let currentTaxonomy: AcademyTaxonomy = DEFAULT_ACADEMY_TAXONOMY;
 let currentOptions: AcademyListOptions = {};
 let browserState: AcademyBrowserState = createAcademyBrowserState();
+/** The provider the dialog shows; null is the public ZAM Academy. */
+let currentProvider: string | null = null;
+
+/** The pseudo-source of provider packages the team library holds. */
+const LIBRARY_SOURCE = "@library";
+
+interface LibraryInfo {
+  teamLibrary: boolean;
+  curator: boolean;
+  count: number;
+}
+
+/** What `academy-installed-list` said last; null before or without it. */
+let libraryInfo: LibraryInfo | null = null;
+
+interface InstalledTileRow {
+  tileId: string;
+  providerId: string;
+  origin: string;
+  version: string;
+  title: string;
+  description: string;
+  appUrl: string | null;
+  preview: boolean;
+  items: number;
+  held: boolean;
+  newItems: number;
+}
+
+async function fetchInstalledProviderTiles(): Promise<{
+  info: LibraryInfo;
+  cells: AcademyCellRow[];
+}> {
+  const result = await runBridge<{
+    success: boolean;
+    teamLibrary: boolean;
+    curator: boolean;
+    tiles: InstalledTileRow[];
+  }>("academy-installed-list");
+  if (!result?.success) throw new Error(t("academy_error"));
+  return {
+    info: {
+      teamLibrary: result.teamLibrary,
+      curator: result.curator,
+      count: result.tiles.length,
+    },
+    cells: result.tiles.map((tile) => ({
+      id: tile.tileId,
+      provider: tile.providerId,
+      providerTitle: confirmedProviders().find(
+        (provider) => provider.id === tile.providerId && provider.origin === tile.origin,
+      )?.title,
+      title: tile.title,
+      description: tile.description,
+      language: null,
+      version: tile.version,
+      items: tile.items,
+      appUrl: tile.appUrl,
+      bundled: false,
+      held: tile.held,
+      heldVersion: tile.held ? tile.version : null,
+      newer: tile.held && tile.newItems > 0,
+      preview: tile.preview,
+      installed: true,
+    })),
+  };
+}
+
+/** Reads what the library holds, quietly: without the command there is none. */
+async function refreshLibraryInfo(): Promise<void> {
+  try {
+    libraryInfo = (await fetchInstalledProviderTiles()).info;
+  } catch {
+    libraryInfo = null;
+  }
+}
+
+function libraryShown(): boolean {
+  return Boolean(libraryInfo?.teamLibrary && libraryInfo.count > 0);
+}
 
 function setBackgroundInert(inert: boolean): void {
   const appShell = document.getElementById?.("app-shell");
@@ -435,7 +565,10 @@ function ensureDialog(): DialogParts {
 
   const intro = document.createElement("p");
   intro.className = "academy-intro";
-  header.append(headerTop, intro);
+  const providerStrip = document.createElement("div");
+  providerStrip.className = "academy-chip-strip academy-provider-strip";
+  providerStrip.setAttribute("role", "group");
+  header.append(headerTop, intro, providerStrip);
   box.setAttribute("aria-labelledby", title.id);
 
   // Persistent controls bar (search + view/lens toggles + school strip / dropdowns)
@@ -579,6 +712,7 @@ function ensureDialog(): DialogParts {
     title,
     summary,
     intro,
+    providerStrip,
     searchLabel,
     searchInput,
     viewGroup,
@@ -633,6 +767,92 @@ function updateSummaryPill(): void {
       ? tf("academy_summary_held", { total: currentCells.length, held })
       : tf("academy_summary_total", { total: currentCells.length });
   dialog.summary.hidden = false;
+}
+
+/**
+ * A provider's row in a team library (ADR 2026-11-25 D7): a curator installs
+ * the package for everyone; it is then listed under „In dieser Bibliothek“,
+ * where each learner takes it. Everyone else waits for a curator.
+ */
+function libraryActionButton(
+  cell: AcademyCellRow,
+  row: HTMLElement,
+  status: HTMLElement,
+  options: AcademyListOptions,
+): HTMLButtonElement {
+  const button = document.createElement("button");
+  button.type = "button";
+  button.dataset.action = "library-install";
+  const done = (): void => {
+    button.className = "btn secondary-btn btn-sm";
+    button.textContent = t("academy_library_installed");
+    button.disabled = true;
+  };
+  if (cell.libraryAction === "installed") {
+    done();
+    return button;
+  }
+  if (cell.libraryAction === "curator-only") {
+    button.className = "btn secondary-btn btn-sm";
+    button.textContent = t("academy_library_curator_only");
+    button.disabled = true;
+    return button;
+  }
+  button.className = "btn primary-btn btn-sm";
+  button.textContent = t("academy_library_install");
+  button.setAttribute(
+    "aria-label",
+    `${t("academy_library_install")}: ${cell.title}`,
+  );
+  button.addEventListener("click", () => {
+    if (activeCellImports.has(cell.id)) return;
+    button.disabled = true;
+    button.textContent = t("academy_library_installing");
+    const progress = createCellImportProgress((key, counts) => tf(key, counts));
+    activeCellImports.set(cell.id, {
+      kind: "enrol",
+      progress,
+      button,
+      row,
+      idleLabel: t("academy_library_install"),
+    });
+    row.append(progress.element);
+    status.textContent = t("academy_library_installing");
+    withAcademyProgress(cell.id, progress.update, () =>
+      runBridge<{ success: boolean; version: string | null }>(
+        "academy-install-for-library",
+        [cell.id],
+      ),
+    )
+      .then((result) => {
+        if (!result?.success) throw new Error(t("academy_error"));
+        progress.finish();
+        progress.remove();
+        cell.libraryAction = "installed";
+        done();
+        status.textContent = tf("academy_library_install_done", {
+          name: cell.title,
+        });
+        if (libraryInfo) {
+          libraryInfo = { ...libraryInfo, count: libraryInfo.count + 1 };
+          // The first install brings „In dieser Bibliothek“ into the switch.
+          if (dialog) renderProviderStrip(dialog);
+        }
+        void Promise.resolve(options.onEnrolled?.()).catch((err) =>
+          console.error("academy: refresh after library install failed", err),
+        );
+      })
+      .catch((err) => {
+        progress.remove();
+        button.textContent = t("academy_library_install");
+        button.disabled = false;
+        status.textContent = academyErrorText(err);
+      })
+      .finally(() => {
+        activeCellImports.delete(cell.id);
+      });
+  });
+  return button;
 }
 
 /** One cell: subject emblem, title, badges, description, topic tags, meta, „Üben ↗“ and „Aufnehmen“. */
@@ -702,10 +922,11 @@ export function academyRow(
 
   const meta = document.createElement("div");
   meta.className = "academy-pkg-meta";
-  meta.textContent =
-    facet?.lessons && facet.lessons > 0
-      ? `${tf("academy_lessons_count", { lessons: facet.lessons })} · ${academyMetaText(cell)}`
-      : academyMetaText(cell);
+  meta.textContent = [
+    cell.providerTitle ?? cell.provider,
+    facet?.lessons ? tf("academy_lessons_count", { lessons: facet.lessons }) : null,
+    academyMetaText(cell),
+  ].filter(Boolean).join(" · ");
 
   const buttons = document.createElement("div");
   buttons.className = "academy-pkg-actions";
@@ -732,7 +953,9 @@ export function academyRow(
     update.type = "button";
     update.className = "btn primary-btn btn-sm";
     update.dataset.action = "update";
-    const label = tf("academy_update_to", { version: cell.version });
+    const label = cell.installed
+      ? t("academy_library_new_cards")
+      : tf("academy_update_to", { version: cell.version });
     update.textContent = label;
     update.setAttribute("aria-label", `${label}: ${cell.title}`);
     if (inFlight?.kind === "update") {
@@ -758,7 +981,10 @@ export function academyRow(
       activeCellImports.set(cell.id, entry);
       row.append(progress.element);
       status.textContent = t("academy_updating");
-      updateAcademyCell(cell.id, progress.update)
+      (cell.installed
+        ? enrolAcademyCell(cell.id, progress.update, cell.provider, true)
+        : updateAcademyCell(cell.id, progress.update, cell.provider)
+      )
         .then((result) => {
           progress.finish();
           progress.remove();
@@ -788,6 +1014,8 @@ export function academyRow(
         });
     });
     buttons.append(update);
+  } else if (cell.libraryAction) {
+    buttons.append(libraryActionButton(cell, row, status, options));
   } else {
     const take = document.createElement("button");
     take.type = "button";
@@ -824,7 +1052,12 @@ export function academyRow(
         activeCellImports.set(cell.id, entry);
         row.append(progress.element);
         status.textContent = t("academy_taking");
-        enrolAcademyCell(cell.id, progress.update)
+        enrolAcademyCell(
+          cell.id,
+          progress.update,
+          cell.provider,
+          cell.installed === true,
+        )
           .then((result) => {
             // Another version than the row showed is not what was taken: say
             // which one was saved and let the learner try again.
@@ -1733,6 +1966,92 @@ export async function openAcademyList(
     t("academy_school_filter_label"),
   );
 
+  parts.overlay.classList.add("active");
+  setBackgroundInert(true);
+  parts.searchInput.focus();
+
+  // The providers confirmed on this machine (ADR 2026-11-25 D6); the dialog
+  // opens on the public Academy, or on the provider chosen last time it was
+  // open in this window. The list loads at once; the provider chips follow
+  // when the confirmed list has been read again.
+  renderProviderStrip(parts);
+  void Promise.all([refreshProviderLessonHosts(), refreshLibraryInfo()]).then(() => {
+    const stillThere =
+      currentProvider === LIBRARY_SOURCE
+        ? libraryShown()
+        : confirmedProviders().some((provider) => provider.id === currentProvider);
+    if (currentProvider && !stillThere) {
+      currentProvider = null;
+      void loadAcademyListing(parts);
+    }
+    renderProviderStrip(parts);
+  });
+  await loadAcademyListing(parts);
+}
+
+/** The source switch: „ZAM Academy“, the providers, „Anbieter hinzufügen …“. */
+function renderProviderStrip(parts: DialogParts): void {
+  const strip = parts.providerStrip;
+  strip.replaceChildren();
+  strip.setAttribute("aria-label", t("provider_switch_label"));
+  const providers = confirmedProviders();
+  const chip = (label: string, id: string | null): HTMLButtonElement => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "academy-chip";
+    button.dataset.provider = id ?? "";
+    button.textContent = label;
+    const active = currentProvider === id;
+    button.classList.toggle("active", active);
+    button.setAttribute("aria-pressed", String(active));
+    button.addEventListener("click", () => {
+      if (currentProvider === id) return;
+      currentProvider = id;
+      browserState = createAcademyBrowserState();
+      renderProviderStrip(parts);
+      void loadAcademyListing(parts);
+    });
+    return button;
+  };
+  // With no provider the switch is only the way to add one. A team library
+  // also lists the packages a curator installed for it (D7).
+  if (providers.length > 0 || libraryShown()) {
+    strip.append(chip(t("provider_public"), null));
+    if (libraryShown()) {
+      strip.append(chip(t("academy_library_source"), LIBRARY_SOURCE));
+    }
+    for (const provider of providers) strip.append(chip(provider.title, provider.id));
+  }
+  const add = document.createElement("button");
+  add.type = "button";
+  add.className = "btn secondary-btn btn-xs academy-provider-add";
+  add.dataset.action = "provider-add";
+  add.textContent = t("provider_add");
+  add.addEventListener("click", () => {
+    parts.schoolStrip.hidden = true;
+    parts.listFilters.hidden = true;
+    parts.stageBar.hidden = true;
+    parts.status.textContent = "";
+    renderAddProviderPanel(parts.content, {
+      onAdded: (provider) => {
+        currentProvider = provider.id;
+        browserState = createAcademyBrowserState();
+        renderProviderStrip(parts);
+        void loadAcademyListing(parts);
+      },
+      onCancel: () => {
+        renderProviderStrip(parts);
+        void loadAcademyListing(parts);
+      },
+    });
+  });
+  strip.append(add);
+  strip.hidden = false;
+}
+
+/** Loads the list of the chosen source into the open dialog. */
+async function loadAcademyListing(parts: DialogParts): Promise<void> {
+  const provider = currentProvider;
   parts.summary.hidden = true;
   parts.schoolStrip.hidden = true;
   parts.listFilters.hidden = true;
@@ -1741,15 +2060,52 @@ export async function openAcademyList(
   parts.progress.hidden = false;
   parts.body.replaceChildren(parts.progress, parts.status, parts.content);
   parts.status.textContent = t("academy_loading");
-
-  parts.overlay.classList.add("active");
-  setBackgroundInert(true);
-  parts.searchInput.focus();
+  const summary =
+    confirmedProviders().find((entry) => entry.id === provider) ?? null;
+  const fromLibrary = provider === LIBRARY_SOURCE;
+  parts.title.textContent = fromLibrary
+    ? t("academy_library_source")
+    : summary
+      ? summary.title
+      : t("academy_title");
+  parts.intro.textContent = fromLibrary
+    ? t("academy_library_intro")
+    : summary
+      ? `${summary.publisher} · ${summary.host}`
+      : t("academy_intro");
 
   try {
-    const listing = await fetchAcademyCells();
+    const listing: AcademyListing = fromLibrary
+      ? await fetchInstalledProviderTiles().then(({ info, cells }) => {
+          libraryInfo = info;
+          return { offline: false, cells };
+        })
+      : await fetchAcademyCells(provider);
+    // The learner switched again while this one loaded.
+    if (provider !== currentProvider) return;
     parts.progress.hidden = true;
     parts.progress.remove();
+    if (listing.provider && listing.providerChanged) {
+      const changed = listing.providerChanged;
+      const banner = providerChangedBanner(listing.provider, changed, () => {
+        if (provider !== currentProvider) return;
+        if (currentProvider !== changed.served.id) {
+          currentProvider = changed.served.id;
+          browserState = createAcademyBrowserState();
+        }
+        renderProviderStrip(parts);
+        void loadAcademyListing(parts);
+      });
+      parts.body.prepend(banner);
+    }
+    if (listing.providerAccessError) {
+      const block = providerErrorBlock(listing.providerAccessError, listing.provider ?? summary, () => {
+        void loadAcademyListing(parts);
+      });
+      parts.status.textContent = block ? "" : listing.providerAccessError;
+      if (block) parts.content.replaceChildren(block);
+      return;
+    }
     const taxonomy = listing.taxonomy ?? DEFAULT_ACADEMY_TAXONOMY;
     const needsFacet = listing.cells.some((c) => !c.facet);
     currentTaxonomy = taxonomy;
@@ -1764,9 +2120,18 @@ export async function openAcademyList(
         : "";
     renderBrowser();
   } catch (err) {
+    if (provider !== currentProvider) return;
     parts.progress.hidden = true;
     parts.progress.remove();
-    parts.status.textContent = academyErrorText(err);
+    const block = providerErrorBlock(err, summary, () => {
+      void loadAcademyListing(parts);
+    });
+    if (block) {
+      parts.status.textContent = "";
+      parts.content.replaceChildren(block);
+    } else {
+      parts.status.textContent = academyErrorText(err);
+    }
   }
 }
 
@@ -1787,18 +2152,21 @@ export function initAcademyList(options: AcademyListOptions = {}): void {
 export function academyUpdateButton(
   cellId: string,
   onUpdated?: () => void | Promise<void>,
+  fromLibrary = false,
 ): HTMLButtonElement {
   const button = document.createElement("button");
   button.type = "button";
   button.className = "btn secondary-btn btn-xs";
   button.dataset.action = "academy-update";
-  button.textContent = t("academy_check_update");
+  button.textContent = t(fromLibrary ? "academy_library_new_cards" : "academy_check_update");
   let newerVersion: string | null = null;
   button.addEventListener("click", () => {
     button.disabled = true;
-    if (!newerVersion) {
-      fetchAcademyCells()
+    const provider = providerOfCellId(cellId)?.id ?? null;
+    if (!fromLibrary && !newerVersion) {
+      fetchAcademyCells(provider)
         .then((listing) => {
+          if (listing.providerAccessError) throw new Error(listing.providerAccessError);
           const cell = listing.cells.find((row) => row.id === cellId);
           if (cell?.newer) {
             newerVersion = cell.version;
@@ -1823,7 +2191,10 @@ export function academyUpdateButton(
     button.textContent = t("academy_updating");
     const progress = createCellImportProgress((key, counts) => tf(key, counts));
     button.closest(".zam-card")?.append(progress.element);
-    updateAcademyCell(cellId, progress.update)
+    const update = fromLibrary
+      ? enrolAcademyCell(cellId, progress.update, provider, true)
+      : updateAcademyCell(cellId, progress.update, provider);
+    update
       .then((result) => {
         progress.finish();
         button.textContent = tf("academy_updated", {
@@ -1836,9 +2207,9 @@ export function academyUpdateButton(
       })
       .catch(() => {
         progress.remove();
-        button.textContent = tf("academy_update_to", {
-          version: newerVersion ?? "",
-        });
+        button.textContent = fromLibrary
+          ? t("academy_library_new_cards")
+          : tf("academy_update_to", { version: newerVersion ?? "" });
         button.disabled = false;
       });
   });

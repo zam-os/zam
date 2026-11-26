@@ -32,6 +32,12 @@ export class AcademyElement {
           .join(" ");
       },
       contains: (name: string) => this.className.split(" ").includes(name),
+      toggle: (name: string, force?: boolean) => {
+        const on = force ?? !this.classList.contains(name);
+        if (on && !this.classList.contains(name)) this.classList.add(name);
+        if (!on) this.classList.remove(name);
+        return on;
+      },
     };
   }
   append(...children: AcademyElement[]) {
@@ -39,6 +45,13 @@ export class AcademyElement {
       child.remove();
       child.parentElement = this;
       this.children.push(child);
+    }
+  }
+  prepend(...children: AcademyElement[]) {
+    for (const child of [...children].reverse()) {
+      child.remove();
+      child.parentElement = this;
+      this.children.unshift(child);
     }
   }
   replaceChildren(...children: AcademyElement[]) {

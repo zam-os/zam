@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   academyPracticeLink,
+  setProviderLessonHosts,
   webSourceLink,
 } from "../../desktop/src/source-link.js";
 
@@ -111,5 +112,29 @@ describe("academyPracticeLink (zam-os/zam#438)", () => {
     ]) {
       expect(academyPracticeLink(raw, 1, LESSON), String(raw)).toBeNull();
     }
+  });
+});
+
+describe("private provider lessons (ADR 2026-11-25 Decision 6)", () => {
+  it("labels a confirmed provider's link as a lesson, and only then", () => {
+    const raw = "https://provider.example/lf3/#lesson=osi";
+    expect(webSourceLink(raw, LESSON)?.academy).toBe(false);
+    setProviderLessonHosts(["Provider.Example"]);
+    try {
+      expect(webSourceLink(raw, LESSON)).toMatchObject({
+        label: LESSON,
+        academy: true,
+        href: raw,
+      });
+      expect(academyPracticeLink(raw, 1, LESSON)?.href).toBe(raw);
+      // A look-alike host does not pass.
+      expect(
+        webSourceLink("https://provider.example.evil.test/lf3/", LESSON)
+          ?.academy,
+      ).toBe(false);
+    } finally {
+      setProviderLessonHosts([]);
+    }
+    expect(webSourceLink(raw, LESSON)?.academy).toBe(false);
   });
 });

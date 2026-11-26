@@ -21,7 +21,12 @@ import {
   safeFetch,
 } from "../../src/cli/net/safe-fetch.js";
 import { resolveReviewContext } from "../../src/cli/review-context.js";
-import { clearReviewContextCache } from "../../src/kernel/index.js";
+import {
+  clearReviewContextCache,
+  confirmProvider,
+  parseAcademyProvider,
+  removeConfirmedProvider,
+} from "../../src/kernel/index.js";
 
 const resolverFor =
   (table: Record<string, string[]>): Resolver =>
@@ -362,7 +367,44 @@ describe("source links go through the fetcher", () => {
   });
 
   it("does not mistake another host for the Academy", async () => {
-    const context = await resolveReviewContext("http://10.0.0.1/academy.zam-os.org/");
+    const context = await resolveReviewContext(
+      "http://10.0.0.1/academy.zam-os.org/",
+    );
     expect(context?.content).toMatch(/Access denied/);
+  });
+
+  it("never reads a private provider's lesson for a review (ADR 2026-11-25 D6)", async () => {
+    confirmProvider({
+      origin: "https://provider.example",
+      provider: parseAcademyProvider({
+        schema: 1,
+        id: "example-provider",
+        title: "Example Academy",
+        publisher: "Example",
+        auth: { kind: "none" },
+      }),
+      sha256: "a".repeat(64),
+    });
+    const transport = vi.spyOn(https, "request");
+    const fetchSpy = vi.fn();
+    vi.stubGlobal("fetch", fetchSpy);
+    try {
+      for (const link of [
+        "https://provider.example/optik/#lesson=1",
+        "https://PROVIDER.example/",
+      ]) {
+        expect(await resolveReviewContext(link), link).toBeNull();
+      }
+      expect(transport).not.toHaveBeenCalled();
+      expect(fetchSpy).not.toHaveBeenCalled();
+    } finally {
+      transport.mockRestore();
+      removeConfirmedProvider("example-provider");
+    }
+    // An unrelated link still goes through the usual checks.
+    const other = await resolveReviewContext(
+      "http://10.0.0.1/provider.example/",
+    );
+    expect(other?.content).toMatch(/Access denied/);
   });
 });

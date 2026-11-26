@@ -2,6 +2,7 @@ import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { Command } from "commander";
+import { academyCommand } from "./commands/academy.js";
 import { agentCommand } from "./commands/agent.js";
 import { bridgeCommand } from "./commands/bridge.js";
 import { cardCommand } from "./commands/card.js";
@@ -80,6 +81,7 @@ program.addCommand(
 program.addCommand(skillCommand);
 program.addCommand(monitorCommand);
 program.addCommand(trustCommand);
+program.addCommand(academyCommand);
 program.addCommand(observationCommand);
 program.addCommand(observerCommand);
 program.addCommand(settingsCommand);

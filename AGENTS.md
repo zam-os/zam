@@ -117,7 +117,7 @@ open a terminal.
   directory; a URL from an argument or the library goes through `safeFetch`
   (`src/cli/net/safe-fetch.ts`); no argument may write a security switch
   (trusted folders, secret backends, observation, pairing, endpoint
-  confirmation). A Studio panel command needs its entry in
+  confirmation, Academy providers). A Studio panel command needs its entry in
   `STUDIO_BRIDGE_COMMANDS` with the options it refuses, and a pre-approved
   tool must change nothing. Secrets go to child processes on stdin or in that
   child's environment, never on a command line. See
@@ -137,6 +137,16 @@ open a terminal.
   browser only on a click, only for http(s) (`desktop/src/source-link.ts`).
   Integrating new cells and replacing the `de-by:` school cells follows
   `docs/plans/2026-11-08-academy-cell-integration.md`.
+- **Private Academy providers (ADR 2026-11-25)** publish Academy-format
+  packages on their own origin. Use example identities in this repository
+  and keep private cells out of the bundle and `academy:sync`. The learner
+  confirms the provider and file hash in Studio or `zam academy provider add`.
+  The provider list is a machine-local security switch. The Azure CLI token
+  goes only to the confirmed origin. `installKvtTile({ provider })` pins
+  that origin per namespace (M051) and verifies ownership of all affected
+  atoms and items (`tile_atoms`, M050). Team curators install, then members
+  enrol and review under their own row-level permissions. Agent tools
+  enrol only from the cache and the library (`src/cli/academy/agent-cells.ts`).
 - New kernel API must be re-exported from `src/kernel/index.ts`.
 - **`docs/okf/` is not hand-editable.** It is an OKF knowledge bundle whose
   articles are learning sources (ADR 2026-07-17): write only through the

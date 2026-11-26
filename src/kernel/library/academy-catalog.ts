@@ -112,11 +112,27 @@ const SLUG = /^[a-z0-9][a-z0-9-]{0,80}$/;
 const SHA256 = /^[0-9a-f]{64}$/;
 
 /**
+ * Where a catalog comes from. Without it, the catalog is the public ZAM
+ * Academy's; a private provider passes its own origin and its tile-id prefix
+ * (ADR 2026-11-25 Decisions 4 and 5).
+ */
+export interface AcademyCatalogSource {
+  /** The provider's origin, e.g. `https://provider.example`. */
+  origin: string;
+  /** Every entry id must start with `<prefix>:`. */
+  prefix: string;
+}
+
+/**
  * Checks a parsed `catalog.json` and resolves its paths against the origin.
  * Throws on anything unexpected: a catalog that is wrong in one place is
  * not trusted in the others.
  */
-export function parseAcademyCatalog(raw: unknown): AcademyCatalog {
+export function parseAcademyCatalog(
+  raw: unknown,
+  source?: AcademyCatalogSource,
+): AcademyCatalog {
+  const origin = source ? providerOrigin(source.origin) : ACADEMY_ORIGIN;
   if (!isRecord(raw) || raw.schema !== 1 || !Array.isArray(raw.cells)) {
     throw new Error("Academy catalog: expected { schema: 1, cells: [...] }");
   }
@@ -126,6 +142,11 @@ export function parseAcademyCatalog(raw: unknown): AcademyCatalog {
     if (!isRecord(value)) throw new Error(`${where}: not an object`);
     const id = text(value.id);
     if (!ID.test(id)) throw new Error(`${where}: invalid id`);
+    if (source && !id.startsWith(`${source.prefix}:`)) {
+      throw new Error(
+        `${where}: ${id} is outside the namespace ${source.prefix}:`,
+      );
+    }
     if (seen.has(id)) throw new Error(`${where}: duplicate id ${id}`);
     seen.add(id);
     const version = text(value.version);
@@ -150,8 +171,8 @@ export function parseAcademyCatalog(raw: unknown): AcademyCatalog {
       language: typeof language === "string" ? language : null,
       version,
       items,
-      appUrl: academyUrl(value.app, `${where}: app`),
-      cellUrl: academyUrl(value.cell, `${where}: cell`),
+      appUrl: academyUrl(value.app, `${where}: app`, origin),
+      cellUrl: academyUrl(value.cell, `${where}: cell`, origin),
       sha256,
       preview,
     };
@@ -371,6 +392,17 @@ export function academyAppSlug(value: string | null | undefined): string {
   if (trimmed.startsWith("zam-academy:")) {
     return trimmed.slice("zam-academy:".length);
   }
+  // Any app URL, a private provider's included (ADR 2026-11-25): the first
+  // path segment names the app.
+  if (/^https?:\/\//i.test(trimmed)) {
+    try {
+      return (
+        new URL(trimmed).pathname.replace(/^\/+|\/+$/g, "").split("/")[0] ?? ""
+      );
+    } catch {
+      // Not a URL after all: fall through.
+    }
+  }
   const stripped = trimmed
     .replace(ACADEMY_ORIGIN, "")
     .replace(/^\/+|\/+$/g, "");
@@ -381,7 +413,11 @@ export function academyAppSlug(value: string | null | undefined): string {
  * A catalog path resolved against the origin. Only a plain absolute path
  * qualifies, so an entry can never point ZAM at another host.
  */
-export function academyUrl(path: unknown, where = "Academy path"): string {
+export function academyUrl(
+  path: unknown,
+  where = "Academy path",
+  origin: string = ACADEMY_ORIGIN,
+): string {
   if (
     typeof path !== "string" ||
     !path.startsWith("/") ||
@@ -389,13 +425,40 @@ export function academyUrl(path: unknown, where = "Academy path"): string {
     path.length > 200 ||
     /[\\?#%@:\s]|\.\.|\/\//.test(path)
   ) {
-    throw new Error(`${where}: must be a plain path on ${ACADEMY_ORIGIN}`);
+    throw new Error(`${where}: must be a plain path on ${origin}`);
   }
-  const url = new URL(path, ACADEMY_ORIGIN);
-  if (url.origin !== ACADEMY_ORIGIN) {
-    throw new Error(`${where}: must be a plain path on ${ACADEMY_ORIGIN}`);
+  const url = new URL(path, origin);
+  if (url.origin !== origin) {
+    throw new Error(`${where}: must be a plain path on ${origin}`);
   }
   return url.href;
+}
+
+/**
+ * A provider origin as ZAM keeps it: https, a host, nothing else — no path,
+ * query, fragment or credentials. Returns the canonical `URL.origin` form
+ * (lower-case host, punycode). The trailing slash `URL` adds is accepted.
+ */
+export function providerOrigin(value: string): string {
+  let url: URL;
+  try {
+    url = new URL(value);
+  } catch {
+    throw new Error(`Provider origin ${value}: not a URL`);
+  }
+  if (
+    url.protocol !== "https:" ||
+    !url.hostname ||
+    url.username ||
+    url.password ||
+    url.pathname !== "/" ||
+    url.search ||
+    url.hash ||
+    /[?#]/.test(value)
+  ) {
+    throw new Error(`Provider origin ${value}: must be a bare https origin`);
+  }
+  return url.origin;
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {

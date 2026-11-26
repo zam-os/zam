@@ -4573,9 +4573,10 @@ export async function ensureHighQualityQuestion(
     try {
       let sourceLinkContent: string | null = null;
       if (token.sourceLink) {
-        const resolved = await resolveReviewContext(token.sourceLink).catch(
-          () => null,
-        );
+        const resolved = await resolveReviewContext(token.sourceLink, {
+          db,
+          tokenId: token.id,
+        }).catch(() => null);
         if (resolved) {
           sourceLinkContent = resolved.content;
         }
